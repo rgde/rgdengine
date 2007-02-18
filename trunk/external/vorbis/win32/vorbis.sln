@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbis_static", "vorbis_static.vcproj", "{88A9EA72-91BF-400B-B175-C7E1DB13DAE7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbisfile_static", "vorbisfile_static.vcproj", "{4B61F965-D1DA-4454-8983-D645CC327633}"
+	ProjectSection(ProjectDependencies) = postProject
+		{88A9EA72-91BF-400B-B175-C7E1DB13DAE7} = {88A9EA72-91BF-400B-B175-C7E1DB13DAE7}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88A9EA72-91BF-400B-B175-C7E1DB13DAE7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{88A9EA72-91BF-400B-B175-C7E1DB13DAE7}.Debug|Win32.Build.0 = Debug|Win32
+		{88A9EA72-91BF-400B-B175-C7E1DB13DAE7}.Release|Win32.ActiveCfg = Release|Win32
+		{88A9EA72-91BF-400B-B175-C7E1DB13DAE7}.Release|Win32.Build.0 = Release|Win32
+		{4B61F965-D1DA-4454-8983-D645CC327633}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4B61F965-D1DA-4454-8983-D645CC327633}.Debug|Win32.Build.0 = Debug|Win32
+		{4B61F965-D1DA-4454-8983-D645CC327633}.Release|Win32.ActiveCfg = Release|Win32
+		{4B61F965-D1DA-4454-8983-D645CC327633}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
