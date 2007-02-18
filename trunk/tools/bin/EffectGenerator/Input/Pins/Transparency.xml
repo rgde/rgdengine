@@ -1,0 +1,31 @@
+<EffectGeneratorParameters>
+
+  <pins>
+    <pin priority = "0">
+
+      <variation name_add = "Transparent">
+        <constants>
+          <TransparencyEnabled>true</TransparencyEnabled>
+        </constants>
+        <pin_pass type = "current">
+          <ZWriteEnable>false</ZWriteEnable>
+          <CullMode>CW</CullMode>
+          <AlphaBlendEnable>true</AlphaBlendEnable>
+          <SrcBlend>SRCALPHA</SrcBlend>
+          <DestBlend>INVSRCALPHA</DestBlend>
+        </pin_pass>
+        <pin_pass type = "new_copy_from_prev">
+          <CullMode>CCW</CullMode>
+        </pin_pass>
+      </variation>
+
+      <variation>
+        <constants>
+          <TransparencyEnabled>false</TransparencyEnabled>
+        </constants>
+      </variation>
+
+    </pin>
+  </pins>
+
+</EffectGeneratorParameters>

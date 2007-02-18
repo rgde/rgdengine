@@ -1,0 +1,28 @@
+<EffectGeneratorParameters>
+
+  <pins>
+    <pin priority = "20">
+
+      <variation name_add = "Illumination">
+        <constants>
+          <IlluminationValidity>true</IlluminationValidity>
+        </constants>
+        <pin_pass type = "current">
+          <Sampler>(SamplerIllumination)</Sampler>
+          <ColorOp>ADD</ColorOp>
+          <ColorArg0>CURRENT</ColorArg0>
+          <ColorArg1>TEXTURE</ColorArg1>
+          <TexCoordIndex>PASSTHRU</TexCoordIndex>
+        </pin_pass>
+      </variation>
+
+      <variation>
+        <constants>
+          <IlluminationValidity>false</IlluminationValidity>
+        </constants>
+      </variation>
+
+    </pin>
+  </pins>
+
+</EffectGeneratorParameters>

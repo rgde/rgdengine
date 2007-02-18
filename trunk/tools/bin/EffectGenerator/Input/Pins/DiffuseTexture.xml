@@ -1,0 +1,31 @@
+<EffectGeneratorParameters>
+
+  <pins>
+    <pin priority = "50">
+
+      <variation name_add = "Diffuse">
+        <constants>
+          <DiffuseValidity>true</DiffuseValidity>
+        </constants>
+        <pin_pass type = "current">
+          <Sampler>(SamplerDiffuse)</Sampler>
+          <ColorOp>MODULATE</ColorOp>
+          <AlphaOp>MODULATE</AlphaOp>
+          <ColorArg0>CURRENT</ColorArg0>
+          <ColorArg1>TEXTURE</ColorArg1>
+          <AlphaArg0>CURRENT</AlphaArg0>
+          <AlphaArg1>TEXTURE</AlphaArg1>
+          <TexCoordIndex>PASSTHRU</TexCoordIndex>
+        </pin_pass>
+      </variation>
+
+      <variation>
+        <constants>
+          <DiffuseValidity>false</DiffuseValidity>
+        </constants>
+      </variation>
+
+    </pin>
+  </pins>
+
+</EffectGeneratorParameters>

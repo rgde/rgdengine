@@ -1,0 +1,207 @@
+<EffectGeneratorParameters>
+
+  <!-- CONSTANTS -->
+  <constants>
+    <MaxNumStages>4</MaxNumStages>
+    <MaxNumLights>8</MaxNumLights>
+  </constants>
+  <!-- CONSTANTS -->
+
+  <!-- STATES -->
+  <states>
+    <Material type = "variable">
+      <MaterialAmbient>
+        <default_value>(vAmbientColor)</default_value>
+      </MaterialAmbient>
+      <MaterialDiffuse>
+        <default_value>(vDiffuseColor)</default_value>
+      </MaterialDiffuse>
+      <MaterialEmissive>
+        <default_value>(vEmissiveColor)</default_value>
+      </MaterialEmissive>
+      <MaterialSpecular>
+        <default_value>(vSpecularColor)</default_value>
+      </MaterialSpecular>
+      <MaterialPower>
+        <default_value>(fPower)</default_value>
+      </MaterialPower>
+    </Material>
+
+    <Sampler type = "turn" max = "%MaxNumStages%">
+      <Sampler />
+    </Sampler>
+
+    <TextureStage type = "turn" max = "%MaxNumStages%">
+      <ColorOp>
+        <default_value>DISABLE</default_value>
+        <default_value n = "0">SELECTARG1</default_value>
+      </ColorOp>
+      <AlphaOp>
+        <default_value>DISABLE</default_value>
+        <default_value n = "0">SELECTARG1</default_value>
+      </AlphaOp>
+      <AlphaArg0 />
+      <AlphaArg1>
+        <default_value n = "0">CURRENT</default_value>
+      </AlphaArg1>
+      <AlphaArg2 />
+      <ColorArg0>
+        <default_value n = "0">CURRENT</default_value>
+      </ColorArg0>
+      <ColorArg1 />
+      <ColorArg2 />
+      <TexCoordIndex />
+    </TextureStage>
+
+    <VertexPipe type = "variable">
+      <FogEnable>
+        <default_value>(fog.bEnabled)</default_value>
+      </FogEnable>
+      <FogColor>
+        <default_value>(fog.color)</default_value>
+      </FogColor>
+      <FogTableMode>
+        <default_value>(fog.iMode)</default_value>
+      </FogTableMode>
+      <FogStart>
+        <default_value>(fog.fStart)</default_value>
+      </FogStart>
+      <FogEnd>
+        <default_value>(fog.fEnd)</default_value>
+      </FogEnd>
+      <SpecularEnable>
+        <default_value>true</default_value>
+      </SpecularEnable>
+      <ColorVertex>
+        <default_value>true</default_value>
+      </ColorVertex>
+      <Lighting>
+        <default_value>(LightingEnabled)</default_value>
+      </Lighting>
+      <Ambient>
+        <default_value>(vAmbientLight)</default_value>
+      </Ambient>
+      <CullMode>
+        <default_value>NONE</default_value>
+      </CullMode>
+    </VertexPipe>
+
+    <PixelPipe type = "variable">
+      <FillMode>
+        <default_value>(FillMode)</default_value>
+      </FillMode>
+      <NormalizeNormals>
+        <default_value>true</default_value>
+      </NormalizeNormals>
+      <ZEnable>
+        <default_value>true</default_value>
+      </ZEnable>
+      <AlphaBlendEnable>
+        <default_value>false</default_value>
+      </AlphaBlendEnable>
+      <SrcBlend>
+        <default_value>ZERO</default_value>
+      </SrcBlend>
+      <DestBlend>
+        <default_value>ZERO</default_value>
+      </DestBlend>
+      <ZWriteEnable />
+    </PixelPipe>
+
+    <Transform type = "variable">
+      <ViewTransform>
+        <default_value>(View)</default_value>
+      </ViewTransform>
+      <ProjectionTransform>
+        <default_value>(Projection)</default_value>
+      </ProjectionTransform>
+    </Transform>
+
+    <Transform type = "array" max = "1">
+      <WorldTransform>
+        <default_value n = "0">(World)</default_value>
+      </WorldTransform>
+    </Transform>
+
+    <Light type = "array" max = "%MaxNumLights%">
+
+      <LightPosition>
+        <default_value>(lights[!n!].vPos)</default_value>
+      </LightPosition>
+      <LightDirection>
+        <default_value>(lights[!n!].vDir)</default_value>
+      </LightDirection>
+      <LightDiffuse>
+        <default_value>(lights[!n!].vDiffuse)</default_value>
+      </LightDiffuse>
+      <LightSpecular>
+        <default_value>(lights[!n!].vSpecular)</default_value>
+      </LightSpecular>
+      <LightAmbient>
+        <default_value>(lights[!n!].vAmbient)</default_value>
+      </LightAmbient>
+      <LightEnable>
+        <default_value>(lights[!n!].bEnabled)</default_value>
+      </LightEnable>
+      <LightRange>
+        <default_value>(lights[!n!].fRange)</default_value>
+      </LightRange>
+      <LightFalloff>
+        <default_value>(lights[!n!].vSpot.z)</default_value>
+      </LightFalloff>
+      <LightTheta>
+        <default_value>(lights[!n!].vSpot.x)</default_value>
+      </LightTheta>
+      <LightPhi>
+        <default_value>(lights[!n!].vSpot.y)</default_value>
+      </LightPhi>
+      <LightAttenuation0>
+        <default_value>(lights[!n!].vAttenuation.x)</default_value>
+      </LightAttenuation0>
+      <LightAttenuation1>
+        <default_value>(lights[!n!].vAttenuation.y)</default_value>
+      </LightAttenuation1>
+      <LightAttenuation2>
+        <default_value>(lights[!n!].vAttenuation.z)</default_value>
+      </LightAttenuation2>
+      <LightType>
+        <default_value>(lights[!n!].iType)</default_value>
+      </LightType>
+
+    </Light>
+
+  </states>
+  <!-- STATES -->
+
+  <!-- TYPES -->
+  <!--
+  <types>
+
+    <type name = "FFP" priority = "0">
+      <MaterialAmbient />
+      <MaterialDiffuse />
+      <MaterialEmissive />
+      <MaterialSpecular />
+      <MaterialPower />
+      <Sampler />
+      <ColorOp />
+      <AlphaOp />
+      <AlphaArg0 />
+      <AlphaArg1 />
+      <AlphaArg2 />
+      <ColorArg0 />
+      <ColorArg1 />
+      <ColorArg2 />
+      <TexCoordIndex />
+    </type>
+
+    <type name = "SM 2.0" priority = "1">
+      <PixelShader />
+      <VertexShader />
+    </type>
+
+  </types>
+  -->
+  <!-- TYPES -->
+
+</EffectGeneratorParameters>
