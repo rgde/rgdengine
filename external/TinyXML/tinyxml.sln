@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyXmlTest", "tinyXmlTest.vcproj", "{FA7733D5-03E8-4ED9-95C9-61AF85AC684C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9BAF9DFD-510D-443B-8C1A-473E1450549B} = {9BAF9DFD-510D-443B-8C1A-473E1450549B}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyXmlTestSTL", "tinyXmlTestSTL.vcproj", "{E68D80EB-4773-4967-AAD1-E08D368C1D7E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E8B256DE-0D44-4DC5-A43F-58E7F61331CA} = {E8B256DE-0D44-4DC5-A43F-58E7F61331CA}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyxml", "tinyxml_lib.vcproj", "{9BAF9DFD-510D-443B-8C1A-473E1450549B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyxmlSTL", "tinyxmlSTL.vcproj", "{E8B256DE-0D44-4DC5-A43F-58E7F61331CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA7733D5-03E8-4ED9-95C9-61AF85AC684C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FA7733D5-03E8-4ED9-95C9-61AF85AC684C}.Debug|Win32.Build.0 = Debug|Win32
+		{FA7733D5-03E8-4ED9-95C9-61AF85AC684C}.Release|Win32.ActiveCfg = Release|Win32
+		{FA7733D5-03E8-4ED9-95C9-61AF85AC684C}.Release|Win32.Build.0 = Release|Win32
+		{E68D80EB-4773-4967-AAD1-E08D368C1D7E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E68D80EB-4773-4967-AAD1-E08D368C1D7E}.Debug|Win32.Build.0 = Debug|Win32
+		{E68D80EB-4773-4967-AAD1-E08D368C1D7E}.Release|Win32.ActiveCfg = Release|Win32
+		{E68D80EB-4773-4967-AAD1-E08D368C1D7E}.Release|Win32.Build.0 = Release|Win32
+		{9BAF9DFD-510D-443B-8C1A-473E1450549B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9BAF9DFD-510D-443B-8C1A-473E1450549B}.Debug|Win32.Build.0 = Debug|Win32
+		{9BAF9DFD-510D-443B-8C1A-473E1450549B}.Release|Win32.ActiveCfg = Release|Win32
+		{9BAF9DFD-510D-443B-8C1A-473E1450549B}.Release|Win32.Build.0 = Release|Win32
+		{E8B256DE-0D44-4DC5-A43F-58E7F61331CA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E8B256DE-0D44-4DC5-A43F-58E7F61331CA}.Debug|Win32.Build.0 = Debug|Win32
+		{E8B256DE-0D44-4DC5-A43F-58E7F61331CA}.Release|Win32.ActiveCfg = Release|Win32
+		{E8B256DE-0D44-4DC5-A43F-58E7F61331CA}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
