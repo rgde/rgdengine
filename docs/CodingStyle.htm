@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html XMLNS:O>
+	<head>
+		<title></title>
+		<meta name="GENERATOR" content="Microsoft Visual Studio .NET 7.1">
+		<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+	</head>
+	<body>
+		<H1>Правила оформление кода
+		</H1>
+		<P class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+				<o:p></o:p></SPAN></P>
+		<H2>Именование типов:</H2>
+		<UL style="MARGIN-TOP: 0cm" type="disc">
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+				Классы начинаются с большой буквы <I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						C</SPAN></I> – <I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						CClass</SPAN>, </I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						CObject</SPAN>, </I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						CSomeObject</SPAN></I>
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+				Интерфейсные классы (в которых все методы чисто виртуальные " = 0") – <I style="mso-bidi-font-style: normal">
+					<SPAN lang="EN-US" style="mso-ansi-language: EN-US">ISomeInterface</SPAN>, </I>
+				<I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						IBaseType</SPAN></I>
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+				Имя структуры начинается с <I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						S</SPAN> – </I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						SSomeStructure</SPAN>, </I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						SDataType</SPAN></I>
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+				Имя темплейтного класса начинается с <I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						T</SPAN> – </I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						TTemplateClass</SPAN>, </I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						TVector</SPAN>, </I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						TEvent</SPAN></I>
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+				Имя <SPAN lang="EN-US" style="mso-ansi-language: EN-US">enum</SPAN> типа 
+				начинается с <I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						E</SPAN>
+					<o:p></o:p></I></LI></UL>
+		<H2><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+				<o:p></o:p></SPAN></H2>
+		<H2>Именование глобальных ф-ий и ф-ий мемберов:</H2>
+		<P class="MsoNormal">
+			<o:p></o:p></P>
+		<UL style="MARGIN-TOP: 0cm" type="disc">
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+			Ф-ия мембер начинается с маленькой буквы
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+			Ф-ия мембер начинается с прописной буквы если она статическая
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+			Имя глобальной ф-ии начинается с прописной буквы
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+				Имя любой ф-ии должно начинаться с глагола</LI></UL>
+		<P class="MsoNormal" style="MARGIN-LEFT: 18pt">
+			<o:p></o:p></P>
+		<ADDRESS class="MsoNormal" style="MARGIN-LEFT: 18pt"><I style="mso-bidi-font-style: normal">Примеры 
+				правильно именования:
+				<o:p></o:p></I></ADDRESS>
+		<ADDRESS class="MsoNormal" style="MARGIN-LEFT: 18pt"><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">Class</SPAN><SPAN lang="EN-US">
+				</SPAN></I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+					CSomeClass</SPAN>
+				<o:p></o:p></I></ADDRESS>
+		<ADDRESS class="MsoNormal" style="MARGIN-LEFT: 18pt"><I style="mso-bidi-font-style: normal">{
+				<o:p></o:p></I></ADDRESS>
+		<ADDRESS class="MsoNormal" style="MARGIN-LEFT: 18pt"><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">int 
+					getValue();
+					<o:p></o:p></SPAN></I></ADDRESS>
+		<ADDRESS class="MsoNormal" style="MARGIN-LEFT: 18pt"><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">static 
+					void HideAll():
+					<o:p></o:p></SPAN></I></ADDRESS>
+		<ADDRESS class="MsoNormal" style="MARGIN-LEFT: 18pt"><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">}
+					<o:p></o:p></SPAN></I></ADDRESS>
+		<ADDRESS class="MsoNormal" style="MARGIN-LEFT: 18pt"><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+					<o:p></o:p></SPAN></I>&nbsp;</ADDRESS>
+		<ADDRESS class="MsoNormal" style="MARGIN-LEFT: 18pt"><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">void 
+					FreeUnusedMemory();</SPAN>
+				<o:p></o:p></I></ADDRESS>
+		<H2>
+			<o:p></o:p></H2>
+		<H2>Имена переменных:</H2>
+		<P class="MsoNormal">
+			<o:p></o:p></P>
+		<UL style="MARGIN-TOP: 0cm" type="disc">
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+				переменная член класс должна начинаться с <I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						m</SPAN> – </I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+						m</SPAN>_</I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">nSomeMemberVal</SPAN>;
+					<o:p></o:p></I>
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+				если переменная статическая у ее есть префикс <I style="mso-bidi-font-style: normal">
+					<SPAN lang="EN-US" style="mso-ansi-language: EN-US">s</SPAN> – </I><I style="mso-bidi-font-style: normal">
+					<SPAN lang="EN-US" style="mso-ansi-language: EN-US">ms</SPAN>_</I><I style="mso-bidi-font-style: normal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">nSomeStaticMemeberVar</SPAN></I>;
+			<LI class="MsoNormal" style="mso-list: l0 level1 lfo1; tab-stops: list 36.0pt">
+				после символа «_» должна следовать информация о типе так:
+				<UL style="MARGIN-TOP: 0cm" type="circle">
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						<SPAN lang="EN-US" style="mso-ansi-language: EN-US">int, unsigned, <I style="mso-bidi-font-style: normal">
+								_size-t – n (nSomeIntVal)
+								<o:p></o:p></I></SPAN>
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						<SPAN lang="EN-US" style="mso-ansi-language: EN-US">float, double – f <I style="mso-bidi-font-style: normal">
+								– fSomeFloatValue
+								<o:p></o:p></I></SPAN>
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						<SPAN lang="EN-US" style="mso-ansi-language: EN-US">string, char* <I style="mso-bidi-font-style: normal">
+								- str – strSomeStringValue
+								<o:p></o:p></I></SPAN>
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						<SPAN lang="EN-US" style="mso-ansi-language: EN-US">pointer – p -<SPAN style="mso-spacerun: yes">&nbsp;
+							</SPAN><I style="mso-bidi-font-style: normal">MyObj* pMyObj;
+								<o:p></o:p></I></SPAN>
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						<SPAN lang="EN-US" style="mso-ansi-language: EN-US">std::vector&lt;type&gt; - <I style="mso-bidi-font-style: normal">
+								ar</I> or <I style="mso-bidi-font-style: normal">vec</I>
+							<o:p></o:p></SPAN>
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						<SPAN lang="EN-US" style="mso-ansi-language: EN-US">std::list&lt;&gt; - <I style="mso-bidi-font-style: normal">
+								list
+								<o:p></o:p></I></SPAN>
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						<SPAN lang="EN-US" style="mso-ansi-language: EN-US">…
+							<o:p></o:p></SPAN>
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						класс<SPAN lang="EN-US" style="mso-ansi-language: EN-US"> – </SPAN>с<SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+							- CSomeClass<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>cVariable
+							<o:p></o:p></SPAN>
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						ссылка<SPAN lang="EN-US" style="mso-ansi-language: EN-US"> – r – CSomeClass 
+							&amp;rVariable
+							<o:p></o:p></SPAN>
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						<SPAN lang="EN-US" style="mso-ansi-language: EN-US">std::map&lt;&gt; - map – 
+							std::map&lt;int&gt; mapVariables
+							<o:p></o:p></SPAN>
+					<LI class="MsoNormal" style="mso-list: l0 level2 lfo1; tab-stops: list 72.0pt">
+						<SPAN lang="EN-US" style="mso-ansi-language: EN-US">handle – h – HWND hWnd
+							<o:p></o:p></SPAN></LI></UL>
+			</LI>
+		</UL>
+		<P class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US"></SPAN><SPAN lang="EN-US" style="mso-ansi-language: EN-US"></SPAN><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+				<o:p></o:p></SPAN></P>
+		<P class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+				<o:p></o:p></SPAN></P>
+		<H2>Каждый public класс и каждый public метод, назначение которых неочевидно из 
+			имени или имеющий специальные требования по работе с ним, &nbsp;должен 
+			содержать комментарий&nbsp;Doxygen формата. Например</H2>
+		<P class="MsoNormal">
+			/// класс для демонстрации правил оформления кода</P>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">class 
+				MyClass
+				<o:p></o:p></SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">{</SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal">/// этот метод никогда не будет вызван</ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">void 
+				MySuperPuperMethod();
+				<o:p></o:p></SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">};
+				<o:p></o:p></SPAN></ADDRESS>
+		<P class="MsoNormal"><FONT size="5">или так</FONT></P>
+		<ADDRESS class="MsoNormal"><EM>/** краткое описание&nbsp;&nbsp;&lt;точка&gt;</EM></ADDRESS>
+		<ADDRESS class="MsoNormal" style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Arial"><FONT face="Times New Roman" size="3"><EM>&nbsp;*&nbsp;&nbsp; 
+					подробное описание (многострочное)</EM></FONT></ADDRESS>
+		<ADDRESS class="MsoNormal" style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Arial"><FONT face="Times New Roman" size="3"><EM>&nbsp;*&nbsp;&nbsp; 
+					при необходимости используйте директивы @todo &lt;comment&gt;, @author 
+					&lt;name&gt;</EM></FONT></ADDRESS>
+		<ADDRESS class="MsoNormal"><EM>&nbsp;*/</EM></ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">class 
+				MyClass
+				<O:P></O:P></SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">{</SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">void 
+				MySuperPuperMethod(); </SPAN>
+		</ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US"></SPAN><SPAN lang="EN-US" style="mso-ansi-language: EN-US">};
+				<O:P></O:P></SPAN></ADDRESS>
+		<H2>В начале каждого <SPAN lang="EN-US" style="mso-ansi-language: EN-US">H</SPAN> файла&nbsp;может 
+			быть заголовок&nbsp;<SPAN lang="EN-US" style="mso-ansi-language: EN-US"> Doxygen 
+				формата для пояснения назначения файла. Например
+				<o:p></o:p></SPAN></H2>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">//////////////////////////////////////////////////////////////////////////</SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US"><A>// 
+					@author</A>&nbsp;&lt;name&gt;,&nbsp;&nbsp;</SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">// @date 
+				дата создания</SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">// 
+				email: </SPAN>
+		</ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">// 
+				project: RGDE </SPAN>
+		</ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">// 
+				description:&nbsp;</SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">// 
+				example of use: </SPAN>
+		</ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">// @todo 
+				&lt;comment&gt;</SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">//////////////////////////////////////////////////////////////////////////</SPAN></ADDRESS>
+		<ADDRESS class="MsoNormal">
+			<ADDRESS class="MsoNormal"><SPAN lang="EN-US" style="mso-ansi-language: EN-US">
+					<o:p></o:p></SPAN></ADDRESS>
+			<P class="MsoNormal">
+			<P class="MsoNormal" style="FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Arial"><FONT face="Times New Roman" size="3"><EM></EM></FONT></P>
+			<FONT face="Times New Roman" size="5">Обработка ошибок</FONT>
+		</ADDRESS>
+		<P></P>
+		<UL>
+			<LI>
+			обработка ошибок должна быть
+			<LI>
+			по возможности&nbsp;восстановление должно быть локальным (большинство случаев)
+			<LI>
+				если клиент класса должен быть "предупрежден" о возможности ошибки - интерфейс 
+				должен содержать путь как проверить состояние ошибки <STRONG>до</STRONG>
+			действия, которое к ней приводит
+			<LI>
+			необходимо отделять основной путь исполнения от обработки ошибок а не смешивать 
+			их
+			<LI>
+			на критическом по производительности пути ошибки, от которых возможно 
+			восстановление, должны сообщаться посредством кодов ошибок. Для кодов ошибок, 
+			которые не должны быть проигнорированы другими разработчиками можно 
+			использовать шаблон ErrorCode в base/exceptions.h
+			<LI>
+			ошибки, от которых невозможно локальное восстановление и не допускают обработку 
+			на вызвавшем (верхнем) уровне должны сообщаться посредством исключений
+			<LI>
+				<STRONG>на использование исключений наложены следующие ограничения:</STRONG>
+				<OL>
+			<LI>
+			вместо оператора throw следует использовать фукцию throw_ из base/exceptions.h
+			<LI>
+			тип исключения должен быть классом унаследовавнимся от base::CBaseException из 
+			base/exceptions.h&nbsp;и&nbsp;называться с Exception на конце.&nbsp;
+			<LI>
+				запрещается в явном виде использовать макросы __FILE__ и __LINE__ для передачи 
+				аргументов в конструктор этого класса. Взамен используйте макросы 
+				M_CBASEEXCEPTION_ARGS из base/exceptions.h</LI></OL>
+			<LI>
+				to be continued :)</LI></UL>
+		<P class="MsoNormal"><FONT size="5"></FONT>&nbsp;</P>
+		<H3>Примечание:</H3>
+		<P class="MsoNormal">Правила планируется еще доработать и расширить.</P>
+		<P class="MsoNormal"><FONT size="5"></FONT>&nbsp;</P>
+	</body>
+</html>

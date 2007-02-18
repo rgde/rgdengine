@@ -1,0 +1,28 @@
+<EffectGeneratorParameters>
+
+  <pins>
+    <pin priority = "30">
+
+      <variation name_add = "Lightmap">
+        <constants>
+          <LightmapValidity>true</LightmapValidity>
+        </constants>
+        <pin_pass type = "current">
+          <Sampler>(SamplerLightmap)</Sampler>
+          <ColorOp>MODULATE</ColorOp>
+          <ColorArg0>CURRENT</ColorArg0>
+          <ColorArg1>TEXTURE</ColorArg1>
+          <TexCoordIndex>1</TexCoordIndex>
+        </pin_pass>
+      </variation>
+
+      <variation>
+        <constants>
+          <LightmapValidity>false</LightmapValidity>
+        </constants>
+      </variation>
+
+    </pin>
+  </pins>
+
+</EffectGeneratorParameters>

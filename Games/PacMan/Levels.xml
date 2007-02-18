@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<game startlevel="menu">
+	<!-- Уровень меню 
+	Возможны переходы на уровни: game, controls, about -->
+	<level name="menu">
+		<label name="labPacMan" caption="Pac Man" pos="not_set" />
+		<video_animation name="animPacMan" pos="not_set">
+			not_set
+		</video_animation>
+		<button name="butStartGame" caption="Start Game" pos="not_set">
+			<action type="next_level" next_level="game" />
+		</button>
+		<button name="butControls" caption="Controls" pos="not_set">
+			<action type="next_level" next_level="controls" />
+		</button>
+		<button name="butAbout" caption="About" pos="not_set">
+			<action type="next_level" next_level="about" />
+		</button>
+		<button name="butQuit" caption="Quit" pos="not_set">
+			<action type="end_game" />
+		</button>
+	</level>
+	
+	<!-- Уровень игры 
+	Возможен переход на уровень: menu -->
+	<level name="game">
+		<gui>
+			<label name="labScore" caption="Score" pos="not_set" />
+			<label_dynamic name="labScoreValue" pos="not_set" />
+			<label name="labLives" caption="Lives" pos="not_set" />
+			<animated_texture name="livesValue" pos="not_set" />
+			<texture name="bonusPicture" pos="not_set" />
+			<animated_texture name="texPaused" pos="not_set />
+		</gui>
+		<level_data>
+				0	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18
+			0	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd
+			1	Brd									Brd									Brd
+			2	Brd		Brd	Brd		Brd	Brd	Brd		Brd		Brd	Brd	Brd		Brd	Brd		Brd
+			3	Brd																		Brd
+			4	Brd		Brd	Brd		Brd		Brd	Brd	Brd	Brd	Brd		Brd		Brd	Brd		Brd
+			5	Brd					Brd			Brd	Brd	Brd			Brd					Brd
+			6	Brd	Brd	Brd	Brd		Brd	Brd		Brd	Brd	Brd		Brd	Brd		Brd	Brd	Brd	Brd
+			7				Brd		Brd								Brd		Brd
+			8	Brd	Brd	Brd	Brd		Brd		Brd				Brd		Brd		Brd	Brd	Brd	Brd
+			9								Brd				Brd							
+			10	Brd	Brd	Brd	Brd		Brd		Brd	Brd	Brd	Brd	Brd		Brd		Brd	Brd	Brd	Brd
+			11				Brd		Brd								Brd		Brd
+			12	Brd	Brd	Brd	Brd		Brd		Brd	Brd	Brd	Brd	Brd		Brd		Brd	Brd	Brd	Brd
+			13	Brd									Brd									Brd
+			14	Brd		Brd	Brd		Brd	Brd	Brd		Brd		Brd	Brd	Brd		Brd	Brd		Brd
+			15	Brd			Brd												Brd			Brd
+			16	Brd	Brd		Brd		Brd		Brd	Brd	Brd	Brd	Brd		Brd		Brd		Brd	Brd
+			17	Brd					Brd				Brd				Brd					Brd
+			18	Brd		Brd	Brd	Brd	Brd	Brd	Brd		Brd		Brd	Brd	Brd	Brd	Brd	Brd		Brd
+			19	Brd																		Brd
+			20	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd	Brd		
+		</level_data>
+	</level>
+	
+	<!-- Уровень просмотра клавиш управления 
+	Возможен переход на уровень: menu -->
+	<level name="controls">
+		<label name="labPacMan" caption="Pac Man" pos="not_set" />
+		<label name="labControlsText" caption="not_set" pos="not_set" />
+		<button name="butGoBack" caption="Go Back" pos="not_set">
+			<action type="next_level" next_level="menu" />
+		</button>
+	</level>
+	
+	<!-- Уровень просмотра инфы об игре 
+	Возможен переход на уровень: menu -->
+	<level name="about">
+		<label name="labPacMan" caption="Pac Man" pos="not_set" />
+		<label name="labAboutText" caption="not_set" pos="not_set" />
+		<button name="butGoBack" caption="Go Back" pos="not_set">
+			<action type="next_level" next_level="menu" />
+		</button>
+	</level>
+</game>

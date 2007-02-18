@@ -1,0 +1,41 @@
+<EffectGeneratorParameters>
+
+  <pins>
+    <pin priority = "10">
+
+      <variation name_add = "Reflection">
+        <constants>
+          <ReflectionValidity>true</ReflectionValidity>
+        </constants>
+        <pin_pass type = "current">
+          <Sampler>(SamplerReflection)</Sampler>
+          <ColorOp>ADD</ColorOp>
+          <ColorArg0>CURRENT</ColorArg0>
+          <ColorArg1>TEXTURE</ColorArg1>
+          <TexCoordIndex>SPHEREMAP</TexCoordIndex>
+        </pin_pass>
+      </variation>
+
+      <variation name_add = "ReflectionCube">
+        <constants>
+          <ReflectionValidity>true</ReflectionValidity>
+        </constants>
+        <pin_pass type = "current">
+          <Sampler>(SamplerReflection)</Sampler>
+          <ColorOp>ADD</ColorOp>
+          <ColorArg0>CURRENT</ColorArg0>
+          <ColorArg1>TEXTURE</ColorArg1>
+          <TexCoordIndex>CAMERASPACEREFLECTIONVECTOR</TexCoordIndex>
+        </pin_pass>
+      </variation>
+
+      <variation>
+        <constants>
+          <ReflectionValidity>false</ReflectionValidity>
+        </constants>
+      </variation>
+
+    </pin>
+  </pins>
+
+</EffectGeneratorParameters>
