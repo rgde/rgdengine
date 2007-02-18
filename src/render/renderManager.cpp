@@ -143,8 +143,8 @@ namespace render
 				{
 					static PMaterial pDefaultMaterial = CMaterial::Create();
 
-					PMaterial&	pMaterial = info.spMaterial ? info.spMaterial : pDefaultMaterial;
-					PEffect&	pEffect	= info.spShader ? info.spShader : defaultEffect;
+					const PMaterial& pMaterial = info.spMaterial ? info.spMaterial : pDefaultMaterial;
+					const PEffect&	 pEffect	= info.spShader ? info.spShader : defaultEffect;
 					
 					pMaterial->getDynamicBinder()->setupParameters(info.pFrame);
 									
