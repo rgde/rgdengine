@@ -1,0 +1,52 @@
+<model>
+    <head>
+        <version>0.01</version>
+        <name>test_light2.XML</name>
+        <comment>no comment</comment>
+    </head>
+    <material_list>
+        <material file="01 - Default.xml" id="0" />
+    </material_list>
+    <node>
+        <node name="nd_ROOT0">
+            <translation x="0.0" y="0.0" z="0.0" />
+            <rotation x="0.0" y="0.0" z="0.0" />
+            <scale x="1.0" y="-1.0" z="1.0" />
+            <node name="Plane01" type="mesh">
+                <translation x="2.173" y="-0.60879" z="0." />
+                <rotation x="-0." y="0." z="-0." />
+                <scale x="1." y="1." z="1." />
+                <material id="0" />
+                <geometry name="Plane01" />
+            </node>
+            <node name="Fspot01" type="light">
+                <translation x="16.729" y="27.293" z="56.805" />
+                <rotation x="-0." y="0." z="-0." />
+                <scale x="1." y="1." z="1." />
+                <light>
+                    <type value="spot" />
+                    <ambient red="1." green="1." blue="1." />
+                    <diffuse red="1." green="1." blue="1." />
+                    <spec red="1." green="1." blue="1." />
+                    <enabled value="1" />
+                    <outer_ang value="49.3" />
+                    <inner_ang value="47.3" />
+                </light>
+            </node>
+            <node name="Omni01" type="light">
+                <translation x="53.214" y="-53.294" z="14.062" />
+                <rotation x="-0." y="0." z="-0." />
+                <scale x="1." y="1." z="1." />
+                <light>
+                    <type value="point" />
+                    <ambient red="1." green="1." blue="1." />
+                    <diffuse red="1." green="1." blue="1." />
+                    <spec red="1." green="1." blue="1." />
+                    <enabled value="1" />
+                    <near_att start="0." end="40." />
+                    <far_att start="80." end="200." />
+                </light>
+            </node>
+        </node>
+    </node>
+</model>

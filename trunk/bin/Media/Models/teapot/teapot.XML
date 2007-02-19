@@ -1,0 +1,19 @@
+<model>
+    <head>
+        <version>0.01</version>
+        <name>teapot.XML</name>
+        <comment>no comment</comment>
+    </head>
+    <material_list>
+        <material file="08 - Default.xml" id="0" />
+    </material_list>
+    <node>
+        <node name="Teapot01">
+            <translation x="-6.337" y="-7.5081" z="0." />
+            <rotation x="0." y="0." z="0." />
+            <scale x="1." y="1." z="1." />
+            <material id="0" />
+            <geometry name="Teapot01" />
+        </node>
+    </node>
+</model>

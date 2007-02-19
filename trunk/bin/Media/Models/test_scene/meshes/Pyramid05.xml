@@ -1,0 +1,56 @@
+<mesh name="Pyramid05">
+    <vertices num="6">
+        <vertex>
+            <position x="0." y="0." z="56.948" />
+            <uvset u="0.5" v="1." />
+            <normal x="0." y="-9.2202e-002" z="4.3981e-003" />
+            <tangent x="0." y="1." z="4.0899e-004" />
+            <binormal x="8.9642e-003" y="4.6229e-006" z="0.99996" />
+        </vertex>
+        <vertex>
+            <position x="-2.6332" y="-2.7164" z="0." />
+            <uvset u="0." v="0." />
+            <normal x="0." y="-1.5229" z="7.2643e-002" />
+            <tangent x="0.7445" y="-0.66529" z="5.5789e-002" />
+            <binormal x="3.6291e-002" y="3.4348e-002" z="0.99875" />
+        </vertex>
+        <vertex>
+            <position x="2.6332" y="-2.7164" z="0." />
+            <uvset u="1." v="0." />
+            <normal x="0." y="-1.5229" z="7.2643e-002" />
+            <tangent x="0.73423" y="0.67653" z="-5.6732e-002" />
+            <binormal x="3.0211e-002" y="0.12957" z="0.99111" />
+        </vertex>
+        <vertex>
+            <position x="2.6332" y="2.7164" z="0." />
+            <uvset u="1.532e-002" v="0." />
+            <normal x="1.5216" y="0." z="7.0355e-002" />
+            <tangent x="0.64091" y="-0.76584" z="5.2169e-002" />
+            <binormal x="-3.5193e-002" y="-3.5399e-002" z="0.99875" />
+        </vertex>
+        <vertex>
+            <position x="-2.6332" y="2.7164" z="0." />
+            <uvset u="1.0153" v="0." />
+            <normal x="0." y="1.5229" z="7.2643e-002" />
+            <tangent x="-0.7445" y="-0.66529" z="-5.5789e-002" />
+            <binormal x="-3.0097e-002" y="-0.12575" z="0.99161" />
+        </vertex>
+        <vertex>
+            <position x="0." y="0." z="0." />
+            <uvset u="0." v="1." />
+            <normal x="0." y="0." z="-1." />
+            <tangent x="0." y="1." z="0." />
+            <binormal x="1." y="0." z="0." />
+        </vertex>
+    </vertices>
+    <faces num="8">
+        <face a="0" b="1" c="2" />
+        <face a="0" b="2" c="3" />
+        <face a="0" b="3" c="4" />
+        <face a="0" b="4" c="1" />
+        <face a="1" b="5" c="2" />
+        <face a="2" b="5" c="3" />
+        <face a="3" b="5" c="4" />
+        <face a="4" b="5" c="1" />
+    </faces>
+</mesh>

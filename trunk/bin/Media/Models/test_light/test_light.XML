@@ -1,0 +1,46 @@
+<model>
+    <head>
+        <version>0.01</version>
+        <name>test_light.XML</name>
+        <comment>no comment</comment>
+    </head>
+    <material_list>
+        <material file="01 - Default.xml" id="0" />
+        <material file="02 - Default.xml" id="1" />
+    </material_list>
+    <node>
+        <node name="nd_ROOT0">
+            <translation x="0.0" y="0.0" z="0.0" />
+            <rotation x="0.0" y="0.0" z="0.0" />
+            <scale x="1.0" y="-1.0" z="1.0" />
+            <node name="Plane01" type="mesh">
+                <translation x="0.79779" y="-0.23418" z="2.7167" />
+                <rotation x="-0." y="0." z="-0." />
+                <scale x="1." y="1." z="1." />
+                <material id="0" />
+                <geometry name="Plane01" />
+            </node>
+          
+            <node name="Omni01" type="light">
+                <translation x="0." y="0." z="20." />
+                <rotation x="-0." y="0." z="-0." />
+                <scale x="1." y="1." z="1." />
+                <light>
+                    <type value="point" />
+                    <ambient red="1." green="1." blue="1." />
+                    <diffuse red="1." green="1." blue="1." />
+                    <spec red="1." green="1." blue="1." />
+                    <enabled value="1" />
+                </light>
+            </node>
+          
+            <node name="Box01" type="mesh">
+                <translation x="-1.141" y="26.582" z="0." />
+                <rotation x="-0." y="0." z="-0." />
+                <scale x="1." y="1." z="1." />
+                <material id="1" />
+                <geometry name="Box01" />
+            </node>
+        </node>
+    </node>
+</model>

@@ -1,0 +1,16 @@
+<material name="03 - Default">
+    <maps />
+    <ambient>
+        <color red="0.60784" green="0.84314" blue="0.59216" />
+    </ambient>
+    <diffuse>
+        <color red="0.60784" green="0.84314" blue="0.59216" />
+    </diffuse>
+    <specular>
+        <color red="0.9" green="0.9" blue="0.9" />
+    </specular>
+    <bump />
+    <reflection />
+    <opacity value="0.42" />
+    <illumination value="0.17" />
+</material>

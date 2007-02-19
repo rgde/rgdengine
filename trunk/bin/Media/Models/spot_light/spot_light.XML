@@ -1,0 +1,44 @@
+<model>
+    <head>
+        <version>0.01</version>
+        <name>spot_light.XML</name>
+        <comment>no comment</comment>
+    </head>
+    <material_list>
+        <material file="l02 - Default.xml" id="0" />
+        <material file="l01 - Default.xml" id="1" />
+    </material_list>
+    <node>
+        <node name="Group02">
+            <translation x="-1.7222e-003" y="0." z="7.8113e-002" />
+            <rotation x="0." y="1.5708" z="0." />
+            <scale x="1." y="1." z="1." />
+            <node name="Cone02">
+                <translation x="1.0052e-009" y="0." z="6.7967" />
+                <rotation x="0." y="-4.8578e-016" z="0." />
+                <scale x="0.10951" y="0.10731" z="7.9973e-002" />
+                <material id="0" />
+                <geometry name="lCone02" />
+            </node>
+            <node name="Cylinder02">
+                <translation x="-5.0354e-004" y="-2.6642e-002" z="6.9364" />
+                <rotation x="0." y="2.7192e-016" z="0." />
+                <scale x="0.14625" y="0.14749" z="0.1068" />
+                <geometry name="lCylinder02" />
+            </node>
+            <node name="Cylinder03">
+                <translation x="4.5776e-004" y="-3.717e-002" z="-8.6524" />
+                <rotation x="0." y="7.5729e-016" z="0." />
+                <scale x="0.11686" y="0.11451" z="8.5337e-002" />
+                <geometry name="lCylinder03" />
+            </node>
+            <node name="Cylinder01">
+                <translation x="7.3853e-003" y="-7.3547e-003" z="9.803" />
+                <rotation x="0." y="1.3816e-015" z="0." />
+                <scale x="0.10042" y="9.8398e-002" z="7.3331e-002" />
+                <material id="1" />
+                <geometry name="lCylinder01" />
+            </node>
+        </node>
+    </node>
+</model>

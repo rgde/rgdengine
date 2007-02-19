@@ -1,0 +1,21 @@
+<material name="2 - Default">
+    <maps>
+        <map id="0" file="Texture.jpg&#x00;" utile="1." vtile="1." />
+    </maps>
+    <ambient>
+        <color r="150" g="150" b="150" a="255" />
+    </ambient>
+    <diffuse>
+        <color r="150" g="150" b="150" a="255">
+            <map id="0." amount="1." />
+        </color>
+    </diffuse>
+    <specular>
+        <color r="229" g="229" b="229" a="255" />
+    </specular>
+    <bump />
+    <reflection />
+    <sefl_illumination />
+    <opacity value="1." />
+    <illumination value="0." />
+</material>
