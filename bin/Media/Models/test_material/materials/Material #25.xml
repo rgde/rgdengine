@@ -1,0 +1,18 @@
+<material name="Material #25">
+    <maps>
+    </maps>
+    <ambient>
+        <color red="0.58824" green="0.58824" blue="0.58824" />
+    </ambient>
+    <diffuse>
+        <color red="0.58824" green="0.58824" blue="0.58824" />
+    </diffuse>
+    <specular>
+        <color red="0.9" green="0.9" blue="0.9" />
+    </specular>
+    <bump />
+    <reflection />
+    <sefl_illumination />
+    <opacity value="1." />
+    <illumination value="0." />
+</material>

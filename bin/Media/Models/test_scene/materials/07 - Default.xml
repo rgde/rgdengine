@@ -1,0 +1,27 @@
+<material name="07 - Default">
+    <maps>
+        <map id="0" file="Concgray.jpg" />
+        <map id="1" file="MtlPlat2_Bump.jpg" />
+        <map id="2" file="MtlPlat2_Bump.jpg" />
+        <map id="3" file="SphereMap.jpg" />
+    </maps>
+    <ambient>
+        <color red="0.80392" green="0.79216" blue="0.68235" />
+    </ambient>
+    <diffuse>
+        <color red="0.30196" green="0.35294" blue="0.60784" />
+        <map id="0" amount="1." />
+    </diffuse>
+    <specular>
+        <color red="1." green="1." blue="1." />
+        <map id="1" amount="1." />
+    </specular>
+    <bump>
+        <map id="2" amount="0.3" />
+    </bump>
+    <reflection>
+        <map id="3" amount="1." />
+    </reflection>
+    <opacity value="0.6" />
+    <illumination value="0." />
+</material>

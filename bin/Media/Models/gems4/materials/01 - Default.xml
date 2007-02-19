@@ -1,0 +1,19 @@
+<material name="01 - Default">
+    <maps>
+        <map id="0" file="tex1.bmp" utile="1." vtile="1." />
+    </maps>
+    <ambient>
+        <color red="0.2" green="0" blue="0" />
+    </ambient>
+    <diffuse>
+        <color red="1" green="0" blue="0" />         
+    </diffuse>
+    <specular>
+        <color red="0.9" green="0" blue="0" />
+    </specular>
+    <bump />
+    <reflection/>    
+    <sefl_illumination />
+    <opacity value="1" />
+    <illumination value="0." />
+</material>

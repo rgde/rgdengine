@@ -1,0 +1,158 @@
+<mesh name="Line216">
+    <vertices num="24">
+        <vertex x="-72.178" y="91.864" z="19.685">
+            <uvset type="primary" u="0.88303" v="0.59746" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="-0.53635" y="0." z="-0.844" />
+            <binormal x="-0.35566" y="-0.90687" z="0.22602" />
+        </vertex>
+        <vertex x="85.302" y="91.864" z="19.685">
+            <uvset type="primary" u="0.88303" v="0.64854" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="-0.53635" y="0." z="-0.844" />
+            <binormal x="-6.2594e-002" y="-0.99725" z="3.9777e-002" />
+        </vertex>
+        <vertex x="85.302" y="91.864" z="-7.3556e-011">
+            <uvset type="primary" u="0.8884" v="0.64854" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="0." y="0." z="-1." />
+            <binormal x="-0.43938" y="-0.8983" z="0." />
+        </vertex>
+        <vertex x="85.302" y="91.864" z="-7.3556e-011">
+            <uvset type="primary" u="0.8884" v="0.64854" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="0." y="0." z="-1." />
+            <binormal x="-0.43938" y="-0.8983" z="0." />
+        </vertex>
+        <vertex x="-72.178" y="91.864" z="-7.3453e-011">
+            <uvset type="primary" u="0.8884" v="0.59746" />
+            <normal x="-0." y="1.5708" z="0." />
+            <tangent x="0." y="0." z="-1." />
+            <binormal x="-0.42546" y="-0.90498" z="0." />
+        </vertex>
+        <vertex x="-72.178" y="91.864" z="19.685">
+            <uvset type="primary" u="0.88303" v="0.59746" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="-0.53635" y="0." z="-0.844" />
+            <binormal x="-0.35566" y="-0.90687" z="0.22602" />
+        </vertex>
+        <vertex x="85.302" y="-183.73" z="19.685">
+            <uvset type="primary" u="0.88303" v="0.68063" />
+            <normal x="-1.3638" y="-0.77933" z="0." />
+            <tangent x="0.41257" y="0.50987" z="-0.75486" />
+            <binormal x="-0.91302" y="0.23795" z="0.33133" />
+        </vertex>
+        <vertex x="-72.178" y="91.864" z="19.685">
+            <uvset type="primary" u="0.88303" v="0.59746" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="-0.53635" y="0." z="-0.844" />
+            <binormal x="-0.35566" y="-0.90687" z="0.22602" />
+        </vertex>
+        <vertex x="-72.178" y="91.864" z="-7.3453e-011">
+            <uvset type="primary" u="0.8884" v="0.59746" />
+            <normal x="-0." y="1.5708" z="0." />
+            <tangent x="0." y="0." z="-1." />
+            <binormal x="-0.42546" y="-0.90498" z="0." />
+        </vertex>
+        <vertex x="-72.178" y="91.864" z="-7.3453e-011">
+            <uvset type="primary" u="0.8884" v="0.59746" />
+            <normal x="-0." y="1.5708" z="0." />
+            <tangent x="0." y="0." z="-1." />
+            <binormal x="-0.42546" y="-0.90498" z="0." />
+        </vertex>
+        <vertex x="85.302" y="-183.73" z="-5.2546e-011">
+            <uvset type="primary" u="0.8884" v="0.68063" />
+            <normal x="-1.3638" y="-0.77933" z="0." />
+            <tangent x="0." y="0." z="-1." />
+            <binormal x="-0.90662" y="0.42194" z="0." />
+        </vertex>
+        <vertex x="85.302" y="-183.73" z="19.685">
+            <uvset type="primary" u="0.88303" v="0.68063" />
+            <normal x="-1.3638" y="-0.77933" z="0." />
+            <tangent x="0.41257" y="0.50987" z="-0.75486" />
+            <binormal x="-0.91302" y="0.23795" z="0.33133" />
+        </vertex>
+        <vertex x="85.302" y="91.864" z="19.685">
+            <uvset type="primary" u="0.88303" v="0.64854" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="-0.53635" y="0." z="-0.844" />
+            <binormal x="-6.2594e-002" y="-0.99725" z="3.9777e-002" />
+        </vertex>
+        <vertex x="85.302" y="-183.73" z="19.685">
+            <uvset type="primary" u="0.88303" v="0.68063" />
+            <normal x="-1.3638" y="-0.77933" z="0." />
+            <tangent x="0.41257" y="0.50987" z="-0.75486" />
+            <binormal x="-0.91302" y="0.23795" z="0.33133" />
+        </vertex>
+        <vertex x="85.302" y="-183.73" z="-5.2546e-011">
+            <uvset type="primary" u="0.8884" v="0.68063" />
+            <normal x="-1.3638" y="-0.77933" z="0." />
+            <tangent x="0." y="0." z="-1." />
+            <binormal x="-0.90662" y="0.42194" z="0." />
+        </vertex>
+        <vertex x="85.302" y="-183.73" z="-5.2546e-011">
+            <uvset type="primary" u="0.8884" v="0.68063" />
+            <normal x="-1.3638" y="-0.77933" z="0." />
+            <tangent x="0." y="0." z="-1." />
+            <binormal x="-0.90662" y="0.42194" z="0." />
+        </vertex>
+        <vertex x="85.302" y="91.864" z="-7.3556e-011">
+            <uvset type="primary" u="0.8884" v="0.64854" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="0." y="0." z="-1." />
+            <binormal x="-0.43938" y="-0.8983" z="0." />
+        </vertex>
+        <vertex x="85.302" y="91.864" z="19.685">
+            <uvset type="primary" u="0.88303" v="0.64854" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="-0.53635" y="0." z="-0.844" />
+            <binormal x="-6.2594e-002" y="-0.99725" z="3.9777e-002" />
+        </vertex>
+        <vertex x="-72.178" y="91.864" z="-7.3453e-011">
+            <uvset type="primary" u="0.9333" v="0.59742" />
+            <normal x="-0." y="1.5708" z="0." />
+            <tangent x="-1." y="0." z="6.552e-016" />
+            <binormal x="0." y="-1." z="1.7978e-007" />
+        </vertex>
+        <vertex x="85.302" y="91.864" z="-7.3556e-011">
+            <uvset type="primary" u="0.88823" v="0.59742" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="-1." y="0." z="6.552e-016" />
+            <binormal x="-3.4041e-029" y="-1." z="-5.1955e-014" />
+        </vertex>
+        <vertex x="85.302" y="-183.73" z="-5.2546e-011">
+            <uvset type="primary" u="0.88823" v="0.68016" />
+            <normal x="-1.3638" y="-0.77933" z="0." />
+            <tangent x="0.62903" y="0.77738" z="4.7921e-016" />
+            <binormal x="-0.95209" y="-0.30583" z="1.2799e-007" />
+        </vertex>
+        <vertex x="-72.178" y="91.864" z="19.685">
+            <uvset type="primary" u="0.9333" v="0.59742" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="-0.53635" y="0." z="-0.844" />
+            <binormal x="-0.35566" y="-0.90687" z="0.22602" />
+        </vertex>
+        <vertex x="85.302" y="-183.73" z="19.685">
+            <uvset type="primary" u="0.88823" v="0.68016" />
+            <normal x="-1.3638" y="-0.77933" z="0." />
+            <tangent x="0.41257" y="0.50987" z="-0.75486" />
+            <binormal x="-0.91302" y="0.23795" z="0.33133" />
+        </vertex>
+        <vertex x="85.302" y="91.864" z="19.685">
+            <uvset type="primary" u="0.88823" v="0.59742" />
+            <normal x="0." y="1.5708" z="0." />
+            <tangent x="-0.53635" y="0." z="-0.844" />
+            <binormal x="-6.2594e-002" y="-0.99725" z="3.9777e-002" />
+        </vertex>
+    </vertices>
+    <faces num="8">
+        <face a="0" b="1" c="2" />
+        <face a="3" b="4" c="5" />
+        <face a="6" b="7" c="8" />
+        <face a="9" b="10" c="11" />
+        <face a="12" b="13" c="14" />
+        <face a="15" b="24" c="17" />
+        <face a="18" b="19" c="20" />
+        <face a="21" b="22" c="23" />
+    </faces>
+</mesh>

@@ -1,0 +1,6 @@
+<fog>
+   <color r = "49" g = "38" b = "31" a = "4" />
+   <mode>Linear</mode>
+   <start>65000.0</start>
+   <end>65534.0</end>
+</fog>

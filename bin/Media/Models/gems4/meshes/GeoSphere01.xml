@@ -1,0 +1,614 @@
+<mesh name="GeoSphere01">
+    <vertices num="114">
+        <vertex>
+            <position x="10.36" y="-7.5266" z="9.0164" />
+            <uvset type="primary" u="0.4" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="13.464" y="1.1706e-007" z="9.0164" />
+            <uvset type="primary" u="0.5" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="7.5266" z="9.0164" />
+            <uvset type="primary" u="0.6" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="-7.5266" z="9.0164" />
+            <uvset type="primary" u="0.4" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="7.5266" z="9.0164" />
+            <uvset type="primary" u="0.6" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="4.1606" y="12.805" z="9.0164" />
+            <uvset type="primary" u="0.7" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="-7.5266" z="9.0164" />
+            <uvset type="primary" u="0.4" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="4.1606" y="12.805" z="9.0164" />
+            <uvset type="primary" u="0.7" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="12.178" z="9.0164" />
+            <uvset type="primary" u="0.8" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-12.805" y="-1.0482e-006" z="9.0164" />
+            <uvset type="primary" u="1." v="0.18391" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-10.893" y="-7.914" z="9.0164" />
+            <uvset type="primary" u="1.0119" v="-4.7378e-002" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="-12.178" z="9.0164" />
+            <uvset type="primary" u="0.74721" v="-0.18807" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-10.893" y="7.914" z="9.0164" />
+            <uvset type="primary" u="0.9" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-12.805" y="-1.0482e-006" z="9.0164" />
+            <uvset type="primary" u="1." v="0.18391" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="-12.178" z="9.0164" />
+            <uvset type="primary" u="0.74721" v="-0.18807" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="12.178" z="9.0164" />
+            <uvset type="primary" u="0.8" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-10.893" y="7.914" z="9.0164" />
+            <uvset type="primary" u="0.9" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="-12.178" z="9.0164" />
+            <uvset type="primary" u="0.74721" v="-0.18807" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="-7.5266" z="9.0164" />
+            <uvset type="primary" u="0.4" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="12.178" z="9.0164" />
+            <uvset type="primary" u="0.8" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="-12.178" z="9.0164" />
+            <uvset type="primary" u="0.74721" v="-0.18807" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="-7.5266" z="9.0164" />
+            <uvset type="primary" u="0.4" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="-12.178" z="9.0164" />
+            <uvset type="primary" u="0.74721" v="-0.18807" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="4.1606" y="-12.805" z="9.0164" />
+            <uvset type="primary" u="0.34128" v="-0.17207" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="13.464" y="1.1706e-007" z="9.0164" />
+            <uvset type="primary" u="0.5" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="25.259" y="-8.2071" z="0." />
+            <uvset type="primary" u="0.45" v="0.5" />
+            <normal x="0.60731" y="1.4114e-007" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="25.259" y="8.2071" z="0." />
+            <uvset type="primary" u="0.55" v="0.5" />
+            <normal x="0.60731" y="1.4114e-007" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="25.259" y="-8.2071" z="0." />
+            <uvset type="primary" u="0.45" v="0.5" />
+            <normal x="0.60731" y="1.4114e-007" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="0.2357" y="0.35232" z="-23.548" />
+            <uvset type="primary" u="0.65" v="0.6619" />
+            <normal x="0.68532" y="1.5927e-007" z="-0.72825" />
+        </vertex>
+        <vertex>
+            <position x="25.259" y="8.2071" z="0." />
+            <uvset type="primary" u="0.55" v="0.5" />
+            <normal x="0.60731" y="1.4114e-007" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="4.1606" y="12.805" z="9.0164" />
+            <uvset type="primary" u="0.7" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="15.611" y="21.487" z="0." />
+            <uvset type="primary" u="0.65" v="0.5" />
+            <normal x="0.18767" y="0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-7.8217e-007" y="26.559" z="0." />
+            <uvset type="primary" u="0.75" v="0.5" />
+            <normal x="0.18767" y="0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="15.611" y="21.487" z="0." />
+            <uvset type="primary" u="0.65" v="0.5" />
+            <normal x="0.18767" y="0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="0.2357" y="0.35232" z="-23.548" />
+            <uvset type="primary" u="0.65" v="0.6619" />
+            <normal x="0.68532" y="1.5927e-007" z="-0.72825" />
+        </vertex>
+        <vertex>
+            <position x="-7.8217e-007" y="26.559" z="0." />
+            <uvset type="primary" u="0.75" v="0.5" />
+            <normal x="0.18767" y="0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-10.893" y="7.914" z="9.0164" />
+            <uvset type="primary" u="0.9" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-15.611" y="21.487" z="0." />
+            <uvset type="primary" u="0.85" v="0.5" />
+            <normal x="-0.49133" y="0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-25.259" y="8.2071" z="0." />
+            <uvset type="primary" u="0.95" v="0.5" />
+            <normal x="-0.49133" y="0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-15.611" y="21.487" z="0." />
+            <uvset type="primary" u="0.85" v="0.5" />
+            <normal x="-0.49133" y="0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="0.2357" y="0.35232" z="-23.548" />
+            <uvset type="primary" u="0.65" v="0.6619" />
+            <normal x="0.68532" y="1.5927e-007" z="-0.72825" />
+        </vertex>
+        <vertex>
+            <position x="-25.259" y="8.2071" z="0." />
+            <uvset type="primary" u="0.95" v="0.5" />
+            <normal x="-0.49133" y="0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-10.893" y="-7.914" z="9.0164" />
+            <uvset type="primary" u="0.1" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-25.259" y="-8.2071" z="0." />
+            <uvset type="primary" u="5.e-002" v="0.5" />
+            <normal x="-0.49133" y="-0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-15.611" y="-21.487" z="0." />
+            <uvset type="primary" u="0.15" v="0.5" />
+            <normal x="-0.49133" y="-0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-25.259" y="-8.2071" z="0." />
+            <uvset type="primary" u="5.e-002" v="0.5" />
+            <normal x="-0.49133" y="-0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="0.2357" y="0.35232" z="-23.548" />
+            <uvset type="primary" u="0.175" v="0.72956" />
+            <normal x="0.68532" y="1.5927e-007" z="-0.72825" />
+        </vertex>
+        <vertex>
+            <position x="-15.611" y="-21.487" z="0." />
+            <uvset type="primary" u="0.15" v="0.5" />
+            <normal x="-0.49133" y="-0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="4.1606" y="-12.805" z="9.0164" />
+            <uvset type="primary" u="0.3" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="3.801e-007" y="-26.559" z="0." />
+            <uvset type="primary" u="0.25" v="0.5" />
+            <normal x="0.18767" y="-0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="15.611" y="-21.487" z="0." />
+            <uvset type="primary" u="0.35" v="0.5" />
+            <normal x="0.18767" y="-0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="3.801e-007" y="-26.559" z="0." />
+            <uvset type="primary" u="0.25" v="0.5" />
+            <normal x="0.18767" y="-0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="0.2357" y="0.35232" z="-23.548" />
+            <uvset type="primary" u="0.175" v="0.72956" />
+            <normal x="0.68532" y="1.5927e-007" z="-0.72825" />
+        </vertex>
+        <vertex>
+            <position x="15.611" y="-21.487" z="0." />
+            <uvset type="primary" u="0.35" v="0.5" />
+            <normal x="0.18767" y="-0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="0.2357" y="0.35232" z="-23.548" />
+            <uvset type="primary" u="0.65" v="0.6619" />
+            <normal x="0.68532" y="1.5927e-007" z="-0.72825" />
+        </vertex>
+        <vertex>
+            <position x="15.611" y="21.487" z="0." />
+            <uvset type="primary" u="0.65" v="0.5" />
+            <normal x="0.18767" y="0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="25.259" y="8.2071" z="0." />
+            <uvset type="primary" u="0.55" v="0.5" />
+            <normal x="0.60731" y="1.4114e-007" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="15.611" y="21.487" z="0." />
+            <uvset type="primary" u="0.65" v="0.5" />
+            <normal x="0.18767" y="0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="4.1606" y="12.805" z="9.0164" />
+            <uvset type="primary" u="0.7" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="7.5266" z="9.0164" />
+            <uvset type="primary" u="0.6" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="15.611" y="21.487" z="0." />
+            <uvset type="primary" u="0.65" v="0.5" />
+            <normal x="0.18767" y="0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="7.5266" z="9.0164" />
+            <uvset type="primary" u="0.6" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="25.259" y="8.2071" z="0." />
+            <uvset type="primary" u="0.55" v="0.5" />
+            <normal x="0.60731" y="1.4114e-007" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="25.259" y="8.2071" z="0." />
+            <uvset type="primary" u="0.55" v="0.5" />
+            <normal x="0.60731" y="1.4114e-007" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="7.5266" z="9.0164" />
+            <uvset type="primary" u="0.6" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="13.464" y="1.1706e-007" z="9.0164" />
+            <uvset type="primary" u="0.5" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="0.2357" y="0.35232" z="-23.548" />
+            <uvset type="primary" u="0.65" v="0.6619" />
+            <normal x="0.68532" y="1.5927e-007" z="-0.72825" />
+        </vertex>
+        <vertex>
+            <position x="-15.611" y="21.487" z="0." />
+            <uvset type="primary" u="0.85" v="0.5" />
+            <normal x="-0.49133" y="0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-7.8217e-007" y="26.559" z="0." />
+            <uvset type="primary" u="0.75" v="0.5" />
+            <normal x="0.18767" y="0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-15.611" y="21.487" z="0." />
+            <uvset type="primary" u="0.85" v="0.5" />
+            <normal x="-0.49133" y="0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-10.893" y="7.914" z="9.0164" />
+            <uvset type="primary" u="0.9" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="12.178" z="9.0164" />
+            <uvset type="primary" u="0.8" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-15.611" y="21.487" z="0." />
+            <uvset type="primary" u="0.85" v="0.5" />
+            <normal x="-0.49133" y="0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="12.178" z="9.0164" />
+            <uvset type="primary" u="0.8" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-7.8217e-007" y="26.559" z="0." />
+            <uvset type="primary" u="0.75" v="0.5" />
+            <normal x="0.18767" y="0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-7.8217e-007" y="26.559" z="0." />
+            <uvset type="primary" u="0.75" v="0.5" />
+            <normal x="0.18767" y="0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="12.178" z="9.0164" />
+            <uvset type="primary" u="0.8" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="4.1606" y="12.805" z="9.0164" />
+            <uvset type="primary" u="0.7" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="0.2357" y="0.35232" z="-23.548" />
+            <uvset type="primary" u="0.175" v="0.72956" />
+            <normal x="0.68532" y="1.5927e-007" z="-0.72825" />
+        </vertex>
+        <vertex>
+            <position x="-25.259" y="-8.2071" z="0." />
+            <uvset type="primary" u="5.e-002" v="0.5" />
+            <normal x="-0.49133" y="-0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-25.259" y="8.2071" z="0." />
+            <uvset type="primary" u="-5.e-002" v="0.5" />
+            <normal x="-0.49133" y="0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-25.259" y="-8.2071" z="0." />
+            <uvset type="primary" u="5.e-002" v="0.5" />
+            <normal x="-0.49133" y="-0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-10.893" y="-7.914" z="9.0164" />
+            <uvset type="primary" u="0.1" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-12.805" y="-1.0482e-006" z="9.0164" />
+            <uvset type="primary" u="2.844e-008" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-25.259" y="-8.2071" z="0." />
+            <uvset type="primary" u="5.e-002" v="0.5" />
+            <normal x="-0.49133" y="-0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-12.805" y="-1.0482e-006" z="9.0164" />
+            <uvset type="primary" u="2.844e-008" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-25.259" y="8.2071" z="0." />
+            <uvset type="primary" u="-5.e-002" v="0.5" />
+            <normal x="-0.49133" y="0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-25.259" y="8.2071" z="0." />
+            <uvset type="primary" u="-5.e-002" v="0.5" />
+            <normal x="-0.49133" y="0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-12.805" y="-1.0482e-006" z="9.0164" />
+            <uvset type="primary" u="2.844e-008" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-10.893" y="7.914" z="9.0164" />
+            <uvset type="primary" u="-0.1" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="0.2357" y="0.35232" z="-23.548" />
+            <uvset type="primary" u="0.175" v="0.72956" />
+            <normal x="0.68532" y="1.5927e-007" z="-0.72825" />
+        </vertex>
+        <vertex>
+            <position x="3.801e-007" y="-26.559" z="0." />
+            <uvset type="primary" u="0.25" v="0.5" />
+            <normal x="0.18767" y="-0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-15.611" y="-21.487" z="0." />
+            <uvset type="primary" u="0.15" v="0.5" />
+            <normal x="-0.49133" y="-0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="3.801e-007" y="-26.559" z="0." />
+            <uvset type="primary" u="0.25" v="0.5" />
+            <normal x="0.18767" y="-0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="4.1606" y="-12.805" z="9.0164" />
+            <uvset type="primary" u="0.3" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="-12.178" z="9.0164" />
+            <uvset type="primary" u="0.2" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="3.801e-007" y="-26.559" z="0." />
+            <uvset type="primary" u="0.25" v="0.5" />
+            <normal x="0.18767" y="-0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="-12.178" z="9.0164" />
+            <uvset type="primary" u="0.2" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-15.611" y="-21.487" z="0." />
+            <uvset type="primary" u="0.15" v="0.5" />
+            <normal x="-0.49133" y="-0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-15.611" y="-21.487" z="0." />
+            <uvset type="primary" u="0.15" v="0.5" />
+            <normal x="-0.49133" y="-0.35697" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="-3.957" y="-12.178" z="9.0164" />
+            <uvset type="primary" u="0.2" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="-10.893" y="-7.914" z="9.0164" />
+            <uvset type="primary" u="0.1" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="0.2357" y="0.35232" z="-23.548" />
+            <uvset type="primary" u="0.65" v="0.6619" />
+            <normal x="0.68532" y="1.5927e-007" z="-0.72825" />
+        </vertex>
+        <vertex>
+            <position x="25.259" y="-8.2071" z="0." />
+            <uvset type="primary" u="0.45" v="0.5" />
+            <normal x="0.60731" y="1.4114e-007" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="15.611" y="-21.487" z="0." />
+            <uvset type="primary" u="0.35" v="0.5" />
+            <normal x="0.18767" y="-0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="25.259" y="-8.2071" z="0." />
+            <uvset type="primary" u="0.45" v="0.5" />
+            <normal x="0.60731" y="1.4114e-007" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="13.464" y="1.1706e-007" z="9.0164" />
+            <uvset type="primary" u="0.5" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="-7.5266" z="9.0164" />
+            <uvset type="primary" u="0.4" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="25.259" y="-8.2071" z="0." />
+            <uvset type="primary" u="0.45" v="0.5" />
+            <normal x="0.60731" y="1.4114e-007" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="-7.5266" z="9.0164" />
+            <uvset type="primary" u="0.4" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="15.611" y="-21.487" z="0." />
+            <uvset type="primary" u="0.35" v="0.5" />
+            <normal x="0.18767" y="-0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="15.611" y="-21.487" z="0." />
+            <uvset type="primary" u="0.35" v="0.5" />
+            <normal x="0.18767" y="-0.57759" z="0.79446" />
+        </vertex>
+        <vertex>
+            <position x="10.36" y="-7.5266" z="9.0164" />
+            <uvset type="primary" u="0.4" v="0.32379" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+        <vertex>
+            <position x="4.1606" y="-12.805" z="9.0164" />
+            <uvset type="primary" u="0.3" v="0.35242" />
+            <normal x="0." y="0." z="1." />
+        </vertex>
+    </vertices>
+    <faces num="38">
+        <face a="0" b="1" c="2" />
+        <face a="3" b="4" c="5" />
+        <face a="6" b="7" c="8" />
+        <face a="9" b="10" c="11" />
+        <face a="12" b="13" c="14" />
+        <face a="15" b="16" c="17" />
+        <face a="18" b="19" c="20" />
+        <face a="21" b="22" c="23" />
+        <face a="24" b="25" c="26" />
+        <face a="27" b="28" c="29" />
+        <face a="30" b="31" c="32" />
+        <face a="33" b="34" c="35" />
+        <face a="36" b="37" c="38" />
+        <face a="39" b="40" c="41" />
+        <face a="42" b="43" c="44" />
+        <face a="45" b="46" c="47" />
+        <face a="48" b="49" c="50" />
+        <face a="51" b="52" c="53" />
+        <face a="54" b="55" c="56" />
+        <face a="57" b="58" c="59" />
+        <face a="60" b="61" c="62" />
+        <face a="63" b="64" c="65" />
+        <face a="66" b="67" c="68" />
+        <face a="69" b="70" c="71" />
+        <face a="72" b="73" c="74" />
+        <face a="75" b="76" c="77" />
+        <face a="78" b="79" c="80" />
+        <face a="81" b="82" c="83" />
+        <face a="84" b="85" c="86" />
+        <face a="87" b="88" c="89" />
+        <face a="90" b="91" c="92" />
+        <face a="93" b="94" c="95" />
+        <face a="96" b="97" c="98" />
+        <face a="99" b="100" c="101" />
+        <face a="102" b="103" c="104" />
+        <face a="105" b="106" c="107" />
+        <face a="108" b="109" c="110" />
+        <face a="111" b="112" c="113" />
+    </faces>
+</mesh>
