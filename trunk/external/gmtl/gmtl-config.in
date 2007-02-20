@@ -1,0 +1,159 @@
+#!/bin/sh
+
+# ************************************************************* ggt-head beg
+#
+# GGT: Generic Graphics Toolkit
+#
+# Original Authors:
+#   Allen Bierbaum
+#
+# -----------------------------------------------------------------
+# File:          $RCSfile: gmtl-config.in,v $
+# Date modified: $Date: 2006/07/19 14:12:14 $
+# Version:       $Revision: 1.3 $
+# -----------------------------------------------------------------
+#
+# ********************************************************** ggt-head end
+# ************************************************************** ggt-cpr beg
+# 
+# GGT: The Generic Graphics Toolkit
+# Copyright (C) 2001,2002 Allen Bierbaum
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+#
+# *********************************************************** ggt-cpr end
+
+gmtl_extra_cxxflags="@gmtl_extra_cxxflags@"
+gmtl_extra_include_dirs="@gmtl_extra_include_dirs@"
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+prefix_set='no'
+exec_prefix_set='no'
+print_all='no'
+use_linker='no'
+
+usage()
+{
+    if test "x$2" != "x" ; then
+       echo "Unrecognized option '$2'"
+    fi
+
+    cat <<EOF
+Usage: gmtl-config [OPTIONS] [LIBRARIES]
+Options:
+        [--basedir]             Use \$GMTL_BASE_DIR when printing paths
+        [--prefix[=DIR]]        Print the installation prefix or set an
+                                alternate prefix to use when printing paths
+        [--exec-prefix[=DIR]]   Print the executable prefix or set an
+                                alternate executable prefix to use when
+                                printing paths
+        [--version]             Print the installed GMTL's version number
+        [--cxxflags]            Print the GMTL-specific flags for the C++
+                                compiler
+        [--all]                 Print all the flags used for compiling or
+                                linking (depending on other options)
+EOF
+
+    exit $1
+}
+
+if test $# -eq 0; then
+   usage 1 1>&2
+fi
+
+while test $# -gt 0; do
+   case "$1" in
+      -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+      *) optarg= ;;
+   esac
+
+   case $1 in
+      --help)
+         usage 0 1>&2
+         ;;
+      --all)
+         print_all='yes'
+         ;;
+      --basedir)
+         use_base_dir=yes
+         ;;
+      --prefix=*)
+         prefix=$optarg
+         prefix_set='yes'
+
+         if test $exec_prefix_set = no ; then
+            exec_prefix=$optarg
+         fi
+         ;;
+      --prefix)
+         echo_prefix=yes
+         ;;
+      --exec-prefix=*)
+         exec_prefix=$optarg
+         exec_prefix_set=yes
+         ;;
+      --exec-prefix)
+         echo_exec_prefix=yes
+         ;;
+      --version)
+          echo @VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@
+          ;;
+      --cxxflags)
+         echo_cxxflags=yes
+         ;;
+      *)
+         usage 1 1>&2
+         ;;
+   esac
+   shift
+done
+
+# If we are using $GMTL_BASE_DIR, overwrite $prefix and $exec_prefix unless
+# they were set explicitly on the command line.
+if test "$use_base_dir" = "yes" ; then
+   if test "$prefix_set" = "no" ; then
+      prefix="$GMTL_BASE_DIR"
+   fi
+
+   if test "$exec_prefix_set" = "no" ; then
+      exec_prefix="$GMTL_BASE_DIR"
+   fi
+fi
+
+if test "$echo_prefix" = "yes"; then
+   echo $prefix
+fi
+
+if test "$echo_exec_prefix" = "yes"; then
+   echo $exec_prefix
+fi
+
+if test "$echo_cxxflags" = "yes"; then
+   if [ "x$gmtl_extra_include_dirs" != "x" ]; then
+      for dir in $gmtl_extra_include_dirs ; do
+         gmtl_extra_includes="$gmtl_extra_includes -I@includedir@/$dir"
+         gmtl_basedir_extra_includes="$gmtl_basedir_extra_includes -I$GMTL_BASE_DIR/include/$dir"
+      done
+   fi
+
+   if test "$use_base_dir" = "yes"; then
+      echo @gmtl_cxxflags@ $gmtl_extra_cxxflags -I$GMTL_BASE_DIR/include $gmtl_basedir_extra_includes
+   else
+      echo @gmtl_cxxflags@ $gmtl_extra_cxxflags -I@includedir@ $gmtl_extra_includes
+   fi
+fi
+
+exit 0
