@@ -27,7 +27,7 @@ namespace math
     {
         float operator()(const float &k1, const float &k2)
         {
-            return std::fabs(k2-k1);
+            return fabs(k2-k1);
         }
     };
 

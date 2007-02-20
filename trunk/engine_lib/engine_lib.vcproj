@@ -43,7 +43,7 @@
 				Optimization="0"
 				InlineFunctionExpansion="0"
 				EnableIntrinsicFunctions="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)third_party/gmtl&quot;;&quot;$(SolutionDir)third_party/&quot;;&quot;$(SolutionDir)\src&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)external/gmtl&quot;;&quot;$(SolutionDir)external/&quot;;&quot;$(SolutionDir)\src&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;D3D_DEBUG_INFO;VC_EXTRALEAN;_CRT_SECURE_NO_DEPRECATE;TEST_NEW_BINDERS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -116,9 +116,11 @@
 				AdditionalOptions="/EHa"
 				Optimization="3"
 				InlineFunctionExpansion="2"
-				FavorSizeOrSpeed="1"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="2"
 				OmitFramePointers="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)third_party/&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)third_party/gmtl&quot;"
+				WholeProgramOptimization="true"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)external/gmtl&quot;;&quot;$(SolutionDir)external/&quot;;&quot;$(SolutionDir)\src&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				StringPooling="true"
 				ExceptionHandling="2"
@@ -131,9 +133,10 @@
 				ObjectFile="$(IntDir)/"
 				ProgramDataBaseFileName="$(IntDir)/$(ProjectName).pdb"
 				BrowseInformationFile="$(IntDir)"
-				WarningLevel="3"
+				WarningLevel="4"
+				WarnAsError="true"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -1367,30 +1370,6 @@
 		<Filter
 			Name="shaders"
 			>
-			<File
-				RelativePath="..\bin\Media\Common\shaders\Default.fx"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="fxc compile for: $(InputPath)"
-						CommandLine="fxc /nologo /Tfx_2_0 /Fo&quot;$(InputPath)o&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(InputPath)o&quot;"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="fxc compile for: $(InputPath)"
-						CommandLine="fxc /nologo /Tfx_2_0 /Fo&quot;$(InputPath)o&quot; &quot;$(InputPath)&quot;&#x0D;&#x0A;"
-						Outputs="&quot;$(InputPath)o&quot;"
-					/>
-				</FileConfiguration>
-			</File>
 			<File
 				RelativePath="..\bin\Media\Common\shaders\Line3dManager.fx"
 				>

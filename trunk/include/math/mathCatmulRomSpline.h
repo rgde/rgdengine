@@ -1,11 +1,9 @@
-//mathCatmulRomSpline.h
 #pragma once
 
 #include "mathSpline.h"
 
 namespace math
 {
-
     //сплайн Кэтмула-Рома
     template <typename VALUE>
     class TCatmulRomSpline: public TSpline<VALUE>
@@ -42,7 +40,7 @@ namespace math
 
         float length() const
         {
-            return m_values.size() <= 1 ? 0 : m_values.size()-1;
+            return m_values.empty() ? 0.0f : m_values.size()-1.0f;
         }
 
     private:
@@ -57,5 +55,4 @@ namespace math
                 ) * 0.5f;
         }
     };
-
-} //namespace math
+}
