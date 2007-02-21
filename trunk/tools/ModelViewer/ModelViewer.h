@@ -6,8 +6,8 @@
 class ModelViewer :  public game::IDynamicObject
 {
 public:
-	ModelViewer();	
-	~ModelViewer();
+    ModelViewer();	
+   ~ModelViewer();
 
 protected:
 	void initInput();
