@@ -332,29 +332,29 @@ namespace physic2
 	CPhWorld::CPhWorld( void )
 	{
 		m_vGravity = Point3f(0.0f,0.0f,-10.0f);
-	};
+	}
 
 	void CPhWorld::update( float dt )
 	{
 		// use updater with contacts inside
 		update(dt, &m_Contacts);
-	};
+	}
 
-	void CPhWorld::update( float dt, TPhContacts* p )
+	void CPhWorld::update( float, TPhContacts* )
 	{
 		// update world
-	};
+	}
 
 	CPhSystem::CPhSystem( void )  : m_fDeltaTime(0.0f), m_iDebugPhysic(0),
 		m_bIdle(false), m_fDeactivationTime(2.0f)
 	{
 		//
-	};
+	}
 
 	void CPhSystem::init( void )
 	{
 		//TODO: init system
-	};
+	}
 
 	void CPhSystem::update( void )
 	{
