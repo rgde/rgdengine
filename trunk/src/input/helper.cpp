@@ -18,6 +18,13 @@ namespace input
 
     CHelper::CHelper(const std::wstring &sCommandName): m_pCommand(CInput::getCommand(sCommandName))
     {
+        //->
+        if (!m_pCommand.get())
+        {
+            CInput::addCommand(sCommandName);
+            m_pCommand = CInput::getCommand(sCommandName);
+        }
+        //-<
         if (m_pCommand.get())
             m_pCommand->attachObserver(this);
     }
@@ -32,6 +39,13 @@ namespace input
     {
         detach();
         m_pCommand = CInput::getCommand(sCommandName);
+        //->
+        if (!m_pCommand.get())
+        {
+            CInput::addCommand(sCommandName);
+            m_pCommand = CInput::getCommand(sCommandName);
+        }
+        //-<
         if (m_pCommand.get())
             m_pCommand->attachObserver(this);
     }
