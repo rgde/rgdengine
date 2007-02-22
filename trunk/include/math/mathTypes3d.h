@@ -62,19 +62,16 @@ namespace math
 		{
 			if (position[0] > point[0] || position[1] > point[1]) 
 				return false;
-
-			if (point[0] > position[0] + size[0]) 
+			else if (point[0] > position[0] + size[0]) 
 				return false;
-
-			if (point[1] > position[1] + size[1]) 
+			else if (point[1] > position[1] + size[1]) 
 				return false;
-
-			return true;
+			else
+				return true;
 		}
 
 		union
 		{
-		public:
 			struct 
 			{
 				Vec2f position;
