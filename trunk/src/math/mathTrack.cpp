@@ -104,7 +104,8 @@ namespace math
 		{
 			std::string error = "CTrack::load: can't load file " + strTrackFileName;
 			//base::lerr << "CTrack::load: can't load file: " << strTrackFileName;
-			throw std::exception(error.c_str());
+			//throw std::exception(error.c_str());
+            throw std::exception("CTrack::load: can't load file");
 		}
 
 		std::vector<byte> data;
