@@ -5,8 +5,15 @@
 AviLevelObject::AviLevelObject()
 {
 	std::cout << "1: AviLevelObject created. (press SPACE for send CCompliteLevelEvent)\n";
-	m_cSpace.attachToControl(input::Keyboard,input::KeySpace);
-	m_cSpace.addHandler(this,&AviLevelObject::onSpace);
+
+    {
+        using namespace input;
+
+        CInput::addCommand(L"Space");
+        CInput::getDevice(Keyboard)->getControl(KeySpace )->bind(L"Space");
+        m_cSpace.attach(L"Space");
+        m_cSpace += boost::bind(&AviLevelObject::onSpace, this);
+    }
 }
 
 AviLevelObject::~AviLevelObject()
@@ -14,11 +21,9 @@ AviLevelObject::~AviLevelObject()
 	std::cout << "AviLevelObject destroyed." << std::endl;
 }
 
-//здесь стоит if, чтобы реагировать только на Ќјжати€ (без него евент посылаетс€ и на ќ“жати€)
-void AviLevelObject::onSpace(const input::CButtonEvent&) 
+void AviLevelObject::onSpace() 
 {
-	if (m_cSpace) 
-		sendEvent(game::CCompliteLevelEvent());
+	sendEvent(game::CCompliteLevelEvent());
 }
 
 namespace game

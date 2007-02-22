@@ -30,28 +30,61 @@ TestCamera::~TestCamera()
 
 void TestCamera::initInput()
 {
-    //привязываем команды к контролам
-    m_cEsc  .attachToControl(input::Keyboard, input::KeyEscape); //ESC - выход
-    m_cR    .attachToControl(input::Keyboard, input::KeyR);
-    m_cTab  .attachToControl(input::Keyboard, input::KeyTab);
-    
-    m_cW    .attachToControl(input::Keyboard, input::KeyW);
-    m_cS    .attachToControl(input::Keyboard, input::KeyS);
-    m_cE    .attachToControl(input::Keyboard, input::KeyE);
-    m_cQ    .attachToControl(input::Keyboard, input::KeyQ);
-    m_cF    .attachToControl(input::Keyboard, input::KeyF);
-    m_cC    .attachToControl(input::Keyboard, input::KeyC);
-    m_cA    .attachToControl(input::Keyboard, input::KeyA);
-    m_cD    .attachToControl(input::Keyboard, input::KeyD);
-    m_cXAxis.attachToControl(input::Mouse, input::AxisX);
-    m_cYAxis.attachToControl(input::Mouse, input::AxisY);
+    {
+        using namespace input;
+
+        //создадим команды
+        CInput::addCommand(L"Quit");
+        CInput::addCommand(L"Reset");
+        CInput::addCommand(L"Change");
+        CInput::addCommand(L"Froward");
+        CInput::addCommand(L"Backward");
+        CInput::addCommand(L"CW");
+        CInput::addCommand(L"CCW");
+        CInput::addCommand(L"Up");
+        CInput::addCommand(L"Down");
+        CInput::addCommand(L"StarfeLeft");
+        CInput::addCommand(L"StarfeRight");
+        CInput::addCommand(L"Horz");
+        CInput::addCommand(L"Vert");
+
+        //связываем команды с контролами
+        CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
+        CInput::getDevice(Keyboard)->getControl(KeyR     )->bind(L"Reset");
+        CInput::getDevice(Keyboard)->getControl(KeyTab   )->bind(L"Change");
+        CInput::getDevice(Keyboard)->getControl(KeyW     )->bind(L"Froward");
+        CInput::getDevice(Keyboard)->getControl(KeyS     )->bind(L"Backward");
+        CInput::getDevice(Keyboard)->getControl(KeyE     )->bind(L"CW");
+        CInput::getDevice(Keyboard)->getControl(KeyQ     )->bind(L"CCW");
+        CInput::getDevice(Keyboard)->getControl(KeyF     )->bind(L"Up");
+        CInput::getDevice(Keyboard)->getControl(KeyC     )->bind(L"Down");
+        CInput::getDevice(Keyboard)->getControl(KeyA     )->bind(L"StarfeLeft");
+        CInput::getDevice(Keyboard)->getControl(KeyD     )->bind(L"StarfeRight");
+        CInput::getDevice(Mouse   )->getControl(AxisX    )->bind(L"Horz");
+        CInput::getDevice(Mouse   )->getControl(AxisY    )->bind(L"Vert");
+    }
+
+    //биндим хелперы с командами
+    m_cEsc  .attach(L"Quit");
+    m_cR    .attach(L"Reset");
+    m_cTab  .attach(L"Change");
+    m_cW    .attach(L"Froward");
+    m_cS    .attach(L"Backward");
+    m_cE    .attach(L"CW");
+    m_cQ    .attach(L"CCW");
+    m_cF    .attach(L"Up");
+    m_cC    .attach(L"Down");
+    m_cA    .attach(L"StarfeLeft");
+    m_cD    .attach(L"StarfeRight");
+    m_cXAxis.attach(L"Horz");
+    m_cYAxis.attach(L"Vert");
 
     //задаем для команд функции-обработчики
-    m_cEsc  .addHandler(this,&TestCamera::onEsc);
-    m_cR    .addHandler(this,&TestCamera::onReset);
-    m_cTab  .addHandler(this,&TestCamera::onChangeCamera);
-    m_cYAxis.addHandler(this,&TestCamera::onYAxis);
-    m_cXAxis.addHandler(this,&TestCamera::onXAxis);
+    m_cEsc   += boost::bind(&TestCamera::onEsc,   this);
+    m_cR     += boost::bind(&TestCamera::onReset, this);
+    m_cTab   += boost::bind(&TestCamera::onChangeCamera, this);
+    m_cYAxis += boost::bind(&TestCamera::onYAxis, this, _1);
+    m_cXAxis += boost::bind(&TestCamera::onXAxis, this, _1);
 }
 
 void TestCamera::initCamera()
@@ -209,44 +242,36 @@ void TestCamera::update(float dt)
     }
 }
 
-void TestCamera::onEsc(const input::CButtonEvent &event)
+void TestCamera::onEsc()
 {
-    if (event.m_bPress)
-        core::IApplication::Get()->close();
+    core::IApplication::Get()->close();
 }
 
-void TestCamera::onReset(const input::CButtonEvent &event)
+void TestCamera::onReset()
 {
-    if (event.m_bPress)
-    {
-        m_nCameraType = 0; //Fly Camera
+    m_nCameraType = 0; //Fly Camera
+    initCamera();
+}
 
-        initCamera();
+void TestCamera::onChangeCamera ()
+{
+    const int nCameras = 3; //Fly, Target, First Person
+    m_nCameraType = (m_nCameraType+1) % nCameras;
+
+    switch (m_nCameraType)
+    {
+    case 0: m_spFlyCamera->activate(); break;
+    case 1: m_spTargetCamera->activate(); break;
+    case 2: m_spFirstPersonCamera->activate(); break;
     }
 }
 
-void TestCamera::onChangeCamera (const input::CButtonEvent &event)
-{
-    if (event.m_bPress)
-    {
-        const int nCameras = 3; //Fly, Target, First Person
-        m_nCameraType = (m_nCameraType+1) % nCameras;
-
-        switch (m_nCameraType)
-        {
-        case 0: m_spFlyCamera->activate(); break;
-        case 1: m_spTargetCamera->activate(); break;
-        case 2: m_spFirstPersonCamera->activate(); break;
-        }
-    }
-}
-
-void TestCamera::onXAxis(const input::CRelativeAxisEvent &event)
+void TestCamera::onXAxis(int dx)
 {
     const int accel = 5;
     const float slow = .01f;
     const float fast = 2*slow;
-    float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+    float angle = dx>accel ? dx*fast : dx*slow;
 
     switch(m_nCameraType)
     {
@@ -256,12 +281,12 @@ void TestCamera::onXAxis(const input::CRelativeAxisEvent &event)
     }
 }
 
-void TestCamera::onYAxis(const input::CRelativeAxisEvent &event)
+void TestCamera::onYAxis(int dy)
 {
     const int accel = 5;
     const float slow = .01f;
     const float fast = 2*slow;
-    float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+    float angle = dy>accel ? dy*fast : dy*slow;
 
     switch(m_nCameraType)
     {

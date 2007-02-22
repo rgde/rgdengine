@@ -1,5 +1,7 @@
 //TestCamera.h
 #pragma once
+#include "input/input.h"
+#include "input/helper.h"
 #include "math/mathFlyCamera.h"
 #include "math/mathTargetCamera.h"
 #include "math/mathFirstPersonCamera.h"
@@ -17,11 +19,11 @@ protected:
 
     void update (float dt);
 
-    void onEsc          (const input::CButtonEvent &event);
-    void onReset        (const input::CButtonEvent &event);
-    void onChangeCamera (const input::CButtonEvent &event);
-    void onXAxis        (const input::CRelativeAxisEvent &event);
-    void onYAxis        (const input::CRelativeAxisEvent &event);
+    void onEsc          ();
+    void onReset        ();
+    void onChangeCamera ();
+    void onXAxis        (int dx);
+    void onYAxis        (int dy);
 
 private:
     render::PModel m_spModel;  //модель
@@ -31,19 +33,19 @@ private:
     int m_nCameraType; //номер используемой камеры
 
     //контролы ввода
-    input::CButtonCommand       m_cEsc;   //выход
-    input::CButtonCommand       m_cTab;   //переключить камеру
-    input::CButtonCommand       m_cR;     //сбросить программу в начальное состояние
-    input::CButtonCommand       m_cQ;     //поворот против часовой
-    input::CButtonCommand       m_cW;     //вперед
-    input::CButtonCommand       m_cE;     //поворот по часовой
-    input::CButtonCommand       m_cA;     //боком влево
-    input::CButtonCommand       m_cS;     //назад
-    input::CButtonCommand       m_cD;     //боком вправо
-    input::CButtonCommand       m_cF;     //вверх
-    input::CButtonCommand       m_cC;     //вниз
-    input::CRelativeAxisCommand m_cXAxis; //горизонтальная ось поворота
-    input::CRelativeAxisCommand m_cYAxis; //вертикальная ось поворота
+    input::CKeyUp        m_cEsc;   //выход
+    input::CKeyDown      m_cTab;   //переключить камеру
+    input::CKeyDown      m_cR;     //сбросить программу в начальное состояние
+    input::CButton       m_cQ;     //поворот против часовой
+    input::CButton       m_cW;     //вперед
+    input::CButton       m_cE;     //поворот по часовой
+    input::CButton       m_cA;     //боком влево
+    input::CButton       m_cS;     //назад
+    input::CButton       m_cD;     //боком вправо
+    input::CButton       m_cF;     //вверх
+    input::CButton       m_cC;     //вниз
+    input::CRelativeAxis m_cXAxis; //горизонтальная ось поворота
+    input::CRelativeAxis m_cYAxis; //вертикальная ось поворота
 
     //контроллеры камеры
     math::PFlyCamera         m_spFlyCamera;         //летающаяя камера

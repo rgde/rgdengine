@@ -1,5 +1,7 @@
 //TestInterpolator.h
 #pragma once
+#include "input/input.h"
+#include "input/helper.h"
 #include "math/mathTargetCamera.h"
 #include "math/mathSplines.h"
 
@@ -16,10 +18,10 @@ protected:
 
     void update (float dt);
 
-    void onEsc   (const input::CButtonEvent &event);
-    void onReset (const input::CButtonEvent &event);
-    void onXAxis (const input::CRelativeAxisEvent &event);
-    void onYAxis (const input::CRelativeAxisEvent &event);
+    void onEsc   ();
+    void onReset ();
+    void onXAxis (int dx);
+    void onYAxis (int dy);
 
 private:
     render::PModel m_spModel;  //модель
@@ -29,14 +31,14 @@ private:
     math::Vec3fCatmulRomDistSpline m_spline; //сплайн
 
     //контролы ввода
-    input::CButtonCommand       m_cEsc;   //выход
-    input::CButtonCommand       m_cR;     //сбросить программу в начальное состояние
-    input::CButtonCommand       m_cQ;     //поворот против часовой
-    input::CButtonCommand       m_cE;     //поворот по часовой
-    input::CButtonCommand       m_cW;     //приблизить
-    input::CButtonCommand       m_cS;     //удалить
-    input::CRelativeAxisCommand m_cXAxis; //горизонтальная ось поворота
-    input::CRelativeAxisCommand m_cYAxis; //вертикальная ось поворота
+    input::CKeyUp        m_cEsc;   //выход
+    input::CKeyDown      m_cR;     //сбросить программу в начальное состояние
+    input::CButton       m_cQ;     //поворот против часовой
+    input::CButton       m_cE;     //поворот по часовой
+    input::CButton       m_cW;     //приблизить
+    input::CButton       m_cS;     //удалить
+    input::CRelativeAxis m_cXAxis; //горизонтальная ось поворота
+    input::CRelativeAxis m_cYAxis; //вертикальная ось поворота
 
     //контроллер камеры
     math::PTargetCamera m_spTargetCamera; //нацеленная камера

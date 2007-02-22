@@ -43,13 +43,23 @@ public:
 
 		m_spTargetCamera = math::CTargetCamera::Create(m_camera);
 		m_spTargetCamera->setPosition(vUpVec,vEyePt,vLookatPt);
-		//инициализация ввода
-		m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
-		m_cXAxis.attachToControl(input::Mouse, input::AxisX);
-		m_cYAxis.attachToControl(input::Mouse, input::AxisY);
-		m_cEsc.addHandler(this,&HelloMessage::onEsc);
-		m_cYAxis.addHandler(this,&HelloMessage::onYAxis);
-		m_cXAxis.addHandler(this,&HelloMessage::onXAxis);
+
+        {
+            using namespace input;
+
+            CInput::addCommand(L"Quit");
+            CInput::addCommand(L"Horz");
+            CInput::addCommand(L"Vert");
+            CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
+            CInput::getDevice(Mouse   )->getControl(AxisX    )->bind(L"Horz");
+            CInput::getDevice(Mouse   )->getControl(AxisY    )->bind(L"Vert");
+            m_cEsc  .attach(L"Quit");
+            m_cXAxis.attach(L"Horz");
+            m_cYAxis.attach(L"Vert");
+            m_cEsc   += boost::bind(&HelloMessage::onEsc,   this);
+            m_cXAxis += boost::bind(&HelloMessage::onXAxis, this, _1);
+            m_cYAxis += boost::bind(&HelloMessage::onYAxis, this, _1);
+        }
 
 		m_spTargetCamera->activate();
 
@@ -72,29 +82,29 @@ public:
 	}
 protected:
 	//выход из программы
-	void onEsc(const input::CButtonEvent&)
+	void onEsc()
 	{
 		core::IApplication::Get()->close();
 	}
 
 	//ось X
-	void onXAxis(const input::CRelativeAxisEvent &event)
+	void onXAxis(int dx)
 	{
 		const int accel = 5;
 		const float slow = .01f;
 		const float fast = 2*slow;
-		float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+		float angle = dx>accel ? dx*fast : dx*slow;
 
 		m_spTargetCamera->rotateLeft(-angle);
 	}
 
 	//ось Y
-	void onYAxis(const input::CRelativeAxisEvent &event)
+	void onYAxis(int dy)
 	{
 		const int accel = 5;
 		const float slow = .01f;
 		const float fast = 2*slow;
-		float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+		float angle = dy>accel ? dy*fast : dy*slow;
 
 		m_spTargetCamera->rotateUp(angle);
 	}
@@ -106,12 +116,12 @@ protected:
 	boost::intrusive_ptr<MySuperPuperClass> m_pMySuper;
 
 	//данные для ввода
-	input::CButtonCommand       m_cEsc;
-	input::CRelativeAxisCommand m_cXAxis;
-	input::CRelativeAxisCommand m_cYAxis;
+	input::CKeyDown      m_cEsc;
+	input::CRelativeAxis m_cXAxis;
+	input::CRelativeAxis m_cYAxis;
 
 	//данные для камеры
-	math::PTargetCamera      m_spTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::PTargetCamera  m_spTargetCamera; //контроллер камеры "нацеленная камера"
 
 	std::auto_ptr<core::IApplication> m_spApp;
 };

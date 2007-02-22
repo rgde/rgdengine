@@ -4,32 +4,40 @@
 //#include <render/renderFont.h>
 #include <engine.h>
 
-MenuLevelObject::MenuLevelObject()
-: m_active_menu_item(0)
+MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
 {
 	std::cout << "2: MenuLevelObject created. (SPACE - play, ESC - exit)" << std::endl;
 
-	m_up.attachToControl(input::Keyboard,input::KeyUp);
-	m_up.addHandler(this, &MenuLevelObject::onUpKey);
+    {
+        using namespace input;
 
-	m_down.attachToControl(input::Keyboard,input::KeyDown);
-	m_down.addHandler(this, &MenuLevelObject::onDownKey);
+        CInput::addCommand(L"Up");
+        CInput::addCommand(L"Down");
+        CInput::addCommand(L"Space");
+        CInput::addCommand(L"Escape");
 
-	m_cSpace.attachToControl(input::Keyboard,input::KeySpace);
-	m_cSpace.addHandler(this, &MenuLevelObject::onSpace);
+        CInput::getDevice(Keyboard)->getControl(KeyUp    )->bind(L"Up");
+        CInput::getDevice(Keyboard)->getControl(KeyDown  )->bind(L"Down");
+        CInput::getDevice(Keyboard)->getControl(KeySpace )->bind(L"Space");
+        CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Escape");
 
-	m_cEsc.attachToControl(input::Keyboard,input::KeyEscape);
-	m_cEsc.addHandler(this, &MenuLevelObject::onEsc);
+        m_up    .attach(L"Up");
+        m_down  .attach(L"Down");
+        m_cSpace.attach(L"Space");
+        m_cEsc  .attach(L"Escape");
+
+        m_up     += boost::bind(&MenuLevelObject::onUpKey,   this);
+        m_down   += boost::bind(&MenuLevelObject::onDownKey, this);
+        m_cSpace += boost::bind(&MenuLevelObject::onSpace,   this);
+        m_cEsc   += boost::bind(&MenuLevelObject::onEsc,     this);
+    }
 
 	using render::IFont;
-
 	m_menu_font = IFont::Create(40, L"Arial", IFont::ExtraBold);
 
 	using namespace game;
-
 	PMenuItem item(new TMenuItem<CCompliteLevelEvent>(L"PLAY GAME", CCompliteLevelEvent()));
 	m_items.push_back(item);
-
 	item = PMenuItem(new TMenuItem<CCloseGameEvent>(L"EXIT", CCloseGameEvent()));
 	m_items.push_back(item);	
 }
@@ -56,38 +64,29 @@ void MenuLevelObject::update(float dt)
 	//m_menu_font->render(L"EXIT", math::Rect(0, size[1]/2, size[0], 50), 0xFF0000FF, true, flags);
 }
 
-void MenuLevelObject::onUpKey(const input::CButtonEvent&)
+void MenuLevelObject::onUpKey()
 {
-	if (m_up) 
-	{
-		m_active_menu_item--;
-		m_active_menu_item = m_active_menu_item < 0 ? 0 : m_active_menu_item;
-	}
+	m_active_menu_item--;
+	m_active_menu_item = m_active_menu_item < 0 ? 0 : m_active_menu_item;
 }
 
-void MenuLevelObject::onDownKey(const input::CButtonEvent&)
+void MenuLevelObject::onDownKey()
 {
-	if (m_down) 
-	{
-		m_active_menu_item++;
-		m_active_menu_item = m_active_menu_item >= NumMenuItems ? NumMenuItems-1 : m_active_menu_item;
-	}
+    m_active_menu_item++;
+    m_active_menu_item = m_active_menu_item >= NumMenuItems ? NumMenuItems-1 : m_active_menu_item;
 }
 
-//здесь стоит if, чтобы реагировать только на НАжатия (без него евент посылается и на ОТжатия)
-void MenuLevelObject::onSpace(const input::CButtonEvent&) 
+void MenuLevelObject::onSpace() 
 {
-	if (m_cSpace) 
-		m_items[m_active_menu_item]->send(this);
-		//sendEvent(m_items[m_active_menu_item].e);
-		//sendEvent(game::CCompliteLevelEvent()); // активируется уровень который прописан как следующий
-		//sendEvent(game::CSetLevelEvent("play")); // окончание текущего уровня и начало уровня "play"
+	m_items[m_active_menu_item]->send(this);
+	//sendEvent(m_items[m_active_menu_item].e);
+	//sendEvent(game::CCompliteLevelEvent()); // активируется уровень который прописан как следующий
+	//sendEvent(game::CSetLevelEvent("play")); // окончание текущего уровня и начало уровня "play"
 }
 
-void MenuLevelObject::onEsc(const input::CButtonEvent&) 
+void MenuLevelObject::onEsc() 
 {
-	if (m_cEsc) 
-		sendEvent(game::CCloseGameEvent());
+	sendEvent(game::CCloseGameEvent());
 }
 
 

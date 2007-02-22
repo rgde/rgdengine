@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="engine_test"
+	Name="test_engine"
 	ProjectGUID="{14ACDBBB-885B-4B01-8670-01F22A10DF87}"
 	RootNamespace="engine_test"
 	Keyword="Win32Proj"

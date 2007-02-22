@@ -25,8 +25,15 @@ public:
 
 		m_camera->lookAt(vEyePt, vLookatPt, vUpVec);
 		m_camera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
-		m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
-		m_cEsc.addHandler(this,&HelloMessage::onEsc);
+
+        {
+            using namespace input;
+
+            CInput::addCommand(L"Quit");
+            CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
+            m_cEsc.attach(L"Quit");
+            m_cEsc += boost::bind(&HelloMessage::onEsc, this);
+        }
 
 		render::TheCameraManager::Get().addCamera(m_camera);
 		
@@ -41,17 +48,17 @@ protected:
 		m_TrianglesManager.render();
 	}
 
-	void onEsc (const input::CButtonEvent&)
+	void onEsc ()
 	{
 		core::IApplication::Get()->close();
 	}
 
 protected:
-	render::PFont					m_pFont;
-	render::PCamera			m_camera;
-	lines_test::CTriangleManager	m_TrianglesManager;
+	render::PFont                         m_pFont;
+	render::PCamera                       m_camera;
+	lines_test::CTriangleManager          m_TrianglesManager;
 	boost::scoped_ptr<core::IApplication> spApp;
-	input::CButtonCommand			m_cEsc;
+	input::CKeyDown                       m_cEsc;
 };
 
 // The application's entry point

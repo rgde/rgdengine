@@ -87,7 +87,13 @@ typedef unsigned int  uint;
 
 #include "game\\game.h"
 
-#include "input\\IL.h"
+#include "input\\base.h"
+#include "input\\input.h"
+#include "input\\inputimpl.h"
+#include "input\\device.h"
+#include "input\\control.h"
+#include "input\\command.h"
+#include "input\\helper.h"
 
 #include "math\\mathTrack.h"
 #include "math\\mathTrackCamera.h"

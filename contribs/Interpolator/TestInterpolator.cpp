@@ -34,22 +34,45 @@ TestInterpolator::~TestInterpolator()
 
 void TestInterpolator::initInput()
 {
-    //привязываем команды к контролам
-    m_cEsc  .attachToControl(input::Keyboard, input::KeyEscape); //ESC - выход
-    m_cR    .attachToControl(input::Keyboard, input::KeyR);
-    
-    m_cW    .attachToControl(input::Keyboard, input::KeyW);
-    m_cS    .attachToControl(input::Keyboard, input::KeyS);
-    m_cE    .attachToControl(input::Keyboard, input::KeyE);
-    m_cQ    .attachToControl(input::Keyboard, input::KeyQ);
-    m_cXAxis.attachToControl(input::Mouse, input::AxisX);
-    m_cYAxis.attachToControl(input::Mouse, input::AxisY);
+    {
+        using namespace input;
+
+        //создадим команды
+        CInput::addCommand(L"Quit");
+        CInput::addCommand(L"Reset");
+        CInput::addCommand(L"Froward");
+        CInput::addCommand(L"Backward");
+        CInput::addCommand(L"CW");
+        CInput::addCommand(L"CCW");
+        CInput::addCommand(L"Horz");
+        CInput::addCommand(L"Vert");
+
+        //связываем команды с контролами
+        CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
+        CInput::getDevice(Keyboard)->getControl(KeyR     )->bind(L"Reset");
+        CInput::getDevice(Keyboard)->getControl(KeyW     )->bind(L"Froward");
+        CInput::getDevice(Keyboard)->getControl(KeyS     )->bind(L"Backward");
+        CInput::getDevice(Keyboard)->getControl(KeyE     )->bind(L"CW");
+        CInput::getDevice(Keyboard)->getControl(KeyQ     )->bind(L"CCW");
+        CInput::getDevice(Mouse   )->getControl(AxisX    )->bind(L"Horz");
+        CInput::getDevice(Mouse   )->getControl(AxisY    )->bind(L"Vert");
+    }
+
+    //биндим хелперы с командами
+    m_cEsc  .attach(L"Quit");
+    m_cR    .attach(L"Reset");
+    m_cW    .attach(L"Froward");
+    m_cS    .attach(L"Backward");
+    m_cE    .attach(L"CW");
+    m_cQ    .attach(L"CCW");
+    m_cXAxis.attach(L"Horz");
+    m_cYAxis.attach(L"Vert");
 
     //задаем для команд функции-обработчики
-    m_cEsc  .addHandler(this,&TestInterpolator::onEsc);
-    m_cR    .addHandler(this,&TestInterpolator::onReset);
-    m_cYAxis.addHandler(this,&TestInterpolator::onYAxis);
-    m_cXAxis.addHandler(this,&TestInterpolator::onXAxis);
+    m_cEsc   += boost::bind(&TestInterpolator::onEsc,   this);
+    m_cR     += boost::bind(&TestInterpolator::onReset, this);
+    m_cYAxis += boost::bind(&TestInterpolator::onYAxis, this, _1);
+    m_cXAxis += boost::bind(&TestInterpolator::onXAxis, this, _1);
 }
 
 void TestInterpolator::initCamera()
@@ -119,34 +142,32 @@ void TestInterpolator::update(float dt)
         m_spTargetCamera->goBackward(dt*100.0f);
 }
 
-void TestInterpolator::onEsc(const input::CButtonEvent &event)
+void TestInterpolator::onEsc()
 {
-    if (event.m_bPress)
-        core::IApplication::Get()->close();
+    core::IApplication::Get()->close();
 }
 
-void TestInterpolator::onReset(const input::CButtonEvent &event)
+void TestInterpolator::onReset()
 {
-    if (event.m_bPress)
-        initCamera();
+    initCamera();
 }
 
-void TestInterpolator::onXAxis(const input::CRelativeAxisEvent &event)
+void TestInterpolator::onXAxis(int dx)
 {
     const int accel = 5;
     const float slow = .01f;
     const float fast = 2*slow;
-    float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+    float angle = dx>accel ? dx*fast : dx*slow;
 
     m_spTargetCamera->rotateLeft(-angle);
 }
 
-void TestInterpolator::onYAxis(const input::CRelativeAxisEvent &event)
+void TestInterpolator::onYAxis(int dy)
 {
     const int accel = 5;
     const float slow = .01f;
     const float fast = 2*slow;
-    float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+    float angle = dy>accel ? dy*fast : dy*slow;
 
     m_spTargetCamera->rotateUp(angle);
 }

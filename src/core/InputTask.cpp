@@ -2,28 +2,28 @@
 #include "core/InputTask.h"
 #include "core/application.h"
 
-#include "input/IL.h"                 //библиотека ввода
-#include "input/ILSystemImplDx.h"     //имплементация ввода при помощи DInput
-#include "input/ILSchemeImplSimple.h" //имплементация раскладки клавиша-контрол
+#include "input/input.h" //библиотека ввода
 
 namespace core
 {
-	CInputTask::CInputTask(const IApplication& app, unsigned int priority, bool exclusive) 
-		: ITask(app, priority)
-	{
-		HWND hWnd = (HWND)IApplication::Get()->getWindowHandle();
-		input::CSystem::Get().init( new input::CSystemImplDx(hWnd, exclusive) );
-		input::CScheme::Get().init( new input::CSchemeImplSimple() );
-	}
+    CInputTask::CInputTask(const IApplication& app, unsigned int priority, bool exclusive) 
+        : ITask(app, priority)
+    {
+        HWND hWnd = (HWND)IApplication::Get()->getWindowHandle();
 
-	CInputTask::~CInputTask ()
-	{
-		input::CScheme::Destroy();
-		input::CSystem::Destroy();
-	}
+        input::CInputImpl *pImpl = new input::CInputImpl();
+        pImpl->Init(hWnd,exclusive);
 
-	void CInputTask::run()
-	{
-		input::CSystem::Update();
-	}
+        input::CInput::Get().init( pImpl );
+    }
+
+    CInputTask::~CInputTask ()
+    {
+        input::CInput::Destroy();
+    }
+
+    void CInputTask::run()
+    {
+        input::CInput::Update();
+    }
 }

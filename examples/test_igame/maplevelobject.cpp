@@ -4,9 +4,16 @@
 
 MapLevelObject::MapLevelObject()
 {
-  std::cout << "3: MapLevelObject created. (press SPACE for send CCompliteLevelEvent)" << std::endl;
-  m_cSpace.attachToControl(input::Keyboard,input::KeySpace);
-  m_cSpace.addHandler(this, &MapLevelObject::onSpace);
+    std::cout << "3: MapLevelObject created. (press SPACE for send CCompliteLevelEvent)" << std::endl;
+
+    {
+        using namespace input;
+
+        CInput::addCommand(L"Space");
+        CInput::getDevice(Keyboard)->getControl(KeySpace )->bind(L"Space");
+        m_cSpace.attach(L"Space");
+        m_cSpace += boost::bind(&MapLevelObject::onSpace, this);
+    }
 }
 
 MapLevelObject::~MapLevelObject()
@@ -14,11 +21,9 @@ MapLevelObject::~MapLevelObject()
 	std::cout << "MapLevelObject destroyed." << std::endl;
 }
 
-//здесь стоит if, чтобы реагировать только на Ќјжати€ (без него евент посылаетс€ и на ќ“жати€)
-void MapLevelObject::onSpace(const input::CButtonEvent&)
+void MapLevelObject::onSpace()
 {
-	if (m_cSpace) 
-		sendEvent(game::CCompliteLevelEvent());
+	sendEvent(game::CCompliteLevelEvent());
 }
 
 namespace game
