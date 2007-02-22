@@ -542,43 +542,31 @@
 				Name="input"
 				>
 				<File
-					RelativePath="..\include\input\Il.h"
+					RelativePath="..\include\input\base.h"
 					>
 				</File>
 				<File
-					RelativePath="..\include\input\ILBase.h"
+					RelativePath="..\include\input\command.h"
 					>
 				</File>
 				<File
-					RelativePath="..\include\input\ILCommand.h"
+					RelativePath="..\include\input\control.h"
 					>
 				</File>
 				<File
-					RelativePath="..\include\input\ILCommandEnum.h"
+					RelativePath="..\include\input\device.h"
 					>
 				</File>
 				<File
-					RelativePath="..\include\input\ILControl.h"
+					RelativePath="..\include\input\helper.h"
 					>
 				</File>
 				<File
-					RelativePath="..\include\input\ILDevice.h"
+					RelativePath="..\include\input\input.h"
 					>
 				</File>
 				<File
-					RelativePath="..\include\input\ILEvent.h"
-					>
-				</File>
-				<File
-					RelativePath="..\include\input\ILHandler.h"
-					>
-				</File>
-				<File
-					RelativePath="..\include\input\ILScheme.h"
-					>
-				</File>
-				<File
-					RelativePath="..\include\input\ILSystem.h"
+					RelativePath="..\include\input\inputimpl.h"
 					>
 				</File>
 			</Filter>
@@ -910,63 +898,31 @@
 				Name="input"
 				>
 				<File
-					RelativePath="..\src\input\ILBase.cpp"
+					RelativePath="..\src\input\base.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\input\ILCommand.cpp"
+					RelativePath="..\src\input\command.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\input\ILCommandEnum.cpp"
+					RelativePath="..\src\input\control.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\input\ILControl.cpp"
+					RelativePath="..\src\input\device.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\input\ILDevice.cpp"
+					RelativePath="..\src\input\helper.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\input\ILScheme.cpp"
+					RelativePath="..\src\input\input.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\input\ILSchemeImpl.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\input\ILSchemeImplSimple.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\input\ILSchemeImplSimple.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\input\ILSystem.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\input\ILSystemImpl.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\input\ILSystemImpl.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\input\ILSystemImplDx.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\input\ILSystemImplDx.h"
-					>
-				</File>
-				<File
-					RelativePath="C:\Documents and Settings\korak\&#1056;&#1072;&#1073;&#1086;&#1095;&#1080;&#1081; &#1089;&#1090;&#1086;&#1083;\shots.jpg"
+					RelativePath="..\src\input\inputimpl.cpp"
 					>
 				</File>
 			</Filter>

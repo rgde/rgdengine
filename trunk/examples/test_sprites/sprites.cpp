@@ -20,20 +20,16 @@ CSpriteTest::CSpriteTest() :
 		m_bSortSpritesBeforeLog (true),
 		m_vSpritesSeed (math::Vec2f (770, 570))		
 	{
-		//m_camera = render::CRenderCamera::Create();
+        {
+            using namespace input;
 
-		m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
-		m_cEsc.addHandler(this, &CSpriteTest::onEsc);
+            CInput::addCommand(L"Quit");
+            CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
+            m_cEsc.attach(L"Quit");
+            m_cEsc += boost::bind(&CSpriteTest::onEsc, this);
+        }
 
 		m_spFont = render::IFont::Create(12, L"Arial", render::IFont::Heavy);
-
-		//math::Vec3f vEyePt(40, 40, -40);
-		//math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
-		//math::Vec3f vUpVec( 00.0f, 1.0f, 0.0f );
-
-		//m_camera->lookAt(vEyePt, vLookatPt, vUpVec);
-		//m_camera->setProjection(math::PI/4, 1.0f, 1.0f, 10000.0f);
-		//render::TheCameraManager::Get().addCamera(m_camera);
 
 		std::vector<render::PTexture> vTextures;
 		vTextures.push_back(render::ITexture::Create( "Sprites/test01.jpg" ));
@@ -68,7 +64,7 @@ CSpriteTest::CSpriteTest() :
 			}
 	}
 
-	void CSpriteTest::onEsc (const input::CButtonEvent&)
+	void CSpriteTest::onEsc ()
 	{
 		core::IApplication::Get()->close();
 	}

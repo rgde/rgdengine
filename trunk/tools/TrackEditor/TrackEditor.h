@@ -18,21 +18,21 @@ protected:
 
     void update (float dt);
 
-    void onEsc        (const input::CButtonEvent &event);
-    void onInfo       (const input::CButtonEvent &event);
-    void onReset      (const input::CButtonEvent &event);
-    void onLoadModel  (const input::CButtonEvent &event);
-    void onLoadTrack  (const input::CButtonEvent &event);
-    void onSaveTrack  (const input::CButtonEvent &event);
-    void onChangeMode (const input::CButtonEvent &event);
-    void onPrevKey    (const input::CButtonEvent &event);
-    void onNextKey    (const input::CButtonEvent &event);
-    void onFaster     (const input::CButtonEvent &event);
-    void onSlower     (const input::CButtonEvent &event);
-    void onAddKey     (const input::CButtonEvent &event);
-    void onDelKey     (const input::CButtonEvent &event);
-    void onXAxis      (const input::CRelativeAxisEvent &event);
-    void onYAxis      (const input::CRelativeAxisEvent &event);
+    void onEsc        ();
+    void onInfo       ();
+    void onReset      ();
+    void onLoadModel  ();
+    void onLoadTrack  ();
+    void onSaveTrack  ();
+    void onChangeMode ();
+    void onPrevKey    ();
+    void onNextKey    ();
+    void onFaster     ();
+    void onSlower     ();
+    void onAddKey     ();
+    void onDelKey     ();
+    void onXAxis      (int dx);
+    void onYAxis      (int dy);
 
 private:
     render::PModel m_spModel;  //модель
@@ -49,29 +49,29 @@ private:
     //-<
 
     //контролы ввода
-    input::CButtonCommand       m_cEsc;   //выход
-    input::CButtonCommand       m_cTab;   //скрыть / показать информацию
-    input::CButtonCommand       m_c0;     //сбросить программу в начальное состо€ние
-    input::CButtonCommand       m_cQ;     //поворот против часовой
-    input::CButtonCommand       m_cW;     //вперед
-    input::CButtonCommand       m_cE;     //поворот по часовой
-    input::CButtonCommand       m_cA;     //боком влево
-    input::CButtonCommand       m_cS;     //назад
-    input::CButtonCommand       m_cD;     //боком вправо
-    input::CButtonCommand       m_cF;     //вверх
-    input::CButtonCommand       m_cC;     //вниз
-    input::CButtonCommand       m_cF1;    //загрузть модель
-    input::CButtonCommand       m_cF2;    //загрузть трек
-    input::CButtonCommand       m_cF3;    //сохранить трек
-    input::CButtonCommand       m_cF4;    //проигрывание / редактирование трека
-    input::CButtonCommand       m_cZ;     //предыдущий ключ
-    input::CButtonCommand       m_cX;     //следующий ключ
-    input::CButtonCommand       m_cO;     //увеличить скорость
-    input::CButtonCommand       m_cP;     //уменьшить скорость
-    input::CButtonCommand       m_cSpace; //добавить ключ
-    input::CButtonCommand       m_cDel;   //удалить ключ
-    input::CRelativeAxisCommand m_cXAxis; //горизонтальна€ ось поворота
-    input::CRelativeAxisCommand m_cYAxis; //вертикальна€ ось поворота
+    input::CKeyDown      m_cEsc;   //выход
+    input::CKeyDown      m_cTab;   //скрыть / показать информацию
+    input::CKeyDown      m_c0;     //сбросить программу в начальное состо€ние
+    input::CButton       m_cQ;     //поворот против часовой
+    input::CButton       m_cW;     //вперед
+    input::CButton       m_cE;     //поворот по часовой
+    input::CButton       m_cA;     //боком влево
+    input::CButton       m_cS;     //назад
+    input::CButton       m_cD;     //боком вправо
+    input::CButton       m_cF;     //вверх
+    input::CButton       m_cC;     //вниз
+    input::CKeyDown      m_cF1;    //загрузть модель
+    input::CKeyDown      m_cF2;    //загрузть трек
+    input::CKeyDown      m_cF3;    //сохранить трек
+    input::CKeyDown      m_cF4;    //проигрывание / редактирование трека
+    input::CKeyDown      m_cZ;     //предыдущий ключ
+    input::CKeyDown      m_cX;     //следующий ключ
+    input::CKeyDown      m_cO;     //увеличить скорость
+    input::CKeyDown      m_cP;     //уменьшить скорость
+    input::CKeyDown      m_cSpace; //добавить ключ
+    input::CKeyDown      m_cDel;   //удалить ключ
+    input::CRelativeAxis m_cXAxis; //горизонтальна€ ось поворота
+    input::CRelativeAxis m_cYAxis; //вертикальна€ ось поворота
 
     //контроллеры камеры
     math::PFlyCamera   m_spFlyCamera;   //летающа€€ камера

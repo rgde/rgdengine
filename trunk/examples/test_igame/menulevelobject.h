@@ -1,5 +1,4 @@
 #pragma once
-
 #include "engine.h"
 
 //меню
@@ -8,17 +7,16 @@ class MenuLevelObject : public game::ILevelObject,
 						public game::IDynamicObject
 {
 public:
-	MenuLevelObject();
-	~MenuLevelObject();
+    MenuLevelObject();
+   ~MenuLevelObject();
 
 private:
 	void update(float dt);
 
-	void onSpace(const input::CButtonEvent&);
-	void onEsc(const input::CButtonEvent&);
-
-	void onUpKey(const input::CButtonEvent&);
-	void onDownKey(const input::CButtonEvent&);
+	void onSpace();
+	void onEsc();
+	void onUpKey();
+	void onDownKey();
 
 private:
 	struct IMenuItem
@@ -51,8 +49,8 @@ private:
 	enum {NumMenuItems = 2};
 
 	render::PFont m_menu_font;
-	input::CButtonCommand m_up;
-	input::CButtonCommand m_down;
-	input::CButtonCommand m_cSpace;
-	input::CButtonCommand m_cEsc;
+	input::CKeyDown m_up;
+	input::CKeyDown m_down;
+	input::CKeyDown m_cSpace;
+	input::CKeyDown m_cEsc;
 };

@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="event_test"
+	Name="test_event"
 	ProjectGUID="{94B7C17B-B23A-4D5C-A1F6-E7EF49763488}"
 	Keyword="Win32Proj"
 	>

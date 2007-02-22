@@ -1,17 +1,16 @@
 #pragma once
-
 #include "engine.h"
 
 //карта
 class MapLevelObject : public game::ILevelObject, public event::CActor
 {	
 public:
-	MapLevelObject();
-	~MapLevelObject();
+    MapLevelObject();
+   ~MapLevelObject();
 
 private:
-	void onSpace(const input::CButtonEvent&);
+	void onSpace();
 
 private:
-	input::CButtonCommand m_cSpace;
+	input::CKeyDown m_cSpace;
 };

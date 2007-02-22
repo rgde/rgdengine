@@ -8,7 +8,7 @@
 int __stdcall WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
     {
-        FloatLinearInterpolatorf i;
+        math::FloatLinearInterpolatorf i;
         i.addValue(1,10);
         i.addValue(2,90);
         i.addValue(3,30);
@@ -26,7 +26,7 @@ int __stdcall WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
     }
 
     {
-        Vec3fCatmulRomSpline s;
+        math::Vec3fCatmulRomSpline s;
         s.m_values.push_back(math::Vec3f(0,0,0));
         s.m_values.push_back(math::Vec3f(1,0,0));
         s.m_values.push_back(math::Vec3f(0,0,0));
@@ -46,7 +46,7 @@ int __stdcall WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
     }
 
     {
-        Vec3fCatmulRomDistSpline d;
+        math::Vec3fCatmulRomDistSpline d;
         d.m_values.push_back(math::Vec3f(0,0,0));
         d.m_values.push_back(math::Vec3f(1,0,0));
         d.m_values.push_back(math::Vec3f(0,1,0));
@@ -61,11 +61,10 @@ int __stdcall WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
             t += 0.1f;
             math::Vec3f v2 = d(t);
 
-            Vec3fDist Dist;
+            math::Vec3fDistance Dist;
             dt = Dist(v1, v2);
         }
     }
-
 
     std::auto_ptr<core::IApplication> pApp(core::IApplication::Create(L"Interpolator", 800, 600, 32, 85, false));
     pApp->addTask(core::PTask(new core::CInputTask(*pApp, 0, false)));

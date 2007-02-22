@@ -1,17 +1,16 @@
 #pragma once
-
 #include "engine.h"
 
 //проигрывание роликов
 class AviLevelObject: public game::ILevelObject, public event::CActor
-{	
+{
 public:
-	AviLevelObject();
-	~AviLevelObject();
+    AviLevelObject();
+   ~AviLevelObject();
 
 private:
-	void onSpace(const input::CButtonEvent&);
+	void onSpace();
 
 private:
-	input::CButtonCommand m_cSpace;
+	input::CKeyDown m_cSpace;
 };

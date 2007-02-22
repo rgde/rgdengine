@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="input_test"
+	Name="test_input"
 	ProjectGUID="{B146005B-B1FE-48F1-8F71-81D819303A43}"
 	Keyword="Win32Proj"
 	>
@@ -198,6 +198,14 @@
 	<Files>
 		<File
 			RelativePath=".\main.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\TestInput.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\TestInput.h"
 			>
 		</File>
 	</Files>

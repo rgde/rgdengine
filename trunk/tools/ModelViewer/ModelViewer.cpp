@@ -1,3 +1,4 @@
+#include <windows.h>
 #include "ModelViewer.h"
 
 ModelViewer::ModelViewer() 
@@ -29,26 +30,64 @@ ModelViewer::~ModelViewer()
 
 void ModelViewer::initInput()
 {
-	m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
-	m_cO.attachToControl(input::Keyboard, input::KeyO);
-	m_cL.attachToControl(input::Keyboard, input::KeyL);
-	m_cK.attachToControl(input::Keyboard, input::KeyK);
-	m_cB.attachToControl(input::Keyboard, input::KeyB);
-	m_cG.attachToControl(input::Keyboard, input::KeyG);
-	m_cW.attachToControl(input::Keyboard, input::KeyW);
-	m_cXAxis.attachToControl(input::Mouse, input::AxisX);
-	m_cYAxis.attachToControl(input::Mouse, input::AxisY);
-	m_cZAxis.attachToControl(input::Mouse, input::AxisWheel);
-	m_cEsc.addHandler(this,&ModelViewer::onEsc);
-	m_cO.addHandler(this,&ModelViewer::onO);
-	m_cL.addHandler(this,&ModelViewer::onL);
-	m_cK.addHandler(this,&ModelViewer::onK);
-	m_cB.addHandler(this,&ModelViewer::onB);
-	m_cG.addHandler(this,&ModelViewer::onG);
-	m_cW.addHandler(this,&ModelViewer::onW);
-	m_cYAxis.addHandler(this,&ModelViewer::onYAxis);
-	m_cXAxis.addHandler(this,&ModelViewer::onXAxis);
-	m_cZAxis.addHandler(this,&ModelViewer::onWheelAxis);
+
+    {
+        using namespace input;
+
+        //создадим команды
+        CInput::addCommand(L"Esc");
+        CInput::addCommand(L"O");
+        CInput::addCommand(L"L");
+        CInput::addCommand(L"K");
+        CInput::addCommand(L"B");
+        CInput::addCommand(L"G");
+        CInput::addCommand(L"W");
+        CInput::addCommand(L"MouseLeft");
+        CInput::addCommand(L"MouseRight");
+        CInput::addCommand(L"XAxis");
+        CInput::addCommand(L"YAxis");
+        CInput::addCommand(L"ZAxis");
+
+        //связываем команды с контролами
+        CInput::getDevice(Keyboard)->getControl(KeyEscape  )->bind(L"Esc");
+        CInput::getDevice(Keyboard)->getControl(KeyO       )->bind(L"O");
+        CInput::getDevice(Keyboard)->getControl(KeyL       )->bind(L"L");
+        CInput::getDevice(Keyboard)->getControl(KeyK       )->bind(L"K");
+        CInput::getDevice(Keyboard)->getControl(KeyB       )->bind(L"B");
+        CInput::getDevice(Keyboard)->getControl(KeyG       )->bind(L"G");
+        CInput::getDevice(Keyboard)->getControl(KeyW       )->bind(L"W");
+        CInput::getDevice(Mouse   )->getControl(ButtonLeft )->bind(L"MouseLeft");
+        CInput::getDevice(Mouse   )->getControl(ButtonRight)->bind(L"MouseRight");
+        CInput::getDevice(Mouse   )->getControl(AxisX      )->bind(L"XAxis");
+        CInput::getDevice(Mouse   )->getControl(AxisY      )->bind(L"YAxis");
+        CInput::getDevice(Mouse   )->getControl(AxisWheel  )->bind(L"ZAxis");
+    }
+
+    //биндим хелперы с командами
+    m_cEsc       .attach(L"Esc");
+    m_cO         .attach(L"O");
+    m_cL         .attach(L"L");
+    m_cK         .attach(L"K");
+    m_cB         .attach(L"B");
+    m_cG         .attach(L"G");
+    m_cW         .attach(L"W");
+    m_cMouseLeft .attach(L"MouseLeft");
+    m_cMouseRight.attach(L"MouseRight");
+    m_cXAxis     .attach(L"XAxis");
+    m_cYAxis     .attach(L"YAxis");
+    m_cZAxis     .attach(L"ZAxis");
+
+    //задаем для команд функции-обработчики
+    m_cEsc   += boost::bind(&ModelViewer::onEsc,       this);
+    m_cO     += boost::bind(&ModelViewer::onO,         this);
+    m_cL     += boost::bind(&ModelViewer::onL,         this);
+    m_cK     += boost::bind(&ModelViewer::onK,         this);
+    m_cB     += boost::bind(&ModelViewer::onB,         this);
+    m_cG     += boost::bind(&ModelViewer::onG,         this);
+    m_cW     += boost::bind(&ModelViewer::onW,         this);
+    m_cXAxis += boost::bind(&ModelViewer::onXAxis,     this, _1);
+    m_cYAxis += boost::bind(&ModelViewer::onYAxis,     this, _1);
+    m_cZAxis += boost::bind(&ModelViewer::onWheelAxis, this, _1);
 }
 
 void ModelViewer::initCamera()
@@ -147,17 +186,14 @@ void ModelViewer::update(float dt)
 }
 
 //выход из программы
-void ModelViewer::onEsc(const input::CButtonEvent&)
+void ModelViewer::onEsc()
 {
 	core::IApplication::Get()->close();
 }
 
 //opening a new file
-void ModelViewer::onO(const input::CButtonEvent &e)
+void ModelViewer::onO()
 {
-	if(!e.m_bPress)
-		return;
-
 	std::wstring current_dir;
 	current_dir.resize(256);
 	GetCurrentDirectory( 256, (wchar_t*)current_dir.c_str() );
@@ -194,58 +230,51 @@ void ModelViewer::onO(const input::CButtonEvent &e)
 	}		
 }
 
-void ModelViewer::onL(const input::CButtonEvent& event)
+void ModelViewer::onL()
 {
-	//if(event.m_bPress)
-	//	render::TheLightManager::Get().setDebugRendering(!render::TheLightManager::Get().isDebugRendering());
+    //render::TheLightManager::Get().setDebugRendering(!render::TheLightManager::Get().isDebugRendering());
 }
 
-void ModelViewer::onK(const input::CButtonEvent& event)
+void ModelViewer::onK()
 {
-	if(event.m_bPress)
-		render::TheRenderManager::Get().enableLighting(!render::TheRenderManager::Get().isLightingEnabled());
+    render::TheRenderManager::Get().enableLighting(!render::TheRenderManager::Get().isLightingEnabled());
 }
 
-void ModelViewer::onB(const input::CButtonEvent& event)
+void ModelViewer::onB()
 {
-	if(event.m_bPress)
-		render::TheRenderManager::Get().enableVolumes(!render::TheRenderManager::Get().isVolumeDrawing());
+    render::TheRenderManager::Get().enableVolumes(!render::TheRenderManager::Get().isVolumeDrawing());
 }
 
-void ModelViewer::onG(const input::CButtonEvent& event)
+void ModelViewer::onG()
 {
-	if(event.m_bPress)
-		m_bRenderGrid = !m_bRenderGrid;
+    m_bRenderGrid = !m_bRenderGrid;
 }
 
-void ModelViewer::onW(const input::CButtonEvent& event)
+void ModelViewer::onW()
 {
-	if(event.m_bPress)
-	{
-		int nFillMode = render::TheRenderManager::Get().getFillMode();
+    int nFillMode = render::TheRenderManager::Get().getFillMode();
 
-		switch(nFillMode)
-		{
-			case render::Solid:
-				render::TheRenderManager::Get().setFillMode(render::WireFrame);
-			break;
+    switch(nFillMode)
+    {
+	    case render::Solid:
+		    render::TheRenderManager::Get().setFillMode(render::WireFrame);
+	        break;
 
-			case render::WireFrame:
-				render::TheRenderManager::Get().setFillMode(render::Solid);
-			break;
-		};
-	}
+	    case render::WireFrame:
+		    render::TheRenderManager::Get().setFillMode(render::Solid);
+	        break;
+    };
 }
 
 //ось X
-void ModelViewer::onXAxis(const input::CRelativeAxisEvent &event)
+void ModelViewer::onXAxis(int dx)
 {
 	const int accel = 5;
 	const float slow = .01f;
 	const float fast = 2*slow;
-	float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+	float angle = dx>accel ? dx*fast : dx*slow;
 
-	if (input::CSystem::Get().GetControl(input::Mouse, input::ButtonLeft)->getPress())
+	if (m_cMouseLeft)
 	{
         math::Vec3f cam_up;
 		math::Vec3f cam_pos;
@@ -256,14 +285,14 @@ void ModelViewer::onXAxis(const input::CRelativeAxisEvent &event)
 		math::normalize(dir);
 		math::normalize(cam_up);
 		math::Vec3f cam_side = math::makeCross(cam_up, dir);
-		cam_side *= -event.m_nDelta*0.1f;
+		cam_side *= -dx*0.1f;
 
 		cam_pos += cam_side;
 		cam_target += cam_side;
 		m_spTargetCamera->setPosition(cam_up,cam_pos,cam_target);
 
 	}
-	else if (input::CSystem::Get().GetControl(input::Mouse, input::ButtonRight)->getPress() == false)
+	else if (!m_cMouseRight)
 		return;
 	else
 	{
@@ -272,9 +301,9 @@ void ModelViewer::onXAxis(const input::CRelativeAxisEvent &event)
 }
 
 //ось Y
-void ModelViewer::onYAxis(const input::CRelativeAxisEvent &event)
+void ModelViewer::onYAxis(int dy)
 {
-	if (input::CSystem::Get().GetControl(input::Mouse, input::ButtonLeft)->getPress())
+	if (m_cMouseLeft)
 	{
 		math::Vec3f cam_up;
 		math::Vec3f cam_pos;
@@ -283,7 +312,7 @@ void ModelViewer::onYAxis(const input::CRelativeAxisEvent &event)
 
 		math::Vec3f dir = cam_target - cam_pos;
 		math::normalize(dir);
-		dir *= event.m_nDelta;
+		dir *= dy;
 
 		cam_pos += dir;
 		cam_target += dir;
@@ -291,20 +320,20 @@ void ModelViewer::onYAxis(const input::CRelativeAxisEvent &event)
 		return;
 
 	}
-	else if (input::CSystem::Get().GetControl(input::Mouse, input::ButtonRight)->getPress() == false)
+	else if (!m_cMouseRight)
 		return;
 
 	const int accel = 5;
 	const float slow = .01f;
 	const float fast = 2*slow;
-	float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+	float angle = dy>accel ? dy*fast : dy*slow;
 
 	m_spTargetCamera->rotateUp(angle);
 }
 
-/*onWheelAxis*/
-void ModelViewer::onWheelAxis(const input::CRelativeAxisEvent &event)
+//колесико мыши
+void ModelViewer::onWheelAxis(int dz)
 {
 	const float slow = .1f;
-	m_spTargetCamera->goBackward(-event.m_nDelta*slow);
+	m_spTargetCamera->goBackward(-dz*slow);
 }

@@ -1,4 +1,5 @@
 //TrackEditor.cpp
+#include <windows.h>
 #include "engine.h"
 #include "TrackEditor.h"
 #include "boost/lexical_cast.hpp" //возможно стоит переделать на base::Lexical_cast [Dub]
@@ -29,47 +30,102 @@ TrackEditor::~TrackEditor()
 
 void TrackEditor::initInput()
 {
+    {
+        using namespace input;
+
+        //создадим команды
+        CInput::addCommand(L"Quit");
+        CInput::addCommand(L"Info");
+        CInput::addCommand(L"Reset");
+        CInput::addCommand(L"CCW");
+        CInput::addCommand(L"Forward");
+        CInput::addCommand(L"CW");
+        CInput::addCommand(L"StrifeLeft");
+        CInput::addCommand(L"Backward");
+        CInput::addCommand(L"StrifeRight");
+        CInput::addCommand(L"Up");
+        CInput::addCommand(L"Down");
+        CInput::addCommand(L"OpenModel");
+        CInput::addCommand(L"OpenTrack");
+        CInput::addCommand(L"SaveTrack");
+        CInput::addCommand(L"TrackMode");
+        CInput::addCommand(L"PrevKey");
+        CInput::addCommand(L"NextKey");
+        CInput::addCommand(L"UpSpeed");
+        CInput::addCommand(L"DownSpeed");
+        CInput::addCommand(L"AddKey");
+        CInput::addCommand(L"DelKey");
+        CInput::addCommand(L"Horz");
+        CInput::addCommand(L"Vert");
+
+        //связываем команды с контролами
+        CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
+        CInput::getDevice(Keyboard)->getControl(KeyTab   )->bind(L"Info");
+        CInput::getDevice(Keyboard)->getControl(Key0     )->bind(L"Reset");
+        CInput::getDevice(Keyboard)->getControl(KeyQ     )->bind(L"CCW");
+        CInput::getDevice(Keyboard)->getControl(KeyW     )->bind(L"Forward");
+        CInput::getDevice(Keyboard)->getControl(KeyE     )->bind(L"CW");
+        CInput::getDevice(Keyboard)->getControl(KeyA     )->bind(L"StrifeLeft");
+        CInput::getDevice(Keyboard)->getControl(KeyS     )->bind(L"Backward");
+        CInput::getDevice(Keyboard)->getControl(KeyD     )->bind(L"StrifeRight");
+        CInput::getDevice(Keyboard)->getControl(KeyF     )->bind(L"Up");
+        CInput::getDevice(Keyboard)->getControl(KeyC     )->bind(L"Down");
+        CInput::getDevice(Keyboard)->getControl(KeyF1    )->bind(L"OpenModel");
+        CInput::getDevice(Keyboard)->getControl(KeyF2    )->bind(L"OpenTrack");
+        CInput::getDevice(Keyboard)->getControl(KeyF3    )->bind(L"SaveTrack");
+        CInput::getDevice(Keyboard)->getControl(KeyF4    )->bind(L"TrackMode");
+        CInput::getDevice(Keyboard)->getControl(KeyZ     )->bind(L"PrevKey");
+        CInput::getDevice(Keyboard)->getControl(KeyX     )->bind(L"NextKey");
+        CInput::getDevice(Keyboard)->getControl(KeyO     )->bind(L"UpSpeed");
+        CInput::getDevice(Keyboard)->getControl(KeyP     )->bind(L"DownSpeed");
+        CInput::getDevice(Keyboard)->getControl(KeySpace )->bind(L"AddKey");
+        CInput::getDevice(Keyboard)->getControl(KeyDelete)->bind(L"DelKey");
+        CInput::getDevice(Mouse   )->getControl(AxisX    )->bind(L"Horz");
+        CInput::getDevice(Mouse   )->getControl(AxisY    )->bind(L"Vert");
+    }
+
     //привязываем команды к контролам
-    m_cEsc  .attachToControl(input::Keyboard, input::KeyEscape); //ESC - выход
-    m_cTab  .attachToControl(input::Keyboard, input::KeyTab);
-    m_c0    .attachToControl(input::Keyboard, input::Key0);
-    m_cQ    .attachToControl(input::Keyboard, input::KeyQ);
-    m_cW    .attachToControl(input::Keyboard, input::KeyW);
-    m_cE    .attachToControl(input::Keyboard, input::KeyE);
-    m_cA    .attachToControl(input::Keyboard, input::KeyA);
-    m_cS    .attachToControl(input::Keyboard, input::KeyS);
-    m_cD    .attachToControl(input::Keyboard, input::KeyD);
-    m_cF    .attachToControl(input::Keyboard, input::KeyF);
-    m_cC    .attachToControl(input::Keyboard, input::KeyC);
-    m_cF1   .attachToControl(input::Keyboard, input::KeyF1);
-    m_cF2   .attachToControl(input::Keyboard, input::KeyF2);
-    m_cF3   .attachToControl(input::Keyboard, input::KeyF3);
-    m_cF4   .attachToControl(input::Keyboard, input::KeyF4);
-    m_cZ    .attachToControl(input::Keyboard, input::KeyZ);
-    m_cX    .attachToControl(input::Keyboard, input::KeyX);
-    m_cO    .attachToControl(input::Keyboard, input::KeyO);
-    m_cP    .attachToControl(input::Keyboard, input::KeyP);
-    m_cSpace.attachToControl(input::Keyboard, input::KeySpace);
-    m_cDel  .attachToControl(input::Keyboard, input::KeyDelete);
-    m_cXAxis.attachToControl(input::Mouse, input::AxisX);
-    m_cYAxis.attachToControl(input::Mouse, input::AxisY);
+    m_cEsc  .attach(L"Quit");
+    m_cTab  .attach(L"Info");
+    m_c0    .attach(L"Reset");
+    m_cQ    .attach(L"CCW");
+    m_cW    .attach(L"Forward");
+    m_cE    .attach(L"CW");
+    m_cA    .attach(L"StrifeLeft");
+    m_cS    .attach(L"Backward");
+    m_cD    .attach(L"StrifeRight");
+    m_cF    .attach(L"Up");
+    m_cC    .attach(L"Down");
+    m_cF1   .attach(L"OpenModel");
+    m_cF2   .attach(L"OpenTrack");
+    m_cF3   .attach(L"SaveTrack");
+    m_cF4   .attach(L"TrackMode");
+    m_cZ    .attach(L"PrevKey");
+    m_cX    .attach(L"NextKey");
+    m_cO    .attach(L"UpSpeed");
+    m_cP    .attach(L"DownSpeed");
+    m_cSpace.attach(L"AddKey");
+    m_cDel  .attach(L"DelKey");
+    m_cXAxis.attach(L"Horz");
+    m_cYAxis.attach(L"Vert");
 
     //задаем для команд функции-обработчики
-    m_cEsc  .addHandler(this,&TrackEditor::onEsc);
-    m_cTab  .addHandler(this,&TrackEditor::onInfo);
-    m_c0    .addHandler(this,&TrackEditor::onReset);
-    m_cF1   .addHandler(this,&TrackEditor::onLoadModel);
-    m_cF2   .addHandler(this,&TrackEditor::onLoadTrack);
-    m_cF3   .addHandler(this,&TrackEditor::onSaveTrack);
-    m_cF4   .addHandler(this,&TrackEditor::onChangeMode);
-    m_cZ    .addHandler(this,&TrackEditor::onPrevKey);
-    m_cX    .addHandler(this,&TrackEditor::onNextKey);
-    m_cO    .addHandler(this,&TrackEditor::onFaster);
-    m_cP    .addHandler(this,&TrackEditor::onSlower);
-    m_cSpace.addHandler(this,&TrackEditor::onAddKey);
-    m_cDel  .addHandler(this,&TrackEditor::onDelKey);
-    m_cYAxis.addHandler(this,&TrackEditor::onYAxis);
-    m_cXAxis.addHandler(this,&TrackEditor::onXAxis);
+    m_cEsc   += boost::bind(&TrackEditor::onEsc,       this);
+    m_cTab   += boost::bind(&TrackEditor::onInfo,      this);
+    m_c0     += boost::bind(&TrackEditor::onReset,     this);
+    m_cF1    += boost::bind(&TrackEditor::onLoadModel, this);
+    m_cF2    += boost::bind(&TrackEditor::onLoadTrack, this);
+    m_cF3    += boost::bind(&TrackEditor::onSaveTrack, this);
+    m_cF4    += boost::bind(&TrackEditor::onChangeMode,this);
+    m_cZ     += boost::bind(&TrackEditor::onPrevKey,   this);
+    m_cX     += boost::bind(&TrackEditor::onNextKey,   this);
+    m_cO     += boost::bind(&TrackEditor::onFaster,    this);
+    m_cP     += boost::bind(&TrackEditor::onSlower,    this);
+    m_cSpace += boost::bind(&TrackEditor::onAddKey,    this);
+    m_cDel   += boost::bind(&TrackEditor::onDelKey,    this);
+
+    m_cYAxis += boost::bind(&TrackEditor::onYAxis, this, _1);
+    m_cXAxis += boost::bind(&TrackEditor::onXAxis, this, _1);
 }
 
 void TrackEditor::initCamera()
@@ -291,32 +347,24 @@ void TrackEditor::update(float dt)
     }
 }
 
-void TrackEditor::onEsc(const input::CButtonEvent &event)
+void TrackEditor::onEsc()
 {
-    if (event.m_bPress)
-        core::IApplication::Get()->close();
+    core::IApplication::Get()->close();
 }
 
-void TrackEditor::onInfo(const input::CButtonEvent &event)
+void TrackEditor::onInfo()
 {
-    if (event.m_bPress)
-        m_bInfo = !m_bInfo;
+    m_bInfo = !m_bInfo;
 }
 
-void TrackEditor::onReset(const input::CButtonEvent &event)
+void TrackEditor::onReset()
 {
-    if (event.m_bPress)
-    {
-        initCamera();
-        initEditor();
-    }
+    initCamera();
+    initEditor();
 }
 
-void TrackEditor::onLoadModel(const input::CButtonEvent &event)
+void TrackEditor::onLoadModel()
 {/*
-    if (!event.m_bPress)
-        return;
-
     std::wstring current_dir;
     current_dir.resize(256);
     GetCurrentDirectory( 256, (wchar_t*)current_dir.c_str() );
@@ -355,11 +403,8 @@ void TrackEditor::onLoadModel(const input::CButtonEvent &event)
     }       
 */}
 
-void TrackEditor::onLoadTrack(const input::CButtonEvent &event)
+void TrackEditor::onLoadTrack()
 {
-    if (!event.m_bPress)
-        return;
-
     std::wstring current_dir;
     current_dir.resize(256);
     GetCurrentDirectory( 256, (wchar_t*)current_dir.c_str() );
@@ -401,11 +446,8 @@ void TrackEditor::onLoadTrack(const input::CButtonEvent &event)
     }       
 }
 
-void TrackEditor::onSaveTrack(const input::CButtonEvent &event)
+void TrackEditor::onSaveTrack()
 {
-    if (!event.m_bPress)
-        return;
-
     std::wstring current_dir;
     current_dir.resize(256);
     GetCurrentDirectory( 256, (wchar_t*)current_dir.c_str() );
@@ -442,77 +484,85 @@ void TrackEditor::onSaveTrack(const input::CButtonEvent &event)
     }       
 }
 
-void TrackEditor::onChangeMode(const input::CButtonEvent &event)
+void TrackEditor::onChangeMode()
 {
-    if (event.m_bPress)
-    {
-        if (m_spTrackCamera->m_cTrack.getTotalTime() == 0)
-            return;
+    if (m_spTrackCamera->m_cTrack.getTotalTime() == 0)
+        return;
 
-        m_bPlay = !m_bPlay;
-        if (m_bPlay)
-            m_spTrackCamera->activate();
-        else
-        {
-            math::CTrack::Key key = m_spTrackCamera->m_cTrack.getKey( m_spTrackCamera->getPosition() );
-            m_spFlyCamera->setPosition(key.m_vUp, key.m_vEyePt, key.m_vLookatPt);
-            m_spFlyCamera->activate();
-        }
+    m_bPlay = !m_bPlay;
+    if (m_bPlay)
+        m_spTrackCamera->activate();
+    else
+    {
+        math::CTrack::Key key = m_spTrackCamera->m_cTrack.getKey( m_spTrackCamera->getPosition() );
+        m_spFlyCamera->setPosition(key.m_vUp, key.m_vEyePt, key.m_vLookatPt);
+        m_spFlyCamera->activate();
     }
 }
 
-void TrackEditor::onPrevKey(const input::CButtonEvent &event)
+void TrackEditor::onPrevKey()
 {
-    if (event.m_bPress)
-        if
-        (
-            i != m_spTrackCamera->m_cTrack.m_values.begin() &&
-            i != m_spTrackCamera->m_cTrack.m_values.end()
-        )
-            --i;
+    if
+    (
+        i != m_spTrackCamera->m_cTrack.m_values.begin() &&
+        i != m_spTrackCamera->m_cTrack.m_values.end()
+    )
+        --i;
 }
 
-void TrackEditor::onNextKey(const input::CButtonEvent &event)
+void TrackEditor::onNextKey()
 {
-    if (event.m_bPress)
-        if (m_spTrackCamera->m_cTrack.m_values.size() > 0)
-            if (i != --m_spTrackCamera->m_cTrack.m_values.end())
-                ++i;
+    if (m_spTrackCamera->m_cTrack.m_values.size() > 0)
+        if (i != --m_spTrackCamera->m_cTrack.m_values.end())
+            ++i;
 }
 
-void TrackEditor::onFaster(const input::CButtonEvent &event)
+void TrackEditor::onFaster()
 {
-    if (event.m_bPress)
-        if (i != m_spTrackCamera->m_cTrack.m_values.end())
+    if (i != m_spTrackCamera->m_cTrack.m_values.end())
+    {
+        i->m_fSpeed += 0.1f;
+        m_spTrackCamera->m_cTrack.apply();
+    }
+}
+
+void TrackEditor::onSlower()
+{
+    if (i != m_spTrackCamera->m_cTrack.m_values.end())
+        if (i->m_fSpeed > 0.1f)
         {
-            i->m_fSpeed += 0.1f;
+            i->m_fSpeed -= 0.1f;
             m_spTrackCamera->m_cTrack.apply();
         }
 }
 
-void TrackEditor::onSlower(const input::CButtonEvent &event)
+void TrackEditor::onAddKey()
 {
-    if (event.m_bPress)
-        if (i != m_spTrackCamera->m_cTrack.m_values.end())
-            if (i->m_fSpeed > 0.1f)
-            {
-                i->m_fSpeed -= 0.1f;
-                m_spTrackCamera->m_cTrack.apply();
-            }
+    math::CTrack::Key key;
+    m_spFlyCamera->getPosition(key.m_vUp, key.m_vEyePt, key.m_vLookatPt);
+    key.m_fSpeed = 1.f;
+
+    if (i != m_spTrackCamera->m_cTrack.m_values.end())
+        ++i;
+
+    i = m_spTrackCamera->m_cTrack.m_values.insert(i, key);
+    m_spTrackCamera->m_cTrack.apply();
+    //->
+    moveTrack2Spline();
+    //-<
 }
 
-void TrackEditor::onAddKey(const input::CButtonEvent &event)
+void TrackEditor::onDelKey()
 {
-    if (event.m_bPress)
+    if (i != m_spTrackCamera->m_cTrack.m_values.end())
     {
-        math::CTrack::Key key;
-        m_spFlyCamera->getPosition(key.m_vUp, key.m_vEyePt, key.m_vLookatPt);
-        key.m_fSpeed = 1.f;
-
-        if (i != m_spTrackCamera->m_cTrack.m_values.end())
-            ++i;
-
-        i = m_spTrackCamera->m_cTrack.m_values.insert(i, key);
+        i = m_spTrackCamera->m_cTrack.m_values.erase(i);
+        if
+        (
+            i == m_spTrackCamera->m_cTrack.m_values.end() &&
+            i != m_spTrackCamera->m_cTrack.m_values.begin()
+        )
+            --i;
         m_spTrackCamera->m_cTrack.apply();
         //->
         moveTrack2Spline();
@@ -520,42 +570,23 @@ void TrackEditor::onAddKey(const input::CButtonEvent &event)
     }
 }
 
-void TrackEditor::onDelKey(const input::CButtonEvent &event)
-{
-    if (event.m_bPress)
-        if (i != m_spTrackCamera->m_cTrack.m_values.end())
-        {
-            i = m_spTrackCamera->m_cTrack.m_values.erase(i);
-            if
-            (
-                i == m_spTrackCamera->m_cTrack.m_values.end() &&
-                i != m_spTrackCamera->m_cTrack.m_values.begin()
-            )
-                --i;
-            m_spTrackCamera->m_cTrack.apply();
-            //->
-            moveTrack2Spline();
-            //-<
-        }
-}
-
-void TrackEditor::onXAxis(const input::CRelativeAxisEvent &event)
+void TrackEditor::onXAxis(int dx)
 {
     const int accel = 5;
     const float slow = .01f;
     const float fast = 2*slow;
-    float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+    float angle = dx>accel ? dx*fast : dx*slow;
 
     if (!m_bPlay)
         m_spFlyCamera->rotateLeft(-angle);
 }
 
-void TrackEditor::onYAxis(const input::CRelativeAxisEvent &event)
+void TrackEditor::onYAxis(int dy)
 {
     const int accel = 5;
     const float slow = .01f;
     const float fast = 2*slow;
-    float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+    float angle = dy>accel ? dy*fast : dy*slow;
 
     if (!m_bPlay)
         m_spFlyCamera->rotateUp(angle);

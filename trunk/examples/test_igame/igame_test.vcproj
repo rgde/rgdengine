@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="igame_test"
+	Name="test_igame"
 	ProjectGUID="{9DCF4E9E-F056-4698-9AFC-AC3F5352578F}"
 	RootNamespace="igame_test"
 	Keyword="Win32Proj"

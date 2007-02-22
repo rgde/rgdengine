@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<input>
+  <command name="Quit">
+    <control device="Keyboard" name="KeyEscape" />
+  </command>
+  <command name="Left">
+    <control device="Keyboard" name="KeyLeft" />
+  </command>
+  <command name="Right">
+    <control device="Keyboard" name="KeyRight" />
+  </command>
+  <command name="Up">
+    <control device="Keyboard" name="KeyUp" />
+  </command>
+  <command name="Down">
+    <control device="Keyboard" name="KeyDown" />
+  </command>
+  <command name="SpeedUp">
+    <control device="Keyboard" name="KeyQ" />
+  </command>
+  <command name="SpeedDown">
+    <control device="Keyboard" name="KeyA" />
+  </command>
+  <command name="Pause">
+    <control device="Keyboard" name="KeyP" />
+    <control device="Keyboard" name="KeySpace" />
+    <control device="Mouse" name="ButtonLeft" />
+  </command>
+  <command name="Horz">
+    <control device="Mouse" name="AxisX" />
+  </command>
+  <command name="Vert">
+    <control device="Mouse" name="AxisY" />
+  </command>
+</input>

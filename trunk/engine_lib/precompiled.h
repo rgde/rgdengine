@@ -9,7 +9,6 @@
 #include <time.h>
 
 //STL
-#include <string>
 #include <vector>
 #include <list>
 #include <map>
