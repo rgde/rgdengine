@@ -2,7 +2,17 @@
 #include "engine.h"
 #include "TestInput.h"
 
-TestInput::TestInput()
+TestInput::TestInput():
+    m_keyupQuit   (L"Quit"),
+    m_btnLeft     (L"Left"),
+    m_btnRight    (L"Right"),
+    m_btnUp       (L"Up"),
+    m_btnDown     (L"Down"),
+    m_btnSpeedUp  (L"SpeedUp"),
+    m_btnSpeedDown(L"SpeedDown"),
+    m_trigPause   (L"Pause"),
+    m_raxisHorz   (L"Horz"),
+    m_raxisVert   (L"Vert")
 {
 
     ///////
@@ -75,18 +85,6 @@ TestInput::TestInput()
     {/*
         using namespace input;
 
-        //создадим команды
-        CInput::addCommand(L"Quit");
-        CInput::addCommand(L"Left");
-        CInput::addCommand(L"Right");
-        CInput::addCommand(L"Up");
-        CInput::addCommand(L"Down");
-        CInput::addCommand(L"SpeedUp");
-        CInput::addCommand(L"SpeedDown");
-        CInput::addCommand(L"Pause");
-        CInput::addCommand(L"Horz");
-        CInput::addCommand(L"Vert");
-
         //свяжем команды с контролами
         CInput::getDevice(Keyboard)->getControl(KeyEscape )->bind(L"Quit");
         CInput::getDevice(Keyboard)->getControl(KeyLeft   )->bind(L"Left");
@@ -101,18 +99,6 @@ TestInput::TestInput()
         CInput::getDevice(Mouse   )->getControl(AxisX     )->bind(L"Horz");
         CInput::getDevice(Mouse   )->getControl(AxisY     )->bind(L"Vert");
     */}
-
-    //настроим хелперы
-    m_keyupQuit.   attach(L"Quit");
-    m_btnLeft.     attach(L"Left");
-    m_btnRight.    attach(L"Right");
-    m_btnUp.       attach(L"Up");
-    m_btnDown.     attach(L"Down");
-    m_btnSpeedUp.  attach(L"SpeedUp");
-    m_btnSpeedDown.attach(L"SpeedDown");
-    m_trigPause.   attach(L"Pause");
-    m_raxisHorz.   attach(L"Horz");
-    m_raxisVert.   attach(L"Vert");
 
     //биндим функции для перехвата событий
     m_keyupQuit += boost::bind(&TestInput::onQuit, this);
