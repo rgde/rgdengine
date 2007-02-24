@@ -20,11 +20,11 @@ namespace base
 
 		ResourcePtr get(const Param& p) 
 		{
-			//ResourceMap::iterator it = m_resources.find(p);
-			//if (it != m_resources.end() && !it->second.expired())
-			//{
-			//	return it->second.lock();
-			//}
+			ResourceMap::iterator it = m_resources.find(p);
+			if (it != m_resources.end() && !it->second.expired())
+			{
+				return it->second.lock();
+			}
 
 			return create(p);
 		}
