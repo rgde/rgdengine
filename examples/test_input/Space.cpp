@@ -1,20 +1,25 @@
 //Space.cpp
 #include "Space.h"
 
-void Space::StarSprite::init ()
+void Space::StarSprite::init(render::PTexture t)
 {
-    using namespace math;
+	pTexture = t;
+	init();
+}
 
-    float s = rangeRandom(2.0f, 10.0f);
-    uPriority = (uint)s;
-    size = Vec2f(s, s);
-    uint c = (uint)(255*s/10.0f);
-    color = Color(255, 255, 255, c);
-    rect = Rect(0, 0, 1, 1);
-    pos = Vec2f(rangeRandom(0,800.0f), rangeRandom(0,620.0f));
-    spin = 0;
+void Space::StarSprite::init()
+{
+	using namespace math;
+	float s = rangeRandom(2.0f, 10.0f);
+	uPriority = (uint)s;
+	size = Vec2f(s, s);
+	uint c = (uint)(255*s/10.0f);
+	color = Color(255, 255, 255, c);
+	rect = Rect(0, 0, 1, 1);
+	pos = Vec2f(rangeRandom(0,800.0f), rangeRandom(0,620.0f));
+	spin = 0;
 
-    velocity = Vec2f(0.f, 5.f)*s;
+	velocity = Vec2f(0.f, 5.f)*s;
 }
 
 Space::Space (int nStars)
@@ -25,6 +30,7 @@ Space::Space (int nStars)
     m_font = render::IFont::Create(12, L"Arial", render::IFont::Heavy);
 
     //кораблик
+	m_textureStar = render::ITexture::Create("TestInput/Star.png");//SpaceShip.png");//Star.png"); 
     m_textureShip = render::ITexture::Create("TestInput/SpaceShip.png"); 
 
     m_spriteShip.pTexture = m_textureShip;
@@ -34,15 +40,11 @@ Space::Space (int nStars)
     m_spriteShip.color = math::Color(255, 255, 255, 255);
     m_spriteShip.spin = 0;
 
-    //звезды
-    m_textureStar = render::ITexture::Create("TestInput/Star.png"); 
+    //звезды    
     m_stars.resize(nStars);
 
     std::for_each(m_stars.begin(), m_stars.end(), 
-        boost::bind(&Space::StarSprite::init, _1));
-
-    for (Stars::iterator it = m_stars.begin(); it != m_stars.end(); ++it)
-        it->pTexture = m_textureStar;
+        boost::bind(&Space::StarSprite::init, _1, m_textureStar));
 }
 
 void Space::update (float dt)
@@ -80,10 +82,9 @@ void Space::fireSecondaryWeapon ()
 }
 
 void Space::initSprite(StarSprite& s)
-{				
+{
     s.init();
     s.pos = math::Vec2f(math::rangeRandom (0, 800.0f), -s.size[1]*2);
-    //s.pTexture = m_textureStar;
 }
 
 void Space::updateSprite(StarSprite& s, float dt)
