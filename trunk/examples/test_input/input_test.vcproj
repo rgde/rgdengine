@@ -201,6 +201,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\Space.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Space.h"
+			>
+		</File>
+		<File
 			RelativePath=".\TestInput.cpp"
 			>
 		</File>
