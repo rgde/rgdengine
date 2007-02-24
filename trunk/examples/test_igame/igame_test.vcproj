@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHa"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)third_party/gmtl&quot;;&quot;$(SolutionDir)third_party/&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\include&quot;;&quot;$(SolutionDir)external/gmtl&quot;;&quot;$(SolutionDir)external/&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
