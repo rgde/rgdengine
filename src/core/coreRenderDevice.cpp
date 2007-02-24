@@ -131,10 +131,6 @@ namespace core
 
 			LPDIRECT3DSURFACE9 ScreenShotSurface = NULL;
 
-			// Create the off screen surface with the same info as the back buffer.
-			m_pd3dDevice->CreateOffscreenPlainSurface(display.Width, display.Height,
-				D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &ScreenShotSurface, NULL);
-
 			// Save the back buffer to the surface.  Then save the file. 
 			m_pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &ScreenShotSurface);
 			D3DXSaveSurfaceToFile((strFileName + L".png").c_str(), D3DXIFF_PNG, ScreenShotSurface, NULL, NULL);

@@ -24,7 +24,12 @@
   <command name="Pause">
     <control device="Keyboard" name="KeyP" />
     <control device="Keyboard" name="KeySpace" />
+  </command>
+  <command name="PrimaryFire">
     <control device="Mouse" name="ButtonLeft" />
+  </command>
+  <command name="SecondaryFire">
+    <control device="Mouse" name="ButtonRight" />
   </command>
   <command name="Horz">
     <control device="Mouse" name="AxisX" />
