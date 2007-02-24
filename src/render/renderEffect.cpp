@@ -491,15 +491,19 @@ namespace render
 		void begin()
 		{
 			//guard(Technique::begin())
+			if(NULL != m_pEffect)
+			{
 				m_pEffect->SetTechnique(m_strName.c_str());
 				unsigned int numPasses = 0;
 				m_pEffect->Begin(&numPasses, 0);
+			}
 			//unguard
 		}
 
 		void end()
 		{
 			//guard(Technique::end())
+			if(NULL != m_pEffect)
 				m_pEffect->End();
 			//unguard
 		}
@@ -554,6 +558,12 @@ namespace render
 				io::CFileSystem& fs = io::TheFileSystem::Get();
 				io::ScopePathAdd p("Common/shaders/");
 				io::PReadStream in = fs.findFile(m_strName);
+
+				if (!in)
+				{
+					base::lerr << "fx file not found: " << effect_name;
+					return;
+				}
 				
 				std::vector<byte> data;
 				io::StreamToVector(data, in);
@@ -611,6 +621,7 @@ namespace render
 		void commitChanges()
 		{
 			//guard(CEffect::commitChanges())
+			if(NULL != m_pEffect)
 				m_pEffect->CommitChanges();
 			//unguard
 		}
@@ -618,6 +629,7 @@ namespace render
 		void onLostDevice()
 		{
 			//guard(CEffect::onLostDevice())
+			if(NULL != m_pEffect)
 				m_pEffect->OnLostDevice();
 			//unguard
 		}
@@ -625,6 +637,7 @@ namespace render
 		void onResetDevice()
 		{
 			//guard(CEffect::onResetDevice())
+			if(NULL != m_pEffect)
 				m_pEffect->OnResetDevice();
 			//unguard
 		}
