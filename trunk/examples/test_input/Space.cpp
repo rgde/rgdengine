@@ -7,7 +7,7 @@ void Space::StarSprite::init ()
 
     float s = rangeRandom(2.0f, 10.0f);
     uPriority = (uint)s;
-    size = Vec2f(100, 100);//Vec2f(s, s);
+    size = Vec2f(s, s);
     uint c = (uint)(255*s/10.0f);
     color = Color(255, 255, 255, c);
     rect = Rect(0, 0, 1, 1);
@@ -41,8 +41,8 @@ Space::Space (int nStars)
     std::for_each(m_stars.begin(), m_stars.end(), 
         boost::bind(&Space::StarSprite::init, _1));
 
-    //for (Stars::iterator it = m_stars.begin(); it != m_stars.end(); ++it)
-    //    it->pTexture = m_textureStar;
+    for (Stars::iterator it = m_stars.begin(); it != m_stars.end(); ++it)
+        it->pTexture = m_textureStar;
 }
 
 void Space::update (float dt)
@@ -83,7 +83,7 @@ void Space::initSprite(StarSprite& s)
 {				
     s.init();
     s.pos = math::Vec2f(math::rangeRandom (0, 800.0f), -s.size[1]*2);
-    s.pTexture = m_textureStar;
+    //s.pTexture = m_textureStar;
 }
 
 void Space::updateSprite(StarSprite& s, float dt)
