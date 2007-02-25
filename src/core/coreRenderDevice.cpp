@@ -156,7 +156,11 @@ namespace core
 			V(g_pd3dDevice->SetViewport(&g_DefaultViewport));
 
 			// Clear the backbuffer to a blue color
-			V(m_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(m_ClearColor.a, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b), 1.0f, 0 ));
+            //->
+            math::Color color = render::TheDevice::Get().getClearColor();
+            V(m_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(color.a, color.r, color.g, color.b), 1.0f, 0 ));
+			//V(m_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(m_ClearColor.a, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b), 1.0f, 0 ));
+            //-<
 			
 			// Begin the scene
 			if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
@@ -269,6 +273,10 @@ namespace core
 			deviceInfo.m_ClearColor.g = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "g", 100);
 			deviceInfo.m_ClearColor.b = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "b", 100);
 			deviceInfo.m_ClearColor.a = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "a", 255);
+            //->
+            math::Color color = deviceInfo.m_ClearColor;
+            render::TheDevice::Get().setClearColor(color);
+            //-<
 
 			std::string strColorBufferFormat = base::safeReadValue<std::string>(RenderDeviceNode, "ColorFormat", "A8R8G8B8");
 

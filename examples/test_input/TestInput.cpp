@@ -17,6 +17,8 @@ TestInput::TestInput():
     m_btnPrimaryFire   (L"PrimaryFire"),
     m_btnSecondaryFire (L"SecondaryFire")
 {
+    render::TheDevice::Get().setClearColor(math::Color(0,0,0,255));
+
     input::CInput::LoadFromFile("TestInput/input.xml");
 
     //биндим функции для перехвата событий

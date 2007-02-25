@@ -14,6 +14,7 @@ namespace render
 {
 	CDevice::CDevice() : m_shaderFlags(0)
 	{
+        m_ClearColor = math::Color(0,0,0,255);
 		//base::lmsg << "CDevice::CDevice()";
 	}
 
