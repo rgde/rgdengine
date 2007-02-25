@@ -165,6 +165,7 @@ void Space::updateSprite(ParticleSprite& s, float dt)
     }
 
     s.pos += s.velocity*dt*m_speed;
+    s.size[1] = s.size[0]*m_speed;
 }
 
 void Space::updateStar(ParticleSprite& s, float dt)
