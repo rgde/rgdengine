@@ -10,16 +10,16 @@ void Space::StarSprite::init(render::PTexture t)
 void Space::StarSprite::init()
 {
 	using namespace math;
-	float s = rangeRandom(2.0f, 10.0f);
+	float s = rangeRandom(2.0f, 8.0f);
 	uPriority = (uint)s;
 	size = Vec2f(s, s);
-	uint c = (uint)(255*s/10.0f);
+	uint c = (uint)(255*s/8.0f);
 	color = Color(255, 255, 255, c);
 	rect = Rect(0, 0, 1, 1);
 	pos = Vec2f(rangeRandom(0,800.0f), rangeRandom(0,620.0f));
 	spin = 0;
 
-	velocity = Vec2f(0.f, 5.f)*s;
+	velocity = Vec2f(0.f, 10.f)*s;
 }
 
 Space::Space (int nStars)
@@ -30,7 +30,6 @@ Space::Space (int nStars)
     m_font = render::IFont::Create(12, L"Arial", render::IFont::Heavy);
 
     //кораблик
-	m_textureStar = render::ITexture::Create("TestInput/Star.png");//SpaceShip.png");//Star.png"); 
     m_textureShip = render::ITexture::Create("TestInput/SpaceShip.png"); 
 
     m_spriteShip.pTexture = m_textureShip;
@@ -41,6 +40,7 @@ Space::Space (int nStars)
     m_spriteShip.spin = 0;
 
     //звезды    
+	m_textureStar = render::ITexture::Create("TestInput/Star.png");
     m_stars.resize(nStars);
 
     std::for_each(m_stars.begin(), m_stars.end(), 
@@ -84,7 +84,7 @@ void Space::fireSecondaryWeapon ()
 void Space::initSprite(StarSprite& s)
 {
     s.init();
-    s.pos = math::Vec2f(math::rangeRandom (0, 800.0f), -s.size[1]*2);
+    s.pos = math::Vec2f(math::rangeRandom (0, 800.0f), m_speed>0 ? -s.size[1]*2 : 600.0f+s.size[1]*2  );
 }
 
 void Space::updateSprite(StarSprite& s, float dt)
@@ -100,5 +100,9 @@ void Space::updateSprite(StarSprite& s, float dt)
 
 bool Space::isInsideScreen(const StarSprite& s)
 {
-    return s.pos[0] - s.size[0] > 800 || s.pos[1] - s.size[1] > 600;
+    const float offset = 40.f;
+    return s.pos[0] - s.size[0] > 800 + offset ||
+           s.pos[1] - s.size[1] > 600 + offset ||
+           s.pos[0] - s.size[0] < -offset      ||
+           s.pos[1] - s.size[1] < -offset;
 }
