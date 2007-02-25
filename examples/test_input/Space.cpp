@@ -26,6 +26,8 @@ Space::Space (int nStars)
 {
     m_x = 0;
     m_y = 0;
+    m_speed = 0;
+    m_bFirePrimaryWeapon = false;
 
     m_font = render::IFont::Create(12, L"Arial", render::IFont::Heavy);
 
@@ -62,6 +64,17 @@ void Space::update (float dt)
 
     std::for_each(m_stars.begin(), m_stars.end(), 
         boost::bind(&render::CSpriteManager::addSprite, &m_sprite_renderer, _1));
+
+    //primary weapon
+    if (m_bFirePrimaryWeapon)
+    {
+        float x = m_x;
+        float y = m_y-19;
+
+        render::CLine2dManager &pLineManager = render::TheLine2dManager::Get();
+        for (int i=-1; i<=1; ++i)
+            pLineManager.addLine(math::Vec2f(x+i,0.f), math::Vec2f(x+i,y), math::Color(255,0,0,255));
+    }
 }
 
 void Space::setPositionAndSpeed (float x, float y, float speed)
@@ -73,7 +86,7 @@ void Space::setPositionAndSpeed (float x, float y, float speed)
 
 void Space::firePrimaryWeapon (bool bFire)
 {
-    //...
+    m_bFirePrimaryWeapon = bFire;
 }
 
 void Space::fireSecondaryWeapon ()

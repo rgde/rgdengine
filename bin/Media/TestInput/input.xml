@@ -27,6 +27,7 @@
   </command>
   <command name="PrimaryFire">
     <control device="Mouse" name="ButtonLeft" />
+    <control device="Keyboard" name="KeyLControl" />
   </command>
   <command name="SecondaryFire">
     <control device="Mouse" name="ButtonRight" />
