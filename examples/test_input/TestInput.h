@@ -32,8 +32,8 @@ private:
     input::CRelativeAxis m_raxisHorz;
     input::CRelativeAxis m_raxisVert;
 
-    float m_x,
-          m_y,
-          m_speed;
+    float m_x;
+    float m_y;
+    float m_speed;
     Space m_space;
 };

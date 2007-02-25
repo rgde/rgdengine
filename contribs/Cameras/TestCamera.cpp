@@ -35,6 +35,7 @@ void TestCamera::initInput()
 
         //создадим команды
         CInput::addCommand(L"Quit");
+        CInput::addCommand(L"Wireframe");
         CInput::addCommand(L"Reset");
         CInput::addCommand(L"Change");
         CInput::addCommand(L"Froward");
@@ -50,6 +51,7 @@ void TestCamera::initInput()
 
         //связываем команды с контролами
         CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
+        CInput::getDevice(Keyboard)->getControl(KeySpace )->bind(L"Wireframe");
         CInput::getDevice(Keyboard)->getControl(KeyR     )->bind(L"Reset");
         CInput::getDevice(Keyboard)->getControl(KeyTab   )->bind(L"Change");
         CInput::getDevice(Keyboard)->getControl(KeyW     )->bind(L"Froward");
@@ -66,6 +68,7 @@ void TestCamera::initInput()
 
     //биндим хелперы с командами
     m_cEsc  .attach(L"Quit");
+    m_cSpace.attach(L"Wireframe");
     m_cR    .attach(L"Reset");
     m_cTab  .attach(L"Change");
     m_cW    .attach(L"Froward");
@@ -80,8 +83,9 @@ void TestCamera::initInput()
     m_cYAxis.attach(L"Vert");
 
     //задаем для команд функции-обработчики
-    m_cEsc   += boost::bind(&TestCamera::onEsc,   this);
-    m_cR     += boost::bind(&TestCamera::onReset, this);
+    m_cEsc   += boost::bind(&TestCamera::onEsc,          this);
+    m_cSpace += boost::bind(&TestCamera::onWireframe,    this);
+    m_cR     += boost::bind(&TestCamera::onReset,        this);
     m_cTab   += boost::bind(&TestCamera::onChangeCamera, this);
     m_cYAxis += boost::bind(&TestCamera::onYAxis, this, _1);
     m_cXAxis += boost::bind(&TestCamera::onXAxis, this, _1);
@@ -130,6 +134,7 @@ void TestCamera::update(float dt)
     case 0:
         text =
         L"ESC - Выход\n"
+        L"SPACE - wireframe вкл/выкл"
         L"TAB - Переключить камеру\n"
         L"R - Сбросить программу в начальное состояние\n"
         L"\n"
@@ -145,6 +150,7 @@ void TestCamera::update(float dt)
     case 1:
         text =
         L"ESC - Выход\n"
+        L"SPACE - wireframe вкл/выкл"
         L"TAB - Переключить камеру\n"
         L"R - Сбросить программу в начальное состояние\n"
         L"\n"
@@ -160,6 +166,7 @@ void TestCamera::update(float dt)
     case 2:
         text =
         L"ESC - Выход\n"
+        L"SPACE - wireframe вкл/выкл"
         L"TAB - Переключить камеру\n"
         L"R - Сбросить программу в начальное состояние\n"
         L"\n"
@@ -245,6 +252,22 @@ void TestCamera::update(float dt)
 void TestCamera::onEsc()
 {
     core::IApplication::Get()->close();
+}
+
+void TestCamera::onWireframe()
+{
+    int nFillMode = render::TheRenderManager::Get().getFillMode();
+
+    switch(nFillMode)
+    {
+	    case render::Solid:
+		    render::TheRenderManager::Get().setFillMode(render::WireFrame);
+	        break;
+
+	    case render::WireFrame:
+		    render::TheRenderManager::Get().setFillMode(render::Solid);
+	        break;
+    };
 }
 
 void TestCamera::onReset()
