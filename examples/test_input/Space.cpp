@@ -19,7 +19,7 @@ void Space::ParticleSprite::initParticle()
 	float s = rangeRandom(2.0f, 4.0f);
 	uPriority = (uint)s;
 	size = Vec2f(s, s*2);
-	uint c = (uint)(255*s/4.0f);
+	uint c = (uint)(255*s/6.0f);
 	color = Color(255, 255, 255, c);
 	rect = Rect(0, 0, 1, 1);
 	pos = Vec2f(rangeRandom(0,800.0f), rangeRandom(0,620.0f));
@@ -78,7 +78,7 @@ Space::Space (int nStars)
     m_textureLazer = render::ITexture::Create("TestInput/Lazer.png"); 
 
     m_spriteLazer.pTexture = m_textureLazer;
-    m_spriteLazer.size = math::Vec2f(m_textureLazer->getWidth(),m_textureLazer->getHeight());
+    m_spriteLazer.size = math::Vec2f(m_textureLazer->getWidth()*1.5f,m_textureLazer->getHeight());
     m_spriteLazer.pos = math::Vec2f(m_x,m_y);
     m_spriteLazer.rect = math::Rect(0, 0, 1, 1);
     m_spriteLazer.color = math::Color(255, 255, 255, 255);
@@ -111,7 +111,7 @@ void Space::update (float dt)
     //primary weapon
     if (m_bFirePrimaryWeapon)
     {
-        float x = int(m_x) + .5f;
+        float x = int(m_x) - .5f;
         float y = int(m_y) - 34.5f;
 
         float h = m_textureLazer->getHeight();
