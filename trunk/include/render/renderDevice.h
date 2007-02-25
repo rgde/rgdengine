@@ -43,7 +43,16 @@ namespace render
 		void                    showFPS(const PFont& font);
 		void                    showStatistics(const PFont& font);
 
+        //->
+        void                    setClearColor (math::Color color) {m_ClearColor = color;}
+        math::Color             getClearColor () {return m_ClearColor;}
+        //-<
+
 	protected:
+        //->
+        math::Color             m_ClearColor;
+        //-<
+
 		unsigned long			m_shaderFlags;
 		math::PCamera			m_curCam;
 

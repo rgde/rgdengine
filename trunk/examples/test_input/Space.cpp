@@ -19,7 +19,7 @@ void Space::StarSprite::init()
 	pos = Vec2f(rangeRandom(0,800.0f), rangeRandom(0,620.0f));
 	spin = 0;
 
-	velocity = Vec2f(0.f, 10.f)*s;
+	velocity = Vec2f(0.f, 10.f)*(s/2 + 4);
 }
 
 Space::Space (int nStars)
@@ -68,11 +68,11 @@ void Space::update (float dt)
     //primary weapon
     if (m_bFirePrimaryWeapon)
     {
-        float x = m_x;
-        float y = m_y-19;
+        float x = int(m_x) + .5f;
+        float y = int(m_y) - 19.5f;
 
         render::CLine2dManager &pLineManager = render::TheLine2dManager::Get();
-        for (int i=-1; i<=1; ++i)
+        for (int i=0; i<=1; ++i)
             pLineManager.addLine(math::Vec2f(x+i,0.f), math::Vec2f(x+i,y), math::Color(255,0,0,255));
     }
 }
