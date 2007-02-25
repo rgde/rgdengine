@@ -4,10 +4,13 @@
 
 class Space
 {
-	struct StarSprite: public render::SSprite
+	struct ParticleSprite: public render::SSprite
 	{
-		void init(render::PTexture t);
-		void init();
+        void initParticle(render::PTexture &texture);
+		void initStar(render::PTexture &texture);
+
+        void initParticle();
+		void initStar();
 		math::Vec2f velocity;
 	};
 
@@ -20,13 +23,16 @@ public:
     void fireSecondaryWeapon();
 
 private:    
-    void initSprite(StarSprite& s);
-    void updateSprite(StarSprite& s, float dt);
-    bool isInsideScreen(const StarSprite& s);
+    void initSprite(ParticleSprite& s);
+    void initStar(ParticleSprite& s);
+    void updateSprite(ParticleSprite& s, float dt);
+    void updateStar(ParticleSprite& s, float dt);
+    bool isInsideScreen(const ParticleSprite& s);
 
 private:
-	typedef std::vector<StarSprite> Stars;
-	Stars m_stars;
+	typedef std::vector<ParticleSprite> Particles;
+	Particles m_particles;
+    Particles m_stars;
 
 	float m_x;
 	float m_y;
@@ -35,7 +41,11 @@ private:
 
 	render::PFont          m_font;
 	render::PTexture       m_textureShip;
-	render::PTexture       m_textureStar;
+	render::PTexture       m_textureParticle;
+	render::PTexture       m_textureLazer;
+	render::PTexture       m_textureStars;
 	render::SSprite        m_spriteShip;
+	render::SSprite        m_spriteLazer;
+	render::SSprite        m_spriteStars;
 	render::CSpriteManager m_sprite_renderer;
 };

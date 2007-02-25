@@ -1,25 +1,44 @@
 //Space.cpp
 #include "Space.h"
 
-void Space::StarSprite::init(render::PTexture t)
+void Space::ParticleSprite::initParticle(render::PTexture &texture)
 {
-	pTexture = t;
-	init();
+    pTexture = texture;
+    initParticle();
 }
 
-void Space::StarSprite::init()
+void Space::ParticleSprite::initStar(render::PTexture &texture)
+{
+    pTexture = texture;
+    initStar();
+}
+
+void Space::ParticleSprite::initParticle()
 {
 	using namespace math;
-	float s = rangeRandom(2.0f, 8.0f);
+	float s = rangeRandom(2.0f, 4.0f);
 	uPriority = (uint)s;
-	size = Vec2f(s, s);
-	uint c = (uint)(255*s/8.0f);
+	size = Vec2f(s, s*2);
+	uint c = (uint)(255*s/4.0f);
 	color = Color(255, 255, 255, c);
 	rect = Rect(0, 0, 1, 1);
 	pos = Vec2f(rangeRandom(0,800.0f), rangeRandom(0,620.0f));
 	spin = 0;
 
-	velocity = Vec2f(0.f, 10.f)*(s/2 + 4);
+	velocity = Vec2f(0.f, 20.f)*s;
+}
+
+void Space::ParticleSprite::initStar()
+{
+	using namespace math;
+	uPriority = (uint).1f;
+	size = Vec2f(128.f, 128.f);
+	color = Color(255, 255, 255, 255);
+	rect = Rect(0, 0, 1, 1);
+	pos = Vec2f(rangeRandom(0.f,800.f), rangeRandom(-128.f*2,600.0f+128.f));
+	spin = 0;
+
+	velocity = Vec2f(0.f, 20.f);
 }
 
 Space::Space (int nStars)
@@ -41,12 +60,29 @@ Space::Space (int nStars)
     m_spriteShip.color = math::Color(255, 255, 255, 255);
     m_spriteShip.spin = 0;
 
-    //звезды    
-	m_textureStar = render::ITexture::Create("TestInput/Star.png");
-    m_stars.resize(nStars);
+    //пыль
+	m_textureParticle = render::ITexture::Create("TestInput/Particle.png");
+    m_particles.resize(nStars);
+
+    std::for_each(m_particles.begin(), m_particles.end(), 
+        boost::bind(&Space::ParticleSprite::initParticle, _1, m_textureParticle));
+
+    //звезды
+	m_textureStars = render::ITexture::Create("TestInput/Stars.png");
+    m_stars.resize(nStars/4);
 
     std::for_each(m_stars.begin(), m_stars.end(), 
-        boost::bind(&Space::StarSprite::init, _1, m_textureStar));
+        boost::bind(&Space::ParticleSprite::initStar, _1, m_textureStars));
+
+    //лазер
+    m_textureLazer = render::ITexture::Create("TestInput/Lazer.png"); 
+
+    m_spriteLazer.pTexture = m_textureLazer;
+    m_spriteLazer.size = math::Vec2f(m_textureLazer->getWidth(),m_textureLazer->getHeight());
+    m_spriteLazer.pos = math::Vec2f(m_x,m_y);
+    m_spriteLazer.rect = math::Rect(0, 0, 1, 1);
+    m_spriteLazer.color = math::Color(255, 255, 255, 255);
+    m_spriteLazer.spin = 0;
 }
 
 void Space::update (float dt)
@@ -58,9 +94,16 @@ void Space::update (float dt)
     m_spriteShip.pos = math::Vec2f(int(m_x)+.5f,int(m_y)+.5f);
     m_sprite_renderer.addSprite(m_spriteShip);
 
+    //пыль
+    std::for_each(m_particles.begin(), m_particles.end(), 
+        boost::bind(&Space::updateSprite, this, _1, dt));
+
+    std::for_each(m_particles.begin(), m_particles.end(), 
+        boost::bind(&render::CSpriteManager::addSprite, &m_sprite_renderer, _1));
+
     //звезды
     std::for_each(m_stars.begin(), m_stars.end(), 
-        boost::bind(&Space::updateSprite, this, _1, dt));
+        boost::bind(&Space::updateStar, this, _1, dt));
 
     std::for_each(m_stars.begin(), m_stars.end(), 
         boost::bind(&render::CSpriteManager::addSprite, &m_sprite_renderer, _1));
@@ -69,11 +112,15 @@ void Space::update (float dt)
     if (m_bFirePrimaryWeapon)
     {
         float x = int(m_x) + .5f;
-        float y = int(m_y) - 19.5f;
+        float y = int(m_y) - 34.5f;
 
-        render::CLine2dManager &pLineManager = render::TheLine2dManager::Get();
-        for (int i=0; i<=1; ++i)
-            pLineManager.addLine(math::Vec2f(x+i,0.f), math::Vec2f(x+i,y), math::Color(255,0,0,255));
+        float h = m_textureLazer->getHeight();
+        for (; y>-h/2; y -= h)
+        {
+            m_spriteLazer.rect = math::Rect(0, math::rangeRandom(0,.2f), 1, 1-math::rangeRandom(0,.2f));
+            m_spriteLazer.pos = math::Vec2f(x,y);
+            m_sprite_renderer.addSprite(m_spriteLazer);
+        }
     }
 }
 
@@ -94,13 +141,19 @@ void Space::fireSecondaryWeapon ()
     //...
 }
 
-void Space::initSprite(StarSprite& s)
+void Space::initSprite(ParticleSprite& s)
 {
-    s.init();
+    s.initParticle();
     s.pos = math::Vec2f(math::rangeRandom (0, 800.0f), m_speed>0 ? -s.size[1]*2 : 600.0f+s.size[1]*2  );
 }
 
-void Space::updateSprite(StarSprite& s, float dt)
+void Space::initStar(ParticleSprite& s)
+{
+    s.initStar();
+    s.pos = math::Vec2f(math::rangeRandom (0, 800.0f), m_speed>0 ? -s.size[1]*2 : 600.0f+s.size[1]*2  );
+}
+
+void Space::updateSprite(ParticleSprite& s, float dt)
 {
     if (isInsideScreen(s))
     {
@@ -111,11 +164,20 @@ void Space::updateSprite(StarSprite& s, float dt)
     s.pos += s.velocity*dt*m_speed;
 }
 
-bool Space::isInsideScreen(const StarSprite& s)
+void Space::updateStar(ParticleSprite& s, float dt)
 {
-    const float offset = 40.f;
-    return s.pos[0] - s.size[0] > 800 + offset ||
-           s.pos[1] - s.size[1] > 600 + offset ||
-           s.pos[0] - s.size[0] < -offset      ||
-           s.pos[1] - s.size[1] < -offset;
+    if (isInsideScreen(s))
+    {
+        initStar(s);
+        return;
+    }
+
+    s.pos += s.velocity*dt*m_speed;
+}
+
+bool Space::isInsideScreen(const ParticleSprite& s)
+{
+    const float offset = s.size[1]*4;
+    return s.pos[1] - s.size[1] > 600 + offset ||
+           s.pos[1] + s.size[1] <     - offset;
 }
