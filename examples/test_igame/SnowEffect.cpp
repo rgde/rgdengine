@@ -27,7 +27,7 @@ namespace game
 		SnowEffect::SnowEffect(uint numSprites)
 		{
 			m_font = render::IFont::Create(12, L"Arial", render::IFont::Heavy);
-			m_texture = render::ITexture::Create("ZColumns/Snowflake.png"); 
+			m_texture = render::ITexture::Create("ZColumns/snow.dds"); 
 
 			m_sprites.resize(numSprites);
 
