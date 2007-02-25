@@ -31,6 +31,7 @@ private:
 	float m_x;
 	float m_y;
 	float m_speed;
+    bool  m_bFirePrimaryWeapon;
 
 	render::PFont          m_font;
 	render::PTexture       m_textureShip;
