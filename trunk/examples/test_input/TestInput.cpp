@@ -35,7 +35,7 @@ TestInput::TestInput():
 
 void TestInput::update (float dt)
 {
-    const float deltaspeed = .3f;
+    const float deltaspeed = 10.f;
     const float movespeed  = 300.f;
 
     if (m_trigPause)
@@ -44,7 +44,7 @@ void TestInput::update (float dt)
     {
         //изменение скорости
         if (m_btnSpeedUp)   m_speed += dt * deltaspeed;
-        if (m_btnSpeedDown) m_speed += dt * deltaspeed;
+        if (m_btnSpeedDown) m_speed -= dt * deltaspeed;
 
         //перемещение корабля
         if (m_btnUp)    m_y -= dt * movespeed;

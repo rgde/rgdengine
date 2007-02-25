@@ -10,6 +10,7 @@ class Space
 		void init();
 		math::Vec2f velocity;
 	};
+
 public:
     Space(int nStars);
 
@@ -24,10 +25,7 @@ private:
     bool isInsideScreen(const StarSprite& s);
 
 private:
-
 	typedef std::vector<StarSprite> Stars;
-
-
 	Stars m_stars;
 
 	float m_x;
