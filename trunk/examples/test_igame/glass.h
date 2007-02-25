@@ -18,7 +18,7 @@ namespace game
 		uint x, y;
 	};
 
-	class Glass  : public game::IDynamicObject
+	class Glass  : public IDynamicObject
 	{
 	public:
 		typedef std::vector<Brick> Line;
