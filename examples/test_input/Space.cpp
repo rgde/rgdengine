@@ -39,7 +39,7 @@ void Space::ParticleSprite::initStar()
 	color = Color(255*c, 255*c, 255*c, 255);
 	rect = Rect(0, 0, 1, 1);
 	pos = Vec2f(rangeRandom(0.f,800.f), rangeRandom(-128.f*2,600.0f+128.f));
-	spin = 0;
+	spin = rangeRandom(0.f,360.f);
 
 	velocity = Vec2f(0.f, 20.f*c);
 }
