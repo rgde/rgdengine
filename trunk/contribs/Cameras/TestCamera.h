@@ -10,7 +10,7 @@ class TestCamera: public game::IDynamicObject
 {
 public:
     TestCamera();
-    ~TestCamera();
+   ~TestCamera();
 
 protected:
     void initInput();
@@ -20,6 +20,7 @@ protected:
     void update (float dt);
 
     void onEsc          ();
+    void onWireframe    ();
     void onReset        ();
     void onChangeCamera ();
     void onXAxis        (int dx);
@@ -34,6 +35,7 @@ private:
 
     //контролы ввода
     input::CKeyUp        m_cEsc;   //выход
+    input::CKeyDown      m_cSpace; //переключение режима wirframe/solid
     input::CKeyDown      m_cTab;   //переключить камеру
     input::CKeyDown      m_cR;     //сбросить программу в начальное состояние
     input::CButton       m_cQ;     //поворот против часовой
