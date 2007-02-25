@@ -19,8 +19,8 @@ void Space::ParticleSprite::initParticle()
 	float s = rangeRandom(2.0f, 4.0f);
 	uPriority = (uint)s;
 	size = Vec2f(s, s*2);
-	uint c = (uint)(255*s/6.0f);
-	color = Color(255, 255, 255, c);
+	uint c = (uint)(255*s/4.0f);
+	color = Color(105, 105, 105, c);
 	rect = Rect(0, 0, 1, 1);
 	pos = Vec2f(rangeRandom(0,800.0f), rangeRandom(0,620.0f));
 	spin = 0;
@@ -31,14 +31,17 @@ void Space::ParticleSprite::initParticle()
 void Space::ParticleSprite::initStar()
 {
 	using namespace math;
+
+	float c = rangeRandom(1.0f, 5.0f) / 4.0f;
+
 	uPriority = (uint).1f;
 	size = Vec2f(128.f, 128.f);
-	color = Color(255, 255, 255, 255);
+	color = Color(255*c, 255*c, 255*c, 255);
 	rect = Rect(0, 0, 1, 1);
 	pos = Vec2f(rangeRandom(0.f,800.f), rangeRandom(-128.f*2,600.0f+128.f));
 	spin = 0;
 
-	velocity = Vec2f(0.f, 20.f);
+	velocity = Vec2f(0.f, 20.f*c);
 }
 
 Space::Space (int nStars)
@@ -62,14 +65,14 @@ Space::Space (int nStars)
 
     //пыль
 	m_textureParticle = render::ITexture::Create("TestInput/Particle.png");
-    m_particles.resize(nStars);
+    m_particles.resize(nStars/4);
 
     std::for_each(m_particles.begin(), m_particles.end(), 
         boost::bind(&Space::ParticleSprite::initParticle, _1, m_textureParticle));
 
     //звезды
 	m_textureStars = render::ITexture::Create("TestInput/Stars.png");
-    m_stars.resize(nStars/4);
+    m_stars.resize(nStars/2);
 
     std::for_each(m_stars.begin(), m_stars.end(), 
         boost::bind(&Space::ParticleSprite::initStar, _1, m_textureStars));
@@ -78,7 +81,7 @@ Space::Space (int nStars)
     m_textureLazer = render::ITexture::Create("TestInput/Lazer.png"); 
 
     m_spriteLazer.pTexture = m_textureLazer;
-    m_spriteLazer.size = math::Vec2f(m_textureLazer->getWidth()*1.5f,m_textureLazer->getHeight());
+    m_spriteLazer.size = math::Vec2f(m_textureLazer->getWidth()*2,m_textureLazer->getHeight());
     m_spriteLazer.pos = math::Vec2f(m_x,m_y);
     m_spriteLazer.rect = math::Rect(0, 0, 1, 1);
     m_spriteLazer.color = math::Color(255, 255, 255, 255);
@@ -111,7 +114,7 @@ void Space::update (float dt)
     //primary weapon
     if (m_bFirePrimaryWeapon)
     {
-        float x = int(m_x) - .5f;
+        float x = int(m_x) + .5f;
         float y = int(m_y) - 34.5f;
 
         float h = m_textureLazer->getHeight();
