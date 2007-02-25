@@ -114,7 +114,7 @@ void Space::update (float dt)
     //primary weapon
     if (m_bFirePrimaryWeapon)
     {
-        float x = int(m_x) + .5f;
+        float x = int(m_x) - .5f;
         float y = int(m_y) - 34.5f;
 
         float h = m_textureLazer->getHeight();
