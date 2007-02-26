@@ -47,6 +47,7 @@ void TestInput::update (float dt)
         //изменение скорости
         if (m_btnSpeedUp)   m_speed += dt * deltaspeed;
         if (m_btnSpeedDown) m_speed -= dt * deltaspeed;
+        if (m_speed < 0)    m_speed = 0;
 
         //перемещение корабля
         if (m_btnUp)    m_y -= dt * movespeed;
