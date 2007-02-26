@@ -13,6 +13,12 @@ void Space::ParticleSprite::initStar(render::PTexture &texture)
     initStar();
 }
 
+void Space::ParticleSprite::initAlien(render::PTexture &texture)
+{
+    pTexture = texture;
+    initAlien();
+}
+
 void Space::ParticleSprite::initParticle()
 {
 	using namespace math;
@@ -42,6 +48,24 @@ void Space::ParticleSprite::initStar()
 	spin = rangeRandom(0.f,360.f);
 
 	velocity = Vec2f(0.f, 20.f*c);
+}
+
+void Space::ParticleSprite::initAlien()
+{
+	using namespace math;
+
+	float c = rangeRandom(1.0f, 5.0f) / 4.0f;
+
+	uPriority = (uint).11f;
+	size = Vec2f(64.f, 64.f);
+	color = Color(255, 255, 255, 255);
+	rect = Rect(0, 0, 1, 1);
+	pos = Vec2f(rangeRandom(0.f,800.f), rangeRandom(-128.f*2,600.0f+128.f));
+	spin = rangeRandom(0.f,360.f);
+
+	velocity = Vec2f(0.f, 20.f*c);
+    damage = 1.f;
+    hide = 0.f;
 }
 
 Space::Space (int nStars)
@@ -77,6 +101,13 @@ Space::Space (int nStars)
     std::for_each(m_stars.begin(), m_stars.end(), 
         boost::bind(&Space::ParticleSprite::initStar, _1, m_textureStars));
 
+    //чужие
+	m_textureAlien = render::ITexture::Create("TestInput/Alien.png");
+    m_aliens.resize(nStars/10);
+
+    std::for_each(m_aliens.begin(), m_aliens.end(), 
+        boost::bind(&Space::ParticleSprite::initAlien, _1, m_textureAlien));
+
     //лазер
     m_textureLazer = render::ITexture::Create("TestInput/Lazer.png"); 
 
@@ -109,6 +140,13 @@ void Space::update (float dt)
         boost::bind(&Space::updateStar, this, _1, dt));
 
     std::for_each(m_stars.begin(), m_stars.end(), 
+        boost::bind(&render::CSpriteManager::addSprite, &m_sprite_renderer, _1));
+
+    //чюжие
+    std::for_each(m_aliens.begin(), m_aliens.end(), 
+        boost::bind(&Space::updateAlien, this, _1, dt));
+
+    std::for_each(m_aliens.begin(), m_aliens.end(), 
         boost::bind(&render::CSpriteManager::addSprite, &m_sprite_renderer, _1));
 
     //primary weapon
@@ -156,6 +194,12 @@ void Space::initStar(ParticleSprite& s)
     s.pos = math::Vec2f(math::rangeRandom (0, 800.0f), m_speed>0 ? -s.size[1]*2 : 600.0f+s.size[1]*2  );
 }
 
+void Space::initAlien(ParticleSprite& s)
+{
+    s.initAlien();
+    s.pos = math::Vec2f(math::rangeRandom (0, 800.0f), m_speed>0 ? -s.size[1]*2 : 600.0f+s.size[1]*2  );
+}
+
 void Space::updateSprite(ParticleSprite& s, float dt)
 {
     if (isInsideScreen(s))
@@ -178,6 +222,64 @@ void Space::updateStar(ParticleSprite& s, float dt)
     }
 
     s.pos += s.velocity*dt*m_speed;
+}
+
+void Space::updateAlien(ParticleSprite& s, float dt)
+{
+    if (isInsideScreen(s))
+    {
+        initAlien(s);
+        return;
+    }
+
+    //сдвигаем вниз
+    s.pos += s.velocity*dt*m_speed;
+
+    //дамажим
+    if (m_bFirePrimaryWeapon)
+    {
+        if (math::abs(s.pos[0]-m_x) < s.size[0]/2.f && s.damage > 0)
+        {
+            s.damage -= 2.f * dt;
+            if (s.damage <= 0)
+            {
+                s.damage = 0;
+                s.hide = 1.f;
+            }
+            s.color = math::Color(255.f, 255.f*s.damage, 255.f*s.damage, 255.f);
+            s.pos[0] += math::rangeRandom(-5.f, 5.f)*(1-s.damage);
+            s.spin += math::rangeRandom(-.1f,.1f);
+        }
+    }
+
+    //таем
+    if (s.damage == 0.f && s.hide > 0)
+    {
+        s.hide -= 4.f * dt;
+        if (s.hide <= 0)
+        {
+            initAlien(s);
+            return;
+        }
+        s.color = math::Color(255.f, 0, 0, 255.f*s.hide);
+        s.pos[0] += math::rangeRandom(-5.f, 5.f);
+        s.spin += math::rangeRandom(-.1f,.1f);
+    }
+
+    //лечимся
+    if (!m_bFirePrimaryWeapon || math::abs(s.pos[0]-m_x) > s.size[0]/2.f)
+    {
+        if (s.hide == 0 && s.damage < 1.f)
+        {
+            s.damage += .5f*dt;
+            if (s.damage > 1.f)
+                s.damage = 1.f;
+            s.color = math::Color(255.f, 255.f*s.damage, 255.f*s.damage, 255.f);
+
+            s.pos[0] += math::rangeRandom(-5.f, 5.f)*(1-s.damage);
+            s.spin += math::rangeRandom(-.04f,.04f);
+        }
+    }
 }
 
 bool Space::isInsideScreen(const ParticleSprite& s)
