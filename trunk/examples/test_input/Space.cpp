@@ -131,7 +131,7 @@ void Space::setPositionAndSpeed (float x, float y, float speed)
 {
     m_x     = x;
     m_y     = y;
-    m_speed = speed;
+    m_speed = speed < 0 ? 0 : speed;
 }
 
 void Space::firePrimaryWeapon (bool bFire)
@@ -165,7 +165,8 @@ void Space::updateSprite(ParticleSprite& s, float dt)
     }
 
     s.pos += s.velocity*dt*m_speed;
-    s.size[1] = s.size[0]*m_speed;
+    float size = s.size[0]*m_speed;
+    s.size[1] = math::abs(size) < 4 ? 4 : size;
 }
 
 void Space::updateStar(ParticleSprite& s, float dt)
