@@ -238,7 +238,7 @@ void Space::updateAlien(ParticleSprite& s, float dt)
     //дамажим
     if (m_bFirePrimaryWeapon)
     {
-        if (math::abs(s.pos[0]-m_x) < s.size[0]/2.f && s.damage > 0)
+        if (math::abs(s.pos[0]-m_x) < s.size[0]/2.f && s.damage > 0 && s.pos[1] < m_y)
         {
             s.damage -= 2.f * dt;
             if (s.damage <= 0)
