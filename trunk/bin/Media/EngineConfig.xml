@@ -1,23 +1,23 @@
 <Engine>
-	<Window>
-	  <name>UI Test</name>
-	  <width>800</width>
-	  <height>600</height>
-	  <bpp>32</bpp>
-	  <RefreshRate>85</RefreshRate>
-	  <Fullscreen>0</Fullscreen>
-	</Window>
-	<RenderDevice>
-	  <!-- Color Buffer clear color -->
-	  <BackColor r = "100" g = "100" b = "100" a = "255"/>
-	  <!-- Color Buffer format. Can be A2R10G10B10, A8R8G8B8, X8R8G8B8, A1R5G5B5, X1R5G5B5 or R5G6B5 -->
-	  <ColorFormat>A8R8G8B8</ColorFormat>
-	  <!-- Depth and Stencil Buffers format -->
-	  <DepthStencilFormat DepthBpp = "24" StencilBpp = "8"/>
-	  <!-- Vertex Processing Method. Can be SOFTWARE, HARDWARE or MIXED. Note: High and low registers are the same -->
-	  <VertexProcessingMethod>HARDWARE</VertexProcessingMethod>
-	  <!-- If shader model isn't specified for any technique this value will be used. Can be "FFP" (it means no shaders), "1.0", "1.1", "2.0", "3.0", etc.-->
-	  <DefaultShaderModel>FFP</DefaultShaderModel>
-	  <VSync>0</VSync>
-	</RenderDevice>
+        <Window>
+          <name>UI Test</name>
+          <width>800</width>
+          <height>600</height>
+          <bpp>32</bpp>
+          <RefreshRate>85</RefreshRate>
+          <Fullscreen>0</Fullscreen>
+        </Window>
+        <RenderDevice>
+          <!-- Color Buffer clear color -->
+          <BackColor r = "100" g = "100" b = "100" a = "255"/>
+          <!-- Color Buffer format. Can be A2R10G10B10, A8R8G8B8, X8R8G8B8, A1R5G5B5, X1R5G5B5 or R5G6B5 -->
+          <ColorFormat>A8R8G8B8</ColorFormat>
+          <!-- Depth and Stencil Buffers format -->
+          <DepthStencilFormat DepthBpp = "24" StencilBpp = "8"/>
+          <!-- Vertex Processing Method. Can be SOFTWARE, HARDWARE or MIXED. Note: High and low registers are the same -->
+          <VertexProcessingMethod>HARDWARE</VertexProcessingMethod>
+          <!-- If shader model isn't specified for any technique this value will be used. Can be "FFP" (it means no shaders), "1.0", "1.1", "2.0", "3.0", etc.-->
+          <DefaultShaderModel>FFP</DefaultShaderModel>
+          <VSync>0</VSync>
+        </RenderDevice>
 </Engine>
