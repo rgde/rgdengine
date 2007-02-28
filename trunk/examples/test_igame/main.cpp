@@ -22,7 +22,6 @@ int main()
 		pApp->Run();
 	}
 
-	event::IEventManager::DeleteAllManagers(); //шо за на? разве pApp сам не чистит за собой? проверить [dub]
 	//_getch();
 
 	return 0;

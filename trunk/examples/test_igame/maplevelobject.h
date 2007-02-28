@@ -2,7 +2,7 @@
 #include "engine.h"
 
 //карта
-class MapLevelObject : public game::ILevelObject, public event::CActor
+class MapLevelObject : public game::ILevelObject, public event::CSender
 {	
 public:
     MapLevelObject();

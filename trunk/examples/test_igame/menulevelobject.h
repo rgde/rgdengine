@@ -3,7 +3,7 @@
 
 //меню
 class MenuLevelObject : public game::ILevelObject, 
-						public event::CActor,
+						public event::CSender,
 						public game::IDynamicObject
 {
 public:
@@ -35,7 +35,7 @@ private:
 			text = str;
 		}
 
-		virtual void send(MenuLevelObject* obj) {obj->sendEvent(event);}
+		virtual void send(MenuLevelObject* obj) {obj->sendEvent<EventType>(event);}
 
 		EventType event;
 	};

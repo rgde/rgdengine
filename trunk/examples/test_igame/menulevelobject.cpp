@@ -86,7 +86,7 @@ void MenuLevelObject::onSpace()
 
 void MenuLevelObject::onEsc() 
 {
-	sendEvent(game::CCloseGameEvent());
+	sendEvent<game::CCloseGameEvent>(game::CCloseGameEvent());
 }
 
 

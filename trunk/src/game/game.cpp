@@ -66,9 +66,9 @@ namespace game
 
 	CGame::CGame(): m_bChangeLevel(false)
 	{
-		subscribe(this, &CGame::onCloseGame);
-		subscribe(this, &CGame::onCompliteLevel);
-		subscribe(this, &CGame::onSetLevel);
+		subscribe<CCloseGameEvent>     (&CGame::onCloseGame);
+		subscribe<CCompliteLevelEvent> (&CGame::onCompliteLevel);
+		subscribe<CSetLevelEvent>      (&CGame::onSetLevel);
 		core::TheTimer::Get().start();
 	}
 

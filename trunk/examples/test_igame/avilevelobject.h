@@ -2,7 +2,7 @@
 #include "engine.h"
 
 //проигрывание роликов
-class AviLevelObject: public game::ILevelObject, public event::CActor
+class AviLevelObject: public game::ILevelObject, public event::CSender
 {
 public:
     AviLevelObject();
