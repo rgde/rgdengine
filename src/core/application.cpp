@@ -47,7 +47,7 @@ namespace core
 
 	class ApplicationImpl : public Forms::Window, 
 							public IApplication,
-							public event::CActor
+							public event::CSender
 	{
 	protected:
 		//cs_object m_cs;
@@ -280,7 +280,7 @@ namespace core
 			// TODO: Send event with new sizes
 			int width = rcWindowClient.right - rcWindowClient.left;
 			int height = rcWindowClient.bottom - rcWindowClient.top;
-			this->sendEvent(CWindowResize(width, height));
+			this->sendEvent<CWindowResize>(CWindowResize(width, height));
 
 			m_bIsPaused = false;
 		}
@@ -345,7 +345,6 @@ namespace core
 
 	ApplicationImpl::~ApplicationImpl()
 	{
-		event:: IEventManager::DeleteAllManagers();
 		base::log::destroy();
 		gs_pApplication = 0;
 	}

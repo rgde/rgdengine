@@ -533,7 +533,11 @@
 				Name="event"
 				>
 				<File
-					RelativePath="..\include\event\event.h"
+					RelativePath="..\include\event\Event.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\event\EventBase.h"
 					>
 				</File>
 			</Filter>
@@ -889,7 +893,7 @@
 				Name="event"
 				>
 				<File
-					RelativePath="..\src\event\event.cpp"
+					RelativePath="..\src\event\EventBase.cpp"
 					>
 				</File>
 			</Filter>

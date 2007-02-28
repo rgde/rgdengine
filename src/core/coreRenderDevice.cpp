@@ -63,7 +63,7 @@ namespace core
 		bool VSync;
 	};
 
-	class CDXRenderDevice : public IRenderSystem, public event::CActor
+	class CDXRenderDevice : public IRenderSystem, public event::CSender
 	{
 	public:
 		CDXRenderDevice(HWND hwnd)
@@ -71,7 +71,7 @@ namespace core
 				m_pd3dDevice(NULL),
 				m_hWnd(hwnd)
 		{
-			subscribe(this, &CDXRenderDevice::onWindowResizeEvent);
+			subscribe<CWindowResize>(&CDXRenderDevice::onWindowResizeEvent);
 			init(hwnd);
 		}
 

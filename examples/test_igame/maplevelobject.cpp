@@ -23,7 +23,7 @@ MapLevelObject::~MapLevelObject()
 
 void MapLevelObject::onSpace()
 {
-	sendEvent(game::CCompliteLevelEvent());
+	sendEvent<game::CCompliteLevelEvent>(game::CCompliteLevelEvent());
 }
 
 namespace game

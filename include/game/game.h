@@ -11,17 +11,17 @@
 namespace game
 {
 	//евент "закончить игру"
-	class CCloseGameEvent: public event::CEvent
+	class CCloseGameEvent
 	{
 	};
 
 	//евент "завершить текущий уровень"
-	class CCompliteLevelEvent: public event::CEvent
+	class CCompliteLevelEvent
 	{
 	};
 
 	//евент "задать новый уровень"
-	class CSetLevelEvent: public event::CEvent
+	class CSetLevelEvent
 	{
 	public:
 		CSetLevelEvent(const std::string& strNextLevel)
