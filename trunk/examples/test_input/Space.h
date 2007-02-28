@@ -17,8 +17,8 @@ class Space
 		math::Vec2f velocity;
 
         //только для чужих
-        float       damage;
-        float       hide;
+        float damage;
+        float hide;
 	};
 
 public:
