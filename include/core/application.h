@@ -2,16 +2,6 @@
 
 #include "event/event.h"
 
-struct SRect
-{
-    SRect(int x, int y)
-    {
-        width = x;
-        height = y;
-    }
-    int	width, height;
-};
-
 class CWindowResize
 {
 public:
@@ -21,9 +11,9 @@ public:
     {
     }
 
-    int	width, height;
+    int	width;
+    int height;
 };
-
 
 typedef void *WindowHandle;
 
