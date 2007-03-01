@@ -7,6 +7,25 @@ namespace event
 
     class CSenderBase;
     class CListenerBase;
+    class CEventManager;
+
+    /////////////////////////////////////////
+    // синглтон со списком всех менеджеров //
+    /////////////////////////////////////////
+    class CListManagers
+    {
+    public:
+        static CListManagers& Get();
+        void unsubscribeAll (CListenerBase *pListener); //отписать данного получателя ото всех менеджеров
+        void addManager     (CEventManager *pManager);  //менеджер добавляет себя в общий список менеджеров
+        void delManager     (CEventManager *pManager);  //менеджер удаляет себя из общего списка менеджеров
+
+    private:
+        CListManagers();
+       ~CListManagers();
+
+        std::list<CEventManager*> m_managers;
+    };
 
     /////////////////////////////////////
     // базовый класс менеджера событий //
@@ -16,42 +35,8 @@ namespace event
     public:
         virtual ~CEventManager(){}
 
-        //отписать данного получателя ото всех менеджеров
-        static void unsubscribeAll(CListenerBase *pListener)
-        {
-            std::list<CEventManager*>::iterator i = ms_managers.begin();
-            while (i != ms_managers.end())
-            {
-                (*i)->unsubscribe(pListener);
-                ++i;
-            }
-        }
-
-    protected:
         //отписать получателя от менеджера (потомка класса CEventManager)
         virtual void unsubscribe (CListenerBase*) = 0;
-
-        //менеджер добавляет себя в общий список менеджеров
-        static void addManager (CEventManager *pManager)
-        {
-            ms_managers.push_back(pManager);
-        }
-
-        //менеджер удаляет себя из общего списка менеджеров
-        static void delManager (CEventManager *pManager)
-        {
-            std::list<CEventManager*>::iterator i = ms_managers.begin();
-            while (i != ms_managers.end())
-            {
-                if ((*i) == pManager)
-                    i = ms_managers.erase(i);
-                else
-                    ++i;
-            }
-        }
-
-    private:
-        static std::list<CEventManager*> ms_managers;
     };
 
     ///////////////////////////////////////
@@ -82,6 +67,13 @@ namespace event
         };
 
     public:
+        //синглтон епт
+        static TEventManager& Get()
+        {
+            static TEventManager instance;
+            return instance;
+        }
+
         //подписать pListener на получение событий в функтор func от отправителя pSender (если равен 0 - то от всех)
         void subscribe (CListenerBase *pListener, boost::function<void(Event)> func, CSenderBase *pSender)
         {
@@ -122,19 +114,19 @@ namespace event
             }
         }
 
+    private:
         //регистрация менеджера в глобальном списке менеджеров
         TEventManager ()
         {
-            CEventManager::addManager(this);
+            CListManagers::Get().addManager(this);
         }
 
         //убираем регистрацию менеджера
        ~TEventManager()
         {
-            CEventManager::delManager(this);
+            CListManagers::Get().delManager(this);
         }
 
-    private:
         TEventManager(const TEventManager&);
         TEventManager& operator= (const TEventManager&);
 
@@ -152,21 +144,21 @@ namespace event
         //отписать получателя от всех менеджеров
         virtual ~CListenerBase()
         {
-            CEventManager::unsubscribeAll(this);
+            CListManagers::Get().unsubscribeAll(this);
         }
 
         //подписаться на получение событий
         template <typename Event>
         void _subscribe( boost::function<void(Event)> f, CSenderBase *pSender=0 )
         {
-            base::TSingelton<TEventManager<Event> >::Get().subscribe(this,f,pSender);
+            TEventManager<Event>::Get().subscribe(this,f,pSender);
         }
 
         //отписаться от получения событий
         template <typename Event>
         void _unsubscribe()
         {
-            base::TSingelton<TEventManager<Event> >::Get().unsubscribe(this);
+            TEventManager<Event>::Get().unsubscribe(this);
         }
 
     private:
@@ -186,7 +178,7 @@ namespace event
         template<typename Event>
         void _sendEvent(Event event)
         {
-            base::TSingelton<TEventManager<Event> >::Get().sendEvent(event,this);
+            TEventManager<Event>::Get().sendEvent(event,this);
         }
 
     private:

@@ -23,9 +23,9 @@ struct CMenu: public event::CListener
 
     CMenu ()
     {
-        subscribe<CClickEvent,CMenu> (&CMenu::onExit, &btnExit);
-        subscribe<CClickEvent,CMenu> (&CMenu::onHelp, &btnHelp);
-        subscribe<CClickEvent,CMenu> (&CMenu::onBeep);
+        subscribe<CClickEvent,CMenu> (&CMenu::onExit, &btnExit); //получать события только от btnExit
+        subscribe<CClickEvent,CMenu> (&CMenu::onHelp, &btnHelp); //получать события только от btnРудз
+        subscribe<CClickEvent,CMenu> (&CMenu::onBeep);           //получать события от всех
     }
 
     void onExit (const CClickEvent &e) {std::cout << "CMenu::onExit()\n";}

@@ -53,7 +53,7 @@ void MenuLevelObject::update(float dt)
 	unsigned int flags = IFont::Center | IFont::SingleLine | IFont::VCenter | IFont::Center;
 	math::Vec2f size(800, 600);
 
-	for (int i = 0; i < m_items.size(); ++i)
+	for (unsigned int i = 0; i < m_items.size(); ++i)
 	{
 		unsigned int color = i == m_active_menu_item ? 0xFFF00000 : 0xFFFFFFFF;
 		float y = size[1]/2-50*m_items.size()/2 + i*50;
