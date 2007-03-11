@@ -13,7 +13,8 @@ namespace meta
 
 		string name;
 
-		abstract_property(const string& _name, const type_info& owner, const type_info& type)
+		abstract_property(const string& _name, const type_info& owner, 
+			const type_info& type)
 			: value_type(type),
 			owner_type(owner),
 			name(_name)
