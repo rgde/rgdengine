@@ -4,7 +4,6 @@
 
 //#include "bind_test_stuff.h"
 //#include "stl_helpers.h"
-
 //#include "composite.h"
 
 namespace meta
