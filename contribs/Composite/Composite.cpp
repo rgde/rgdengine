@@ -127,25 +127,24 @@ namespace meta
 			: info(i), type_name(name){}
 
 		virtual ~type_information(){}
-
-
-
 	};
-
 
 	namespace details
 	{
 		template<class T>
 		struct concrete_type_information : public type_information
 		{
-			//typename concrete_type_information<T> me__;
-
 			explicit concrete_type_information(const std::string& name)
 				: type_information(typeid(T), name)
 			{
 			}
 
-			//std::string test::*
+			template<class BaseType>
+			concrete_type_information& base()
+			{
+				return *this;
+			}
+
 
 			template<typename V>
 			concrete_type_information& def(const std::string name, V T::* data_member_pointer)
@@ -163,6 +162,75 @@ namespace meta
 			concrete_type_information& def_property(const std::string name, V T::* data_member_pointer)
 			{
 				return def<V>(name, data_member_pointer);
+			}
+
+			template<typename data_type>
+			concrete_type_information& def_property(const std::string name, data_type (T::* getter_func_ptr)())
+			{
+				return *this;
+			}
+
+			// нужно использовать boost::type_traits - что бы решить проблему передачи параметров по конст ссылке
+			template<typename data_type>
+			concrete_type_information& def_property(const std::string name, data_type (T::* getter_func_ptr)(), void (T::* setter_func_ptr)(data_type))
+			{
+				return *this;
+			}
+
+			template<typename data_type>
+			concrete_type_information& def(const std::string name, data_type (T::* getter_func_ptr)(), void (T::* setter_func_ptr)(data_type))
+			{
+				return def_property(name, getter_func_ptr, setter_func_ptr);
+			}
+
+			template<typename data_type>
+			concrete_type_information& def_property(const std::string name, data_type (T::* getter_func_ptr)() const)
+			{
+				return *this;
+			}
+
+			template<typename data_type>
+			concrete_type_information& def_property(const std::string name, data_type (T::* getter_func_ptr)() const, void (T::* setter_func_ptr)(data_type))
+			{
+				return *this;
+			}
+
+			template<typename data_type>
+			concrete_type_information& def(const std::string name, data_type (T::* getter_func_ptr)() const, void (T::* setter_func_ptr)(data_type))
+			{
+				return def_property(name, getter_func_ptr, setter_func_ptr);
+			}
+
+
+			// Mem-func defs
+			template<typename ret_type>
+			concrete_type_information& def(const std::string name, ret_type (T::* mem_func_ptr)())
+			{
+				return *this;
+			}
+
+			template<typename ret_type, typename P1>
+			concrete_type_information& def(const std::string name, ret_type (T::* mem_func_ptr)(P1))
+			{
+				return *this;
+			}
+
+			template<typename ret_type, typename P1, typename P2>
+			concrete_type_information& def(const std::string name, ret_type (T::* mem_func_ptr)(P1, P2))
+			{
+				return *this;
+			}
+
+			template<typename ret_type, typename P1, typename P2, typename P3>
+			concrete_type_information& def(const std::string name, ret_type (T::* mem_func_ptr)(P1, P2, P3))
+			{
+				return *this;
+			}
+
+			template<typename ret_type, typename P1, typename P2, typename P3, typename P4>
+			concrete_type_information& def(const std::string name, ret_type (T::* mem_func_ptr)(P1, P2, P3, P4))
+			{
+				return *this;
 			}
 		};
 	}
@@ -230,12 +298,33 @@ namespace meta
 
 }
 
-struct test
-{
-	std::string name;
+struct test_base {};
+
+struct test : public test_base
+{	
 	int			value;
+	std::string name;
+
+
+
+	float func0() {return 1.0f;}
+	float func1(float f) {return 1.0f*f;}
+	float func2(float f, int i) {return 1.0f*f+i;}
+	double func3(float f, int i, double d) {return (1.0f*f+i)*d;}
+
+	double get_data() const {return my_private_data;}
+	void set_data(double d) {my_private_data = d;}
+
+private:
+	double my_private_data;
 };
 
+
+template <class T>
+struct mem_func_types_holder
+{
+	//void (T::* ptfptr) (int) = &X::f;
+};
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -245,19 +334,37 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	storage.get_module("engine")
 		.class_<test>("test")
+		// можно задать сколько угодно базовых типов. проблема в том что не ясно откуда его получать...
+		// видимо тайп инфо должен иметь ссылку на module, а там ссылку на storage...
+		.base<test_base>() 
 		.def_readonly("name", &test::name)
-		.def("value", &test::value);
+		.def("value", &test::value)
+		.def("func0", &test::func0)
+		.def("func3", &test::func3)
+		.def_property("data", &test::get_data, &test::set_data)
+		.def_property("data_readonly", &test::get_data);
 
 	// так же можно и так:
 	//storage.get_module("engine").def_class<test>("test");
 
-	//std::string test::*  t = &test::str_value;
-	//size_t str_offset = (&test::str_value);//std::cout << ;
+	// что еще надо:
+	//1
+	// бинд конструкторов
+	// бинд статик методов
 
-	// что еще надо - бинд конструкторов
-	// бинд методов
-	// бинд св-в через get/set 
-	// бинд реад_онли св-в только с get
+	//2
+	// сохранние бид информации. 	
+	// наследование
+
+	//3
+	// серелизация (bin,xml)
+	// удобный доступ из С++
+
+	//4 
+	// рефлекшен в скрипт
+
+	//5
+	// рефлекшен в редактор
 
 	
 	return 0;
