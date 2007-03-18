@@ -19,43 +19,6 @@
 
 #include <stdarg.h>
 
-
-//
-//<effect length="20" name value="big-boom-bam" description="firebol_explode">
-//<Params>
-//<rotation type="float3" script="rand(0,0,20);rand(1,0,20);rand(2,0,20)" value="0;0;0"/>
-//<position type="float3" script="" value="0;0;0"/>
-//</Params>
-//<item type="ComsiteItem" >
-//<SubParts>
-//<Start>
-//<item type="StaticParticles" file="fire.prt" start="0" start_frame="0" end_frame="7" cycling="0" additive_blend="0"/>
-//<item type="StaticParticles" file="stars.prt" start_frame="0" end_frame="7" cycling="0" additive_blend="0"/>
-//</Start>
-//
-//<Casting cycling="1" cycling_delta="0.20" fade_time="0.25">
-//<item type="StaticParticles" file="fire.prt" start_frame="7" rend_frame="7" cycling="0" additive_blend="0"/>
-//<item type="StaticParticles" file="stars.prt" start_frame="7" rend_frame="7" cycling="0" additive_blend="0"/>
-//</Casting>
-//
-//<End>
-//<item type="StaticParticles" file="fire.prt" rstart_frame="7" rend_frame="0" cycling="0" additive_blend="0"/>
-//<item type="StaticParticles" file="stars.prt" rstart_frame="7" rend_frame="0" cycling="0" additive_blend="0"/>
-//</End>
-//</SubParts>
-//<Body>
-//
-//</Body>		
-//</item>
-//
-//<item type="StaticParticles" file="fire.prt" start="0" end="20" cycling="1" additive_blend="0">
-//<item type="StaticParticles" file="stars.prt" start="0" end="20" cycling="1" additive_blend="0"/>
-//<item type="StaticParticles" file="fire.prt" start="0" end="20" cycling="1" additive_blend="1"/>
-//<!--	<item type="StaticParticles" file="flare.prt" start="0" end="2" cycling="0" additive_blend="1"/> -->
-//</effect>
-//
-
-
 struct parser
 {
 	static void tokenize(const std::string& src, std::vector<std::string>& out_tokens, 
@@ -116,29 +79,117 @@ namespace funcs_helpers
 {
 	struct abstract_func
 	{
-		virtual ~abstract_command(){}
+		virtual ~abstract_func(){}
 		virtual boost::any execute(const command&) = 0;
 	};
+
+	typedef boost::shared_ptr<abstract_func> func_ptr;
 
 	template<typename result_type>
 	struct t_func : public abstract_func
 	{
 		boost::function<result_type(const command&)> func;
 		boost::any execute(const command& c) { return func(c); }
+
+		static func_ptr create()
+		{
+			return func_ptr(new t_func);
+		}
 	};
 
-	typedef boost::shared_ptr<abstract_func> func_ptr;
+	template<>
+	struct t_func<void> : public abstract_func
+	{
+		boost::function<void(const command&)> func;
+		boost::any execute(const command& c) 
+		{ 
+			func(c); 
+			return boost::any();
+		}
+
+		static func_ptr create()
+		{
+			return func_ptr(new t_func);
+		}
+	};
+}
+
+namespace details
+{
+	struct call_helper
+	{
+		template<typename result_type>
+		static result_type call(const command& c, boost::function<result_type(void)>& func)
+		{
+			std::cerr << "0 param func called" << std::endl;
+			func();
+		}
+
+		template<typename result_type, typename P1>
+		static result_type call(const command& c, boost::function<result_type(P1)>& func)
+		{
+			std::cerr << "1 param func called" << std::endl;
+			return result_type();
+		}
+
+		template<typename result_type, typename P1, typename P2>
+		static result_type call(const command& c, boost::function<result_type(P1,P2)>& func)
+		{
+			std::cerr << "2 param func called" << std::endl;
+			if (c.args.size() != 2)
+			{
+				std::cerr << "Error! Incorrect param num, while calling func <" << c.name << ">" << std::endl;
+				return result_type();
+			}
+
+			try
+			{
+				P1 p1 = boost::lexical_cast<P1>(c.args[0]);
+				P2 p2 = boost::lexical_cast<P2>(c.args[1]);
+				return func(p1, p2);
+			}
+			catch (boost::bad_lexical_cast& ex)
+			{
+				
+				std::cerr << "Invalid pram types!" << std::endl
+						<< ex.what() << std::endl;
+				return result_type();				
+			}			
+		}
+	};
+
+
+	template<class FunctionType, typename result_type>
+	struct exec_helper
+	{
+		static result_type call(const command& c, FunctionType func)
+		{
+			if (c.args.size() != FunctionType::args)
+			{
+				std::cerr << "Invalid number of argiments!" << std::endl;
+				std::cerr << "Number of args is " << FunctionType::args << std::endl;
+				return FunctionType::result_type();
+			}
+			return call_helper::call(c, func);
+			//return FunctionType::result_type();
+		}
+	};
+
+	template<class FunctionType>
+	struct exec_helper<FunctionType, void>
+	{
+		static void call(const command& c, FunctionType func)
+		{
+			std::cout << "void func called" << std::endl;
+			//call_helper::call(c, func);
+		}
+	};
 }
 
 struct command_processor
 {
 	command_processor(){}
 	~command_processor(){}
-
-	typedef boost::function<std::string (const command&)> command_handler;
-	typedef std::map<std::string, command_handler> Commands;
-
-	Commands commands;
 
 	struct command_info
 	{
@@ -147,59 +198,53 @@ struct command_processor
 		boost::any execute(const command& c) {return func ? func->execute(c) : boost::any();}
 	};
 
-	void bind(const std::string& command_name, command_handler handler)
-	{
-		if (commands.find(command_name) == commands.end())
-		{
-			commands[command_name] = handler;
-		}
-	}
-
-	template<class FunctionType, typename result_type>
-	result_type execute(const command& c, FunctionType func)
-	{
-		if (c.args.size() != FunctionType::args)
-		{
-			std::cerr << "Invalid number of argiments!" << std::endl;
-			return result_type();
-		}
-		return result_type();
-	}
+	typedef std::map<std::string, command_info> Commands;
+	Commands commands;
 
 	template<class FunctionType>
-	void _bind(const std::string& command_name, FunctionType func)//, ...)
+	void bind(const std::string& command_name, FunctionType func)//, ...)
 	{
 		using std::cout;
 		using std::endl;
 
-		cout << FunctionType::args << endl;
-		cout << typeid(FunctionType::result_type).name() << endl;
-		cout << typeid(FunctionType::arg1_type).name() << endl;
-		cout << typeid(FunctionType::arg2_type).name() << endl;
+		//cout << FunctionType::args << endl;
+		//cout << typeid(FunctionType::result_type).name() << endl;
+		//cout << typeid(FunctionType::arg1_type).name() << endl;
+		//cout << typeid(FunctionType::arg2_type).name() << endl;
 
-		typedef command_info<float> command_info;
+		//typedef command_info<float> command_info;
+
+		typedef typename FunctionType::result_type result_type;
+		typedef funcs_helpers::func_ptr func_ptr;
+		typedef funcs_helpers::t_func<result_type> t_func;
+
+		t_func* fp = new t_func;
+		//cout << typeid(result_type).name() << endl;
+		//boost::function<void(const command&)> tp = boost::bind(&details::exec_helper<FunctionType, result_type>::call, _1, func);
+		fp->func = boost::bind(&details::exec_helper<FunctionType, result_type>::call, _1, func);
+
 		command_info info;
 		info.name = command_name;
-		typedef FunctionType F;
-		
-		info.func = boost::bind(&command_processor::execute<F, F::result_type>, this, _1, func);
+		info.func = func_ptr(fp);
 
-		command c(info.name);
-		info.func(c);
+		//command c(info.name);
+		//info.func->execute(c);
+
+		commands[info.name] = info;
 	}
 
 
-	std::string execute(const command& c)
+	boost::any execute(const command& c)
 	{
 		Commands::iterator it = commands.find(c.name);
 
 		if (it != commands.end())
 		{
-			return it->second(c);
+			return (it->second.func)->execute(c);
 		}
 		else
 		{
-			return std::string("unknown command");
+			boost::any();//return std::string("unknown command");
 		}
 	}
 };
@@ -243,36 +288,55 @@ namespace bindings
 }
 
 
+std::ostream& operator <<(std::ostream& out, const boost::any& value)
+{
+	if (value.type() == typeid(float))
+	{
+		out << boost::any_cast<float>(value);
+	}
+	return out;
+}
+
+float print_help(float, float)
+{
+	std::cout << "====HELP!!!====" << std::endl;
+	return 0;
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	using boost::function_traits;
 
 
-	typedef boost::function<float(float, float)> test_func;
+	//typedef boost::function<float(float, float)> test_func;
 
 	
 	using boost::bind;
 
-	{
-		command_processor p;
-		boost::function<float(float, float)> f = bind(&math::rand, _1, _2);
-		p._bind("rand", f);
-	}
-	
-	return 0;
+	//{
+	//	command_processor p;
+	//	boost::function<float(float, float)> f = bind(&math::rand, _1, _2);
+	//	p.bind("rand", f);
+	//	//p.bind("rand", &math::rand);
+	//}
+	//
+	//return 0;
 
-	std::string test_string = "rand(1,2);rand(5,7);rand(15,40)";
+	std::string test_string = "rand(1,2);rand(5,7);rand(15,40);";//help();";
 
 	std::vector<std::string> commands;
 	parser::tokenize(test_string, commands);
 
 	command_processor p;
-	p.bind("rand", boost::bind(&bindings::math::rand, _1));
+	boost::function<float(float, float)> f = bind(&math::rand, _1, _2);
+	p.bind("rand", f);
+	boost::function<float(float, float)> f1 = bind(&print_help, 1.0f, 2.0f);
+	p.bind("help", f1);//bind(&print_help));
 
-	for (int i = 0; i < commands.size(); ++i)
+	for (size_t i = 0; i < commands.size(); ++i)
 	{
 		command c(commands[i]);
-		std::cout << commands[i].c_str() << "=" << p.execute(c).c_str() << std::endl;
+		std::cout << commands[i].c_str() << "=" << p.execute(c) << std::endl;
 	}
 
 	return 0;
