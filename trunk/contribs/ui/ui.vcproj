@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="8,00"
 	Name="ui"
 	ProjectGUID="{C20B1676-DFA1-4B92-9CA5-922D225FE2A1}"
 	RootNamespace="ui"
@@ -170,79 +170,59 @@
 	</References>
 	<Files>
 		<Filter
-			Name="ui"
+			Name="h"
 			>
-			<Filter
-				Name="h"
+			<File
+				RelativePath=".\bitmap.h"
 				>
-				<File
-					RelativePath=".\font.h"
-					>
-				</File>
-				<File
-					RelativePath=".\image.h"
-					>
-				</File>
-				<File
-					RelativePath=".\render.h"
-					>
-				</File>
-				<File
-					RelativePath=".\types.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ui.h"
-					>
-				</File>
-				<File
-					RelativePath=".\widget.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="cpp"
+			</File>
+			<File
+				RelativePath=".\cursor.h"
 				>
-				<File
-					RelativePath=".\render.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ui.cpp"
-					>
-				</File>
-			</Filter>
+			</File>
+			<File
+				RelativePath=".\factory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\font.h"
+				>
+			</File>
+			<File
+				RelativePath=".\keys.h"
+				>
+			</File>
+			<File
+				RelativePath=".\render.h"
+				>
+			</File>
+			<File
+				RelativePath=".\system.h"
+				>
+			</File>
+			<File
+				RelativePath=".\theme.h"
+				>
+			</File>
+			<File
+				RelativePath=".\types.h"
+				>
+			</File>
+			<File
+				RelativePath=".\widget.h"
+				>
+			</File>
 		</Filter>
 		<Filter
-			Name="render"
+			Name="cpp"
 			>
-			<Filter
-				Name="h"
+			<File
+				RelativePath=".\cursor.cpp"
 				>
-			</Filter>
-			<Filter
-				Name="cpp"
-				>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="widget"
-			>
-			<Filter
-				Name="h"
-				>
-			</Filter>
-			<Filter
-				Name="cpp"
-				>
-			</Filter>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\main.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\notes.txt"
 			>
 		</File>
 	</Files>
