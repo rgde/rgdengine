@@ -1,35 +1,36 @@
 //font.h
 #pragma once
-#include "render.h"
 #include "types.h"
+#include <boost/shared_ptr.hpp>
 
 namespace ui
 {
-
-    //бфзовый класс для шрифтов
-    class CFont
+    //интрефейс шрифта
+    struct IFont
     {
-    public:
-        virtual ~CFont() {}
-        const std::wstring& getName() const {return m_sName;}
-        CRender&            getRender() {return m_rRender;}
-        virtual void        render(const Point&, const std::wstring&) = 0;
-        //рендер:
-        //* в прямоугольник, с выравниванием (3 позиции) по высоте и ширине
-        //* базовая линия
-        //* получить охватывающий прямоугольник
-        //...
+        virtual ~IFont(){}
 
-    private:
-        friend CFont* CRender::createFont(const std::wstring&);
-        CFont(const std::wstring &sName, CRender &rRender): m_sName(sName), m_rRender(rRender) {}
+        enum Aligment //выравнивание выводимой строки внутри прямоугольника вывода
+        {
+            Top     = 0x00000000,
+            Left    = 0x00000001,
+            Center  = 0x00000002,
+            Right   = 0x00000004,
+            VCenter = 0x00000008,
+            Bottom  = 0x0000000F
+        };
 
-        std::wstring  m_sName;
-        CRender      &m_rRender;
-        //...
+        virtual void draw        (const std::wstring &text, const Rect &r, const Color &color, int flags = 0) = 0;
+        virtual Rect measureText (const std::wstring &text) = 0;
 
-        CFont(const CFont&);
-        CFont& operator=(const CFont&);
+        virtual const std::wstring& getFontFamily () const = 0;
+        virtual int                 getHeight     () const = 0;
+        virtual bool                isItalic      () const = 0;
+        virtual bool                isBold        () const = 0;
+        virtual bool                isFixed       () const = 0;
     };
+
+    //смартпоинтер
+    typedef boost::shared_ptr<IFont> PFont;
 
 } //namespace ui

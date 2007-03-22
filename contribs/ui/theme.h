@@ -1,9 +1,10 @@
-//widget.h
+//theme.h
 #pragma once
 
 namespace ui
 {
-    //базовый класс для виджета
+
+    //тема (скрин) для ui
     //...
 
 } //namespace ui

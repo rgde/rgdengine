@@ -1,44 +1,28 @@
 //types.h
 #pragma once
+#include <boost/shared_ptr.hpp>
 
 namespace ui
 {
+    //предопределения
+    class  CSystem;
+    class  CCursor;
+    struct IRender;
+    struct IBitmap;
+    struct IFont;
 
-    class Color;
-    class Size;
-    class Point;
-    class Rect;
+    //смартпоинтеры
+    typedef boost::shared_ptr<CSystem> PSystem;
+    typedef boost::shared_ptr<CCursor> PCursor;
+    typedef boost::shared_ptr<IRender> PRender;
+    typedef boost::shared_ptr<IBitmap> PBitmap;
+    typedef boost::shared_ptr<IFont  > PFont;
 
-    //цвет
-    class Color
-    {
-        unsigned char r;
-        unsigned char g;
-        unsigned char b;
-        unsigned char a;
-    };
-
-    //рамер
-    class Size
-    {
-        float width;
-        float height;
-    };
-
-    //точка
-    class Point
-    {
-        float x;
-        float y;
-    };
-
-    //прямоугольник
-    class Rect
-    {
-        float x;
-        float y;
-        float width;
-        float height;
-    };
+    //вспомогательные типы
+    struct Color;
+    struct Rect;
+    struct Size;
+    struct Point;
+    //...
 
 } //namespace ui
