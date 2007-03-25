@@ -2,6 +2,8 @@
 #pragma once
 #include "types.h"
 #include "keys.h"
+#include <string>
+#include <list>
 
 namespace ui
 {
@@ -15,9 +17,10 @@ namespace ui
 
         //виджеты
         template <typename Widget>
-        Widget* create (const std::string &sName);
-        Widget* find   (const std::string &sName);
-        //... (удаление, биндинг, дерево, евенты)
+        Widget*  create (const std::string &sName);
+        CWidget* find   (const std::string &sName);
+        CWidget* remove (const std::string &sName);
+        CWidget* remove (const CWidget *pWidget);
 
         //события
         void injectKey                 (keys::Keys key, bool pressed);
@@ -34,9 +37,32 @@ namespace ui
         void update (float dt);
         void render ();
 
+    protected:
+        std::string generateWidgetName();
+
     private:
+        typedef std::list<CWidget*> Widgets;
+
         PRender m_pRender;
         PCursor m_pCursor;
+        Widgets m_widgets;
     };
+
+    //создание виджета
+    template <typename Widget>
+    Widget* CSystem<Widget>::create (const std::string &sName)
+    {
+        std::string sNewWidgetName = sName;
+
+        //такой виджет уже существует
+        if (find(sNewWidgetName))
+            sNewWidgetName = generateNewWidgetName();
+
+        //создать виджет
+        Widget *pWidget = new Widget(sNewWidgetName,*this);
+        m_widgets.push_back(pWidget);
+        return pWidget;
+    }
+
 
 } //namespace ui
