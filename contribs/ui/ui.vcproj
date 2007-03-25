@@ -220,9 +220,17 @@
 				RelativePath=".\cursor.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\system.cpp"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\main.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\notes.txt"
 			>
 		</File>
 	</Files>
