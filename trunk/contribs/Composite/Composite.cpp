@@ -12,6 +12,19 @@ namespace meta
 	{
 		typedef std::wstring string;
 
+		struct factory
+		{ 
+			typedef std::map<std::string type_names, type_information*> types_map;
+			types_map types;
+
+			void register_type(type_information& ti)
+			{
+				types[ti.type_name] = &ti;
+			}
+			
+
+		};
+
 		struct abstract_property
 		{
 			const type_info& value_type;
