@@ -203,7 +203,6 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 
 	case WM_LBUTTONUP:
 		{
-			RECT rc;
 			SetCursorPos(clicked_x, clicked_y);
 			ShowCursor(TRUE);
 			ReleaseCapture();
@@ -237,7 +236,7 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 			int yPos = HIWORD(lparam); 
 
 			
-			if ((old_x != -1 || old_y != -1) && (wparam & MK_RBUTTON != 0))
+			if ((old_x != -1 || old_y != -1) && ((wparam & MK_RBUTTON) != 0))
 			{
 				int dx = xPos - old_x;
 				int dy = yPos - old_y;

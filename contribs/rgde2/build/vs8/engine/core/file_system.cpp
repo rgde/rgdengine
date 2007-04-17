@@ -9,17 +9,17 @@ namespace rgde
 		{
 			std::wstring get_extension(const std::wstring& file_name)
 			{
-				int pos = file_name.rfind(L".");
-				if(pos == -1) return std::wstring();
+				size_t pos = file_name.rfind(L".");
+				if(pos == std::wstring::npos) return std::wstring();
 
 				return file_name.substr(pos, file_name.size() - pos - 1);
 			}
 
 			std::wstring strip_extension(const std::wstring& file_name)
 			{
-				int pos	= file_name.rfind(L".");
+				size_t pos	= file_name.rfind(L".");
 
-				if(pos == -1)
+				if(pos == std::wstring::npos)
 					return file_name;
 				else
 					return file_name.substr(0, pos);

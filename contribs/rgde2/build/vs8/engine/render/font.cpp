@@ -15,7 +15,7 @@ namespace rgde
 		font::font(device& dev, size_t height, const std::wstring& name, Weight weigh)
 			: m_device(dev), m_font(NULL)
 		{
-			if (S_OK != D3DXCreateFont(m_device.get_dx_device(), -height, 0, weigh, 1, FALSE, 
+			if (S_OK != D3DXCreateFont(m_device.get_dx_device(), -(int)height, 0, weigh, 1, FALSE, 
 				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 
 				5, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &m_font))
 			{

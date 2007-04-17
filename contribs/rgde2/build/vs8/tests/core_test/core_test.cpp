@@ -32,7 +32,7 @@ struct	basic_time_tracer
 
 		typedef std::basic_string<char_type> _string;
 		_string out(output.begin(), output.end());
-		io::write(snk, out.c_str(), out.size());
+		io::write(snk, out.c_str(), (std::streamsize)out.size());
 		return	n;
 	}			
 };
