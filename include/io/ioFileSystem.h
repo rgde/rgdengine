@@ -1,7 +1,6 @@
 #pragma once
 
 #include "base/singelton.h"
-
 #include "io/ioPath.h"
 
 namespace io
@@ -20,8 +19,6 @@ namespace io
 
 		static PFileSource  CreateDirectorySource(const Path& path);
 		//static PFileSource CreateZipSource(const Path& path);
-		//static PFileSource CreateRarSource(const Path& path);
-		//static PFileSource CreatePakSource(const Path& path);
 	};
 
 	class CFileSystem

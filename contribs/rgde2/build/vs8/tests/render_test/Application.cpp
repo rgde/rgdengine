@@ -70,7 +70,8 @@ Application::Application()
 	: m_active(true),
 	window(L"RenderTest"),
 	m_device(get_handle()),
-	m_font(m_device, 18, L"Arial", font::Heavy)
+	m_font(m_device, 18, L"Arial", font::Heavy),
+	m_arc_ball(640, 480)
 {
 	show();
 	update();
@@ -135,7 +136,9 @@ void Application::run()
 			D3DXMATRIX matCamTranslation;
 			D3DXMatrixTranslation( &matCamTranslation, -m_cam_pos.x, -m_cam_pos.y, -m_cam_pos.z ); 
 
-			matView = (matRotY/* * matRotX*/) * matCamTranslation * matView;
+			//m_arc_ball.get_matrix()
+
+			matView = m_arc_ball.get_matrix() * matCamTranslation *  matView;//(matRotY/* * matRotX*/) * matCamTranslation * matView;
 
 			m_device.get_dx_device()->SetTransform( D3DTS_VIEW, &(matView) );
 			m_device.get_dx_device()->SetTransform( D3DTS_WORLD, &matWorld );	// Set The Transformation
@@ -198,6 +201,10 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 			GetCursorPos(&p);
 			clicked_x = p.x;
 			clicked_y = p.y;
+
+			int xPos = LOWORD(lparam); 
+			int yPos = HIWORD(lparam); 
+			m_arc_ball.click(xPos, yPos);
 		}
 		return 0;
 
@@ -236,8 +243,9 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 			int yPos = HIWORD(lparam); 
 
 			
-			if ((old_x != -1 || old_y != -1) && ((wparam & MK_RBUTTON) != 0))
+			if ((old_x != -1 || old_y != -1) && ((wparam & MK_LBUTTON) != 0))
 			{
+				m_arc_ball.drag(xPos, yPos);
 				int dx = xPos - old_x;
 				int dy = yPos - old_y;
 

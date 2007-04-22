@@ -80,7 +80,7 @@ namespace core
 		virtual ~ApplicationImpl();
 
 		void init(WindowHandle hParent);
-		void init(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen);
+		void init(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen, bool resize_enable);
 
 		virtual void Run();
 		virtual bool update();
@@ -315,13 +315,13 @@ namespace core
 		return Create(std::wstring(strName.begin(), strName.end()), nWidth, nHeight, nColorDepth, nDisplayFrequency, bFullscreen);
 	}
 
-	IApplication* IApplication::Create(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen)
+	IApplication* IApplication::Create(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen, bool resize_enable)
 	{
 		if ( 0 != gs_pApplication)
 			return gs_pApplication;
 
 		ApplicationImpl* pApp = new ApplicationImpl();
-		pApp->init(Name, Width, Height, ColorDepth, DisplayFrequency, Fullscreen);
+		pApp->init(Name, Width, Height, ColorDepth, DisplayFrequency, Fullscreen, resize_enable);
 	
 		return pApp;
 	}
@@ -455,7 +455,7 @@ namespace core
 		::UpdateWindow(Handle());
 	}
 
-	void ApplicationImpl::init(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen)
+	void ApplicationImpl::init(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen, bool resize_enable)
 	{
 		// Styles and position
 		dword Style;
@@ -474,7 +474,13 @@ namespace core
 		}
 		else
 		{
-			Style = WS_OVERLAPPEDWINDOW | WS_SIZEBOX ;//WS_OVERLAPPED | WS_BORDER | WS_CAPTION | WS_SYSMENU;
+
+			if (resize_enable)
+				// | WS_SIZEBOX ;//WS_OVERLAPPED | WS_BORDER | WS_CAPTION | WS_SYSMENU;
+				Style = WS_OVERLAPPEDWINDOW;
+			else
+				Style = WS_CAPTION | WS_POPUP | WS_SYSMENU | WS_MINIMIZEBOX;
+
 			ExStyle = 0;
 			x = (GetSystemMetrics(SM_CXSCREEN) / 2) - (Width / 2);
 			y = (GetSystemMetrics(SM_CYSCREEN) / 2) - (Height / 2);
