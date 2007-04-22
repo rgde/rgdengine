@@ -357,18 +357,23 @@ namespace core
 			unsigned int width = rc.right - rc.left;
 			unsigned int height = rc.bottom - rc.top;
 
-			width -= DeviceInfo.m_bWindowed ? (GetSystemMetrics(SM_CXBORDER) * 2) : 0;
-			height -= DeviceInfo.m_bWindowed ? ((GetSystemMetrics(SM_CYBORDER) ) + GetSystemMetrics(SM_CYCAPTION)) : 0;
+			//width -= DeviceInfo.m_bWindowed ? (GetSystemMetrics(SM_CXBORDER) * 2) : 0;
+			//height -= DeviceInfo.m_bWindowed ? ((GetSystemMetrics(SM_CYBORDER) ) + GetSystemMetrics(SM_CYCAPTION)) : 0;
+
+			//width -= DeviceInfo.m_bWindowed ? (GetSystemMetrics(SM_CXDLGFRAME) * 2) : 0;
+			//height -= DeviceInfo.m_bWindowed ? ((GetSystemMetrics(SM_CYDLGFRAME) ) + GetSystemMetrics(SM_CYCAPTION)) : 0;
+
 
 			m_info = DeviceInfo;
 			D3DPRESENT_PARAMETERS d3dpp; 
 			ZeroMemory( &d3dpp, sizeof(d3dpp) );
 
+			d3dpp.BackBufferWidth = width;
+			d3dpp.BackBufferHeight = height;
+
 			if(!DeviceInfo.m_bWindowed)
 			{
 				d3dpp.Windowed = FALSE;               // Window mode (fullscreen).
-				d3dpp.BackBufferWidth = width;
-				d3dpp.BackBufferHeight = height;
 				d3dpp.FullScreen_RefreshRateInHz = DeviceInfo.m_nRefreshRate;
 			}
 			else
