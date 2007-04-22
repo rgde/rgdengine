@@ -3,7 +3,7 @@
 int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 {
 	typedef std::auto_ptr<core::IApplication> PApp;
-	PApp pApp(core::IApplication::Create(L"Model Viewer", 800, 600, 32, 85, false, false));
+	PApp pApp(core::IApplication::Create(L"Model Viewer", 800, 600, false, true));
 
 	{
 		typedef core::PTask PTask;
