@@ -5,12 +5,7 @@
 class CWindowResize
 {
 public:
-    CWindowResize(int x, int y):
-        width(x),
-        height(y)
-    {
-    }
-
+    CWindowResize(int x, int y): width(x),height(y) {}
     int	width;
     int height;
 };
@@ -25,14 +20,10 @@ namespace core
     class IApplication
     {
     protected:
-        IApplication()
-        {
-        }
+		IApplication(){}
 
     public:
-        virtual ~IApplication()
-        {
-        }
+		virtual ~IApplication() {}
         virtual void			addTask(PTask pTask) = 0;
         virtual void			Run() = 0;
         virtual bool			update() = 0;
@@ -40,7 +31,7 @@ namespace core
         virtual WindowHandle	getWindowHandle() const = 0;
 
         static IApplication		*Create();
-        static IApplication		*Create(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen);
+        static IApplication		*Create(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen, bool resize_enable = true);
         static IApplication		*Create(WindowHandle hParentWindow);
 
         static IApplication		*Get();

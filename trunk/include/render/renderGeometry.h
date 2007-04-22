@@ -323,14 +323,17 @@ namespace render
 		std::vector<byte> data;
 		io::CFileSystem& fs = io::TheFileSystem::Get();
 		io::PReadStream in = fs.findFile(xml_filename);
-		unsigned int size = in->getSize();
-		io::StreamToVector(data, in);
+		if (in && in->getSize() > 0)
+		{
+			unsigned int size = in->getSize();
+			io::StreamToVector(data, in);
 
-		TiXmlDocument xml;//( xml_filename );
-		xml.Parse((const char*)&(data[0]));
-		//if ( !xml.LoadFile() ) return;
+			TiXmlDocument xml;//( xml_filename );
+			xml.Parse((const char*)&(data[0]));
+			//if ( !xml.LoadFile() ) return;
 
-		loadGeomDataFromXmlEl( xml.FirstChild( "mesh" ), vb, ib );
+			loadGeomDataFromXmlEl( xml.FirstChild( "mesh" ), vb, ib );
+		}
 	}
 
 
@@ -470,14 +473,32 @@ namespace render
 			m_spImpl->render(ePrimType, 0, 0, nPrimitiveCount*4, 6*nStartPrimitive, nPrimitiveCount );
 		}
 
+		void loadFromXML(const std::string& filename)
+		{
+
+		}
+
+		void loadFromBinary(const std::string& filename)
+		{
+
+		}
+
 		void load( const std::string& filename )
 		{
 			std::vector<byte> data;
 			io::CFileSystem& fs = io::TheFileSystem::Get();
 
+			bool use_binary = false;
+
 			//first try to find binary file
 			std::string bin_filename = filename + ".mesh";
 			io::PReadStream bin_in = fs.findFile(bin_filename);
+			if (!bin_in)
+			{
+				bin_filename = io::helpers::getFileNameWithoutExtension(filename);
+				bin_filename += ".mesh";
+				bin_in = fs.findFile(bin_filename);
+			}
 
 			bool loaded = false;
 
@@ -516,10 +537,13 @@ namespace render
 
 		void unlockVB()
 		{
-			const size_t nVertexSize = sizeof(Vertex);
-			const size_t nSize = m_vVertexes.size() * nVertexSize;
-			m_spImpl->updateVB(&m_vVertexes[0], nSize, nVertexSize);
-			m_bChanged = true;			
+			if (!m_vVertexes.empty())
+			{
+				const size_t nVertexSize = sizeof(Vertex);
+				const size_t nSize = m_vVertexes.size() * nVertexSize;
+				m_spImpl->updateVB(&m_vVertexes[0], nSize, nVertexSize);
+				m_bChanged = true;
+			}
 		}
 
 		Indexes& lockIB(){return m_vIndexes;}
@@ -527,7 +551,8 @@ namespace render
 
 		void unlockIB() 
 		{
-			m_spImpl->updateIB(&m_vIndexes[0], m_vIndexes.size()*sizeof(unsigned short));
+			if (!m_vIndexes.empty())
+				m_spImpl->updateIB(&m_vIndexes[0], m_vIndexes.size()*sizeof(unsigned short));
 		}
 
 		int getIndexNum() const					{ return (int)m_vIndexes.size(); }

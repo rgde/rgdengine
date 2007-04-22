@@ -1,8 +1,5 @@
 #pragma once
 
-#include <string>
-#include <map>
-
 class WaveFile;
 
 // This is a singleton factory that manages .wav file memory.

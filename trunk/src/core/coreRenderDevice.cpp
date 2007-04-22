@@ -31,11 +31,18 @@ namespace core
 		SRenderDeviceInfo()
 		{
 			m_bWindowed = true;
-			m_DepthStencilFormat = D3DFMT_UNKNOWN;
-			m_BackBufferFormat = D3DFMT_UNKNOWN;
+			m_DepthStencilFormat = D3DFMT_D24S8;
+			m_BackBufferFormat = D3DFMT_X8R8G8B8;
 			m_nRefreshRate = 0;
 			m_VertexProcessingMode = 0;
 			VSync = false;
+
+			m_ClearColor = math::Color(100,100,100,255);
+
+			width = 640;
+			height = 480;
+
+			m_VertexProcessingMode = D3DCREATE_HARDWARE_VERTEXPROCESSING;
 		}
 
 		SRenderDeviceInfo(bool bWindowed, D3DFORMAT DepthStencilFormat,
@@ -65,11 +72,13 @@ namespace core
 
 	class CDXRenderDevice : public IRenderSystem, public event::CSender
 	{
+		mutable bool m_is_first_frame;
 	public:
 		CDXRenderDevice(HWND hwnd)
 			: 	m_pD3D(NULL),
 				m_pd3dDevice(NULL),
-				m_hWnd(hwnd)
+				m_hWnd(hwnd),
+				m_is_first_frame(true)
 		{
 			subscribe<CWindowResize>(&CDXRenderDevice::onWindowResizeEvent);
 			init(hwnd);
@@ -81,7 +90,6 @@ namespace core
 			::render::TheDevice::Destroy(); // here onLost calling
 			::render::TheLine2dManager::Destroy();
 			::render::Line3dManager::Destroy();
-			//::render::TheSpriteManager::Destroy();
 			::render::TheRenderManager::Destroy();
 
 			::render::IEffect::ClearAll();
@@ -145,7 +153,14 @@ namespace core
 			if( NULL == m_pd3dDevice )
 			    return;
 
-			HRESULT hr = m_pd3dDevice->Present( NULL, NULL, NULL, NULL );
+			if (!m_is_first_frame)
+			{
+				// Present the backbuffer contents to the display
+				HRESULT hr = m_pd3dDevice->Present( NULL, NULL, NULL, NULL );
+				//if (hr == D3DERR_DEVICELOST) - сделать проверки на потерю девайса и т.д.
+			}
+
+			m_is_first_frame = false;
 
 			if (g_pDefaultColorTarget)
 				V(g_pd3dDevice->SetRenderTarget(0, g_pDefaultColorTarget));	// restore backbuffer as target
@@ -155,12 +170,9 @@ namespace core
 			// set default viewport
 			V(g_pd3dDevice->SetViewport(&g_DefaultViewport));
 
-			// Clear the backbuffer to a blue color
-            //->
+			// Clear the backbuffer
             math::Color color = render::TheDevice::Get().getClearColor();
             V(m_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(color.a, color.r, color.g, color.b), 1.0f, 0 ));
-			//V(m_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(m_ClearColor.a, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b), 1.0f, 0 ));
-            //-<
 			
 			// Begin the scene
 			if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
@@ -170,11 +182,6 @@ namespace core
 			    // End the scene
 			    V(m_pd3dDevice->EndScene());
 			}
-		
-			// Present the backbuffer contents to the display
-			//HRESULT hr = m_pd3dDevice->Present( NULL, NULL, NULL, NULL );
-			//if (hr == D3DERR_DEVICELOST) - сделать проверки на потерю девайса и т.д.
-
 		}
 
 		inline D3DFORMAT getBackBufferFormat(const std::string& strColorBufferFormat)
@@ -248,8 +255,9 @@ namespace core
 
 			if(!base::loadXml(strConfigName, XmlConfig))
 			{
-				base::lerr << "readRenderDeviceParameters(): Can't open config file: \""<<strConfigName<<"\".";
-				exit(1);
+				base::lwrn << "readRenderDeviceParameters(): Can't open config file: \""<<strConfigName<<"\"";
+				base::lwrn << "Using default settings";
+				return deviceInfo;
 			}
 
 			TiXmlHandle hConfigHandle(&XmlConfig);
@@ -344,6 +352,11 @@ namespace core
 				return false;
 			}
 
+			RECT rc;
+			GetClientRect(m_hWnd, &rc);
+			unsigned int width = rc.right - rc.left;
+			unsigned int height = rc.bottom - rc.top;
+
 			m_info = DeviceInfo;
 			D3DPRESENT_PARAMETERS d3dpp; 
 			ZeroMemory( &d3dpp, sizeof(d3dpp) );
@@ -351,8 +364,8 @@ namespace core
 			if(!DeviceInfo.m_bWindowed)
 			{
 				d3dpp.Windowed = FALSE;               // Window mode (fullscreen).
-				d3dpp.BackBufferWidth = DeviceInfo.width;
-				d3dpp.BackBufferHeight = DeviceInfo.height;
+				d3dpp.BackBufferWidth = width;
+				d3dpp.BackBufferHeight = height;
 				d3dpp.FullScreen_RefreshRateInHz = DeviceInfo.m_nRefreshRate;
 			}
 			else
