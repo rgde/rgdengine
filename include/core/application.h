@@ -2,9 +2,8 @@
 
 #include "event/event.h"
 
-class CWindowResize
+struct CWindowResize
 {
-public:
     CWindowResize(int x, int y): width(x),height(y) {}
     int	width;
     int height;
@@ -31,8 +30,8 @@ namespace core
         virtual WindowHandle	getWindowHandle() const = 0;
 
 		static IApplication		*Create(const std::wstring& window_name = L"");
-        static IApplication		*Create(const std::wstring& window_name, int Width, int Height, bool Fullscreen, bool resize_enable = true);
-        static IApplication		*Create(WindowHandle hParentWindow);
+        static IApplication		*Create(const std::wstring& window_name, int width, int height, bool fullscreen, bool resize_enable = true);
+        static IApplication		*Create(WindowHandle parent_window);
 
         static IApplication		*Get();
     };
