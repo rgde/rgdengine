@@ -357,6 +357,9 @@ namespace core
 			unsigned int width = rc.right - rc.left;
 			unsigned int height = rc.bottom - rc.top;
 
+			width -= DeviceInfo.m_bWindowed ? (GetSystemMetrics(SM_CXDLGFRAME) << 1) : 0;
+			height -= DeviceInfo.m_bWindowed ? ((GetSystemMetrics(SM_CYDLGFRAME) << 1) + GetSystemMetrics(SM_CYCAPTION)) : 0;
+
 			m_info = DeviceInfo;
 			D3DPRESENT_PARAMETERS d3dpp; 
 			ZeroMemory( &d3dpp, sizeof(d3dpp) );
