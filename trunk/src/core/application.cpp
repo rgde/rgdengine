@@ -80,7 +80,7 @@ namespace core
 		virtual ~ApplicationImpl();
 
 		void init(WindowHandle hParent);
-		void init(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen, bool resize_enable);
+		void init(std::wstring Name, int Width, int Height, bool Fullscreen, bool resize_enable);
 
 		virtual void Run();
 		virtual bool update();
@@ -289,39 +289,44 @@ namespace core
 		return false;
 	}
 
-	IApplication* IApplication::Create()
+	IApplication* IApplication::Create(const std::wstring& window_name)
 	{
 		if ( 0 != gs_pApplication) return gs_pApplication;
 
+		std::wstring strName = window_name.empty() ? L"RGDE Window" : window_name;
+		int  nWidth = 640;
+		int  nHeight = 480;
+		bool bFullscreen = false;
 
 		TiXmlDocument XmlConfig;
 
 		if(!base::loadXml("EngineConfig.xml", XmlConfig))
 		{
-			base::lerr << "IApplication::Create(): Can't load config file: \"EngineConfig.xml\"";
-			exit(1);
+			base::lwrn << "IApplication::Create(): Can't load config file: \"EngineConfig.xml\"";
+			base::lwrn << "Using default settings.";			
+		}
+		else
+		{
+			TiXmlHandle hConfigHandle(&XmlConfig);
+			TiXmlHandle pWindowNode = hConfigHandle.FirstChildElement("Engine").FirstChildElement("Window");//.FirstChildElement().Element();
+
+			std::string ansi_name = base::safeReadValue<std::string>(pWindowNode, "name", "");
+			strName = ansi_name.empty() ? strName : std::wstring(ansi_name.begin(), ansi_name.end());
+			nWidth = base::safeReadValue<int>(pWindowNode, "width", 640);
+			nHeight = base::safeReadValue<int>(pWindowNode, "height", 480);
+			bFullscreen = base::safeReadValue<bool>(pWindowNode, "Fullscreen", 0);
 		}
 
-		TiXmlHandle hConfigHandle(&XmlConfig);
-		TiXmlHandle pWindowNode = hConfigHandle.FirstChildElement("Engine").FirstChildElement("Window");//.FirstChildElement().Element();
-
-		std::string strName = base::safeReadValue<std::string>(pWindowNode, "name", "RGDE Window");
-		int  nWidth = base::safeReadValue<int>(pWindowNode, "width", 640);
-		int  nHeight = base::safeReadValue<int>(pWindowNode, "height", 480);
-		int  nColorDepth = base::safeReadValue<int>(pWindowNode, "bpp", 32);
-		int  nDisplayFrequency = base::safeReadValue<int>(pWindowNode, "RefreshRate", 85);
-		bool bFullscreen = base::safeReadValue<bool>(pWindowNode, "Fullscreen", 0);;
-
-		return Create(std::wstring(strName.begin(), strName.end()), nWidth, nHeight, nColorDepth, nDisplayFrequency, bFullscreen);
+		return Create(std::wstring(strName.begin(), strName.end()), nWidth, nHeight, bFullscreen);
 	}
 
-	IApplication* IApplication::Create(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen, bool resize_enable)
+	IApplication* IApplication::Create(const std::wstring& Name, int Width, int Height, bool Fullscreen, bool resize_enable)
 	{
 		if ( 0 != gs_pApplication)
 			return gs_pApplication;
 
 		ApplicationImpl* pApp = new ApplicationImpl();
-		pApp->init(Name, Width, Height, ColorDepth, DisplayFrequency, Fullscreen, resize_enable);
+		pApp->init(Name, Width, Height, Fullscreen, resize_enable);
 	
 		return pApp;
 	}
@@ -455,7 +460,7 @@ namespace core
 		::UpdateWindow(Handle());
 	}
 
-	void ApplicationImpl::init(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen, bool resize_enable)
+	void ApplicationImpl::init(std::wstring Name, int Width, int Height, bool Fullscreen, bool resize_enable)
 	{
 		// Styles and position
 		dword Style;

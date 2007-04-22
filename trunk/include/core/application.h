@@ -30,8 +30,8 @@ namespace core
         virtual void			close() = 0;
         virtual WindowHandle	getWindowHandle() const = 0;
 
-        static IApplication		*Create();
-        static IApplication		*Create(std::wstring Name, int Width, int Height, int ColorDepth, int DisplayFrequency, bool Fullscreen, bool resize_enable = true);
+		static IApplication		*Create(const std::wstring& window_name = L"");
+        static IApplication		*Create(const std::wstring& window_name, int Width, int Height, bool Fullscreen, bool resize_enable = true);
         static IApplication		*Create(WindowHandle hParentWindow);
 
         static IApplication		*Get();
