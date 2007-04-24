@@ -77,14 +77,15 @@ Application::Application()
 	update();
 	pVertexBuffer = NULL;
 
-	m_device.get_dx_device()->SetRenderState(D3DRS_ZENABLE,  TRUE ); // Z-Buffer (Depth Buffer)
-	m_device.get_dx_device()->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); // Disable Backface Culling
-	m_device.get_dx_device()->SetRenderState(D3DRS_LIGHTING, FALSE); // Disable Light
-	m_device.get_dx_device()->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE); // Disable Light
-	m_device.get_dx_device()->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE); // Disable Light
+	IDirect3DDevice9* dev = m_device.get_dx_device();
 
+	dev->SetRenderState(D3DRS_ZENABLE,  TRUE ); // Z-Buffer (Depth Buffer)
+	dev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); // Disable Backface Culling
+	dev->SetRenderState(D3DRS_LIGHTING, FALSE); // Disable Light
+	dev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE); // Disable Light
+	dev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE); // Disable Light
 
-	m_device.get_dx_device()->CreateVertexBuffer( 24*sizeof(tVertex),0, D3DFVF_CUSTOMVERTEX,
+	dev->CreateVertexBuffer( 24*sizeof(tVertex),0, D3DFVF_CUSTOMVERTEX,
 		D3DPOOL_DEFAULT, &pVertexBuffer, NULL );
 	unsigned char *pVertices = NULL;
 
@@ -92,7 +93,8 @@ Application::Application()
 	memcpy( pVertices, cube, sizeof(cube) );
 	pVertexBuffer->Unlock();
 
-	m_cam_pos = D3DXVECTOR3(-5, 0, 0);
+	D3DXVECTOR3 cam_pos(-5, 0, 0);
+	m_camera.lookAt(cam_pos, (D3DXVECTOR3(1,0,0) + cam_pos), D3DXVECTOR3(0,1,0));
 }
 
 Application::~Application()
@@ -111,36 +113,27 @@ void Application::run()
 			static float rotqube = 0.0f;
 			rotqube  += 0.9f;
 
-
-			D3DXMATRIX matWorld;			// Create The World Matrix
-			D3DXMATRIX matTranslation;		// Create a Translation Matrix
+			//D3DXMATRIX matWorld;			// Create The World Matrix
+			//D3DXMATRIX matTranslation;		// Create a Translation Matrix
 			//D3DXMATRIX matRotX;				// Create X Axis Rotation Matrix
-			D3DXMATRIX matRotY;				// Create Y Axis Rotation Matrix
-
-			D3DXMatrixTranslation( &matTranslation, 0.0f, 0.0f, 0.0f ); 
-
+			//D3DXMATRIX matRotY;				// Create Y Axis Rotation Matrix
+			//D3DXMatrixTranslation( &matTranslation, 0.0f, 0.0f, 0.0f ); 
 			//D3DXMatrixRotationZ(&matRotX, D3DXToRadian(g_rot_x));		// Rotate In X Direction
 			//D3DXMatrixRotationY(&matRotY, D3DXToRadian(g_rot_y));		// Rotate In Z Direction
+			//D3DXMatrixRotationYawPitchRoll(&matRotY, D3DXToRadian(g_rot_y), 0, D3DXToRadian(g_rot_x));
+			//matWorld = matTranslation;
 
-			D3DXMatrixRotationYawPitchRoll(&matRotY, D3DXToRadian(g_rot_y), 0, D3DXToRadian(g_rot_x));
-
-			matWorld = matTranslation;
-
-			D3DXMATRIX matView;
-			D3DXMatrixLookAtLH(&matView,	// Update View Matrix
-				&D3DXVECTOR3(0,0,0)/*m_cam_pos*/,	
-				&D3DXVECTOR3(1,0,0),	
-				&D3DXVECTOR3(0,1,0) );
-
-
-			D3DXMATRIX matCamTranslation;
-			D3DXMatrixTranslation( &matCamTranslation, -m_cam_pos.x, -m_cam_pos.y, -m_cam_pos.z ); 
+			//D3DXMATRIX matCamTranslation;
+			//D3DXMatrixTranslation( &matCamTranslation, -m_cam_pos.x, -m_cam_pos.y, -m_cam_pos.z ); 
 
 			//m_arc_ball.get_matrix()
 
-			matView = m_arc_ball.get_matrix() * matCamTranslation *  matView;//(matRotY/* * matRotX*/) * matCamTranslation * matView;
+			//matView = m_arc_ball.get_matrix() * matCamTranslation *  matView;//(matRotY/* * matRotX*/) * matCamTranslation * matView;
 
-			m_device.get_dx_device()->SetTransform( D3DTS_VIEW, &(matView) );
+			D3DXMATRIX matWorld;
+			D3DXMatrixIdentity(&matWorld);
+
+			m_device.get_dx_device()->SetTransform( D3DTS_VIEW, &m_camera.getViewMatrix() );
 			m_device.get_dx_device()->SetTransform( D3DTS_WORLD, &matWorld );	// Set The Transformation
 
 			m_device.begin();
@@ -204,7 +197,7 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 
 			int xPos = LOWORD(lparam); 
 			int yPos = HIWORD(lparam); 
-			m_arc_ball.click(xPos, yPos);
+			//m_arc_ball.click(xPos, yPos);
 		}
 		return 0;
 
@@ -232,8 +225,9 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 	case WM_MOUSEWHEEL:
 		{
 			float delta = (short)HIWORD((DWORD)wparam);//120.0f;
-			delta /= 30.0f;
-			m_cam_pos += D3DXVECTOR3(0.01f,0,0)*delta;
+			delta /= 80.0f;
+			m_camera.goForward(-delta);
+			//m_cam_pos += D3DXVECTOR3(0.01f,0,0)*delta;
 		}
 		break;
 
@@ -249,9 +243,12 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 				int dx = xPos - old_x;
 				int dy = yPos - old_y;
 
-				g_rot_y -= dx/10.0f;
-				g_rot_x += dy/10.0f;
-			}		
+				m_camera.rotateRight(-dx/100.0f);
+				m_camera.rotateUp(dy/100.0f);
+
+				//g_rot_y -= dx/10.0f;
+				//g_rot_x += dy/10.0f;
+			}
 
 			old_x = xPos;
 			old_y = yPos;
@@ -268,10 +265,8 @@ void Application::resize_scene(unsigned int width, unsigned int height)
 		height=1;										// Making Height Equal One
 	}
 
-	D3DXMATRIX projection_matrix;
-	D3DXMatrixPerspectiveFovLH(&projection_matrix, 45.0f, (float)width/(float)height, 0.1f, 100.0f );
-	m_device.get_dx_device()->SetTransform( D3DTS_PROJECTION, &(D3DMATRIX)projection_matrix );
-	D3DXMatrixIdentity(&projection_matrix);
+	m_camera.setProjection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
+	m_device.get_dx_device()->SetTransform( D3DTS_PROJECTION, &m_camera.getProjMatrix()/*D3DMATRIX)projection_matrix */);
 }
 
 bool Application::do_events()
