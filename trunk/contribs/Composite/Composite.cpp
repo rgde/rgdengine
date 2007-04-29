@@ -11,19 +11,33 @@ namespace meta
 	namespace details
 	{
 		typedef std::wstring string;
+		struct type_information;
 
 		struct factory
 		{ 
-			typedef std::map<std::string type_names, type_information*> types_map;
+			typedef std::map<std::string, type_information*> types_map;
 			types_map types;
 
-			void register_type(type_information& ti)
-			{
-				types[ti.type_name] = &ti;
-			}
-			
-
+			void register_type(type_information& ti);
 		};
+
+		struct type_information
+		{
+			const type_info& info;
+			const std::string type_name;
+			factory::types_map parrent_types;
+
+			/// name = custom name. may differ from real type name.
+			type_information(const type_info& i, const std::string& name) 
+				: info(i), type_name(name){}
+
+			virtual ~type_information(){}
+		};
+
+		void factory::register_type(type_information& ti)
+		{
+			types[ti.type_name] = &ti;
+		}
 
 		struct abstract_property
 		{
@@ -128,18 +142,7 @@ namespace meta
 
 
 
-	struct type_information
-	{
-		const type_info& info;
-		const std::string type_name;
-		types_map parrent_types;
 
-		/// name = custom name. may differ from real type name.
-		type_information(const type_info& i, const std::string& name) 
-			: info(i), type_name(name){}
-
-		virtual ~type_information(){}
-	};
 
 	namespace details
 	{
