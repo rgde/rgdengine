@@ -39,8 +39,13 @@ namespace game
 	class CGame: public event::CListener
 	{
 	public:
+        //инициализация из xml файла
 		void init(const std::string&);
-		
+
+        //или динамическое создание уровней игры
+        void addLevel(const std::string &name, const std::string &nextlevel);
+        void addLevelTypeToCreate(const std::string &name, const std::string& type_name);
+
 		//узнать имя текущего уровня
 		std::string getCurrentLevel() const {return m_strCurrentLevel;} 
 
@@ -57,7 +62,6 @@ namespace game
 		void unregisterDynamicObject(IDynamicObject*); //РАЗрегестрировать динамический объект
 
 	private:
-		void addLevel(CLevel*);
 		CLevel* getLevel(std::string);
 	
 	protected:

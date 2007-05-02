@@ -15,7 +15,22 @@ int main()
 
 		pApp->addTask(PTask(new CRenderTask(*pApp, 0)));
 		pApp->addTask(PTask(new CInputTask(*pApp, 1, false)));
-		pApp->addTask(PTask(new CGameTask(*pApp, 2, "gameconfig.xml")));
+        //->
+		//pApp->addTask(PTask(new CGameTask(*pApp, 2, "gameconfig.xml")));
+        pApp->addTask(PTask(new CGameTask(*pApp, 2)));
+
+        game::TheGame::Get().addLevel("intro", "menu");
+        game::TheGame::Get().addLevelTypeToCreate("intro", "AviLevelObject");
+
+        game::TheGame::Get().addLevel("menu", "play");
+        game::TheGame::Get().addLevelTypeToCreate("menu", "MenuLevelObject");
+
+        game::TheGame::Get().addLevel("play", "menu");
+        game::TheGame::Get().addLevelTypeToCreate("play", "PlayLevelObject");
+        game::TheGame::Get().addLevelTypeToCreate("play", "MapLevelObject");
+
+        game::TheGame::Get().setCurrentLevel("intro");
+        //-<
 
 		game::effects::SnowEffect background_effect;
 
