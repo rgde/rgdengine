@@ -23,15 +23,11 @@ namespace render
 		render::PTexture pTexture;			///> јдрес текстуры
 		math::Color color;					///> ÷вет
 
-		SSprite(){}
+		SSprite();
 		SSprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
 			const math::Color& color_ = 0xffffffff,render::PTexture pTexture_ = render::PTexture(), 
 			float spin_ = 0, const math::Rect& rect_ = math::Rect(0, 0, 1, 1),			
-			unsigned long uPriority_ = 0 ) :
-		rect (rect_), pos (pos_), size (size_), spin (spin_), uPriority (uPriority_), 
-			pTexture (pTexture_), color (color_)
-		{
-		}
+			unsigned long uPriority_ = 0 );
 	};
 
 	class CSpriteManager : public IDeviceObject, public IRendererable

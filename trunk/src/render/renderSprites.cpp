@@ -4,6 +4,20 @@
 
 namespace render
 {
+	//////////////////////////////////////////////////////////////////////////
+	SSprite::SSprite()	: spin(0), uPriority(0), rect(0, 0, 1, 1)
+	{
+	}
+
+	SSprite::SSprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
+		const math::Color& color_,render::PTexture pTexture_,
+		float spin_, const math::Rect& rect_,
+		unsigned long uPriority_) :
+	rect (rect_), pos (pos_), size (size_), spin (spin_), uPriority (uPriority_), 
+		pTexture (pTexture_), color (color_)
+	{
+	}
+	//////////////////////////////////////////////////////////////////////////
 	//-----------------------------------------------------------------------------------
 	CSpriteManager::CSpriteManager(int priority)
 		: m_cvScreenSize(800, 600),
