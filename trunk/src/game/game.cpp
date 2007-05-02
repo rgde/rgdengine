@@ -10,7 +10,9 @@ namespace game
 	//инициализаци€
 	void CGame::init(const std::string& strXmlGameConfig)
 	{
-		//return;
+        //ничего не делаем, если им€ конфига не задано
+        if (strXmlGameConfig == "")
+            return;
 
 		std::string fname = "Media/" + strXmlGameConfig;
 		TiXmlDocument doc(fname);
@@ -45,7 +47,7 @@ namespace game
 
 				//добавить уровень
 				CLevel* pLevel = new game::CLevel(name,nextlevel);
-				m_listLevels.push_back(pLevel);
+				addLevel(name,nextlevel);
 
 				//прочитать список объектов, которые должен создать уровень	
 				TiXmlElement *levelobject = level->FirstChildElement("levelobject");
@@ -63,6 +65,36 @@ namespace game
 			setCurrentLevel(strCurrentLevel);
 		}
 	}
+
+    void CGame::addLevel(const std::string &name, const std::string &nextlevel)
+    {
+        //убедимс€, что уровней с таким именем нет
+        if (getLevel(name) != 0)
+        {
+            //... ругаемс€ в лог и выходим из функции (не добавл€€ нового уровн€)
+            return;
+        }
+
+        //добавл€ем уровень
+		CLevel* pLevel = new game::CLevel(name,nextlevel);
+		m_listLevels.push_back(pLevel);
+    }
+
+    //написана отдельна€ функци€, лишь бы не давать доступа к
+    //укзателю на CLevel: у программиста есть доступ только по имени уровн€
+    void CGame::addLevelTypeToCreate(const std::string &name, const std::string& type_name)
+    {
+        CLevel *pLevel = getLevel(name);
+
+        //если такого уровн€ нет
+        if (!pLevel)
+        {
+            //... ругаемс€ в лог и выходим из функции
+            return;
+        }
+
+        pLevel->callFunction("AddTypeToCreate", type_name);
+    }
 
 	CGame::CGame(): m_bChangeLevel(false)
 	{
@@ -89,6 +121,12 @@ namespace game
 		CLevel* pCurrentLevel = getLevel(m_strCurrentLevel);
 		if (0 != pCurrentLevel)
 			pCurrentLevel->leave();
+
+        while (m_listLevels.begin() != m_listLevels.end())
+        {
+            delete *m_listLevels.begin();
+            m_listLevels.erase(m_listLevels.begin());
+        }
 	}	
 	
 	void CGame::onCloseGame(CCloseGameEvent)
@@ -187,12 +225,6 @@ namespace game
 			throw std::exception("List of DynamicObjects in CGame corrupted!");
 #endif
 		m_listDynamicObjects.remove(pObject);
-	}
-
-
-	void CGame::addLevel(CLevel* pLevel)
-	{
-		m_listLevels.push_back(pLevel);
 	}
 
 	CLevel* CGame::getLevel(std::string strName)
