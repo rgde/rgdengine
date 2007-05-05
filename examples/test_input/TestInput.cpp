@@ -23,6 +23,7 @@ TestInput::TestInput():
 
     //биндим функции для перехвата событий
     m_keyupQuit        += boost::bind(&TestInput::onQuit,          this);
+    m_trigPause        += boost::bind(&TestInput::onPause,         this, _1);
     m_raxisHorz        += boost::bind(&TestInput::onHorz,          this, _1);
     m_raxisVert        += boost::bind(&TestInput::onVert,          this, _1);
     m_btnPrimaryFire   += boost::bind(&TestInput::onPrimaryFire,   this, _1);
@@ -64,6 +65,18 @@ void TestInput::update (float dt)
 void TestInput::onQuit ()
 {
     core::IApplication::Get()->close();
+}
+
+void TestInput::onPause (bool pause)
+{
+    if (pause)
+    {
+        input::CInput::Get().SetMode(false);
+    }
+    else
+    {
+        input::CInput::Get().SetMode(true);
+    }
 }
 
 void TestInput::onHorz (int dx)

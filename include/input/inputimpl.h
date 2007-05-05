@@ -20,11 +20,12 @@ namespace input
         /////////////////////////////////////////////////
         // основные методы для работы с системой ввода //
         /////////////////////////////////////////////////
-        bool Init   (HWND hWnd, bool exclusive=false, bool foreground=true); //проинициализировать систему ввода
-        void Load   (const std::string &sXml);                               //загрузить раскладку
-        void Update ();                                                      //считать из буфера все события от устройств ввода
-        void Save   (std::string &sXml);                                     //сохранить раскладку
-        void Done   ();                                                      //завершить работу системы ввода
+        bool SetMode (bool exclusive=false, bool foreground=true);            //изменить режим работы устройств ввода
+        bool Init    (HWND hWnd, bool exclusive=false, bool foreground=true); //проинициализировать систему ввода
+        void Load    (const std::string &sXml);                               //загрузить раскладку
+        void Update  ();                                                      //считать из буфера все события от устройств ввода
+        void Save    (std::string &sXml);                                     //сохранить раскладку
+        void Done    ();                                                      //завершить работу системы ввода
 
         ////////////////////////////////
         // доступ к устройствам ввода //
@@ -57,6 +58,10 @@ namespace input
         CInputImpl& operator= (const CInputImpl&);
 
     private:
+        HWND m_hWnd;
+        bool m_exclusive;
+        bool m_foreground;
+
         bool initDXInput(HWND hWnd, bool exclusive, bool foreground);
         void doneDXInput();
 

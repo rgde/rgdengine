@@ -20,10 +20,11 @@ namespace input
         /////////////////////////////////
         // функции самой системы ввода //
         /////////////////////////////////
+        static bool SetMode (bool exclusive=false, bool foreground=true); //изменить режим работы устройств ввода
         static void LoadFromString (const std::string &sXml);      //загрузить раскладку
         static void LoadFromFile   (const std::string &sFileName); //загрузить раскладку
-        static void Update ();                        //считать из буфера все события от устройств ввода
-        static void Save   (std::string &sXml);       //сохранить раскладку
+        static void Update  ();                        //считать из буфера все события от устройств ввода
+        static void Save    (std::string &sXml);       //сохранить раскладку
 
         ////////////////////////////////
         // доступ к устройствам ввода //

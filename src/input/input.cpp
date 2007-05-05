@@ -45,6 +45,12 @@ namespace input
         m_pImpl.reset(pImpl);
     }
 
+    //изменить режим работы устройств ввода
+    bool CInput::SetMode (bool exclusive, bool foreground)
+    {
+        return Get().m_pImpl->SetMode(exclusive,foreground);
+    }
+
     //загрузить раскладку
     void CInput::LoadFromString (const std::string &sXml)
     {

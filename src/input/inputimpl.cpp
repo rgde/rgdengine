@@ -35,6 +35,26 @@ namespace input
     // основные методы для работы с системой ввода //
     /////////////////////////////////////////////////
 
+    //изменить режим работы устройств ввода
+    bool CInputImpl::SetMode (bool exclusive/*=false*/, bool foreground/*=true*/)
+    {
+        if (!m_bInit)
+            return false;
+
+        //убить старое подключение к устройствам ввода
+        doneDXInput();
+
+        //выполнить подключение к устройствам ввода с новыми настройками
+        if (!initDXInput(m_hWnd,exclusive,foreground))
+        {
+            //если не удалось, то подключится со старыми настройками
+            initDXInput(m_hWnd,m_exclusive,m_foreground);
+            return false;
+        }
+
+        return true;
+    }
+
     //проинициализировать систему ввода
     bool CInputImpl::Init (HWND hWnd, bool exclusive/*=false*/, bool foreground/*=true*/)
     {
@@ -623,6 +643,11 @@ namespace input
 
         //захватываем мышь
         m_pMouse->Acquire();
+
+        //запомним параметры инициализации
+        m_hWnd = hWnd;
+        m_exclusive = exclusive;
+        m_foreground = foreground;
 
         return true;
     }
