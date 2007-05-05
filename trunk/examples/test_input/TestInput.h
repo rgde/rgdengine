@@ -13,10 +13,11 @@ protected:
     void update (float dt);
 
 private:
-    void onQuit ();
-    void onHorz (int dx);
-    void onVert (int dy);
-    void onPrimaryFire (bool press);
+    void onQuit  ();
+    void onPause (bool pause);
+    void onHorz  (int dx);
+    void onVert  (int dy);
+    void onPrimaryFire   (bool press);
     void onSecondaryFire (bool press);
 
     input::CKeyUp        m_keyupQuit;
