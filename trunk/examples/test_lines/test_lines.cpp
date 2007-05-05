@@ -8,7 +8,7 @@ class HelloMessage :  public game::IDynamicObject
 {
 public:
 	HelloMessage() :  
-	  spApp(core::IApplication::Create(L"Test_Lines Example", 640, 480, 32, 85, false)),
+	  spApp(core::IApplication::Create(L"Test_Lines Example", 800, 600, false, false)),
 	  m_TrianglesManager(9)
 	{
 		spApp->addTask(core::PTask(new core::CRenderTask(*spApp, 1)));

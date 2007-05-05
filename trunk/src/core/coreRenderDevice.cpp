@@ -39,9 +39,6 @@ namespace core
 
 			m_ClearColor = math::Color(100,100,100,255);
 
-			width = 640;
-			height = 480;
-
 			m_VertexProcessingMode = D3DCREATE_HARDWARE_VERTEXPROCESSING;
 		}
 
@@ -65,8 +62,6 @@ namespace core
 		int m_nRefreshRate;
 		DWORD m_VertexProcessingMode;
 		math::Color m_ClearColor;
-		int width;
-		int height;
 		bool VSync;
 	};
 
@@ -162,13 +157,13 @@ namespace core
 
 			m_is_first_frame = false;
 
-			if (g_pDefaultColorTarget)
-				V(g_pd3dDevice->SetRenderTarget(0, g_pDefaultColorTarget));	// restore backbuffer as target
-			if (g_pDefaultDepthStencilTarget)
-				V(g_pd3dDevice->SetDepthStencilSurface(g_pDefaultDepthStencilTarget));	// else restore default depth-stencil as target
-			
-			// set default viewport
-			V(g_pd3dDevice->SetViewport(&g_DefaultViewport));
+			//if (g_pDefaultColorTarget)
+			//	V(g_pd3dDevice->SetRenderTarget(0, g_pDefaultColorTarget));	// restore backbuffer as target
+			//if (g_pDefaultDepthStencilTarget)
+			//	V(g_pd3dDevice->SetDepthStencilSurface(g_pDefaultDepthStencilTarget));	// else restore default depth-stencil as target
+			//
+			//// set default viewport
+			//V(g_pd3dDevice->SetViewport(&g_DefaultViewport));
 
 			// Clear the backbuffer
             math::Color color = render::TheDevice::Get().getClearColor();
@@ -264,8 +259,8 @@ namespace core
 			TiXmlHandle WindowNode = hConfigHandle.FirstChildElement("Engine").FirstChildElement("Window");
 			TiXmlHandle RenderDeviceNode = hConfigHandle.FirstChildElement("Engine").FirstChildElement("RenderDevice");
 
-			deviceInfo.width = base::safeReadValue<int>(WindowNode, "width", 640);
-			deviceInfo.height = base::safeReadValue<int>(WindowNode, "height", 480);
+			//deviceInfo.width = base::safeReadValue<int>(WindowNode, "width", 640);
+			//deviceInfo.height = base::safeReadValue<int>(WindowNode, "height", 480);
 
 			deviceInfo.m_nRefreshRate = base::safeReadValue<int>(WindowNode, "RefreshRate", 85);
 			deviceInfo.m_bWindowed = !base::safeReadValue<int>(WindowNode, "Fullscreen", 0);
@@ -323,6 +318,8 @@ namespace core
 				exit(1);//is it right?
 			}
 
+			return;
+
 			D3DCAPS9 caps;
 			m_pd3dDevice->GetDeviceCaps(&caps);
 
@@ -361,34 +358,60 @@ namespace core
 			//height -= DeviceInfo.m_bWindowed ? ((GetSystemMetrics(SM_CYBORDER) ) + GetSystemMetrics(SM_CYCAPTION)) : 0;
 
 			//width -= DeviceInfo.m_bWindowed ? (GetSystemMetrics(SM_CXDLGFRAME) * 2) : 0;
-			//height -= DeviceInfo.m_bWindowed ? ((GetSystemMetrics(SM_CYDLGFRAME) ) + GetSystemMetrics(SM_CYCAPTION)) : 0;
+			//height -= DeviceInfo.m_bWindowed ? ((GetSystemMetrics(SM_CYDLGFRAME)*2 ) + GetSystemMetrics(SM_CYCAPTION)) : 0;
+
+			//width = 10;
+			//height = 10;
+
 
 
 			m_info = DeviceInfo;
-			D3DPRESENT_PARAMETERS d3dpp; 
-			ZeroMemory( &d3dpp, sizeof(d3dpp) );
+			//D3DPRESENT_PARAMETERS d3dpp; 
+			//ZeroMemory( &d3dpp, sizeof(d3dpp) );
 
-			d3dpp.BackBufferWidth = width;
-			d3dpp.BackBufferHeight = height;
+			//d3dpp.BackBufferWidth = width;
+			//d3dpp.BackBufferHeight = height;
 
-			if(!DeviceInfo.m_bWindowed)
+			D3DPRESENT_PARAMETERS d3dpp=
 			{
-				d3dpp.Windowed = FALSE;               // Window mode (fullscreen).
-				d3dpp.FullScreen_RefreshRateInHz = DeviceInfo.m_nRefreshRate;
-			}
-			else
-				d3dpp.Windowed = TRUE; 
-			
-			if (DeviceInfo.VSync)
-				d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT; //SYNC ON
-			else
-				d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;	//VSYNC OFF		
+				width,			// Back Buffer Width
+				height,			// Back Buffer Height
+				D3DFMT_X8R8G8B8,		// Back Buffer Format (Color Depth)
+				1,				// Back Buffer Count (Double Buffer)
+				D3DMULTISAMPLE_4_SAMPLES/*D3DMULTISAMPLE_NONE*/,	// No Multi Sample Type
+				0,				// No Multi Sample Quality
+				D3DSWAPEFFECT_DISCARD,	// Swap Effect (Fast)
+				(HWND)m_hWnd,	// The Window Handle
+				TRUE,		// Windowed or Fullscreen
+				TRUE,			// Enable Auto Depth Stencil  
+				D3DFMT_D24S8,	// 16Bit Z-Buffer (Depth Buffer)
+				0,				// No Flags
+				D3DPRESENT_RATE_DEFAULT,   // Default Refresh Rate
+				D3DPRESENT_INTERVAL_IMMEDIATE	// Presentation Interval (vertical sync)
+			};
 
-			d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-			d3dpp.EnableAutoDepthStencil = TRUE;
-			d3dpp.AutoDepthStencilFormat = DeviceInfo.m_DepthStencilFormat;
-			d3dpp.BackBufferFormat = DisplayMode.Format;//DeviceInfo.m_BackBufferFormat;
-			d3dpp.hDeviceWindow = m_hWnd;
+			//if(!DeviceInfo.m_bWindowed)
+			//{
+			//	d3dpp.Windowed = FALSE;               // Window mode (fullscreen).
+			//	d3dpp.FullScreen_RefreshRateInHz = DeviceInfo.m_nRefreshRate;
+			//	d3dpp.BackBufferFormat = DisplayMode.Format;//DeviceInfo.m_BackBufferFormat;
+			//}
+			//else
+			//{
+			//	d3dpp.Windowed = TRUE; 
+			//	d3dpp.BackBufferFormat = DeviceInfo.m_BackBufferFormat;
+			//}
+			//
+			//if (DeviceInfo.VSync)
+			//	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT; //SYNC ON
+			//else
+			//	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;	//VSYNC OFF		
+
+			//d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+			//d3dpp.EnableAutoDepthStencil = TRUE;
+			//d3dpp.AutoDepthStencilFormat = DeviceInfo.m_DepthStencilFormat;
+			//
+			//d3dpp.hDeviceWindow = m_hWnd;
 
 			m_d3dpp = d3dpp;
 
@@ -410,6 +433,8 @@ namespace core
 					break;
 				}
 			}
+
+			m_pd3dDevice = NULL;
 
 			if(FAILED(m_pD3D->CreateDevice( AdapterToUse, DeviceType, m_hWnd,
 			                                    DeviceInfo.m_VertexProcessingMode, //TODO:

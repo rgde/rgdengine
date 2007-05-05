@@ -479,12 +479,13 @@ namespace core
 		}
 		else
 		{
+			Style = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
-			if (resize_enable)
-				// | WS_SIZEBOX ;//WS_OVERLAPPED | WS_BORDER | WS_CAPTION | WS_SYSMENU;
-				Style = WS_OVERLAPPEDWINDOW;
-			else
-				Style = WS_CAPTION | WS_POPUP | WS_SYSMENU | WS_MINIMIZEBOX;
+			//if (resize_enable)
+			//	// | WS_SIZEBOX ;//WS_OVERLAPPED | WS_BORDER | WS_CAPTION | WS_SYSMENU;
+			//	Style = WS_OVERLAPPEDWINDOW;
+			//else
+			//	Style = WS_CAPTION | WS_POPUP | WS_SYSMENU | WS_MINIMIZEBOX;
 
 			ExStyle = 0;
 			x = (GetSystemMetrics(SM_CXSCREEN) / 2) - (Width / 2);
@@ -494,15 +495,15 @@ namespace core
 		// Window rectangle
 		Forms::Drawing::Rectangle Rect(y, x, x + Width, y + Height);
 		
-		if (!Fullscreen)
-			AdjustWindowRect(&Rect, Style, false);
+		/*if (!Fullscreen)
+			AdjustWindowRect(&Rect, Style, false);*/
 		
 		// Register window class
 		//RegisterCls(Name.c_str(), CS_HREDRAW | CS_VREDRAW | CS_OWNDC, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
 		
 		
-		RegisterCls(Name.c_str(), CS_HREDRAW | CS_VREDRAW, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
-		//RegisterCls(Name.c_str(), CS_DBLCLKS, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
+		//RegisterCls(Name.c_str(), CS_HREDRAW | CS_VREDRAW, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
+		RegisterCls(Name.c_str(), NULL, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
 
 		// Create window
 		CreateWnd(NULL, Name.c_str(), Name.c_str(), Style, ExStyle, 0, Rect);

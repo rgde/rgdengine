@@ -9,7 +9,7 @@ namespace rgde
 	{
 		namespace windows
 		{
-			class	window
+			class window
 			{
 			public:		
 				explicit window(const std::wstring& title = L"Window");

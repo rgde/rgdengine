@@ -85,7 +85,9 @@ namespace render
 	}
 
 	void CTextureImpl::createTextureFromFile(const std::string& strFileName)
-	{		
+	{	
+		if (NULL == g_pd3dDevice) return;
+
 		std::vector<byte> data;
 		io::PReadStream in = findTexture(strFileName);
 

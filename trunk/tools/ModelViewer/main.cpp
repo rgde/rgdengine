@@ -11,13 +11,15 @@ int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 		PTask game_task(new core::CGameTask(*pApp, 1));
 		PTask render_task(new core::CRenderTask(*pApp, 2));
 
-		pApp->addTask(input_task);
-		pApp->addTask(game_task);
-		pApp->addTask(render_task);
+		{
+			pApp->addTask(input_task);
+			pApp->addTask(game_task);
+			pApp->addTask(render_task);
 
-		ModelViewer r;
+			ModelViewer r;
 
-		pApp->Run();
+			pApp->Run();
+		}
 	}
 
 	return 0;

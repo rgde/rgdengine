@@ -124,8 +124,10 @@ namespace rgde
 					style,
 					pos[0],//CW_USEDEFAULT,//0
 					pos[1],//CW_USEDEFAULT,//0
-					s[0]/*640*/+2*GetSystemMetrics(SM_CXSIZEFRAME),
-					s[1]/*480*/+2*GetSystemMetrics(SM_CYSIZEFRAME) + GetSystemMetrics(SM_CYCAPTION),
+					s[0],
+					s[1],
+					//s[0]/*640*/+2*GetSystemMetrics(SM_CXSIZEFRAME),
+					//s[1]/*480*/+2*GetSystemMetrics(SM_CYSIZEFRAME) + GetSystemMetrics(SM_CYCAPTION),
 					m_parent_hwnd,
 					NULL,
 					NULL,/* hInstance: Windows NT/2000/XP: This value is ignored. */

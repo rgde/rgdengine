@@ -180,7 +180,7 @@ namespace render
 
 	void CMaterial::load(const std::string& fileName)
 	{
-		n_file_name = fileName;
+		m_file_name = fileName;
 		base::lmsg << "loading material: " << "\"" << fileName << "\"";
 
 		TiXmlDocument mat;
