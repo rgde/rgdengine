@@ -158,7 +158,7 @@ int main ()
     //log << "test" << std::endl << "a\nb" << std::endl; 
 
     file_device   dev1("test.txt");
-    screen_device dev2;
+    //screen_device dev2;
     output_device dev3;
 
     typedef boost::iostreams::filtering_stream<boost::iostreams::output> log_stream;

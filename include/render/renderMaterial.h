@@ -21,7 +21,6 @@ namespace render
 		class CMaterialMap
 		{
 		public:
-
 			enum EDefaultTexture
 			{
 				Black            = 1,
@@ -117,6 +116,6 @@ namespace render
 		math::Color     m_emissive;       // Emissive color RGB 
 		float           m_fPower;         // Sharpness if specular highlight
 
-		std::string		n_file_name;
+		std::string		m_file_name;
 	};
 }

@@ -20,7 +20,10 @@ namespace render
 			const math::Color& color = 0xffffffff );
 
 		void addBox(const math::Matrix44f& m, const math::AABoxf& box,
-			const math::Color& color = 0xffffffff );		
+			const math::Color& color = 0xffffffff );
+
+		void addBox(const math::Vec3f& size, const math::Color& color = 0xffffffff );
+		void addBox(const math::AABoxf& box, const math::Color& color = 0xffffffff );
 
 		void addDirection( const math::Matrix44f& m, const math::Point3f& dir,
 			const math::Color& color = 0xffffffff );

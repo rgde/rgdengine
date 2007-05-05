@@ -70,6 +70,91 @@ namespace render
 		m_pVertices->push_back(Point(vPoint2, color));
 	}
 	//-----------------------------------------------------------------------------------
+	void CLine3dManager::addBox(const math::Vec3f& size, const math::Color& color)
+	{
+		static const size_t nVerts = 8;
+		static math::Vec3f box[nVerts];
+		static bool isVertexesCreated	= false;
+
+		if (!isVertexesCreated)
+		{
+			isVertexesCreated = true;
+
+			box[0] = math::Vec3f(-1, 1, -1);
+			box[1] = math::Vec3f(-1, 1, 1);
+			box[2] = math::Vec3f(1, 1, 1);
+			box[3] = math::Vec3f(1, 1, -1);
+
+			box[4] = math::Vec3f(-1, -1, -1);
+			box[5] = math::Vec3f(-1, -1, 1);
+			box[6] = math::Vec3f(1, -1, 1);
+			box[7] = math::Vec3f(1, -1, -1);
+		}
+
+		static math::Point3f size_box[nVerts];
+		for (unsigned i = 0; i < nVerts; ++i)
+		{
+			const math::Vec3f &v= box[i];			
+			size_box[i] = math::Point3f(v[0] * size[0], v[1] * size[1], v[2] * size[2]);
+		}
+
+
+		// Добавляем линии
+		// up size
+		addLine(size_box[0], size_box[1], color);
+		addLine(size_box[1], size_box[2], color);
+		addLine(size_box[2], size_box[3], color);
+		addLine(size_box[3], size_box[0], color);
+
+		//bottom size
+		addLine(size_box[0 + 4], size_box[1 + 4], color);
+		addLine(size_box[1 + 4], size_box[2 + 4], color);
+		addLine(size_box[2 + 4], size_box[3 + 4], color);
+		addLine(size_box[3 + 4], size_box[0 + 4], color);
+
+		// connections between up and bottom
+		addLine(size_box[0], size_box[0 + 4], color);
+		addLine(size_box[1], size_box[1 + 4], color);
+		addLine(size_box[2], size_box[2 + 4], color);
+		addLine(size_box[3], size_box[3 + 4], color);
+	}
+	//-----------------------------------------------------------------------------------
+	void CLine3dManager::addBox(const math::AABoxf& box, const math::Color& color)
+	{
+		math::Point3f max = box.getMax();
+		math::Point3f min = box.getMin();
+
+		math::Point3f center = min + (max - min) / 2.0f;
+		math::Point3f r		 = max - center;
+
+		math::Point3f x(r[0], 0.0f, 0.0f);
+		math::Point3f y(0.0f, r[1], 0.0f);
+		math::Point3f z(0.0f, 0.0f, r[2]);
+
+		math::Point3f& xm		= x;
+		math::Point3f& ym		= y;
+		math::Point3f& zm		= z;
+		math::Point3f& centerm	= center;
+
+		addLine(centerm + xm + ym + zm, centerm - xm + ym + zm, color);
+		addLine(centerm + xm + ym - zm, centerm - xm + ym - zm, color);
+
+		addLine(centerm + xm - ym + zm, centerm - xm - ym + zm, color);
+		addLine(centerm + xm - ym - zm, centerm - xm - ym - zm, color);
+
+		addLine(centerm + xm + ym + zm, centerm + xm - ym + zm, color);
+		addLine(centerm + xm + ym - zm, centerm + xm - ym - zm, color);
+
+		addLine(centerm - xm + ym + zm, centerm - xm - ym + zm, color);
+		addLine(centerm - xm + ym - zm, centerm - xm - ym - zm, color);
+
+		addLine(centerm + xm + ym + zm, centerm + xm + ym - zm, color);
+		addLine(centerm + xm - ym + zm, centerm + xm - ym - zm, color);
+
+		addLine(centerm - xm + ym + zm, centerm - xm + ym - zm, color);
+		addLine(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
+	}
+	//-----------------------------------------------------------------------------------
 	void CLine3dManager::addBox(const math::Matrix44f &m, const math::AABoxf &box, const math::Color &color)
 	{
 		math::Point3f max = box.getMax();

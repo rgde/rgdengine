@@ -119,17 +119,26 @@ void TestInterpolator::update(float dt)
     m_spFont->render(text,math::Rect(1,416,400,400),0xFFFFFFFF,false);
 
     //сплайн
-    float t=0;
-    const float step = m_spline.length()/100;
-    while (t<m_spline.length())
-    {
-        math::Vec3f v1 = m_spline(t);
-        math::Vec3f v2 = m_spline(t+step);
-        t += 2*step;
-        render::Line3dManager::Get().addLine(v1,v2);
-    }
+	if (m_lines.empty())
+	{
+		float t=0;
+		const float step = m_spline.length()/100;
+		while (t<m_spline.length())
+		{
+			math::Vec3f v1 = m_spline(t);
+			math::Vec3f v2 = m_spline(t+step);
+			t += 2*step;
+			m_lines.push_back(v1);
+			m_lines.push_back(v2);			
+		}
+	}
 
-    render::Line3dManager::Get().addBox(math::MAT_IDENTITY44F, math::Vec3f(20.f,20.f,20.f), 0xffff0000);
+	for (size_t i = 0; i < m_lines.size(); i+=2)
+	{
+		render::Line3dManager::Get().addLine(m_lines[i],m_lines[i+1]);
+	}	
+
+    render::Line3dManager::Get().addBox(/*math::MAT_IDENTITY44F, */math::Vec3f(20.f,20.f,20.f), 0xffff0000);
 
     //движение
     if(m_cE)

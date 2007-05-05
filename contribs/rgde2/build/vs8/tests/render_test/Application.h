@@ -3,6 +3,24 @@
 #include "ArcBall.h"
 
 
+namespace rgde
+{
+	namespace render
+	{
+		namespace graphics2d
+		{
+			class bather
+			{
+			public:
+				virtual ~bather(){}
+
+			};
+
+						
+		}
+	}
+}
+
 
 class Camera
 {

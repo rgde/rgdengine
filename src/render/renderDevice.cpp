@@ -84,6 +84,9 @@ namespace render
 	//--------------------------------------------------------------------------------------
 	math::Vec2f CDevice::getBackBufferSize()
 	{
+		if (NULL == g_pd3dDevice)
+			return math::Vec2f(800, 600);
+
 		IDirect3DSurface9 *pBackBufferSurface;
 		g_pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBufferSurface);
 

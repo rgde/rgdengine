@@ -24,6 +24,8 @@ protected:
     void onYAxis (int dy);
 
 private:
+	std::vector<math::Vec3f> m_lines;
+
     render::PModel m_spModel;  //למהוכü
     render::PFont  m_spFont;   //רנטפע
     math::PCamera  m_spCamera; //ךאלונא
