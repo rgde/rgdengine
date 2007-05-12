@@ -11,8 +11,8 @@ public:
 	  spApp(core::IApplication::Create(L"Test_Lines Example", 800, 600, false, false)),
 	  m_TrianglesManager(9)
 	{
-		spApp->addTask(core::PTask(new core::CRenderTask(*spApp, 1)));
-		spApp->addTask(core::PTask(new core::CInputTask(*spApp,0)));
+		spApp->addTask(core::PTask(new core::RenderTask(*spApp, 1)));
+		spApp->addTask(core::PTask(new core::InputTask(*spApp,0)));
 		spApp->addTask(core::PTask(new core::CGameTask(*spApp,2)));
 
 		m_pFont = render::IFont::Create(20, L"Arial", render::IFont::Heavy);
@@ -29,9 +29,9 @@ public:
         {
             using namespace input;
 
-            CInput::addCommand(L"Quit");
-            CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
             m_cEsc.attach(L"Quit");
+			Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Quit");
+            
             m_cEsc += boost::bind(&HelloMessage::onEsc, this);
         }
 
@@ -58,7 +58,7 @@ protected:
 	render::PCamera                       m_camera;
 	lines_test::CTriangleManager          m_TrianglesManager;
 	boost::scoped_ptr<core::IApplication> spApp;
-	input::CKeyDown                       m_cEsc;
+	input::KeyDown                       m_cEsc;
 };
 
 // The application's entry point

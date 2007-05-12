@@ -55,34 +55,3 @@ namespace base
 }
 #define BASE_EXCEPTION_ARGS1(what) CBaseException((what), 0, __FILE__, __LINE__)
 #define BASE_EXCEPTION_ARGS2(what, code) CBaseException((what), (code), __FILE__, __LINE__)
-//
-//class IgnoreError {};
-///** asserting error codes. 
-//*
-//*  Recommended usage: when ignored retcode is a BUG
-//*  The only way to not check for value of ErrorCode is to cast it to the IgnoreError
-//*  warning to all casters - you will be easily found by text search :)
-//*  Typical usage - just replace type name "int" in return value of a method with ErrorCode<int> 
-//*    run and assert in destructor of ErrorCode will find all ignorant guys.
-//*/
-//template< typename T >
-//class ErrorCode
-//{
-//public:
-//	ErrorCode(const T& code) : code_(code), read_(false) {}
-//	ErrorCode(const ErrorCode& rhs) : code_(rhs.code_), read_(rhs.read_)
-//	{
-//		rhs.read_ = true;
-//	}
-//
-//	~ErrorCode() { assert(read_); }
-//
-//	operator T() const { read_ = true; return code_; }
-//	operator IgnoreError() const { read_ = true; return IgnoreError(); }
-//
-//private:
-//	mutable bool read_;
-//	T code_;
-//
-//	ErrorCode& operator =(const ErrorCode&);
-//};

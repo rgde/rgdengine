@@ -50,11 +50,11 @@ protected:
     unsigned m_iSpeed;
 
     //данные для ввода
-    input::CButton       m_cW, m_cA, m_cS, m_cD, m_cUp, m_cDown, m_cLeft, m_cRight;
-    input::CKeyDown      m_cEsc, m_cO, m_cL, m_cK, m_cB, m_cG, m_cR, m_cSpace,
+    input::Button       m_cW, m_cA, m_cS, m_cD, m_cUp, m_cDown, m_cLeft, m_cRight;
+    input::KeyDown      m_cEsc, m_cO, m_cL, m_cK, m_cB, m_cG, m_cR, m_cSpace,
                          m_cC, m_cT, m_cI, m_cF, m_cH, m_cE,
                          m_cMinus, m_cEquals;
-    input::CRelativeAxis m_cXAxis, m_cYAxis, m_cZAxis;
+    input::RelativeAxis m_cXAxis, m_cYAxis, m_cZAxis;
 
     //данные для камеры
     math::PTargetCamera      m_spTargetCamera;      //контроллер камеры "нацеленная камера"	

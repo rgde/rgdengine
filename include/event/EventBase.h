@@ -1,24 +1,26 @@
-//EventBase.h
 #pragma once
 #include "base/Singelton.h"
 
 namespace event
 {
-
     class CSenderBase;
     class CListenerBase;
     class CEventManager;
 
-    /////////////////////////////////////////
-    // синглтон со списком всех менеджеров //
-    /////////////////////////////////////////
+    // синглтон со списком всех менеджеров
     class CListManagers
     {
     public:
         static CListManagers& Get();
-        void unsubscribeAll (CListenerBase *pListener); //отписать данного получателя ото всех менеджеров
-        void addManager     (CEventManager *pManager);  //менеджер добавляет себя в общий список менеджеров
-        void delManager     (CEventManager *pManager);  //менеджер удаляет себя из общего списка менеджеров
+
+		//отписать данного получателя ото всех менеджеров
+        void unsubscribeAll (CListenerBase *pListener);
+
+		//менеджер добавляет себя в общий список менеджеров
+        void addManager     (CEventManager *pManager);
+
+		//менеджер удаляет себя из общего списка менеджеров
+        void delManager     (CEventManager *pManager);
 
     private:
         CListManagers();
@@ -27,9 +29,7 @@ namespace event
         std::list<CEventManager*> m_managers;
     };
 
-    /////////////////////////////////////
-    // базовый класс менеджера событий //
-    /////////////////////////////////////
+    // базовый класс менеджера событий
     class CEventManager
     {
     public:
@@ -39,9 +39,7 @@ namespace event
         virtual void unsubscribe (CListenerBase*) = 0;
     };
 
-    ///////////////////////////////////////
-    // шаблонный класс менеджера событий //
-    ///////////////////////////////////////
+    // шаблонный класс менеджера событий
     template <typename Event>
     class TEventManager: public CEventManager
     {
@@ -133,9 +131,7 @@ namespace event
         std::list<Subscription> m_subscriptions;
     };    
 
-    //////////////////////////////
-    // базовый класс получателя //
-    //////////////////////////////
+    // базовый класс получателя
     class CListenerBase
     {
     protected:
@@ -166,9 +162,7 @@ namespace event
         CListenerBase& operator= (const CListenerBase&);
     };
 
-    ///////////////////////////////
-    // базовый класс отправителя //
-    ///////////////////////////////
+    // базовый класс отправителя
     class CSenderBase
     {
     protected:
@@ -185,5 +179,4 @@ namespace event
         CSenderBase(const CSenderBase&);
         CSenderBase& operator= (const CSenderBase&);
     };
-
-} //namespace event
+}

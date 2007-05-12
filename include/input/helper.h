@@ -1,255 +1,215 @@
-//helper.h
 #pragma once
+
 #include "base.h"
 #include <boost/function.hpp>
 
 namespace input
 {
-    class CButton;
-    class CTrigger;
-    class CKeyUp;
-    class CKeyDown;
-    class CRelativeAxis;
-    class CAbsoluteAxis;
-    class CKeyStream;
+	//Helper
 
-    /////////////
-    // CHelper //
-    /////////////
-
-    //параметр для CHelper::Handler
-    struct CHelperEvent
-    {
-        enum EType
-        {
-            Button,
-            Axis
-        } m_eType;
-
-        bool m_bPress;
-        int  m_nDelta;
-        int  m_nTime;
-    };
-
-    //обьект-посредник для получения информации о событиях ввода
-    class CHelper
-    {
-    public:
-        typedef boost::function<void(const CHelperEvent&)> Handler;
-
-        CHelper ();
-        CHelper (const std::wstring &sCommandName);
-        virtual ~CHelper();
-
-        void attach (const std::wstring &sCommandName);
-        void detach ();
-
-        void operator += (Handler handler);
-
-    protected:
-        friend class CCommand;
-        virtual void notify (const CControl &rControl);
-
-    private:
-        PCommand           m_pCommand;
-        std::list<Handler> m_handlers;
-    };
-
-    /////////////
-    // CButton //
-    /////////////
-
-    //обьект-посредник "кнопка"
-    class CButton: public CHelper
-    {
-    public:
-        typedef boost::function<void(bool)> ButtonHandler;
-		CButton (): m_nPress(0) {}
-        CButton (const std::wstring &sCommandName): CHelper(sCommandName), m_nPress(0) {}
-
-        void operator += (ButtonHandler handler);
-        operator bool () const {return m_nPress>0;}
-
-    protected:
-        friend class CCommand;
-        virtual void notify (const CControl &rControl);
-
-    private:
-        int m_nPress;
-        std::list<ButtonHandler> m_buttonHandlers;
-    };
-
-    //////////////
-    // CTrigger //
-    //////////////
-
-    //обьект-посредник "триггер"
-    class CTrigger: public CHelper
-    {
-    public:
-        typedef boost::function<void(bool)> TriggerHandler;
-		CTrigger (): m_bOn(false) {}
-        CTrigger (const std::wstring &sCommandName): CHelper(sCommandName), m_bOn(false) {}
-
-        void operator += (TriggerHandler handler);
-        operator bool () const {return m_bOn;}
-
-        void setState (bool bOn);
-
-    protected:
-        friend class CCommand;
-        virtual void notify (const CControl &rControl);
-
-    private:
-        bool m_bOn;
-        std::list<TriggerHandler> m_triggerHandlers;
-    };
-
-    ////////////
-    // CKeyUp //
-    ////////////
-
-    //обьект-посредник "ОТжатие клавиши"
-    class CKeyUp: public CHelper
-    {
-    public:
-        typedef boost::function<void()> KeyUpHandler;
-        CKeyUp () {}
-        CKeyUp (const std::wstring &sCommandName): CHelper(sCommandName) {}
-
-        void operator += (KeyUpHandler handler);
-
-    protected:
-        friend class CCommand;
-        virtual void notify (const CControl &rControl);
-
-    private:
-        std::list<KeyUpHandler> m_keyupHandlers;
-    };
-
-    //////////////
-    // CKeyDown //
-    //////////////
-
-    //обьект-посредник "НАжатие клавиши"
-    class CKeyDown: public CHelper
-    {
-    public:
-        typedef boost::function<void()> KeyDownHandler;
-        CKeyDown () {}
-        CKeyDown (const std::wstring &sCommandName): CHelper(sCommandName) {}
-
-        void operator += (KeyDownHandler handler);
-
-    protected:
-        friend class CCommand;
-        virtual void notify (const CControl &rControl);
-
-    private:
-        std::list<KeyDownHandler> m_keydownHandlers;
-    };
-
-    ///////////////////
-    // CRelativeAxis //
-    ///////////////////
-
-    //обьект-посредник "относительная ось"
-    class CRelativeAxis: public CHelper
-    {
-    public:
-        typedef boost::function<void(int)> RelativeAxisHandler;
-        CRelativeAxis () {}
-        CRelativeAxis (const std::wstring &sCommandName): CHelper(sCommandName) {}
-
-        void operator += (RelativeAxisHandler handler);
-
-    protected:
-        friend class CCommand;
-        virtual void notify (const CControl &rControl);
-
-    private:
-        std::list<RelativeAxisHandler> m_raxisHandlers;
-    };
-
-    ///////////////////
-    // CAbsoluteAxis //
-    ///////////////////
-
-    //обьект-посредник "абсолютная ось"
-    class CAbsoluteAxis: public CHelper
-    {
-    public:
-        typedef boost::function<void(int)> AbsoluteAxisHandler;
-		CAbsoluteAxis ():
-			m_nMin (0),
-			m_nMax (100),
-			m_nPos (0)
+	//параметр для Helper::Handler
+	struct HelperEvent
+	{
+		enum EType
 		{
-		}
-        CAbsoluteAxis (const std::wstring &sCommandName):
-			CHelper(sCommandName),
-			m_nMin (0),
-			m_nMax (100),
-			m_nPos (0)
+			Button,
+			Axis
+		};
+
+		EType m_type;
+		bool m_press;
+		int  m_delta;
+		int  m_time;
+	};
+
+	//обьект-посредник для получения информации о событиях ввода
+	class Helper
+	{
+	public:
+		typedef boost::function<void(const HelperEvent&)> Handler;
+
+		Helper ();
+		Helper (const std::wstring &commandName);
+		virtual ~Helper();
+
+		void attach (const std::wstring &commandName);
+		void detach ();
+
+		void operator += (Handler handler);
+
+	protected:
+		friend class Command;
+		virtual void notify (const Control &control);
+
+	private:
+		CommandPtr         m_command;
+		std::list<Handler> m_handlers;
+	};
+
+	// Button, обьект-посредник "кнопка"
+	class Button: public Helper
+	{
+	public:
+		typedef boost::function<void(bool)> ButtonHandler;
+		Button ();
+		Button (const std::wstring &commandName);
+
+		void operator += (ButtonHandler handler);
+		operator bool () const {return m_press > 0;}
+
+	protected:
+		friend class Command;
+		virtual void notify (const Control &control);
+
+	private:
+		int m_press;
+		std::list<ButtonHandler> m_buttonHandlers;
+	};
+
+	// Trigger, обьект-посредник "триггер"
+	class Trigger: public Helper
+	{
+	public:
+		typedef boost::function<void(bool)> TriggerHandler;
+		Trigger ();
+		Trigger (const std::wstring &commandName);
+
+		void operator += (TriggerHandler handler);
+		operator bool () const {return m_is_active;}
+
+		void setState (bool state);
+
+	protected:
+		friend class CCommand;
+		virtual void notify (const Control &rControl);
+
+	private:
+		bool m_is_active;
+		std::list<TriggerHandler> m_triggerHandlers;
+	};
+
+	// KeyUp, обьект-посредник "ОТжатие клавиши"
+	class KeyUp: public Helper
+	{
+	public:
+		typedef boost::function<void()> KeyUpHandler;
+		KeyUp ();
+		KeyUp (const std::wstring &commandName);
+
+		void operator += (KeyUpHandler handler);
+
+	protected:
+		friend class Command;
+		virtual void notify (const Control &control);
+
+	private:
+		std::list<KeyUpHandler> m_keyupHandlers;
+	};
+
+	// KeyDown
+	//обьект-посредник "НАжатие клавиши"
+	class KeyDown: public Helper
+	{
+	public:
+		typedef boost::function<void()> KeyDownHandler;
+		KeyDown ();
+		KeyDown (const std::wstring &commandName);
+
+		void operator += (KeyDownHandler handler);
+
+	protected:
+		friend class Command;
+		virtual void notify (const Control &control);
+
+	private:
+		std::list<KeyDownHandler> m_keydownHandlers;
+	};
+
+	// RelativeAxis
+	//обьект-посредник "относительная ось"
+	class RelativeAxis : public Helper
+	{
+	public:
+		typedef boost::function<void(int)> RelativeAxisHandler;
+		RelativeAxis ();
+		RelativeAxis (const std::wstring &commandName);
+
+		void operator += (RelativeAxisHandler handler);
+
+	protected:
+		friend class Command;
+		virtual void notify (const Control &control);
+
+	private:
+		std::list<RelativeAxisHandler> m_raxisHandlers;
+	};
+
+	// AbsoluteAxis
+	//обьект-посредник "абсолютная ось"
+	class AbsoluteAxis: public Helper
+	{
+	public:
+		typedef boost::function<void(int)> AbsoluteAxisHandler;
+
+		AbsoluteAxis ();
+		AbsoluteAxis (const std::wstring &commandName);
+
+		void operator += (AbsoluteAxisHandler handler);
+		operator int () const {return m_pos;}
+
+		int  getMin () const {return m_min;}
+		void setMin (int value);
+
+		int  getMax () const {return m_max;}
+		void setMax (int value);
+
+		int  getPos () const {return m_pos;}		
+		void setPos (int value);
+
+	protected:
+		friend class Command;
+		virtual void notify (const Control &control);
+
+	private:
+		int m_min;
+		int m_max;
+		int m_pos;
+		std::list<AbsoluteAxisHandler> m_aaxisHandlers;
+	};
+
+	// KeyStream
+
+	//параметр для KeyStream::KeyStreamHandler
+	struct KeyStreamEvent
+	{
+		enum EType
 		{
-		}
+			KeyUp,
+			KeyDown,
+			KeyDownAuto,
+			Char
+		};
 
-        void operator += (AbsoluteAxisHandler handler);
-        operator int () const {return m_nPos;}
+		EType m_type;
+		bool m_press;
+		int  m_key_code;
+		int  m_char;
+	};
 
-		int  getMin ();
-		int  getMax ();
-        int  getPos ();
-		void setMin (int nMin);
-		void setMax (int nMax);
-		void setPos (int nPos);
+	//обьект-посредник "поток символов"
+	class KeyStream: public Helper
+	{
+	public:
+		typedef boost::function<void(const KeyStreamEvent&)> KeyStreamHandler;
+		KeyStream () {}
 
-    protected:
-        friend class CCommand;
-        virtual void notify (const CControl &rControl);
+		void operator += (KeyStreamHandler handler);
 
-    private:
-		int m_nMin;
-		int m_nMax;
-		int m_nPos;
-        std::list<AbsoluteAxisHandler> m_aaxisHandlers;
-    };
+	protected:
+		friend class Command;
+		virtual void notify (const Control &rControl);
 
-    ////////////////
-    // CKeyStream //
-    ////////////////
-
-    //параметр для CKeyStream::KeyStreamHandler
-    struct CKeyStreamEvent
-    {
-        enum EType
-        {
-            KeyUp,
-            KeyDown,
-            KeyDownAuto,
-            Char
-        } m_eType;
-
-        bool m_bPress;
-        int  m_nKeyCode;
-        int  m_nChar;
-    };
-
-    //обьект-посредник "поток символов"
-    class CKeyStream: public CHelper
-    {
-    public:
-        typedef boost::function<void(const CKeyStreamEvent&)> KeyStreamHandler;
-		CKeyStream () {}
-
-        void operator += (KeyStreamHandler handler);
-
-    protected:
-        friend class CCommand;
-        virtual void notify (const CControl &rControl);
-
-    private:
-        std::list<KeyStreamHandler> m_ksHandlers;
-    };
-
+	private:
+		std::list<KeyStreamHandler> m_ksHandlers;
+	};
 }

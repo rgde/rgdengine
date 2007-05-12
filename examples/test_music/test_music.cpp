@@ -122,9 +122,9 @@ int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 {
 //	std::auto_ptr<core::IApplication> spApp(core::IApplication::Create(L"Test Window", 640, 480, 32, 85, false));
 //
-//	new core::CRenderTask(0);
+//	new core::RenderTask(0);
 //	new core::CGameTask (2);
-//	new core::CInputTask (1);
+//	new core::InputTask (1);
 //
 //	HelloMessage r;
 //	SimpleInput i;

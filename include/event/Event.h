@@ -1,13 +1,10 @@
-//Event.h
 #pragma once
+
 #include "EventBase.h"
 
 namespace event
 {
-
-    ////////////////
-    // получатель //
-    ////////////////
+    // получатель
     class CListener: private CListenerBase
     {
     public:
@@ -37,18 +34,16 @@ namespace event
         }
     };
 
-    /////////////////
-    // отправитель //
-    /////////////////
+
+    // отправитель
     class CSender: public CListener, public CSenderBase
     {
     public:
-        //отправить событие
+
         template<typename Event>
         void sendEvent(Event event)
         {
             _sendEvent<Event>(event);
         }
     };
-
-} //namespace event
+}

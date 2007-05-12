@@ -1,15 +1,13 @@
-//control.h
 #pragma once
-#include "base.h"
+
+#include "input/base.h"
 
 namespace input
 {
-
     //элемент (кнопка, ось и т.п.) устройства ввода
-    class CControl
+    class Control
     {
-    public:
-        
+    public:        
         //виды контролов
         enum EType
         {
@@ -17,35 +15,43 @@ namespace input
             Axis
         };
 
-        CControl(EControl eName, EType eType, CDevice &rDevice);
+        Control(types::EControl name, EType type, Device &device);
 
-        EControl getName () const {return m_eName;} //получить 'имя' контрола
-        EType    getType () const {return m_eType;} //получить тип контрола
+        types::EControl getName () const {return m_name;}
+		EType    getType () const {return m_type;}
 
         //добавить наблюдателя
-        void bind (PCommand pCommand);
-        void bind (const std::wstring &sCommandName);
+        void bind (CommandPtr command);
+        void bind (const std::wstring &command_name);
 
         //удалить наблюдателя
-        void unbind (PCommand pCommand);
-        void unbind (const std::wstring &sCommandName);
+        void unbind (CommandPtr command);
+        void unbind (const std::wstring &command_name);
 
         //добавлен ли такой наблюдатель
-        bool isbind (PCommand pCommand);
-        bool isbind (const std::wstring &sCommandName);
+        bool isbind (CommandPtr command);
+        bool isbind (const std::wstring &command_name);
 
         //уведомить наблюдателей о своем изменении
         void notifyAllObservers (); 
 
-        int  m_nTime;
-        bool m_bPress;
-        int  m_nDelta;
+        int  m_time;
+        bool m_press;
+        int  m_delta;
 
     private:
-        CDevice            &m_rDevice;  //устройство, которому принадлежит контрол
-        EType               m_eType;    //тип контрола
-        EControl            m_eName;    //'имя' контрола
-        std::list<PCommand> m_commands; //команда, к которой привязан контрол
-    };
+		//устройство, которому принадлежит контрол
+        Device    &m_device;
 
+		//тип контрола
+        EType     m_type;
+		//'имя' контрола
+        types::EControl  m_name;    
+
+		typedef std::list<CommandPtr> CommandsList;
+		typedef CommandsList::iterator CommandsIter;
+
+		//команды, к которой привязан контрол
+        CommandsList m_commands;
+    };
 }

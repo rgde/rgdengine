@@ -10,7 +10,7 @@ namespace render
 {
 	typedef boost::shared_ptr<class CMaterial> PMaterial;
 
-	class CMaterial : public core::CNamedObject//, game::IDynamicObject
+	class CMaterial : public core::NamedObject//, game::IDynamicObject
 	{
 		CMaterial(math::Color amb, math::Color diff, math::Color spec,
 				  math::Color em, float power);

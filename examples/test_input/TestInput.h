@@ -20,18 +20,18 @@ private:
     void onPrimaryFire   (bool press);
     void onSecondaryFire (bool press);
 
-    input::CKeyUp        m_keyupQuit;
-    input::CButton       m_btnLeft;
-    input::CButton       m_btnRight;
-    input::CButton       m_btnUp;
-    input::CButton       m_btnDown;
-    input::CButton       m_btnSpeedUp;
-    input::CButton       m_btnSpeedDown;
-    input::CButton       m_btnPrimaryFire;
-    input::CButton       m_btnSecondaryFire;
-    input::CTrigger      m_trigPause;
-    input::CRelativeAxis m_raxisHorz;
-    input::CRelativeAxis m_raxisVert;
+    input::KeyUp        m_keyupQuit;
+    input::Button       m_btnLeft;
+    input::Button       m_btnRight;
+    input::Button       m_btnUp;
+    input::Button       m_btnDown;
+    input::Button       m_btnSpeedUp;
+    input::Button       m_btnSpeedDown;
+    input::Button       m_btnPrimaryFire;
+    input::Button       m_btnSecondaryFire;
+    input::Trigger      m_trigPause;
+    input::RelativeAxis m_raxisHorz;
+    input::RelativeAxis m_raxisVert;
 
     float m_x;
     float m_y;

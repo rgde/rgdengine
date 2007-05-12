@@ -1,18 +1,24 @@
-//command.cpp
 #include "precompiled.h"
+
 #include "input/command.h"
 #include "input/control.h"
 #include "input/helper.h"
 
 namespace input
 {
+	Command::Command(const std::wstring &sName, InputImpl &rInput):
+		m_rInput  (rInput),
+		m_sName   (sName),
+		m_bLocked (false)
+	{
+	}
 
-    void CCommand::notifyAllObservers (const CControl &rControl)
+    void Command::notifyAllObservers (const Control &rControl)
     {
         if (m_bLocked)
             return;
 
-        std::list<CHelper*>::iterator i = m_helpers.begin();
+        HelpersIt i = m_helpers.begin();
         while (i != m_helpers.end())
         {
             (*i)->notify(rControl);
@@ -20,14 +26,14 @@ namespace input
         }
     }
 
-    void CCommand::attachObserver (CHelper *pHelper)
+    void Command::attachObserver (Helper *pHelper)
     {
         m_helpers.push_back(pHelper);
     }
 
-    void CCommand::detachObserver (CHelper *pHelper)
+    void Command::detachObserver (Helper *pHelper)
     {
-        std::list<CHelper*>::iterator i = m_helpers.begin();
+        HelpersIt i = m_helpers.begin();
         while (i != m_helpers.end())
         {
             if (*i == pHelper)

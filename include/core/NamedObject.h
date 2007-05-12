@@ -2,17 +2,17 @@
 
 namespace core
 {
-	class CNamedObject
+	class NamedObject
 	{
 	public:
-		CNamedObject(){}
-		CNamedObject(const std::string& name) : m_Name(name){}
-		virtual ~CNamedObject(){}
+		NamedObject(){}
+		NamedObject(const std::string& name) : m_name(name){}
+		virtual ~NamedObject(){}
 
-		const std::string& getName()	const	{return m_Name;}
-		void setName(const std::string& name)	{m_Name = name;}
+		const std::string& getName()	const	{return m_name;}
+		void setName(const std::string& name)	{m_name = name;}
 
 	protected:
-		std::string m_Name;
+		std::string m_name;
 	};
 }

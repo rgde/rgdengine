@@ -34,20 +34,20 @@ private:
     int m_nCameraType; //номер используемой камеры
 
     //контролы ввода
-    input::CKeyUp        m_cEsc;   //выход
-    input::CKeyDown      m_cSpace; //переключение режима wirframe/solid
-    input::CKeyDown      m_cTab;   //переключить камеру
-    input::CKeyDown      m_cR;     //сбросить программу в начальное состояние
-    input::CButton       m_cQ;     //поворот против часовой
-    input::CButton       m_cW;     //вперед
-    input::CButton       m_cE;     //поворот по часовой
-    input::CButton       m_cA;     //боком влево
-    input::CButton       m_cS;     //назад
-    input::CButton       m_cD;     //боком вправо
-    input::CButton       m_cF;     //вверх
-    input::CButton       m_cC;     //вниз
-    input::CRelativeAxis m_cXAxis; //горизонтальная ось поворота
-    input::CRelativeAxis m_cYAxis; //вертикальная ось поворота
+    input::KeyUp        m_cEsc;   //выход
+    input::KeyDown      m_cSpace; //переключение режима wirframe/solid
+    input::KeyDown      m_cTab;   //переключить камеру
+    input::KeyDown      m_cR;     //сбросить программу в начальное состояние
+    input::Button       m_cQ;     //поворот против часовой
+    input::Button       m_cW;     //вперед
+    input::Button       m_cE;     //поворот по часовой
+    input::Button       m_cA;     //боком влево
+    input::Button       m_cS;     //назад
+    input::Button       m_cD;     //боком вправо
+    input::Button       m_cF;     //вверх
+    input::Button       m_cC;     //вниз
+    input::RelativeAxis m_cXAxis; //горизонтальная ось поворота
+    input::RelativeAxis m_cYAxis; //вертикальная ось поворота
 
     //контроллеры камеры
     math::PFlyCamera         m_spFlyCamera;         //летающаяя камера

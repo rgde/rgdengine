@@ -45,35 +45,26 @@ void TestTrack::initInput()
         using namespace input;
 
         //создадим команды
-        CInput::addCommand(L"Quit");
-        CInput::addCommand(L"Reset");
-        CInput::addCommand(L"Froward");
-        CInput::addCommand(L"Backward");
-        CInput::addCommand(L"CW");
-        CInput::addCommand(L"CCW");
-        CInput::addCommand(L"Horz");
-        CInput::addCommand(L"Vert");
+		//биндим хелперы с командами
+		m_cEsc  .attach(L"Quit");
+		m_cR    .attach(L"Reset");
+		m_cW    .attach(L"Froward");
+		m_cS    .attach(L"Backward");
+		m_cE    .attach(L"CW");
+		m_cQ    .attach(L"CCW");
+		m_cXAxis.attach(L"Horz");
+		m_cYAxis.attach(L"Vert");
 
         //связываем команды с контролами
-        CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
-        CInput::getDevice(Keyboard)->getControl(KeyR     )->bind(L"Reset");
-        CInput::getDevice(Keyboard)->getControl(KeyW     )->bind(L"Froward");
-        CInput::getDevice(Keyboard)->getControl(KeyS     )->bind(L"Backward");
-        CInput::getDevice(Keyboard)->getControl(KeyE     )->bind(L"CW");
-        CInput::getDevice(Keyboard)->getControl(KeyQ     )->bind(L"CCW");
-        CInput::getDevice(Mouse   )->getControl(AxisX    )->bind(L"Horz");
-        CInput::getDevice(Mouse   )->getControl(AxisY    )->bind(L"Vert");
+		Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Quit");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyR     )->bind(L"Reset");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyW     )->bind(L"Froward");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyS     )->bind(L"Backward");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyE     )->bind(L"CW");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyQ     )->bind(L"CCW");
+        Input::getDevice(types::Mouse   )->getControl(types::AxisX    )->bind(L"Horz");
+        Input::getDevice(types::Mouse   )->getControl(types::AxisY    )->bind(L"Vert");
     }
-
-    //биндим хелперы с командами
-    m_cEsc  .attach(L"Quit");
-    m_cR    .attach(L"Reset");
-    m_cW    .attach(L"Froward");
-    m_cS    .attach(L"Backward");
-    m_cE    .attach(L"CW");
-    m_cQ    .attach(L"CCW");
-    m_cXAxis.attach(L"Horz");
-    m_cYAxis.attach(L"Vert");
 
     //задаем для команд функции-обработчики
     m_cEsc   += boost::bind(&TestTrack::onEsc,   this);

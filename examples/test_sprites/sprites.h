@@ -13,7 +13,7 @@ protected:
 protected:
     render::CSpriteManager				m_sprite_renderer;
     render::CSpriteManager::TSprites	m_vSprites;
-    input::CKeyDown                     m_cEsc;
+    input::KeyDown                      m_cEsc;
     unsigned							m_nPriorities;				// Число приоритетов спрайтов
     unsigned							m_nSpritesPerPriority;		// Число спрайтов с одинаковым приоритетом
     bool								m_bDebugLog;				// Стоит ли выводить отладочный лог

@@ -1,40 +1,38 @@
-//command.h
 #pragma once
-#include "base.h"
+
+#include "input/base.h"
 
 namespace input
 {
-
     //команда системы ввода
-    class CCommand
+    class Command
     {
     public:
-        CCommand(const std::wstring &sName, CInputImpl &rInput):
-            m_rInput  (rInput),
-            m_sName   (sName),
-            m_bLocked (false)
-        {
-        }
+        Command(const std::wstring &sName, InputImpl &rInput);
 
-        const std::wstring& getName () const {return m_sName;} //получить 'имя' команды
+		/// Get command name
+        const std::wstring& getName () const {return m_sName;}
         void lock     () {m_bLocked = true;}
         void unlock   () {m_bLocked = false;}
         bool islocked () const {return m_bLocked;}
 
     protected:
-        friend class CControl;
-        void notifyAllObservers (const CControl &rControl);
+        friend class Control;
+        void notifyAllObservers (const Control &rControl);
 
     protected:
-        friend class CHelper;
-        void attachObserver (CHelper *pHelper);
-        void detachObserver (CHelper *pHelper);
+		friend class Helper;
+        void attachObserver (Helper *pHelper);
+        void detachObserver (Helper *pHelper);
 
     private:
-        bool                m_bLocked;
-        CInputImpl         &m_rInput;
-        std::wstring        m_sName;
-        std::list<CHelper*> m_helpers;
-    };
+        bool          m_bLocked;
+        InputImpl     &m_rInput;
+        std::wstring  m_sName;
 
+		typedef std::list<Helper*> HelpersList;
+		typedef HelpersList::iterator HelpersIt;
+
+        HelpersList m_helpers;
+    };
 }

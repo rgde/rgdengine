@@ -6,12 +6,11 @@
 namespace render
 {
 	//ILight
-	ILight::ILight(const std::string &strName, EType eType)
+	ILight::ILight(const std::string &name, EType eType)
 	{
-		m_Name     = strName;
+		m_name     = name;
 		m_bEnabled = true;
 		m_eType    = eType;
-
 		//TheLightManager::Get().addLight(this);
 	}
 

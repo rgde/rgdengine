@@ -9,9 +9,8 @@ AviLevelObject::AviLevelObject()
     {
         using namespace input;
 
-        CInput::addCommand(L"Space");
-        CInput::getDevice(Keyboard)->getControl(KeySpace )->bind(L"Space");
         m_cSpace.attach(L"Space");
+		Input::getDevice(types::Keyboard)->getControl(types::KeySpace )->bind(L"Space");        
         m_cSpace += boost::bind(&AviLevelObject::onSpace, this);
     }
 }

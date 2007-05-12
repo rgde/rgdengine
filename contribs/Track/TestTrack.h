@@ -32,14 +32,14 @@ private:
     math::CTrack m_track; //трек
 
     //контролы ввода
-    input::CKeyUp        m_cEsc;   //выход
-    input::CKeyDown      m_cR;     //сбросить программу в начальное состояние
-    input::CButton       m_cQ;     //поворот против часовой
-    input::CButton       m_cE;     //поворот по часовой
-    input::CButton       m_cW;     //приблизить
-    input::CButton       m_cS;     //удалить
-    input::CRelativeAxis m_cXAxis; //горизонтальная ось поворота
-    input::CRelativeAxis m_cYAxis; //вертикальная ось поворота
+    input::KeyUp        m_cEsc;   //выход
+    input::KeyDown      m_cR;     //сбросить программу в начальное состояние
+    input::Button       m_cQ;     //поворот против часовой
+    input::Button       m_cE;     //поворот по часовой
+    input::Button       m_cW;     //приблизить
+    input::Button       m_cS;     //удалить
+    input::RelativeAxis m_cXAxis; //горизонтальная ось поворота
+    input::RelativeAxis m_cYAxis; //вертикальная ось поворота
 
     //контроллер камеры
     math::PTargetCamera m_spTargetCamera; //нацеленная камера

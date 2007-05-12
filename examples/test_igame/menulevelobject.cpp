@@ -11,20 +11,15 @@ MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
     {
         using namespace input;
 
-        CInput::addCommand(L"Up");
-        CInput::addCommand(L"Down");
-        CInput::addCommand(L"Space");
-        CInput::addCommand(L"Escape");
+		m_up    .attach(L"Up");
+		m_down  .attach(L"Down");
+		m_cSpace.attach(L"Space");
+		m_cEsc  .attach(L"Escape");
 
-        CInput::getDevice(Keyboard)->getControl(KeyUp    )->bind(L"Up");
-        CInput::getDevice(Keyboard)->getControl(KeyDown  )->bind(L"Down");
-        CInput::getDevice(Keyboard)->getControl(KeySpace )->bind(L"Space");
-        CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Escape");
-
-        m_up    .attach(L"Up");
-        m_down  .attach(L"Down");
-        m_cSpace.attach(L"Space");
-        m_cEsc  .attach(L"Escape");
+		Input::getDevice(types::Keyboard)->getControl(types::KeyUp    )->bind(L"Up");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyDown  )->bind(L"Down");
+        Input::getDevice(types::Keyboard)->getControl(types::KeySpace )->bind(L"Space");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Escape");
 
         m_up     += boost::bind(&MenuLevelObject::onUpKey,   this);
         m_down   += boost::bind(&MenuLevelObject::onDownKey, this);

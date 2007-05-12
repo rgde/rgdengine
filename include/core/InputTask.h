@@ -4,11 +4,11 @@
 
 namespace core
 {
-	class CInputTask: public ITask
+	class InputTask: public ITask
 	{
 	public:
-		CInputTask(const IApplication& app, unsigned int priority = 0, bool exclusive = true);
-		virtual ~CInputTask();
+		InputTask(const IApplication& app, unsigned int priority = 0, bool exclusive = true);
+		virtual ~InputTask();
 
 	protected:
 		virtual void run();

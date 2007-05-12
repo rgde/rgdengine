@@ -9,11 +9,11 @@ namespace core
 {
 	class XmlClass :  public CPropertyOwner, 
 					  public CFunctionsOwner, 
-					  public virtual CNamedObject, 
+					  public virtual NamedObject, 
 					  public virtual base::CBaseRefCounted
 	{
 	public:
-		XmlClass(const std::string& name) : CNamedObject(name)
+		XmlClass(const std::string& name) : NamedObject(name)
 		{
 			//REGISTER_PROPERTY(Name, std::string)
 		}

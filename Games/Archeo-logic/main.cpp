@@ -13,8 +13,8 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 	std::auto_ptr<core::IApplication> pApp(core::IApplication::Create(L"RGDE: DaGGeR's Game", 800, 600, false,false));
-	pApp->addTask(PTask(new CRenderTask(*pApp, 0)));
-	pApp->addTask(PTask(new CInputTask(*pApp, 1, false)));
+	pApp->addTask(PTask(new RenderTask(*pApp, 0)));
+	pApp->addTask(PTask(new InputTask(*pApp, 1, false)));
 	pApp->addTask(PTask(new CGameTask(*pApp, 2)));
 	game::TheGame::Get().addLevel("game","game");
 	game::TheGame::Get().addLevelTypeToCreate("game", "GameProcess");
