@@ -1,6 +1,15 @@
 #include "base\shared.fx"
 
-texture spriteTexture;
+texture SpriteTexture;
+sampler SpriteSampler = sampler_state
+{
+    Texture = <SpriteTexture>;
+    MinFilter = Linear;  
+    MagFilter = Linear;
+    MipFilter = Linear;
+    AddressU  = Clamp;
+    AddressV  = Clamp;
+};
 
 technique aditive
 {
@@ -15,7 +24,8 @@ technique aditive
         SrcBlend        = SrcAlpha;
         DestBlend       = One;
 
-        Texture[0]		= <spriteTexture>;
+        //Texture[0]		= <spriteTexture>;
+        Sampler[0]		= <SpriteSampler>;
         ColorOp[0]		= Modulate;
         ColorArg1[0]	= Texture;
         ColorArg2[0]	= Diffuse;
@@ -46,7 +56,8 @@ technique alpha
         SrcBlend        = SrcAlpha;
         DestBlend       = INVSRCALPHA;
 
-        Texture[0]		= <spriteTexture>;
+        //Texture[0]		= <spriteTexture>;
+        Sampler[0]		= <SpriteSampler>;
         ColorOp[0]		= Modulate;
         ColorArg1[0]	= Texture;
         ColorArg2[0]	= Diffuse;
