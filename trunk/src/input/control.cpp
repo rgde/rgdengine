@@ -1,28 +1,27 @@
-//control.cpp
 #include "precompiled.h"
+
 #include "input/inputimpl.h"
 #include "input/control.h"
 #include "input/device.h"
 #include "input/command.h"
+
 #include <algorithm>
 
 namespace input
 {
-
-    CControl::CControl(EControl eName, EType eType, CDevice &rDevice):
-        m_rDevice (rDevice),
-        m_eType   (eType),
-        m_nTime   (0),
-        m_bPress  (false),
-        m_nDelta  (0),
-        m_eName   (eName)
+    Control::Control(types::EControl eName, EType eType, Device &rDevice):
+        m_device (rDevice),
+        m_type   (eType),
+        m_time   (0),
+        m_press  (false),
+        m_delta  (0),
+        m_name   (eName)
     {
     }
 
-    //добавить наблюдателя
-    void CControl::bind (PCommand pCommand)
+    void Control::bind (CommandPtr pCommand)
     {
-        std::list<PCommand>::iterator pos = std::find
+        CommandsIter pos = std::find
         (
           m_commands.begin(),
           m_commands.end(),
@@ -35,15 +34,15 @@ namespace input
         m_commands.push_back(pCommand);
     }
 
-    void CControl::bind (const std::wstring &sCommandName)
+    void Control::bind (const std::wstring &sCommandName)
     {
-        bind (m_rDevice.getInput().getCommand(sCommandName));
+        bind (m_device.getInput().getCommand(sCommandName));
     }
 
     //удалить наблюдателя
-    void CControl::unbind (PCommand pCommand)
+    void Control::unbind (CommandPtr pCommand)
     {
-        std::list<PCommand>::iterator pos = std::find
+        CommandsIter pos = std::find
         (
           m_commands.begin(),
           m_commands.end(),
@@ -56,15 +55,15 @@ namespace input
         m_commands.erase(pos);
     }
 
-    void CControl::unbind (const std::wstring &sCommandName)
+    void Control::unbind (const std::wstring &sCommandName)
     {
-        unbind(m_rDevice.getInput().getCommand(sCommandName));
+        unbind(m_device.getInput().getCommand(sCommandName));
     }
 
     //добавлен ли такой наблюдатель
-    bool CControl::isbind (PCommand pCommand)
+    bool Control::isbind (CommandPtr pCommand)
     {
-        std::list<PCommand>::iterator pos = std::find
+        CommandsIter pos = std::find
         (
           m_commands.begin(),
           m_commands.end(),
@@ -77,15 +76,15 @@ namespace input
         return true;
     }
 
-    bool CControl::isbind (const std::wstring &sCommandName)
+    bool Control::isbind (const std::wstring &sCommandName)
     {
-        return isbind(m_rDevice.getInput().getCommand(sCommandName));
+        return isbind(m_device.getInput().getCommand(sCommandName));
     }
 
     //уведомить наблюдателей о своем изменении
-    void CControl::notifyAllObservers ()
+    void Control::notifyAllObservers ()
     {
-        std::list<PCommand>::iterator i = m_commands.begin();
+        CommandsIter i = m_commands.begin();
 
         while (i != m_commands.end())
         {

@@ -12,5 +12,5 @@ private:
 	void onSpace();
 
 private:
-	input::CKeyDown m_cSpace;
+	input::KeyDown m_cSpace;
 };

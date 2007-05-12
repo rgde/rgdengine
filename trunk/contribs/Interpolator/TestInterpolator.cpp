@@ -38,24 +38,24 @@ void TestInterpolator::initInput()
         using namespace input;
 
         //создадим команды
-        CInput::addCommand(L"Quit");
-        CInput::addCommand(L"Reset");
-        CInput::addCommand(L"Froward");
-        CInput::addCommand(L"Backward");
-        CInput::addCommand(L"CW");
-        CInput::addCommand(L"CCW");
-        CInput::addCommand(L"Horz");
-        CInput::addCommand(L"Vert");
+        Input::addCommand(L"Quit");
+        Input::addCommand(L"Reset");
+        Input::addCommand(L"Froward");
+        Input::addCommand(L"Backward");
+        Input::addCommand(L"CW");
+        Input::addCommand(L"CCW");
+        Input::addCommand(L"Horz");
+        Input::addCommand(L"Vert");
 
         //связываем команды с контролами
-        CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
-        CInput::getDevice(Keyboard)->getControl(KeyR     )->bind(L"Reset");
-        CInput::getDevice(Keyboard)->getControl(KeyW     )->bind(L"Froward");
-        CInput::getDevice(Keyboard)->getControl(KeyS     )->bind(L"Backward");
-        CInput::getDevice(Keyboard)->getControl(KeyE     )->bind(L"CW");
-        CInput::getDevice(Keyboard)->getControl(KeyQ     )->bind(L"CCW");
-        CInput::getDevice(Mouse   )->getControl(AxisX    )->bind(L"Horz");
-        CInput::getDevice(Mouse   )->getControl(AxisY    )->bind(L"Vert");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Quit");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyR     )->bind(L"Reset");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyW     )->bind(L"Froward");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyS     )->bind(L"Backward");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyE     )->bind(L"CW");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyQ     )->bind(L"CCW");
+        Input::getDevice(types::Mouse   )->getControl(types::AxisX    )->bind(L"Horz");
+        Input::getDevice(types::Mouse   )->getControl(types::AxisY    )->bind(L"Vert");
     }
 
     //биндим хелперы с командами

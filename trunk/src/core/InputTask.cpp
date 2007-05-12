@@ -3,27 +3,30 @@
 #include "core/application.h"
 
 #include "input/input.h" //библиотека ввода
+#include "input/inputimpl.h"
+
+#include <Windows.h>
 
 namespace core
 {
-    CInputTask::CInputTask(const IApplication& app, unsigned int priority, bool exclusive) 
+    InputTask::InputTask(const IApplication& app, unsigned int priority, bool exclusive) 
         : ITask(app, priority)
     {
         HWND hWnd = (HWND)IApplication::Get()->getWindowHandle();
 
-        input::CInputImpl *pImpl = new input::CInputImpl();
+        input::InputImpl *pImpl = new input::InputImpl();
         pImpl->Init(hWnd,exclusive);
 
-        input::CInput::Get().init( pImpl );
+        input::Input::Get().init( pImpl );
     }
 
-    CInputTask::~CInputTask ()
+    InputTask::~InputTask ()
     {
-        input::CInput::Destroy();
+        input::Input::Destroy();
     }
 
-    void CInputTask::run()
+    void InputTask::run()
     {
-        input::CInput::Update();
+        input::Input::Update();
     }
 }

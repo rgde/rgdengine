@@ -36,18 +36,18 @@ protected:
 	bool m_bRenderGrid;
 
 	//данные для ввода
-	input::CKeyDown      m_cEsc;
-	input::CKeyDown      m_cO;
-	input::CKeyDown      m_cL;
-	input::CKeyDown      m_cK;
-	input::CKeyDown      m_cB;
-	input::CKeyDown      m_cG;
-	input::CKeyDown      m_cW;
-    input::CButton       m_cMouseLeft;
-    input::CButton       m_cMouseRight;
-	input::CRelativeAxis m_cXAxis;
-	input::CRelativeAxis m_cYAxis;
-	input::CRelativeAxis m_cZAxis;
+	input::KeyDown      m_cEsc;
+	input::KeyDown      m_cO;
+	input::KeyDown      m_cL;
+	input::KeyDown      m_cK;
+	input::KeyDown      m_cB;
+	input::KeyDown      m_cG;
+	input::KeyDown      m_cW;
+    input::Button       m_cMouseLeft;
+    input::Button       m_cMouseRight;
+	input::RelativeAxis m_cXAxis;
+	input::RelativeAxis m_cYAxis;
+	input::RelativeAxis m_cZAxis;
 
 	//данные для камеры
 	math::PTargetCamera  m_spTargetCamera; //контроллер камеры "нацеленная камера"	

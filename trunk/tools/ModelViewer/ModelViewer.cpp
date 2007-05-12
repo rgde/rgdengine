@@ -30,52 +30,37 @@ ModelViewer::~ModelViewer()
 
 void ModelViewer::initInput()
 {
-
     {
         using namespace input;
 
-        //создадим команды
-        CInput::addCommand(L"Esc");
-        CInput::addCommand(L"O");
-        CInput::addCommand(L"L");
-        CInput::addCommand(L"K");
-        CInput::addCommand(L"B");
-        CInput::addCommand(L"G");
-        CInput::addCommand(L"W");
-        CInput::addCommand(L"MouseLeft");
-        CInput::addCommand(L"MouseRight");
-        CInput::addCommand(L"XAxis");
-        CInput::addCommand(L"YAxis");
-        CInput::addCommand(L"ZAxis");
+		//биндим хелперы с командами
+		m_cEsc       .attach(L"Esc");
+		m_cO         .attach(L"O");
+		m_cL         .attach(L"L");
+		m_cK         .attach(L"K");
+		m_cB         .attach(L"B");
+		m_cG         .attach(L"G");
+		m_cW         .attach(L"W");
+		m_cMouseLeft .attach(L"MouseLeft");
+		m_cMouseRight.attach(L"MouseRight");
+		m_cXAxis     .attach(L"XAxis");
+		m_cYAxis     .attach(L"YAxis");
+		m_cZAxis     .attach(L"ZAxis");
 
         //связываем команды с контролами
-        CInput::getDevice(Keyboard)->getControl(KeyEscape  )->bind(L"Esc");
-        CInput::getDevice(Keyboard)->getControl(KeyO       )->bind(L"O");
-        CInput::getDevice(Keyboard)->getControl(KeyL       )->bind(L"L");
-        CInput::getDevice(Keyboard)->getControl(KeyK       )->bind(L"K");
-        CInput::getDevice(Keyboard)->getControl(KeyB       )->bind(L"B");
-        CInput::getDevice(Keyboard)->getControl(KeyG       )->bind(L"G");
-        CInput::getDevice(Keyboard)->getControl(KeyW       )->bind(L"W");
-        CInput::getDevice(Mouse   )->getControl(ButtonLeft )->bind(L"MouseLeft");
-        CInput::getDevice(Mouse   )->getControl(ButtonRight)->bind(L"MouseRight");
-        CInput::getDevice(Mouse   )->getControl(AxisX      )->bind(L"XAxis");
-        CInput::getDevice(Mouse   )->getControl(AxisY      )->bind(L"YAxis");
-        CInput::getDevice(Mouse   )->getControl(AxisWheel  )->bind(L"ZAxis");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyEscape  )->bind(L"Esc");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyO       )->bind(L"O");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyL       )->bind(L"L");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyK       )->bind(L"K");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyB       )->bind(L"B");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyG       )->bind(L"G");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyW       )->bind(L"W");
+        Input::getDevice(types::Mouse   )->getControl(types::ButtonLeft )->bind(L"MouseLeft");
+        Input::getDevice(types::Mouse   )->getControl(types::ButtonRight)->bind(L"MouseRight");
+        Input::getDevice(types::Mouse   )->getControl(types::AxisX      )->bind(L"XAxis");
+        Input::getDevice(types::Mouse   )->getControl(types::AxisY      )->bind(L"YAxis");
+        Input::getDevice(types::Mouse   )->getControl(types::AxisWheel  )->bind(L"ZAxis");
     }
-
-    //биндим хелперы с командами
-    m_cEsc       .attach(L"Esc");
-    m_cO         .attach(L"O");
-    m_cL         .attach(L"L");
-    m_cK         .attach(L"K");
-    m_cB         .attach(L"B");
-    m_cG         .attach(L"G");
-    m_cW         .attach(L"W");
-    m_cMouseLeft .attach(L"MouseLeft");
-    m_cMouseRight.attach(L"MouseRight");
-    m_cXAxis     .attach(L"XAxis");
-    m_cYAxis     .attach(L"YAxis");
-    m_cZAxis     .attach(L"ZAxis");
 
     //задаем для команд функции-обработчики
     m_cEsc   += boost::bind(&ModelViewer::onEsc,       this);

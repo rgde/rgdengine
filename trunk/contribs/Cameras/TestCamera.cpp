@@ -34,36 +34,36 @@ void TestCamera::initInput()
         using namespace input;
 
         //создадим команды
-        CInput::addCommand(L"Quit");
-        CInput::addCommand(L"Wireframe");
-        CInput::addCommand(L"Reset");
-        CInput::addCommand(L"Change");
-        CInput::addCommand(L"Froward");
-        CInput::addCommand(L"Backward");
-        CInput::addCommand(L"CW");
-        CInput::addCommand(L"CCW");
-        CInput::addCommand(L"Up");
-        CInput::addCommand(L"Down");
-        CInput::addCommand(L"StarfeLeft");
-        CInput::addCommand(L"StarfeRight");
-        CInput::addCommand(L"Horz");
-        CInput::addCommand(L"Vert");
+        Input::addCommand(L"Quit");
+        Input::addCommand(L"Wireframe");
+        Input::addCommand(L"Reset");
+        Input::addCommand(L"Change");
+        Input::addCommand(L"Froward");
+        Input::addCommand(L"Backward");
+        Input::addCommand(L"CW");
+        Input::addCommand(L"CCW");
+        Input::addCommand(L"Up");
+        Input::addCommand(L"Down");
+        Input::addCommand(L"StarfeLeft");
+        Input::addCommand(L"StarfeRight");
+        Input::addCommand(L"Horz");
+        Input::addCommand(L"Vert");
 
         //связываем команды с контролами
-        CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
-        CInput::getDevice(Keyboard)->getControl(KeySpace )->bind(L"Wireframe");
-        CInput::getDevice(Keyboard)->getControl(KeyR     )->bind(L"Reset");
-        CInput::getDevice(Keyboard)->getControl(KeyTab   )->bind(L"Change");
-        CInput::getDevice(Keyboard)->getControl(KeyW     )->bind(L"Froward");
-        CInput::getDevice(Keyboard)->getControl(KeyS     )->bind(L"Backward");
-        CInput::getDevice(Keyboard)->getControl(KeyE     )->bind(L"CW");
-        CInput::getDevice(Keyboard)->getControl(KeyQ     )->bind(L"CCW");
-        CInput::getDevice(Keyboard)->getControl(KeyF     )->bind(L"Up");
-        CInput::getDevice(Keyboard)->getControl(KeyC     )->bind(L"Down");
-        CInput::getDevice(Keyboard)->getControl(KeyA     )->bind(L"StarfeLeft");
-        CInput::getDevice(Keyboard)->getControl(KeyD     )->bind(L"StarfeRight");
-        CInput::getDevice(Mouse   )->getControl(AxisX    )->bind(L"Horz");
-        CInput::getDevice(Mouse   )->getControl(AxisY    )->bind(L"Vert");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Quit");
+        Input::getDevice(types::Keyboard)->getControl(types::KeySpace )->bind(L"Wireframe");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyR     )->bind(L"Reset");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyTab   )->bind(L"Change");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyW     )->bind(L"Froward");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyS     )->bind(L"Backward");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyE     )->bind(L"CW");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyQ     )->bind(L"CCW");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyF     )->bind(L"Up");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyC     )->bind(L"Down");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyA     )->bind(L"StarfeLeft");
+        Input::getDevice(types::Keyboard)->getControl(types::KeyD     )->bind(L"StarfeRight");
+        Input::getDevice(types::Mouse   )->getControl(types::AxisX    )->bind(L"Horz");
+        Input::getDevice(types::Mouse   )->getControl(types::AxisY    )->bind(L"Vert");
     }
 
     //биндим хелперы с командами

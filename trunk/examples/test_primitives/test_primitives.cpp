@@ -1,4 +1,4 @@
-//RGDE
+
 #include "engine.h"
 
 
@@ -28,8 +28,8 @@ class HelloMessage
 public:
 	HelloMessage() :  m_spApp(core::IApplication::Create())
 	{
-		m_spApp->addTask(core::PTask(new core::CInputTask(*m_spApp,0,false)));
-		m_spApp->addTask(core::PTask(new core::CRenderTask(*m_spApp,1)));
+		m_spApp->addTask(core::PTask(new core::InputTask(*m_spApp,0,false)));
+		m_spApp->addTask(core::PTask(new core::RenderTask(*m_spApp,1)));
 		m_spApp->addTask(core::PTask(new core::CGameTask(*m_spApp,2)));
 
 		math::Vec3f vEyePt( 0.0f, 0, -30 );
@@ -47,12 +47,12 @@ public:
         {
             using namespace input;
 
-            CInput::addCommand(L"Quit");
-            CInput::addCommand(L"Horz");
-            CInput::addCommand(L"Vert");
-            CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
-            CInput::getDevice(Mouse   )->getControl(AxisX    )->bind(L"Horz");
-            CInput::getDevice(Mouse   )->getControl(AxisY    )->bind(L"Vert");
+            Input::addCommand(L"Quit");
+            Input::addCommand(L"Horz");
+            Input::addCommand(L"Vert");
+            Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Quit");
+            Input::getDevice(types::Mouse   )->getControl(types::AxisX    )->bind(L"Horz");
+			Input::getDevice(types::Mouse   )->getControl(types::AxisY    )->bind(L"Vert");
             m_cEsc  .attach(L"Quit");
             m_cXAxis.attach(L"Horz");
             m_cYAxis.attach(L"Vert");
@@ -109,19 +109,20 @@ protected:
 		m_spTargetCamera->rotateUp(angle);
 	}
 protected:
-	math::PCamera       m_camera;            //указатель на камеру
+	math::PCamera       m_camera;
 
 	::render::CGenerator<vertex::PositionNormalColored>::PGeometry m_pGeometry;
 
 	boost::intrusive_ptr<MySuperPuperClass> m_pMySuper;
 
 	//данные для ввода
-	input::CKeyDown      m_cEsc;
-	input::CRelativeAxis m_cXAxis;
-	input::CRelativeAxis m_cYAxis;
+	input::KeyDown      m_cEsc;
+	input::RelativeAxis m_cXAxis;
+	input::RelativeAxis m_cYAxis;
 
 	//данные для камеры
-	math::PTargetCamera  m_spTargetCamera; //контроллер камеры "нацеленная камера"
+	//контроллер камеры "нацеленная камера"
+	math::PTargetCamera  m_spTargetCamera; 
 
 	std::auto_ptr<core::IApplication> m_spApp;
 };

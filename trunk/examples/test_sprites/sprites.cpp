@@ -23,9 +23,8 @@ CSpriteTest::CSpriteTest() :
         {
             using namespace input;
 
-            CInput::addCommand(L"Quit");
-            CInput::getDevice(Keyboard)->getControl(KeyEscape)->bind(L"Quit");
             m_cEsc.attach(L"Quit");
+			Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Quit");            
             m_cEsc += boost::bind(&CSpriteTest::onEsc, this);
         }
 

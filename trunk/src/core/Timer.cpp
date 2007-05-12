@@ -9,8 +9,7 @@
 //-----------------------------------------------------------------------------
 namespace core
 {
-	//-----------------------------------------------------------------------------
-	CTimer::CTimer()
+	Timer::Timer()
 	{
 		Stopped = true;
 
@@ -26,7 +25,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	void CTimer::start()
+	void Timer::start()
 	{
 		LARGE_INTEGER time;
 
@@ -44,7 +43,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	void CTimer::stop()
+	void Timer::stop()
 	{
 		if( Stopped )
 		{
@@ -62,7 +61,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	void CTimer::reset()
+	void Timer::reset()
 	{
 		LARGE_INTEGER time;
 
@@ -79,13 +78,13 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	void CTimer::advance()
+	void Timer::advance()
 	{
 		StopTime += TicksPerSecond/10;
 	}
 
 	//-----------------------------------------------------------------------------
-	float CTimer::getAbsoluteTime()
+	float Timer::getAbsoluteTime()
 	{
 		LARGE_INTEGER time;
 
@@ -99,7 +98,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float CTimer::getCurrentTime()
+	float Timer::getCurrentTime()
 	{
 		LARGE_INTEGER time;
 
@@ -113,7 +112,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float CTimer::getElapsedTime()
+	float Timer::getElapsedTime()
 	{
 		LARGE_INTEGER time;
 
@@ -131,7 +130,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	bool CTimer::isStoped()
+	bool Timer::isStoped()
 	{
 		return Stopped;
 	}

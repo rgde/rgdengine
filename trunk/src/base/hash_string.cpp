@@ -1,5 +1,4 @@
 #include "precompiled.h"
-//#include "dxstdafx.h"
 #include "base/hash_string.h"
 
 #include <stdio.h>  // Needed for file access
@@ -15,9 +14,6 @@ typedef union
 	unsigned char c[64];
 	unsigned long l[16];
 } SHA1_WORKSPACE_BLOCK;
-
-//typedef hash_id hash_value;
-using namespace std_ext;
 
 class CSHA1
 {
@@ -40,7 +36,7 @@ public:
 
 	// Finalize hash and report
 	void Final();
-	hash_id GetHash();
+	hash_string::hash_id GetHash();
 private:
 	unsigned long m_state[5];
 	unsigned long m_count[2];
@@ -56,84 +52,62 @@ private:
 
 
 //////////////////////////////////////////////////////////////////////////
-
-namespace std_ext
+void hash_string::hash_id::operator=(const hash_string::hash_id& _hid)
 {
-	void hash_id::operator=(const hash_id& _hid) {
-		i1 = _hid.i1; 
-		i2 = _hid.i2; 
-		i3 = _hid.i3; 
-		i4 = _hid.i4; 
-		i5 = _hid.i5;
-	}
-
-	bool hash_id::operator==(const hash_id& _hid) const
-	{
-		if (i1 != _hid.i1)
-			return false;
-		else if (i2 != _hid.i2)
-			return false;
-		else if (i3 != _hid.i3)
-			return false;
-		else if (i4 != _hid.i4)
-			return false;
-		else if (i5 != _hid.i5)
-			return false;
-
-		return true;
-	}
-
-
-	hash_string::hash_string() : m_isHashCalculated(false)
-	{
-	}
-
-	hash_string::hash_string(const char* _c): std::string(_c), m_isHashCalculated(false)
-	{
-	}
-
-	hash_string::hash_string(char* _c) : std::string(_c), m_isHashCalculated(false)
-	{
-	}
-
-	hash_string::hash_string(char* _c, size_t _n) : std::string(_c, _n), m_isHashCalculated(false)
-	{
-	}
-
-	hash_string::hash_string(const std::string& _s) : std::string(_s), m_isHashCalculated(false)
-	{
-	}
-
-	hash_string::hash_string(const hash_string& _hs) : 
-	std::string(_hs.c_str(), _hs.size()), 
-		m_hash_value(_hs.m_hash_value)
-	{
-		m_isHashCalculated = false;
-	}
-
-	const hash_id& hash_string::hash()
-	{
-		if (!m_isHashCalculated)
-			calc_hash();
-
-		return m_hash_value;
-
-	}
-
-	void hash_string::calc_hash()
-	{
-		CSHA1 sha1;
-
-		sha1.Reset();
-		sha1.Update((unsigned char *)this->c_str(), this->size());
-		sha1.Final();
-
-		m_hash_value = sha1.GetHash();
-
-		m_isHashCalculated = true;
-	}
+	i1 = _hid.i1; 
+	i2 = _hid.i2; 
+	i3 = _hid.i3; 
+	i4 = _hid.i4; 
+	i5 = _hid.i5;
 }
 
+bool hash_string::hash_id::operator==(const hash_string::hash_id& _hid) const
+{
+	if (i1 != _hid.i1)
+		return false;
+	else if (i2 != _hid.i2)
+		return false;
+	else if (i3 != _hid.i3)
+		return false;
+	else if (i4 != _hid.i4)
+		return false;
+	else if (i5 != _hid.i5)
+		return false;
+
+	return true;
+}
+//////////////////////////////////////////////////////////////////////////
+hash_string::hash_string(const char* _c): m_string(_c)
+{
+	calc_hash();
+}
+
+hash_string::hash_string(const char* _c, size_t _n) : m_string(_c, _n)
+{
+	calc_hash();
+}
+
+hash_string::hash_string(const std::string& _s) : m_string(_s) 
+{
+	calc_hash();
+}
+
+hash_string::hash_string(const hash_string& _hs) : 	
+	m_string(_hs.m_string), 
+	m_hash_value(_hs.m_hash_value)
+{
+}
+
+void hash_string::calc_hash()
+{
+	CSHA1 sha1;
+
+	sha1.Reset();
+	sha1.Update((unsigned char *)m_string.c_str(), m_string.size());
+	sha1.Final();
+
+	m_hash_value = sha1.GetHash();
+}
 //////////////////////////////////////////////////////////////////////////
 #define MAX_FILE_READ_BUFFER 8000
 
@@ -291,10 +265,9 @@ void CSHA1::Final()
 }
 
 // Get the raw message digest
-hash_id CSHA1::GetHash()
+hash_string::hash_id CSHA1::GetHash()
 {
-	hash_id v;
+	hash_string::hash_id v;
 	memcpy(v.raw_uchar, m_digest, 20);
 	return v;
 }
-

@@ -1,49 +1,42 @@
-//device.h
 #pragma once
-#include "base.h"
-#include <map>
+
+#include "input/base.h"
 
 namespace input
 {
-
     //устройство ввода
-    class CDevice
+    class Device
     {
     public:
-        CDevice(EDevice eName, int nIndx, CInputImpl &rInput):
-            m_nIndx  (nIndx),
-            m_eName  (eName),
-            m_rInput (rInput)
-        {
-        }
-        virtual ~CDevice();
+		Device(types::EDevice name, int index, InputImpl &input_system);
+        virtual ~Device();
 
-        EDevice     getName () const {return m_eName;}  //получить 'имя' устройства
-        int         getIndx () const {return m_nIndx;}  //получить порядковый номер устройства
-        CInputImpl& getInput()       {return m_rInput;} //получить устройство ввода
+		//получить 'имя' устройства
+        types::EDevice getName () const {return m_eName;}
+		//получить порядковый номер устройства
+        int		getIndx () const {return m_nIndx;}
+		//получить устройство ввода
+        InputImpl& getInput()       {return m_rInput;}
 
-        CControl* getControl       (EControl            eControlName);       //получить контрол
-        CControl* getControl       (const std::wstring &sControlName);
-        bool      isControlPresent (EControl            eControlName) const; //есть ли такой контрол
-        bool      isControlPresent (const std::wstring &sControlName) const;
+		//получить контрол
+        Control* getControl       (types::EControl	eControlName);
+        Control* getControl       (const std::wstring &sControlName);
+
+		//есть ли такой контрол
+        bool isControlPresent (types::EControl	eControlName) const;
+        bool isControlPresent (const std::wstring &sControlName) const;
 
     protected:
-        friend class CInputImpl;
-        void addButton (EControl eControlName); //добавить кнопку
-        void addAxis   (EControl eControlName); //добавить ось
-        void detachCommand (PCommand pCommand); //отвязать команду ото всех контролов
-
-        //->
-        //init
-        //getbuffereddata
-        //process
-        //-<
+        friend class InputImpl;
+        void addButton (types::EControl controlName); //добавить кнопку
+        void addAxis   (types::EControl controlName); //добавить ось
+        void detachCommand (CommandPtr command); //отвязать команду ото всех контролов
 
     private:
         int         m_nIndx;
-        EDevice     m_eName;
-        CInputImpl &m_rInput;
+        types::EDevice m_eName;
+        InputImpl &m_rInput;
 
-        std::map<EControl, CControl*> m_controls; //контролы, которые есть у устройства
+        std::map<types::EControl, Control*> m_controls; //контролы, которые есть у устройства
     };
 }

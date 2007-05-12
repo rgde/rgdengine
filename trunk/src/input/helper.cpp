@@ -7,294 +7,310 @@
 
 namespace input
 {
-
-    /////////////
-    // CHelper //
-    /////////////
-
-    CHelper::CHelper ()
-    {
-    }
-
-    CHelper::CHelper(const std::wstring &sCommandName): m_pCommand(CInput::getCommand(sCommandName))
-    {
-        //->
-        if (!m_pCommand.get())
-        {
-            CInput::addCommand(sCommandName);
-            m_pCommand = CInput::getCommand(sCommandName);
-        }
-        //-<
-        if (m_pCommand.get())
-            m_pCommand->attachObserver(this);
-    }
-
-    CHelper::~CHelper()
-    {
-        if (m_pCommand.get())
-            m_pCommand->detachObserver(this);
-    }
-
-    void CHelper::attach (const std::wstring &sCommandName)
-    {
-        detach();
-        m_pCommand = CInput::getCommand(sCommandName);
-        //->
-        if (!m_pCommand.get())
-        {
-            CInput::addCommand(sCommandName);
-            m_pCommand = CInput::getCommand(sCommandName);
-        }
-        //-<
-        if (m_pCommand.get())
-            m_pCommand->attachObserver(this);
-    }
-
-    void CHelper::detach ()
-    {
-        if (m_pCommand.get())
-            m_pCommand->detachObserver(this);
-        m_pCommand.reset();
-    }
-
-    void CHelper::operator += (CHelper::Handler handler)
-    {
-        m_handlers.push_back(handler);
-    }
-
-
-    void CHelper::notify (const CControl &rControl)
-    {
-        CHelperEvent ev;
-
-        switch (rControl.getType())
-        {
-            case CControl::Axis:   ev.m_eType = CHelperEvent::Axis; break;
-            case CControl::Button: ev.m_eType = CHelperEvent::Button; break;
-            default:			   ev.m_eType = CHelperEvent::Button;
-        }
-        ev.m_bPress = rControl.m_bPress;
-        ev.m_nDelta = rControl.m_nDelta;
-        ev.m_nTime  = rControl.m_nTime;
-
-        std::list<CHelper::Handler>::iterator i = m_handlers.begin();
-        while (i != m_handlers.end())
-        {
-            (*i)(ev);
-            ++i;
-        }
-    }
-
-    /////////////
-    // CButton //
-    /////////////
-
-    void CButton::operator += (CButton::ButtonHandler handler)
-    {
-        m_buttonHandlers.push_back(handler);
-    }
-
-    void CButton::notify (const CControl &rControl)
-    {
-        if (rControl.getType() != CControl::Button)
-            return;
-
-        if (rControl.m_bPress)
-            ++m_nPress;
-        else
-            --m_nPress;
-        if (m_nPress<0)
-            m_nPress = 0;
-
-        std::list<CButton::ButtonHandler>::iterator i = m_buttonHandlers.begin();
-        while (i != m_buttonHandlers.end())
-        {
-            (*i)(rControl.m_bPress);
-            ++i;
-        }
-    }
-
-    //////////////
-    // CTrigger //
-    //////////////
-
-    void CTrigger::operator += (CTrigger::TriggerHandler handler)
-    {
-        m_triggerHandlers.push_back(handler);
-    }
-
-    void CTrigger::setState (bool bOn)
-    {
-        m_bOn = bOn;
-    }
-
-    void CTrigger::notify (const CControl &rControl)
-    {
-        if (rControl.getType() != CControl::Button)
-            return;
-
-        if (!rControl.m_bPress)
-            return;
-
-        m_bOn = !m_bOn;
-
-        std::list<CTrigger::TriggerHandler>::iterator i = m_triggerHandlers.begin();
-        while (i != m_triggerHandlers.end())
-        {
-            (*i)(m_bOn);
-            ++i;
-        }
-    }
-
-    ////////////
-    // CKeyUp //
-    ////////////
-
-    void CKeyUp::operator += (CKeyUp::KeyUpHandler handler)
-    {
-        m_keyupHandlers.push_back(handler);
-    }
-
-    void CKeyUp::notify (const CControl &rControl)
-    {
-        if (rControl.getType() != CControl::Button)
-            return;
-
-        if (rControl.m_bPress)
-            return;
-
-        std::list<CKeyUp::KeyUpHandler>::iterator i = m_keyupHandlers.begin();
-        while (i != m_keyupHandlers.end())
-        {
-            (*i)();
-            ++i;
-        }
-    }
-
-    //////////////
-    // CKeyDown //
-    //////////////
-
-    void CKeyDown::operator += (CKeyDown::KeyDownHandler handler)
-    {
-        m_keydownHandlers.push_back(handler);
-    }
-
-    void CKeyDown::notify (const CControl &rControl)
-    {
-        if (rControl.getType() != CControl::Button)
-            return;
-
-        if (!rControl.m_bPress)
-            return;
-
-        std::list<CKeyDown::KeyDownHandler>::iterator i = m_keydownHandlers.begin();
-        while (i != m_keydownHandlers.end())
-        {
-            (*i)();
-            ++i;
-        }
-    }
-
-    ///////////////////
-    // CRelativeAxis //
-    ///////////////////
-
-    void CRelativeAxis::operator += (CRelativeAxis::RelativeAxisHandler handler)
-    {
-        m_raxisHandlers.push_back(handler);
-    }
-
-    void CRelativeAxis::notify (const CControl &rControl)
-    {
-		if (rControl.getType() != CControl::Axis)
-            return;
-
-        std::list<CRelativeAxis::RelativeAxisHandler>::iterator i = m_raxisHandlers.begin();
-        while (i != m_raxisHandlers.end())
-        {
-            (*i)(rControl.m_nDelta);
-            ++i;
-        }
-    }
-
-    ///////////////////
-    // CAbsoluteAxis //
-    ///////////////////
-
-    void CAbsoluteAxis::operator += (CAbsoluteAxis::AbsoluteAxisHandler handler)
-    {
-        m_aaxisHandlers.push_back(handler);
-    }
-
-	int CAbsoluteAxis::getMin ()
+//////////////////////////////////////////////////////////////////////////
+	// CHelper
+	Helper::Helper()
 	{
-		return m_nMin;
 	}
 
-	int CAbsoluteAxis::getMax ()
+	Helper::Helper(const std::wstring &sCommandName)
 	{
-		return m_nMax;
+		attach(sCommandName);
 	}
 
-	int CAbsoluteAxis::getPos ()
+	Helper::~Helper()
 	{
-		return m_nPos;
+		detach();
 	}
 
-	void CAbsoluteAxis::setMin (int nMin)
+	void Helper::attach (const std::wstring &sCommandName)
 	{
-		m_nMin = nMin;
-
-		if (m_nMin > m_nMax)
+		detach();
+		m_command = Input::getCommand(sCommandName);
+		//->
+		if (!m_command)
 		{
-			int t  = m_nMin;
-			m_nMin = m_nMax;
-			m_nMax = t;
+			Input::addCommand(sCommandName);
+			m_command = Input::getCommand(sCommandName);
+		}
+		//-<
+		if (m_command)
+			m_command->attachObserver(this);
+	}
+
+	void Helper::detach ()
+	{
+		if (m_command)
+		{
+			m_command->detachObserver(this);
+			m_command.reset();
+		}        
+	}
+
+	void Helper::operator += (Helper::Handler handler)
+	{
+		m_handlers.push_back(handler);
+	}
+
+
+	void Helper::notify (const Control &rControl)
+	{
+		HelperEvent ev;
+
+		switch (rControl.getType())
+		{
+			case Control::Axis:
+				ev.m_type = HelperEvent::Axis; 
+				break;
+			case Control::Button:
+				ev.m_type = HelperEvent::Button; 
+				break;
+			default:
+				ev.m_type = HelperEvent::Button;
 		}
 
-		if (m_nPos < m_nMin) m_nPos = m_nMin;
-		if (m_nPos > m_nMax) m_nPos = m_nMax;
+		ev.m_press = rControl.m_press;
+		ev.m_delta = rControl.m_delta;
+		ev.m_time  = rControl.m_time;
+
+		std::list<Helper::Handler>::iterator i = m_handlers.begin();
+		while (i != m_handlers.end())
+		{
+			Helper::Handler& handler = *i;
+			handler(ev);
+			++i;
+		}
 	}
 
-	void CAbsoluteAxis::setMax (int nMax)
+	//////////////////////////////////////////////////////////////////////////
+	// CButton
+	Button::Button (): m_press(0) 
 	{
-		m_nMax = nMax;
+	}
 
-		if (m_nMin > m_nMax)
+	Button::Button(const std::wstring &commandName): 
+		Helper(commandName), m_press(0) 
+	{
+	}
+
+	void Button::operator += (Button::ButtonHandler handler)
+	{
+		m_buttonHandlers.push_back(handler);
+	}
+
+	void Button::notify (const Control &rControl)
+	{
+		if (rControl.getType() != Control::Button)
+			return;
+
+		if (rControl.m_press)
+			++m_press;
+		else
+			--m_press;
+
+		if (m_press<0)
+			m_press = 0;
+
+		std::list<Button::ButtonHandler>::iterator i = m_buttonHandlers.begin();
+		while (i != m_buttonHandlers.end())
 		{
-			int t  = m_nMin;
-			m_nMin = m_nMax;
-			m_nMax = t;
+			(*i)(rControl.m_press);
+			++i;
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// CTrigger
+
+	Trigger::Trigger()
+		: m_is_active(false) 
+	{
+	}
+
+	Trigger::Trigger(const std::wstring &commandName): 
+		Helper(commandName), 
+		m_is_active(false) 
+	{
+	}
+
+	void Trigger::operator += (Trigger::TriggerHandler handler)
+	{
+		m_triggerHandlers.push_back(handler);
+	}
+
+	void Trigger::setState (bool bOn)
+	{
+		m_is_active = bOn;
+	}
+
+	void Trigger::notify (const Control &rControl)
+	{
+		if (rControl.getType() != Control::Button)
+			return;
+
+		if (!rControl.m_press)
+			return;
+
+		m_is_active = !m_is_active;
+
+		std::list<Trigger::TriggerHandler>::iterator i = m_triggerHandlers.begin();
+		while (i != m_triggerHandlers.end())
+		{
+			(*i)(m_is_active);
+			++i;
+		}
+	}
+
+//////////////////////////////////////////////////////////////////////////
+
+	KeyUp::KeyUp() 
+	{
+	}
+
+	KeyUp::KeyUp(const std::wstring &commandName): Helper(commandName) 
+	{
+	}
+
+	void KeyUp::operator += (KeyUp::KeyUpHandler handler)
+	{
+		m_keyupHandlers.push_back(handler);
+	}
+
+	void KeyUp::notify (const Control &rControl)
+	{
+		if (rControl.getType() != Control::Button)
+			return;
+
+		if (rControl.m_press)
+			return;
+
+		std::list<KeyUp::KeyUpHandler>::iterator i = m_keyupHandlers.begin();
+		while (i != m_keyupHandlers.end())
+		{
+			(*i)();
+			++i;
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+
+	KeyDown::KeyDown () 
+	{
+	}
+
+	KeyDown::KeyDown (const std::wstring &commandName): 
+		Helper(commandName) 
+	{
+	}
+
+	void KeyDown::operator += (KeyDown::KeyDownHandler handler)
+	{
+		m_keydownHandlers.push_back(handler);
+	}
+
+	void KeyDown::notify (const Control &rControl)
+	{
+		if (rControl.getType() != Control::Button)
+			return;
+
+		if (!rControl.m_press)
+			return;
+
+		std::list<KeyDown::KeyDownHandler>::iterator i = m_keydownHandlers.begin();
+		while (i != m_keydownHandlers.end())
+		{
+			(*i)();
+			++i;
+		}
+	}
+
+//////////////////////////////////////////////////////////////////////////
+
+	RelativeAxis::RelativeAxis()
+	{
+	}
+
+	RelativeAxis::RelativeAxis(const std::wstring &commandName) : 
+		Helper(commandName) 
+	{
+	}
+
+	void RelativeAxis::operator += (RelativeAxis::RelativeAxisHandler handler)
+	{
+		m_raxisHandlers.push_back(handler);
+	}
+
+	void RelativeAxis::notify (const Control &rControl)
+	{
+		if (rControl.getType() != Control::Axis)
+			return;
+
+		std::list<RelativeAxis::RelativeAxisHandler>::iterator i = m_raxisHandlers.begin();
+		while (i != m_raxisHandlers.end())
+		{
+			(*i)(rControl.m_delta);
+			++i;
+		}
+	}
+
+//////////////////////////////////////////////////////////////////////////
+
+	AbsoluteAxis::AbsoluteAxis ():
+		m_min (0),
+		m_max (100),
+		m_pos (0)
+	{
+	}
+
+	AbsoluteAxis::AbsoluteAxis (const std::wstring &commandName):
+		Helper(commandName),
+		m_min (0),
+		m_max (100),
+		m_pos (0)
+	{
+	}
+
+	void AbsoluteAxis::operator += (AbsoluteAxis::AbsoluteAxisHandler handler)
+	{
+		m_aaxisHandlers.push_back(handler);
+	}
+
+	void AbsoluteAxis::setMin (int nMin)
+	{
+		m_min = nMin;
+
+		if (m_min > m_max)
+		{
+			std::swap(m_min, m_max);
 		}
 
-		if (m_nPos < m_nMin) m_nPos = m_nMin;
-		if (m_nPos > m_nMax) m_nPos = m_nMax;
+		setPos(m_pos);
 	}
 
-	void CAbsoluteAxis::setPos (int nPos)
+	void AbsoluteAxis::setMax (int nMax)
 	{
-		m_nPos = nPos;
-
-		if (m_nPos < m_nMin) m_nPos = m_nMin;
-		if (m_nPos > m_nMax) m_nPos = m_nMax;
+		m_max = nMax;
+		setMin(m_min);
 	}
 
-    void CAbsoluteAxis::notify (const CControl &rControl)
-    {
-		if (rControl.getType() != CControl::Axis)
-            return;
+	void AbsoluteAxis::setPos (int nPos)
+	{
+		m_pos = std::min(std::max(m_min, nPos), m_max);
+	}
 
-		m_nPos += rControl.m_nDelta;
-		if (m_nPos < m_nMin) m_nPos = m_nMin;
-		if (m_nPos > m_nMax) m_nPos = m_nMax;
+	void AbsoluteAxis::notify (const Control &rControl)
+	{
+		if (rControl.getType() != Control::Axis)
+			return;
 
-        std::list<CAbsoluteAxis::AbsoluteAxisHandler>::iterator i = m_aaxisHandlers.begin();
-        while (i != m_aaxisHandlers.end())
-        {
-            (*i)(m_nPos);
-            ++i;
-        }
-    }
+		setPos(m_pos + rControl.m_delta);
 
+		std::list<AbsoluteAxis::AbsoluteAxisHandler>::iterator i = m_aaxisHandlers.begin();
+		while (i != m_aaxisHandlers.end())
+		{
+			(*i)(m_pos);
+			++i;
+		}
+	}
+//////////////////////////////////////////////////////////////////////////
 }

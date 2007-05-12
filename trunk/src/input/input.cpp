@@ -1,38 +1,36 @@
-//input.cpp
 #include "precompiled.h"
+
 #include "input/input.h"
+#include "input/inputimpl.h"
+
 #include "io/io.h"
 
 namespace input
 {
-
-    //указатель на единственный экземпл€р
-    //по стандарту и так ноль, но все равно спокойней на душе :)
-    CInput* CInput::ms_pInstance = 0;
+    Input* Input::ms_pInstance = 0;
 
     //только дл€ конструировани€ синглтона
-    CInput::CInput ()
+    Input::Input ()
     {
         assert(!ms_pInstance);
         ms_pInstance = this;
     }
 
-    CInput::~CInput ()
+    Input::~Input ()
     {
         assert(ms_pInstance);
         ms_pInstance = 0;
     }
 
-    //получить указатель на синглтон системы ввода
-    CInput& CInput::Get ()
+    Input& Input::Get ()
     {
         if (!ms_pInstance)
-            ms_pInstance = new CInput;
+            ms_pInstance = new Input;
         return *ms_pInstance;
     }
 
     //удалить синглтон системы ввода
-    void CInput::Destroy ()
+    void Input::Destroy ()
     {
         if (ms_pInstance)
             delete ms_pInstance;
@@ -40,24 +38,22 @@ namespace input
     }
 
     //инициализировать систему ввода
-    void CInput::init (CInputImpl *pImpl)
+    void Input::init (InputImpl *pImpl)
     {
         m_pImpl.reset(pImpl);
     }
 
-    //изменить режим работы устройств ввода
-    bool CInput::SetMode (bool exclusive, bool foreground)
+    bool Input::SetMode (bool exclusive, bool foreground)
     {
         return Get().m_pImpl->SetMode(exclusive,foreground);
     }
 
-    //загрузить раскладку
-    void CInput::LoadFromString (const std::string &sXml)
+    void Input::LoadFromString (const std::string &sXml)
     {
         Get().m_pImpl->Load(sXml);
     }
 
-    void CInput::LoadFromFile (const std::string &sFileName)
+    void Input::LoadFromFile (const std::string &sFileName)
     {
         std::vector<char> data;
 
@@ -68,64 +64,59 @@ namespace input
         Get().m_pImpl->Load(std::string(data.begin(), data.end()));
     }
 
-    //считать из буфера все событи€ от устройств ввода
-    void CInput::Update ()
+    void Input::Update ()
     {
         Get().m_pImpl->Update();
     }
 
-    //сохранить раскладку
-    void CInput::Save (std::string &sXml)
+    void Input::Save (std::string &sXml)
     {
         Get().m_pImpl->Save(sXml);
     }
 
-    //получить устройство
-    CDevice* CInput::getDevice (EDevice eDeviceName, int indx)
+    Device* Input::getDevice (types::EDevice eDeviceName, int indx)
     {
         return Get().m_pImpl->getDevice(eDeviceName, indx);
     }
 
-    //получить устройство
-    CDevice* CInput::getDevice (const std::wstring &sDeviceName, int indx)
+    Device* Input::getDevice (const std::wstring &sDeviceName, int indx)
     {
         return Get().m_pImpl->getDevice(sDeviceName, indx);
     }
 
     //есть ли такое устройство
-    bool CInput::isDevicePresent (EDevice eDeviceName, int indx)
+    bool Input::isDevicePresent (types::EDevice eDeviceName, int indx)
     {
         return Get().m_pImpl->isDevicePresent(eDeviceName,indx);
     }
 
     //есть ли такое устройство
-    bool CInput::isDevicePresent (const std::wstring &sDeviceName, int indx)
+    bool Input::isDevicePresent (const std::wstring &sDeviceName, int indx)
     {
         return Get().m_pImpl->isDevicePresent(sDeviceName, indx);
     }
 
     //добавить команду
-    void CInput::addCommand (const std::wstring &sCommandName)
+    void Input::addCommand (const std::wstring &sCommandName)
     {
         Get().m_pImpl->addCommand(sCommandName);
     }
 
     //получить команду
-    PCommand CInput::getCommand (const std::wstring &sCommandName)
+    CommandPtr Input::getCommand (const std::wstring &sCommandName)
     {
         return Get().m_pImpl->getCommand(sCommandName);
     }
 
     //есть ли така€ команда
-    bool CInput::isCommandPresent (const std::wstring &sCommandName)
+    bool Input::isCommandPresent (const std::wstring &sCommandName)
     {
         return Get().m_pImpl->isCommandPresent(sCommandName);
     }
 
     //отв€зать команду ото всех контролов
-    void CInput::detachCommand (PCommand pCommand)
+    void Input::detachCommand (CommandPtr pCommand)
     {
         Get().m_pImpl->detachCommand(pCommand);
     }
-
-} //namespace input
+}

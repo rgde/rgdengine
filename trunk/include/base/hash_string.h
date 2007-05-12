@@ -1,9 +1,9 @@
 #pragma once
 
-#pragma warning( disable : 4201 )
 
-namespace std_ext
+class hash_string
 {
+public:
 	union hash_id
 	{
 		unsigned char raw_uchar[20];
@@ -18,22 +18,21 @@ namespace std_ext
 		void operator=(const hash_id& _hid);
 		bool operator==(const hash_id& _hid) const;
 	};
+	
+	explicit hash_string(const char* _c);
+	explicit hash_string(const char* _c, size_t _n);
+	explicit hash_string(const std::string& _s);
 
-	class hash_string : public std::string
-	{
-	public:		
-		hash_string();
-		hash_string(const char* _c);
-		hash_string(char* _c);
-		hash_string(char* _c, size_t _n);
-		hash_string(const std::string& _s);
-		hash_string(const hash_string& _hs);
+	hash_string(const hash_string& _hs);
 
-		const hash_id& hash();
-	protected:
-		void calc_hash();
-	protected:
-		bool m_isHashCalculated;
-		hash_id  m_hash_value;
-	};
-}
+	operator const std::string&() const {return m_string;}
+
+	const hash_id& hash() const {return m_hash_value;}
+
+protected:
+	void calc_hash();
+
+protected:
+	std::string m_string;
+	hash_id  m_hash_value;
+};

@@ -7,34 +7,33 @@
 //-----------------------------------------------------------------------------
 namespace core
 {
-	class CTimer
+	class Timer
 	{
-	protected:
-		CTimer();
-
 	public:
-		// Starts timer
+		Timer();
+	
+		/// Starts timer
 		void start();
 
-		// Stop/pause timer
+		/// Stop/pause timer
 		void stop();
 
-		// Resets all time values to zero
+		/// Resets all time values to zero
 		void reset();
 
-		// Advance a timer by 0.1 seconds
+		/// Advance a timer by 0.1 seconds
 		void advance();
 
-		// Returns the absolute system time
+		/// Returns the absolute system time
 		float getAbsoluteTime();
 
-		// Returns the current time
+		/// Returns the current time
 		float getCurrentTime();
 
-		// Returns a time that elapsed between getElapsedTime() calls
+		/// Returns a time that elapsed between getElapsedTime() calls
 		float getElapsedTime();
 
-		// Indicates that a timer is stopped or paused
+		/// Indicates that a timer is stopped or paused
 		bool isStoped();
 
 	protected:
@@ -46,5 +45,5 @@ namespace core
 		__int64 TicksPerSecond;
 	};
 
-	typedef base::TSingelton<CTimer> TheTimer;
+	typedef base::TSingelton<Timer> TheTimer;
 }

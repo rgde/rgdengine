@@ -19,7 +19,7 @@ TestInput::TestInput():
 {
     render::TheDevice::Get().setClearColor(math::Color(0,0,0,255));
 
-    input::CInput::LoadFromFile("TestInput/input.xml");
+    input::Input::LoadFromFile("TestInput/input.xml");
 
     //биндим функции для перехвата событий
     m_keyupQuit        += boost::bind(&TestInput::onQuit,          this);
@@ -71,11 +71,11 @@ void TestInput::onPause (bool pause)
 {
     if (pause)
     {
-        input::CInput::Get().SetMode(false);
+        input::Input::Get().SetMode(false);
     }
     else
     {
-        input::CInput::Get().SetMode(true);
+        input::Input::Get().SetMode(true);
     }
 }
 
