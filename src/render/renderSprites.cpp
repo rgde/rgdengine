@@ -163,7 +163,7 @@ namespace render
 			pTech->getPasses()[iPass]->begin();
 
 			unsigned nSpritesRendered				= 0;
-			IEffect::IParameter *textureShaderParam	= m_pEffect->getParams()["spriteTexture"];
+			IEffect::IParameter *textureShaderParam	= m_pEffect->getParams()["SpriteTexture"];
 
 			uint start_sprite = 0;
 			PTexture cur_tex = m_vSprites[0].pTexture;
