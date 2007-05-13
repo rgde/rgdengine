@@ -48,16 +48,14 @@ namespace render
 		{
 		case CMaterial::CMaterialMap::Black:
 			return TheRenderManager::Get().getBlackTexture();
-			break;
-
 		case CMaterial::CMaterialMap::White:
 			return TheRenderManager::Get().getWhiteTexture();
-			break;
-
 		case CMaterial::CMaterialMap::DefaultNormalMap:
 			return TheRenderManager::Get().getDefaultNormalMap();
-			break;
 		}
+
+		static PTexture empti_texture_ptr;
+		return empti_texture_ptr;
 	}
 
 	CMaterial::CMaterialMap::CMaterialMap(EDefaultTexture defaultTexture)
