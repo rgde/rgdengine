@@ -20,7 +20,7 @@ ModelViewer::ModelViewer()
 	initInput();
 	createLights();
 
-	m_bRenderGrid = false;
+	m_bRenderGrid = true;
 }
 
 

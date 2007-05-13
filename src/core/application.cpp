@@ -14,7 +14,7 @@
 
 #include "render/renderManager.h"
 
-
+#include <boost/filesystem/operations.hpp>
 
 #ifdef _DEBUG
 	#pragma comment (lib, "dxguid.lib")
@@ -136,84 +136,11 @@ namespace core
 			bool bKeyDown = (uMsg == WM_KEYDOWN || uMsg == WM_SYSKEYDOWN);
 			DWORD dwMask = (1 << 29);
 			bool bAltDown = ( (lParam & dwMask) != 0 );
-		
-			//bool* bKeys = GetDXUTState().GetKeys();
-			//bKeys[ (BYTE) (wParam & 0xFF) ] = bKeyDown;
-		
-			//LPDXUTCALLBACKKEYBOARD pCallbackKeyboard = GetDXUTState().GetKeyboardFunc();
-			//if( pCallbackKeyboard )
-			//	pCallbackKeyboard( (UINT)wParam, bKeyDown, bAltDown, GetDXUTState().GetKeyboardFuncUserContext() );
 		}
 	}
 
 	void ApplicationImpl::OnMouse(Forms::Message &msg)
 	{
-		// вероятно это надо вынести в слушателя мышиных событий
-		//case WM_MOUSEMOVE:
-		//	if( !DXUTIsRenderingPaused() && !DXUTIsWindowed() )
-		//	{
-		//		IDirect3DDevice9* pd3dDevice = DXUTGetD3DDevice();
-		//		if( pd3dDevice )
-		//		{
-		//			POINT ptCursor;
-		//			GetCursorPos( &ptCursor );
-		//			pd3dDevice->SetCursorPosition( ptCursor.x, ptCursor.y, 0 );
-		//		}
-		//	}
-		//	break;
-
-		// общик код заканчивается посылкой эвента
-		//// Consolidate the mouse button messages and pass them to the app's mouse callback
-		//if( uMsg == WM_LBUTTONDOWN ||
-		//   uMsg == WM_LBUTTONUP ||
-		//   uMsg == WM_LBUTTONDBLCLK ||
-		//   uMsg == WM_MBUTTONDOWN ||
-		//   uMsg == WM_MBUTTONUP ||
-		//   uMsg == WM_MBUTTONDBLCLK ||
-		//   uMsg == WM_RBUTTONDOWN ||
-		//   uMsg == WM_RBUTTONUP ||
-		//   uMsg == WM_RBUTTONDBLCLK ||
-		//   uMsg == WM_XBUTTONDOWN ||
-		//   uMsg == WM_XBUTTONUP ||
-		//   uMsg == WM_XBUTTONDBLCLK ||
-		//   uMsg == WM_MOUSEWHEEL || 
-		//   (GetDXUTState().GetNotifyOnMouseMove() && uMsg == WM_MOUSEMOVE) )
-		//{
-		//	int xPos = (short)LOWORD(lParam);
-		//	int yPos = (short)HIWORD(lParam);
-		//
-		//	if( uMsg == WM_MOUSEWHEEL )
-		//	{
-		//		// WM_MOUSEWHEEL passes screen mouse coords
-		//		// so convert them to client coords
-		//		POINT pt;
-		//		pt.x = xPos; pt.y = yPos;
-		//		ScreenToClient( hWnd, &pt );
-		//		xPos = pt.x; yPos = pt.y;
-		//	}
-		//
-		//	int nMouseWheelDelta = 0;
-		//	if( uMsg == WM_MOUSEWHEEL ) 
-		//		nMouseWheelDelta = (short) HIWORD(wParam);
-		//
-		//	int nMouseButtonState = LOWORD(wParam);
-		//	bool bLeftButton  = ((nMouseButtonState & MK_LBUTTON) != 0);
-		//	bool bRightButton = ((nMouseButtonState & MK_RBUTTON) != 0);
-		//	bool bMiddleButton = ((nMouseButtonState & MK_MBUTTON) != 0);
-		//	bool bSideButton1 = ((nMouseButtonState & MK_XBUTTON1) != 0);
-		//	bool bSideButton2 = ((nMouseButtonState & MK_XBUTTON2) != 0);
-		//
-		//	bool* bMouseButtons = GetDXUTState().GetMouseButtons();
-		//	bMouseButtons[0] = bLeftButton;
-		//	bMouseButtons[1] = bMiddleButton;
-		//	bMouseButtons[2] = bRightButton;
-		//	bMouseButtons[3] = bSideButton1;
-		//	bMouseButtons[4] = bSideButton2;
-		//
-		//	LPDXUTCALLBACKMOUSE pCallbackMouse = GetDXUTState().GetMouseFunc();
-		//	if( pCallbackMouse )
-		//		pCallbackMouse( bLeftButton, bRightButton, bMiddleButton, bSideButton1, bSideButton2, nMouseWheelDelta, xPos, yPos, GetDXUTState().GetMouseFuncUserContext() );
-		//}
 	}
 
 	void ApplicationImpl::OnSize(Forms::Message &msg)
@@ -293,6 +220,10 @@ namespace core
 	{
 		if ( 0 != gs_pApplication) return gs_pApplication;
 
+		std::wstring buffer;
+		buffer.resize(256);
+		GetCurrentDirectoryW(256, &buffer[0]);
+
 		std::wstring strName = window_name.empty() ? L"RGDE Window" : window_name;
 		int  nWidth = 640;
 		int  nHeight = 480;
@@ -325,6 +256,27 @@ namespace core
 		if ( 0 != gs_pApplication)
 			return gs_pApplication;
 
+		std::wstring buffer;
+		buffer.resize(256);
+		//GetCurrentDirectoryW(256, &buffer[0]);
+
+		GetModuleFileNameW(NULL, &buffer[0], 256);
+		//GetMonitorInfoW()
+
+		//GetLongPathNameW(`)
+
+		std::wstring module_path;
+		module_path.resize(256);
+		GetFullPathNameW(&buffer[0], 256, &module_path[0], NULL);
+
+		//using boost::filesystem::path;
+		boost::filesystem::wpath p(buffer);
+
+		std::wstring path = p.branch_path().string();
+
+		SetCurrentDirectoryW(path.c_str());
+		
+
 		ApplicationImpl* pApp = new ApplicationImpl();
 		pApp->init(Name, Width, Height, Fullscreen, resize_enable);
 	
@@ -335,6 +287,10 @@ namespace core
 	{
 		if ( 0 != gs_pApplication)
 			return gs_pApplication;
+
+		std::wstring buffer;
+		buffer.resize(256);
+		GetCurrentDirectoryW(256, &buffer[0]);
 
 		ApplicationImpl* pApp = new ApplicationImpl();
 		pApp->init(hParentWindow);
