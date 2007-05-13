@@ -100,6 +100,8 @@ namespace input
 
 	void Button::notify (const Control &rControl)
 	{
+        CHelper::notify(rControl);
+
 		if (rControl.getType() != Control::Button)
 			return;
 
@@ -145,7 +147,9 @@ namespace input
 
 	void Trigger::notify (const Control &rControl)
 	{
-		if (rControl.getType() != Control::Button)
+        CHelper::notify(rControl);
+
+        if (rControl.getType() != Control::Button)
 			return;
 
 		if (!rControl.m_press)
@@ -178,6 +182,8 @@ namespace input
 
 	void KeyUp::notify (const Control &rControl)
 	{
+        CHelper::notify(rControl);
+
 		if (rControl.getType() != Control::Button)
 			return;
 
@@ -210,6 +216,8 @@ namespace input
 
 	void KeyDown::notify (const Control &rControl)
 	{
+        CHelper::notify(rControl);
+
 		if (rControl.getType() != Control::Button)
 			return;
 
@@ -242,6 +250,8 @@ namespace input
 
 	void RelativeAxis::notify (const Control &rControl)
 	{
+        CHelper::notify(rControl);
+
 		if (rControl.getType() != Control::Axis)
 			return;
 
@@ -300,6 +310,8 @@ namespace input
 
 	void AbsoluteAxis::notify (const Control &rControl)
 	{
+        CHelper::notify(rControl);
+
 		if (rControl.getType() != Control::Axis)
 			return;
 
