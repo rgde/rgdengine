@@ -18,10 +18,10 @@ namespace gulman
 
 		virtual void update(float dt);
 		
-		void onEsc(const input::CButtonEvent&);	//выход из программы
-		void onXAxis(const input::CRelativeAxisEvent &event);
-		void onYAxis(const input::CRelativeAxisEvent &event);
-		void onWheelAxis(const input::CRelativeAxisEvent &event);
+		void onEsc();	//выход из программы
+		void onXAxis(int delta);
+		void onYAxis(int delta);
+		void onWheelAxis(int delta);
 
 	protected:
 		render::PModel			m_spModel;
@@ -29,10 +29,10 @@ namespace gulman
 		math::PCamera			m_camera;            //указатель на камеру
 
 		//данные для ввода
-		input::CButtonCommand       m_cEsc;
-		input::CRelativeAxisCommand m_cXAxis;
-		input::CRelativeAxisCommand m_cYAxis;
-		input::CRelativeAxisCommand m_cZAxis;
+		input::Button       m_cEsc;
+		input::RelativeAxis m_cXAxis;
+		input::RelativeAxis m_cYAxis;
+		input::RelativeAxis m_cZAxis;
 
 		//данные для камеры
 		math::PTargetCamera      m_spTargetCamera;      //контроллер камеры "нацеленная камера"	

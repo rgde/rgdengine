@@ -30,6 +30,12 @@ namespace input
         static bool isDevicePresent (types::EDevice eDeviceName, int indx=0);
         static bool isDevicePresent (const std::wstring &sDeviceName, int indx=0);
 
+		static Control* GetControl(types::EDevice device, int dev_index, types::EControl control);
+		static Control* GetControl(types::EDevice device, types::EControl control)
+		{
+			return GetControl(device, 0, control);
+		}
+
         // доступ к командам системы ввода
         static void      addCommand       (const std::wstring &sCommandName); //добавить команду
         static CommandPtr  getCommand       (const std::wstring &sCommandName); //получить команду

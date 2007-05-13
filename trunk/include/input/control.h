@@ -35,6 +35,8 @@ namespace input
         //уведомить наблюдателей о своем изменении
         void notifyAllObservers (); 
 
+		bool getPress() const {return m_press;}
+
         int  m_time;
         bool m_press;
         int  m_delta;
