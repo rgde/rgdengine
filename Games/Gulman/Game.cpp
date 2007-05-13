@@ -25,14 +25,22 @@ Game::~Game()
 
 void Game::initInput()
 {
-	m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
-	m_cXAxis.attachToControl(input::Mouse, input::AxisX);
-	m_cYAxis.attachToControl(input::Mouse, input::AxisY);
-	m_cZAxis.attachToControl(input::Mouse, input::AxisWheel);
-	m_cEsc.addHandler(this,&Game::onEsc);
-	m_cYAxis.addHandler(this,&Game::onYAxis);
-	m_cXAxis.addHandler(this,&Game::onXAxis);
-	m_cZAxis.addHandler(this,&Game::onWheelAxis);
+	m_cEsc.attach(L"Exit");
+	m_cXAxis.attach(L"XAxis");
+	m_cYAxis.attach(L"YAxis");
+	m_cZAxis.attach(L"ZAxis");
+
+	using namespace input;
+
+	Input::GetControl(types::Keyboard, types::KeyEscape )->bind(m_cEsc.getCommand());
+	Input::GetControl(types::Mouse, types::AxisX )->bind(m_cXAxis.getCommand());
+	Input::GetControl(types::Mouse, types::AxisY )->bind(m_cYAxis.getCommand());
+	Input::GetControl(types::Mouse, types::AxisWheel )->bind(m_cZAxis.getCommand());
+
+	m_cEsc += boost::bind(&Game::onEsc, this);
+	m_cYAxis += boost::bind(&Game::onYAxis, this, _1);
+	m_cXAxis += boost::bind(&Game::onXAxis, this, _1);
+	m_cZAxis += boost::bind(&Game::onWheelAxis, this, _1);
 }
 
 void Game::initCamera()
@@ -71,21 +79,21 @@ void Game::update(float dt)
 }
 
 //выход из программы
-void Game::onEsc(const input::CButtonEvent&)
+void Game::onEsc()
 {
 	core::IApplication::Get()->close();
 }
 
 
 //ось X
-void Game::onXAxis(const input::CRelativeAxisEvent &event)
+void Game::onXAxis(int delta)
 {
 	const int accel = 5;
 	const float slow = .01f;
 	const float fast = 2*slow;
-	float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+	float angle = delta > accel ? delta*fast : delta*slow;
 
-	if (input::CSystem::Get().GetControl(input::Mouse, input::ButtonLeft)->getPress())
+	if (input::Input::GetControl(input::types::Mouse, input::types::ButtonLeft)->getPress())
 	{
 		math::Vec3f cam_up;
 		math::Vec3f cam_pos;
@@ -96,14 +104,14 @@ void Game::onXAxis(const input::CRelativeAxisEvent &event)
 		math::normalize(dir);
 		math::normalize(cam_up);
 		math::Vec3f cam_side = math::makeCross(cam_up, dir);
-		cam_side *= -event.m_nDelta*0.1f;
+		cam_side *= -delta*0.1f;
 
 		cam_pos += cam_side;
 		cam_target += cam_side;
 		m_spTargetCamera->setPosition(cam_up,cam_pos,cam_target);
 
 	}
-	else if (input::CSystem::Get().GetControl(input::Mouse, input::ButtonRight)->getPress() == false)
+	else if (input::Input::GetControl(input::types::Mouse, input::types::ButtonRight)->getPress() == false)
 		return;
 	else
 	{
@@ -112,9 +120,10 @@ void Game::onXAxis(const input::CRelativeAxisEvent &event)
 }
 
 //ось Y
-void Game::onYAxis(const input::CRelativeAxisEvent &event)
+void Game::onYAxis(int delta)
 {
-	if (input::CSystem::Get().GetControl(input::Mouse, input::ButtonLeft)->getPress())
+	using namespace input;
+	if (Input::GetControl(types::Mouse, types::ButtonLeft)->getPress())
 	{
 		math::Vec3f cam_up;
 		math::Vec3f cam_pos;
@@ -123,7 +132,7 @@ void Game::onYAxis(const input::CRelativeAxisEvent &event)
 
 		math::Vec3f dir = cam_target - cam_pos;
 		math::normalize(dir);
-		dir *= event.m_nDelta;
+		dir *= delta;
 
 		cam_pos += dir;
 		cam_target += dir;
@@ -131,21 +140,21 @@ void Game::onYAxis(const input::CRelativeAxisEvent &event)
 		return;
 
 	}
-	else if (input::CSystem::Get().GetControl(input::Mouse, input::ButtonRight)->getPress() == false)
+	else if (Input::GetControl(types::Mouse, types::ButtonRight)->getPress() == false)
 		return;
 
 	const int accel = 5;
 	const float slow = .01f;
 	const float fast = 2*slow;
-	float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+	float angle = delta>accel ? delta*fast : delta*slow;
 
 	m_spTargetCamera->rotateUp(angle);
 }
 
 /*onWheelAxis*/
-void Game::onWheelAxis(const input::CRelativeAxisEvent &event)
+void Game::onWheelAxis(int delta)
 {
 	const float slow = .1f;
-	m_spTargetCamera->goBackward(-event.m_nDelta*slow);
+	m_spTargetCamera->goBackward(-delta*slow);
 }
 }

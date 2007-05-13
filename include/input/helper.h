@@ -37,6 +37,8 @@ namespace input
 
 		void operator += (Handler handler);
 
+		CommandPtr getCommand() const {return m_command;}
+
 	protected:
 		friend class Command;
 		virtual void notify (const Control &control);

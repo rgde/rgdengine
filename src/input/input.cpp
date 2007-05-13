@@ -2,6 +2,7 @@
 
 #include "input/input.h"
 #include "input/inputimpl.h"
+#include "input/device.h"
 
 #include "io/io.h"
 
@@ -83,6 +84,14 @@ namespace input
     {
         return Get().m_pImpl->getDevice(sDeviceName, indx);
     }
+
+	Control* Input::GetControl(types::EDevice device, int dev_index, types::EControl control)
+	{
+		if (Device* dev = getDevice(device, dev_index))
+			return dev->getControl(control);
+
+		return NULL;
+	}
 
     //есть ли такое устройство
     bool Input::isDevicePresent (types::EDevice eDeviceName, int indx)
