@@ -65,7 +65,7 @@ namespace io
 
 
 	template<typename DataType>
-	void StreamToVector(std::vector<DataType>& v, PReadStream& s)
+	void StreamToVector(std::vector<DataType>& v, PReadStream& s, bool from_current_pos = false)
 	{
 		if (!s) 
 		{
@@ -73,7 +73,16 @@ namespace io
 		}
 
 		uint size = s->getSize();
-		s->setPos(0);
+
+		if (!from_current_pos)
+		{
+			s->setPos(0);
+		}
+		else
+		{
+			size -= s->getPos();
+		}
+		
 		uint vsize  = size/sizeof(DataType);
 
 		v.resize(vsize);
