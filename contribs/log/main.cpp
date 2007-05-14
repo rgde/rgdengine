@@ -1,13 +1,48 @@
 #include <Windows.h> //OutputDebugStringA
 #include <iostream>
 #include <fstream>
+#include <boost/lexical_cast.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/iostreams/categories.hpp>
 #include <boost/iostreams/stream.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
 
 ///////
-// 5 //
+// 7 //
+///////
+std::string getCurrentTime()
+{
+                time_t ttime;
+                ::time (&ttime);
+                struct tm ctime;
+        localtime_s (&ctime, &ttime);
+
+        std::string time;
+        time.append(boost::lexical_cast<std::string>(ctime.tm_hour));
+        time.append(":");
+        time.append(boost::lexical_cast<std::string>(ctime.tm_min));
+        time.append(":");
+        time.append(boost::lexical_cast<std::string>(ctime.tm_sec));
+
+        return time;
+}
+
+std::string getCurrentDateTime()
+{
+        SYSTEMTIME t;
+        GetLocalTime (&t);
+
+        char day[3], month[3];
+        sprintf_s (day, (t.wDay < 10) ? "0%i" : "%i", t.wDay);
+        sprintf_s (month, (t.wMonth < 10) ? "0%i" : "%i", t.wMonth);
+
+        char time[128];
+        sprintf (time, "%i.%i%_%s.%s.%i", t.wHour, t.wMinute, day, month, t.wYear); 
+    return std::string(time);
+}
+
+///////
+// 6 //
 ///////
 struct html_time
 {
@@ -17,7 +52,7 @@ struct html_time
     template<typename Sink>
     std::streamsize write(Sink &snk, const char_type *s, std::streamsize n)
     {
-        std::string output("<b>[12-34-56]</b>&nbsp;");
+        std::string output("<b>[" + getCurrentTime() + "]</b>&nbsp;");
         output.append(s, s+n);
 
         boost::iostreams::write(snk, output.c_str(), (std::streamsize)output.size());
@@ -34,7 +69,7 @@ struct text_time
     template<typename Sink>
     std::streamsize write(Sink &snk, const char_type *s, std::streamsize n)
     {
-        std::string output("[12-34-56] ");
+        std::string output("[" + getCurrentTime() + "] ");
         output.append(s, s+n);
 
         boost::iostreams::write(snk, output.c_str(), (std::streamsize)output.size());
@@ -149,25 +184,48 @@ struct text_err
 BOOST_IOSTREAMS_PIPABLE(text_err,0)
 
 ///////
-// 4 //
+// 5 //
 ///////
 class file_wrapper
 {
 public:
-    file_wrapper (const std::string filename):
-        m_file(filename.c_str())
+    file_wrapper ()
     {
-        m_file << "<html><body>\n";
+    }
+
+    file_wrapper (const std::string &filename)
+    {
+        open(filename);
     }
 
    ~file_wrapper ()
     {
-        m_file << "</body></html>";
-        m_file.close();
+        close();
     }
 
-	std::streamsize write(const char *s, std::streamsize n)
-	{
+    void open (const std::string &filename)
+    {
+        if (m_file.is_open())
+            close();
+
+        m_file.open(filename.c_str());
+        m_file << "<html><body>\n";
+    }
+
+    void close ()
+    {
+        if (m_file.is_open())
+        {
+            m_file << "</body></html>";
+            m_file.close();
+        }
+    }
+
+        std::streamsize write(const char *s, std::streamsize n)
+        {
+        if (!m_file.is_open())
+            return n; //или следует вернуть 0 (хз как буст отреагирует)?
+
         std::string in(s,n);
         std::string out;
         
@@ -189,8 +247,8 @@ public:
         }
 
         m_file << out;
-		return n;
-	}
+                return n;
+        }
 
 private:
     file_wrapper (const file_wrapper&);
@@ -198,14 +256,65 @@ private:
 
     std::ofstream m_file;
 };
-
 typedef boost::shared_ptr<file_wrapper> PFileWrapper;
+
+class ostream_wrapper
+{
+public:
+    ostream_wrapper ():
+        m_out(0)
+    {
+    }
+
+    ostream_wrapper (std::streambuf *sbuf):
+        m_out(0)
+    {
+        open(sbuf);
+    }
+
+   ~ostream_wrapper ()
+    {
+        close();
+    }
+
+   void open (std::streambuf *sbuf)
+    {
+        if (m_out.rdbuf())
+            close();
+
+        m_out.rdbuf(sbuf);
+    }
+
+    void close ()
+    {
+        if (m_out.rdbuf())
+        {
+            m_out.rdbuf(0);
+        }
+    }
+
+        std::streamsize write(const char *s, std::streamsize n)
+        {
+        if (!m_out.rdbuf())
+            return n; //или следует вернуть 0 (хз как буст отреагирует)?
+
+        m_out << std::string(s, n);
+                return n;
+        }
+
+private:
+    ostream_wrapper (const ostream_wrapper&);
+    ostream_wrapper& operator= (const ostream_wrapper&);
+
+    std::ostream m_out;
+};
+typedef boost::shared_ptr<ostream_wrapper> POStreamWrapper;
 
 class file_dev
 {
 public:
-	typedef char char_type;
-	typedef boost::iostreams::sink_tag category;
+        typedef char char_type;
+        typedef boost::iostreams::sink_tag category;
 
     file_dev (const file_dev &inst)
     {
@@ -217,10 +326,20 @@ public:
         m_pfile = pfile;
     }
 
-	std::streamsize write(const char *s, std::streamsize n)
-	{
-		return m_pfile->write(s,n);
-	}
+        std::streamsize write(const char *s, std::streamsize n)
+        {
+                return m_pfile->write(s,n);
+        }
+
+    void open (const std::string &filename)
+    {
+        m_pfile->open(filename);
+    }
+
+    void close ()
+    {
+        m_pfile->close();
+    }
 
 private:
     PFileWrapper m_pfile;
@@ -229,48 +348,58 @@ private:
 class screen_dev
 {
 public:
-	typedef char char_type;
-	typedef boost::iostreams::sink_tag category;
+        typedef char char_type;
+        typedef boost::iostreams::sink_tag category;
 
-    screen_dev(const screen_dev &inst):
-        m_screen(inst.m_screen.rdbuf())
+    screen_dev(const screen_dev &inst)
     {
+        m_postream = inst.m_postream;
     }
 
-    screen_dev(const std::ostream &stream):
-        m_screen(stream.rdbuf())
+    screen_dev(POStreamWrapper postream)
     {
+        m_postream = postream;
     }
 
-	std::streamsize write(const char *s, std::streamsize n)
-	{
-        m_screen << std::string(s, n);
-		return n;
-	}
+        std::streamsize write(const char *s, std::streamsize n)
+        {
+        m_postream->write(s, n);
+                return n;
+        }
+
+    void open (std::streambuf *sbuf)
+    {
+        m_postream->open(sbuf);
+    }
+
+    void close ()
+    {
+        m_postream->close();
+    }
 
 private:
-    std::ostream m_screen;
+    POStreamWrapper m_postream;
 };
 
 class output_dev
 {
 public:
-	typedef char char_type;
-	typedef boost::iostreams::sink_tag category;
+        typedef char char_type;
+        typedef boost::iostreams::sink_tag category;
 
-	std::streamsize write(const char *s, std::streamsize n)
-	{
+        std::streamsize write(const char *s, std::streamsize n)
+        {
         std::string out(s,n);
         OutputDebugStringA(out.c_str());
         return n;
-	}
+        }
 };
 
 class composite_dev
 {
 public:
-	typedef char char_type;
-	typedef boost::iostreams::sink_tag category;
+        typedef char char_type;
+        typedef boost::iostreams::sink_tag category;
 
     composite_dev (const composite_dev &inst):
         m_stream1(inst.m_stream1.rdbuf()),
@@ -286,8 +415,8 @@ public:
     {
     }
 
-	std::streamsize write(const char *s, std::streamsize n)
-	{
+        std::streamsize write(const char *s, std::streamsize n)
+        {
         std::string str(s,n);
         m_stream1 << str;
         m_stream2 << str;
@@ -296,8 +425,8 @@ public:
         m_stream1.flush();
         m_stream2.flush();
         m_stream3.flush();
-		return n;
-	}
+                return n;
+        }
 
 private:
     std::ostream m_stream1;
@@ -306,15 +435,17 @@ private:
 };
 
 ///////
-// 3 //
+// 4 //
 ///////
-PFileWrapper pfilewrapper(new file_wrapper("log.html"));
+PFileWrapper    pfilewrapper   (new file_wrapper());
+POStreamWrapper postreamwrapper (new ostream_wrapper());
+
 file_dev   fdev(pfilewrapper);
-screen_dev sdev(std::cout);
+screen_dev sdev(postreamwrapper);
 output_dev odev;
 
 ///////
-// 2 //
+// 3 //
 ///////
 typedef boost::iostreams::filtering_stream<boost::iostreams::output> dev_stream;
 
@@ -331,7 +462,7 @@ dev_stream lerr_screen (text_err() | text_time() | sdev );
 dev_stream lerr_output (text_err() | text_time() | odev );
 
 ///////
-// 1 //
+// 2 //
 ///////
 typedef boost::iostreams::stream<composite_dev> log_stream;
 
@@ -344,12 +475,73 @@ log_stream lwrn(wrn_dev);
 log_stream lerr(err_dev);
 
 ///////
+// 1 //
+///////
+
+class LogSystem
+{
+public:
+    LogSystem(): coutsbuf(0)
+    {
+        //перенаправим потоки
+        pfilewrapper->open(generateLogName());
+
+        //перенаправление cout
+        if (std::cout.rdbuf() != lmsg.rdbuf())
+        {
+            postreamwrapper->open(std::cout.rdbuf());
+            coutsbuf = std::cout.rdbuf();
+            std::cout.rdbuf(lmsg.rdbuf());
+        }
+    }
+
+   ~LogSystem()
+    {
+        //восстановим исходное состояние потоков
+        pfilewrapper->close();
+
+        //перенаправление cout
+        if (coutsbuf != 0)
+        {
+            postreamwrapper->close();
+            std::cout.rdbuf(coutsbuf);
+        }
+    }
+
+private:
+    std::streambuf *coutsbuf;
+
+    static std::string generateLogName()
+    {
+            std::string strLogName;
+            strLogName.append("RGDE_Log_");
+            strLogName.append(getCurrentDateTime().c_str());
+            strLogName.append(".html");
+
+        return strLogName;
+    }
+
+private:
+    LogSystem (const LogSystem&);
+    LogSystem& operator= (const LogSystem&);
+};
+
+///////
 // 0 //
 ///////
 int main ()
 {
-    lmsg << "это тестовое сообщение в лог\n" << 123 << "ups" << std::endl;
-    lwrn << "а это - варнинг" << std::endl;
-    lerr << "ну и ахтунг (куда же без него)" << std::endl;
-    return 0;
+    std::cout << "вывод в std::cout 1" << std::endl;
+    LogSystem log;
+
+    std::cout << "вывод в std::cout 2" << std::endl;
+    {
+        LogSystem log;
+
+        std::cout << "вывод в std::cout 3" << std::endl;
+        lmsg << "это тестовое сообщение в лог\n" << 123 << "ups" << std::endl;
+        lwrn << "а это - варнинг" << std::endl;
+        lerr << "ну и ахтунг (куда же без него)" << std::endl;
+        return 0;
+    }
 }
