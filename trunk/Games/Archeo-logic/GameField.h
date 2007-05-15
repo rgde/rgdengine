@@ -1,8 +1,8 @@
 #pragma once
 #include <engine.h>
 
-#define GLASS_HEIGHT 20
-#define BLOCK_SIZE 128
+#define GLASS_HEIGHT 28
+#define BLOCK_SIZE 20
 
 class GameField 
 {
@@ -10,7 +10,7 @@ public:
 	GameField();
 	~GameField(void);
 
-	void LoadLevelFromFile(const std::string& levelfile);
+	bool LoadLevelFromFile(const std::string& levelfile);
 
 	
 	void Draw();
@@ -26,5 +26,7 @@ private:
 	unsigned int m_levelHeight;
 
 	render::CSpriteManager m_spriteRenderer;
+
+	void DrawBorderRect(math::Vec2f& topLeft, math::Vec2f& bottomRight,float width, render::PTexture border, render::PTexture corner);
 	void RenderBorders();
 };

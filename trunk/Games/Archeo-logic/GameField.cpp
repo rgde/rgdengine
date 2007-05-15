@@ -5,33 +5,32 @@ GameField::GameField()
 	io::ScopePathAdd p("dagger/");
 	m_border1 = render::ITexture::Create("border_1.jpg");
 	m_border2 = render::ITexture::Create("border_2.png");
-//	m_emptyBlock = render::ITexture::Create("empty.jpg");
+	m_levelWidth = 16;
+	m_emptyBlock = render::ITexture::Create("empty.jpg");
 }
 
 GameField::~GameField(void)
 {
 }
 
-void GameField::LoadLevelFromFile(const std::string& levelfile)
+bool GameField::LoadLevelFromFile(const std::string& levelfile)
 {
-/* ѕолночный бред, временный вектор не нужен
 	io::CFileSystem &fs	= io::TheFileSystem::Get();
-
 	io::PReadStream in	= fs.findFile(levelfile);
-	std::vector<int> data;
-	io::StreamToVector(data,in);
+	io::StreamToVector(m_levelData,in);
+	
 
-	if(data.empty())
-		return;
+	if(m_levelData.empty())
+		return false;
 
-	if(data[0]!=0x31474144) //DAG1
-		return;
+	if(m_levelData[0]!=0x31474144) //DAG1
+		return false;
 
-	m_levelWidth = data[1];
-	m_levelHeight = data[2];
-	m_levelData.resize(m_levelWidth*m_levelHeight);
-	std::copy(data.begin()+3,data.end(),m_levelData.begin());
-*/
+	m_levelWidth = m_levelData[1];
+	m_levelHeight = m_levelData[2];
+	//пока така€ хрень тоже ахтунг как и предидуща€.
+	m_levelData.erase(m_levelData.begin(),m_levelData.begin()+3);
+	return true;
 }
 
 void GameField::RenderBorders()
@@ -41,27 +40,53 @@ void GameField::RenderBorders()
 	border.size = math::Vec2f(BLOCK_SIZE,BLOCK_SIZE);
 	border.color = 0xFFFFFFFF;
 
-	border.pTexture = m_border2;
-	border.pos = math::Vec2f(100,100);
-	m_spriteRenderer.addSprite(border);
+	float borderX = BLOCK_SIZE/2;
+	float borderY = BLOCK_SIZE/2;
 
-	border.pTexture = m_border1;
-	border.pos = math::Vec2f(100+BLOCK_SIZE,100);
-	m_spriteRenderer.addSprite(border);
+	for(int i = 1; i < m_levelWidth - 1; i++)
+	{
+		border.pTexture = m_border1;
+		borderX = BLOCK_SIZE/2 + BLOCK_SIZE*i;
 
+		border.pos = math::Vec2f(borderX,borderY);
+		m_spriteRenderer.addSprite(border);
+
+		border.pos = math::Vec2f(borderX,borderY+BLOCK_SIZE*(GLASS_HEIGHT+1));
+		m_spriteRenderer.addSprite(border);
+	}
+
+	border.spin = PI_OVER_2;
+	for(int i = 1; i<GLASS_HEIGHT-1; i++)
+	{
+		border.pTexture = m_border1;
+		borderY = BLOCK_SIZE/2 + BLOCK_SIZE*i;
+
+		border.pos = math::Vec2f(borderX,borderY);
+		m_spriteRenderer.addSprite(border);
+
+		border.pos = math::Vec2f(borderX+(m_levelWidth+1)*BLOCK_SIZE,borderY);
+		m_spriteRenderer.addSprite(border);
+	}
 
 /*
-	border.pTexture = m_border1;
 	for(int i = 1; i<m_levelWidth; i++)
 	{
+		for(int k=0; k<GLASS_HEIGHT;k++)
+		{
+			border.pTexture = m_emptyBlock;
+			border.pos = math::Vec2f(BLOCK_SIZE/2+BLOCK_SIZE*i,BLOCK_SIZE/2+BLOCK_SIZE*k);
+
+		}
+		border.pTexture = m_border1;
 		border.pos = math::Vec2f(BLOCK_SIZE/2+BLOCK_SIZE*i,BLOCK_SIZE/2);
 		m_spriteRenderer.addSprite(border);
 		border.pos = math::Vec2f(BLOCK_SIZE/2+BLOCK_SIZE*i,BLOCK_SIZE/2 + BLOCK_SIZE*GLASS_HEIGHT);
 		m_spriteRenderer.addSprite(border);
 	}
 	border.spin = PI_OVER_2;
-	for(int j = 1; j<GLASS_HEIGHT; j++)
+	for(int j = 0; j<GLASS_HEIGHT; j++)
 	{
+		border.pTexture = m_border1;
 		border.pos = math::Vec2f(BLOCK_SIZE/2,BLOCK_SIZE/2+BLOCK_SIZE*j);
 		m_spriteRenderer.addSprite(border);
 		border.pos = math::Vec2f(BLOCK_SIZE/2+BLOCK_SIZE*m_levelWidth,BLOCK_SIZE/2+BLOCK_SIZE*j);
@@ -92,6 +117,34 @@ void GameField::Draw()
 {
 //	render::CLine2dManager& man = render::TheLine2dManager::Get();
 //	man.addLine(math::Vec2f(0,0),math::Vec2f(800,600));
-	RenderBorders();
+//	RenderBorders();
 
+	DrawBorderRect(math::Vec2f(BLOCK_SIZE/2,BLOCK_SIZE/2),math::Vec2f(BLOCK_SIZE/2 + m_levelWidth*BLOCK_SIZE, BLOCK_SIZE/2+GLASS_HEIGHT*BLOCK_SIZE),BLOCK_SIZE,m_border1,m_border2);
+
+}
+
+void GameField::DrawBorderRect(math::Vec2f& topLeft, math::Vec2f& bottomRight, float width, render::PTexture border, render::PTexture corner)
+{
+	render::SSprite block;
+	block.color = 0xFFFFFFFF;
+	block.size = math::Vec2f(width,width);
+	block.pTexture = corner;
+
+	block.spin = 0;
+	block.pos = topLeft;
+	m_spriteRenderer.addSprite(block);
+
+	block.spin = -PI_OVER_2;
+	block.pos[1] = bottomRight[1];
+	m_spriteRenderer.addSprite(block);
+
+	block.spin = -PI;
+	block.pos = bottomRight;
+	m_spriteRenderer.addSprite(block);
+
+	block.spin = PI_OVER_2;
+	block.pos[1] = topLeft[1];
+	m_spriteRenderer.addSprite(block);
+
+	for(int i = 0;)
 }
