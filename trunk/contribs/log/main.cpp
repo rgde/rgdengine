@@ -12,9 +12,9 @@
 ///////
 std::string getCurrentTime()
 {
-                time_t ttime;
-                ::time (&ttime);
-                struct tm ctime;
+		time_t ttime;
+		::time (&ttime);
+		struct tm ctime;
         localtime_s (&ctime, &ttime);
 
         std::string time;
@@ -29,15 +29,15 @@ std::string getCurrentTime()
 
 std::string getCurrentDateTime()
 {
-        SYSTEMTIME t;
-        GetLocalTime (&t);
+	SYSTEMTIME t;
+	GetLocalTime (&t);
 
-        char day[3], month[3];
-        sprintf_s (day, (t.wDay < 10) ? "0%i" : "%i", t.wDay);
-        sprintf_s (month, (t.wMonth < 10) ? "0%i" : "%i", t.wMonth);
+	char day[3], month[3];
+	sprintf_s (day, (t.wDay < 10) ? "0%i" : "%i", t.wDay);
+	sprintf_s (month, (t.wMonth < 10) ? "0%i" : "%i", t.wMonth);
 
-        char time[128];
-        sprintf (time, "%i.%i%_%s.%s.%i", t.wHour, t.wMinute, day, month, t.wYear); 
+	char time[128];
+	sprintf (time, "%i.%i%_%s.%s.%i", t.wHour, t.wMinute, day, month, t.wYear); 
     return std::string(time);
 }
 
@@ -221,8 +221,8 @@ public:
         }
     }
 
-        std::streamsize write(const char *s, std::streamsize n)
-        {
+	std::streamsize write(const char *s, std::streamsize n)
+	{
         if (!m_file.is_open())
             return n; //или следует вернуть 0 (хз как буст отреагирует)?
 
@@ -247,8 +247,8 @@ public:
         }
 
         m_file << out;
-                return n;
-        }
+		return n;
+	}
 
 private:
     file_wrapper (const file_wrapper&);
@@ -293,14 +293,14 @@ public:
         }
     }
 
-        std::streamsize write(const char *s, std::streamsize n)
-        {
+	std::streamsize write(const char *s, std::streamsize n)
+	{
         if (!m_out.rdbuf())
             return n; //или следует вернуть 0 (хз как буст отреагирует)?
 
         m_out << std::string(s, n);
-                return n;
-        }
+		return n;
+	}
 
 private:
     ostream_wrapper (const ostream_wrapper&);
@@ -313,8 +313,8 @@ typedef boost::shared_ptr<ostream_wrapper> POStreamWrapper;
 class file_dev
 {
 public:
-        typedef char char_type;
-        typedef boost::iostreams::sink_tag category;
+	typedef char char_type;
+	typedef boost::iostreams::sink_tag category;
 
     file_dev (const file_dev &inst)
     {
@@ -326,10 +326,10 @@ public:
         m_pfile = pfile;
     }
 
-        std::streamsize write(const char *s, std::streamsize n)
-        {
-                return m_pfile->write(s,n);
-        }
+	std::streamsize write(const char *s, std::streamsize n)
+	{
+		return m_pfile->write(s,n);
+	}
 
     void open (const std::string &filename)
     {
@@ -348,8 +348,8 @@ private:
 class screen_dev
 {
 public:
-        typedef char char_type;
-        typedef boost::iostreams::sink_tag category;
+	typedef char char_type;
+	typedef boost::iostreams::sink_tag category;
 
     screen_dev(const screen_dev &inst)
     {
@@ -361,11 +361,11 @@ public:
         m_postream = postream;
     }
 
-        std::streamsize write(const char *s, std::streamsize n)
-        {
+	std::streamsize write(const char *s, std::streamsize n)
+	{
         m_postream->write(s, n);
-                return n;
-        }
+		return n;
+	}
 
     void open (std::streambuf *sbuf)
     {
@@ -384,22 +384,22 @@ private:
 class output_dev
 {
 public:
-        typedef char char_type;
-        typedef boost::iostreams::sink_tag category;
+	typedef char char_type;
+	typedef boost::iostreams::sink_tag category;
 
-        std::streamsize write(const char *s, std::streamsize n)
-        {
+	std::streamsize write(const char *s, std::streamsize n)
+	{
         std::string out(s,n);
         OutputDebugStringA(out.c_str());
         return n;
-        }
+	}
 };
 
 class composite_dev
 {
 public:
-        typedef char char_type;
-        typedef boost::iostreams::sink_tag category;
+	typedef char char_type;
+	typedef boost::iostreams::sink_tag category;
 
     composite_dev (const composite_dev &inst):
         m_stream1(inst.m_stream1.rdbuf()),
@@ -415,8 +415,8 @@ public:
     {
     }
 
-        std::streamsize write(const char *s, std::streamsize n)
-        {
+	std::streamsize write(const char *s, std::streamsize n)
+	{
         std::string str(s,n);
         m_stream1 << str;
         m_stream2 << str;
@@ -425,8 +425,8 @@ public:
         m_stream1.flush();
         m_stream2.flush();
         m_stream3.flush();
-                return n;
-        }
+		return n;
+	}
 
 private:
     std::ostream m_stream1;
@@ -481,50 +481,68 @@ log_stream lerr(err_dev);
 class LogSystem
 {
 public:
-    LogSystem(): coutsbuf(0)
+    LogSystem()
     {
-        //перенаправим потоки
-        pfilewrapper->open(generateLogName());
-
-        //перенаправление cout
-        if (std::cout.rdbuf() != lmsg.rdbuf())
-        {
-            postreamwrapper->open(std::cout.rdbuf());
-            coutsbuf = std::cout.rdbuf();
-            std::cout.rdbuf(lmsg.rdbuf());
-        }
+        if (counter++ == 0)
+            ploghelper = new LogHelper();
     }
 
    ~LogSystem()
     {
-        //восстановим исходное состо€ние потоков
-        pfilewrapper->close();
-
-        //перенаправление cout
-        if (coutsbuf != 0)
-        {
-            postreamwrapper->close();
-            std::cout.rdbuf(coutsbuf);
-        }
+        if (--counter == 0)
+            delete ploghelper;
     }
 
 private:
-    std::streambuf *coutsbuf;
-
-    static std::string generateLogName()
+    //гарантировано существование только одного экзмепл€ра этого класса
+    class LogHelper
     {
-            std::string strLogName;
-            strLogName.append("RGDE_Log_");
-            strLogName.append(getCurrentDateTime().c_str());
-            strLogName.append(".html");
+    public:
+        LogHelper(): coutsbuf(0)
+        {
+            pfilewrapper->open(generateLogName());
+            postreamwrapper->open(std::cout.rdbuf());
 
-        return strLogName;
-    }
+            coutsbuf = std::cout.rdbuf();
+            std::cout.rdbuf(lmsg.rdbuf());
+        }
+
+       ~LogHelper()
+        {
+            pfilewrapper->close();
+            postreamwrapper->close();
+
+            std::cout.rdbuf(coutsbuf);
+        }
+
+    private:
+        std::streambuf *coutsbuf;
+
+        static std::string generateLogName()
+        {
+	        std::string strLogName;
+	        strLogName.append("RGDE_Log_");
+	        strLogName.append(getCurrentDateTime().c_str());
+	        strLogName.append(".html");
+
+            return strLogName;
+        }
+
+    private:
+        LogHelper (const LogHelper&);
+        LogHelper& operator= (const LogHelper&);
+    };
+
+    static int counter;
+    static LogHelper *ploghelper;
 
 private:
     LogSystem (const LogSystem&);
     LogSystem& operator= (const LogSystem&);
 };
+
+int LogSystem::counter = 0;
+LogSystem::LogHelper* LogSystem::ploghelper = 0;
 
 ///////
 // 0 //
