@@ -1,9 +1,9 @@
 #include "precompiled.h"
 
-#include "render/renderLensFlares.h"
-#include "render/renderSprites.h"
+#include <rgde/render/renderLensFlares.h>
+#include <rgde/render/renderSprites.h>
 
-#include "base/xml_helpers.h"
+#include <rgde/base/xml_helpers.h>
 
 
 namespace render

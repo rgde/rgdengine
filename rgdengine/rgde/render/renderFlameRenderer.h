@@ -1,7 +1,7 @@
 #pragma once
 
-#include "game/DynamicObject.h"
-#include "render/renderManager.h"
+#include <rgde/game/DynamicObject.h>
+#include <rgde/render/renderManager.h>
 
 namespace particles
 {

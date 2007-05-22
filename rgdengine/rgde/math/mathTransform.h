@@ -1,8 +1,8 @@
 #pragma once
 
-#include "io/io.h"
-#include "core/xmlNode.h"
-#include "math/mathTypes3d.h"
+#include <rgde/io/io.h>
+#include <rgde/core/xmlNode.h>
+#include <rgde/math/mathTypes3d.h>
 
 namespace math
 {

@@ -1,4 +1,4 @@
-#include <engine.h>
+#include <rgde/engine.h>
 
 #include <boost/scoped_ptr.hpp>
 

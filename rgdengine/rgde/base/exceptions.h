@@ -11,8 +11,8 @@
 */
 #pragma once
 
-#include "base/log.h"
-#include "base/logHelper.h"
+#include "rgde/base/log.h"
+#include "rgde/base/logHelper.h"
 
 namespace base
 {

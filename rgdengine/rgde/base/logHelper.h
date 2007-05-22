@@ -1,8 +1,9 @@
 #pragma once
 
-#include "base/log.h"
+#include "rgde/base/log.h"
 
-namespace base{
+namespace base
+{
 
 class LogHelper
 {

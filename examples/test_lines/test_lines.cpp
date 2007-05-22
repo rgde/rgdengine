@@ -1,5 +1,5 @@
 //RGDE
-#include "engine.h"
+#include <rgde/engine.h>
 #include "TriangleManager.h"
 
 #include <boost/scoped_ptr.hpp>

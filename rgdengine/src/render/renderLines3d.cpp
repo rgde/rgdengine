@@ -1,8 +1,8 @@
 #include "precompiled.h"
 
-#include "render/renderLines3d.h"
-#include "render/renderEffect.h"
-#include "render/renderDevice.h"
+#include <rgde/render/renderLines3d.h>
+#include <rgde/render/renderEffect.h>
+#include <rgde/render/renderDevice.h>
 
 
 #include "../base/exception.h"

@@ -1,10 +1,10 @@
 #include "precompiled.h"
 
-#include "wavefile.h"
+#include <rgde/audio/wavefile.h>
 
 #include <dxerr9.h>
 
-#include "io/io.h"
+#include <rgde/io/io.h>
 
 #define SAFE_RELEASE(p) 	 { if(p) { (p)->Release(); (p)=NULL; } }
 

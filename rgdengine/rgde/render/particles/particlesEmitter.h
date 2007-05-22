@@ -10,9 +10,9 @@ Created: 7.06.2005
 ---------------------------------------------------------------------------------------*/
 #pragma once
 
-#include "io/io.h"
-#include "math/mathTransform.h"
+#include <rgde/io/io.h>
 
+#include <rgde/math/mathTransform.h>
 
 
 namespace particles

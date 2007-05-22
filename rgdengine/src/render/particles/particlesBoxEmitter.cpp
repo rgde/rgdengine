@@ -1,9 +1,9 @@
 #include "precompiled.h"
 
-#include "render/particles/particlesMain.h"
-#include "render/particles/particlesEmitter.h"
-#include "render/particles/particlesBoxEmitter.h"
-#include "render/particles/particlesParticle.h"
+#include <rgde/render/particles/particlesMain.h>
+#include <rgde/render/particles/particlesEmitter.h>
+#include <rgde/render/particles/particlesBoxEmitter.h>
+#include <rgde/render/particles/particlesParticle.h>
 
 
 namespace particles

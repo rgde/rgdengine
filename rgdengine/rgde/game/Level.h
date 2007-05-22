@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/Property.h"
-#include "game/LevelObject.h"
+#include "rgde/core/Property.h"
+#include "rgde/game/LevelObject.h"
 
 namespace game
 {

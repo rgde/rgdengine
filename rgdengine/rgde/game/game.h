@@ -1,12 +1,12 @@
 #pragma once
 
-#include "event/event.h"
+#include "rgde/event/event.h"
 
-#include "game/Level.h"
-#include "game/DynamicObject.h"
-#include "game/LevelObject.h"
+#include "rgde/game/Level.h"
+#include "rgde/game/DynamicObject.h"
+#include "rgde/game/LevelObject.h"
 
-#include "base/singelton.h"
+#include "rgde/base/singelton.h"
 
 namespace game
 {

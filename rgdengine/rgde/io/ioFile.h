@@ -1,6 +1,6 @@
 #pragma once
 
-#include "io/ioPath.h"
+#include <rgde/io/ioPath.h>
 
 namespace io
 {

@@ -18,7 +18,7 @@
 #pragma warning(disable : 4244) // type conversion warning.
 #pragma warning(disable : 4305)	// truncation from 'const double' to 'float'
 
-#include "base/singelton.h"
+#include <rgde/base/singelton.h>
 
 // this define allow us to use customized physic
 #define PHYSIC_CUSTOM

@@ -1,5 +1,5 @@
 //TestInterpolator.cpp
-#include "engine.h"
+#include <rgde/engine.h>
 #include "TestInterpolator.h"
 
 TestInterpolator::TestInterpolator()

@@ -1,10 +1,10 @@
 #include "precompiled.h"
 
-#include "render/particles/particlesMain.h"
-#include "render/particles/particlesSphericalEmitter.h"
-#include "render/particles/particlesParticle.h"
+#include <rgde/render/particles/particlesMain.h>
+#include <rgde/render/particles/particlesSphericalEmitter.h>
+#include <rgde/render/particles/particlesParticle.h>
 
-#include "math/mathTypes3d.h"
+#include <rgde/math/mathTypes3d.h>
 
 
 namespace particles

@@ -14,9 +14,9 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 ---------------------------------------------------------------------------------------*/
 #pragma once
 
-#include "render/particles/particlesEmitter.h"
-#include "render/particles/particlesMayaStructs.h"
-#include "render/particles/particlesParticleTank.h"
+#include <rgde/render/particles/particlesEmitter.h>
+#include <rgde/render/particles/particlesMayaStructs.h>
+#include <rgde/render/particles/particlesParticleTank.h>
 
 
 namespace particles{

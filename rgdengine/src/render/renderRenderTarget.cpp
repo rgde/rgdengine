@@ -1,8 +1,9 @@
 #include "precompiled.h"
 
-#include "render/renderRenderTarget.h"
+#include <rgde/render/renderRenderTarget.h>
 
 #include "renderTextureImpl.h"
+
 #include "../base/exception.h"
 
 extern IDirect3DDevice9* g_pd3dDevice;

@@ -1,12 +1,12 @@
 #pragma once
 
-//#include "base/singelton.h"
+//#include <rgde/base/singelton.h>
 
-#include "math/mathTypes3d.h"
+#include <rgde/math/mathTypes3d.h>
 
-#include "render/renderDevice.h"
-#include "render/renderManager.h"
-#include "render/renderGeometry.h"
+#include <rgde/render/renderDevice.h>
+#include <rgde/render/renderManager.h>
+#include <rgde/render/renderGeometry.h>
 
 namespace render
 {

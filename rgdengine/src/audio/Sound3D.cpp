@@ -1,4 +1,4 @@
-#include "engine.h"
+#include <rgde/engine.h>
 
 #include "audio/sound3D.h"
 #include "wavefile.h"

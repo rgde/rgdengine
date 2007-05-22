@@ -1,9 +1,9 @@
 #include "precompiled.h"
 
-#include "render/renderEffect.h"
-#include "render/renderDevice.h"
+#include <rgde/render/renderEffect.h>
+#include <rgde/render/renderDevice.h>
 
-#include "core/application.h"
+#include <rgde/core/application.h>
 
 #include <d3dx9.h>
 #include "renderTextureImpl.h"

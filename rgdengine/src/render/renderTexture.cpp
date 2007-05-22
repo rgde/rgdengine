@@ -1,13 +1,13 @@
 #include "precompiled.h"
 
-#include "math/mathTypes3d.h"
+#include <rgde/math/mathTypes3d.h>
 
-#include "io/io.h"
+#include <rgde/io/io.h>
 
 #include "renderTextureImpl.h"
 #include "../base/exception.h"
 
-#include <base/manager.h>
+#include <rgde/base/manager.h>
 
 extern IDirect3DDevice9 *g_pd3dDevice;
 

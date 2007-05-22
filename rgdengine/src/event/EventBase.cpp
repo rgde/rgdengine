@@ -1,7 +1,7 @@
 //EventBase.cpp
 #include "precompiled.h"
 
-#include "event/EventBase.h"
+#include <rgde/event/EventBase.h>
 
 namespace event
 {

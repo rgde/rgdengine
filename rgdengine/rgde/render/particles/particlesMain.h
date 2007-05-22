@@ -25,23 +25,23 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 #include <functional>
 
 // io
-#include "io/ioSerializedObject.h"
+#include <rgde/io/ioSerializedObject.h>
 
 // render
-#include "render/renderManager.h"
-#include "render/renderEffect.h"
-#include "render/renderDevice.h"
-#include "render/renderTexture.h"
-#include "render/renderGeometry.h"
+#include <rgde/render/renderManager.h>
+#include <rgde/render/renderEffect.h>
+#include <rgde/render/renderDevice.h>
+#include <rgde/render/renderTexture.h>
+#include <rgde/render/renderGeometry.h>
 
 
 // math
-#include "math/mathTypes3d.h"
-#include "math/mathTransform.h"
-#include "math/mathInterpolyator.h"
+#include <rgde/math/mathTypes3d.h>
+#include <rgde/math/mathTransform.h>
+#include <rgde/math/mathInterpolyator.h>
 
 // utility
-#include "render/renderLines3d.h"
+#include <rgde/render/renderLines3d.h>
 
 // game
-#include "game/DynamicObject.h"
+#include <rgde/game/DynamicObject.h>

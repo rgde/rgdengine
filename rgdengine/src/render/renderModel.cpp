@@ -1,9 +1,9 @@
 #include "precompiled.h"
 
-#include "render/renderModel.h"
-#include "render/renderLight.h"
+#include <rgde/render/renderModel.h>
+#include <rgde/render/renderLight.h>
 
-#include "base/xml_helpers.h"
+#include <rgde/base/xml_helpers.h>
 
 using namespace std;
 using math::Color;

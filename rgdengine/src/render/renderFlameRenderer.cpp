@@ -1,11 +1,11 @@
 #include "precompiled.h"
 
-#include "render/renderFlameRenderer.h"
-#include "render/particles/particlesIncludes.h"
+#include <rgde/render/renderFlameRenderer.h>
+#include <rgde/render/particles/particlesIncludes.h>
 
-#include "base/xml_helpers.h"
+#include <rgde/base/xml_helpers.h>
 
-#include "scene/scene.h"
+#include <rgde/scene/scene.h>
 
 namespace render
 {

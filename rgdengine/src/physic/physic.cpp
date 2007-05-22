@@ -1,15 +1,6 @@
-/******************************************************************************
-@file    physic.cpp
-@author  Neonic
-@mail    gaba@male.ru
-@project RGDE
-@date    23.12.2005
-@desc  
- ******************************************************************************/
-
-//Neonic: octree
 #include "precompiled.h"
-#include "physic/physic.h"
+
+#include <rgde/physic/physic.h>
 
 #pragma warning(disable : 4800)	// warning C4800: forcing value to bool 'true' or 'false' (performance warning)
 

@@ -1,8 +1,8 @@
 //TrackEditor.cpp
 #include <windows.h>
-#include "engine.h"
+#include <rgde/engine.h>
 #include "TrackEditor.h"
-#include "boost/lexical_cast.hpp" //возможно стоит переделать на base::Lexical_cast [Dub]
+#include <boost/lexical_cast.hpp> //возможно стоит переделать на base::Lexical_cast [Dub]
 
 TrackEditor::TrackEditor()
 {

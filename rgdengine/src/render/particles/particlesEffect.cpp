@@ -1,15 +1,15 @@
 #include "precompiled.h"
 
-#include "render/particles/particlesMain.h"
-#include "render/particles/particlesEffect.h"
+#include <rgde/render/particles/particlesMain.h>
+#include <rgde/render/particles/particlesEffect.h>
 
 // Майя эмиттер
-#include "render/particles/particlesMayaEmitter.h"
-#include "render/particles/particlesParticleTank.h"
+#include <rgde/render/particles/particlesMayaEmitter.h>
+#include <rgde/render/particles/particlesParticleTank.h>
 
 // Абстрактные эмиттеры
-#include "render/particles/particlesBoxEmitter.h"
-#include "render/particles/particlesSphericalEmitter.h"
+#include <rgde/render/particles/particlesBoxEmitter.h>
+#include <rgde/render/particles/particlesSphericalEmitter.h>
 
 
 namespace particles

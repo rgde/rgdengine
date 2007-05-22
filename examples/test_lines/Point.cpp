@@ -5,7 +5,7 @@
 mail:	dxprg@mail.ru
 Date:	14 may 2005
 ---------------------------------------------------------------------------------------*/
-#include "engine.h"
+#include <rgde/engine.h>
 #include "Point.h"
 namespace lines_test
 {

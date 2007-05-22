@@ -1,8 +1,8 @@
 #include "precompiled.h"
 
-#include "render/renderFont.h"
-#include "render/renderManager.h"
-#include "render/renderDevice.h"
+#include <rgde/render/renderFont.h>
+#include <rgde/render/renderManager.h>
+#include <rgde/render/renderDevice.h>
 
 #include <d3dx9.h>
 extern LPDIRECT3DDEVICE9 g_pd3dDevice;

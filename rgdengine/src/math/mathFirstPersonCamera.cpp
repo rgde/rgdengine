@@ -1,6 +1,6 @@
-//mathFirstPersonCamera.cpp
 #include "precompiled.h"
-#include "math/mathFirstPersonCamera.h"
+
+#include <rgde/math/mathFirstPersonCamera.h>
 
 namespace math
 {

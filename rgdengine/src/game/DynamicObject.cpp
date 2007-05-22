@@ -1,8 +1,7 @@
 #include "precompiled.h"
 
-#include "game/DynamicObject.h"
-
-#include "game/game.h"
+#include <rgde/game/DynamicObject.h>
+#include <rgde/game/game.h>
 
 namespace game
 {

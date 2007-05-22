@@ -5,7 +5,7 @@
 mail:	dxprg@mail.ruDate:	14 may 2005
 ---------------------------------------------------------------------------------------*/
 
-#include "engine.h"
+#include <rgde/engine.h>
 #include "Triangle.h"
 
 namespace lines_test
@@ -20,7 +20,9 @@ namespace lines_test
 	{
 		using math::Math::rangeRandom;		m_vPoints.resize(3);
 		for( tPointsIter it = m_vPoints.begin(); it != m_vPoints.end(); ++it )
-			it->reset();		float fStrategy = rangeRandom(0,1);
+			it->reset();
+
+		float fStrategy = rangeRandom(0,1);
 		if( fStrategy < 0.8f )
 		{
 			float fColor = rangeRandom(0,1);

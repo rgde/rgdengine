@@ -1,6 +1,6 @@
 #pragma once
 
-#include "input/base.h"
+#include <rgde/input/base.h>
 
 namespace input
 {

@@ -1,8 +1,8 @@
 //mathCameraController.h
 #pragma once
 
-#include "game/DynamicObject.h"
-#include "math/mathCamera.h"
+#include <rgde/game/DynamicObject.h>
+#include <rgde/math/mathCamera.h>
 
 namespace math
 {

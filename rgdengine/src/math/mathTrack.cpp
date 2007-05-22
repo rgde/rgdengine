@@ -1,7 +1,8 @@
-//mathTrack.cpp
 #include "precompiled.h"
-#include "math/mathTrack.h"
-#include "boost/lexical_cast.hpp" //возможно стоит переделать на base::Lexical_cast [Dub]
+
+#include <rgde/math/mathTrack.h>
+
+#include <boost/lexical_cast.hpp> //возможно стоит переделать на base::Lexical_cast [Dub]
 
 namespace math
 {

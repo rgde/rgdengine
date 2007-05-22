@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/factory.h"
+#include "rgde/core/factory.h"
 
 namespace game
 {

@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#include "scene/sceneTree.h"
+#include <rgde/scene/sceneTree.h>
 
 namespace scene
 {	

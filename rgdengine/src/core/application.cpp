@@ -1,18 +1,18 @@
 //TODO: расширить парсинг виндовз сообщений, определить нужную реакцию на основные.
 #include "precompiled.h"
 
-#include "core/application.h"
-#include "core/Task.h"
+#include <rgde/core/application.h>
+#include <rgde/core/Task.h>
 
 // Forms
-#include "forms/window.h"
+#include "../forms/window.h"
 
-#include "base/xml_helpers.h"
+#include <rgde/base/xml_helpers.h>
 
 #include <windows.h>
 #include "../base/exception.h"
 
-#include "render/renderManager.h"
+#include <rgde/render/renderManager.h>
 
 #include <boost/filesystem/operations.hpp>
 

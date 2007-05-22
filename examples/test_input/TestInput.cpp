@@ -1,5 +1,5 @@
 //TestInput.cpp
-#include "engine.h"
+#include <rgde/engine.h>
 #include "TestInput.h"
 
 TestInput::TestInput():

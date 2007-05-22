@@ -1,13 +1,13 @@
 #pragma once
 
-#include "math/mathTransform.h"
+#include <rgde/math/mathTransform.h>
 
-#include "render/renderTexture.h"
-#include "render/renderFont.h"
-#include "render/renderEffect.h"
-#include "render/renderFog.h"
-#include "render/renderMaterial.h"
-#include "render/renderBinders.h"
+#include <rgde/render/renderTexture.h>
+#include <rgde/render/renderFont.h>
+#include <rgde/render/renderEffect.h>
+#include <rgde/render/renderFog.h>
+#include <rgde/render/renderMaterial.h>
+#include <rgde/render/renderBinders.h>
 
 namespace render
 {

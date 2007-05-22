@@ -1,6 +1,6 @@
 #pragma once
 
-#include "render/renderGeometry.h"
+#include <rgde/render/renderGeometry.h>
 
 namespace render
 {

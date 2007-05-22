@@ -1,9 +1,9 @@
 #pragma once
 
-#include "core/Property.h"
-#include "core/NamedObject.h"
-#include "core/factory.h"
-#include "base/smart_ptr_helpers.h"
+#include <rgde/core/Property.h>
+#include <rgde/core/NamedObject.h>
+#include <rgde/core/factory.h>
+#include <rgde/base/smart_ptr_helpers.h>
 
 namespace core
 {

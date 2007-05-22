@@ -6,16 +6,13 @@
 @date    12.05.2006
 @desc    
  ******************************************************************************/
-
-//Neonic: octree
-
 #include "precompiled.h"
 
-#include "base/smart_ptr_helpers.h"
-#include "math/mathTypes3d.h"
-#include "render/renderLines3d.h"
+#include <rgde/base/smart_ptr_helpers.h>
+#include <rgde/math/mathTypes3d.h>
+#include <rgde/render/renderLines3d.h>
 
-#include "scene/liveTree.h"
+#include <rgde/scene/liveTree.h>
 
 namespace live_tree
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "engine.h"
+#include <rgde/engine.h>
 #include "utils.h"
 
 class ModelViewer: public game::IDynamicObject

@@ -1,8 +1,8 @@
 #include "precompiled.h"
 
-#include "scene/scene.h"
+#include <rgde/scene/scene.h>
 
-#include "math/mathTransform.h"
+#include <rgde/math/mathTransform.h>
 
 namespace scene
 {

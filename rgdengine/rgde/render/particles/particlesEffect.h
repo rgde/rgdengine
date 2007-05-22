@@ -1,9 +1,9 @@
 #pragma once
 
-#include "io/io.h"
-#include "game/DynamicObject.h"
-#include "core/xmlClass.h"
-#include "render/renderManager.h"
+#include <rgde/io/io.h>
+#include <rgde/game/DynamicObject.h>
+#include <rgde/core/xmlClass.h>
+#include <rgde/render/renderManager.h>
 
 namespace script
 {

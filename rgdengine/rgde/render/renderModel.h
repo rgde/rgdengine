@@ -1,12 +1,12 @@
 #pragma once 
 
-#include "math/mathTransform.h"
-#include "math/mathAnimationController.h"
+#include <rgde/math/mathTransform.h>
+#include <rgde/math/mathAnimationController.h>
 
-#include "game/DynamicObject.h"
+#include <rgde/game/DynamicObject.h>
 
-#include "render/renderMaterial.h"
-#include "render/renderMesh.h"
+#include <rgde/render/renderMaterial.h>
+#include <rgde/render/renderMesh.h>
 
 namespace render 
 {

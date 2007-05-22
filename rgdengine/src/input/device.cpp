@@ -1,7 +1,7 @@
-//device.cpp
 #include "precompiled.h"
-#include "input/device.h"
-#include "input/control.h"
+
+#include <rgde/input/device.h>
+#include <rgde/input/control.h>
 
 namespace input
 {

@@ -3,20 +3,20 @@
 #include <d3d9.h>
 #include <d3dx9tex.h>
 
-#include "core/coreRenderDevice.h"
+#include <rgde/core/coreRenderDevice.h>
 
-#include "./base/exception.h"
-#include "base/singelton.h"
-#include "base/xml_helpers.h"
+#include "../base/exception.h"
+#include <rgde/base/singelton.h>
+#include <rgde/base/xml_helpers.h>
 
-#include "math/mathTypes3d.h"
-#include "core/application.h"
+#include <rgde/math/mathTypes3d.h>
+#include <rgde/core/application.h>
 
-#include "render/renderDevice.h"
-#include "render/renderEffect.h"
-#include "render/renderLines2d.h"
-#include "render/renderLines3d.h"
-#include "render/renderSprites.h"
+#include <rgde/render/renderDevice.h>
+#include <rgde/render/renderEffect.h>
+#include <rgde/render/renderLines2d.h>
+#include <rgde/render/renderLines3d.h>
+#include <rgde/render/renderSprites.h>
 
 
 LPDIRECT3DDEVICE9       g_pd3dDevice					= NULL;

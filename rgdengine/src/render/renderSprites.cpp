@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#include "render/renderSprites.h"
+#include <rgde/render/renderSprites.h>
 
 namespace render
 {

@@ -15,7 +15,7 @@
 #pragma warning(disable : 4305)	// truncation from 'const double' to 'float'
 #pragma warning(disable : 4800)	// warning C4800: forcing value to bool 'true' or 'false' (performance warning)
 
-#include "base/smart_ptr_helpers.h"
+#include <rgde/base/smart_ptr_helpers.h>
 
 namespace live_tree
 {

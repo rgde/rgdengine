@@ -1,9 +1,6 @@
-//GameTask.h
 #pragma once
 
-#include "core/Task.h"
-
-#include <string>
+#include <rgde/core/Task.h>
 
 
 namespace core

@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#include "game/Level.h"
+#include <rgde/game/Level.h>
 
 namespace game
 {

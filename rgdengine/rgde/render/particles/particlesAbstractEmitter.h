@@ -1,8 +1,8 @@
 #pragma once
 
-#include "render/particles/particlesEmitter.h"
-#include "math/mathRandom.h"
-#include "math/mathInterpolyator.h"
+#include <rgde/render/particles/particlesEmitter.h>
+#include <rgde/math/mathRandom.h>
+#include <rgde/math/mathInterpolyator.h>
 
 
 namespace particles

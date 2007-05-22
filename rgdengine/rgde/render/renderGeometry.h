@@ -1,6 +1,6 @@
 #pragma once
 
-#include "render/renderVertices.h"
+#include <rgde/render/renderVertices.h>
 
 namespace render
 {

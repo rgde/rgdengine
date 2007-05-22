@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "render/renderLight.h"
+#include <rgde/render/renderLight.h>
 
 namespace render
 {

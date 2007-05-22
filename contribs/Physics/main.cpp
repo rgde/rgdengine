@@ -1,4 +1,4 @@
-#include "engine.h"
+#include <rgde/engine.h>
 #include "test_physic.h"
 
 int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )

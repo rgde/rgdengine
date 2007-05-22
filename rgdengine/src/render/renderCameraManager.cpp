@@ -1,9 +1,9 @@
 #include "precompiled.h"
 
-#include "render/renderCameraManager.h"
-#include "render/renderDevice.h"
+#include <rgde/render/renderCameraManager.h>
+#include <rgde/render/renderDevice.h>
 
-#include "math/mathCamera.h"
+#include <rgde/math/mathCamera.h>
 
 namespace render
 {

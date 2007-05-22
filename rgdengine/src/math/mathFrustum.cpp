@@ -2,8 +2,8 @@
 
 #include "precompiled.h"
 
-#include "math/mathFrustum.h"
-#include "math/mathCamera.h"
+#include <rgde/math/mathFrustum.h>
+#include <rgde/math/mathCamera.h>
 
 namespace math
 {

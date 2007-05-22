@@ -1,7 +1,7 @@
 #pragma once
 
 #include <d3dx9.h>
-#include "render/renderTexture.h"
+#include <rgde/render/renderTexture.h>
 
 namespace render
 {

@@ -1,10 +1,10 @@
 #include "precompiled.h"
 
-#include "render/renderFader.h"
-#include "render/renderSprites.h"
+#include <rgde/render/renderFader.h>
+#include <rgde/render/renderSprites.h>
 
-#include "base/log.h"
-#include "base/xml_helpers.h"
+#include <rgde/base/log.h>
+#include <rgde/base/xml_helpers.h>
 
 namespace render
 {

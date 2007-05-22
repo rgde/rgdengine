@@ -1,9 +1,9 @@
 #include "precompiled.h"
 
-#include "game/game.h"
+#include <rgde/game/game.h>
 
-#include "core/Timer.h"
-#include "core/application.h"
+#include <rgde/core/Timer.h>
+#include <rgde/core/application.h>
 
 namespace game
 {

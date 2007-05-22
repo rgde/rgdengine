@@ -1,10 +1,11 @@
 #include "precompiled.h"
 
-#include "scene/sceneDistanceTrigger.h"
-#include "math/mathTransform.h"
-#include "math/mathCamera.h"
+#include <rgde/scene/sceneDistanceTrigger.h>
 
-#include "render/renderDevice.h"
+#include <rgde/math/mathTransform.h>
+#include <rgde/math/mathCamera.h>
+
+#include <rgde/render/renderDevice.h>
 
 namespace scene
 {

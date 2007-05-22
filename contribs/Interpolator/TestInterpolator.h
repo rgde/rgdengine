@@ -1,9 +1,9 @@
 //TestInterpolator.h
 #pragma once
-#include "input/input.h"
-#include "input/helper.h"
-#include "math/mathTargetCamera.h"
-#include "math/mathSplines.h"
+#include <rgde/input/input.h>
+#include <rgde/input/helper.h>
+#include <rgde/math/mathTargetCamera.h>
+#include <rgde/math/mathSplines.h>
 
 class TestInterpolator: public game::IDynamicObject
 {

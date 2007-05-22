@@ -1,12 +1,12 @@
-//mathSpline.h
 #pragma once
-#include "io/io.h"
+
+#include <rgde/io/io.h>
 
 namespace math
 {
 
     template <typename VALUE>
-    class TSpline: public io::ISerializedObject
+    class TSpline : public io::ISerializedObject
     {
     public:
         typedef std::list<VALUE> List;

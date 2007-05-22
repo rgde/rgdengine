@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "render/renderBinder.h"
-#include "render/renderMaterial.h"
+#include <rgde/render/renderBinder.h>
+#include <rgde/render/renderMaterial.h>
 
 namespace render
 {

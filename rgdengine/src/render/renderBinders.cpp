@@ -6,15 +6,16 @@
 // description: 
 // example of use:
 //////////////////////////////////////////////////////////////////////////
-
 #include "precompiled.h"
-#include "render/renderBinders.h"
-#include "render/renderEffectParameterNames.h"
-#include "render/renderDevice.h"
-#include "render/renderManager.h"
-#include "render/renderLightManager.h"
-#include "render/renderFog.h"
-#include "base/lexical_cast.h"
+
+#include <rgde/render/renderBinders.h>
+#include <rgde/render/renderEffectParameterNames.h>
+#include <rgde/render/renderDevice.h>
+#include <rgde/render/renderManager.h>
+#include <rgde/render/renderLightManager.h>
+#include <rgde/render/renderFog.h>
+
+#include <rgde/base/lexical_cast.h>
 
 namespace render
 {

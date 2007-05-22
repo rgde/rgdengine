@@ -1,6 +1,6 @@
-//mathFlyCamera.cpp
 #include "precompiled.h"
-#include "math/mathFlyCamera.h"
+
+#include <rgde/math/mathFlyCamera.h>
 
 namespace math
 {

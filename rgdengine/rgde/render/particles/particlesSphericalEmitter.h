@@ -14,7 +14,7 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 ---------------------------------------------------------------------------------------*/
 #pragma once
 
-#include "render/particles/particlesAbstractEmitter.h"
+#include <rgde/render/particles/particlesAbstractEmitter.h>
 
 
 namespace particles{

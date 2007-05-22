@@ -1,8 +1,8 @@
 #pragma once
 
-#include "io/io.h"
-#include "base/lexical_cast.h"
-#include "math/mathTransform.h"
+#include <rgde/io/io.h>
+#include <rgde/base/lexical_cast.h>
+#include <rgde/math/mathTransform.h>
 
 namespace base
 {

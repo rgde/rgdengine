@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
-#include "core/GameTask.h"
-#include "game/game.h"
+#include <rgde/core/GameTask.h>
+#include <rgde/game/game.h>
 
 namespace core
 {

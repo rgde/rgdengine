@@ -1,10 +1,10 @@
 #include "precompiled.h"
 
-#include "render/renderMaterial.h"
-#include "render/renderManager.h"
-#include "render/renderBinders.h"
+#include <rgde/render/renderMaterial.h>
+#include <rgde/render/renderManager.h>
+#include <rgde/render/renderBinders.h>
 
-#include "base/xml_helpers.h"
+#include <rgde/base/xml_helpers.h>
 
 namespace render
 {
