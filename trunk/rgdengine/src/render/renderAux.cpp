@@ -2,8 +2,8 @@
 
 #include "precompiled.h"
 
-#include "render/renderAux.h"
-#include "render/renderLines3d.h"
+#include <rgde/render/renderAux.h>
+#include <rgde/render/renderLines3d.h>
 
 #include "../base/exception.h"
 

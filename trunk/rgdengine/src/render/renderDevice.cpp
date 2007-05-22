@@ -1,10 +1,10 @@
 #include "precompiled.h"
 
-#include "render/renderDevice.h"
-#include "render/renderBinders.h"
-#include "render/renderLines3d.h"
+#include <rgde/render/renderDevice.h>
+#include <rgde/render/renderBinders.h>
+#include <rgde/render/renderLines3d.h>
 
-#include "core/Timer.h"
+#include <rgde/core/Timer.h>
 
 #include <d3dx9.h>
 extern LPDIRECT3DDEVICE9 g_pd3dDevice;

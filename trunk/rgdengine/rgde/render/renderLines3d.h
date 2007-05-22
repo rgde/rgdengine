@@ -1,7 +1,7 @@
 #pragma once
 
-#include "render/renderGeometry.h"
-#include "render/renderManager.h"
+#include <rgde/render/renderGeometry.h>
+#include <rgde/render/renderManager.h>
 
 namespace render
 {

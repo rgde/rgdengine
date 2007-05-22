@@ -1,5 +1,5 @@
 #pragma once
-#include "engine.h"
+#include <rgde/engine.h>
 
 //проигрывание роликов
 class AviLevelObject: public game::ILevelObject, public event::CSender

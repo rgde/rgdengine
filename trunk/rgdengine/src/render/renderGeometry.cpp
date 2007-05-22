@@ -2,13 +2,13 @@
 
 #include "precompiled.h"
 
-#include "render/renderGeometry.h"
-#include "render/renderDevice.h"
+#include <rgde/render/renderGeometry.h>
+#include <rgde/render/renderDevice.h>
 
-#include "core/coreComPtr.h"
+#include <rgde/core/coreComPtr.h>
 
-#include "base/xml_helpers.h"
-#include "base/lexical_cast.h"
+#include <rgde/base/xml_helpers.h>
+#include <rgde/base/lexical_cast.h>
 
 #include <d3dx9.h>
 

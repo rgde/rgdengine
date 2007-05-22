@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../renderEffect.h"
-#include "render/renderGeometry.h"
+#include <rgde/render/renderEffect.h>
+#include <rgde/render/renderGeometry.h>
 
 namespace particles
 {

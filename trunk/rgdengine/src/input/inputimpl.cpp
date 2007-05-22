@@ -1,11 +1,9 @@
 #include "precompiled.h"
 
-#include "input/inputimpl.h"
-#include "input/device.h"
-#include "input/control.h"
-#include "input/command.h"
-
-#include <sstream>
+#include <rgde/input/inputimpl.h>
+#include <rgde/input/device.h>
+#include <rgde/input/control.h>
+#include <rgde/input/command.h>
 
 #define KEYBOARD_BUFFER_SIZE 1024
 #define    MOUSE_BUFFER_SIZE 1024

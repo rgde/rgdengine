@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
-#include "io/ioFile.h"
-#include "io/ioSerializedObject.h"
+#include <rgde/io/ioFile.h>
+#include <rgde/io/ioSerializedObject.h>
 
 namespace io
 {

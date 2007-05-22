@@ -1,4 +1,4 @@
-#include "engine.h"
+#include <rgde/engine.h>
 #include <io.h>
 
 void searchFiles(std::vector<std::string>& vFileNames, const std::string mask = "*.xml", const std::string& path = "")

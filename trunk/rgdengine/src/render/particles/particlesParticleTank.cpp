@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
-#include "render/particles/particlesMain.h"
-#include "render/particles/particlesParticleTank.h"
+#include <rgde/render/particles/particlesMain.h>
+#include <rgde/render/particles/particlesParticleTank.h>
 
 
 namespace particles

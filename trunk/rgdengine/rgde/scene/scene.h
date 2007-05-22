@@ -1,10 +1,10 @@
 #pragma once
 
-#include "io/io.h"
-#include "base/singelton.h"
+#include <rgde/io/io.h>
+#include <rgde/base/singelton.h>
 
 //Neonic: octree
-#include "scene/livetree.h"
+#include <rgde/scene/livetree.h>
 
 namespace math
 {

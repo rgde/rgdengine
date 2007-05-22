@@ -15,8 +15,8 @@
 #pragma once
 #endif
 
-#include "scene/LiveTree.h"
-#include "base/singelton.h"
+#include <rgde/scene/LiveTree.h>
+#include <rgde/base/singelton.h>
 
 namespace render
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math/mathTransform.h"
-#include "math/mathInterpolyator.h"
+#include <rgde/math/mathTransform.h>
+#include <rgde/math/mathInterpolyator.h>
 
 namespace math
 {

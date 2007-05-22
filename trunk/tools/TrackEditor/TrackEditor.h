@@ -1,10 +1,10 @@
-//TrackEditor.h
 #pragma once
-#include "math/mathTrack.h"
-#include "math/mathFlyCamera.h"
-#include "math/mathTrackCamera.h"
 
-#include "input/input.h"
+#include <rgde/math/mathTrack.h>
+#include <rgde/math/mathFlyCamera.h>
+#include <rgde/math/mathTrackCamera.h>
+
+#include <rgde/input/input.h>
 
 class TrackEditor: public game::IDynamicObject
 {

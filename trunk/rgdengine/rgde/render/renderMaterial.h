@@ -1,10 +1,10 @@
 #pragma once
 
-#include "core/NamedObject.h"
-#include "math/mathTypes3d.h"
-#include "render/renderTexture.h"
-#include "render/renderEffect.h"
-#include "render/renderBinder.h"
+#include <rgde/core/NamedObject.h>
+#include <rgde/math/mathTypes3d.h>
+#include <rgde/render/renderTexture.h>
+#include <rgde/render/renderEffect.h>
+#include <rgde/render/renderBinder.h>
 
 namespace render
 {

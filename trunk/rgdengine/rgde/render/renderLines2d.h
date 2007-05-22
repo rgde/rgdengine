@@ -1,14 +1,14 @@
 #pragma once
 
-#include "render/renderDevice.h"
-#include "render/renderVertices.h"
-#include "render/renderGeometry.h"
-#include "render/renderEffect.h"
-#include "render/renderManager.h"
+#include <rgde/render/renderDevice.h>
+#include <rgde/render/renderVertices.h>
+#include <rgde/render/renderGeometry.h>
+#include <rgde/render/renderEffect.h>
+#include <rgde/render/renderManager.h>
 
-#include "math/mathTypes3d.h"
+#include <rgde/math/mathTypes3d.h>
 
-#include "base/singelton.h"
+#include <rgde/base/singelton.h>
 
 namespace render
 {

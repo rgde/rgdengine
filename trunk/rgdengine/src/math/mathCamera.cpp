@@ -1,9 +1,8 @@
 #include "precompiled.h"
 
-#include "math/mathCamera.h"
+#include <rgde/math/mathCamera.h>
 
-//Neonic: octree
-#include "scene/scene.h"
+#include <rgde/scene/scene.h>
 
 namespace math
 {

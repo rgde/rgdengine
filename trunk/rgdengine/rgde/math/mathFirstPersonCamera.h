@@ -1,7 +1,6 @@
-//mathFirstPersonCamera.h
 #pragma once
 
-#include "math/mathCameraController.h"
+#include <rgde/math/mathCameraController.h>
 
 namespace math
 {

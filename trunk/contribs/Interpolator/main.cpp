@@ -1,9 +1,9 @@
 //main.cpp
-#include "engine.h"
+#include <rgde/engine.h>
 #include "TestInterpolator.h"
 
-#include "math/mathInterpolators.h"
-#include "math/mathSplines.h"
+#include <rgde/math/mathInterpolators.h>
+#include <rgde/math/mathSplines.h>
 
 int __stdcall WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {

@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#include "math/mathTypes3d.h"
+#include <rgde/math/mathTypes3d.h>
 
 namespace math
 {

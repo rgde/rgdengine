@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/Task.h"
-#include "core/coreRenderDevice.h"
+#include <rgde/core/Task.h>
+#include <rgde/core/coreRenderDevice.h>
 
 namespace core
 {

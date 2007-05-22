@@ -1,6 +1,6 @@
 #pragma once
 
-#include "render/renderTexture.h"
+#include <rgde/render/renderTexture.h>
 
 #ifndef MAKEFOURCC
 #define MAKEFOURCC(ch0, ch1, ch2, ch3)                              \

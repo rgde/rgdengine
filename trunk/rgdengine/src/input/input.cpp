@@ -1,10 +1,10 @@
 #include "precompiled.h"
 
-#include "input/input.h"
-#include "input/inputimpl.h"
-#include "input/device.h"
+#include <rgde/input/input.h>
+#include <rgde/input/inputimpl.h>
+#include <rgde/input/device.h>
 
-#include "io/io.h"
+#include <rgde/io/io.h>
 
 namespace input
 {

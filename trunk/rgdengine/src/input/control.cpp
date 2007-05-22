@@ -1,11 +1,9 @@
 #include "precompiled.h"
 
-#include "input/inputimpl.h"
-#include "input/control.h"
-#include "input/device.h"
-#include "input/command.h"
-
-#include <algorithm>
+#include <rgde/input/inputimpl.h>
+#include <rgde/input/control.h>
+#include <rgde/input/device.h>
+#include <rgde/input/command.h>
 
 namespace input
 {

@@ -1,10 +1,10 @@
 #include "precompiled.h"
 
-#include "render/renderFog.h"
+#include <rgde/render/renderFog.h>
 
-#include "base/xml_helpers.h"
-#include "base/log.h"
-#include "base/lexical_cast.h"
+#include <rgde/base/xml_helpers.h>
+#include <rgde/base/log.h>
+#include <rgde/base/lexical_cast.h>
 
 namespace render
 {

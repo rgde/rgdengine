@@ -1,7 +1,7 @@
 #pragma once
 #pragma warning(disable:4786) // truncation to '255' characters
 
-#include "base/exceptions.h"
+#include <rgde/base/exceptions.h>
 
 #include <iostream>
 #include <string>

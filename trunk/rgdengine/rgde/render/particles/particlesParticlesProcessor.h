@@ -14,8 +14,8 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 ---------------------------------------------------------------------------------------*/
 #pragma once
 
-#include "render/particles/particlesParticle.h"
-#include "math/mathRandom.h"
+#include <rgde/render/particles/particlesParticle.h>
+#include <rgde/math/mathRandom.h>
 
 
 namespace particles{

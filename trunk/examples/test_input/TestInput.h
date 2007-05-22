@@ -1,7 +1,8 @@
-//TestInput.h
 #pragma once
-#include "input/input.h"
-#include "input/helper.h"
+
+#include <rgde/input/input.h>
+#include <rgde/input/helper.h>
+
 #include "Space.h"
 
 class TestInput: public game::IDynamicObject

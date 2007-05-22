@@ -5,7 +5,7 @@ position.
 */
 #pragma once
 
-#include "scene/sceneBaseTrigger.h"
+#include <rgde/scene/sceneBaseTrigger.h>
 
 namespace math
 {

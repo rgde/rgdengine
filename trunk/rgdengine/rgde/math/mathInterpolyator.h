@@ -14,8 +14,8 @@
 #pragma once
 
 
-#include "io/io.h"
-#include "base/lexical_cast.h"
+#include <rgde/io/io.h>
+#include <rgde/base/lexical_cast.h>
 
 /**
 Namespace for different math stuff

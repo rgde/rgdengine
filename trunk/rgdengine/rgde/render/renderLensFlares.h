@@ -1,7 +1,7 @@
 /// Class for rendering lens flare effect is declared here.
 #pragma once
 
-#include "render/renderManager.h"
+#include <rgde/render/renderManager.h>
 
 
 namespace render

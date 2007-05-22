@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/xmlClass.h"
+#include <rgde/core/xmlClass.h>
 
 namespace core
 {

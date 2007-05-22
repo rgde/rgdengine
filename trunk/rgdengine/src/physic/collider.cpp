@@ -6,13 +6,12 @@
 @date    02.04.2006
 @desc    some code from [opcode v.1.3] from Pierre Terdiman
  ******************************************************************************/
+//#include <rgde/engine.h>
 
-//Neonic: octree
-
-//#include "engine.h"
 #include "precompiled.h"
-#include "render/renderMesh.h"
-#include "physic/collider.h"
+
+#include <rgde/render/renderMesh.h>
+#include <rgde/physic/collider.h>
 
 #include <float.h>
 

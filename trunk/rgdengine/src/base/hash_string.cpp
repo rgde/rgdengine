@@ -1,5 +1,5 @@
 #include "precompiled.h"
-#include "base/hash_string.h"
+#include "rgde/base/hash_string.h"
 
 #include <stdio.h>  // Needed for file access
 #include <memory.h> // Needed for memset and memcpy

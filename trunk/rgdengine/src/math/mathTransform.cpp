@@ -1,11 +1,11 @@
 #include "precompiled.h"
 
-#include "math/mathTransform.h"
+#include <rgde/math/mathTransform.h>
 
 #include "../base/exception.h"
-#include "base/lexical_cast.h"
+#include <rgde/base/lexical_cast.h>
 
-#include "render/renderLines3d.h"
+#include <rgde/render/renderLines3d.h>
 
 namespace math
 {

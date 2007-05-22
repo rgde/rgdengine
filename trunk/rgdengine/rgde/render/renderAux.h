@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math/mathTransform.h"
-#include "render/renderManager.h"
+#include <rgde/math/mathTransform.h>
+#include <rgde/render/renderManager.h>
 
 namespace render 
 {

@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
-#include "render/renderCamera.h"
-#include "render/renderRenderTarget.h"
+#include <rgde/render/renderCamera.h>
+#include <rgde/render/renderRenderTarget.h>
 
 #include <d3dx9.h>
 

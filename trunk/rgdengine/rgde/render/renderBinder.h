@@ -61,8 +61,8 @@
 #pragma once
 
 #include <boost/call_traits.hpp>
-#include "render/renderEffect.h"
-#include "math/mathTransform.h"
+#include <rgde/render/renderEffect.h>
+#include <rgde/math/mathTransform.h>
 
 namespace render
 {

@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#include "render/renderVertices.h"
+#include <rgde/render/renderVertices.h>
 
 #include <d3dx9.h>
 

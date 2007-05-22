@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#include "base/logHelper.h"
+#include <rgde/base/logHelper.h>
 
 namespace base{
 

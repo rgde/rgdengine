@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math/mathCamera.h"
+#include <rgde/math/mathCamera.h>
 
 
 namespace render

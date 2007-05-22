@@ -1,9 +1,10 @@
 #include "precompiled.h"
-#include "core/InputTask.h"
-#include "core/application.h"
 
-#include "input/input.h" //библиотека ввода
-#include "input/inputimpl.h"
+#include <rgde/core/InputTask.h>
+#include <rgde/core/application.h>
+
+#include <rgde/input/input.h> //библиотека ввода
+#include <rgde/input/inputimpl.h>
 
 #include <Windows.h>
 

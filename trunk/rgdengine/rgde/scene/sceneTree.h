@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/xmlNode.h"
-#include "core/factory.h"
-#include "io/io.h"
+#include <rgde/core/xmlNode.h>
+#include <rgde/core/factory.h>
+#include <rgde/io/io.h>
 
 // гавно !!!
 namespace scene

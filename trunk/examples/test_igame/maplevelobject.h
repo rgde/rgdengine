@@ -1,5 +1,5 @@
 #pragma once
-#include "engine.h"
+#include <rgde/engine.h>
 
 //карта
 class MapLevelObject : public game::ILevelObject, public event::CSender

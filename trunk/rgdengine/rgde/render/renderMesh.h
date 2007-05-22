@@ -1,17 +1,15 @@
 #pragma once
 
-#include "math/mathTransform.h"
-#include "render/renderManager.h"
-#include "render/renderGeometry.h"
+#include <rgde/math/mathTransform.h>
+#include <rgde/render/renderManager.h>
+#include <rgde/render/renderGeometry.h>
 
-//Neonic: octree
-#include "physic/collider.h"
+#include <rgde/physic/collider.h>
 
 namespace render
 {
 	class CMesh : public math::CFrame
 				, public render::IRendererable
-				//Neonic: octree
 				, public collision::CCollisionObject
 	{
 	public:

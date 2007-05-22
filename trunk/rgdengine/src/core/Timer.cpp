@@ -1,9 +1,6 @@
-/// @20.06.2005
-/// Timer implementation
-
 #include "precompiled.h"
 
-#include "../include/core/Timer.h"
+#include <rgde/core/Timer.h>
 #include <windows.h>
 
 //-----------------------------------------------------------------------------

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "math/mathCamera.h"
-#include "render/renderFont.h"
+#include <rgde/math/mathCamera.h>
+#include <rgde/render/renderFont.h>
 
-#include "base/singelton.h"
+#include <rgde/base/singelton.h>
 
 namespace render
 {

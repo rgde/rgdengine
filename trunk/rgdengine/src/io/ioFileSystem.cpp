@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
-#include "io/ioFileSystem.h"
-#include "io/ioFile.h"
+#include <rgde/io/ioFileSystem.h>
+#include <rgde/io/ioFile.h>
 
 namespace io
 {

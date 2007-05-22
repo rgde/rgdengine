@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
-#include "render/renderLightManager.h"
-#include "base/xml_helpers.h"
+#include <rgde/render/renderLightManager.h>
+#include <rgde/base/xml_helpers.h>
 
 namespace render
 {

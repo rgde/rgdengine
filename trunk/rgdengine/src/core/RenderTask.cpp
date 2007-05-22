@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
-#include "core/RenderTask.h"
-#include "core/application.h"
+#include <rgde/core/RenderTask.h>
+#include <rgde/core/application.h>
 
 namespace core
 {

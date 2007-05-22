@@ -1,7 +1,7 @@
 #pragma once
 
-#include "math/mathTypes3d.h"
-#include "base/smart_ptr_helpers.h"
+#include <rgde/math/mathTypes3d.h>
+#include <rgde/base/smart_ptr_helpers.h>
 
 namespace render
 {

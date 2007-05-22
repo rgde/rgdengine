@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#include "base/log.h"
+#include <rgde/base/log.h>
 
 #include <windows.h>
 //-------------------------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
-#include "render/particles/particlesEmitter.h"
-#include "io/io.h"
+#include <rgde/render/particles/particlesEmitter.h>
+#include <rgde/io/io.h>
 
 namespace particles
 {

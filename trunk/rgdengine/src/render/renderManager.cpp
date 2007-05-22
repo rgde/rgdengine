@@ -1,14 +1,14 @@
 #include "precompiled.h"
 
-#include "render/renderManager.h"
-#include "render/renderBinders.h"
-#include "render/renderLightManager.h"
-#include "render/renderDevice.h"
-#include "render/renderCameraManager.h"
+#include <rgde/render/renderManager.h>
+#include <rgde/render/renderBinders.h>
+#include <rgde/render/renderLightManager.h>
+#include <rgde/render/renderDevice.h>
+#include <rgde/render/renderCameraManager.h>
 
-#include "base/lexical_cast.h"
+#include <rgde/base/lexical_cast.h>
 
-#include "core/application.h"
+#include <rgde/core/application.h>
 
 #include <d3dx9.h>
 #include "renderTextureImpl.h"

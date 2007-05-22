@@ -1,20 +1,6 @@
-/**--------------------------------------------------------------------------------------
-
-									RGDE Engine
-
-	-----------------------------------------------------------------------------
-\author Denis V. Ovod, 2004
-
-\author Andrew "Zlobnik" Chouprina, 2005
-mail:	dxprg@mail.ru
-
-
-Created:			2004 (Denis V. Ovod)
-Modified for RGDE:	march-april 2005 (Zlobnik)
----------------------------------------------------------------------------------------*/
 #pragma once
 
-#include "render/particles/particlesAbstractEmitter.h"
+#include <rgde/render/particles/particlesAbstractEmitter.h>
 
 
 

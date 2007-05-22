@@ -1,5 +1,5 @@
 //RGDE
-#include "engine.h"
+#include <rgde/engine.h>
 
 //WIN
 //#include <windows.h> //для HWND и SendMessage

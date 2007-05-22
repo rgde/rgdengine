@@ -1,10 +1,11 @@
-//TestCamera.h
 #pragma once
-#include "input/input.h"
-#include "input/helper.h"
-#include "math/mathFlyCamera.h"
-#include "math/mathTargetCamera.h"
-#include "math/mathFirstPersonCamera.h"
+
+#include <rgde/input/input.h>
+#include <rgde/input/helper.h>
+
+#include <rgde/math/mathFlyCamera.h>
+#include <rgde/math/mathTargetCamera.h>
+#include <rgde/math/mathFirstPersonCamera.h>
 
 class TestCamera: public game::IDynamicObject
 {

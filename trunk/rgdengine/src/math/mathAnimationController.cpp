@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#include "math/mathAnimationController.h"
+#include <rgde/math/mathAnimationController.h>
 
 
 namespace math

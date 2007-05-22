@@ -1,11 +1,11 @@
 #include "precompiled.h"
 
-#include "render/renderMesh.h"
+#include <rgde/render/renderMesh.h>
+
+#include <rgde/scene/scene.h>
 
 #include "../base/exception.h"
 
-//Neonic: octree
-#include "scene/scene.h"
 
 namespace render
 {

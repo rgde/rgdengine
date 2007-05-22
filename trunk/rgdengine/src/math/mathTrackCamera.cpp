@@ -1,6 +1,6 @@
-//mathTrackCamera.cpp
 #include "precompiled.h"
-#include "math/mathTrackCamera.h"
+
+#include <rgde/math/mathTrackCamera.h>
 
 namespace math
 {

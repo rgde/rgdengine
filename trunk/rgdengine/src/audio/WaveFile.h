@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <MMReg.h>
 
-#include "io/io.h"
+#include <rgde/io/io.h>
 
 namespace audio
 {
