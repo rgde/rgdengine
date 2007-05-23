@@ -15,8 +15,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Static_Release"
-			IntermediateDirectory=".\Static_Release"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -49,10 +49,6 @@
 				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
 				EnableFunctionLevelLinking="false"
-				PrecompiledHeaderFile=".\Static_Release/ogg_static.pch"
-				AssemblerListingLocation=".\Static_Release/"
-				ObjectFile=".\Static_Release/"
-				ProgramDataBaseFileName=".\Static_Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -69,7 +65,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Static_Release\ogg_static.lib"
+				OutputFile="$(SolutionDir)lib/$(ConfigurationName)\$(ProjectName).lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -92,8 +88,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Static_Debug"
-			IntermediateDirectory=".\Static_Debug"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -123,10 +119,6 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\Static_Debug/ogg_static.pch"
-				AssemblerListingLocation=".\Static_Debug/"
-				ObjectFile=".\Static_Debug/"
-				ProgramDataBaseFileName=".\Static_Debug/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
@@ -144,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="Static_Debug\ogg_static_d.lib"
+				OutputFile="$(SolutionDir)lib/$(ConfigurationName)\$(ProjectName).lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

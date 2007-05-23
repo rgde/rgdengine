@@ -15,8 +15,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\VorbisFile_Static_Debug"
-			IntermediateDirectory=".\VorbisFile_Static_Debug"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -47,9 +47,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\VorbisFile_Static_Debug/vorbisfile_static.pch"
-				AssemblerListingLocation=".\VorbisFile_Static_Debug/"
-				ObjectFile=".\VorbisFile_Static_Debug/"
-				ProgramDataBaseFileName=".\VorbisFile_Static_Debug/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
@@ -67,7 +64,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="VorbisFile_Static_Debug\vorbisfile_static_d.lib"
+				OutputFile="$(SolutionDir)lib/$(ConfigurationName)\$(ProjectName).lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -90,8 +87,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\VorbisFile_Static_Release"
-			IntermediateDirectory=".\VorbisFile_Static_Release"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -126,9 +123,6 @@
 				BufferSecurityCheck="false"
 				EnableFunctionLevelLinking="false"
 				PrecompiledHeaderFile=".\VorbisFile_Static_Release/vorbisfile_static.pch"
-				AssemblerListingLocation=".\VorbisFile_Static_Release/"
-				ObjectFile=".\VorbisFile_Static_Release/"
-				ProgramDataBaseFileName=".\VorbisFile_Static_Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -145,7 +139,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\VorbisFile_Static_Release\vorbisfile_static.lib"
+				OutputFile="$(SolutionDir)lib/$(ConfigurationName)\$(ProjectName).lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool

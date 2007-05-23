@@ -16,8 +16,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\Debug_STL"
-			IntermediateDirectory=".\Debug_STL"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -50,9 +50,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				PrecompiledHeaderFile=".\Debug_STL/tinyxmlSTL.pch"
-				AssemblerListingLocation=".\Debug_STL/"
-				ObjectFile=".\Debug_STL/"
-				ProgramDataBaseFileName=".\Debug_STL/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -70,7 +67,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="Debug_STL\tinyxmld_STL.lib"
+				OutputFile="$(SolutionDir)lib/$(ConfigurationName)\$(ProjectName).lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -93,8 +90,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release_STL"
-			IntermediateDirectory=".\Release_STL"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -128,9 +125,6 @@
 				BufferSecurityCheck="false"
 				EnableFunctionLevelLinking="false"
 				PrecompiledHeaderFile=".\Release_STL/tinyxmlSTL.pch"
-				AssemblerListingLocation=".\Release_STL/"
-				ObjectFile=".\Release_STL/"
-				ProgramDataBaseFileName=".\Release_STL/"
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
@@ -150,7 +144,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="Release_STL\tinyxml_STL.lib"
+				OutputFile="$(SolutionDir)lib/$(ConfigurationName)\$(ProjectName).lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
