@@ -1409,7 +1409,7 @@
 			Name="precompiled"
 			>
 			<File
-				RelativePath=".\precompiled.cpp"
+				RelativePath=".\src\precompiled.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -1430,7 +1430,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\precompiled.h"
+				RelativePath=".\src\precompiled.h"
 				>
 			</File>
 		</Filter>
