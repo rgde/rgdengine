@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)rgdengine&quot;;&quot;$(SolutionDir)external/gmtl&quot;;&quot;$(SolutionDir)external/&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -126,7 +126,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)rgdengine&quot;;&quot;$(SolutionDir)external/gmtl&quot;;&quot;$(SolutionDir)external/&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="true"
 				ExceptionHandling="2"
