@@ -1,7 +1,5 @@
 #pragma once
 
-#undef min
-#undef max
 
 //STD
 #include <memory>
@@ -23,6 +21,9 @@
 #include <sstream>
 #include <iostream>
 #include <exception>
+
+#undef min
+#undef max
 
 #include <gmtl/gmtl.h>
 
