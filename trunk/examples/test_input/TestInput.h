@@ -38,4 +38,11 @@ private:
     float m_y;
     float m_speed;
     Space m_space;
+
+    //->
+    input::AbsoluteAxis    m_mouseHorz;
+    input::AbsoluteAxis    m_mouseVert;
+    render::SSprite        m_cursor;
+	render::CSpriteManager m_sprite_renderer;
+    //-<
 };
