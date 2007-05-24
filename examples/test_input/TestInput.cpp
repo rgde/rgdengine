@@ -14,6 +14,10 @@ TestInput::TestInput():
     m_trigPause        (L"Pause"),
     m_raxisHorz        (L"Horz"),
     m_raxisVert        (L"Vert"),
+    //->
+    m_mouseHorz        (L"Horz"),
+    m_mouseVert        (L"Vert"),
+    //-<
     m_btnPrimaryFire   (L"PrimaryFire"),
     m_btnSecondaryFire (L"SecondaryFire")
 {
@@ -34,6 +38,23 @@ TestInput::TestInput():
     m_y = 100.f;
     m_speed = 5.f;
     m_space.setPositionAndSpeed(m_x,m_y,m_speed);
+
+    //->
+    m_mouseHorz.setMax(800);
+    m_mouseHorz.setPos(400);
+    m_mouseVert.setMax(600);
+    m_mouseVert.setPos(300);
+    {
+	    using namespace math;
+        m_cursor.pTexture = render::ITexture::Create("TestInput/SpaceShip.png");
+	    m_cursor.uPriority = (uint)1000;
+	    m_cursor.size = Vec2f(16, 16);
+	    m_cursor.color = Color(255, 255, 255, 255);
+	    m_cursor.rect = Rect(0, 0, 1, 1);
+	    m_cursor.pos = Vec2f(m_mouseHorz.getPos(), m_mouseVert.getPos());
+	    m_cursor.spin = 0;
+    }
+    //-<
 }
 
 void TestInput::update (float dt)
@@ -42,7 +63,13 @@ void TestInput::update (float dt)
     const float movespeed  = 300.f;
 
     if (m_trigPause)
+    {
         m_space.setPositionAndSpeed(m_x,m_y,0);
+        //->
+        m_cursor.pos = Vec2f(m_mouseHorz.getPos(), m_mouseVert.getPos());
+        m_sprite_renderer.addSprite(m_cursor);
+        //-<
+    }
     else
     {
         //изменение скорости
@@ -58,6 +85,7 @@ void TestInput::update (float dt)
 
         m_space.setPositionAndSpeed(m_x,m_y,m_speed);
     }
+
 
     m_space.update(dt);
 }
