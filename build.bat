@@ -6,6 +6,6 @@ if not defined VS80COMNTOOLS (
 )
 
 call "%VS80COMNTOOLS%\vsvars32.bat" || exit /b 1
-devenv.com rgde.sln /rebuild release
-devenv.com rgde.sln /rebuild debug
+devenv.com build.sln /rebuild release
+devenv.com buid.sln /rebuild debug
 pause
