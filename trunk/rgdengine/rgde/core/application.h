@@ -9,6 +9,13 @@ struct CWindowResize
     int height;
 };
 
+struct CCursorMove
+{
+    CCursorMove(int _x, int _y): x(_x),y(_y) {}
+    int	x;
+    int y;
+};
+
 typedef void *WindowHandle;
 
 namespace core
