@@ -2,6 +2,7 @@
 
 #include "base.h"
 #include <boost/function.hpp>
+#include <rgde/core/application.h>
 
 namespace input
 {
@@ -181,7 +182,7 @@ namespace input
 
 	// Cursor
 	//обьект-посредник "курсор мыши"
-	class Cursor: public Helper
+    class Cursor: public Helper, public event::CListener
 	{
 	public:
 		typedef boost::function<void(int,int)> CursorHandler;
@@ -190,16 +191,16 @@ namespace input
 
 		void operator += (CursorHandler handler);
 
-		int  getX   () const;
-		int  getY   () const;
-        void setX   (int x);
-        void setY   (int y);
-        void setPos (int x, int y);
+        int getX () const {return m_x;}
+		int getY () const {return m_y;}
 
 	protected:
+        void onCursorMove (CCursorMove e);
         virtual void notify (const Control &control);
 
 	private:
+        int m_x;
+        int m_y;
 		std::list<CursorHandler> m_cursorHandlers;
 	};
 

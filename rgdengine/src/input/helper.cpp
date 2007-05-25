@@ -331,10 +331,9 @@ namespace input
 
 //////////////////////////////////////////////////////////////////////////
 
-    Cursor::Cursor (): Helper(L"Cursor")
+    Cursor::Cursor (): m_x(0), m_y(0)
     {
-        Input::GetControl(types::Mouse, types::AxisX)->bind(L"Cursor");
-        Input::GetControl(types::Mouse, types::AxisY)->bind(L"Cursor");
+        subscribe<CCursorMove>(&Cursor::onCursorMove);
     }
 
 	void Cursor::operator += (CursorHandler handler)
@@ -342,73 +341,22 @@ namespace input
 		m_cursorHandlers.push_back(handler);
     }
 
-	int Cursor::getX () const
+    void Cursor::onCursorMove (CCursorMove e)
     {
-        POINT p;
-        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
-
-        GetCursorPos(&p);
-        ScreenToClient(hwnd, &p);
-        return p.x;
-    }
-
-    int Cursor::getY () const
-    {
-        POINT p;
-        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
-
-        GetCursorPos(&p);
-        ScreenToClient(hwnd, &p);
-        return p.y;
-    }
-
-    void Cursor::setX (int x)
-    {
-        POINT p;
-        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
-
-        GetCursorPos(&p);
-        ScreenToClient(hwnd, &p);
-        p.x = x;
-        ClientToScreen(hwnd, &p);
-        SetCursorPos(p.x,p.y);
-    }
-
-    void Cursor::setY (int y)
-    {
-        POINT p;
-        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
-
-        GetCursorPos(&p);
-        ScreenToClient(hwnd, &p);
-        p.y = y;
-        ClientToScreen(hwnd, &p);
-        SetCursorPos(p.x,p.y);
-    }
-
-    void Cursor::setPos (int x, int y)
-    {
-        POINT p;
-        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
-
-        GetCursorPos(&p);
-        ScreenToClient(hwnd, &p);
-        p.x = x;
-        p.y = y;
-        ClientToScreen(hwnd, &p);
-        SetCursorPos(p.x,p.y);
-    }
-
-	void Cursor::notify (const Control &rControl)
-    {
-        Helper::notify(rControl);
+        m_x = e.x;
+        m_y = e.y;
 
 		std::list<Cursor::CursorHandler>::iterator i = m_cursorHandlers.begin();
 		while (i != m_cursorHandlers.end())
 		{
-			(*i)(getX(), getY());
+			(*i)(m_x, m_y);
 			++i;
 		}
+    }
+
+	void Cursor::notify (const Control &rControl)
+    {
+        //должно быть пусто
     }
 
 //////////////////////////////////////////////////////////////////////////

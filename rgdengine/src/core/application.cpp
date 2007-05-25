@@ -141,6 +141,7 @@ namespace core
 
 	void ApplicationImpl::OnMouse(Forms::Message &msg)
 	{
+        this->sendEvent<CCursorMove>(CCursorMove(LOWORD(msg.lParam), HIWORD(msg.lParam)));
 	}
 
 	void ApplicationImpl::OnSize(Forms::Message &msg)
