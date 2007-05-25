@@ -1,9 +1,13 @@
 #include "precompiled.h"
 
+#include <rgde/core/application.h>
 #include <rgde/input/helper.h>
 #include <rgde/input/input.h>
 #include <rgde/input/control.h>
 #include <rgde/input/command.h>
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
 namespace input
 {
@@ -305,7 +309,7 @@ namespace input
 
 	void AbsoluteAxis::setPos (int nPos)
 	{
-		m_pos = std::min(std::max(m_min, nPos), m_max);
+		m_pos = min(max(m_min, nPos), m_max);
 	}
 
 	void AbsoluteAxis::notify (const Control &rControl)
@@ -324,5 +328,88 @@ namespace input
 			++i;
 		}
 	}
+
+//////////////////////////////////////////////////////////////////////////
+
+    Cursor::Cursor (): Helper(L"Cursor")
+    {
+        Input::GetControl(types::Mouse, types::AxisX)->bind(L"Cursor");
+        Input::GetControl(types::Mouse, types::AxisY)->bind(L"Cursor");
+    }
+
+	void Cursor::operator += (CursorHandler handler)
+    {
+		m_cursorHandlers.push_back(handler);
+    }
+
+	int Cursor::getX () const
+    {
+        POINT p;
+        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+
+        GetCursorPos(&p);
+        ScreenToClient(hwnd, &p);
+        return p.x;
+    }
+
+    int Cursor::getY () const
+    {
+        POINT p;
+        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+
+        GetCursorPos(&p);
+        ScreenToClient(hwnd, &p);
+        return p.y;
+    }
+
+    void Cursor::setX (int x)
+    {
+        POINT p;
+        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+
+        GetCursorPos(&p);
+        ScreenToClient(hwnd, &p);
+        p.x = x;
+        ClientToScreen(hwnd, &p);
+        SetCursorPos(p.x,p.y);
+    }
+
+    void Cursor::setY (int y)
+    {
+        POINT p;
+        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+
+        GetCursorPos(&p);
+        ScreenToClient(hwnd, &p);
+        p.y = y;
+        ClientToScreen(hwnd, &p);
+        SetCursorPos(p.x,p.y);
+    }
+
+    void Cursor::setPos (int x, int y)
+    {
+        POINT p;
+        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+
+        GetCursorPos(&p);
+        ScreenToClient(hwnd, &p);
+        p.x = x;
+        p.y = y;
+        ClientToScreen(hwnd, &p);
+        SetCursorPos(p.x,p.y);
+    }
+
+	void Cursor::notify (const Control &rControl)
+    {
+        Helper::notify(rControl);
+
+		std::list<Cursor::CursorHandler>::iterator i = m_cursorHandlers.begin();
+		while (i != m_cursorHandlers.end())
+		{
+			(*i)(getX(), getY());
+			++i;
+		}
+    }
+
 //////////////////////////////////////////////////////////////////////////
 }

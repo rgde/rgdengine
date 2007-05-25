@@ -840,7 +840,7 @@ namespace input
 
         Control *pControl = mouse->getControl(eControl);
 		if (!pControl)
-			return; //... такой контрол для клавиатуры не предусмотрен 
+			return; //... такой контрол для мыши не предусмотрен 
 
         pControl->m_time = dod.dwTimeStamp;
 

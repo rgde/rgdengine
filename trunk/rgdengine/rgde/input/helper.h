@@ -179,6 +179,30 @@ namespace input
 		std::list<AbsoluteAxisHandler> m_aaxisHandlers;
 	};
 
+	// Cursor
+	//обьект-посредник "курсор мыши"
+	class Cursor: public Helper
+	{
+	public:
+		typedef boost::function<void(int,int)> CursorHandler;
+
+		Cursor ();
+
+		void operator += (CursorHandler handler);
+
+		int  getX   () const;
+		int  getY   () const;
+        void setX   (int x);
+        void setY   (int y);
+        void setPos (int x, int y);
+
+	protected:
+        virtual void notify (const Control &control);
+
+	private:
+		std::list<CursorHandler> m_cursorHandlers;
+	};
+
 	// KeyStream
 
 	//параметр для KeyStream::KeyStreamHandler
