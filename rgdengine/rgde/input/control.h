@@ -42,13 +42,10 @@ namespace input
         int  m_delta;
 
     private:
-		//устройство, которому принадлежит контрол
-        Device    &m_device;
 
-		//тип контрола
-        EType     m_type;
-		//'имя' контрола
-        types::EControl  m_name;    
+        Device          &m_device; //устройство, которому принадлежит контрол
+        EType            m_type;   //тип контрола
+        types::EControl  m_name;   //'имя' контрола
 
 		typedef std::list<CommandPtr> CommandsList;
 		typedef CommandsList::iterator CommandsIter;

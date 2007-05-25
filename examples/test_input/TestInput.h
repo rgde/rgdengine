@@ -40,8 +40,7 @@ private:
     Space m_space;
 
     //->
-    input::AbsoluteAxis    m_mouseHorz;
-    input::AbsoluteAxis    m_mouseVert;
+    input::Cursor          m_cursorPos;
     render::SSprite        m_cursor;
 	render::CSpriteManager m_sprite_renderer;
     //-<
