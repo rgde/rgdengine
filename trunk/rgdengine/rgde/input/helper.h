@@ -193,13 +193,15 @@ namespace input
 
         float getX () const {return m_x;}
 		float getY () const {return m_y;}
+        void  setPos (float x, float y);
 
 	protected:
         void onCursorMove (CCursorMove e);
         virtual void notify (const Control &control);
 
 	private:
-        void adjustPos(float &x, float &y);
+        void adjustPosToWindow(float &x, float &y);
+        void adjustPosToClient(float &x, float &y);
 
 	private:
         float m_x;

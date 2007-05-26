@@ -38,9 +38,9 @@ TestInput::TestInput():
     //->
     {
 	    using namespace math;
-        m_cursor.pTexture = render::ITexture::Create("TestInput/SpaceShip.png");
+        m_cursor.pTexture = render::ITexture::Create("TestInput/cursor.png");
 	    m_cursor.uPriority = (uint)1000;
-	    m_cursor.size = Vec2f(16, 16);
+	    m_cursor.size = Vec2f(32, 32);
 	    m_cursor.color = Color(255, 255, 255, 255);
 	    m_cursor.rect = Rect(0, 0, 1, 1);
 	    m_cursor.pos = Vec2f(m_cursorPos.getX(), m_cursorPos.getY());
@@ -92,9 +92,12 @@ void TestInput::onPause (bool pause)
     if (pause)
     {
         input::Input::Get().SetMode(false);
+        m_cursorPos.setPos(400,300);
+        ShowCursor(FALSE);
     }
     else
     {
+        ShowCursor(TRUE);
         input::Input::Get().SetMode(true);
     }
 }

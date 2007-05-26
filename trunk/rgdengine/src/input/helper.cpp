@@ -341,12 +341,28 @@ namespace input
 		m_cursorHandlers.push_back(handler);
     }
 
+    void Cursor::setPos (float x, float y)
+    {
+        m_x = x;
+        m_y = y;
+
+        adjustPosToClient(x,y);
+
+        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+        POINT pos;
+        pos.x = (int)x;
+        pos.y = (int)y;
+        ClientToScreen(hwnd, &pos);
+
+        SetCursorPos(pos.x,pos.y);
+    }
+
     void Cursor::onCursorMove (CCursorMove e)
     {
         m_x = e.x;
         m_y = e.y;
 
-        adjustPos(m_x, m_y);
+        adjustPosToWindow(m_x, m_y);
 
 		std::list<Cursor::CursorHandler>::iterator i = m_cursorHandlers.begin();
 		while (i != m_cursorHandlers.end())
@@ -361,7 +377,7 @@ namespace input
         //должно быть пусто
     }
 
-    void Cursor::adjustPos(float &x, float &y)
+    void Cursor::adjustPosToWindow(float &x, float &y)
     {
         RECT client;
         RECT window;
@@ -375,6 +391,22 @@ namespace input
 
         x = x * (window.right-window.left) / (client.right-client.left);
         y = y * (window.bottom-window.top) / (client.bottom-client.top);
+    }
+
+    void Cursor::adjustPosToClient(float &x, float &y)
+    {
+        RECT client;
+        RECT window;
+        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+
+        GetClientRect(hwnd, &client);
+        GetWindowRect(hwnd, &window);
+
+        if (EqualRect(&client, &window))
+            return;
+
+        x = x * (client.right-client.left) / (window.right-window.left);
+        y = y * (client.bottom-client.top) / (window.bottom-window.top);
     }
 
 //////////////////////////////////////////////////////////////////////////
