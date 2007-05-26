@@ -346,6 +346,8 @@ namespace input
         m_x = e.x;
         m_y = e.y;
 
+        adjustPos(m_x, m_y);
+
 		std::list<Cursor::CursorHandler>::iterator i = m_cursorHandlers.begin();
 		while (i != m_cursorHandlers.end())
 		{
@@ -357,6 +359,22 @@ namespace input
 	void Cursor::notify (const Control &rControl)
     {
         //должно быть пусто
+    }
+
+    void Cursor::adjustPos(float &x, float &y)
+    {
+        RECT client;
+        RECT window;
+        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+
+        GetClientRect(hwnd, &client);
+        GetWindowRect(hwnd, &window);
+
+        if (EqualRect(&client, &window))
+            return;
+
+        x = x * (window.right-window.left) / (client.right-client.left);
+        y = y * (window.bottom-window.top) / (client.bottom-client.top);
     }
 
 //////////////////////////////////////////////////////////////////////////

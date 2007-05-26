@@ -185,22 +185,25 @@ namespace input
     class Cursor: public Helper, public event::CListener
 	{
 	public:
-		typedef boost::function<void(int,int)> CursorHandler;
+		typedef boost::function<void(float,float)> CursorHandler;
 
 		Cursor ();
 
 		void operator += (CursorHandler handler);
 
-        int getX () const {return m_x;}
-		int getY () const {return m_y;}
+        float getX () const {return m_x;}
+		float getY () const {return m_y;}
 
 	protected:
         void onCursorMove (CCursorMove e);
         virtual void notify (const Control &control);
 
 	private:
-        int m_x;
-        int m_y;
+        void adjustPos(float &x, float &y);
+
+	private:
+        float m_x;
+        float m_y;
 		std::list<CursorHandler> m_cursorHandlers;
 	};
 
