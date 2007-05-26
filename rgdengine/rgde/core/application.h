@@ -11,9 +11,9 @@ struct CWindowResize
 
 struct CCursorMove
 {
-    CCursorMove(int _x, int _y): x(_x),y(_y) {}
-    int	x;
-    int y;
+    CCursorMove(float _x, float _y): x(_x),y(_y) {}
+    float x;
+    float y;
 };
 
 typedef void *WindowHandle;
