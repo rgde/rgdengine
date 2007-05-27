@@ -199,15 +199,56 @@ namespace input
         void onCursorMove (CCursorMove e);
         virtual void notify (const Control &control);
 
-	private:
-        void adjustPosToWindow(float &x, float &y);
-        void adjustPosToClient(float &x, float &y);
+        void adjustPosToWindow (float &x, float &y);
+        void adjustPosToClient (float &x, float &y);
 
 	private:
         float m_x;
         float m_y;
 		std::list<CursorHandler> m_cursorHandlers;
 	};
+
+    // Mouse
+	//обьект-посредник "мышь"
+    class Mouse: public Cursor
+    {
+    public:
+        enum ClickType
+        {
+            Down,
+            Up,
+            DoubleClick
+        };
+
+		typedef boost::function<void(int)>       WhellHandler;
+		typedef boost::function<void(ClickType)> ButtonHandler;
+
+        Mouse ();
+
+        void setMoveHandler         (CursorHandler handler);
+		void setWhellHandler        (WhellHandler  handler);
+        void setLeftButtonHandler   (ButtonHandler handler);
+        void setMiddleButtonHandler (ButtonHandler handler);
+        void setRightButtonHandler  (ButtonHandler handler);
+
+        bool isLeftPressed   () const {return m_left;}
+        bool isMiddlePressed () const {return m_middle;}
+        bool isRightPressed  () const {return m_right;}
+
+    protected:
+        void onWhell (CMouseWhell e);
+        void onButton (CMouseButton e);
+
+    private:
+        bool m_left;
+        bool m_middle;
+        bool m_right;
+
+    	std::list<WhellHandler> m_whellHandlers;
+    	std::list<ButtonHandler> m_leftButtonHandlers;
+    	std::list<ButtonHandler> m_middleButtonHandlers;
+    	std::list<ButtonHandler> m_rightButtonHandlers;
+    };
 
 	// KeyStream
 

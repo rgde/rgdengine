@@ -16,6 +16,33 @@ struct CCursorMove
     float y;
 };
 
+struct CMouseWhell
+{
+    CMouseWhell(int _delta): delta(_delta) {}
+    int delta;
+};
+
+struct CMouseButton
+{
+    enum ButtonType
+    {
+        Left,
+        Middle,
+        Right
+    };
+
+    enum ClickType
+    {
+        Down,
+        Up,
+        DoubleClick
+    };
+
+    CMouseButton(ButtonType _button, ClickType _click): button(_button), click(_click) {}
+    ButtonType button;
+    ClickType click;
+};
+
 typedef void *WindowHandle;
 
 namespace core

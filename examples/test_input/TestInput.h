@@ -40,7 +40,7 @@ private:
     Space m_space;
 
     //->
-    input::Cursor          m_cursorPos;
+    input::Mouse           m_mouse;
     render::SSprite        m_cursor;
 	render::CSpriteManager m_sprite_renderer;
     //-<

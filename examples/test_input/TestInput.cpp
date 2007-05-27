@@ -43,7 +43,7 @@ TestInput::TestInput():
 	    m_cursor.size = Vec2f(32, 32);
 	    m_cursor.color = Color(255, 255, 255, 255);
 	    m_cursor.rect = Rect(0, 0, 1, 1);
-	    m_cursor.pos = Vec2f(m_cursorPos.getX(), m_cursorPos.getY());
+	    m_cursor.pos = Vec2f(m_mouse.getX(), m_mouse.getY());
 	    m_cursor.spin = 0;
     }
     //-<
@@ -58,7 +58,11 @@ void TestInput::update (float dt)
     {
         m_space.setPositionAndSpeed(m_x,m_y,0);
         //->
-        m_cursor.pos = Vec2f(m_cursorPos.getX(), m_cursorPos.getY());
+        if (m_mouse.isLeftPressed())
+            m_cursor.color = math::Color(255,0,0,128);
+        else
+            m_cursor.color = math::Color(0,255,0,255);
+        m_cursor.pos = Vec2f(m_mouse.getX(), m_mouse.getY());
         m_sprite_renderer.addSprite(m_cursor);
         //-<
     }
@@ -92,7 +96,7 @@ void TestInput::onPause (bool pause)
     if (pause)
     {
         input::Input::Get().SetMode(false);
-        m_cursorPos.setPos(400,300);
+        m_mouse.setPos(400,300);
         ShowCursor(FALSE);
     }
     else

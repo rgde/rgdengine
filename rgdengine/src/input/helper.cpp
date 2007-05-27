@@ -410,4 +410,107 @@ namespace input
     }
 
 //////////////////////////////////////////////////////////////////////////
+
+    Mouse::Mouse (): m_left(false), m_middle(false), m_right(false)
+    {
+        subscribe<CMouseWhell>  (&Mouse::onWhell);
+        subscribe<CMouseButton> (&Mouse::onButton);
+    }
+
+    void Mouse::setMoveHandler (CursorHandler handler)
+    {
+		*this += handler;
+    }
+
+	void Mouse::setWhellHandler (WhellHandler handler)
+    {
+		m_whellHandlers.push_back(handler);
+    }
+
+    void Mouse::setLeftButtonHandler (ButtonHandler handler)
+    {
+		m_leftButtonHandlers.push_back(handler);
+    }
+
+    void Mouse::setMiddleButtonHandler (ButtonHandler handler)
+    {
+		m_middleButtonHandlers.push_back(handler);
+    }
+
+    void Mouse::setRightButtonHandler (ButtonHandler handler)
+    {
+		m_rightButtonHandlers.push_back(handler);
+    }
+
+    void Mouse::onWhell (CMouseWhell e)
+    {
+		std::list<Mouse::WhellHandler>::iterator i = m_whellHandlers.begin();
+		while (i != m_whellHandlers.end())
+		{
+			(*i)(e.delta);
+			++i;
+		}
+    }
+
+    void Mouse::onButton (CMouseButton e)
+    {
+        //определим тип нажатия
+        ClickType click;
+        if (e.click == CMouseButton::Down)        click = Mouse::Down;
+        if (e.click == CMouseButton::Up)          click = Mouse::Up;
+        if (e.click == CMouseButton::DoubleClick) click = Mouse::DoubleClick;
+
+        switch (e.button)
+        {
+            case CMouseButton::Left:
+            {
+                //поменяем состояние
+                if (e.click == CMouseButton::Down) m_left = true;
+                if (e.click == CMouseButton::Up)   m_left = false;
+
+                //вызовем обработчики
+                std::list<Mouse::ButtonHandler>::iterator i = m_leftButtonHandlers.begin();
+		        while (i != m_leftButtonHandlers.end())
+		        {
+                    (*i)(click);
+			        ++i;
+		        }
+                break;
+            }
+
+            case CMouseButton::Middle:
+            {
+                //поменяем состояние
+                if (e.click == CMouseButton::Down) m_middle = true;
+                if (e.click == CMouseButton::Up)   m_middle = false;
+
+                //вызовем обработчики
+                std::list<Mouse::ButtonHandler>::iterator i = m_middleButtonHandlers.begin();
+		        while (i != m_middleButtonHandlers.end())
+		        {
+                    (*i)(click);
+			        ++i;
+		        }
+                break;
+            }
+            case CMouseButton::Right:
+            {
+                //поменяем состояние
+                if (e.click == CMouseButton::Down) m_right = true;
+                if (e.click == CMouseButton::Up)   m_right = false;
+
+                //вызовем обработчики
+                std::list<Mouse::ButtonHandler>::iterator i = m_rightButtonHandlers.begin();
+		        while (i != m_rightButtonHandlers.end())
+		        {
+                    (*i)(click);
+			        ++i;
+		        }
+                break;
+            }
+        }
+
+    }
+
+//////////////////////////////////////////////////////////////////////////
 }
