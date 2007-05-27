@@ -141,7 +141,42 @@ namespace core
 
 	void ApplicationImpl::OnMouse(Forms::Message &msg)
 	{
-        this->sendEvent<CCursorMove>(CCursorMove(LOWORD(msg.lParam), HIWORD(msg.lParam)));
+        switch (msg.uMsg)
+        {
+            case WM_MOUSEMOVE:
+                this->sendEvent<CCursorMove>(CCursorMove(LOWORD(msg.lParam), HIWORD(msg.lParam)));
+                break;
+            case WM_LBUTTONDOWN:
+                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::Down));
+                break;
+            case WM_LBUTTONUP:
+                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::Up));
+                break;
+            case WM_LBUTTONDBLCLK:
+                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::DoubleClick));
+                break;
+            case WM_MBUTTONDOWN:
+                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::Down));
+                break;
+            case WM_MBUTTONUP:
+                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::Up));
+                break;
+            case WM_MBUTTONDBLCLK:
+                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::DoubleClick));
+                break;
+            case WM_RBUTTONDOWN:
+                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::Down));
+                break;
+            case WM_RBUTTONUP:
+                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::Up));
+                break;
+            case WM_RBUTTONDBLCLK:
+                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::DoubleClick));
+                break;
+            //case WM_MOUSEWHEEL:
+            //    this->sendEvent<CMouseWhell>(CMouseWhell(HIWORD(wParam)));
+            //    break;
+        };
 	}
 
 	void ApplicationImpl::OnSize(Forms::Message &msg)
