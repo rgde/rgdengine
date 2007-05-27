@@ -174,7 +174,7 @@ namespace core
                 this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::DoubleClick));
                 break;
             case WM_MOUSEWHEEL:
-                this->sendEvent<CMouseWhell>(CMouseWhell(HIWORD(wParam)));
+                this->sendEvent<CMouseWhell>(CMouseWhell(HIWORD(msg.wParam)));
                 break;
         };
 	}

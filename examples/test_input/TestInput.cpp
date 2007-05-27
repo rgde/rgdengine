@@ -62,6 +62,17 @@ void TestInput::update (float dt)
             m_cursor.color = math::Color(255,0,0,128);
         else
             m_cursor.color = math::Color(0,255,0,255);
+
+        if (m_mouse.isRightPressed())
+        {
+            m_cursor.color = math::Color(0,0,255,128);
+            //...
+        }
+        else
+        {
+            //...
+        }
+        else
         m_cursor.pos = Vec2f(m_mouse.getX(), m_mouse.getY());
         m_sprite_renderer.addSprite(m_cursor);
         //-<
