@@ -173,9 +173,9 @@ namespace core
             case WM_RBUTTONDBLCLK:
                 this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::DoubleClick));
                 break;
-            //case WM_MOUSEWHEEL:
-            //    this->sendEvent<CMouseWhell>(CMouseWhell(HIWORD(wParam)));
-            //    break;
+            case WM_MOUSEWHEEL:
+                this->sendEvent<CMouseWhell>(CMouseWhell(HIWORD(wParam)));
+                break;
         };
 	}
 
@@ -403,7 +403,7 @@ namespace core
 		//SetMessageEvent(WM_XBUTTONDOWN,	boost::bind(&ApplicationImpl::OnMouse, this, _1));
 		//SetMessageEvent(WM_XBUTTONUP,		boost::bind(&ApplicationImpl::OnMouse, this, _1));
 		//SetMessageEvent(WM_XBUTTONDBLCLK,	boost::bind(&ApplicationImpl::OnMouse, this, _1));
-		//SetMessageEvent(WM_MOUSEWHEEL,	boost::bind(&ApplicationImpl::OnMouse, this, _1));
+		SetMessageEvent(WM_MOUSEWHEEL,	boost::bind(&ApplicationImpl::OnMouse, this, _1));
 
 		SetMessageEvent(WM_MOUSEMOVE,		boost::bind(&ApplicationImpl::OnMouse, this, _1));
 
