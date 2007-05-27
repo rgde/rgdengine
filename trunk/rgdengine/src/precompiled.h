@@ -1,5 +1,7 @@
 #pragma once
 
+//для WM_MOUSEWHELL
+#define _WIN32_WINNT 0x0400
 
 //STD
 #include <memory>
