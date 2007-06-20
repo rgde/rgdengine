@@ -12,19 +12,19 @@
 ///////
 std::string getCurrentTime()
 {
-		time_t ttime;
-		::time (&ttime);
-		struct tm ctime;
-        localtime_s (&ctime, &ttime);
+    time_t ttime;
+    ::time (&ttime);
+    struct tm ctime;
+    localtime_s (&ctime, &ttime);
 
-        std::string time;
-        time.append(boost::lexical_cast<std::string>(ctime.tm_hour));
-        time.append(":");
-        time.append(boost::lexical_cast<std::string>(ctime.tm_min));
-        time.append(":");
-        time.append(boost::lexical_cast<std::string>(ctime.tm_sec));
+    std::string time;
+    time.append(boost::lexical_cast<std::string>(ctime.tm_hour));
+    time.append(":");
+    time.append(boost::lexical_cast<std::string>(ctime.tm_min));
+    time.append(":");
+    time.append(boost::lexical_cast<std::string>(ctime.tm_sec));
 
-        return time;
+    return time;
 }
 
 std::string getCurrentDateTime()
@@ -32,12 +32,13 @@ std::string getCurrentDateTime()
 	SYSTEMTIME t;
 	GetLocalTime (&t);
 
-	char day[3], month[3];
+	char minute[3], day[3], month[3];
+	sprintf_s (minute, (t.wMinute < 10) ? "0%i" : "%i", t.wMinute);
 	sprintf_s (day, (t.wDay < 10) ? "0%i" : "%i", t.wDay);
 	sprintf_s (month, (t.wMonth < 10) ? "0%i" : "%i", t.wMonth);
 
 	char time[128];
-	sprintf (time, "%i.%i%_%s.%s.%i", t.wHour, t.wMinute, day, month, t.wYear); 
+	sprintf (time, "%i.%s%_%s.%s.%i", t.wHour, minute, day, month, t.wYear); 
     return std::string(time);
 }
 
@@ -259,43 +260,7 @@ public:
         }
     }
 
-    //->
-    //template <typename char_type>
-    //std::streamsize write(const char_type *s, std::streamsize n)
-    //{
-    //    if (!m_file.is_open())
-    //        return n; //или следует вернуть 0 (хз как буст отреагирует)?
-
-    //    std::string str1 = "\n";
-    //    std::string str2 = "<br/>\n";
-
-    //    std::basic_string<char_type> end(str1.begin(), str1.end());
-    //    std::basic_string<char_type> brend(str2.begin(), str2.end());
-
-    //    std::basic_string<char_type> in(s,n);
-    //    std::basic_string<char_type> out;
-    //    
-    //    //замена '\n' на "<br/>"
-    //    while (!in.empty())
-    //    {
-    //        std::string::size_type pos = in.find(end);
-    //        if (pos == std::string::npos)
-    //        {
-    //            out += in;
-    //            in.erase();
-    //        }
-    //        else
-    //        {
-    //            out += in.substr(0, pos);
-    //            out += brend;
-    //            in = in.substr(pos+1);
-    //        }
-    //    }
-    //
-    //    m_file << out;
-    //    return n;
-    //}
-
+    //запись в файл multibyte-строк
 	std::streamsize write(const char *s, std::streamsize n)
 	{
         if (!m_file.is_open())
@@ -325,6 +290,7 @@ public:
         return n;
     }
 
+    //запись в файл unicode-строк
 	std::streamsize write(const wchar_t *s, std::streamsize n)
 	{
         if (!m_file.is_open())
@@ -350,10 +316,12 @@ public:
             }
         }
 
-        m_file << std::string(out.begin(), out.end());
+        static char buf[1024];
+        wcstombs(buf, out.c_str(), sizeof(buf));
+
+        m_file << std::string(buf, strlen(buf));
         return n;
     }
-    //-<
 
 private:
     file_wrapper (const file_wrapper&);
@@ -682,32 +650,59 @@ private:
     class LogHelper
     {
     public:
-        LogHelper(): coutsbuf(0), wcoutsbuf(0)
+        LogHelper():
+            coutsbuf  (0),
+            wcoutsbuf (0),
+            cerrsbuf  (0),
+            wcerrsbuf (0)
         {
+            _wsetlocale(LC_ALL, L"rus");
+
             pfilewrapper->open(generateLogName());
             postreamwrapperA->open(std::cout.rdbuf());
             postreamwrapperW->open(std::wcout.rdbuf());
 
+            //(w)cout
             coutsbuf = std::cout.rdbuf();
             std::cout.rdbuf(lmsg.rdbuf());
 
             wcoutsbuf = std::wcout.rdbuf();
             std::wcout.rdbuf(wlmsg.rdbuf());
+
+            //(w)cerr
+            cerrsbuf = std::cerr.rdbuf();
+            std::cerr.rdbuf(lerr.rdbuf());
+            std::cerr.unsetf(std::ios_base::unitbuf);
+
+            wcerrsbuf = std::wcerr.rdbuf();
+            std::wcerr.rdbuf(wlerr.rdbuf());
+            std::wcerr.unsetf(std::ios_base::unitbuf);
         }
 
        ~LogHelper()
         {
-            pfilewrapper->close();
-            postreamwrapperA->close();
-            postreamwrapperW->close();
+            //(w)err
+            std::wcerr.setf(std::ios_base::unitbuf);
+            std::wcerr.rdbuf(wcerrsbuf);
+            std::cerr.setf(std::ios_base::unitbuf);
+            std::cerr.rdbuf(cerrsbuf);
 
-            std::cout.rdbuf(coutsbuf);
+            //(w)cout
             std::wcout.rdbuf(wcoutsbuf);
-        }
+            std::cout.rdbuf(coutsbuf);
+
+            postreamwrapperW->close();
+            postreamwrapperA->close();
+            pfilewrapper->close();
+       }
 
     private:
+        //указатели на стандартные потоки
         std::streambuf  *coutsbuf;
         std::wstreambuf *wcoutsbuf;
+
+        std::streambuf  *cerrsbuf;
+        std::wstreambuf *wcerrsbuf;
 
         static std::string generateLogName()
         {
@@ -740,10 +735,15 @@ LogSystem::LogHelper* LogSystem::ploghelper = 0;
 ///////
 int main ()
 {
-    _wsetlocale(LC_COLLATE, L"rus"); 
-    _wsetlocale(LC_CTYPE, L"rus"); 
-    _wsetlocale(LC_TIME, L"rus"); 
+/*
+    LogSystem log;
 
+    std::cout << "std::cout (LogSystem включена) " << 123 << std::endl;
+    std::cerr << "std::cerr (LogSystem включена) " << 123 << std::endl;
+    std::wcout << L"std::wcout (LogSystem включена) " << 123 << std::endl;
+    std::wcerr << L"std::wcerr (LogSystem включена) " << 123<< std::endl;
+/**/
+//*
     std::cout << "вывод в std::cout 1" << std::endl;
     std::wcout << L"вывод в std::wcout 1" << std::endl;
     LogSystem log;
@@ -761,6 +761,9 @@ int main ()
         wlwrn << L"а это - варнинг" << std::endl;
         lerr << "ну и ахтунг (куда же без него)" << std::endl;
         wlerr << L"ну и ахтунг (куда же без него)" << std::endl;
-        return 0;
     }
+
+    std::cout << "вывод в std::cout јЅџ–¬јЋ√" << std::endl;
+    std::wcout << L"вывод в std::wcout јЅџ–¬јЋ√" << std::endl;
+/**/
 }
