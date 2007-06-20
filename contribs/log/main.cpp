@@ -44,144 +44,182 @@ std::string getCurrentDateTime()
 ///////
 // 6 //
 ///////
+template <typename CHAR>
 struct html_time
 {
-    typedef char char_type;
+    typedef CHAR char_type;
     typedef boost::iostreams::multichar_output_filter_tag category;
 
     template<typename Sink>
     std::streamsize write(Sink &snk, const char_type *s, std::streamsize n)
     {
-        std::string output("<b>[" + getCurrentTime() + "]</b>&nbsp;");
+        std::string str = "<b>[" + getCurrentTime() + "]</b>&nbsp;";
+
+        std::basic_string<char_type> output(str.begin(), str.end());
         output.append(s, s+n);
 
         boost::iostreams::write(snk, output.c_str(), (std::streamsize)output.size());
         return n;
     }
 };
-BOOST_IOSTREAMS_PIPABLE(html_time,0)
+BOOST_IOSTREAMS_PIPABLE(html_time<char>,0)
+BOOST_IOSTREAMS_PIPABLE(html_time<wchar_t>,0)
 
+template <typename CHAR>
 struct text_time
 {
-    typedef char char_type;
+    typedef CHAR char_type;
     typedef boost::iostreams::multichar_output_filter_tag category;
 
     template<typename Sink>
     std::streamsize write(Sink &snk, const char_type *s, std::streamsize n)
     {
-        std::string output("[" + getCurrentTime() + "] ");
+        std::string str("[" + getCurrentTime() + "] ");
+
+        std::basic_string<char_type> output(str.begin(), str.end());
         output.append(s, s+n);
 
         boost::iostreams::write(snk, output.c_str(), (std::streamsize)output.size());
         return n;
     }
 };
-BOOST_IOSTREAMS_PIPABLE(text_time,0)
+BOOST_IOSTREAMS_PIPABLE(text_time<char>,0)
+BOOST_IOSTREAMS_PIPABLE(text_time<wchar_t>,0)
 
+template <typename CHAR>
 struct html_msg
 {
-    typedef char char_type;
+    typedef CHAR char_type;
     typedef boost::iostreams::multichar_output_filter_tag category;
 
     template<typename Sink>
     std::streamsize write(Sink &snk, const char_type *s, std::streamsize n)
     {
-        std::string output("<b>message:</b>&nbsp;<i>");
+        std::string str1("<b>message:</b>&nbsp;<i>");
+        std::string str2("</i>");
+
+        std::basic_string<char_type> output(str1.begin(), str1.end());
+        std::basic_string<char_type> end(str2.begin(), str2.end());
         output.append(s, s+n);
-        output.append("</i>", 4);
+        output.append(end);
 
         boost::iostreams::write(snk, output.c_str(), (std::streamsize)output.size());
         return n;
     }
 };
-BOOST_IOSTREAMS_PIPABLE(html_msg,0)
+BOOST_IOSTREAMS_PIPABLE(html_msg<char>,0)
+BOOST_IOSTREAMS_PIPABLE(html_msg<wchar_t>,0)
 
+template <typename CHAR>
 struct text_msg
 {
-    typedef char char_type;
+    typedef CHAR char_type;
     typedef boost::iostreams::multichar_output_filter_tag category;
 
     template<typename Sink>
     std::streamsize write(Sink &snk, const char_type *s, std::streamsize n)
     {
-        std::string output("message: ");
+        std::string str("message: ");
+
+        std::basic_string<char_type> output(str.begin(), str.end());
         output.append(s, s+n);
 
         boost::iostreams::write(snk, output.c_str(), (std::streamsize)output.size());
         return n;
     }
 };
-BOOST_IOSTREAMS_PIPABLE(text_msg,0)
+BOOST_IOSTREAMS_PIPABLE(text_msg<char>,0)
+BOOST_IOSTREAMS_PIPABLE(text_msg<wchar_t>,0)
 
+template <typename CHAR>
 struct html_wrn
 {
-    typedef char char_type;
+    typedef CHAR char_type;
     typedef boost::iostreams::multichar_output_filter_tag category;
 
     template<typename Sink>
     std::streamsize write(Sink &snk, const char_type *s, std::streamsize n)
     {
-        std::string output("<b>warning:</b>&nbsp;<i>");
+        std::string str1("<b>warning:</b>&nbsp;<i>");
+        std::string str2("</i>");
+
+        std::basic_string<char_type> output(str1.begin(), str1.end());
+        std::basic_string<char_type> end(str2.begin(), str2.end());
         output.append(s, s+n);
-        output.append("</i>", 4);
+        output.append(end);
 
         boost::iostreams::write(snk, output.c_str(), (std::streamsize)output.size());
         return n;
     }
 };
-BOOST_IOSTREAMS_PIPABLE(html_wrn,0)
+BOOST_IOSTREAMS_PIPABLE(html_wrn<char>,0)
+BOOST_IOSTREAMS_PIPABLE(html_wrn<wchar_t>,0)
 
+template <typename CHAR>
 struct text_wrn
 {
-    typedef char char_type;
+    typedef CHAR char_type;
     typedef boost::iostreams::multichar_output_filter_tag category;
 
     template<typename Sink>
     std::streamsize write(Sink &snk, const char_type *s, std::streamsize n)
     {
-        std::string output("warning: ");
+        std::string str("warning: ");
+
+        std::basic_string<char_type> output(str.begin(), str.end());
         output.append(s, s+n);
 
         boost::iostreams::write(snk, output.c_str(), (std::streamsize)output.size());
         return n;
     }
 };
-BOOST_IOSTREAMS_PIPABLE(text_wrn,0)
+BOOST_IOSTREAMS_PIPABLE(text_wrn<char>,0)
+BOOST_IOSTREAMS_PIPABLE(text_wrn<wchar_t>,0)
 
+template <typename CHAR>
 struct html_err
 {
-    typedef char char_type;
+    typedef CHAR char_type;
     typedef boost::iostreams::multichar_output_filter_tag category;
 
     template<typename Sink>
     std::streamsize write(Sink &snk, const char_type *s, std::streamsize n)
     {
-        std::string output("<b>error:</b>&nbsp;<i>");
+        std::string str1("<b>error:</b>&nbsp;<i>");
+        std::string str2("</i>");
+
+        std::basic_string<char_type> output(str1.begin(), str1.end());
+        std::basic_string<char_type> end(str2.begin(), str2.end());
         output.append(s, s+n);
-        output.append("</i>", 4);
+        output.append(end);
 
         boost::iostreams::write(snk, output.c_str(), (std::streamsize)output.size());
         return n;
     }
 };
-BOOST_IOSTREAMS_PIPABLE(html_err,0)
+BOOST_IOSTREAMS_PIPABLE(html_err<char>,0)
+BOOST_IOSTREAMS_PIPABLE(html_err<wchar_t>,0)
 
+template <typename CHAR>
 struct text_err
 {
-    typedef char char_type;
+    typedef CHAR char_type;
     typedef boost::iostreams::multichar_output_filter_tag category;
 
     template<typename Sink>
     std::streamsize write(Sink &snk, const char_type *s, std::streamsize n)
     {
-        std::string output("error: ");
+        std::string str("error: ");
+
+        std::basic_string<char_type> output(str.begin(), str.end());
         output.append(s, s+n);
 
         boost::iostreams::write(snk, output.c_str(), (std::streamsize)output.size());
         return n;
     }
 };
-BOOST_IOSTREAMS_PIPABLE(text_err,0)
+BOOST_IOSTREAMS_PIPABLE(text_err<char>,0)
+BOOST_IOSTREAMS_PIPABLE(text_err<wchar_t>,0)
 
 ///////
 // 5 //
@@ -221,6 +259,43 @@ public:
         }
     }
 
+    //->
+    //template <typename char_type>
+    //std::streamsize write(const char_type *s, std::streamsize n)
+    //{
+    //    if (!m_file.is_open())
+    //        return n; //или следует вернуть 0 (хз как буст отреагирует)?
+
+    //    std::string str1 = "\n";
+    //    std::string str2 = "<br/>\n";
+
+    //    std::basic_string<char_type> end(str1.begin(), str1.end());
+    //    std::basic_string<char_type> brend(str2.begin(), str2.end());
+
+    //    std::basic_string<char_type> in(s,n);
+    //    std::basic_string<char_type> out;
+    //    
+    //    //замена '\n' на "<br/>"
+    //    while (!in.empty())
+    //    {
+    //        std::string::size_type pos = in.find(end);
+    //        if (pos == std::string::npos)
+    //        {
+    //            out += in;
+    //            in.erase();
+    //        }
+    //        else
+    //        {
+    //            out += in.substr(0, pos);
+    //            out += brend;
+    //            in = in.substr(pos+1);
+    //        }
+    //    }
+    //
+    //    m_file << out;
+    //    return n;
+    //}
+
 	std::streamsize write(const char *s, std::streamsize n)
 	{
         if (!m_file.is_open())
@@ -241,14 +316,44 @@ public:
             else
             {
                 out += in.substr(0, pos);
-                out += "<br/>\n";
+                out += "</br>\n";
                 in = in.substr(pos+1);
             }
         }
 
         m_file << out;
-		return n;
-	}
+        return n;
+    }
+
+	std::streamsize write(const wchar_t *s, std::streamsize n)
+	{
+        if (!m_file.is_open())
+            return n; //или следует вернуть 0 (хз как буст отреагирует)?
+
+        std::wstring in(s,n);
+        std::wstring out;
+        
+        //замена '\n' на "<br/>"
+        while (!in.empty())
+        {
+            std::wstring::size_type pos = in.find(L'\n');
+            if (pos == std::wstring::npos)
+            {
+                out += in;
+                in.erase();
+            }
+            else
+            {
+                out += in.substr(0, pos);
+                out += L"</br>\n";
+                in = in.substr(pos+1);
+            }
+        }
+
+        m_file << std::string(out.begin(), out.end());
+        return n;
+    }
+    //-<
 
 private:
     file_wrapper (const file_wrapper&);
@@ -258,15 +363,18 @@ private:
 };
 typedef boost::shared_ptr<file_wrapper> PFileWrapper;
 
+template <typename CHAR>
 class ostream_wrapper
 {
 public:
+    typedef CHAR char_type;
+
     ostream_wrapper ():
         m_out(0)
     {
     }
 
-    ostream_wrapper (std::streambuf *sbuf):
+    ostream_wrapper (std::basic_streambuf<char_type> *sbuf):
         m_out(0)
     {
         open(sbuf);
@@ -277,7 +385,7 @@ public:
         close();
     }
 
-   void open (std::streambuf *sbuf)
+   void open (std::basic_streambuf<char_type> *sbuf)
     {
         if (m_out.rdbuf())
             close();
@@ -293,27 +401,29 @@ public:
         }
     }
 
-	std::streamsize write(const char *s, std::streamsize n)
+	std::streamsize write(const char_type *s, std::streamsize n)
 	{
         if (!m_out.rdbuf())
             return n; //или следует вернуть 0 (хз как буст отреагирует)?
 
-        m_out << std::string(s, n);
+        m_out << std::basic_string<char_type>(s, n);
 		return n;
 	}
 
 private:
-    ostream_wrapper (const ostream_wrapper&);
-    ostream_wrapper& operator= (const ostream_wrapper&);
+    ostream_wrapper (const ostream_wrapper<char_type>&);
+    ostream_wrapper& operator= (const ostream_wrapper<char_type>&);
 
-    std::ostream m_out;
+    std::basic_ostream<char_type> m_out;
 };
-typedef boost::shared_ptr<ostream_wrapper> POStreamWrapper;
+typedef boost::shared_ptr<ostream_wrapper<char> > POStreamWrapperA;
+typedef boost::shared_ptr<ostream_wrapper<wchar_t> > POStreamWrapperW;
 
+template <typename CHAR>
 class file_dev
 {
 public:
-	typedef char char_type;
+	typedef CHAR char_type;
 	typedef boost::iostreams::sink_tag category;
 
     file_dev (const file_dev &inst)
@@ -326,7 +436,7 @@ public:
         m_pfile = pfile;
     }
 
-	std::streamsize write(const char *s, std::streamsize n)
+	std::streamsize write(const char_type *s, std::streamsize n)
 	{
 		return m_pfile->write(s,n);
 	}
@@ -345,10 +455,11 @@ private:
     PFileWrapper m_pfile;
 };
 
+template <typename CHAR>
 class screen_dev
 {
 public:
-	typedef char char_type;
+	typedef CHAR char_type;
 	typedef boost::iostreams::sink_tag category;
 
     screen_dev(const screen_dev &inst)
@@ -356,12 +467,12 @@ public:
         m_postream = inst.m_postream;
     }
 
-    screen_dev(POStreamWrapper postream)
+    screen_dev(boost::shared_ptr<ostream_wrapper<char_type> > postream)
     {
         m_postream = postream;
     }
 
-	std::streamsize write(const char *s, std::streamsize n)
+	std::streamsize write(const char_type *s, std::streamsize n)
 	{
         m_postream->write(s, n);
 		return n;
@@ -378,46 +489,90 @@ public:
     }
 
 private:
-    POStreamWrapper m_postream;
+    boost::shared_ptr<ostream_wrapper<char_type> > m_postream;
 };
 
+template <typename CHAR>
 class output_dev
 {
 public:
-	typedef char char_type;
+	typedef CHAR char_type;
 	typedef boost::iostreams::sink_tag category;
 
-	std::streamsize write(const char *s, std::streamsize n)
+    //реализация метода write по умолчанию использует OutputDebugStringA
+	std::streamsize write(const char_type *s, std::streamsize n)
 	{
-        std::string out(s,n);
+        std::basic_string<char_type> str(s, n);
+        std::string out(str.begin(), str.end());
+
         OutputDebugStringA(out.c_str());
         return n;
 	}
 };
 
-class composite_dev
+//конкретизация char
+template <>
+class output_dev<char>
 {
 public:
 	typedef char char_type;
 	typedef boost::iostreams::sink_tag category;
 
-    composite_dev (const composite_dev &inst):
+	std::streamsize write(const char_type *s, std::streamsize n)
+	{
+        std::string out(s, n);
+
+        OutputDebugStringA(out.c_str());
+        return n;
+	}
+};
+
+//конкретизация wchar_t
+template <>
+class output_dev<wchar_t>
+{
+public:
+	typedef wchar_t char_type;
+	typedef boost::iostreams::sink_tag category;
+
+	std::streamsize write(const char_type *s, std::streamsize n)
+	{
+        std::basic_string<char_type> out(s, n);
+
+        OutputDebugStringW(out.c_str());
+        return n;
+	}
+};
+
+template <typename CHAR>
+class composite_dev
+{
+public:
+	typedef CHAR char_type;
+	typedef boost::iostreams::sink_tag category;
+
+    composite_dev (const composite_dev<char_type> &inst):
         m_stream1(inst.m_stream1.rdbuf()),
         m_stream2(inst.m_stream2.rdbuf()),
         m_stream3(inst.m_stream3.rdbuf())
     {
     }
 
-    composite_dev(std::ostream &stream1, std::ostream &stream2, std::ostream &stream3):
+    composite_dev
+    (
+        std::basic_ostream<char_type> &stream1,
+        std::basic_ostream<char_type> &stream2,
+        std::basic_ostream<char_type> &stream3
+    ):
         m_stream1(stream1.rdbuf()),
         m_stream2(stream2.rdbuf()),
         m_stream3(stream3.rdbuf())
     {
     }
 
-	std::streamsize write(const char *s, std::streamsize n)
+	std::streamsize write(const char_type *s, std::streamsize n)
 	{
-        std::string str(s,n);
+        std::basic_string<char_type> str(s,n);
         m_stream1 << str;
         m_stream2 << str;
         m_stream3 << str;
@@ -429,50 +584,79 @@ public:
 	}
 
 private:
-    std::ostream m_stream1;
-    std::ostream m_stream2;
-    std::ostream m_stream3;
+    std::basic_ostream<char_type> m_stream1;
+    std::basic_ostream<char_type> m_stream2;
+    std::basic_ostream<char_type> m_stream3;
 };
 
 ///////
 // 4 //
 ///////
-PFileWrapper    pfilewrapper   (new file_wrapper());
-POStreamWrapper postreamwrapper (new ostream_wrapper());
+PFileWrapper     pfilewrapper     (new file_wrapper());
+POStreamWrapperA postreamwrapperA (new ostream_wrapper<char>());
+POStreamWrapperW postreamwrapperW (new ostream_wrapper<wchar_t>());
 
-file_dev   fdev(pfilewrapper);
-screen_dev sdev(postreamwrapper);
-output_dev odev;
+file_dev  <char> fdev(pfilewrapper);
+screen_dev<char> sdev(postreamwrapperA);
+output_dev<char> odev;
+
+file_dev  <wchar_t> wfdev(pfilewrapper);
+screen_dev<wchar_t> wsdev(postreamwrapperW);
+output_dev<wchar_t> wodev;
 
 ///////
 // 3 //
 ///////
 typedef boost::iostreams::filtering_stream<boost::iostreams::output> dev_stream;
 
-dev_stream lmsg_file   (html_msg() | html_time() | fdev );
-dev_stream lmsg_screen (text_msg() | text_time() | sdev );
-dev_stream lmsg_output (text_msg() | text_time() | odev );
+dev_stream lmsg_file   (html_msg<char>() | html_time<char>() | fdev );
+dev_stream lmsg_screen (text_msg<char>() | text_time<char>() | sdev );
+dev_stream lmsg_output (text_msg<char>() | text_time<char>() | odev );
 
-dev_stream lwrn_file   (html_wrn() | html_time() | fdev );
-dev_stream lwrn_screen (text_wrn() | text_time() | sdev );
-dev_stream lwrn_output (text_wrn() | text_time() | odev );
+dev_stream lwrn_file   (html_wrn<char>() | html_time<char>() | fdev );
+dev_stream lwrn_screen (text_wrn<char>() | text_time<char>() | sdev );
+dev_stream lwrn_output (text_wrn<char>() | text_time<char>() | odev );
 
-dev_stream lerr_file   (html_err() | html_time() | fdev );
-dev_stream lerr_screen (text_err() | text_time() | sdev );
-dev_stream lerr_output (text_err() | text_time() | odev );
+dev_stream lerr_file   (html_err<char>() | html_time<char>() | fdev );
+dev_stream lerr_screen (text_err<char>() | text_time<char>() | sdev );
+dev_stream lerr_output (text_err<char>() | text_time<char>() | odev );
+
+typedef boost::iostreams::wfiltering_stream<boost::iostreams::output> wdev_stream;
+
+wdev_stream wlmsg_file   (html_msg<wchar_t>() | html_time<wchar_t>() | wfdev );
+wdev_stream wlmsg_screen (text_msg<wchar_t>() | text_time<wchar_t>() | wsdev );
+wdev_stream wlmsg_output (text_msg<wchar_t>() | text_time<wchar_t>() | wodev );
+
+wdev_stream wlwrn_file   (html_wrn<wchar_t>() | html_time<wchar_t>() | wfdev );
+wdev_stream wlwrn_screen (text_wrn<wchar_t>() | text_time<wchar_t>() | wsdev );
+wdev_stream wlwrn_output (text_wrn<wchar_t>() | text_time<wchar_t>() | wodev );
+
+wdev_stream wlerr_file   (html_err<wchar_t>() | html_time<wchar_t>() | wfdev );
+wdev_stream wlerr_screen (text_err<wchar_t>() | text_time<wchar_t>() | wsdev );
+wdev_stream wlerr_output (text_err<wchar_t>() | text_time<wchar_t>() | wodev );
 
 ///////
 // 2 //
 ///////
-typedef boost::iostreams::stream<composite_dev> log_stream;
+typedef boost::iostreams::stream<composite_dev<char> > log_stream;
 
-composite_dev msg_dev(lmsg_file, lmsg_screen, lmsg_output);
-composite_dev wrn_dev(lwrn_file, lwrn_screen, lwrn_output);
-composite_dev err_dev(lerr_file, lerr_screen, lerr_output);
+composite_dev<char> msg_dev(lmsg_file, lmsg_screen, lmsg_output);
+composite_dev<char> wrn_dev(lwrn_file, lwrn_screen, lwrn_output);
+composite_dev<char> err_dev(lerr_file, lerr_screen, lerr_output);
 
 log_stream lmsg(msg_dev);
 log_stream lwrn(wrn_dev);
 log_stream lerr(err_dev);
+
+typedef boost::iostreams::stream<composite_dev<wchar_t> > wlog_stream;
+
+composite_dev<wchar_t> wmsg_dev(wlmsg_file, wlmsg_screen, wlmsg_output);
+composite_dev<wchar_t> wwrn_dev(wlwrn_file, wlwrn_screen, wlwrn_output);
+composite_dev<wchar_t> werr_dev(wlerr_file, wlerr_screen, wlerr_output);
+
+wlog_stream wlmsg(wmsg_dev);
+wlog_stream wlwrn(wwrn_dev);
+wlog_stream wlerr(werr_dev);
 
 ///////
 // 1 //
@@ -498,25 +682,32 @@ private:
     class LogHelper
     {
     public:
-        LogHelper(): coutsbuf(0)
+        LogHelper(): coutsbuf(0), wcoutsbuf(0)
         {
             pfilewrapper->open(generateLogName());
-            postreamwrapper->open(std::cout.rdbuf());
+            postreamwrapperA->open(std::cout.rdbuf());
+            postreamwrapperW->open(std::wcout.rdbuf());
 
             coutsbuf = std::cout.rdbuf();
             std::cout.rdbuf(lmsg.rdbuf());
+
+            wcoutsbuf = std::wcout.rdbuf();
+            std::wcout.rdbuf(wlmsg.rdbuf());
         }
 
        ~LogHelper()
         {
             pfilewrapper->close();
-            postreamwrapper->close();
+            postreamwrapperA->close();
+            postreamwrapperW->close();
 
             std::cout.rdbuf(coutsbuf);
+            std::wcout.rdbuf(wcoutsbuf);
         }
 
     private:
-        std::streambuf *coutsbuf;
+        std::streambuf  *coutsbuf;
+        std::wstreambuf *wcoutsbuf;
 
         static std::string generateLogName()
         {
@@ -549,17 +740,27 @@ LogSystem::LogHelper* LogSystem::ploghelper = 0;
 ///////
 int main ()
 {
+    _wsetlocale(LC_COLLATE, L"rus"); 
+    _wsetlocale(LC_CTYPE, L"rus"); 
+    _wsetlocale(LC_TIME, L"rus"); 
+
     std::cout << "вывод в std::cout 1" << std::endl;
+    std::wcout << L"вывод в std::wcout 1" << std::endl;
     LogSystem log;
 
     std::cout << "вывод в std::cout 2" << std::endl;
+    std::wcout << L"вывод в std::wcout 2" << std::endl;
     {
         LogSystem log;
 
         std::cout << "вывод в std::cout 3" << std::endl;
+        std::wcout << L"вывод в std::wcout 3" << std::endl;
         lmsg << "это тестовое сообщение в лог\n" << 123 << "ups" << std::endl;
+        wlmsg << L"это тестовое сообщение в wлог\n" << 123 << L"ups" << std::endl;
         lwrn << "а это - варнинг" << std::endl;
+        wlwrn << L"а это - варнинг" << std::endl;
         lerr << "ну и ахтунг (куда же без него)" << std::endl;
+        wlerr << L"ну и ахтунг (куда же без него)" << std::endl;
         return 0;
     }
 }
