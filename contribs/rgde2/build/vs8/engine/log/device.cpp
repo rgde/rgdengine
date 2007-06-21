@@ -28,7 +28,9 @@ namespace rgde
                     close();
 
                 m_file.open(filename.c_str());
-                m_file << "<html>\n<head><style>\nbody {font-family: verdana; font-size: 9pt;}\n.id1 {width: 51pt;}\n</style></head>\n<body>\n";
+                m_file << "<html>\n<head>\n<meta http-equiv=Content-Type content='text/html; charset=windows-1251' />" \
+                          "\n<style>\nbody {font-family: verdana; font-size: 9pt;}\n.id1 {width: 51pt;}\n</style>" \
+                          "</head>\n<body>\n";
             }
 
             void file_wrapper::close ()
