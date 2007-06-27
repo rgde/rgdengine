@@ -63,12 +63,21 @@ namespace UIEditor
 
             this.DoubleBuffered = true;
 
-            pictureBox1.MouseWheel += new MouseEventHandler(pictureBox1_MouseWheel);
-            pictureBox1.MouseEnter += new EventHandler(pictureBox1_MouseEnter);
             layout_editor = new LayoutEditor();
             
             splitContainer1.Panel2.Controls.Add(layout_editor);
-            layout_editor.Dock = DockStyle.Fill;           
+            layout_editor.Dock = DockStyle.Fill;
+
+            //pictureBox1.MouseWheel += new MouseEventHandler(pictureBox1_MouseWheel);
+            //pictureBox1.MouseEnter += new EventHandler(pictureBox1_MouseEnter);
+
+            layout_editor.MouseWheel += new MouseEventHandler(pictureBox1_MouseWheel);
+            layout_editor.MouseEnter += new EventHandler(pictureBox1_MouseEnter);
+
+            //layout_editor.MouseDown += new EventHandler(pictureBox1_MouseDown);
+            layout_editor.MouseLeave += new EventHandler(pictureBox1_MouseLeave);
+            //layout_editor.MouseMove += new EventHandler(pictureBox1_MouseMove);
+            //layout_editor.MouseUp += new EventHandler(pictureBox1_MouseUp);        
         }
 
         void pictureBox1_MouseEnter(object sender, EventArgs e)

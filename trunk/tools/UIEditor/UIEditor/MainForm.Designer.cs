@@ -45,13 +45,13 @@ namespace UIEditor
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addRectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.treeViewImageList = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.Panel();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.pictureBox1 = new System.Windows.Forms.Panel();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.treeViewImageList = new System.Windows.Forms.ImageList(this.components);
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.toolStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -174,43 +174,54 @@ namespace UIEditor
             this.addRectToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.ShowImageMargin = false;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 114);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // addRootNodeToolStripMenuItem
             // 
             this.addRootNodeToolStripMenuItem.Name = "addRootNodeToolStripMenuItem";
-            this.addRootNodeToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.addRootNodeToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.addRootNodeToolStripMenuItem.Text = "Add root node";
             this.addRootNodeToolStripMenuItem.Click += new System.EventHandler(this.addRootNodeToolStripMenuItem_Click);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // addFolderToolStripMenuItem
             // 
             this.addFolderToolStripMenuItem.Name = "addFolderToolStripMenuItem";
-            this.addFolderToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.addFolderToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.addFolderToolStripMenuItem.Text = "Add Folder";
             this.addFolderToolStripMenuItem.Click += new System.EventHandler(this.addFolderToolStripMenuItem_Click);
             // 
             // addRectToolStripMenuItem
             // 
             this.addRectToolStripMenuItem.Name = "addRectToolStripMenuItem";
-            this.addRectToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.addRectToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.addRectToolStripMenuItem.Text = "Add Rect";
             this.addRectToolStripMenuItem.Click += new System.EventHandler(this.addRectToolStripMenuItem_Click);
+            // 
+            // treeViewImageList
+            // 
+            this.treeViewImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("treeViewImageList.ImageStream")));
+            this.treeViewImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.treeViewImageList.Images.SetKeyName(0, "document.bmp");
+            this.treeViewImageList.Images.SetKeyName(1, "homenet.ico");
+            this.treeViewImageList.Images.SetKeyName(2, "NewDocumentHS.png");
+            this.treeViewImageList.Images.SetKeyName(3, "NewFolderHS.png");
+            this.treeViewImageList.Images.SetKeyName(4, "XPfolder_closed.bmp");
+            this.treeViewImageList.Images.SetKeyName(5, "XPfolder_Open.bmp");
             // 
             // panel1
             // 
@@ -221,22 +232,6 @@ namespace UIEditor
             this.panel1.Size = new System.Drawing.Size(167, 85);
             this.panel1.TabIndex = 0;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.AutoScroll = true;
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlText;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox1.Location = new System.Drawing.Point(252, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(190, 193);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.Visible = false;
-            this.pictureBox1.MouseLeave += new System.EventHandler(this.pictureBox1_MouseLeave);
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
-            // 
             // propertyGrid1
             // 
             this.propertyGrid1.Location = new System.Drawing.Point(448, 182);
@@ -244,6 +239,21 @@ namespace UIEditor
             this.propertyGrid1.Size = new System.Drawing.Size(141, 234);
             this.propertyGrid1.TabIndex = 1;
             this.propertyGrid1.Visible = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.AutoScroll = true;
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlText;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox1.Location = new System.Drawing.Point(230, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(212, 186);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.MouseLeave += new System.EventHandler(this.pictureBox1_MouseLeave);
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
             // listBox1
             // 
@@ -257,7 +267,6 @@ namespace UIEditor
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(141, 171);
             this.listBox1.TabIndex = 0;
-            this.listBox1.Visible = false;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // numericUpDown1
@@ -282,17 +291,6 @@ namespace UIEditor
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "scale:";
-            // 
-            // treeViewImageList
-            // 
-            this.treeViewImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("treeViewImageList.ImageStream")));
-            this.treeViewImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.treeViewImageList.Images.SetKeyName(0, "document.bmp");
-            this.treeViewImageList.Images.SetKeyName(1, "homenet.ico");
-            this.treeViewImageList.Images.SetKeyName(2, "NewDocumentHS.png");
-            this.treeViewImageList.Images.SetKeyName(3, "NewFolderHS.png");
-            this.treeViewImageList.Images.SetKeyName(4, "XPfolder_closed.bmp");
-            this.treeViewImageList.Images.SetKeyName(5, "XPfolder_Open.bmp");
             // 
             // trackBar1
             // 
