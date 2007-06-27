@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -15,10 +16,27 @@ namespace Rgde.Contols
         Rectangle m_visible_rect = new Rectangle();
         float m_scale = 1.0f;
 
+        ArrayList regions = new ArrayList();//TextureRegion
+
         public LayoutEditor()
         {
             this.DoubleBuffered = true;
             InitializeComponent();
+
+            UI.TextureRegion r1 = new UI.TextureRegion();
+            r1.rect = new Rectangle(10, 10, 30, 30);
+            r1.name = "Button.Bkg";
+            regions.Add(r1);
+
+            UI.TextureRegion r2 = new UI.TextureRegion();
+            r2.rect = new Rectangle(50, 10, 30, 30);
+            r2.name = "Button.Pressed";
+            regions.Add(r2);
+
+            UI.TextureRegion r3 = new UI.TextureRegion();
+            r3.rect = new Rectangle(50, 50, 80, 30);
+            r3.name = "Button.Hover";
+            regions.Add(r3);
         }
 
         int old_x = 0;
@@ -29,6 +47,86 @@ namespace Rgde.Contols
             HorizontalScroll.Value = m_visible_rect.X;
             VerticalScroll.Value = m_visible_rect.Y;
         }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                int delta_x = e.X - old_x;
+                int delta_y = e.Y - old_y;
+
+                old_x = e.X;
+                old_y = e.Y;
+
+                m_visible_rect.X -= (int)(delta_x * m_scale);
+                m_visible_rect.Y -= (int)(delta_y * m_scale);
+
+                ClampRect();
+
+                UpdateScroolBarsVisibility();
+                Invalidate();
+            }
+
+            base.OnMouseMove(e);
+        }
+
+        //protected override void OnMouseMove(MouseEventArgs e)
+        //{
+        //    int dx = (int)((e.X - old_x) / scale);
+        //    int dy = (int)((e.Y - old_y) / scale);
+
+        //    mouse_x = e.X;
+        //    mouse_y = e.Y;
+
+        //    if (m_state.action != AppState.Action.None)
+        //    {
+        //        if (m_state.action == AppState.Action.Resizing)
+        //        {
+        //            switch (m_state.rect_part)
+        //            {
+        //                case RectParts.LeftTopSizer:
+        //                    UpdateSelection(dx, dy, -dx, -dy);
+        //                    break;
+        //                case RectParts.RightTopSizer:
+        //                    UpdateSelection(0, dy, dx, -dy);
+        //                    break;
+        //                case RectParts.RightDownSizer:
+        //                    UpdateSelection(0, 0, dx, dy);
+        //                    break;
+        //                case RectParts.LeftDownSizer:
+        //                    UpdateSelection(dx, 0, -dx, dy);
+        //                    break;
+        //            }
+        //        }
+        //        else if (m_state.action == AppState.Action.Moving)
+        //        {
+        //            UpdateSelection(dx, dy, 0, 0);
+        //        }
+        //        return;
+        //    }
+
+        //    IsMouseOverSelectedBox();
+
+        //    foreach (TextureRegion r in listBox1.Items)
+        //    {
+        //        if (r.GetRect(scale).Contains(new Point(mouse_x, mouse_y)))
+        //        {
+        //            int i = listBox1.Items.IndexOf(r);
+        //            if (old_hovered_item != i)
+        //            {
+        //                old_hovered_item = i;
+        //                pictureBox1.Invalidate();
+        //            }
+        //            return;
+        //        }
+        //    }
+
+        //    if (old_hovered_item != -1)
+        //    {
+        //        old_hovered_item = -1;
+        //        pictureBox1.Invalidate();
+        //    }
+        //}
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
@@ -61,27 +159,7 @@ namespace Rgde.Contols
             m_visible_rect.Y = max_y > m_image.Height ? m_image.Height - m_visible_rect.Height : m_visible_rect.Y;
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                int delta_x = e.X - old_x;
-                int delta_y = e.Y - old_y;
 
-                old_x = e.X;
-                old_y = e.Y;
-
-                m_visible_rect.X -= (int)(delta_x*m_scale);
-                m_visible_rect.Y -= (int)(delta_y*m_scale);
-
-                ClampRect();
-                
-                UpdateScroolBarsVisibility();
-                Invalidate();
-            }
-            
-            base.OnMouseMove(e);
-        }
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
@@ -183,6 +261,18 @@ namespace Rgde.Contols
             }
         }
 
+        private void DrawBoxes(System.Drawing.Graphics g)
+        {
+            //int x = (int)(mouse_x / Scale);
+            //int y = (int)(mouse_y / Scale);
+            //Point p = new Point(x, y);
+
+            foreach (UI.TextureRegion r in regions)
+            {
+                r.Draw(g, Scale, r.IsMouseOver());//IsMouseHovered(r));
+            }
+        }
+
         private void UpdateScroolBarsVisibility()
         {
             if (m_image == null)
@@ -234,6 +324,8 @@ namespace Rgde.Contols
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;//.
                 e.Graphics.DrawImage(m_image, ClientRectangle, m_visible_rect, GraphicsUnit.Pixel);
             }
+
+            DrawBoxes(e.Graphics);
         }
     }
 }

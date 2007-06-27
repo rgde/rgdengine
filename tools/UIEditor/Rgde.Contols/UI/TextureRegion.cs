@@ -8,6 +8,16 @@ namespace Rgde.Contols.UI
 {
     public class TextureRegion
     {
+        public enum RectParts
+        {
+            Body,
+            LeftTopSizer,
+            RightTopSizer,
+            RightDownSizer,
+            LeftDownSizer,
+            None
+        };
+
         public string group_name;
         public string name;
         public Rectangle rect;
@@ -15,7 +25,7 @@ namespace Rgde.Contols.UI
         public Object tag = null;
         public bool selected = false;
 
-        public bool IsSeleced() { return selected; }
+        public bool IsSelected() { return selected; }
 
         public Rectangle GetRect(float scale)
         {
