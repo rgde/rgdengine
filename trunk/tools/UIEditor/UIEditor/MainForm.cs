@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Rgde.Contols;
 using Rgde.Contols.UI;
+using TreeViewSerialization;
 
 namespace UIEditor
 {
@@ -557,6 +558,12 @@ namespace UIEditor
             TextureRegion reg = (TextureRegion)e.Node.Tag;
             reg.name = e.Label;
             propertyGrid1.SelectedObject = reg;
+        }
+
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            TreeViewSerializer out_ = new TreeViewSerializer();
+            out_.SerializeTreeView(treeView1, "test.xml");
         }
     }
 }
