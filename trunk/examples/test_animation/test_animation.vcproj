@@ -2,9 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="test_sprites"
-	ProjectGUID="{E4665F88-53D9-4B18-A1E0-FB2E52E2F7FF}"
-	RootNamespace="test_sprites"
+	Name="test_animation"
+	ProjectGUID="{41B9303C-12BC-4C84-84E4-19070F99FF8D}"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -42,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHa"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
+				AdditionalIncludeDirectories="$(SolutionDir)\include;$(SolutionDir)third_party/includes"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -68,8 +67,9 @@
 				AdditionalDependencies=""
 				OutputFile="$(OutDir)/D_$(ProjectName).exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)/external/bin_libs"
+				AdditionalLibraryDirectories="$(SolutionDir)/third_party/libs"
 				IgnoreDefaultLibraryNames="libcmt.lib"
+				ModuleDefinitionFile=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)/$D_(ProjectName).pdb"
 				SubSystem="2"
@@ -130,7 +130,7 @@
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
+				AdditionalIncludeDirectories="$(SolutionDir)\include;$(SolutionDir)third_party/includes"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				ExceptionHandling="0"
@@ -157,164 +157,13 @@
 				AdditionalDependencies=""
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)/external/bin_libs"
+				AdditionalLibraryDirectories="$(SolutionDir)/third_party/libs"
 				GenerateDebugInformation="false"
 				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Profile|Win32"
-			OutputDirectory="$(SolutionDir)/bin"
-			IntermediateDirectory="$(TEMP)\rgde_tmp\$(ProjectName)\$(ConfigurationName)"
-			ConfigurationType="1"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			CharacterSet="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalOptions="/EHa"
-				Optimization="3"
-				InlineFunctionExpansion="2"
-				FavorSizeOrSpeed="1"
-				OmitFramePointers="false"
-				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
-				StringPooling="true"
-				ExceptionHandling="2"
-				RuntimeLibrary="0"
-				BufferSecurityCheck="true"
-				EnableFunctionLevelLinking="false"
-				UsePrecompiledHeader="0"
-				ProgramDataBaseFileName="$(OutDir)/$(ProjectName).pdb"
-				BrowseInformation="0"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies=""
-				OutputFile="$(OutDir)/$(ProjectName).exe"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)/external/bin_libs"
-				GenerateDebugInformation="false"
-				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Product|Win32"
-			ConfigurationType="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -346,19 +195,7 @@
 	</References>
 	<Files>
 		<File
-			RelativePath=".\main.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\sprites.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\sprites.h"
-			>
-		</File>
-		<File
-			RelativePath=".\VTune\test_sprites.vpj"
+			RelativePath=".\test_animation.cpp"
 			>
 		</File>
 	</Files>
