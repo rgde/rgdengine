@@ -1,6 +1,6 @@
 #pragma once
 
-#include <engine/core/math_forward.h>
+#include <engine/core/math/forward.h>
 
 namespace rgde
 {

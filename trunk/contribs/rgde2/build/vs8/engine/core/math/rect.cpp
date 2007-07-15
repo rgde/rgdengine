@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include <gmtl/gmtl.h>
-#include <engine/core/rect.h>
+#include <engine/core/math/rect.h>
 
 
 namespace rgde

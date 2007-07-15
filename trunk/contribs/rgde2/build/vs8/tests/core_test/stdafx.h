@@ -35,6 +35,7 @@
 #include <exception>
 #include <iostream>
 
+#include <boost/noncopyable.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/any.hpp>
 #include <boost/bind.hpp>

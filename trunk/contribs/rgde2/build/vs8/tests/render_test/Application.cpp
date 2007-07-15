@@ -77,21 +77,21 @@ Application::Application()
 	update();
 	pVertexBuffer = NULL;
 
-	IDirect3DDevice9* dev = m_device.get_dx_device();
+	//IDirect3DDevice9* dev = m_device.get_dx_device();
 
-	dev->SetRenderState(D3DRS_ZENABLE,  TRUE ); // Z-Buffer (Depth Buffer)
-	dev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); // Disable Backface Culling
-	dev->SetRenderState(D3DRS_LIGHTING, FALSE); // Disable Light
-	dev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE); // Disable Light
-	dev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE); // Disable Light
+	//dev->SetRenderState(D3DRS_ZENABLE,  TRUE ); // Z-Buffer (Depth Buffer)
+	//dev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); // Disable Backface Culling
+	//dev->SetRenderState(D3DRS_LIGHTING, FALSE); // Disable Light
+	//dev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE); // Disable Light
+	//dev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE); // Disable Light
 
-	dev->CreateVertexBuffer( 24*sizeof(tVertex),0, D3DFVF_CUSTOMVERTEX,
-		D3DPOOL_DEFAULT, &pVertexBuffer, NULL );
-	unsigned char *pVertices = NULL;
+	//dev->CreateVertexBuffer( 24*sizeof(tVertex),0, D3DFVF_CUSTOMVERTEX,
+	//	D3DPOOL_DEFAULT, &pVertexBuffer, NULL );
+	//unsigned char *pVertices = NULL;
 
-	pVertexBuffer->Lock( 0, sizeof(cube), (void**)&pVertices, 0 );
-	memcpy( pVertices, cube, sizeof(cube) );
-	pVertexBuffer->Unlock();
+	//pVertexBuffer->Lock( 0, sizeof(cube), (void**)&pVertices, 0 );
+	//memcpy( pVertices, cube, sizeof(cube) );
+	//pVertexBuffer->Unlock();
 
 	D3DXVECTOR3 cam_pos(-5, 0, 0);
 	m_camera.lookAt(cam_pos, (D3DXVECTOR3(1,0,0) + cam_pos), D3DXVECTOR3(0,1,0));
@@ -99,7 +99,8 @@ Application::Application()
 
 Application::~Application()
 {
-	pVertexBuffer->Release();
+	if (pVertexBuffer)
+		pVertexBuffer->Release();
 }
 
 void Application::run()
@@ -133,24 +134,24 @@ void Application::run()
 			D3DXMATRIX matWorld;
 			D3DXMatrixIdentity(&matWorld);
 
-			m_device.get_dx_device()->SetTransform( D3DTS_VIEW, &m_camera.getViewMatrix() );
-			m_device.get_dx_device()->SetTransform( D3DTS_WORLD, &matWorld );	// Set The Transformation
+			//m_device.get_dx_device()->SetTransform( D3DTS_VIEW, &m_camera.getViewMatrix() );
+			//m_device.get_dx_device()->SetTransform( D3DTS_WORLD, &matWorld );	// Set The Transformation
 
-			m_device.begin();
+			m_device.frame_begin();
 			//m_device.clear(Grey);
 			m_device.clear(0x00595979);
-			m_device.get_dx_device()->SetStreamSource( 0, pVertexBuffer, 0, sizeof(tVertex) );
-			m_device.get_dx_device()->SetFVF( D3DFVF_CUSTOMVERTEX );
+			//m_device.get_dx_device()->SetStreamSource( 0, pVertexBuffer, 0, sizeof(tVertex) );
+			//m_device.get_dx_device()->SetFVF( D3DFVF_CUSTOMVERTEX );
 
-			m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP,  0, 2 ); // Draw Front
-			m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP,  4, 2 ); // Draw Back
-			m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP,  8, 2 ); // Draw Top
-			m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 12, 2 ); // Draw Bottom
-			m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 16, 2 ); // Draw Right
-			m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 20, 2 ); // Draw Left
+			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP,  0, 2 ); // Draw Front
+			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP,  4, 2 ); // Draw Back
+			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP,  8, 2 ); // Draw Top
+			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 12, 2 ); // Draw Bottom
+			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 16, 2 ); // Draw Right
+			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 20, 2 ); // Draw Left
 
 			m_font.render(L"Hello", rect(10,10,100,100),Red, true);
-			m_device.end();
+			m_device.frame_end();
 			m_device.present();
 		}
 	}
@@ -266,7 +267,7 @@ void Application::resize_scene(unsigned int width, unsigned int height)
 	}
 
 	m_camera.setProjection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
-	m_device.get_dx_device()->SetTransform( D3DTS_PROJECTION, &m_camera.getProjMatrix()/*D3DMATRIX)projection_matrix */);
+	//m_device.get_dx_device()->SetTransform( D3DTS_PROJECTION, &m_camera.getProjMatrix()/*D3DMATRIX)projection_matrix */);
 }
 
 bool Application::do_events()
