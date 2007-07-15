@@ -1,6 +1,11 @@
 #pragma once
 
-struct ID3DXFont;
+#include <engine/core/math/forward.h>
+
+#include <string>
+
+#include <boost/noncopyable.hpp>
+#include <boost/scoped_ptr.hpp>
 
 namespace rgde
 {
@@ -10,6 +15,8 @@ namespace rgde
 
 		class font
 		{
+			class font_impl;
+			typedef boost::scoped_ptr<font_impl> pimpl;
 		public:
 			enum Weight
 			{
@@ -57,9 +64,14 @@ namespace rgde
 
 			math::rect measure_test( const std::wstring& text, int flags = 0);
 
+			const device& get_device() const;
+			device& get_device();
+
+			font_impl& get_impl();
+			const font_impl& get_impl() const;
+
 		private:
-			device& m_device;
-			ID3DXFont* m_font;
+			pimpl m_pimpl;
 		};
 	}
 }

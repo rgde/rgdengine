@@ -220,11 +220,11 @@
 				Name="math"
 				>
 				<File
-					RelativePath=".\color.cpp"
+					RelativePath=".\math\color.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\rect.cpp"
+					RelativePath=".\math\rect.cpp"
 					>
 				</File>
 			</Filter>
@@ -322,7 +322,11 @@
 				Name="math"
 				>
 				<File
-					RelativePath=".\color.h"
+					RelativePath=".\math\color.h"
+					>
+				</File>
+				<File
+					RelativePath=".\math\forward.h"
 					>
 				</File>
 				<File
@@ -330,11 +334,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\math_forward.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rect.h"
+					RelativePath=".\math\rect.h"
 					>
 				</File>
 			</Filter>
