@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories="$(SolutionDir)ext\dxsdk\Lib;"
+				AdditionalLibraryDirectories="$(SolutionDir)ext\dxsdk\Lib\x86"
 			/>
 			<Tool
 				Name="VCALinkTool"
