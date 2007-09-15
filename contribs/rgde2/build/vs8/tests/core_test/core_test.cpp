@@ -2,15 +2,13 @@
 
 #include <engine/core/core.h>
 
-#include <iterator>  // back_inserter
+#include <iterator>
 
 #include <boost/iostreams/stream.hpp>
 #include <boost/iostreams/stream_buffer.hpp>
 #include <boost/iostreams/categories.hpp>
 #include <boost/iostreams/detail/ios.hpp> 
 #include <boost/iostreams/filtering_stream.hpp>
-
-//#include	<boost/date_time/posix_time/posix_time.hpp>
 
 namespace io = boost::iostreams;
 
