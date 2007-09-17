@@ -179,7 +179,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\buffer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\device.h"
+				>
+			</File>
+			<File
+				RelativePath=".\device_object.h"
 				>
 			</File>
 			<File
@@ -195,7 +203,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\resource.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\surface.h"
 				>
 			</File>
 		</Filter>

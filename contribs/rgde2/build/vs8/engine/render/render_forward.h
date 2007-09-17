@@ -11,5 +11,8 @@ namespace rgde
 
 		class font;
 		typedef boost::shared_ptr<font> font_ptr;
+
+		class resource;
+		typedef boost::shared_ptr<resource> resource_ptr;
 	}
 }
