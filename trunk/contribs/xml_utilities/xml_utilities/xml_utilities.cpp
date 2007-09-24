@@ -123,6 +123,7 @@ namespace details
 		{
 			std::cerr << "0 param func called" << std::endl;
 			func();
+			return result_type();
 		}
 
 		template<typename result_type, typename P1>
@@ -234,9 +235,9 @@ struct command_processor
 	}
 
 
-	boost::any execute(const command& c)
+	boost::any execute(const command& c) const
 	{
-		Commands::iterator it = commands.find(c.name);
+		Commands::const_iterator it = commands.find(c.name);
 
 		if (it != commands.end())
 		{
@@ -244,7 +245,7 @@ struct command_processor
 		}
 		else
 		{
-			boost::any();//return std::string("unknown command");
+			return boost::any();//return std::string("unknown command");
 		}
 	}
 };
@@ -254,36 +255,6 @@ namespace math
 	float rand(float min = 0, float max = 1)
 	{
 		return (max - min) / 2.0f;
-	}
-}
-
-void testit ( int i, ...)
-{
-	va_list argptr;
-	va_start(argptr, i);
-
-	if ( i == 0 ) {
-		int n = va_arg( argptr, int );
-		printf( "%d\n", n );
-	} else {
-		char *s = va_arg( argptr, char* );
-		printf( "%s\n", s);
-	}
-}
-
-
-namespace bindings
-{
-	namespace math
-	{
-		std::string rand(const command& c)
-		{
-			std::vector<float> params;
-			parser::parse(c.args, params);
-			float result = ::math::rand(params[0], params[1]);
-			std::string out = boost::lexical_cast<std::string>(result);
-			return out;
-		}
 	}
 }
 
@@ -303,41 +274,44 @@ float print_help(float, float)
 	return 0;
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+void init_command_processor(command_processor& processor)
 {
 	using boost::function_traits;
-
-
-	//typedef boost::function<float(float, float)> test_func;
-
-	
 	using boost::bind;
 
-	//{
-	//	command_processor p;
-	//	boost::function<float(float, float)> f = bind(&math::rand, _1, _2);
-	//	p.bind("rand", f);
-	//	//p.bind("rand", &math::rand);
-	//}
-	//
-	//return 0;
-
-	std::string test_string = "rand(1,2);rand(5,7);rand(15,40);";//help();";
-
-	std::vector<std::string> commands;
-	parser::tokenize(test_string, commands);
-
-	command_processor p;
 	boost::function<float(float, float)> f = bind(&math::rand, _1, _2);
-	p.bind("rand", f);
-	boost::function<float(float, float)> f1 = bind(&print_help, 1.0f, 2.0f);
-	p.bind("help", f1);//bind(&print_help));
+	processor.bind("rand", f);
+	//boost::function<float(float, float)> f1 = bind(&print_help, 1.0f, 2.0f);
+	boost::function<float()> f1 = bind(&print_help, 1.0f, 2.0f);
+	processor.bind("help", f1);
+}
 
+void execute_commands(std::vector<std::string>& commands, const command_processor& processor)
+{
 	for (size_t i = 0; i < commands.size(); ++i)
 	{
 		command c(commands[i]);
-		std::cout << commands[i].c_str() << "=" << p.execute(c) << std::endl;
+		boost::any ret_value = processor.execute(c);
+
+		std::cout << commands[i].c_str() << "=" << ret_value << std::endl;
 	}
+
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	command_processor processor;
+
+	init_command_processor(processor);
+
+	//std::string test_string = "rand(1,2);rand(5,7);rand(15,40);help()";
+	std::string test_commands_string = "help()";
+
+	std::vector<std::string> commands;
+	parser::tokenize(test_commands_string, commands);
+
+	execute_commands(commands, processor);
+
 
 	return 0;
 }

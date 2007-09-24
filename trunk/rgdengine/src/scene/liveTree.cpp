@@ -685,7 +685,7 @@ namespace live_tree
 				bool isExist = iIndexMin&(1<<iStep);
 				center[iStep] = cnt[iStep]+(isExist?fQuart:-fQuart);
 			}
-			parse(pBranch->call(iIndexMin),center,fQuart,division+1);
+			return parse(pBranch->call(iIndexMin),center,fQuart,division+1);
 		}
 		else
 		{
