@@ -232,9 +232,9 @@ protected:
 	input::KeyUp        m_keyupQuit;
 	input::RelativeAxis m_cXAxis;
 	input::RelativeAxis m_cYAxis;
-	//input::CButtonCommand       m_cEsc;
-	//input::CButtonCommand		m_cRightButton;
-	//input::CRelativeAxisCommand m_cZAxis;
+	//input::Button       m_cEsc;
+	//input::Button		m_cRightButton;
+	//input::RelativeAxis m_cZAxis;
 
 	math::PCamera				m_pCamera;
 	math::PTargetCamera			m_cTargetCamera;      //контроллер камеры "нацеленная камера"

@@ -161,7 +161,7 @@ public:
 	}
 
 protected:
-	input::CButtonCommand				m_cSpace, m_cEsc;
+	input::Button				m_cSpace, m_cEsc;
 	render::PFont						m_spFont;
 	std::auto_ptr<core::IApplication>	m_pApp;
 	math::PCamera						m_camera;
@@ -179,8 +179,8 @@ protected:
 	render::PEffect m_spEffect1;
 	render::PEffect m_spEffect2;
 
-	input::CRelativeAxisCommand m_cXAxis;
-	input::CRelativeAxisCommand m_cYAxis;
+	input::RelativeAxis m_cXAxis;
+	input::RelativeAxis m_cYAxis;
 
 	enum MODE {Mode1 = 1, Mode2};
 	MODE								m_Mode;

@@ -410,21 +410,21 @@ protected:
 	bool m_bRenderGrid;
 
 	//данные для ввода
-	input::CButtonCommand       m_cEsc;
-	input::CButtonCommand       m_c1;
-	input::CButtonCommand       m_c2;
-	input::CButtonCommand       m_c3;
-	input::CButtonCommand       m_c4;
-	input::CButtonCommand       m_c5;
-	input::CButtonCommand       m_cO;
-	input::CButtonCommand       m_cL;
-	input::CButtonCommand       m_cK;
-	input::CButtonCommand       m_cB;
-	input::CButtonCommand       m_cG;
-	input::CButtonCommand       m_cW;
-	input::CRelativeAxisCommand m_cXAxis;
-	input::CRelativeAxisCommand m_cYAxis;
-	input::CRelativeAxisCommand m_cZAxis;
+	input::Button       m_cEsc;
+	input::Button       m_c1;
+	input::Button       m_c2;
+	input::Button       m_c3;
+	input::Button       m_c4;
+	input::Button       m_c5;
+	input::Button       m_cO;
+	input::Button       m_cL;
+	input::Button       m_cK;
+	input::Button       m_cB;
+	input::Button       m_cG;
+	input::Button       m_cW;
+	input::RelativeAxis m_cXAxis;
+	input::RelativeAxis m_cYAxis;
+	input::RelativeAxis m_cZAxis;
 
 	//данные для камеры
 	math::CTargetCamera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"

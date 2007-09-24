@@ -110,7 +110,7 @@
 //	}
 //
 //private:
-//	input::CButtonCommand m_cEsc;
+//	input::Button m_cEsc;
 //	void onEsc (const input::CButtonEvent&)
 //	{
 //		core::IApplication::Get()->close();
