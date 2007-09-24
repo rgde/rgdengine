@@ -197,7 +197,7 @@ namespace particles{
 				}
 				else
 				{
-					assert(false);
+					//assert(false);
 					return;
 				}
 			}

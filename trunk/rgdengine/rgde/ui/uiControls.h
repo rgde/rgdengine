@@ -2,8 +2,8 @@
 
 namespace ui
 {
-	class IControl : virtual public core::CNamedObject, 
-					 virtual public CPropertyOwner
+	class IControl : public core::NamedObject/*, 
+					 virtual public CPropertyOwner*/
 	{
 	public:
 		typedef std::list<IControl*> Children;

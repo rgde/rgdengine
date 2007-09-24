@@ -14,6 +14,7 @@ namespace math
 		, public collision::CCollisionObject
 	{
 	public:
+		CBaseCamera() {}
 		virtual ~CBaseCamera(){}
 
 		virtual void	setProjection(float fFovy, float fAspect, float fZNear, float fZFar);
@@ -25,8 +26,8 @@ namespace math
 		math::CFrustum& getFrustum() { return m_frustum; }
 		const math::CFrustum& getFrustum() const { return m_frustum; }
 
-		virtual void	 setPriority(unsigned priority) = 0;
-		virtual unsigned getPriority() const = 0;
+		virtual void	 setPriority(unsigned priority) {}
+		virtual unsigned getPriority() const {return 0;}
 
 	protected:
 		math::Matrix44f m_ProjMatrix;

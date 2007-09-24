@@ -151,7 +151,7 @@ namespace render
 				textShadowLocation.right = textShadowLocation.left + (LONG)(rect.size[0] * ratio[0]);
 				textShadowLocation.bottom = textShadowLocation.top + (LONG)(rect.size[1] * ratio[1]);
 
-				TheFontRenderManager::Get().addText(this, boost::bind(&CFontImpl::doRender, this, text, textShadowLocation, nShadowColor, flags));
+				//TheFontRenderManager::Get().addText(this, boost::bind(&CFontImpl::doRender, this, text, textShadowLocation, nShadowColor, flags));
 			}
 
 			RECT	textLocation;
@@ -160,7 +160,7 @@ namespace render
 			textLocation.right = textLocation.left + (LONG)(rect.size[0] * ratio[0]);
 			textLocation.bottom = textLocation.top + (LONG)(rect.size[1] * ratio[1]);
 
-			TheFontRenderManager::Get().addText(this, boost::bind(&CFontImpl::doRender, this, text, textLocation, color, flags));
+			//TheFontRenderManager::Get().addText(this, boost::bind(&CFontImpl::doRender, this, text, textLocation, color, flags));
 		}		
 
 		virtual void onLostDevice()

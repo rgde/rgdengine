@@ -176,12 +176,12 @@ namespace ui
 		{
 			int flag = render::IFont::Center | render::IFont::VCenter;
 
-			math::Vec2f vFrontBufferSize = render::Device::Get().getBackBufferSize();
+			math::Vec2f vFrontBufferSize = render::TheDevice::Get().getBackBufferSize();
 			math::Vec2f screenSize(800, 600);
 
 			rect.position	= (rect.position * vFrontBufferSize) / screenSize;
 			rect.size		= (rect.size * vFrontBufferSize) / screenSize;
-			font->renderText(text, rect, 0xFFFFFFFF, bShowShadow, flag);
+			font->render(text, rect, 0xFFFFFFFF, bShowShadow, flag);
 		}
 	};
 

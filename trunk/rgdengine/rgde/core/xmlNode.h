@@ -36,8 +36,8 @@ namespace core
 			node->setParent(0);
 		}
 
-		PNode		 getParent() const  {return m_parent;}
-		Node*		 getParent()		{return m_parent;}
+		const PNode& getParent() const  {return m_parent;}
+		PNode		 getParent()		{return m_parent;}
 
 		//ChildrenList& getChildren() {return m_children;}
 		const ChildrenList& getChildren() const {return m_children;}
@@ -64,7 +64,7 @@ namespace core
 
 	protected:
 		ChildrenList m_children;
-		Node*		 m_parent;
+		PNode		 m_parent;
 	};
 
 	template <class T>

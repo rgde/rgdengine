@@ -63,6 +63,30 @@ namespace core
         virtual void			close() = 0;
         virtual WindowHandle	getWindowHandle() const = 0;
 
+		template<typename TaskType, typename P1, typename P2, typename P3>
+		IApplication& addTask(const P1& p1, const P2& p2, const P3& p3)
+		{
+			PTask task(new TaskType(*this, p1, p2, p3));
+			addTask(task);
+			return *this;
+		}
+
+		template<typename TaskType, typename P1, typename P2>
+		IApplication& addTask(const P1& p1, const P2& p2)
+		{
+			PTask task(new TaskType(*this, p1, p2));
+			addTask(task);
+			return *this;
+		}
+
+		template<typename TaskType, typename P1>
+		IApplication& addTask(const P1& p1)
+		{
+			PTask task(new TaskType(*this, p1));
+			addTask(task);
+			return *this;
+		}
+
 		static IApplication		*Create(const std::wstring& window_name = L"");
         static IApplication		*Create(const std::wstring& window_name, int width, int height, bool fullscreen, bool resize_enable = true);
         static IApplication		*Create(WindowHandle parent_window);
