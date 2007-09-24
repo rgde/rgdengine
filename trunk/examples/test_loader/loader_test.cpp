@@ -92,9 +92,9 @@ protected:
 	render::PModel    m_geometry;
 
 	//данные для ввода
-	input::CButtonCommand       m_cEsc;
-	input::CRelativeAxisCommand m_cXAxis;
-	input::CRelativeAxisCommand m_cYAxis;
+	input::Button       m_cEsc;
+	input::RelativeAxis m_cXAxis;
+	input::RelativeAxis m_cYAxis;
 
 	//данные для камеры
 	math::CTargetCamera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"

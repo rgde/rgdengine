@@ -113,18 +113,18 @@ protected:
 	math::PCamera				m_pCamera;
 	math::PTargetCamera			m_cTargetCamera;      //контроллер камеры "нацеленная камера"
 
-	//input::CButtonCommand       m_cEsc;
-	//input::CButtonCommand       m_cQ;
-	//input::CButtonCommand       m_cW;
-	//input::CButtonCommand       m_cE;
-	//input::CButtonCommand       m_cA;
-	//input::CButtonCommand       m_cS;
-	//input::CButtonCommand       m_cD;
-	//input::CButtonCommand       m_cF;
-	//input::CButtonCommand       m_cC;
-	//input::CButtonCommand		m_cRightButton;
-	//input::CRelativeAxisCommand m_cXAxis;
-	//input::CRelativeAxisCommand m_cYAxis;
+	//input::Button       m_cEsc;
+	//input::Button       m_cQ;
+	//input::Button       m_cW;
+	//input::Button       m_cE;
+	//input::Button       m_cA;
+	//input::Button       m_cS;
+	//input::Button       m_cD;
+	//input::Button       m_cF;
+	//input::Button       m_cC;
+	//input::Button		m_cRightButton;
+	//input::RelativeAxis m_cXAxis;
+	//input::RelativeAxis m_cYAxis;
 
 	typedef boost::shared_ptr<core::IApplication> AplicationPtr;
 	AplicationPtr m_app;

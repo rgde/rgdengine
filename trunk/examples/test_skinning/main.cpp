@@ -1,9 +1,5 @@
-/*
-
-@author PC
-*/
-
 #include "engine.h"
+
 #include "SkinnedMesh.h"
 #include "AnimationController.h"
 
@@ -459,52 +455,52 @@ protected:
 	}
 
 	//выход из программы
-	void onEsc(const input::CButtonEvent&)
+	void onEsc(bool)
 	{
 		core::IApplication::Get()->close();
 	}
 
-	void on1(const input::CButtonEvent&)
+	void on1(bool)
 	{
 		blendTo(0);
 	}
 
-	void on2(const input::CButtonEvent&)
+	void on2(bool)
 	{
 		blendTo(1);
 	}
 
-	void on3(const input::CButtonEvent&)
+	void on3(bool)
 	{
 		blendTo(2);
 	}
 
 	//ось X
-	void onXAxis(const input::CRelativeAxisEvent &event)
+	void onXAxis(int dx)
 	{
 		const int accel = 5;
 		const float slow = .01f;
 		const float fast = 2*slow;
-		float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+		float angle = dx>accel ? dx*fast : dx*slow;
 
 		m_cTargetCamera.rotateLeft(-angle);
 	}
 
 	//ось Y
-	void onYAxis(const input::CRelativeAxisEvent &event)
+	void onYAxis(int dy)
 	{
 		const int accel = 5;
 		const float slow = .01f;
 		const float fast = 2*slow;
-		float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+		float angle = dy>accel ? dy*fast : dy*slow;
 
 		m_cTargetCamera.rotateUp(angle);
 	}
 
-	void onWheelAxis(const input::CRelativeAxisEvent &event)
+	void onWheelAxis(int i)
 	{
 		const float slow = .1f;
-		m_cTargetCamera.goBackward(-event.m_nDelta*slow);
+		m_cTargetCamera.goBackward(-i*slow);
 	}
 
 protected:
@@ -522,13 +518,13 @@ protected:
 	bool m_bRenderGrid;
 
 	//данные для ввода
-	input::CButtonCommand       m_cEsc;
-	input::CButtonCommand       m_c1;
-	input::CButtonCommand       m_c2;
-	input::CButtonCommand       m_c3;
-	input::CRelativeAxisCommand m_cXAxis;
-	input::CRelativeAxisCommand m_cYAxis;
-	input::CRelativeAxisCommand m_cZAxis;
+	input::Button       m_cEsc;
+	input::Button       m_c1;
+	input::Button       m_c2;
+	input::Button       m_c3;
+	input::RelativeAxis m_cXAxis;
+	input::RelativeAxis m_cYAxis;
+	input::RelativeAxis m_cZAxis;
 
 	//данные для камеры
 	math::CTargetCamera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"

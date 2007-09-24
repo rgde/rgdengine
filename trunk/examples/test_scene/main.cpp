@@ -63,7 +63,7 @@ protected:
 	render::PFont		m_spFont;
 	math::PCamera		m_camera;
 
-	input::CButtonCommand m_cEsc;
+	input::Button m_cEsc;
 };
 
 
