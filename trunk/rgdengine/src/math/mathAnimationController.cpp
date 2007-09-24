@@ -73,6 +73,7 @@ namespace math
 			}
 
 		}
+		return true;
 	}
 
 	float CFrameAnimationController::getWeight() const
