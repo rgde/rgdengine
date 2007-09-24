@@ -1,4 +1,4 @@
-#include "engine.h"
+#include <rgde/engine.h>
 
 
 class CTestShader : public game::IDynamicObject

@@ -1,6 +1,6 @@
 #pragma once
-#include "engine.h"
-#include "boost/weak_ptr.hpp"
+#include <rgde/engine.h>
+#include <boost/weak_ptr.hpp>
 //////////////////////////////////////////////////////////////////////////
 
 //#define DEFINE_PROPERTY(NAME, TYPE)\
@@ -179,16 +179,14 @@ public:
 	DEFINE_PROPERTY(Value, int)
 };
 
-inline
-std::string getSpaces(int nSpaces = 10)
+inline std::string getSpaces(int nSpaces = 10)
 {
 	std::string spaces;
 	for (int i = 0; i < nSpaces; ++i)
 		spaces += " ";
 	return spaces;
 }
-inline
-void ShowNode(std::ostream& out, CXmlNodePtr obj, int nSpaces = 0)
+inline void ShowNode(std::ostream& out, CXmlNodePtr obj, int nSpaces = 0)
 {
 	std::string spaces = getSpaces(nSpaces);
 

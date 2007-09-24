@@ -4,6 +4,7 @@
 	Version="8,00"
 	Name="test_skinning"
 	ProjectGUID="{3974115C-1E30-4DCA-B715-B12E502090F5}"
+	RootNamespace="test_skinning"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -127,7 +128,7 @@
 				Optimization="3"
 				InlineFunctionExpansion="2"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="$(SolutionDir)\include;$(SolutionDir)third_party/includes"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				MinimalRebuild="false"

@@ -4,6 +4,7 @@
 	Version="8,00"
 	Name="test_material"
 	ProjectGUID="{63DE6A4C-F160-4378-9C34-D448497CF34D}"
+	RootNamespace="test_material"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -125,7 +126,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/EHa"
-				AdditionalIncludeDirectories="$(SolutionDir)\include;$(SolutionDir)third_party/includes"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				ExceptionHandling="0"

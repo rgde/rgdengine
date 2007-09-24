@@ -1,6 +1,4 @@
-//WinAPI
 #include <windows.h>
-
 #include "header.h"
  
 namespace scene
@@ -8,7 +6,6 @@ namespace scene
 	//class CScene
 	//{
 	//public:
-
 	//};
 
 	//class CNode : public core::CNamedObject
@@ -16,7 +13,6 @@ namespace scene
 	//public:
 	//	// path в виде root.child1.child2.child3
 	//	CNode* getChildNodeByPath(std::wstring path);
-
 	//};
 
 	//typedef base::TSingelton<CScene> Scene;
