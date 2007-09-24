@@ -1,5 +1,5 @@
 //RGDE
-#include "engine.h"
+#include <rgde/engine.h>
 
 //класс для теста рендера, камеры и ввода
 class CTest : public game::IDynamicObject

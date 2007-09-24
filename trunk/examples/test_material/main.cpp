@@ -1,5 +1,5 @@
 //RGDE
-#include "engine.h"
+#include <rgde/engine.h>
 
 #include "d3dx.h"
 
