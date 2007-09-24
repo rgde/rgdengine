@@ -1,6 +1,1 @@
-/*
-
-@author PC
-*/
-
-#include <rgde/engine.h>
+#include "engine.h"
