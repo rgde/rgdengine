@@ -5,9 +5,9 @@
 
 namespace render
 {
-	typedef boost::intrusive_ptr<class IFont> PFont;
+	typedef boost::shared_ptr<class IFont> PFont;
 
-	class IFont : public base::CBaseRefCounted
+	class IFont
 	{
 	public:
 		enum FontWeight

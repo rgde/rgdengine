@@ -80,5 +80,5 @@ namespace render
 		std::vector<unsigned> m_vEqualPrioritiesN;	/// Число спрайтов в группах с одинаковыми приоритетами
 	};
 
-	//typedef base::TSingelton<CSpriteManager> TheSpriteManager;
+	typedef base::TSingelton<CSpriteManager> TheSpriteManager;
 }

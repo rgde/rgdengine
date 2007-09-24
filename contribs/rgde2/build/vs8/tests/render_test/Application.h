@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ArcBall.h"
-
+#include <d3dx9.h>
 
 namespace rgde
 {

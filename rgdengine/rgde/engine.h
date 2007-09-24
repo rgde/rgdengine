@@ -156,4 +156,5 @@ typedef unsigned int  uint;
 #include "scene\\sceneBaseTrigger.h"
 #include "scene\\sceneDistanceTrigger.h"
 
+#include "ui/ui.h"
 //#include "script\\script.h"

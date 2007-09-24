@@ -18,7 +18,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)/bin"
-			IntermediateDirectory="$(TEMP)\rgde_tmp\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
@@ -69,7 +69,7 @@
 				AdditionalDependencies="d3dxof.lib dxguid.lib d3dx9.lib d3d9.lib dxerr9.lib "
 				OutputFile="$(OutDir)/D_$(ProjectName).exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)/external/bin_libs"
+				AdditionalLibraryDirectories="$(SolutionDir)lib/$(ConfigurationName)"
 				IgnoreDefaultLibraryNames="libcmt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)/$D_(ProjectName).pdb"
