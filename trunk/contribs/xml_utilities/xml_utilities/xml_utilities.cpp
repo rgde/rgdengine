@@ -60,7 +60,7 @@ struct command
 		std::vector<std::string> tokens;
 		parser::tokenize(src, tokens, "(,)");
 
-		if (tokens.size() > 1)
+		if (tokens.size() >= 1)
 			name = tokens[0];
 
 		if (tokens.size() > 2)
@@ -182,7 +182,7 @@ namespace details
 		static void call(const command& c, FunctionType func)
 		{
 			std::cout << "void func called" << std::endl;
-			//call_helper::call(c, func);
+			call_helper::call(c, func);
 		}
 	};
 }
@@ -213,23 +213,17 @@ struct command_processor
 		//cout << typeid(FunctionType::arg1_type).name() << endl;
 		//cout << typeid(FunctionType::arg2_type).name() << endl;
 
-		//typedef command_info<float> command_info;
-
 		typedef typename FunctionType::result_type result_type;
 		typedef funcs_helpers::func_ptr func_ptr;
 		typedef funcs_helpers::t_func<result_type> t_func;
 
 		t_func* fp = new t_func;
 		//cout << typeid(result_type).name() << endl;
-		//boost::function<void(const command&)> tp = boost::bind(&details::exec_helper<FunctionType, result_type>::call, _1, func);
 		fp->func = boost::bind(&details::exec_helper<FunctionType, result_type>::call, _1, func);
 
 		command_info info;
 		info.name = command_name;
 		info.func = func_ptr(fp);
-
-		//command c(info.name);
-		//info.func->execute(c);
 
 		commands[info.name] = info;
 	}
@@ -268,10 +262,9 @@ std::ostream& operator <<(std::ostream& out, const boost::any& value)
 	return out;
 }
 
-float print_help(float, float)
+void print_help()
 {
 	std::cout << "====HELP!!!====" << std::endl;
-	return 0;
 }
 
 void init_command_processor(command_processor& processor)
@@ -281,9 +274,12 @@ void init_command_processor(command_processor& processor)
 
 	boost::function<float(float, float)> f = bind(&math::rand, _1, _2);
 	processor.bind("rand", f);
-	//boost::function<float(float, float)> f1 = bind(&print_help, 1.0f, 2.0f);
-	boost::function<float()> f1 = bind(&print_help, 1.0f, 2.0f);
-	processor.bind("help", f1);
+	
+	boost::function<void()> f1 = bind(&print_help);
+	processor.bind("help", f1); 
+
+	// для такой записи надо сделать перегруженную ф-ию bind для boost::function
+	//processor.bind("help", &print_help); 
 }
 
 void execute_commands(std::vector<std::string>& commands, const command_processor& processor)
@@ -295,7 +291,6 @@ void execute_commands(std::vector<std::string>& commands, const command_processo
 
 		std::cout << commands[i].c_str() << "=" << ret_value << std::endl;
 	}
-
 }
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -304,14 +299,13 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	init_command_processor(processor);
 
-	//std::string test_string = "rand(1,2);rand(5,7);rand(15,40);help()";
-	std::string test_commands_string = "help()";
+	std::string test_commands_string = "rand(1,2);rand(5,7);rand(15,40);help();";
+	//std::string test_commands_string = "help()";
 
 	std::vector<std::string> commands;
 	parser::tokenize(test_commands_string, commands);
 
 	execute_commands(commands, processor);
-
 
 	return 0;
 }
