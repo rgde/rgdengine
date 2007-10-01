@@ -26,6 +26,9 @@ namespace meta
 		virtual bool can_write() const = 0;
 		virtual bool can_read() const = 0;
 
+		//virtual boost::any get() const = 0;
+		//virtual bool set(const boost::any& value) = 0;
+
 		bool operator==(const abstract_property& p) const {return name == p.name;}
 		bool operator!=(const abstract_property& p) const {return !((*this)==p);}
 	};
@@ -77,6 +80,20 @@ namespace meta
 				return false;
 			}
 		}
+
+		//virtual boost::any get() const
+		//{
+		//	if(can_read())
+		//	{
+
+		//	}
+		//	return boost::any();
+		//}
+
+		//virtual bool set(const boost::any& value) 
+		//{
+
+		//}
 	};
 
 	struct property_storage
@@ -91,9 +108,9 @@ namespace meta
 			typename property<OwnerType, ValueType>::setter_func setter = property<OwnerType, ValueType>::setter_func())
 		{
 			properties.push_back(
-				property_ptr(
-				new property<OwnerType, ValueType>(name, getter, setter)
-				)
+					property_ptr(
+						new property<OwnerType, ValueType>(name, getter, setter)
+					)
 				);
 		}
 	};

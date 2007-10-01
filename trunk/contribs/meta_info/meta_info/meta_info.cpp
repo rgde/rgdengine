@@ -2,7 +2,6 @@
 
 #include "storage.h"
 
-//#include <boost/python.hpp>
 
 namespace test
 {
@@ -10,7 +9,11 @@ namespace test
 	{
 		float value;
 	public:
-		test_class(float i = 5) : value(i) {std::cout << "test_class created." << std::endl;}
+		test_class(float i = 5) : value(i) 
+		{
+			std::cout << "test_class created." << std::endl;
+		}
+
 		float getValue() {return value;}
 		void setValue(float i) {value = i;}
 
@@ -33,7 +36,11 @@ namespace test
 		{
 			int value2;
 		public:
-			test_child(int i = 6) : test_class(), value2(i) {std::cout << "test_child created." << std::endl;}
+			test_child(int i = 6) : test_class(), value2(i) 
+			{
+				std::cout << "test_child created." << std::endl;
+			}
+
 			int getValue2() {return value2;}
 			void setValue2(int i) {value2 = i;}
 
@@ -188,22 +195,26 @@ int _tmain(int argc, _TCHAR* argv[])
 	storage.add<test::test_class>();
 	storage.add<test::derived::test_child, test::test_class>();
 
-
-
-
-	
 	print_types_info(storage);
 
-	cout << ">";
+	{	// test factory creation
+		//cout << ">";
+		//std::string type_name;
+		//std::cin >> type_name;
+		//object_ptr obj = storage.get_factory().create(type_name);
+		//object_ptr obj = storage.get_factory().create("test::test_class");
+	}
 
-	std::string type_name;
-	std::cin >> type_name;
-	object_ptr obj = storage.get_factory().create(type_name);
-	//object_ptr obj = storage.get_factory().create("test::test_class");
+	object_ptr obj = storage.get_factory().create("test::test_class");
+	type_information_ptr ti = obj->get_type_info(storage);
 
-		type_information_ptr ti = obj->get_type_info(storage);
+	std::cout << ti->type_name << std::endl;
 
-	_asm nop;
+	meta::property_ptr p = *ti->get_all_properties().begin();
+
+	//p->
+
+	__asm nop;
 
 	return 0;
 }
