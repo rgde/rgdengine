@@ -35,7 +35,6 @@ namespace meta
 		std::string type_name = (0 != t_name) ? t_name : get_type_name(info);
 		return type_name;
 	}
-
 	
 	typedef std::map<std::string, type_information_ptr> types_map;
 	typedef types_map::iterator types_map_iter;
@@ -68,6 +67,27 @@ namespace meta
 			return total_properties;
 		}
 
+
+		property_ptr find_property(const string& name)
+		{
+			typedef std::list<property_ptr> properties_list;
+			typedef properties_list::iterator prop_iter;
+
+			properties_list properties = get_all_properties();
+
+			prop_iter beg = properties.begin();
+			prop_iter end = properties.end();
+			for (prop_iter it = beg; it != end; ++it)
+			{
+				property_ptr p = *it;
+				const string& prop_name = p->name;
+				if (name == prop_name)
+					return p;
+			}
+
+			return property_ptr();
+		}
+
 		template<class T>
 		type_information_ptr create_child_type(const char* t_name = 0)
 		{
@@ -98,10 +118,11 @@ namespace meta
 
 	struct property_holder
 	{
-		property_holder(object_ptr obj, property_ptr property)
+		property_holder() {}
+
+		property_holder(struct object* obj = 0, property_ptr property)
 		{
 		}
-
 	};
 
 	struct object
@@ -109,11 +130,23 @@ namespace meta
 		virtual ~object() {}
 		virtual type_information_ptr get_type_info(const class types_info_storage& storage) = 0;
 
+		virtual property_holder get_property(const string& name)
+		{
+			get_type_info();
+			property_ptr p = m_type_info->find_property(name);
+
+			if (p)
+			{
+
+			}
+
+			return 
+		}
+
 	protected:
 		// to speed up request, we will cash it here.
 		type_information_ptr m_type_info;
 	};
-
 	
 
 	namespace details
