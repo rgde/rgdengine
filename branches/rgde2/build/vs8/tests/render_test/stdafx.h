@@ -43,3 +43,6 @@
 
 #include <engine/core/core.h>
 #include <engine/render/render.h>
+
+#define COM_NO_WINDOWS_H
+#include <objbase.h>
