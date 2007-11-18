@@ -1,10 +1,16 @@
 #pragma once
 
+#include <engine/render/resource.h>
+#include <engine/render/buffer.h>
 
 namespace rgde
 {
 	namespace render
 	{
+		D3DPOOL convert(resource::pool pool);
+		DWORD convert_lock_flags(uint lock_flags);
+		DWORD convert_to_fvf(const vertex_elements_vector& elements); // to FVF
+
 		class device::device_impl
 		{
 		public:
