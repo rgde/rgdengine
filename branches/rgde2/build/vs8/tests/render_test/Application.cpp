@@ -3,6 +3,8 @@
 #include <d3dx9.h>
 #include <Windows.h>
 
+#include <boost/assign.hpp>
+
 using namespace rgde;
 using core::windows::window;
 using render::device;
@@ -21,13 +23,19 @@ int clicked_x = 0;
 int clicked_y = 0;
 
 
-#define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZ | D3DFVF_DIFFUSE)
+using rgde::render::vertex_element;
+vertex_element custom_vertex_desc[] = 
+{
+	{0, 0,  vertex_element::float3,   vertex_element::default_method, vertex_element::position, 0}, 
+	{0, 12, vertex_element::color4ub, vertex_element::default_method, vertex_element::color,	0},
+	vertex_element::end_element
+};
 
 
 struct tVertex				// Our new vertex struct
 {
 	float x, y, z;			// 3D position
-	DWORD color;			// Hex Color Value
+	ulong color;			// Hex Color Value
 };
 
 
@@ -70,28 +78,32 @@ Application::Application()
 	: m_active(true),
 	window(L"RenderTest"),
 	m_device(get_handle()),
-	m_font(m_device, 18, L"Arial", font::Heavy),
+	m_font(font::create(m_device, 18, L"Arial", font::heavy)),
 	m_arc_ball(640, 480)
 {
 	show();
 	update();
-	pVertexBuffer = NULL;
 
-	//IDirect3DDevice9* dev = m_device.get_dx_device();
+	using namespace rgde::render;
+	vertex_declaration_ptr decl = vertex_declaration::create(m_device, custom_vertex_desc, 3);
 
-	//dev->SetRenderState(D3DRS_ZENABLE,  TRUE ); // Z-Buffer (Depth Buffer)
-	//dev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE); // Disable Backface Culling
-	//dev->SetRenderState(D3DRS_LIGHTING, FALSE); // Disable Light
-	//dev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE); // Disable Light
-	//dev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE); // Disable Light
+	m_vb = vertex_buffer::create
+						(
+							m_device, decl, 
+							24*sizeof(tVertex), 
+							resource::default, 
+							buffer::write_only
+						);
 
-	//dev->CreateVertexBuffer( 24*sizeof(tVertex),0, D3DFVF_CUSTOMVERTEX,
-	//	D3DPOOL_DEFAULT, &pVertexBuffer, NULL );
-	//unsigned char *pVertices = NULL;
+	m_device.set_ztest(true);
+	m_device.set_cull_mode(rgde::render::cull_none);
+	m_device.set_lighting(false);
+	m_device.set_alpha_blend(false);
+	m_device.set_alpha_test(false);
 
-	//pVertexBuffer->Lock( 0, sizeof(cube), (void**)&pVertices, 0 );
-	//memcpy( pVertices, cube, sizeof(cube) );
-	//pVertexBuffer->Unlock();
+	void *pVertices = m_vb->lock( 0, sizeof(cube), 0 );
+	memcpy( pVertices, cube, sizeof(cube) );
+	m_vb->unlock();
 
 	D3DXVECTOR3 cam_pos(-5, 0, 0);
 	m_camera.lookAt(cam_pos, (D3DXVECTOR3(1,0,0) + cam_pos), D3DXVECTOR3(0,1,0));
@@ -99,8 +111,6 @@ Application::Application()
 
 Application::~Application()
 {
-	if (pVertexBuffer)
-		pVertexBuffer->Release();
 }
 
 void Application::run()
@@ -114,43 +124,24 @@ void Application::run()
 			static float rotqube = 0.0f;
 			rotqube  += 0.9f;
 
-			//D3DXMATRIX matWorld;			// Create The World Matrix
-			//D3DXMATRIX matTranslation;		// Create a Translation Matrix
-			//D3DXMATRIX matRotX;				// Create X Axis Rotation Matrix
-			//D3DXMATRIX matRotY;				// Create Y Axis Rotation Matrix
-			//D3DXMatrixTranslation( &matTranslation, 0.0f, 0.0f, 0.0f ); 
-			//D3DXMatrixRotationZ(&matRotX, D3DXToRadian(g_rot_x));		// Rotate In X Direction
-			//D3DXMatrixRotationY(&matRotY, D3DXToRadian(g_rot_y));		// Rotate In Z Direction
-			//D3DXMatrixRotationYawPitchRoll(&matRotY, D3DXToRadian(g_rot_y), 0, D3DXToRadian(g_rot_x));
-			//matWorld = matTranslation;
-
-			//D3DXMATRIX matCamTranslation;
-			//D3DXMatrixTranslation( &matCamTranslation, -m_cam_pos.x, -m_cam_pos.y, -m_cam_pos.z ); 
-
-			//m_arc_ball.get_matrix()
-
-			//matView = m_arc_ball.get_matrix() * matCamTranslation *  matView;//(matRotY/* * matRotX*/) * matCamTranslation * matView;
-
-			D3DXMATRIX matWorld;
 			D3DXMatrixIdentity(&matWorld);
 
-			//m_device.get_dx_device()->SetTransform( D3DTS_VIEW, &m_camera.getViewMatrix() );
-			//m_device.get_dx_device()->SetTransform( D3DTS_WORLD, &matWorld );	// Set The Transformation
+			m_device.set_transform( rgde::render::view_transform, m_camera.getViewMatrix() );
+			m_device.set_transform( rgde::render::world_transform, getWorldMatrix() );	// Set The Transformation
 
 			m_device.frame_begin();
 			//m_device.clear(Grey);
 			m_device.clear(0x00595979);
-			//m_device.get_dx_device()->SetStreamSource( 0, pVertexBuffer, 0, sizeof(tVertex) );
-			//m_device.get_dx_device()->SetFVF( D3DFVF_CUSTOMVERTEX );
+			m_device.set_stream_source( 0, m_vb, sizeof(tVertex) );
 
-			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP,  0, 2 ); // Draw Front
-			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP,  4, 2 ); // Draw Back
-			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP,  8, 2 ); // Draw Top
-			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 12, 2 ); // Draw Bottom
-			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 16, 2 ); // Draw Right
-			//m_device.get_dx_device()->DrawPrimitive( D3DPT_TRIANGLESTRIP, 20, 2 ); // Draw Left
+			m_device.draw( rgde::render::triangle_strip,  0, 2 ); // Draw Front
+			m_device.draw( rgde::render::triangle_strip,  4, 2 ); // Draw Back
+			m_device.draw( rgde::render::triangle_strip,  8, 2 ); // Draw Top
+			m_device.draw( rgde::render::triangle_strip,  12, 2 ); // Draw Bottom
+			m_device.draw( rgde::render::triangle_strip,  16, 2 ); // Draw Right
+			m_device.draw( rgde::render::triangle_strip,  20, 2 ); // Draw Left
 
-			m_font.render(L"Hello", rect(10,10,100,100),Red, true);
+			m_font->render(L"Hello", rect(10,10,100,100),Red, true);
 			m_device.frame_end();
 			m_device.present();
 		}
@@ -198,7 +189,6 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 
 			int xPos = LOWORD(lparam); 
 			int yPos = HIWORD(lparam); 
-			//m_arc_ball.click(xPos, yPos);
 		}
 		return 0;
 
@@ -219,7 +209,6 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 
 	case WM_SIZE:
 		{
-			// LoWord=Width, HiWord=Height
 			resize_scene(LOWORD(lparam), HIWORD(lparam));
 			return 0;
 		}
@@ -228,7 +217,6 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 			float delta = (short)HIWORD((DWORD)wparam);//120.0f;
 			delta /= 80.0f;
 			m_camera.goForward(-delta);
-			//m_cam_pos += D3DXVECTOR3(0.01f,0,0)*delta;
 		}
 		break;
 
@@ -246,9 +234,6 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 
 				m_camera.rotateRight(-dx/100.0f);
 				m_camera.rotateUp(dy/100.0f);
-
-				//g_rot_y -= dx/10.0f;
-				//g_rot_x += dy/10.0f;
 			}
 
 			old_x = xPos;
@@ -267,7 +252,7 @@ void Application::resize_scene(unsigned int width, unsigned int height)
 	}
 
 	m_camera.setProjection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
-	//m_device.get_dx_device()->SetTransform( D3DTS_PROJECTION, &m_camera.getProjMatrix()/*D3DMATRIX)projection_matrix */);
+	m_device.set_transform( rgde::render::projection_transform, m_camera.getProjMatrix());
 }
 
 bool Application::do_events()
