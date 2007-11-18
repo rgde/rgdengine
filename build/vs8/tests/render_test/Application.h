@@ -3,25 +3,6 @@
 #include "ArcBall.h"
 #include <d3dx9.h>
 
-namespace rgde
-{
-	namespace render
-	{
-		namespace graphics2d
-		{
-			class bather
-			{
-			public:
-				virtual ~bather(){}
-
-			};
-
-						
-		}
-	}
-}
-
-
 class Camera
 {
 public:
@@ -46,7 +27,7 @@ public:
 		D3DXMatrixLookAtLH(&m_ViewMatrix, &vEyePt, &vLookatPt, &vUpVec);
 	}
 
-	D3DXMATRIX getViewMatrix() 
+	rgde::math::mat44f getViewMatrix() 
 	{
 		D3DXVECTOR3 cam_pos(-1 * m_distance, 0, 0);
 
@@ -60,9 +41,15 @@ public:
 		
 		D3DXMatrixLookAtLH(&m_ViewMatrix, &cam_pos, &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(0,1,0));
 
-		return m_ViewMatrix;
+		rgde::math::mat44f mat = *(rgde::math::mat44f*)&m_ViewMatrix;
+
+		return mat;
 	}
-	const D3DXMATRIX& getProjMatrix() const {return m_ProjMatrix;}
+
+	const rgde::math::mat44f& getProjMatrix() const 
+	{
+		return *(const rgde::math::mat44f*)&m_ProjMatrix;
+	}
 
 	//движение
 	void goForward(float delta)
@@ -121,12 +108,18 @@ protected:
 	void resize_scene(unsigned int width, unsigned int height);
 	bool do_events();
 
+	const rgde::math::mat44f& getWorldMatrix() const 
+	{
+		return *(const rgde::math::mat44f*)&matWorld;
+	}
+
 private:
+	D3DXMATRIX matWorld;
 	ArcBall m_arc_ball;
 	bool m_active;
 	device m_device;
-	font m_font;
-	IDirect3DVertexBuffer9 *pVertexBuffer;
+	rgde::render::font_ptr m_font;
+	rgde::render::vertex_buffer_ptr m_vb;
 	D3DXVECTOR3 m_cam_pos;
 	Camera m_camera;
 };
