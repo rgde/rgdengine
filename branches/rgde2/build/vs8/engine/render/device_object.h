@@ -10,8 +10,10 @@ namespace rgde
 
 		class device_object
 		{
-		public:
+		protected:
 			explicit device_object(device& dev, bool register_on_lost_reset = false);
+
+		public:			
 			virtual ~device_object();
 
 			device& get_device() {return m_device;}
@@ -28,6 +30,8 @@ namespace rgde
 			device& m_device;
 			bool m_is_registered;
 			obj_handler m_handler;
+
+			static unsigned int ms_num_objects;
 		};
 	}
 }
