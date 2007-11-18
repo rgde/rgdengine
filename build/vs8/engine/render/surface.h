@@ -16,5 +16,21 @@ namespace rgde
 
 			virtual format get_format() const = 0;
 		};
+
+		class base_texture : public resource
+		{
+		public:
+			explicit base_texture(device& dev);
+
+			virtual void set_lod(unsigned int new_lod) = 0;
+			virtual unsigned int get_lod() = 0;
+
+			virtual unsigned int get_level_count() const = 0;
+
+			//STDMETHOD(SetAutoGenFilterType)(THIS_ D3DTEXTUREFILTERTYPE FilterType) PURE;
+			//STDMETHOD_(D3DTEXTUREFILTERTYPE, GetAutoGenFilterType)(THIS) PURE;
+			//STDMETHOD_(void, GenerateMipSubLevels)(THIS) PURE;
+		};
+
 	}
 }
