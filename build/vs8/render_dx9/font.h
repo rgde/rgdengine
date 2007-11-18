@@ -9,10 +9,10 @@ namespace rgde
 		class font::font_impl
 		{
 		public:
-			font_impl(device& dev, size_t height, const std::wstring& name, Weight weigh)
+			font_impl(device& dev, size_t height, const std::wstring& name, weight w)
 				: m_device(dev), m_font(NULL)
 			{
-				if (S_OK != D3DXCreateFont(m_device.get_impl().get_dx_device(), -(int)height, 0, weigh, 1, FALSE, 
+				if (S_OK != D3DXCreateFont(m_device.get_impl().get_dx_device(), -(int)height, 0, w, 1, FALSE, 
 					DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 
 					5, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &m_font))
 				{
@@ -65,11 +65,9 @@ namespace rgde
 				do_render(m_font, text, textLocation, color, flags);
 			}
 
-			const device& get_device() const {return m_device;}
-			device& get_device() {return m_device;}
-
 			const ID3DXFont* get_dx_font() {return m_font;}
 
+		private:
 			device& m_device;
 			ID3DXFont* m_font;
 		};
