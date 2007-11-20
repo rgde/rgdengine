@@ -13,13 +13,6 @@ using namespace math;
 
 int _tmain(int argc, wchar_t* argv[])
 {
-	int value = 5;
-	switch(value)
-	{
-	case 5:
-		int c = 5;
-		break;
-	};
 	Application app;
 	app.run();
 	
