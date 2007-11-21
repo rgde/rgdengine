@@ -31,26 +31,7 @@ namespace rgde
 
         private:
             //гарантировано существование только одного экзмепляра этого класса
-            class loghelper
-            {
-            public:
-                loghelper();
-               ~loghelper();
-
-            private:
-                //указатели на стандартные потоки
-                std::streambuf  *coutsbuf;
-                std::wstreambuf *wcoutsbuf;
-
-                std::streambuf  *cerrsbuf;
-                std::wstreambuf *wcerrsbuf;
-
-                static std::string generateLogName();
-
-            private:
-                loghelper (const loghelper&);
-                loghelper& operator= (const loghelper&);
-            };
+            class loghelper;
 
             static int counter;
             static loghelper *ploghelper;

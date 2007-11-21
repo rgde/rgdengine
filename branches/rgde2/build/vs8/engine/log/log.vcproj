@@ -180,6 +180,14 @@
 				RelativePath=".\util.cpp"
 				>
 			</File>
+			<Filter
+				Name="details"
+				>
+				<File
+					RelativePath=".\log_helper.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
