@@ -4,6 +4,8 @@
 #include <engine/log/filter.h>
 #include <boost/iostreams/filtering_stream.hpp>
 
+#include "log_helper.h"
+
 namespace rgde
 {
     namespace log
