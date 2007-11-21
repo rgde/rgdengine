@@ -1,5 +1,0 @@
-<ModelsNames>
-	<PointLight>point_light</PointLight>
-	<SpotLight>spot_light</SpotLight>
-	<DirectionalLight>teapot</DirectionalLight>
-</ModelsNames>
