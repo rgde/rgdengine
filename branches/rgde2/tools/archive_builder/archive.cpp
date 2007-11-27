@@ -180,8 +180,8 @@ namespace rgde
 			out_data.clear();
 
 			out_data.resize(data_size);
-			m_archive_stream.seekg(entry->offset + offset);
-			m_archive_stream.read(&out_data.front(), data_size);
+			m_archive_stream.seekg((std::streamoff)entry->offset + offset);
+			m_archive_stream.read(&out_data.front(), (std::streamsize)data_size);
 			return true;
 		}
 
@@ -261,7 +261,7 @@ namespace rgde
 
 		struct search_by_string
 		{
-			bool operator()(const const archive::archive_entry& lhs, const archive::archive_entry& rhs)
+			bool operator()(const archive::archive_entry& lhs, const archive::archive_entry& rhs)
 			{
 				if (lhs.name == rhs.name && 0 == rhs.offset)
 				{
