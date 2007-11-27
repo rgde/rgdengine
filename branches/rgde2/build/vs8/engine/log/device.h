@@ -189,46 +189,9 @@ namespace rgde
 	            std::streamsize write(const char_type *s, std::streamsize n)
 	            {
 					text_write(s, n);
-                    //std::basic_string<char_type> str(s, n);
-                    //std::string out(str.begin(), str.end());
-
-                    //OutputDebugStringA(out.c_str());
                     return n;
 	            }
             };
-
-			//void text_write(const char* str, std::streamsize n);
-			//void text_write(const wchar_t* str, std::streamsize n);
-
-     //       //конкретизация шаблона для char
-     //       template <>
-     //       class output_dev<char>
-     //       {
-     //       public:
-	    //        typedef char char_type;
-	    //        typedef boost::iostreams::sink_tag category;
-
-	    //        std::streamsize write(const char_type *s, std::streamsize n)
-	    //        {
-					//text_write(s, n);
-     //               return n;
-	    //        }
-     //       };
-
-     //       //конкретизация wchar_t
-     //       template <>
-     //       class output_dev<wchar_t>
-     //       {
-     //       public:
-	    //        typedef wchar_t char_type;
-	    //        typedef boost::iostreams::sink_tag category;
-
-	    //        std::streamsize write(const char_type *s, std::streamsize n)
-	    //        {
-					//text_write(s, n);
-     //               return n;
-	    //        }
-     //       };
 
             //"устройство" - контейнер. позволяет вести вывод сразу в несколько (сейчас в три) устройств
             template <typename CHAR>
