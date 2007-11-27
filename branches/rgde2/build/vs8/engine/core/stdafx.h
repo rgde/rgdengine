@@ -20,6 +20,9 @@
 #undef max
 #endif
 
+//#define _SECURE_SCL 0
+#define _SCL_SECURE_NO_WARNINGS
+
 #include <map>
 #include <vector>
 #include <string>

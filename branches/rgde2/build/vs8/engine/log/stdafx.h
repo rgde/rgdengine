@@ -8,5 +8,7 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 
+#define _SCL_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <string>

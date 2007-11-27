@@ -79,6 +79,8 @@ namespace rgde
                     if (!m_out.rdbuf())
                         return n; //или следует вернуть 0 (хз как буст отреагирует)?
 
+					// Add color output!
+
                     m_out << std::basic_string<char_type>(s, n);
 		            return n;
 	            }
