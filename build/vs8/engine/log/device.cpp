@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include <Windows.h>
 #include <engine/log/device.h>
 
 namespace rgde
@@ -8,6 +9,18 @@ namespace rgde
     {
         namespace device
         {
+			void text_write(const char* str, std::streamsize n)
+			{
+				std::string out(str, n);
+				OutputDebugStringA(out.c_str());
+			}
+
+			void text_write(const wchar_t* str, std::streamsize n)
+			{
+				std::wstring out(str, n);
+				OutputDebugStringW(out.c_str());
+			}
+
             file_wrapper::file_wrapper()
             {
             }

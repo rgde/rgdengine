@@ -1,8 +1,8 @@
 #pragma once
 
-#include <windows.h>
 #include <iostream>
 #include <fstream>
+
 #include <boost/iostreams/categories.hpp>
 #include <boost/smart_ptr.hpp>
 
@@ -40,10 +40,11 @@ namespace rgde
             class ostream_wrapper
             {
             public:
+				//int text_color;
                 typedef CHAR char_type;
 
                 ostream_wrapper ():
-                    m_out(0)
+                    m_out(0)//, text_color(0xFFFFFFFF)
                 {
                 }
 
@@ -80,6 +81,10 @@ namespace rgde
                         return n; //или следует вернуть 0 (хз как буст отреагирует)?
 
 					// Add color output!
+					//HANDLE handle = GetStdHandle( STD_OUTPUT_HANDLE ); // Make a handle
+					//text_color 
+					//SetConsoleTextAttribute( handle, text_color);
+					//SetConsoleTextAttribute( handle, FOREGROUND_RED ); // Set the color of the text
 
                     m_out << std::basic_string<char_type>(s, n);
 		            return n;
@@ -169,6 +174,9 @@ namespace rgde
                 boost::shared_ptr<ostream_wrapper<char_type> > m_postream;
             };
 
+			void text_write(const char* str, std::streamsize n);
+			void text_write(const wchar_t* str, std::streamsize n);
+
             //"устройство" для вывода в output VisualStudio
             template <typename CHAR>
             class output_dev
@@ -180,47 +188,47 @@ namespace rgde
                 //реализация метода write по умолчанию использует OutputDebugStringA
 	            std::streamsize write(const char_type *s, std::streamsize n)
 	            {
-                    std::basic_string<char_type> str(s, n);
-                    std::string out(str.begin(), str.end());
+					text_write(s, n);
+                    //std::basic_string<char_type> str(s, n);
+                    //std::string out(str.begin(), str.end());
 
-                    OutputDebugStringA(out.c_str());
+                    //OutputDebugStringA(out.c_str());
                     return n;
 	            }
             };
 
-            //конкретизация шаблона для char
-            template <>
-            class output_dev<char>
-            {
-            public:
-	            typedef char char_type;
-	            typedef boost::iostreams::sink_tag category;
+			//void text_write(const char* str, std::streamsize n);
+			//void text_write(const wchar_t* str, std::streamsize n);
 
-	            std::streamsize write(const char_type *s, std::streamsize n)
-	            {
-                    std::string out(s, n);
+     //       //конкретизация шаблона для char
+     //       template <>
+     //       class output_dev<char>
+     //       {
+     //       public:
+	    //        typedef char char_type;
+	    //        typedef boost::iostreams::sink_tag category;
 
-                    OutputDebugStringA(out.c_str());
-                    return n;
-	            }
-            };
+	    //        std::streamsize write(const char_type *s, std::streamsize n)
+	    //        {
+					//text_write(s, n);
+     //               return n;
+	    //        }
+     //       };
 
-            //конкретизация wchar_t
-            template <>
-            class output_dev<wchar_t>
-            {
-            public:
-	            typedef wchar_t char_type;
-	            typedef boost::iostreams::sink_tag category;
+     //       //конкретизация wchar_t
+     //       template <>
+     //       class output_dev<wchar_t>
+     //       {
+     //       public:
+	    //        typedef wchar_t char_type;
+	    //        typedef boost::iostreams::sink_tag category;
 
-	            std::streamsize write(const char_type *s, std::streamsize n)
-	            {
-                    std::basic_string<char_type> out(s, n);
-
-                    OutputDebugStringW(out.c_str());
-                    return n;
-	            }
-            };
+	    //        std::streamsize write(const char_type *s, std::streamsize n)
+	    //        {
+					//text_write(s, n);
+     //               return n;
+	    //        }
+     //       };
 
             //"устройство" - контейнер. позволяет вести вывод сразу в несколько (сейчас в три) устройств
             template <typename CHAR>
