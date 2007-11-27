@@ -102,7 +102,6 @@ Application::Application()
 	memcpy( pVertices, cube, sizeof(cube) );
 	m_vb->unlock();
 
-	//D3DXVECTOR3 cam_pos(-5, 0, 0);
 	math::vec3f cam_pos(-5, 0, 0);
 	m_camera.lookAt(cam_pos, (math::vec3f(1,0,0) + cam_pos), math::vec3f(0,1,0));
 }
@@ -117,13 +116,10 @@ void Application::run()
 	{
 		if( !do_events() && m_active)
 		{
-			//Sleep(10);
-
 			static float rotqube = 0.0f;
 			rotqube  += 0.9f;
 
 			matWorld = math::MAT_IDENTITY44F;
-			//D3DXMatrixIdentity(&matWorld);
 
 			m_device.set_transform( rgde::render::view_transform, m_camera.getViewMatrix() );
 			m_device.set_transform( rgde::render::world_transform, getWorldMatrix() );	// Set The Transformation

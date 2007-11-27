@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ArcBall.h"
-#include <d3dx9.h>
 
 namespace rgde
 {
@@ -12,9 +11,6 @@ namespace rgde
 		{
 			m_ProjMatrix = math::MAT_IDENTITY44F;
 			m_ViewMatrix = math::MAT_IDENTITY44F;
-			//D3DXMatrixIdentity(&m_ProjMatrix);
-			//D3DXMatrixIdentity(&m_ViewMatrix);
-
 			m_rotx = m_roty = 0;
 			m_distance = 5.0f;
 		}
@@ -22,18 +18,13 @@ namespace rgde
 
 		void setProjection(float fFovy, float fAspect, float fZNear, float fZFar)
 		{
-/*			D3DXMATRIX proj;
-			D3DXMatrixPerspectiveFovLH(&proj, fFovy, fAspect, fZNear, fZFar );*/			
 			m_ProjMatrix = math::makePerspectiveFovLH(fFovy, fAspect, fZNear, fZFar);
 		}
 
 		void lookAt(const math::vec3f& vEyePt, const math::vec3f& vLookatPt, const math::vec3f& vUpVec)
 		{
 			m_lookPt = vLookatPt;
-			D3DXMATRIX look_at;
-			//D3DXMatrixLookAtLH(&look_at, (const D3DXVECTOR3 *)&vEyePt, (const D3DXVECTOR3 *)&vLookatPt, (const D3DXVECTOR3 *)&vUpVec);
 			m_ViewMatrix = math::makeLookAt(vEyePt, vLookatPt, vUpVec);
-
 			_asm nop;
 		}
 
@@ -43,7 +34,7 @@ namespace rgde
 
 			math::quatf quat = math::makeRot<math::quatf>(math::EulerAngleXYZf(m_rotx, m_roty, 0));
 			
-			math::mat44f rotation;// = math::makeRot;
+			math::mat44f rotation;
 			math::set(rotation, quat);
 			
 			cam_pos = rotation * cam_pos;
