@@ -63,7 +63,6 @@ namespace rgde
 		//Set initial bounds
 		set_bounds(NewWidth, NewHeight);
 		m_matrix = math::MAT_IDENTITY44F;
-		//D3DXMatrixIsIdentity(&m_matrix);
 	}
 
 	void ArcBall::click(int x, int y)
@@ -77,16 +76,12 @@ namespace rgde
 		map2sphere(x, y, EnVec);
 
 		//Return the quaternion equivalent to the rotation
-		//D3DXVECTOR3 Perp;
 		math::vec3f Perp;
 
 		//Compute the vector perpendicular to the begin and end vectors	
 		Perp = math::makeCross(StVec, EnVec);
-		//D3DXVec3Cross(&Perp, &StVec, &EnVec);
-
 
 		//Compute the length of the perpendicular vector
-		//if (D3DXVec3Length(&Perp) > 0.0001f)    //if its non-zero
 		if (math::length(Perp) > 0.0001f)    //if its non-zero
 		{
 			//We're ok, so return the perpendicular vector as the transform after all
@@ -94,27 +89,19 @@ namespace rgde
 			m_quaternion[1] = Perp[1];
 			m_quaternion[2] = Perp[2];
 			//In the quaternion values, w is cosine (theta / 2), where theta is rotation angle
-			//m_quaternion.w= D3DXVec3Dot(&StVec, &EnVec);
 			m_quaternion[3] = math::dot(StVec, EnVec);
 		}
 		else                                    //if its zero
 		{
 			//The begin and end vectors coincide, so return an identity transform
 			m_quaternion = math::QUAT_ADD_IDENTITYF; // (0,0,0,0);
-			//D3DXQuaternionIdentity(&m_quaternion);
 		}
 
 		math::normalize(m_accum_quaternion);
-		//D3DXQuaternionNormalize(&m_accum_quaternion, &m_accum_quaternion);
 		math::normalize(m_quaternion);
-		//D3DXQuaternionNormalize(&m_quaternion, &m_quaternion);
 
 		m_accum_quaternion *= m_quaternion;
 
-		//D3DXMATRIX temp;
-		//m_matrix = math::makeRot(m_accum_quaternion);
 		math::set(m_matrix, m_accum_quaternion);
-		//D3DXMatrixRotationQuaternion( &m_matrix, &m_accum_quaternion);	
-		//m_matrix = m_matrix * temp;
 	}
 }
