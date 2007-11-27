@@ -3,6 +3,10 @@
 #include <engine/core/log.h>
 #include <windows.h>
 
+//#if _SECURE_SCL == 1
+//int 5;
+//#endif
+
 namespace rgde
 {
 	namespace core

@@ -98,7 +98,7 @@ namespace rgde
             _wsetlocale(LC_COLLATE, L"rus"); 
             _wsetlocale(LC_CTYPE, L"rus"); 
             _wsetlocale(LC_TIME, L"rus");
-            _wsetlocale(LC_NUMERIC, L"English"); //Denis: нyмерик явно в english поставь плиз
+            _wsetlocale(LC_NUMERIC, L"English");
 
             pfilewrapper->open(generateLogName());
             postreamwrapperA->open(std::cout.rdbuf());

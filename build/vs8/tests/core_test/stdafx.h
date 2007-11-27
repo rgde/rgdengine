@@ -25,6 +25,8 @@
 #undef max
 #endif
 
+#define _SCL_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <tchar.h>
 

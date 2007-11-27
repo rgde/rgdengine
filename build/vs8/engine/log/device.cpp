@@ -100,8 +100,11 @@ namespace rgde
 
                 //перекодировка из unicode в multibyte
                 std::string buf;
-                buf.resize(out.length());               
-                wcstombs(&buf[0], out.c_str(), buf.length());
+                buf.resize(out.length());
+				size_t num_chars = 0;
+
+                //wcstombs_s(&num_chars, &buf[0], buf.size(), out.c_str(), buf.length());
+				wcstombs(&buf[0], out.c_str(), buf.length());
 
                 m_file << buf;
                 return n;

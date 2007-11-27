@@ -1,6 +1,8 @@
 #include "stdafx.h"
+
 #include <windows.h>
 #include <time.h>
+
 #include <boost/lexical_cast.hpp>
 
 namespace rgde
@@ -37,7 +39,8 @@ namespace rgde
 	            sprintf_s (month, (t.wMonth < 10) ? "0%i" : "%i", t.wMonth);
 
 	            char time[128];
-	            sprintf (time, "%i.%s%_%s.%s.%i", t.wHour, minute, day, month, t.wYear); 
+				sprintf (time, "%i.%s%_%s.%s.%i", t.wHour, minute, day, month, t.wYear); 
+	            //sprintf_s (time, "%i.%s%_%s.%s.%i", t.wHour, minute, day, month, t.wYear); 
                 return std::string(time);
             }
         }
