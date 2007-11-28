@@ -23,7 +23,7 @@ namespace ui
 
 			m_text = L"button";
 
-			m_spFont = render::IFont::Create(16, L"Tahoma");
+			//m_spFont = render::IFont::Create(16, L"Tahoma");
 
 			m_pressed = false;
 			m_wait = false;
@@ -158,7 +158,7 @@ namespace ui
 			if ( !m_wait )
 				drawBorder(rect, style);
 
-			drawText(m_spFont, text, rect, !m_wait);
+			//drawText(m_spFont, text, rect, !m_wait);
 
 			sprite.pos = rect.position;
 			sprite.size = rect.size;
