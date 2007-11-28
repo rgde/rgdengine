@@ -8,10 +8,14 @@
 
 namespace meta
 {
+	typedef std::wstring string;
+	struct type_information;
+
+
+
+
 	namespace details
 	{
-		typedef std::wstring string;
-		struct type_information;
 
 		struct factory
 		{ 
@@ -20,20 +24,23 @@ namespace meta
 
 			void register_type(type_information& ti);
 		};
+	}
 
-		struct type_information
-		{
-			const type_info& info;
-			const std::string type_name;
-			factory::types_map parrent_types;
+	struct type_information
+	{
+		const type_info& info;
+		const std::string type_name;
+		details::factory::types_map parrent_types;
 
-			/// name = custom name. may differ from real type name.
-			type_information(const type_info& i, const std::string& name) 
-				: info(i), type_name(name){}
+		/// name = custom name. may differ from real type name.
+		type_information(const type_info& i, const std::string& name) 
+			: info(i), type_name(name){}
 
-			virtual ~type_information(){}
-		};
+		virtual ~type_information(){}
+	};
 
+	namespace details
+	{
 		void factory::register_type(type_information& ti)
 		{
 			types[ti.type_name] = &ti;
@@ -274,11 +281,15 @@ namespace meta
 		details::concrete_type_information<T>& def_class(const std::string& name)
 		{
 			typedef details::concrete_type_information<T> ti;
-			typedef boost::shared_ptr<ti> ti_ptr;
+			//typedef boost::shared_ptr<typename ti> ti_ptr;
 
-			ti_ptr t(new ti(name));
+			ti* pti = new ti(name);
+			//ti_ptr t(ti);
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			type_information_ptr t(pti);
 			types[name] = t;
-			return *t;
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			return *pti;
 		}
 
 		/// для тех кто привык с синтаксису boost::python or lua_bind
@@ -361,6 +372,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	// так же можно и так:
 	//storage.get_module("engine").def_class<test>("test");
+
+	meta::type_information_ptr ti = storage.get_module("engine").types["test"];
 
 	// что еще надо:
 	//1
