@@ -10,7 +10,7 @@ const int NUM_ANIMATIONS = 3;
 const int CYLINDER_HEIGHT_SEGMENTS = 16;
 const int CYLINDER_RADIUS_SEGMENTS = 16;
 
-class CSkinningTest :  public game::IDynamicObject   //и получать апдейты
+class CSkinningTest : public game::IDynamicObject   //и получать апдейты
 {
 	void initInput()
 	{
@@ -93,7 +93,7 @@ class CSkinningTest :  public game::IDynamicObject   //и получать апдейты
 	{
 		vertex.weights[0] = 1.0f;
 		vertex.indices[0] = bone;
-		for(int i = 1; i < 4; i++)
+		for(size_t i = 1; i < 4; ++i)
 		{
 			vertex.weights[i] = 0.0f;
 			vertex.indices[i] = 0;
@@ -156,8 +156,6 @@ class CSkinningTest :  public game::IDynamicObject   //и получать апдейты
 
 		for(int i = 0; i < 4 - 1; i++)
 			m_bones[4 - 1]->addChild(m_bones[i]);
-
-
 
 		for(int i = 0; i < 4; i++)
 			m_bones[i]->setScale(math::Vec3f(1.0f, 1.0f, 1.0f));
@@ -431,9 +429,6 @@ public:
 
 
 protected:
-
-protected:
-
 	virtual void update(float dt)
 	{
 		render::TheDevice::Get().showFPS(m_spFont);
