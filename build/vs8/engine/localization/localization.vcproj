@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="render"
-	ProjectGUID="{98B9C120-939A-4A20-9231-B25805EB85D1}"
-	RootNamespace="render"
+	Name="localization"
+	ProjectGUID="{499A4A27-1B37-4B09-A14C-362589A3DC06}"
+	RootNamespace="localization"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -149,19 +149,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\device.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\device_object.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\font.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\resource.cpp"
+				RelativePath=".\localization.cpp"
 				>
 			</File>
 			<File
@@ -191,49 +179,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\buffer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\device.h"
-				>
-			</File>
-			<File
-				RelativePath=".\device_object.h"
-				>
-			</File>
-			<File
-				RelativePath=".\font.h"
-				>
-			</File>
-			<File
-				RelativePath=".\render.h"
-				>
-			</File>
-			<File
-				RelativePath=".\render_forward.h"
-				>
-			</File>
-			<File
-				RelativePath=".\resource.h"
+				RelativePath=".\localization.h"
 				>
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
-			<File
-				RelativePath=".\surface.h"
-				>
-			</File>
-			<Filter
-				Name="aux"
-				>
-				<File
-					RelativePath=".\lines_renderer.h"
-					>
-				</File>
-			</Filter>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
