@@ -14,6 +14,8 @@
 #include "renderTextureImpl.h"
 
 
+extern LPDIRECT3DDEVICE9 g_pd3dDevice;
+
 namespace render
 {
 	PTexture safeLoadDefaultTexture(const std::string &strTextureName)
@@ -143,8 +145,14 @@ namespace render
 				{
 					static PMaterial pDefaultMaterial = CMaterial::Create();
 
-					const PMaterial& pMaterial = info.spMaterial ? info.spMaterial : pDefaultMaterial;
-					const PEffect&	 pEffect	= info.spShader ? info.spShader : defaultEffect;
+					//const PMaterial& pMaterial = info.spMaterial ? info.spMaterial : pDefaultMaterial;
+					//const PEffect&	 pEffect	= info.spShader ? info.spShader : defaultEffect;
+
+					const PMaterial& pMaterial = pDefaultMaterial;
+					const PEffect&	 pEffect	= defaultEffect;
+
+
+					//m_pDefaultEffect
 					
 					pMaterial->getDynamicBinder()->setupParameters(info.pFrame);
 									
@@ -170,6 +178,11 @@ namespace render
 					}
 					else
 					{
+						//info.pFrame->getFullTransform()
+						//return mProj*(mView*frame->getFullTransform());
+						g_pd3dDevice->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&info.pFrame->getFullTransform()[0]);
+						//g_pd3dDevice->Set
+						info.pRenderFunc();
 						//base::lmsg << "Invalid binder or technique";
 					}
 				}
@@ -305,6 +318,16 @@ namespace render
 				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(TheDevice::Get().getCurentCamera()->getPosition()));
 
 				{
+					{
+						const math::PCamera& pCamera = *camera;
+						const math::Matrix44f& mView = pCamera->getViewMatrix();
+						const math::Matrix44f& mProj = pCamera->getProjMatrix();
+						//return mProj*(mView*frame->getFullTransform());
+						g_pd3dDevice->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&mView[0]);
+						g_pd3dDevice->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&mProj[0]);
+					}
+
+
 					functors::SDefaultRender r;
 					std::for_each(vSolid.begin(),			vSolid.end(),			r);
 					std::for_each(vTransparet.begin(),		vTransparet.end(),		r);

@@ -259,6 +259,11 @@ std::ostream& operator <<(std::ostream& out, const boost::any& value)
 	{
 		out << boost::any_cast<float>(value);
 	}
+	else if ()
+	{
+
+	}
+
 	return out;
 }
 
@@ -287,9 +292,9 @@ void execute_commands(std::vector<std::string>& commands, const command_processo
 	for (size_t i = 0; i < commands.size(); ++i)
 	{
 		command c(commands[i]);
+		
 		boost::any ret_value = processor.execute(c);
-
-		std::cout << commands[i].c_str() << "=" << ret_value << std::endl;
+		std::cout << commands[i].c_str() << "=" << ret_value << std::endl;		
 	}
 }
 
