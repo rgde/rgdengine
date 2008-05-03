@@ -45,22 +45,22 @@ namespace UIEditor
         public MainForm()
         {
             InitializeComponent();
-            listBox1.Items.Clear();
+            //listBox1.Items.Clear();
 
-            TextureRegion r1 = new TextureRegion();
-            r1.rect = new Rectangle(10, 10, 30, 30);
-            r1.name = "Button.Bkg";
-            listBox1.Items.Add(r1);            
+            //TextureRegion r1 = new TextureRegion();
+            //r1.rect = new Rectangle(10, 10, 30, 30);
+            //r1.name = "Button.Bkg";
+            //listBox1.Items.Add(r1);            
 
-            TextureRegion r2 = new TextureRegion();
-            r2.rect = new Rectangle(50, 10, 30, 30);
-            r2.name = "Button.Pressed";
-            listBox1.Items.Add(r2);
+            //TextureRegion r2 = new TextureRegion();
+            //r2.rect = new Rectangle(50, 10, 30, 30);
+            //r2.name = "Button.Pressed";
+            //listBox1.Items.Add(r2);
 
-            TextureRegion r3 = new TextureRegion();
-            r3.rect = new Rectangle(50, 50, 80, 30);
-            r3.name = "Button.Hover";
-            listBox1.Items.Add(r3);
+            //TextureRegion r3 = new TextureRegion();
+            //r3.rect = new Rectangle(50, 50, 80, 30);
+            //r3.name = "Button.Hover";
+            //listBox1.Items.Add(r3);
 
             this.DoubleBuffered = true;
 
@@ -89,30 +89,30 @@ namespace UIEditor
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            foreach (TextureRegion reg in listBox1.Items)
-            {
-                reg.selected = false;
-            }
+            //foreach (TextureRegion reg in listBox1.Items)
+            //{
+            //    reg.selected = false;
+            //}
 
-            try
-            {
-                if (listBox1.SelectedItem != null)
-                {
-                    TextureRegion r = (TextureRegion)listBox1.SelectedItem;
-                    regionName.Text = r.name;
-                    r.selected = true;
-                }
-                else
-                {
-                    regionName.Text = "";
-                }
-            }
-            catch
-            {
-                regionName.Text = "";
-            }
+            //try
+            //{
+            //    if (listBox1.SelectedItem != null)
+            //    {
+            //        TextureRegion r = (TextureRegion)listBox1.SelectedItem;
+            //        regionName.Text = r.name;
+            //        r.selected = true;
+            //    }
+            //    else
+            //    {
+            //        regionName.Text = "";
+            //    }
+            //}
+            //catch
+            //{
+            //    regionName.Text = "";
+            //}
 
-            pictureBox1.Invalidate();
+            //pictureBox1.Invalidate();
         }
 
 
@@ -123,7 +123,7 @@ namespace UIEditor
             {
                 bitmap = new Bitmap(ofd.FileName);
                 layout_editor.Image = bitmap;
-                pictureBox1.Invalidate();
+                //pictureBox1.Invalidate();
                 layout_editor.Invalidate();
             }
         }
@@ -145,16 +145,16 @@ namespace UIEditor
             //e.Graphics.DrawRectangle(new Pen(Color.Green, 1), mouse_x, mouse_y, 10,10);
         }
 
-        Rectangle GetBoxRect(int i)
-        {
-            TextureRegion r = (TextureRegion)listBox1.Items[i];
-            int pos_x = (int)(r.rect.X * scale);
-            int pos_y = (int)(r.rect.Y * scale);
-            int width = (int)(r.rect.Width * scale);
-            int height = (int)(r.rect.Height * scale);
-            Rectangle frect = new Rectangle(pos_x, pos_y, width, height);
-            return frect;
-        }
+        //Rectangle GetBoxRect(int i)
+        //{
+        //    TextureRegion r = (TextureRegion)listBox1.Items[i];
+        //    int pos_x = (int)(r.rect.X * scale);
+        //    int pos_y = (int)(r.rect.Y * scale);
+        //    int width = (int)(r.rect.Width * scale);
+        //    int height = (int)(r.rect.Height * scale);
+        //    Rectangle frect = new Rectangle(pos_x, pos_y, width, height);
+        //    return frect;
+        //}
 
         bool IsInsideRect(Rectangle r, int x, int y)
         {
@@ -188,71 +188,71 @@ namespace UIEditor
 
         private void DrawBoxes(System.Drawing.Graphics g)
         {
-            int x = (int)(mouse_x/scale);
-            int y = (int)(mouse_y / scale);
-            Point p = new Point(x, y);
+            //int x = (int)(mouse_x/scale);
+            //int y = (int)(mouse_y / scale);
+            //Point p = new Point(x, y);
 
-            foreach(TextureRegion r in listBox1.Items)
-            {
-                r.Draw(g, scale, IsMouseHovered(r) ? TextureRegion.DrawMode.Hovered : TextureRegion.DrawMode.Normal);
-            }
+            //foreach(TextureRegion r in listBox1.Items)
+            //{
+            //    r.Draw(g, scale, IsMouseHovered(r) ? TextureRegion.DrawMode.Hovered : TextureRegion.DrawMode.Normal);
+            //}
         }
 
         void UpdateSelection(int dx, int dy, int dwidth, int dheight)
         {
-            TextureRegion r = GetSelectedItem();
-            if (r == null) return;
+            //TextureRegion r = GetSelectedItem();
+            //if (r == null) return;
 
-            if (MouseButtons == MouseButtons.Left)
-            {
-                r.rect.X += dx;
-                r.rect.Y += dy;
-                r.rect.Width += dwidth;
-                r.rect.Height += dheight;
-            }
+            //if (MouseButtons == MouseButtons.Left)
+            //{
+            //    r.rect.X += dx;
+            //    r.rect.Y += dy;
+            //    r.rect.Width += dwidth;
+            //    r.rect.Height += dheight;
+            //}
 
-            pictureBox1.Invalidate();
+            //pictureBox1.Invalidate();
         }
 
         void SetCursor(int x, int y)
         {
-            try
-            {
-                if (listBox1.SelectedItem != null)
-                {
-                    TextureRegion r = GetSelectedItem();
+            //try
+            //{
+            //    if (listBox1.SelectedItem != null)
+            //    {
+            //        TextureRegion r = GetSelectedItem();
 
-                    Rectangle[] rects = TextureRegion.GetSelectionRectangles(r.GetRect(0,0,scale));
+            //        Rectangle[] rects = TextureRegion.GetSelectionRectangles(r.GetRect(0,0,scale));
 
-                    Point mouse_pos = new Point(x, y);
+            //        Point mouse_pos = new Point(x, y);
 
-                    if (rects[0].Contains(mouse_pos))
-                    {
-                        Cursor.Current = Cursors.SizeNWSE;
-                    }
-                    else if (rects[1].Contains(mouse_pos))
-                    {
-                        Cursor.Current = Cursors.SizeNESW;                        
-                    }
-                    else if (rects[2].Contains(mouse_pos))
-                    {
-                        Cursor.Current = Cursors.SizeNWSE;
-                    }
-                    else if (rects[3].Contains(mouse_pos))
-                    {
-                        Cursor.Current = Cursors.SizeNESW;
-                    }
-                    else if (r.rect.Contains(mouse_pos))
-                    {
-                        Cursor.Current = Cursors.SizeAll;
-                    }
-                    else
-                        Cursor.Current = Cursors.Default;
-                }
-            }
-            catch
-            {
-            }
+            //        if (rects[0].Contains(mouse_pos))
+            //        {
+            //            Cursor.Current = Cursors.SizeNWSE;
+            //        }
+            //        else if (rects[1].Contains(mouse_pos))
+            //        {
+            //            Cursor.Current = Cursors.SizeNESW;                        
+            //        }
+            //        else if (rects[2].Contains(mouse_pos))
+            //        {
+            //            Cursor.Current = Cursors.SizeNWSE;
+            //        }
+            //        else if (rects[3].Contains(mouse_pos))
+            //        {
+            //            Cursor.Current = Cursors.SizeNESW;
+            //        }
+            //        else if (r.rect.Contains(mouse_pos))
+            //        {
+            //            Cursor.Current = Cursors.SizeAll;
+            //        }
+            //        else
+            //            Cursor.Current = Cursors.Default;
+            //    }
+            //}
+            //catch
+            //{
+            //}
         }
 
 
@@ -281,24 +281,21 @@ namespace UIEditor
 
         bool IsOverSelectedRect(int x, int y)
         {
-            TextureRegion r = GetSelectedItem();
+            //TextureRegion r = GetSelectedItem();
 
-            if (r != null)
-            {
-                if (RectParts.None != TestMouseHover(r.GetRect(0,0,scale), mouse_x, mouse_y))
-                    return true;
-            }
+            //if (r != null)
+            //{
+            //    if (RectParts.None != TestMouseHover(r.GetRect(0,0,scale), mouse_x, mouse_y))
+            //        return true;
+            //}
             return false;
         }             
    
-        TextureRegion GetSelectedItem()
-        {
-            return listBox1.SelectedItem as TextureRegion;
-        }
+
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            TextureRegion r = GetSelectedItem();
+            TextureRegion r = null;// GetSelectedItem();
 
             if (r != null)
             {                
@@ -320,15 +317,6 @@ namespace UIEditor
                 }
             }
 
-            if (old_hovered_item != -1)
-            {
-                if (listBox1.SelectedIndex != old_hovered_item)
-                {
-                    listBox1.SelectedIndex = old_hovered_item;
-                    pictureBox1.Invalidate();
-                    return;
-                }
-            }
         }
 
 
@@ -369,25 +357,7 @@ namespace UIEditor
 
             IsMouseOverSelectedBox();
 
-            foreach (TextureRegion r in listBox1.Items)
-            {
-                if (r.GetRect(0,0,scale).Contains(new Point(mouse_x, mouse_y)))
-                {
-                    int i = listBox1.Items.IndexOf(r);
-                    if (old_hovered_item != i)
-                    {
-                        old_hovered_item = i;
-                        pictureBox1.Invalidate();
-                    }
-                    return;
-                }
-            }
 
-            if (old_hovered_item != -1)
-            {
-                old_hovered_item = -1;
-                pictureBox1.Invalidate();
-            }
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
@@ -474,7 +444,7 @@ namespace UIEditor
             TextureRegion rec = new TextureRegion();
             owner.Tag = rec;
             rec.tag = owner;
-            propertyGrid1.SelectedObject = rec;
+            //propertyGrid1.SelectedObject = rec;
             owner.ForeColor = Color.Blue;
             rec.name = owner.Text;
             owner.ImageIndex = 0;
@@ -527,7 +497,6 @@ namespace UIEditor
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            propertyGrid1.SelectedObject = e.Node.Tag;
             regionName.Text = e.Node.FullPath;
         }
 
@@ -550,7 +519,6 @@ namespace UIEditor
             if (e.Node.Tag == null) return;
             TextureRegion reg = (TextureRegion)e.Node.Tag;
             reg.name = e.Label;
-            propertyGrid1.SelectedObject = reg;
         }
 
         private void saveToolStripButton_Click(object sender, EventArgs e)
