@@ -12,11 +12,38 @@ namespace Rgde.Contols
 {
     public partial class LayoutEditor : UserControl
     {
+        enum RectParts
+        {
+            Body,
+            LeftTopSizer,
+            RightTopSizer,
+            RightDownSizer,
+            LeftDownSizer,
+            None
+        };
+
+        class AppState
+        {
+            public enum Action
+            {
+                None,
+                Moving,
+                Resizing
+            };
+
+            public Action action = Action.None;
+            public RectParts rect_part = RectParts.None;
+        };
+
+        AppState m_state = new AppState();
+
         Image m_image = null;
         Rectangle m_visible_rect = new Rectangle();
         float m_scale = 1.0f;
-
-        ArrayList regions = new ArrayList();//TextureRegion
+        
+        List<UI.TextureRegion> regions = new List<UI.TextureRegion>();
+        List<UI.TextureRegion> hovered_regions = new List<UI.TextureRegion>();
+        List<UI.TextureRegion> selected_regions = new List<UI.TextureRegion>();
 
         public LayoutEditor()
         {
@@ -50,93 +77,164 @@ namespace Rgde.Contols
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            int dx = (int)((e.X - old_x) / m_scale);
+            int dy = (int)((e.Y - old_y) / m_scale);
+
+            int delta_x = e.X - old_x;
+            int delta_y = e.Y - old_y;
+
+            old_x = e.X;
+            old_y = e.Y;
+
+            bool need_to_redraw = hovered_regions.Count > 0;
+            hovered_regions.Clear();
+
+            if (e.Button == MouseButtons.Right && null != m_image)
             {
-                int delta_x = e.X - old_x;
-                int delta_y = e.Y - old_y;
-
-                old_x = e.X;
-                old_y = e.Y;
-
-                m_visible_rect.X -= (int)(delta_x * m_scale);
-                m_visible_rect.Y -= (int)(delta_y * m_scale);
+                m_visible_rect.X -= (int)(delta_x / m_scale);
+                m_visible_rect.Y -= (int)(delta_y / m_scale);
 
                 ClampRect();
 
                 UpdateScroolBarsVisibility();
-                Invalidate();
+                need_to_redraw = true;
             }
 
             base.OnMouseMove(e);
+
+            if (e.Button == MouseButtons.None)
+            {
+                int mouse_x = e.X;
+                int mouse_y = e.Y;
+
+                float x = (float)m_visible_rect.X;
+                float y = (float)m_visible_rect.Y;
+
+                foreach (UI.TextureRegion r in regions)
+                {
+                    if (r.GetRect(x, y, m_scale).Contains(new Point(mouse_x, mouse_y)))
+                    {
+                        hovered_regions.Add(r);
+                    }
+                }
+
+                if (hovered_regions.Count > 0)
+                    need_to_redraw = true;
+
+                SetCursor(mouse_x, mouse_y);
+            }
+
+            if (m_state.action != AppState.Action.None)
+            {
+                if (m_state.action == AppState.Action.Resizing)
+                {
+                    switch (m_state.rect_part)
+                    {
+                        case RectParts.LeftTopSizer:
+                            UpdateRegion(dx, dy, -dx, -dy);
+                            need_to_redraw = true;
+                            break;
+                        case RectParts.RightTopSizer:
+                            UpdateRegion(0, dy, dx, -dy);
+                            need_to_redraw = true;
+                            break;
+                        case RectParts.RightDownSizer:
+                            UpdateRegion(0, 0, dx, dy);
+                            need_to_redraw = true;
+                            break;
+                        case RectParts.LeftDownSizer:
+                            UpdateRegion(dx, 0, -dx, dy);
+                            need_to_redraw = true;
+                            break;
+                    }
+                }
+                else if (m_state.action == AppState.Action.Moving)
+                {
+                    UpdateRegion(dx, dy, 0, 0);
+                    need_to_redraw = true;
+                }
+            }
+
+            if (need_to_redraw)
+                Invalidate();
         }
 
-        //protected override void OnMouseMove(MouseEventArgs e)
+        void UpdateRegion(int dx, int dy, int dwidth, int dheight)
+        {
+            foreach (UI.TextureRegion r in selected_regions)
+            {
+                if (r == null) continue;
+
+                if (MouseButtons == MouseButtons.Left)
+                {
+                    r.rect.X += dx;
+                    r.rect.Y += dy;
+                    r.rect.Width += dwidth;
+                    r.rect.Height += dheight;
+                }
+            }
+        }
+
+        //private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         //{
-        //    int dx = (int)((e.X - old_x) / scale);
-        //    int dy = (int)((e.Y - old_y) / scale);
+        //    TextureRegion r = GetSelectedItem();
 
-        //    mouse_x = e.X;
-        //    mouse_y = e.Y;
-
-        //    if (m_state.action != AppState.Action.None)
+        //    if (r != null)
         //    {
-        //        if (m_state.action == AppState.Action.Resizing)
-        //        {
-        //            switch (m_state.rect_part)
-        //            {
-        //                case RectParts.LeftTopSizer:
-        //                    UpdateSelection(dx, dy, -dx, -dy);
-        //                    break;
-        //                case RectParts.RightTopSizer:
-        //                    UpdateSelection(0, dy, dx, -dy);
-        //                    break;
-        //                case RectParts.RightDownSizer:
-        //                    UpdateSelection(0, 0, dx, dy);
-        //                    break;
-        //                case RectParts.LeftDownSizer:
-        //                    UpdateSelection(dx, 0, -dx, dy);
-        //                    break;
-        //            }
-        //        }
-        //        else if (m_state.action == AppState.Action.Moving)
-        //        {
-        //            UpdateSelection(dx, dy, 0, 0);
-        //        }
-        //        return;
-        //    }
+        //        RectParts p = TestMouseHover(r.GetRect(scale), mouse_x, mouse_y);
 
-        //    IsMouseOverSelectedBox();
+        //        m_state.rect_part = p;
 
-        //    foreach (TextureRegion r in listBox1.Items)
-        //    {
-        //        if (r.GetRect(scale).Contains(new Point(mouse_x, mouse_y)))
+        //        switch (p)
         //        {
-        //            int i = listBox1.Items.IndexOf(r);
-        //            if (old_hovered_item != i)
-        //            {
-        //                old_hovered_item = i;
-        //                pictureBox1.Invalidate();
-        //            }
-        //            return;
+        //            case RectParts.Body:
+        //                m_state.action = AppState.Action.Moving;
+        //                return;
+        //            case RectParts.LeftDownSizer:
+        //            case RectParts.LeftTopSizer:
+        //            case RectParts.RightDownSizer:
+        //            case RectParts.RightTopSizer:
+        //                m_state.action = AppState.Action.Resizing;
+        //                return;
         //        }
         //    }
 
         //    if (old_hovered_item != -1)
         //    {
-        //        old_hovered_item = -1;
-        //        pictureBox1.Invalidate();
+        //        if (listBox1.SelectedIndex != old_hovered_item)
+        //        {
+        //            listBox1.SelectedIndex = old_hovered_item;
+        //            pictureBox1.Invalidate();
+        //            return;
+        //        }
         //    }
         //}
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
+
+            bool need_to_redraw = selected_regions.Count > 0;
+
             if (e.Button == MouseButtons.Right)
             {
                 Cursor = Cursors.Hand;
                 old_x = e.X;
                 old_y = e.Y;
             }
+            else
+            {
+                selected_regions.Clear();
+
+                foreach (UI.TextureRegion r in hovered_regions)
+                {
+                    selected_regions.Add(r);
+                    need_to_redraw = true;
+                }
+            }
+
+            if (need_to_redraw)
+                Invalidate();            
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
@@ -159,18 +257,24 @@ namespace Rgde.Contols
             m_visible_rect.Y = max_y > m_image.Height ? m_image.Height - m_visible_rect.Height : m_visible_rect.Y;
         }
 
-
+        void RecalcVisibleRect()
+        {
+            m_visible_rect.Height = (int)(ClientRectangle.Height / m_scale);
+            m_visible_rect.Width = (int)(ClientRectangle.Width / m_scale);
+        }
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
 
+            if (null == m_image)
+                return;
+
             m_scale += e.Delta / 2000.0f;
             m_scale = m_scale < 0.05f ? 0.05f : m_scale; //min scale
             //m_scale = m_scale > 1.0f ? 1.0f : m_scale;
 
-            m_visible_rect.Height = (int)(m_scale*ClientRectangle.Height);
-            m_visible_rect.Width = (int)(m_scale*ClientRectangle.Width);
+            RecalcVisibleRect();
 
             if (m_visible_rect.Height > m_image.Height || m_visible_rect.Width > m_image.Width)
             {
@@ -178,14 +282,13 @@ namespace Rgde.Contols
                 {
                     m_visible_rect.Height = m_image.Height;
                     m_scale = (1.0f * m_visible_rect.Height) / ClientRectangle.Height;
-                    m_visible_rect.Width = (int)(m_scale * ClientRectangle.Width);
                 }
                 else
                 {
                     m_visible_rect.Width = m_image.Width;
                     m_scale = (1.0f * m_visible_rect.Width) / ClientRectangle.Width;
-                    m_visible_rect.Height = (int)(m_scale * ClientRectangle.Height);
                 }
+                RecalcVisibleRect();
             }
 
             ClampRect();
@@ -263,13 +366,22 @@ namespace Rgde.Contols
 
         private void DrawBoxes(System.Drawing.Graphics g)
         {
-            //int x = (int)(mouse_x / Scale);
-            //int y = (int)(mouse_y / Scale);
-            //Point p = new Point(x, y);
+            float x = (float)m_visible_rect.X;
+            float y = (float)m_visible_rect.Y;
 
             foreach (UI.TextureRegion r in regions)
             {
-                r.Draw(g, Scale, r.IsMouseOver());//IsMouseHovered(r));
+                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Normal);
+            }
+
+            foreach (UI.TextureRegion r in hovered_regions)
+            {
+                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Hovered);
+            }
+
+            foreach (UI.TextureRegion r in selected_regions)
+            {
+                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Selected);
             }
         }
 
@@ -326,6 +438,49 @@ namespace Rgde.Contols
             }
 
             DrawBoxes(e.Graphics);
+        }
+
+        void SetCursor(int x, int y)
+        {
+            try
+            {
+                float ox = (float)m_visible_rect.X;
+                float oy = (float)m_visible_rect.Y;
+
+                foreach (UI.TextureRegion r in selected_regions)
+                {
+                    Rectangle rect = r.GetRect(ox, oy, m_scale);
+                    Rectangle[] rects = UI.TextureRegion.GetSelectionRectangles(rect);
+
+                    Point mouse_pos = new Point(x, y);
+
+                    if (rects[0].Contains(mouse_pos))
+                    {
+                        Cursor.Current = Cursors.SizeNWSE;
+                    }
+                    else if (rects[1].Contains(mouse_pos))
+                    {
+                        Cursor.Current = Cursors.SizeNESW;
+                    }
+                    else if (rects[2].Contains(mouse_pos))
+                    {
+                        Cursor.Current = Cursors.SizeNWSE;
+                    }
+                    else if (rects[3].Contains(mouse_pos))
+                    {
+                        Cursor.Current = Cursors.SizeNESW;
+                    }
+                    else if (rect.Contains(mouse_pos))
+                    {
+                        Cursor.Current = Cursors.SizeAll;
+                    }
+                    else
+                        Cursor.Current = Cursors.Default;
+                }
+            }
+            catch
+            {
+            }
         }
     }
 }

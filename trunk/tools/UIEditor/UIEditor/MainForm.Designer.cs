@@ -47,15 +47,11 @@ namespace UIEditor
             this.addRectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.treeViewImageList = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-            this.pictureBox1 = new System.Windows.Forms.Panel();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.toolStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -134,12 +130,6 @@ namespace UIEditor
             // 
             this.splitContainer1.Panel1.Controls.Add(this.treeView1);
             this.splitContainer1.Panel1.Controls.Add(this.panel1);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.propertyGrid1);
-            this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
-            this.splitContainer1.Panel2.Controls.Add(this.listBox1);
             this.splitContainer1.Size = new System.Drawing.Size(763, 419);
             this.splitContainer1.SplitterDistance = 167;
             this.splitContainer1.TabIndex = 2;
@@ -155,10 +145,10 @@ namespace UIEditor
             this.treeView1.ImageIndex = 0;
             this.treeView1.ImageList = this.treeViewImageList;
             this.treeView1.LabelEdit = true;
-            this.treeView1.Location = new System.Drawing.Point(0, 85);
+            this.treeView1.Location = new System.Drawing.Point(0, 189);
             this.treeView1.Name = "treeView1";
             this.treeView1.SelectedImageIndex = 0;
-            this.treeView1.Size = new System.Drawing.Size(167, 334);
+            this.treeView1.Size = new System.Drawing.Size(167, 230);
             this.treeView1.TabIndex = 1;
             this.treeView1.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCollapse);
             this.treeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView1_AfterLabelEdit);
@@ -230,45 +220,8 @@ namespace UIEditor
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(167, 85);
+            this.panel1.Size = new System.Drawing.Size(167, 189);
             this.panel1.TabIndex = 0;
-            // 
-            // propertyGrid1
-            // 
-            this.propertyGrid1.Location = new System.Drawing.Point(448, 182);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(141, 234);
-            this.propertyGrid1.TabIndex = 1;
-            this.propertyGrid1.Visible = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.AutoScroll = true;
-            this.pictureBox1.BackColor = System.Drawing.SystemColors.ControlText;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox1.Location = new System.Drawing.Point(230, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(212, 186);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.MouseLeave += new System.EventHandler(this.pictureBox1_MouseLeave);
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
-            this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
-            // 
-            // listBox1
-            // 
-            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
-            "region1",
-            "region2",
-            "region3"});
-            this.listBox1.Location = new System.Drawing.Point(448, 3);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(141, 171);
-            this.listBox1.TabIndex = 0;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // numericUpDown1
             // 
@@ -317,7 +270,6 @@ namespace UIEditor
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
@@ -337,8 +289,6 @@ namespace UIEditor
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
         private System.Windows.Forms.ToolStripTextBox regionName;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Panel pictureBox1;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TreeView treeView1;
@@ -349,7 +299,6 @@ namespace UIEditor
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addRectToolStripMenuItem;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.ImageList treeViewImageList;
         private System.Windows.Forms.TrackBar trackBar1;
     }

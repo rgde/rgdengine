@@ -69,21 +69,15 @@ namespace UIEditor
             splitContainer1.Panel2.Controls.Add(layout_editor);
             layout_editor.Dock = DockStyle.Fill;
 
-            //pictureBox1.MouseWheel += new MouseEventHandler(pictureBox1_MouseWheel);
-            //pictureBox1.MouseEnter += new EventHandler(pictureBox1_MouseEnter);
-
             layout_editor.MouseWheel += new MouseEventHandler(pictureBox1_MouseWheel);
             layout_editor.MouseEnter += new EventHandler(pictureBox1_MouseEnter);
 
-            //layout_editor.MouseDown += new EventHandler(pictureBox1_MouseDown);
-            layout_editor.MouseLeave += new EventHandler(pictureBox1_MouseLeave);
-            //layout_editor.MouseMove += new EventHandler(pictureBox1_MouseMove);
-            //layout_editor.MouseUp += new EventHandler(pictureBox1_MouseUp);        
+            layout_editor.MouseLeave += new EventHandler(pictureBox1_MouseLeave);       
         }
 
         void pictureBox1_MouseEnter(object sender, EventArgs e)
         {
-            pictureBox1.Focus();            
+            layout_editor.Focus();            
         }
 
         float scale = 1.0f;
@@ -91,7 +85,6 @@ namespace UIEditor
         void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
             scale += e.Delta / 10000.0f;
-            pictureBox1.Invalidate();
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -190,7 +183,7 @@ namespace UIEditor
         {
             int x = (int)(mouse_x);
             int y = (int)(mouse_y);
-            return RectParts.None != TestMouseHover(r.GetRect(scale), x, y);
+            return RectParts.None != TestMouseHover(r.GetRect(0,0,scale), x, y);
         }
 
         private void DrawBoxes(System.Drawing.Graphics g)
@@ -201,7 +194,7 @@ namespace UIEditor
 
             foreach(TextureRegion r in listBox1.Items)
             {
-                r.Draw(g, scale, IsMouseHovered(r));
+                r.Draw(g, scale, IsMouseHovered(r) ? TextureRegion.DrawMode.Hovered : TextureRegion.DrawMode.Normal);
             }
         }
 
@@ -229,7 +222,7 @@ namespace UIEditor
                 {
                     TextureRegion r = GetSelectedItem();
 
-                    Rectangle[] rects = TextureRegion.GetSelectionRectangles(r.GetRect(scale));
+                    Rectangle[] rects = TextureRegion.GetSelectionRectangles(r.GetRect(0,0,scale));
 
                     Point mouse_pos = new Point(x, y);
 
@@ -292,7 +285,7 @@ namespace UIEditor
 
             if (r != null)
             {
-                if (RectParts.None != TestMouseHover(r.GetRect(scale), mouse_x, mouse_y))
+                if (RectParts.None != TestMouseHover(r.GetRect(0,0,scale), mouse_x, mouse_y))
                     return true;
             }
             return false;
@@ -309,7 +302,7 @@ namespace UIEditor
 
             if (r != null)
             {                
-                RectParts p = TestMouseHover(r.GetRect(scale), mouse_x, mouse_y);
+                RectParts p = TestMouseHover(r.GetRect(0,0,scale), mouse_x, mouse_y);
 
                 m_state.rect_part = p;
 
@@ -378,7 +371,7 @@ namespace UIEditor
 
             foreach (TextureRegion r in listBox1.Items)
             {
-                if (r.GetRect(scale).Contains(new Point(mouse_x, mouse_y)))
+                if (r.GetRect(0,0,scale).Contains(new Point(mouse_x, mouse_y)))
                 {
                     int i = listBox1.Items.IndexOf(r);
                     if (old_hovered_item != i)

@@ -27,26 +27,33 @@ namespace Rgde.Contols.UI
 
         public bool IsSelected() { return selected; }
 
-        public Rectangle GetRect(float scale)
+        public Rectangle GetRect(float x, float y, float scale)
         {
-            int pos_x = (int)(rect.X * scale);
-            int pos_y = (int)(rect.Y * scale);
+            int pos_x = (int)((rect.X - x) * scale);
+            int pos_y = (int)((rect.Y - y) * scale);
             int width = (int)(rect.Width * scale);
             int height = (int)(rect.Height * scale);
             Rectangle frect = new Rectangle(pos_x, pos_y, width, height);
             return frect;
         }
 
-        public void Draw(System.Drawing.Graphics g, float scale, bool hovered)
+        public enum DrawMode
         {
-            Rectangle frect = GetRect(scale);
+            Normal,
+            Hovered,
+            Selected
+        };
+
+        public void Draw(System.Drawing.Graphics g, float scale, float x, float y, DrawMode mode)
+        {
+            Rectangle frect = GetRect(x, y, scale);
 
             g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            int pen_width = hovered ? 3 : 1;
+            int pen_width = mode == DrawMode.Hovered || mode == DrawMode.Selected ? 3 : 1;
 
-            if (selected)
+            if (mode == DrawMode.Selected)
             {
                 g.DrawRectangle(new Pen(Color.Red, pen_width), frect);
 
@@ -57,6 +64,11 @@ namespace Rgde.Contols.UI
             {
                 g.DrawRectangle(new Pen(Color.RoyalBlue, pen_width), frect);
             }
+        }
+
+        public void Draw(System.Drawing.Graphics g, float scale, DrawMode mode)
+        {
+            Draw(g, scale, 0, 0, mode);
         }
 
         public bool IsMouseOver()
