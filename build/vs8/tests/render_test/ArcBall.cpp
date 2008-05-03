@@ -44,7 +44,7 @@ namespace rgde
 			//Return a vector to a point mapped inside the sphere sqrt(radius squared - length)
 			new_vec[0] = TempPt[0];
 			new_vec[1] = TempPt[1];
-			new_vec[2] = sqrtf(1.0f - length);
+			new_vec[2] = -sqrtf(1.0f - length);
 		}
 	}
 
@@ -76,10 +76,9 @@ namespace rgde
 		map2sphere(x, y, EnVec);
 
 		//Return the quaternion equivalent to the rotation
-		math::vec3f Perp;
-
 		//Compute the vector perpendicular to the begin and end vectors	
-		Perp = math::makeCross(StVec, EnVec);
+		//math::vec3f Perp = math::makeCross(StVec, EnVec);
+		math::vec3f Perp = math::makeCross(EnVec, StVec);
 
 		//Compute the length of the perpendicular vector
 		if (math::length(Perp) > 0.0001f)    //if its non-zero
@@ -87,14 +86,15 @@ namespace rgde
 			//We're ok, so return the perpendicular vector as the transform after all
 			m_quaternion[0] = Perp[0];
 			m_quaternion[1] = Perp[1];
-			m_quaternion[2] = Perp[2];
+			m_quaternion[2] = -Perp[2];
 			//In the quaternion values, w is cosine (theta / 2), where theta is rotation angle
-			m_quaternion[3] = math::dot(StVec, EnVec);
+			m_quaternion[3] = -math::dot(StVec, EnVec);
 		}
 		else                                    //if its zero
 		{
 			//The begin and end vectors coincide, so return an identity transform
-			m_quaternion = math::QUAT_ADD_IDENTITYF; // (0,0,0,0);
+			//m_quaternion = math::QUAT_ADD_IDENTITYF; // (0,0,0,0);
+			m_quaternion = math::QUAT_IDENTITYF;
 		}
 
 		math::normalize(m_accum_quaternion);
@@ -103,5 +103,7 @@ namespace rgde
 		m_accum_quaternion *= m_quaternion;
 
 		math::set(m_matrix, m_accum_quaternion);
+
+		math::transpose(m_matrix);
 	}
 }

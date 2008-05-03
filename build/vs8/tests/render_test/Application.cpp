@@ -121,20 +121,22 @@ void Application::run()
 
 			matWorld = math::MAT_IDENTITY44F;
 
-			m_device.set_transform( rgde::render::view_transform, m_camera.getViewMatrix() );
-			m_device.set_transform( rgde::render::world_transform, getWorldMatrix() );	// Set The Transformation
+			m_device.set_transform( render::view_transform, m_camera.getViewMatrix());
+			m_device.set_transform( render::world_transform, /*getWorldMatrix()*/ m_arc_ball.get_matrix());	// Set The Transformation
+			//m_device.set_transform( render::view_transform, m_arc_ball.get_matrix());
+			//m_arc_ball
 
 			m_device.frame_begin();
 			//m_device.clear(Grey);
 			m_device.clear(0x00595979);
 			m_device.set_stream_source( 0, m_vb, sizeof(tVertex) );
 
-			m_device.draw( rgde::render::triangle_strip,  0, 2 ); // Draw Front
-			m_device.draw( rgde::render::triangle_strip,  4, 2 ); // Draw Back
-			m_device.draw( rgde::render::triangle_strip,  8, 2 ); // Draw Top
-			m_device.draw( rgde::render::triangle_strip,  12, 2 ); // Draw Bottom
-			m_device.draw( rgde::render::triangle_strip,  16, 2 ); // Draw Right
-			m_device.draw( rgde::render::triangle_strip,  20, 2 ); // Draw Left
+			m_device.draw( render::triangle_strip,  0, 2 ); // Draw Front
+			m_device.draw( render::triangle_strip,  4, 2 ); // Draw Back
+			m_device.draw( render::triangle_strip,  8, 2 ); // Draw Top
+			m_device.draw( render::triangle_strip,  12, 2 ); // Draw Bottom
+			m_device.draw( render::triangle_strip,  16, 2 ); // Draw Right
+			m_device.draw( render::triangle_strip,  20, 2 ); // Draw Left
 
 			m_font->render(L"Hello", rect(10,10,100,100),Red, true);
 			m_device.frame_end();
@@ -184,6 +186,8 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 
 			int xPos = LOWORD(lparam); 
 			int yPos = HIWORD(lparam); 
+
+			m_arc_ball.click(xPos, yPos);
 		}
 		return 0;
 
@@ -227,8 +231,9 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 				int dx = xPos - old_x;
 				int dy = yPos - old_y;
 
-				m_camera.rotateRight(-dx/100.0f);
-				m_camera.rotateUp(dy/100.0f);
+				//m_arc_ball.drag(dx, dy);
+				//m_camera.rotateRight(-dx/100.0f);
+				//m_camera.rotateUp(dy/100.0f);
 			}
 
 			old_x = xPos;
@@ -247,7 +252,7 @@ void Application::resize_scene(unsigned int width, unsigned int height)
 	}
 
 	m_camera.setProjection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
-	m_device.set_transform( rgde::render::projection_transform, m_camera.getProjMatrix());
+	m_device.set_transform( render::projection_transform, m_camera.getProjMatrix());
 }
 
 bool Application::do_events()
