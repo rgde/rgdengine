@@ -71,8 +71,12 @@ namespace Rgde.Contols
 
         protected override void AdjustFormScrollbars(bool displayScrollbars)
         {
-            HorizontalScroll.Value = m_visible_rect.X;
-            VerticalScroll.Value = m_visible_rect.Y;
+            try
+            {
+                HorizontalScroll.Value = m_visible_rect.X;
+                VerticalScroll.Value = m_visible_rect.Y;
+            }
+            catch{}
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -181,22 +185,7 @@ namespace Rgde.Contols
 
         //    if (r != null)
         //    {
-        //        RectParts p = TestMouseHover(r.GetRect(scale), mouse_x, mouse_y);
 
-        //        m_state.rect_part = p;
-
-        //        switch (p)
-        //        {
-        //            case RectParts.Body:
-        //                m_state.action = AppState.Action.Moving;
-        //                return;
-        //            case RectParts.LeftDownSizer:
-        //            case RectParts.LeftTopSizer:
-        //            case RectParts.RightDownSizer:
-        //            case RectParts.RightTopSizer:
-        //                m_state.action = AppState.Action.Resizing;
-        //                return;
-        //        }
         //    }
 
         //    if (old_hovered_item != -1)
@@ -209,6 +198,41 @@ namespace Rgde.Contols
         //        }
         //    }
         //}
+
+        RectParts TestMouseHover(UI.TextureRegion r, int x, int y)
+        {
+
+            float ox = (float)m_visible_rect.X;
+            float oy = (float)m_visible_rect.Y;
+            
+            Rectangle rect = r.GetRect(ox, oy, m_scale);
+            Rectangle[] rects = UI.TextureRegion.GetSelectionRectangles(rect);
+
+            Point mouse_pos = new Point(x, y);
+
+            if (rects[0].Contains(mouse_pos))
+            {
+                return RectParts.LeftTopSizer;
+            }
+            else if (rects[1].Contains(mouse_pos))
+            {
+                return RectParts.RightTopSizer;
+            }
+            else if (rects[2].Contains(mouse_pos))
+            {
+                return RectParts.RightDownSizer;
+            }
+            else if (rects[3].Contains(mouse_pos))
+            {
+                return RectParts.LeftDownSizer;
+            }
+            else if (rect.Contains(mouse_pos))
+            {
+                return RectParts.Body;
+            }
+            else
+                return RectParts.None;
+        }
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
@@ -230,6 +254,23 @@ namespace Rgde.Contols
                 {
                     selected_regions.Add(r);
                     need_to_redraw = true;
+
+                    RectParts p = TestMouseHover(r, e.X, e.Y);
+
+                    m_state.rect_part = p;
+
+                    switch (p)
+                    {
+                        case RectParts.Body:
+                            m_state.action = AppState.Action.Moving;
+                            return;
+                        case RectParts.LeftDownSizer:
+                        case RectParts.LeftTopSizer:
+                        case RectParts.RightDownSizer:
+                        case RectParts.RightTopSizer:
+                            m_state.action = AppState.Action.Resizing;
+                            return;
+                    }
                 }
             }
 
@@ -442,6 +483,7 @@ namespace Rgde.Contols
 
         void SetCursor(int x, int y)
         {
+            return;
             try
             {
                 float ox = (float)m_visible_rect.X;

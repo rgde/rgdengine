@@ -27,6 +27,11 @@ namespace Rgde.Contols.UI
 
         public bool IsSelected() { return selected; }
 
+        public Rectangle GetRect(float scale)
+        {
+            return GetRect(0, 0, scale);
+        }
+
         public Rectangle GetRect(float x, float y, float scale)
         {
             int pos_x = (int)((rect.X - x) * scale);
@@ -84,7 +89,7 @@ namespace Rgde.Contols.UI
             int width = r.Width;
             int height = r.Height;
 
-            const int half_size = 6;
+            const int half_size = 3;
             const int full_size = half_size * 2;
 
             Rectangle r1 = new Rectangle(pos_x - half_size, pos_y - half_size, full_size, full_size);
