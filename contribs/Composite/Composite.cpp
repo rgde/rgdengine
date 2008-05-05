@@ -375,6 +375,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	meta::type_information_ptr ti = storage.get_module("engine").types["test"];
 
+	__asm nop;
+
 	// что еще надо:
 	//1
 	// бинд конструкторов
