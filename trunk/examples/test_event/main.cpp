@@ -8,15 +8,15 @@ struct CClickEvent
     int x,y;
 };
 
-struct CButton: public event::CSender
+struct CButton: public event::Sender
 {
     void Click (int x, int y)
     {
-        sendEvent<CClickEvent>( CClickEvent(x,y) );
+        send_event( CClickEvent(x,y) );
     }
 };
 
-struct CMenu: public event::CListener
+struct CMenu: public event::Listener
 {
     CButton btnExit;
     CButton btnHelp;
