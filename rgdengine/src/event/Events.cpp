@@ -7,11 +7,11 @@ namespace event
 {
 	namespace
 	{
-		class CListManagers
+		class ListManagers
 		{
 		public:
-			CListManagers() {}
-			~CListManagers() {}
+			ListManagers() {}
+			~ListManagers() {}
 
 			//отписать данного получателя ото всех менеджеров
 			void unsubscribeAll (BaseListener *pListener);
@@ -57,7 +57,7 @@ namespace event
 	}
 
     //отписать данного получателя ото всех менеджеров
-    void CListManagers::unsubscribeAll(BaseListener *pListener)
+    void ListManagers::unsubscribeAll(BaseListener *pListener)
     {
         std::list<BaseEventsManager*>::iterator i = m_managers.begin();
         while (i != m_managers.end())
@@ -68,13 +68,13 @@ namespace event
     }
 
     //менеджер добавляет себя в общий список менеджеров
-    void CListManagers::addManager (BaseEventsManager *pManager)
+    void ListManagers::addManager (BaseEventsManager *pManager)
     {
         m_managers.push_back(pManager);
     }
 
     //менеджер удаляет себя из общего списка менеджеров
-    void CListManagers::delManager (BaseEventsManager *pManager)
+    void ListManagers::delManager (BaseEventsManager *pManager)
     {
         std::list<BaseEventsManager*>::iterator i = m_managers.begin();
         while (i != m_managers.end())

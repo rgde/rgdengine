@@ -123,7 +123,7 @@ namespace particles{
 		//m_bIsJustCreated = true;
 		m_fCycleTime = 5.0f;
 		m_bIsCycling = true;
-		m_fTimeShift = 0.0f;
+		m_time_shift = 0.0f;
 
 		m_fCurrentTime = 0.0f;
 		m_bIsVisible = true; 
@@ -139,7 +139,7 @@ namespace particles{
 		//addProperty(new TProperty<float>(m_fCycleTime,			"CycleTime",	"float"));
 		//addProperty(new TProperty<bool>(m_bIsCycling,			"IsCycling",	"bool"));
 		//addProperty(new TProperty<bool>(m_bIsVisible,			"IsVisible",	"bool"));
-		//addProperty(new TProperty<float>(m_fTimeShift,			"fTimeShift",	"float"));
+		//addProperty(new TProperty<float>(m_time_shift,			"fTimeShift",	"float"));
 		//
 		//addProperty(new TProperty<math::FloatInterp>(m_PMass,		"PMass",	"FloatInterp"));
 		//addProperty(new TProperty<math::FloatInterp>(m_PMassSpread,	"PMassSpread",	"FloatInterp"));
@@ -200,8 +200,8 @@ namespace particles{
 		wf	<< m_fCycleTime
 			<< m_bIsCycling
 			<< m_bIsVisible
-			<< m_fTimeShift
-			<< m_strName
+			<< m_time_shift
+			<< m_name
 			<< (m_PMass)
 			<< (m_PMassSpread)
 			<< (m_PAcceleration)
@@ -223,8 +223,8 @@ namespace particles{
 		rf	>> m_fCycleTime
 			>> m_bIsCycling
 			>> m_bIsVisible
-			>> m_fTimeShift
-			>> m_strName
+			>> m_time_shift
+			>> m_name
 			>> (m_PMass)
 			>> (m_PMassSpread)
 			>> (m_PAcceleration)

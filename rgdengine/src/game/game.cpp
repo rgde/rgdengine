@@ -46,7 +46,7 @@ namespace game
 				std::string nextlevel = level->Attribute("nextlevel");
 
 				//добавить уровень
-				CLevel* pLevel = new game::CLevel(name,nextlevel);
+				Level* pLevel = new game::Level(name,nextlevel);
 				addLevel(name,nextlevel);
 
 				//прочитать список объектов, которые должен создать уровень	
@@ -76,15 +76,15 @@ namespace game
         }
 
         //добавляем уровень
-		CLevel* pLevel = new game::CLevel(name,nextlevel);
+		Level* pLevel = new game::Level(name,nextlevel);
 		m_listLevels.push_back(pLevel);
     }
 
     //написана отдельная функция, лишь бы не давать доступа к
-    //укзателю на CLevel: у программиста есть доступ только по имени уровня
+    //укзателю на Level: у программиста есть доступ только по имени уровня
     void CGame::addLevelTypeToCreate(const std::string &name, const std::string& type_name)
     {
-        CLevel *pLevel = getLevel(name);
+        Level *pLevel = getLevel(name);
 
         //если такого уровня нет
         if (!pLevel)
@@ -118,7 +118,7 @@ namespace game
 
 		m_listDynamicObjects.clear();
 
-		CLevel* pCurrentLevel = getLevel(m_strCurrentLevel);
+		Level* pCurrentLevel = getLevel(m_strCurrentLevel);
 		if (0 != pCurrentLevel)
 			pCurrentLevel->leave();
 
@@ -138,7 +138,7 @@ namespace game
 	void CGame::onCompliteLevel(CCompliteLevelEvent)
 	{
 		std::string strNextLevel;
-		CLevel *pLevel = getLevel(m_strCurrentLevel);
+		Level *pLevel = getLevel(m_strCurrentLevel);
 
 		if (0 != pLevel)
 			strNextLevel = pLevel->getNextLevel();
@@ -175,7 +175,7 @@ namespace game
 		//сменим уровень (если надо)
 		if (m_bChangeLevel)
 		{
-			CLevel* pCurrentLevel = getLevel(m_strCurrentLevel);
+			Level* pCurrentLevel = getLevel(m_strCurrentLevel);
 
 			if (0 != pCurrentLevel)
 				pCurrentLevel->leave();
@@ -227,11 +227,11 @@ namespace game
 		m_listDynamicObjects.remove(pObject);
 	}
 
-	CLevel* CGame::getLevel(std::string strName)
+	Level* CGame::getLevel(std::string name)
 	{
-		for(std::list<CLevel*>::iterator i = m_listLevels.begin(); i != m_listLevels.end(); ++i)
+		for(std::list<Level*>::iterator i = m_listLevels.begin(); i != m_listLevels.end(); ++i)
 		{
-			if ((*i)->getName() == strName)
+			if ((*i)->getName() == name)
 				return (*i);
 		}
 		return 0;

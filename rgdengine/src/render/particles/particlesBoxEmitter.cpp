@@ -12,7 +12,7 @@ namespace particles
 	//-----------------------------------------------------------------------------------
 	IBoxEmitter::IBoxEmitter() : IAbstractEmitter(IEmitter::Box)
 	{
-		m_strName = "BoxEmitter";
+		m_name = "BoxEmitter";
 
 		m_BoxSize.addKey(1, math::Vec3f(3, 3, 3) );
 
@@ -45,13 +45,13 @@ namespace particles
 		math::Vec3f direction_rand = m_DirectionSpread(m_fTimeNormalaized);
 
 		math::Matrix44f m = getTransform().getFullTransform();
-		render::CLine3dManager& pLine3dManager = render::Line3dManager::Get();
-		pLine3dManager.addBox( m, (math::Vec3f)(size + size_rand), math::Color(0, 255, 0, 255) );
-		pLine3dManager.addBox( m, (math::Vec3f)(size - size_rand), math::Color(0, 255, 0, 255) );
+		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
+		line_manager.addBox( m, (math::Vec3f)(size + size_rand), math::Color(0, 255, 0, 255) );
+		line_manager.addBox( m, (math::Vec3f)(size - size_rand), math::Color(0, 255, 0, 255) );
 
-		pLine3dManager.addBox( m, size, math::Color(0, 255, 0, 255) );
+		line_manager.addBox( m, size, math::Color(0, 255, 0, 255) );
 
-		pLine3dManager.addDirection( m, direction, math::Color(0, 255, 0, 255) );
+		line_manager.addDirection( m, direction, math::Color(0, 255, 0, 255) );
 	}
 
 	//-----------------------------------------------------------------------------------

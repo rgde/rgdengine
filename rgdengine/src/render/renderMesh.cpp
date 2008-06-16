@@ -42,7 +42,7 @@ namespace render
 		{
 			for (SubMeshes::iterator it = m_sub_meshes.begin(); it != m_sub_meshes.end(); ++it)
 			{
-				SIndexedSubMeshInfo &minfo	= *it;
+				IndexedSubMeshInfo &minfo	= *it;
 				PMaterial m					= mlist[minfo.nMaterialIndex];
 
 				m_geometry->render(m_ePrimType, minfo.nBaseVertexIndex, minfo.nMinIndex, minfo.nNumVertices, minfo.nStartIndex, minfo.nPrimitiveCount);
@@ -92,47 +92,47 @@ namespace render
 	//Neonic: octree
 	void Mesh::updateTree( bool NeedFullUpdate )
 	{
-		if( !getRoot() )
-		{
-		//	// calc global AABB from OOB
-		//	AABoxf global_aabb;
-		//	Matrix44f m = m_pFrame.get()->getFullTransform();
-		//	float	Xmax = m_renderInfo.bbox.getMax()[0],
-		//			Ymax = m_renderInfo.bbox.getMax()[1],
-		//			Zmax = m_renderInfo.bbox.getMax()[2],
-		//			Xmin = m_renderInfo.bbox.getMin()[0],
-		//			Ymin = m_renderInfo.bbox.getMin()[1],
-		//			Zmin = m_renderInfo.bbox.getMin()[2];
-		////(MAX/min)
-		//	extendVolume(global_aabb,m*Point3f(Xmax,Ymax,Zmax));	// XYZ
-		//	extendVolume(global_aabb,m*Point3f(Xmax,Ymax,Zmin));	// XYz
-		//	extendVolume(global_aabb,m*Point3f(Xmax,Ymin,Zmax));	// XyZ
-		//	extendVolume(global_aabb,m*Point3f(Xmax,Ymin,Zmin));	// Xyz
-		//	extendVolume(global_aabb,m*Point3f(Xmin,Ymax,Zmax));	// xYZ
-		//	extendVolume(global_aabb,m*Point3f(Xmin,Ymax,Zmin));	// xYz
-		//	extendVolume(global_aabb,m*Point3f(Xmin,Ymin,Zmax));	// xyZ
-		//	extendVolume(global_aabb,m*Point3f(Xmin,Ymin,Zmin));	// xyz
+		//if( !getRoot() )
+		//{
+		////	// calc global AABB from OOB
+		////	AABoxf global_aabb;
+		////	Matrix44f m = m_pFrame.get()->getFullTransform();
+		////	float	Xmax = m_renderInfo.bbox.getMax()[0],
+		////			Ymax = m_renderInfo.bbox.getMax()[1],
+		////			Zmax = m_renderInfo.bbox.getMax()[2],
+		////			Xmin = m_renderInfo.bbox.getMin()[0],
+		////			Ymin = m_renderInfo.bbox.getMin()[1],
+		////			Zmin = m_renderInfo.bbox.getMin()[2];
+		//////(MAX/min)
+		////	extendVolume(global_aabb,m*Point3f(Xmax,Ymax,Zmax));	// XYZ
+		////	extendVolume(global_aabb,m*Point3f(Xmax,Ymax,Zmin));	// XYz
+		////	extendVolume(global_aabb,m*Point3f(Xmax,Ymin,Zmax));	// XyZ
+		////	extendVolume(global_aabb,m*Point3f(Xmax,Ymin,Zmin));	// Xyz
+		////	extendVolume(global_aabb,m*Point3f(Xmin,Ymax,Zmax));	// xYZ
+		////	extendVolume(global_aabb,m*Point3f(Xmin,Ymax,Zmin));	// xYz
+		////	extendVolume(global_aabb,m*Point3f(Xmin,Ymin,Zmax));	// xyZ
+		////	extendVolume(global_aabb,m*Point3f(Xmin,Ymin,Zmin));	// xyz
 
-			math::AABoxf global_aabb = m_renderInfo.bbox;
-			collision::calcAABB(getFullTransform(),global_aabb);
-			setAABB(global_aabb);
-			//Neonic: корректируем динамические меши в пространстве 
-			if(isDynamic())
-				updatePos();
-			scene::TheScene::Get().inject(this);
-		}
-		else 
-		if( NeedFullUpdate )
-		{
-			math::AABoxf global_aabb = m_renderInfo.bbox;
-			collision::calcAABB(getFullTransform(),global_aabb);
-			setAABB(global_aabb);
-			scene::TheScene::Get().inject(this);
-		}
-		else
-		{
-			move(getGlobalPosition()+m_renderInfo.bsphere.getCenter());
-		}
+		//	math::AABoxf global_aabb = m_renderInfo.bbox;
+		//	collision::calcAABB(getFullTransform(),global_aabb);
+		//	setAABB(global_aabb);
+		//	//Neonic: корректируем динамические меши в пространстве 
+		//	if(isDynamic())
+		//		updatePos();
+		//	scene::TheScene::Get().inject(this);
+		//}
+		//else 
+		//if( NeedFullUpdate )
+		//{
+		//	math::AABoxf global_aabb = m_renderInfo.bbox;
+		//	collision::calcAABB(getFullTransform(),global_aabb);
+		//	setAABB(global_aabb);
+		//	scene::TheScene::Get().inject(this);
+		//}
+		//else
+		//{
+		//	move(getGlobalPosition()+m_renderInfo.bsphere.getCenter());
+		//}
 	};
 
 	void Mesh::setEffect(PEffect spShader)

@@ -4,7 +4,7 @@
 
 namespace math
 {
-	typedef boost::intrusive_ptr<class CBaseCamera> PCamera;
+	typedef boost::intrusive_ptr<class BaseCamera> PCamera;
 }
 
 namespace render

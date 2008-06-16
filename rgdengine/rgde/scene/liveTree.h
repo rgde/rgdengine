@@ -43,11 +43,11 @@ namespace live_tree
 		unsigned			m_Flags;
 	};
 
-	class CTObject;
+	class TreeObject;
 	class CTBranch;
 	class CTRoot;
 
-	typedef boost::intrusive_ptr<CTObject> PObject;
+	typedef boost::intrusive_ptr<TreeObject> PObject;
 
 	typedef std::vector<PObject>			Array;
 	typedef std::map<PObject, Point3f>		Sorted;
@@ -58,17 +58,17 @@ namespace live_tree
 
 	////////////////////////////////////////////////////////////////////////
 	// 
-	// CTObject
+	// TreeObject
 	//
 	////////////////////////////////////////////////////////////////////////
 
-	class CTObject
-		: virtual public base::CBaseRefCounted
+	class TreeObject
+		: virtual public base::BaseRefCounted
 	{
 	public:
 
-		CTObject( void );
-		virtual ~CTObject( void ) ;
+		TreeObject( void );
+		virtual ~TreeObject( void ) ;
 
 		// get object AABB
 		AABoxf					getAABB( void );
@@ -183,7 +183,7 @@ namespace live_tree
 	////////////////////////////////////////////////////////////////////////
 
 	class CTRoot
-		: virtual public base::CBaseRefCounted
+		: virtual public base::BaseRefCounted
 	{
 	public:
 		// ext is maximum tree extents, base is minimum container size

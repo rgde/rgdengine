@@ -14,7 +14,7 @@ extern LPDIRECT3DDEVICE9 g_pd3dDevice;
 
 namespace render
 {
-	void getAnnotation(ID3DXEffect* pEffect, D3DXHANDLE hParentHandle, int id, IEffect::SAnnotation& annotation)
+	void getAnnotation(ID3DXEffect* pEffect, D3DXHANDLE hParentHandle, int id, IEffect::Annotation& annotation)
 	{
 		D3DXHANDLE hAnnotationHandle = pEffect->GetAnnotation(hParentHandle, id);
 					
@@ -77,21 +77,21 @@ namespace render
 			m_pEffect->GetParameterDesc(paramHandle, &paramDesc);
 
 			m_eType = (EType)paramDesc.Type;
-			m_strName = paramDesc.Name;
+			m_name = paramDesc.Name;
 			m_nSize = paramDesc.Bytes;
 
 			if (NULL != paramDesc.Semantic)
 				m_strSemantic = paramDesc.Semantic;
 			else
-				m_strSemantic = m_strName;
+				m_strSemantic = m_name;
 
-			m_Handle = m_pEffect->GetParameterByName(NULL, m_strName.c_str());
+			m_Handle = m_pEffect->GetParameterByName(NULL, m_name.c_str());
 
 			//base::lmsg << "Annotations: " << paramDesc.Annotations;
 
 			for(unsigned int i = 0; i < paramDesc.Annotations; i++)
 			{
-				IEffect::SAnnotation annotation;
+				IEffect::Annotation annotation;
 				getAnnotation(m_pEffect, m_Handle, i, annotation);
 				m_vecAnnotations.push_back(annotation);
 			}
@@ -105,7 +105,7 @@ namespace render
 		
 		const std::string& getName() const
 		{
-			return m_strName;
+			return m_name;
 		}
 
 		const std::string& getSemantic() const
@@ -244,19 +244,19 @@ namespace render
 			return true;
 		}
 
-		bool set(const PTexture& pTexture)
+		bool set(const PTexture& texture)
 		{
 			ITexture* pTex = NULL;
-			if (pTexture) pTex = pTexture.get();
+			if (texture) pTex = texture.get();
 
 			if (pTex != NULL)
 			{
-				CTextureImpl *pTexImpl = static_cast<CTextureImpl*>(pTex);
+				TextureImpl *pTexImpl = static_cast<TextureImpl*>(pTex);
 				//base::lmsg << "bind texture: " << pTexImpl->getFileName();
 				IDirect3DTexture9* pDxTex = pTexImpl->getDxTexture();
 				if (FAILED(m_pEffect->SetTexture(m_Handle, pDxTex)))
 				{
-					base::lwrn << "EffectParam::set(PTexture pTexture) failed.";
+					base::lwrn << "EffectParam::set(PTexture texture) failed.";
 					return false;
 				}
 			}
@@ -264,7 +264,7 @@ namespace render
 			{
 				if (FAILED(m_pEffect->SetTexture(m_Handle, NULL)))
 				{
-					base::lwrn << "EffectParam::set(PTexture pTexture = NULL) failed.";
+					base::lwrn << "EffectParam::set(PTexture texture = NULL) failed.";
 					return false;
 				}
 			}
@@ -351,7 +351,7 @@ namespace render
 
 	private:
 		ID3DXEffect* m_pEffect;
-		std::string m_strName;
+		std::string m_name;
 		std::string m_strSemantic;
 		unsigned int m_nSize;
 		EType m_eType;
@@ -380,9 +380,9 @@ namespace render
 					base::lerr << "Unable to get pass description";
 
 				m_nCurrentPass = index;
-				m_strName = passDesc.Name;
+				m_name = passDesc.Name;
 
-				//base::lmsg << "Pass name: " << m_strName;
+				//base::lmsg << "Pass name: " << m_name;
 
 				//------------------------------------------------------------------------------
 				// ATTENTION: Number of pass annotations is zero, when the pass name is exist !!
@@ -392,7 +392,7 @@ namespace render
 
 				for (unsigned int i = 0; i < passDesc.Annotations; i ++)
 				{
-					IEffect::SAnnotation annotation;
+					IEffect::Annotation annotation;
 					getAnnotation(m_pEffect, pass, i, annotation);
 					m_vecAnnotations.push_back(annotation);
 				}
@@ -420,7 +420,7 @@ namespace render
 
 			const std::string& getName() const
 			{
-				return m_strName;
+				return m_name;
 			}
 
 			IEffect::AnnotationsVector& getAnnotations()
@@ -429,7 +429,7 @@ namespace render
 			}
 		private:
 			unsigned int m_nCurrentPass;
-			std::string m_strName;
+			std::string m_name;
 			ID3DXEffect* m_pEffect;
 			IEffect::AnnotationsVector m_vecAnnotations;
 		};
@@ -452,7 +452,7 @@ namespace render
 				m_arPasses.push_back(pass);
 			}
 
-			m_strName = Desc.Name;
+			m_name = Desc.Name;
 			m_nPasses = Desc.Passes;
 			m_nAnnotations = Desc.Annotations;
 
@@ -460,7 +460,7 @@ namespace render
 
 			for (unsigned int i = 0; i < Desc.Annotations; i ++)
 			{
-				IEffect::SAnnotation annotation;
+				IEffect::Annotation annotation;
 				getAnnotation(m_pEffect, techniqueHandle, i, annotation);
 				m_vecAnnotations.push_back(annotation);
 			}
@@ -480,7 +480,7 @@ namespace render
 
 		const std::string& getName() const
 		{
-			return m_strName;
+			return m_name;
 		}
 
 		IEffect::AnnotationsVector& getAnnotations()
@@ -493,7 +493,7 @@ namespace render
 			//guard(Technique::begin())
 			if(NULL != m_pEffect)
 			{
-				m_pEffect->SetTechnique(m_strName.c_str());
+				m_pEffect->SetTechnique(m_name.c_str());
 				unsigned int numPasses = 0;
 				m_pEffect->Begin(&numPasses, 0);
 			}
@@ -514,7 +514,7 @@ namespace render
 		}
 	private:
 		ID3DXEffect* m_pEffect;
-		std::string m_strName;
+		std::string m_name;
 		D3DXTECHNIQUE_DESC Desc;
 		unsigned int m_nPasses;
 		unsigned int m_nAnnotations;
@@ -550,14 +550,14 @@ namespace render
 				}	
 			}
 
-			m_strName = effect_name;
+			m_name = effect_name;
 
 			ID3DXBuffer* pErrors;
 
 			try{
 				io::CFileSystem& fs = io::TheFileSystem::Get();
 				io::ScopePathAdd p("Common/shaders/");
-				io::PReadStream in = fs.findFile(m_strName);
+				io::PReadStream in = fs.findFile(m_name);
 
 				if (!in)
 				{
@@ -570,7 +570,7 @@ namespace render
 
 				V(D3DXCreateEffect(g_pd3dDevice, (void*)&(data[0]), (uint)data.size() , NULL, NULL, TheDevice::Get().getShaderFlags(), 
 					m_spPool, &m_pEffect, &pErrors));
-				//V(D3DXCreateEffectFromFile( g_pd3dDevice, m_strName.c_str() , NULL, NULL, Device::Get().getShaderFlags(), 
+				//V(D3DXCreateEffectFromFile( g_pd3dDevice, m_name.c_str() , NULL, NULL, Device::Get().getShaderFlags(), 
 				//	m_spPool, &m_pEffect, &pErrors));
 			}
 			catch(...)
@@ -644,7 +644,7 @@ namespace render
 
 		const std::string& getName() const
 		{
-			return m_strName;
+			return m_name;
 		}
 
 		Parameters& getParams()
@@ -676,7 +676,7 @@ namespace render
 	protected:
 		static LPD3DXEFFECTPOOL m_spPool;
 		static int m_sNumEffects;
-		std::string				m_strName;
+		std::string				m_name;
 		Parameters m_mapParameters;
 		Techniques m_listTechniques;
 	};

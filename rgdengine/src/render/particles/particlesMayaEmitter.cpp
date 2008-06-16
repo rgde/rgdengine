@@ -34,10 +34,10 @@ namespace particles{
 
 		m_bIsFading				= false;
 
-		m_bVisible				= false;
+		m_is_visible				= false;
 		m_bCycling				= false;
 
-		m_fTimeShift			= 0;
+		m_time_shift			= 0;
 
 		m_fLastFrame			= 0;
 		m_fLastTime				= -1.0f;
@@ -73,9 +73,9 @@ namespace particles{
 
 		//		try
 		//		{
-		//			m_pTexture.load(m_TexName);
-		//			m_pTexture.setFilterMode(agl::filter_Linear);
-		//			ms_Textures[m_TexName]  = m_pTexture;
+		//			m_texture.load(m_TexName);
+		//			m_texture.setFilterMode(agl::filter_Linear);
+		//			ms_Textures[m_TexName]  = m_texture;
 		//		}
 		//		catch (...)
 		//		{
@@ -83,7 +83,7 @@ namespace particles{
 		//	}
 		//	else
 		//	{
-		//		m_pTexture = it->second;
+		//		m_texture = it->second;
 		//	}
 
 		//	std::string ext_path = std::string::Concat(
@@ -109,7 +109,7 @@ namespace particles{
 		//		m_bIsAnimTextureUsed = false;
 		//}
 
-		m_pTexture = render::ITexture::Create(m_TexName);// std::wstring(m_TexName.begin(), m_TexName.end()) );
+		m_texture = render::ITexture::Create(m_TexName);// std::wstring(m_TexName.begin(), m_TexName.end()) );
 		m_bIsTexLoaded = true;
 	}
 	//-----------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ namespace particles{
 
 		m_fLastFrame += dt * m_cTexFps;//25.0f;
 
-		if (!(m_fLastFrame < m_fTimeShift + m_Frames->size()))
+		if (!(m_fLastFrame < m_time_shift + m_Frames->size()))
 		{
 			if (m_bCycling) 
 			{
@@ -128,7 +128,7 @@ namespace particles{
 			}
 			else
 			{
-				m_bVisible = false;
+				m_is_visible = false;
 				return;
 			}
 		}
@@ -136,10 +136,10 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void IMayaEmitter::render()
 	{
-		if (!(m_bVisible && m_bIsSeqLoaded))
+		if (!(m_is_visible && m_bIsSeqLoaded))
 			return;
 
-		int frame_to_render = (int)(m_fLastFrame - m_fTimeShift);
+		int frame_to_render = (int)(m_fLastFrame - m_time_shift);
 		if (frame_to_render < 0) return;
 
 		render((unsigned int)frame_to_render);
@@ -209,10 +209,10 @@ namespace particles{
 			for (unsigned int i = 0; i < fseq.frames.size(); ++i)
 			{
 				SFrame& m_spFrame = fseq.frames[i];
-				PPTank spTank(new CPTank);
+				PPTank spTank(new PTank);
 				psyst[i] = spTank;
 
-				CPTank::ParticleArray& array = spTank->getParticles();
+				PTank::ParticleArray& array = spTank->getParticles();
 
 				array.resize( m_spFrame.number_of_particles );
 				for ( unsigned int pn = 0; pn < m_spFrame.number_of_particles; ++pn )
@@ -285,14 +285,14 @@ namespace particles{
 	{
 		PTanks& Frames = *m_Frames;
 		PPTank spTank = Frames[(unsigned int)frame_num];
-		spTank->render(m_pTexture, m_Transform);
+		spTank->render(m_texture, m_Transform);
 	}
 	//----------------------------------------------------------------------------------------
 	void IMayaEmitter::debugDraw()
 	{
 		m_Transform.debugDraw();
 
-		unsigned frame_num = (int)(m_fLastFrame - m_fTimeShift);
+		unsigned frame_num = (int)(m_fLastFrame - m_time_shift);
 		if (frame_num < 0) return;
 
 		PFramesIter& it = ms_PFrames.find(m_Name);
@@ -302,19 +302,19 @@ namespace particles{
 
 		math::Matrix44f m = m_Transform.getFullTransform();
 
-		render::CLine3dManager& pLine3dManager = render::Line3dManager::Get();
+		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
 
 		PPTank spTank = psyst[frame_num];
-		CPTank::ParticleArray& array = spTank->getParticles();
+		PTank::ParticleArray& array = spTank->getParticles();
 
-		for ( CPTank::ParticleArrayIter it = array.begin(); it != array.end(); ++it )
+		for ( PTank::ParticleArrayIter it = array.begin(); it != array.end(); ++it )
 		{
 			//if (!m_bIsGlobal)
 			math::Vec3f center = m * (math::Point3f)it->pos;
 			//else
 			//	center = it->pos;
 
-			pLine3dManager.addQuad( center, it->size, it->spin );	
+			line_manager.addQuad( center, it->size, it->spin );	
 		}
 	}
 	//-----------------------------------------------------------------------------------
@@ -330,9 +330,9 @@ namespace particles{
 		std::string seqName;
 		rf	>> seqName
 			>> m_TexName
-			>> m_fTimeShift
+			>> m_time_shift
 			>> m_bIntense
-			>> m_bVisible
+			>> m_is_visible
 			>> m_bCycling
 			>> m_cTexFps;
 		
@@ -341,7 +341,7 @@ namespace particles{
 
 		setIntense(m_bIntense);
 		setCycling( m_bCycling );
-		setVisible( m_bVisible );
+		setVisible( m_is_visible );
 	}
 	//-----------------------------------------------------------------------------------
 	void IMayaEmitter::toStream(io::IWriteStream& wf) const
@@ -351,9 +351,9 @@ namespace particles{
 		wf  << ms_nVersion
 			<< m_Name
 			<< m_TexName
-			<< m_fTimeShift
+			<< m_time_shift
 			<< m_bIntense
-			<< m_bVisible
+			<< m_is_visible
 			<< m_bCycling
 			<< m_cTexFps;
 	}

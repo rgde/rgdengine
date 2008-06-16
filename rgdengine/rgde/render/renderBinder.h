@@ -120,9 +120,9 @@ namespace render
 		//PType is type of parameter to be set to shader
 		template <class PType>
 		bool addParameter(typename Types<PType>::ParamType val,
-						  const std::string& strName)
+						  const std::string& name)
 		{
-			IEffect::IParameter* param = getParameter(strName);
+			IEffect::IParameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
@@ -134,9 +134,9 @@ namespace render
 
 		template <class PType>
 		bool addParameter(const typename Types<PType>::GetFunction& f,
-						  const std::string& strName)
+						  const std::string& name)
 		{
-			IEffect::IParameter* param = getParameter(strName);
+			IEffect::IParameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
@@ -148,9 +148,9 @@ namespace render
 
 		template <class PType>
 		bool addParameter(const typename Types<PType>::ParamTypeGetFunction& f,
-						  const std::string& strName)
+						  const std::string& name)
 		{
-			IEffect::IParameter* param = getParameter(strName);
+			IEffect::IParameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
@@ -195,10 +195,10 @@ namespace render
 			return (typename Types<PType>::EffectSetFunction) &IEffect::IParameter::set;
 		}
 
-		IEffect::IParameter* getParameter(const std::string& strName) const
+		IEffect::IParameter* getParameter(const std::string& name) const
 		{
 			const IEffect::Parameters& params = m_pEffect->getParams();
-			IEffect::Parameters::const_iterator it = params.find(strName);
+			IEffect::Parameters::const_iterator it = params.find(name);
 
 			IEffect::IParameter* result = NULL;
 
@@ -221,13 +221,13 @@ namespace render
 	};
 	//Dynamic binder is used to setup 'dynamic' parameters,
 	//i.e. parameters which change from object to object.
-	typedef TBinder<math::PFrame> CDynamicBinder;
-	typedef CDynamicBinder::PBinder PDynamicBinder;
+	typedef TBinder<math::PFrame> DynamicBinder;
+	typedef DynamicBinder::PBinder PDynamicBinder;
 
 	//Static binder is used to setup 'static' parameters,
 	//i.e. parameters which are the same for all objects.
 	//We don't need any parameters for this binder so let's
 	//use int.
-	typedef TBinder<int> CStaticBinder;
-	typedef CStaticBinder::PBinder PStaticBinder;
+	typedef TBinder<int> StaticBinder;
+	typedef StaticBinder::PBinder PStaticBinder;
 }

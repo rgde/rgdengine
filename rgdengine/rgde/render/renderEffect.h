@@ -11,12 +11,12 @@ namespace render
 	class IEffect
 	{
 	public:
-		struct SAnnotation
+		struct Annotation
 		{
 			std::string name;
 			std::string value;
 		};
-		typedef std::vector<SAnnotation> AnnotationsVector;
+		typedef std::vector<Annotation> AnnotationsVector;
 
 		class IParameter
 		{

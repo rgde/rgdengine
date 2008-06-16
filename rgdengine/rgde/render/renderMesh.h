@@ -4,16 +4,13 @@
 #include <rgde/render/renderManager.h>
 #include <rgde/render/renderGeometry.h>
 
-#include <rgde/physic/collider.h>
-
 namespace render
 {
-	class Mesh : public math::CFrame
+	class Mesh : public math::Frame
 				, public render::IRendererable
-				, public collision::CCollisionObject
 	{
 	public:
-		struct SIndexedSubMeshInfo		
+		struct IndexedSubMeshInfo		
 		{
 			unsigned int nMaterialIndex;
 			unsigned int nBaseVertexIndex;
@@ -26,7 +23,7 @@ namespace render
 		typedef TIndexedGeometry<vertex::MeshVertex, false> Geometry;
 		typedef boost::shared_ptr<Geometry>					PGeometry;
 		typedef std::vector<PMaterial>						MaterialList;
-		typedef std::vector<SIndexedSubMeshInfo>			SubMeshes;
+		typedef std::vector<IndexedSubMeshInfo>			SubMeshes;
 
 		Mesh();
 		~Mesh();

@@ -2,15 +2,9 @@
 
 #include <rgde/render/renderTexture.h>
 
-//#ifndef MAKEFOURCC
-//#define MAKEFOURCC(ch0, ch1, ch2, ch3)                              \
-//	((DWORD)(BYTE)(ch0) | ((DWORD)(BYTE)(ch1) << 8) |       \
-//	((DWORD)(BYTE)(ch2) << 16) | ((DWORD)(BYTE)(ch3) << 24 ))
-//#endif
-
 namespace render
 {
-	struct SRenderTargetInfo
+	struct RenderTargetInfo
 	{
 		math::Vec2i		size;
 		TextureFormat	format;
@@ -30,6 +24,6 @@ namespace render
 	class IRenderTexture : public IRenderTarget, public ITexture
 	{
 	public:
-		static PRenderTexture Create(const SRenderTargetInfo& params);
+		static PRenderTexture Create(const RenderTargetInfo& params);
 	};
 }

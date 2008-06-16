@@ -2,14 +2,14 @@
 
 namespace math
 {
-	class CBaseCamera;
-	class CFrustum 
+	class BaseCamera;
+	class Frustum 
 	{
 	public:
-		CFrustum();
+		Frustum();
 
 		/// Call this every time the camera moves to update the frustum
-		void CalculateFrustum(const CBaseCamera& pCam);
+		void CalculateFrustum(const BaseCamera& pCam);
 
 		/// This takes a 3D point and returns TRUE if it's inside of the frustum
 		bool PointInFrustum(float x, float y, float z) const;

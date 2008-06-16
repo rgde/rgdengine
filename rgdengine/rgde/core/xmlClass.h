@@ -7,10 +7,10 @@
 
 namespace core
 {
-	class XmlClass :  public CPropertyOwner, 
-					  public CFunctionsOwner, 
+	class XmlClass :  public PropertyOwner, 
+					  public FunctionsOwner, 
 					  public virtual NamedObject, 
-					  public virtual base::CBaseRefCounted
+					  public virtual base::BaseRefCounted
 	{
 	public:
 		XmlClass(const std::string& name) : NamedObject(name)

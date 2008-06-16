@@ -4,7 +4,7 @@
 
 namespace render
 {
-	class CFader
+	class Fader
 	{
 	public:
 		enum Mode
@@ -22,8 +22,8 @@ namespace render
 			Disabled
 		};
 
-		CFader();
-		CFader(const std::string& strFileName);
+		Fader();
+		Fader(const std::string& strFileName);
 
 		void               setColor(const math::Color& color);
 		const math::Color& getColor() const {return m_color;}

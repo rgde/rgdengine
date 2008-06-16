@@ -6,25 +6,25 @@
 namespace game
 {
 	//базовый класс уровня
-	class CLevel : public core::CFunctionsOwner
+	class Level : public core::FunctionsOwner
 	{
 	public:
-		CLevel(const std::string& name, const std::string& next_level);
-		~CLevel();
+		Level(const std::string& name, const std::string& next_level);
+		~Level();
 
 		void addTypeToCreate(const std::string& type_name);	//добавление типа для создания
 		void enter();											//инициализация уровня
 		void leave();											//деинициализация уровня
 
 		//узнать имя уровня
-		const std::string& getName() const		{return m_strName;}
+		const std::string& getName() const		{return m_name;}
 		//узнать имя следущего уровня
 		const std::string& getNextLevel() const {return m_strNextLevel;}
 
 	private:
 		std::list<ILevelObject*> m_listLevelObjs; //список объектов, которые созданы уровнем
 		std::list<std::string>   m_listTypes;     //типы объектов которые надо создать
-		std::string              m_strName;       //имя уровня
+		std::string              m_name;       //имя уровня
 		std::string              m_strNextLevel;  //имя уровня, который должен быть следующим
 	};
 }

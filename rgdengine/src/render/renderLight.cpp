@@ -70,9 +70,9 @@ namespace render
 		m_bEnabled = bEnabled;
 	}
 
-	//CPointLight
-	CPointLight::CPointLight(const std::string &strName)
-		: ILight(strName, ILight::Point)
+	//PointLight
+	PointLight::PointLight(const std::string &name)
+		: ILight(name, ILight::Point)
 	{
 		m_fRange                = 0.0f;
 		m_fConstantAttenuation  = 1.0f;
@@ -80,53 +80,53 @@ namespace render
 		m_fQuadraticAttenuation = 0.0f;
 	}
 
-	CPointLight::~CPointLight()
+	PointLight::~PointLight()
 	{
 	}
 
-	float CPointLight::getRange() const
+	float PointLight::getRange() const
 	{
 		return m_fRange;
 	}
 
-	void CPointLight::setRange(float fRange)
+	void PointLight::setRange(float fRange)
 	{
 		m_fRange = fRange;
 	}
 
-	float CPointLight::getConstantAttenuation() const
+	float PointLight::getConstantAttenuation() const
 	{
 		return m_fConstantAttenuation;
 	}
 
-	void CPointLight::setConstantAttenuation(float fConstantAttenuation)
+	void PointLight::setConstantAttenuation(float fConstantAttenuation)
 	{
 		m_fConstantAttenuation = fConstantAttenuation;
 	}
 
-	float CPointLight::getLinearAttenuation() const
+	float PointLight::getLinearAttenuation() const
 	{
 		return m_fLinearAttenuation;
 	}
 
-	void CPointLight::setLinearAttenuation(float fLinearAttenuation)
+	void PointLight::setLinearAttenuation(float fLinearAttenuation)
 	{
 		m_fLinearAttenuation = fLinearAttenuation;
 	}
 
-	float CPointLight::getQuadraticAttenuation() const
+	float PointLight::getQuadraticAttenuation() const
 	{
 		return m_fQuadraticAttenuation;
 	}
 
-	void CPointLight::setQuadraticAttenuation(float fQuadraticAttenuation)
+	void PointLight::setQuadraticAttenuation(float fQuadraticAttenuation)
 	{
 		m_fQuadraticAttenuation = fQuadraticAttenuation;
 	}
 
-	//CSpotLight
-	CSpotLight::CSpotLight(const std::string &strName)
-		: ILight(strName, ILight::Spot)
+	//SpotLight
+	SpotLight::SpotLight(const std::string &name)
+		: ILight(name, ILight::Spot)
 	{
 		m_fRange   = 0.0f;
 		m_fConstantAttenuation  = 1.0f;
@@ -137,87 +137,87 @@ namespace render
 		m_fPhi     = 0.0f;
 	}
 
-	CSpotLight::~CSpotLight()
+	SpotLight::~SpotLight()
 	{
 	}
 
-	float CSpotLight::getRange() const
+	float SpotLight::getRange() const
 	{
 		return m_fRange;
 	}
 
-	void CSpotLight::setRange(float fRange)
+	void SpotLight::setRange(float fRange)
 	{
 		m_fRange = fRange;
 	}
 
-	float CSpotLight::getConstantAttenuation() const
+	float SpotLight::getConstantAttenuation() const
 	{
 		return m_fConstantAttenuation;
 	}
 
-	void CSpotLight::setConstantAttenuation(float fConstantAttenuation)
+	void SpotLight::setConstantAttenuation(float fConstantAttenuation)
 	{
 		m_fConstantAttenuation = fConstantAttenuation;
 	}
 
-	float CSpotLight::getLinearAttenuation() const
+	float SpotLight::getLinearAttenuation() const
 	{
 		return m_fLinearAttenuation;
 	}
 
-	void CSpotLight::setLinearAttenuation(float fLinearAttenuation)
+	void SpotLight::setLinearAttenuation(float fLinearAttenuation)
 	{
 		m_fLinearAttenuation = fLinearAttenuation;
 	}
 
-	float CSpotLight::getQuadraticAttenuation() const
+	float SpotLight::getQuadraticAttenuation() const
 	{
 		return m_fQuadraticAttenuation;
 	}
 
-	void CSpotLight::setQuadraticAttenuation(float fQuadraticAttenuation)
+	void SpotLight::setQuadraticAttenuation(float fQuadraticAttenuation)
 	{
 		m_fQuadraticAttenuation = fQuadraticAttenuation;
 	}
 
-	float CSpotLight::getFalloff() const
+	float SpotLight::getFalloff() const
 	{
 		return m_fFalloff;
 	}
 
-	void CSpotLight::setFalloff(float fFalloff)
+	void SpotLight::setFalloff(float fFalloff)
 	{
 		m_fFalloff = fFalloff;
 	}
 
-	float CSpotLight::getTheta() const
+	float SpotLight::getTheta() const
 	{
 		return m_fTheta;
 	}
 
-	void CSpotLight::setTheta(float fTheta)
+	void SpotLight::setTheta(float fTheta)
 	{
 		m_fTheta = fTheta;
 	}
 
-	float CSpotLight::getPhi() const
+	float SpotLight::getPhi() const
 	{
 		return m_fPhi;
 	}
 
-	void CSpotLight::setPhi(float fPhi)
+	void SpotLight::setPhi(float fPhi)
 	{
 		m_fPhi = fPhi;
 	}
 
-	//CDirectionalLight
-	CDirectionalLight::CDirectionalLight(const std::string &strName)
-		: ILight(strName, ILight::Directional)
+	//DirectionalLight
+	DirectionalLight::DirectionalLight(const std::string &name)
+		: ILight(name, ILight::Directional)
 	{
 	}
 
-	CDirectionalLight::~CDirectionalLight()
+	DirectionalLight::~DirectionalLight()
 	{
 	}
 }

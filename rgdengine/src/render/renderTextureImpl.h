@@ -5,11 +5,11 @@
 
 namespace render
 {
-	class CTextureImpl : public ITexture
+	class TextureImpl : public ITexture
 	{
 	public:
-							CTextureImpl(const std::string& file_name);
-							~CTextureImpl();
+							TextureImpl(const std::string& file_name);
+							~TextureImpl();
 
 		static PTexture		CreateFromFile(const std::string& strFileName);
 
@@ -32,11 +32,11 @@ namespace render
 		}
 
 	protected:
-		CTextureImpl() {}
+		TextureImpl() {}
 		ETextureType	convertType(D3DRESOURCETYPE d3dType);
 		
 	protected:
-		IDirect3DTexture9	*m_pTexture;	
+		IDirect3DTexture9	*m_texture;	
 		D3DSURFACE_DESC		m_desc;
 		std::string			m_strFileName;
 

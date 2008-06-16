@@ -8,7 +8,7 @@ namespace particles
 {
 
 	//-----------------------------------------------------------------------------------
-	CPTank::CPTank() : m_nReservedSize(0)
+	PTank::PTank() : m_nReservedSize(0)
 	{
 		m_spEffect = render::IEffect::Create( "particles.fxo" );
 
@@ -25,11 +25,11 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	CPTank::~CPTank()
+	PTank::~PTank()
 	{
 	}
 	//-----------------------------------------------------------------------------------
-	void CPTank::render(render::PTexture pTexture, math::CFrame& frame)
+	void PTank::render(render::PTexture texture, math::Frame& frame)
 	{
 		if( (m_nReservedSize == 0) )
 			return;
@@ -58,7 +58,7 @@ namespace particles
 		}
 
 
-		m_paramParticleTexture->set(pTexture);
+		m_paramParticleTexture->set(texture);
 		m_paramTransformMatrix->set(mLVP);
 		m_paramRightVec->set(right);
 		m_paramUpVec->set(up);
@@ -79,7 +79,7 @@ namespace particles
 		m_pRenderTechnique->end();
 	}
 	//-----------------------------------------------------------------------------------
-	void CPTank::update()
+	void PTank::update()
 	{
 		unsigned int nParticles = (unsigned int)m_vParticleArray.size();
 
@@ -152,7 +152,7 @@ namespace particles
 		m_Geometry.unlockVB();
 	}
 
-	void CPTank::setTextureTiling(int nRows, int nColumnsTotal, int nRowsTotal)
+	void PTank::setTextureTiling(int nRows, int nColumnsTotal, int nRowsTotal)
 	{
 		m_nRows = nRows;
 		m_fInvRows = 1.0f/(float)nRows;

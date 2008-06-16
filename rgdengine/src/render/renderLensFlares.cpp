@@ -10,42 +10,42 @@ namespace render
 {
 	typedef base::TSingelton<CSpriteManager, 1> TheSpriteManager2;
 
-	PLensFlares CLensFlares::Create(const std::string &strFileName, const math::PFrame &pFrame)
+	PLensFlares LensFlares::Create(const std::string &strFileName, const math::PFrame &pFrame)
 	{
-		PLensFlares p	= PLensFlares(new CLensFlares(pFrame));
+		PLensFlares p	= PLensFlares(new LensFlares(pFrame));
 
 		p->loadFromXML(strFileName);
 
 		return p;
 	}
 
-	CLensFlares::CLensFlares(math::PFrame pFrame)
+	LensFlares::LensFlares(math::PFrame pFrame)
 		: m_pFrame(pFrame)
 	{
 		m_renderInfo.pFrame = m_pFrame.get();
-		m_renderInfo.pRenderFunc = boost::bind(&CLensFlares::render, this);
+		m_renderInfo.pRenderFunc = boost::bind(&LensFlares::render, this);
 		TheSpriteManager2::Get().setAditiveBlending(true);
 	}
 
-	void CLensFlares::addFlare(const SFlare &flare, const std::string &strTextureName)
+	void LensFlares::addFlare(const Flare &flare, const std::string &strTextureName)
 	{
-		SFlare temp_flare	= flare;
-		if ((temp_flare.pTexture == NULL) && (!strTextureName.empty()))
+		Flare temp_flare	= flare;
+		if ((temp_flare.texture == NULL) && (!strTextureName.empty()))
 		{
 			io::ScopePathAdd p	("common/");
-			temp_flare.pTexture = render::ITexture::Create(strTextureName);
+			temp_flare.texture = render::ITexture::Create(strTextureName);
 		}
 		m_flares.push_back(temp_flare);
 	}
 
-	inline void CLensFlares::progressFlare(SFlare &flare, const math::Vec2f &toLightVector, float fToLightLength, float fAngle, float fAlphaScale)
+	inline void LensFlares::progressFlare(Flare &flare, const math::Vec2f &toLightVector, float fToLightLength, float fAngle, float fAlphaScale)
 	{
-		SSprite sprite;
+		Sprite sprite;
 		sprite.color = flare.color;
 		sprite.color.a = (char)((float)sprite.color.a * fAlphaScale);
 		math::Vec2f screenCenter= math::Vec2f(400.0f, 300.0f);
 		sprite.pos = toLightVector * flare.fDistance * fToLightLength + screenCenter;
-		sprite.pTexture = flare.pTexture;
+		sprite.texture = flare.texture;
 		sprite.rect = math::Rect(0.0f, 0.0f, 1.0f, 1.0f);
 		sprite.size = math::Vec2f(flare.fImageScale, flare.fImageScale);
 		sprite.spin = fAngle * flare.fAngleScale;
@@ -54,7 +54,7 @@ namespace render
 		TheSpriteManager2::Get().addSprite(sprite);
 	}
 
-	void progressNode(TiXmlNode *pNode, CLensFlares *pLensFlares)
+	void progressNode(TiXmlNode *pNode, LensFlares *pLensFlares)
 	{
 		if (NULL == pNode)
 			return;
@@ -64,7 +64,7 @@ namespace render
 		if (NULL == pElement)
 			return;
 
-		CLensFlares::SFlare flare;
+		LensFlares::Flare flare;
 		std::string strTextureName	= base::safeReadValue<std::string>(pElement, "texture", "");
 		flare.fDistance = base::safeReadValue(pElement, "distance", 0.0f);
 		flare.fImageScale = base::safeReadValue(pElement, "image_scale", 0.0f);
@@ -75,7 +75,7 @@ namespace render
 			pLensFlares->addFlare(flare, strTextureName);
 	}
 
-	void CLensFlares::loadFromXML(const std::string &strFileName)
+	void LensFlares::loadFromXML(const std::string &strFileName)
 	{
 		TiXmlDocument lens;
 
@@ -103,7 +103,7 @@ namespace render
 			progressNode(pCurrent, this);
 	}
 
-	void CLensFlares::render()
+	void LensFlares::render()
 	{
 		math::PCamera pCamera	= TheDevice::Get().getCurentCamera();
 

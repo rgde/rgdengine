@@ -10,7 +10,7 @@ using math::Color;
 
 namespace render
 {
-	Model::Model() : m_bVisible(true)
+	Model::Model() : m_is_visible(true)
 	{
 	}
 
@@ -19,7 +19,7 @@ namespace render
 		clear();
 	}
 
-	void ReadNode(TiXmlElement *elem, math::CFrame &rootFrame, Model &model);
+	void ReadNode(TiXmlElement *elem, math::Frame &rootFrame, Model &model);
 	Mesh::PGeometry ReadGeometry(const std::string& fNm);
 
 	PModel Model::Create(const std::string& strFileName)
@@ -78,7 +78,7 @@ namespace render
 				tx->Attribute("id", &m_id);
 
 				std::string str	= tx->Attribute("file");
-				m_vMaterials[m_id] = CMaterial::Create(str);
+				m_vMaterials[m_id] = Material::Create(str);
 			}
 		}
 		{
@@ -92,7 +92,7 @@ namespace render
 		updateTree();
 	}
 
-	void ReadNode(TiXmlElement *elem, math::CFrame &rootFrame, Model &model)
+	void ReadNode(TiXmlElement *elem, math::Frame &rootFrame, Model &model)
 	{
 		if (elem->Attribute("name"))
 		{
@@ -177,8 +177,8 @@ namespace render
 			// читаем всех детей
 
 			//Neonic: octree
-			if(bDynamic)
-				pMesh->makeDynamic();
+			//if(bDynamic)
+			//	pMesh->makeDynamic();
 		}
 
 		//By PC
@@ -195,7 +195,7 @@ namespace render
 
 			if(strType == "point")
 			{
-				CPointLight *pPointLight = new CPointLight(rootFrame.getName());
+				PointLight *pPointLight = new PointLight(rootFrame.getName());
 				rootFrame.addChild(pPointLight);
 
 				math::Color color;
@@ -238,7 +238,7 @@ namespace render
 		TiXmlNode *cd	= 0;
 		while (cd = elem->IterateChildren("node", cd))
 		{
-			math::PFrame child	= new math::CFrame;
+			math::PFrame child	= new math::Frame;
 			ReadNode(cd->ToElement(), *(child.get()), model);
 			rootFrame.addChild(child);
 			model.getFrames().push_back(child); // а это нафига??
@@ -273,8 +273,8 @@ namespace render
 		m_vMaterials.clear();
 		m_vFrames.clear();
 		Meshes::const_iterator i;
-		for (Meshes::const_iterator i = m_vMeshes.begin(); i != m_vMeshes.end(); ++i)
-			(*i)->eject();
+		//for (Meshes::const_iterator i = m_vMeshes.begin(); i != m_vMeshes.end(); ++i)
+		//	(*i)->eject();
 		m_vMeshes.clear();
 		m_vControllers.clear();
 	};
@@ -324,20 +324,20 @@ namespace render
 
 	bool Model::isVisible() const
 	{
-		return m_bVisible;
+		return m_is_visible;
 	}
 
 	void Model::setVisible(bool bVisible)
 	{
-		if (bVisible == m_bVisible)
+		if (bVisible == m_is_visible)
 			return;
 
-		m_bVisible = bVisible;
+		m_is_visible = bVisible;
 
 		size_t nNumMeshes	= m_vMeshes.size();
 
 		for (size_t i = 0; i < nNumMeshes; i++)
-			if (m_bVisible)
+			if (m_is_visible)
 				m_vMeshes[i]->show();
 			else
 				m_vMeshes[i]->hide();

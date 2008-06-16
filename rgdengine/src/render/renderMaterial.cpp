@@ -8,49 +8,49 @@
 
 namespace render
 {
-	void CMaterial::CMaterialMap::setTexture(const PTexture& pTexture)
+	void Material::CMaterialMap::setTexture(const PTexture& texture)
 	{
-		if (pTexture != NULL)
+		if (texture != NULL)
 		{
-			m_pTexture = pTexture;
+			m_texture = texture;
 			m_bTextureIsValid = true;
 		}
 		else
 		{
-			m_pTexture = m_pDefaultTexture;
+			m_texture = m_pDefaultTexture;
 			m_bTextureIsValid = false;
 			//m_bTextureIsValid = true;
 		}
 	}
 
-	void CMaterial::CMaterialMap::update(float fDt)
+	void Material::CMaterialMap::update(float dt)
 	{
-		m_fTime += fDt;
+		m_time += dt;
 
 		math::Matrix44f tempMatrix;
 
-		math::setTrans(tempMatrix, m_scrollSpeed * m_fTime);
+		math::setTrans(tempMatrix, m_scrollSpeed * m_time);
 		m_matrix = tempMatrix;
 
 		math::setTrans(tempMatrix, m_rotationCenter);
 		m_matrix *= tempMatrix;
 
-		math::setRot(tempMatrix, math::AxisAnglef(m_fRotationSpeed * m_fTime, math::Vec3f(0.0f, 0.0f, 1.0f)));//Is it right? (rotating around Z axis)
+		math::setRot(tempMatrix, math::AxisAnglef(m_fRotationSpeed * m_time, math::Vec3f(0.0f, 0.0f, 1.0f)));//Is it right? (rotating around Z axis)
 		m_matrix *= tempMatrix;
 
 		math::setTrans(tempMatrix, -m_rotationCenter);
 		m_matrix *= tempMatrix;
 	}
 
-	PTexture& getDefaultTextureByType(CMaterial::CMaterialMap::EDefaultTexture defaultTexture)
+	PTexture& getDefaultTextureByType(Material::CMaterialMap::EDefaultTexture defaultTexture)
 	{
 		switch (defaultTexture)
 		{
-		case CMaterial::CMaterialMap::Black:
+		case Material::CMaterialMap::Black:
 			return TheRenderManager::Get().getBlackTexture();
-		case CMaterial::CMaterialMap::White:
+		case Material::CMaterialMap::White:
 			return TheRenderManager::Get().getWhiteTexture();
-		case CMaterial::CMaterialMap::DefaultNormalMap:
+		case Material::CMaterialMap::DefaultNormalMap:
 			return TheRenderManager::Get().getDefaultNormalMap();
 		}
 
@@ -58,29 +58,29 @@ namespace render
 		return empti_texture_ptr;
 	}
 
-	CMaterial::CMaterialMap::CMaterialMap(EDefaultTexture defaultTexture)
+	Material::CMaterialMap::CMaterialMap(EDefaultTexture defaultTexture)
 	{
 		m_pDefaultTexture = getDefaultTextureByType(defaultTexture);
 		PTexture pNullTexture;
 		setTexture(pNullTexture);
 
 		m_fRotationSpeed = 0.0f;
-		m_fTime = 0.0;
+		m_time = 0.0;
 	}
 
-	PMaterial CMaterial::Create(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
+	PMaterial Material::Create(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
 	{
-		return PMaterial(new CMaterial(amb, diff, spec, em, power));
+		return PMaterial(new Material(amb, diff, spec, em, power));
 	}
 
-	PMaterial CMaterial::Create(const std::string& fileName)
+	PMaterial Material::Create(const std::string& fileName)
 	{
-		PMaterial mat = CMaterial::Create();
+		PMaterial mat = Material::Create();
 		mat->load(fileName);
 		return mat;
 	}
 
-	CMaterial::CMaterial(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
+	Material::Material(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
 		: m_ambient(amb),
 		  m_diffuse(diff),
 		  m_specular(spec),
@@ -92,15 +92,15 @@ namespace render
 		m_maps["reflection"] = CMaterialMap(CMaterialMap::Black);
 		m_maps["bump"] = CMaterialMap(CMaterialMap::DefaultNormalMap);
 		m_maps["lightmap"] = CMaterialMap();
-		//base::lmsg << "CMaterial::CMaterial()";
+		//base::lmsg << "Material::Material()";
 	}
 
-	CMaterial::~CMaterial()
+	Material::~Material()
 	{
-		//base::lmsg << "CMaterial::~CMaterial()";
+		//base::lmsg << "Material::~Material()";
 	}
 
-	bool CMaterial::isTransparent() const
+	bool Material::isTransparent() const
 	{
 		bool texHasAlpha	= false;
 		MaterialMaps::const_iterator it = m_maps.find("diffuse");
@@ -123,7 +123,7 @@ namespace render
 		return id;
 	}
 
-	TiXmlElement * assignMap(TiXmlElement *elem, std::string name, std::vector<PTexture> &textures, CMaterial::MaterialMaps &maps)
+	TiXmlElement * assignMap(TiXmlElement *elem, std::string name, std::vector<PTexture> &textures, Material::MaterialMaps &maps)
 	{
 		TiXmlElement *pMapEl= elem->FirstChildElement(name);
 		if (NULL == pMapEl)
@@ -176,7 +176,7 @@ namespace render
 		}
 	}
 
-	void CMaterial::load(const std::string& fileName)
+	void Material::load(const std::string& fileName)
 	{
 		m_file_name = fileName;
 		base::lmsg << "loading material: " << "\"" << fileName << "\"";
@@ -220,31 +220,31 @@ namespace render
 		m_fPower = 255.0f;
 	}
 
-	const CMaterial::CMaterialMap & CMaterial::getMaterialMap(const std::string &type) const
+	const Material::CMaterialMap & Material::getMaterialMap(const std::string &type) const
 	{
 		MaterialMaps::const_iterator it	= m_maps.find(type);
 		return it->second;
 	}
 
-	CMaterial::CMaterialMap & CMaterial::getMaterialMap(const std::string &type)
+	Material::CMaterialMap & Material::getMaterialMap(const std::string &type)
 	{
 		MaterialMaps::iterator it	= m_maps.find(type);
 		return it->second;
 	}
 
-	const PTexture & CMaterial::getTextureMap(const std::string &type) const
+	const PTexture & Material::getTextureMap(const std::string &type) const
 	{
 		return getMaterialMap(type).getTexture();
 	}
 
-	void CMaterial::update(float fDt)
+	void Material::update(float dt)
 	{
 		MaterialMaps::iterator it	= m_maps.begin();
 		for (; it != m_maps.end(); it++)
-			it->second.update(fDt);
+			it->second.update(dt);
 	}
 
-	void CMaterial::setEffect(const PEffect& pEffect)
+	void Material::setEffect(const PEffect& pEffect)
 	{
 		if(m_technique)
 			m_technique = NULL;
@@ -261,14 +261,14 @@ namespace render
 			base::lwrn<<"Technique \""<<techName<<"\" not found in effect \""<<pEffect->getName()<<"\".";
 	}
 
-	const PDynamicBinder& CMaterial::getDynamicBinder()
+	const PDynamicBinder& Material::getDynamicBinder()
 	{
 		if(!m_pDynamicBinder)
 			setEffect(TheRenderManager::Get().getDefaultEffect());
 		return m_pDynamicBinder;
 	}
 
-	IEffect::ITechnique* CMaterial::getTechnique() const
+	IEffect::ITechnique* Material::getTechnique() const
 	{
 		return m_technique;
 	}

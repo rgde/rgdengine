@@ -53,7 +53,7 @@ namespace render
 	{
 		using namespace math;
 		using namespace boost;
-		typedef CDynamicBinder::Types<Matrix44f>::GetFunction
+		typedef DynamicBinder::Types<Matrix44f>::GetFunction
 											GetMatrix44fFunction;
 
 		GetMatrix44fFunction getMatrixFunction;
@@ -67,47 +67,47 @@ namespace render
 		getMatrixFunction = bind(&makeWorldViewInvTranspMatrix, _1);
 		binder->addParameter<Matrix44f>(getMatrixFunction,
 										WorldViewITMatrixParamName);
-		getMatrixFunction = bind(&CFrame::getFullTransform, _1);
+		getMatrixFunction = bind(&Frame::getFullTransform, _1);
 		binder->addParameter<Matrix44f>(getMatrixFunction,
 										WorldMatrixParamName);
 	}
 
 	void addMaterialParameters(const PDynamicBinder& binder,
-							   const CMaterial& mat)
+							   const Material& mat)
 	{
 		using namespace math;
 		using namespace boost;
-		typedef CDynamicBinder::Types<math::Color>::ParamTypeGetFunction
+		typedef DynamicBinder::Types<math::Color>::ParamTypeGetFunction
 													ParamTypeGetColorFunction;
-		typedef CDynamicBinder::Types<float>::GetFunction GetFloatFunction;
+		typedef DynamicBinder::Types<float>::GetFunction GetFloatFunction;
 
 		ParamTypeGetColorFunction getColorFunction;
 		GetFloatFunction          getFloatFunction;
 
-		getColorFunction = bind(&CMaterial::getDiffuseColor, mat);
+		getColorFunction = bind(&Material::getDiffuseColor, mat);
 		binder->addParameter<Color>(getColorFunction,
 									MaterialDiffuseColorParamName);
-		getColorFunction = bind(&CMaterial::getAmbientColor, mat);
+		getColorFunction = bind(&Material::getAmbientColor, mat);
 		binder->addParameter<Color>(getColorFunction,
 									MaterialAmbientColorParamName);
-		getColorFunction = bind(&CMaterial::getSpecularColor, mat);
+		getColorFunction = bind(&Material::getSpecularColor, mat);
 		binder->addParameter<Color>(getColorFunction,
 									MaterialSpecularColorParamName);
-		getColorFunction = bind(&CMaterial::getEmissiveColor, mat);
+		getColorFunction = bind(&Material::getEmissiveColor, mat);
 		binder->addParameter<Color>(getColorFunction,
 									MaterialEmissiveColorParamName);
-		getFloatFunction = bind(&CMaterial::getSpecularPower, mat);
+		getFloatFunction = bind(&Material::getSpecularPower, mat);
 		binder->addParameter<float>(getFloatFunction,
 									MaterialPowerValueParamName);
 	}
 
 	std::string addTextureMaps(const PDynamicBinder& binder,
-							   const CMaterial& mat)
+							   const Material& mat)
 	{
-		const CMaterial::MaterialMaps& maps = mat.getMaterialMaps();
+		const Material::MaterialMaps& maps = mat.getMaterialMaps();
 		std::string strTechName;
 
-		CMaterial::MaterialMaps::const_iterator it;
+		Material::MaterialMaps::const_iterator it;
 
 		for(it = maps.begin(); it != maps.end(); it++)
 			if(it->second.isTextureValid())
@@ -150,10 +150,10 @@ namespace render
 	}
 
 	PDynamicBinder createDynamicBinder(const PEffect& pEffect,
-									   const CMaterial& mat,
+									   const Material& mat,
 									   std::string& techniqueName)
 	{
-		PDynamicBinder result = CDynamicBinder::Create(pEffect);
+		PDynamicBinder result = DynamicBinder::Create(pEffect);
 
 		if(result)
 		{
@@ -173,20 +173,20 @@ namespace render
 	{
 		using namespace math;
 		using namespace boost;
-		typedef CStaticBinder::Types<int>::GetFunction GetIntFunction;
-		typedef CStaticBinder::Types<CFog>::ParamTypeGetFunction
+		typedef StaticBinder::Types<int>::GetFunction GetIntFunction;
+		typedef StaticBinder::Types<Fog>::ParamTypeGetFunction
 												ParamTypeGetFogFunction;
 
 		GetIntFunction          getIntFunction;
 		ParamTypeGetFogFunction getFogFunction;
 
-		getIntFunction = bind(&CRenderManager::getFillMode,
+		getIntFunction = bind(&RenderManager::getFillMode,
 							  &TheRenderManager::Get());
 		binder->addParameter<int>(getIntFunction,
 								  FillModeParamName);
-		getFogFunction = bind(&CRenderManager::getCurrentFog,
+		getFogFunction = bind(&RenderManager::getCurrentFog,
 							  &TheRenderManager::Get());
-		binder->addParameter<CFog>(getFogFunction,
+		binder->addParameter<Fog>(getFogFunction,
 								   FogParamName);
 	}
 
@@ -194,12 +194,12 @@ namespace render
 	{
 		//using namespace math;
 		//using namespace boost;
-		//typedef CStaticBinder::Types<Color>::ParamTypeGetFunction
+		//typedef StaticBinder::Types<Color>::ParamTypeGetFunction
 		//									ParamTypeGetColorFunction;
-		//typedef CStaticBinder::Types<int>::GetFunction  GetIntFunction;
-		//typedef CStaticBinder::Types<bool>::GetFunction GetBoolFunction;
-		//typedef CLightManager::LightDatas LightDatas;
-		//typedef CStaticBinder::Types<LightDatas>::GetFunction
+		//typedef StaticBinder::Types<int>::GetFunction  GetIntFunction;
+		//typedef StaticBinder::Types<bool>::GetFunction GetBoolFunction;
+		//typedef LightManager::LightDatas LightDatas;
+		//typedef StaticBinder::Types<LightDatas>::GetFunction
 		//											GetLightsFunction;
 
 		//ParamTypeGetColorFunction getColorFunction;
@@ -207,40 +207,40 @@ namespace render
 		//GetBoolFunction           getBoolFunction;
 		//GetLightsFunction         getLightsFunction;
 
-		//getColorFunction = bind(&CLightManager::getAmbientColor,
+		//getColorFunction = bind(&LightManager::getAmbientColor,
 		//						&TheLightManager::Get());
 		//binder->addParameter<Color>(getColorFunction,
 		//							AmbientLightColorParamName);
 
-		//getIntFunction = bind(&CLightManager::getActivePointLightsIni,
+		//getIntFunction = bind(&LightManager::getActivePointLightsIni,
 		//					  &TheLightManager::Get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTPOINTINI");
 
-		//getIntFunction = bind(&CLightManager::getActivePointLightsNum,
+		//getIntFunction = bind(&LightManager::getActivePointLightsNum,
 		//					  &TheLightManager::Get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTPOINTNUM");
 
-		//getIntFunction = bind(&CLightManager::getActiveSpotLightsIni,
+		//getIntFunction = bind(&LightManager::getActiveSpotLightsIni,
 		//					  &TheLightManager::Get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTSPOTINI");
 
-		//getIntFunction = bind(&CLightManager::getActiveSpotLightsNum,
+		//getIntFunction = bind(&LightManager::getActiveSpotLightsNum,
 		//					  &TheLightManager::Get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTSPOTNUM");
 
-		//getIntFunction = bind(&CLightManager::getActiveDirectionalLightsIni,
+		//getIntFunction = bind(&LightManager::getActiveDirectionalLightsIni,
 		//					  &TheLightManager::Get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTDIRINI");
 
-		//getIntFunction = bind(&CLightManager::getActiveDirectionalLightsNum,
+		//getIntFunction = bind(&LightManager::getActiveDirectionalLightsNum,
 		//					  &TheLightManager::Get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTDIRNUM");
 
-		//getBoolFunction = bind(&CRenderManager::isLightingEnabled,
+		//getBoolFunction = bind(&RenderManager::isLightingEnabled,
 		//					   &TheRenderManager::Get());
 		//binder->addParameter<bool>(getBoolFunction, "LIGHTING_ENABLED");
 
-		//getLightsFunction = bind(&CLightManager::getDatas,
+		//getLightsFunction = bind(&LightManager::getDatas,
 		//						 &TheLightManager::Get());
 		//binder->addParameter<LightDatas>(getLightsFunction, "LIGHTS");
 	}
@@ -276,7 +276,7 @@ namespace render
 	{
 		using namespace math;
 		using namespace boost;
-		typedef CStaticBinder::Types<Matrix44f>::GetFunction GetMatrix44fFunction;
+		typedef StaticBinder::Types<Matrix44f>::GetFunction GetMatrix44fFunction;
 
 		GetMatrix44fFunction getMatrixFunction;
 		
@@ -292,7 +292,7 @@ namespace render
 
 	PStaticBinder createStaticBinder(const PEffect& pEffect)
 	{
-		PStaticBinder binder = CStaticBinder::Create(pEffect);
+		PStaticBinder binder = StaticBinder::Create(pEffect);
 
 		if(binder)
 		{

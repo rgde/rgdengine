@@ -6,48 +6,48 @@
 
 namespace scene
 {
-	CScene::CScene(): m_pRoot( new math::CFrame )
+	Scene::Scene(): m_pRoot( new math::Frame )
 	{
 	}
 
-	CScene::~CScene(){}
+	Scene::~Scene(){}
 
-	math::PFrame& CScene::getRootFrame()
+	math::PFrame& Scene::getRootFrame()
 	{
 		return m_pRoot;
 	}
 
-	void CScene::addManager(const PSceneManager& manager)
+	void Scene::addManager(const PSceneManager& manager)
 	{
 		m_Managers.push_back(manager);
 	}
 
-	void CScene::removeManager( const PSceneManager& manager )
+	void Scene::removeManager( const PSceneManager& manager )
 	{
 		m_Managers.remove( manager );
 	}
 
-	void CScene::debugDraw( )
+	void Scene::debugDraw( )
 	{
 		auxDraw( m_pRoot );
 	}
 
-	void CScene::auxDraw( math::PFrame frame )
+	void Scene::auxDraw( math::PFrame frame )
 	{
 		//frame->debugDraw();
-		//for( math::CFrame::ChildrenList::iterator it = frame->getChildren().begin(); it != frame->getChildren().end(); ++it)
+		//for( math::Frame::ChildrenList::iterator it = frame->getChildren().begin(); it != frame->getChildren().end(); ++it)
 		//{
 		//	auxDraw( (*it) );
 		//}
 	}
 
-	void CScene::toStream(io::IWriteStream& wf) const
+	void Scene::toStream(io::IWriteStream& wf) const
 	{
 		wf << *m_pRoot;
 		// manager saving
 	}
 
-	void CScene::fromStream(io::IReadStream& rf)
+	void Scene::fromStream(io::IReadStream& rf)
 	{
 		rf >> *m_pRoot;
 		// manager loading

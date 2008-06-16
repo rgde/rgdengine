@@ -28,7 +28,7 @@ namespace scene
 	//	{
 	//	}
 
-	//	bool visit( math::CFrame* )
+	//	bool visit( math::Frame* )
 	//	{
 	//		return false;
 	//	}

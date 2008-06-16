@@ -65,8 +65,8 @@ public:
 	inline void	hide() { m_bIsVisible = false; }
 	inline void	show() { m_bIsVisible = true; }
 
-	inline float getTimeShift() const { return m_fTimeShift; }
-	inline void setTimeShift(float t) { m_fTimeShift = t; }
+	inline float getTimeShift() const { return m_time_shift; }
+	inline void setTimeShift(float t) { m_time_shift = t; }
 
 
 protected:
@@ -77,8 +77,8 @@ protected:
 	float			m_fCycleTime;				// время повтора для всех интерполяторов
 	bool			m_bIsCycling;
 	bool			m_bIsVisible;
-	float			m_fTimeShift;				// смещение в секундах от начала проигрывания эффекта
-	std::string		m_strName;					// для будущего использования
+	float			m_time_shift;				// смещение в секундах от начала проигрывания эффекта
+	std::string		m_name;					// для будущего использования
 
 	// common for all emmiters types modifiers
 	math::FloatInterp	m_PMass;				// Масса частицы

@@ -6,37 +6,37 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class CLensFlares> PLensFlares;
+	typedef boost::shared_ptr<class LensFlares> PLensFlares;
 	
-	class CLensFlares : public IRendererable
+	class LensFlares : public IRendererable
 	{
 	public:
 		static PLensFlares Create(const std::string& strFileName, const math::PFrame& pFrame);
 
-		struct SFlare
+		struct Flare
 		{
-			PTexture pTexture;
+			PTexture texture;
 			float fDistance;
 			float fImageScale;
 			float fAngleScale;
 			math::Color color;
 		};
 
-		//You can not to fill pTexture member of SFlare. Then use strTextureName
-		void addFlare(const SFlare& flare, const std::string& strTextureName = "");
+		//You can not to fill texture member of Flare. Then use strTextureName
+		void addFlare(const Flare& flare, const std::string& strTextureName = "");
 
 	protected:
-		CLensFlares(math::PFrame pFrame);//pFrame is light pos
+		LensFlares(math::PFrame pFrame);//pFrame is light pos
 
 	private:
 		void loadFromXML(const std::string& strFileName);
 		void render();
-		inline void progressFlare(SFlare& flare, const math::Vec2f& toLightVector, float fToLightLength, float fAngle, float fAlphaScale);
+		inline void progressFlare(Flare& flare, const math::Vec2f& toLightVector, float fToLightLength, float fAngle, float fAlphaScale);
 
 	private:
 		math::PFrame m_pFrame;
-		std::vector<SFlare> m_flares;
+		std::vector<Flare> m_flares;
 	};
 
-	typedef boost::shared_ptr<class CLensFlares> PLensFlares;
+	typedef boost::shared_ptr<class LensFlares> PLensFlares;
 }

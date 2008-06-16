@@ -8,7 +8,7 @@
 
 namespace math
 {
-	typedef boost::intrusive_ptr<class CFrame> PFrame;
+	typedef boost::intrusive_ptr<class Frame> PFrame;
 }
 
 namespace scene
@@ -16,14 +16,14 @@ namespace scene
 	class ISceneManager;
 	typedef boost::shared_ptr<ISceneManager> PSceneManager;
 
-	class CScene
+	class Scene
 		: public io::ISerializedObject
 		//Neonic: octree
 		, public live_tree::CDynamicTreeRoot
 	{
 	protected:
-		CScene();
-		virtual ~CScene();
+		Scene();
+		virtual ~Scene();
 
 	public:
 		virtual math::PFrame& getRootFrame();
@@ -43,5 +43,5 @@ namespace scene
 		math::PFrame			 m_pRoot;
 	};
 
-	typedef base::TSingelton<CScene> TheScene;
+	typedef base::TSingelton<Scene> TheScene;
 }

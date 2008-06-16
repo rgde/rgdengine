@@ -8,23 +8,23 @@
 
 namespace render
 {
-	inline CFog::Type convertMode(const std::string &strMode)
+	inline Fog::Type convertMode(const std::string &strMode)
 	{
 		std::string strModeLow	= strMode;
 
 		base::lower_case<std::string>(strModeLow);
 
 		if (strModeLow == "exp")
-			return CFog::Exp;
+			return Fog::Exp;
 		else if (strModeLow == "exp2")
-			return CFog::Exp2;
+			return Fog::Exp2;
 		else if (strModeLow == "linear")
-			return CFog::Linear;
+			return Fog::Linear;
 		else
-			return CFog::None;
+			return Fog::None;
 	}
 
-	void CFog::loadFromXML(TiXmlElement *node)
+	void Fog::loadFromXML(TiXmlElement *node)
 	{
 		base::read(m_color, node, "color");
 
@@ -35,7 +35,7 @@ namespace render
 		m_fEnd = base::safeReadValue<float>(node, "end", 0.0f);
 	}
 
-	void CFog::loadFromXML(const std::string &strFileName)
+	void Fog::loadFromXML(const std::string &strFileName)
 	{
 		TiXmlDocument fog;
 		{
@@ -53,13 +53,13 @@ namespace render
 			loadFromXML(root);
 	}
 
-	void CFog::setMode(Type type)
+	void Fog::setMode(Type type)
 	{
 		m_type = type;
 		m_bEnabled = m_type != None;
 	}
 
-	CFog::CFog()
+	Fog::Fog()
 		: m_fStart(0),
 		  m_fEnd(0)
 	{

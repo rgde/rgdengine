@@ -93,40 +93,42 @@ namespace live_tree
 		for (unsigned i = 0; i < nVerts; ++i)
 			SizeBox[i] = Point3f(box[i][0]?max[0]:min[0], box[i][1]?max[1]:min[1], box[i][2]?max[2]:min[2]);
 
+
+		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
 		// Добавляем линии
 		// up size
-		render::Line3dManager::Get().addLine( SizeBox[0], SizeBox[1], color );
-		render::Line3dManager::Get().addLine( SizeBox[1], SizeBox[2], color );
-		render::Line3dManager::Get().addLine( SizeBox[2], SizeBox[3], color );
-		render::Line3dManager::Get().addLine( SizeBox[3], SizeBox[0], color );
+		line_manager.addLine( SizeBox[0], SizeBox[1], color );
+		line_manager.addLine( SizeBox[1], SizeBox[2], color );
+		line_manager.addLine( SizeBox[2], SizeBox[3], color );
+		line_manager.addLine( SizeBox[3], SizeBox[0], color );
 
 		//bottom size
-		render::Line3dManager::Get().addLine( SizeBox[0 + 4], SizeBox[1 + 4], color );
-		render::Line3dManager::Get().addLine( SizeBox[1 + 4], SizeBox[2 + 4], color );
-		render::Line3dManager::Get().addLine( SizeBox[2 + 4], SizeBox[3 + 4], color );
-		render::Line3dManager::Get().addLine( SizeBox[3 + 4], SizeBox[0 + 4], color );
+		line_manager.addLine( SizeBox[0 + 4], SizeBox[1 + 4], color );
+		line_manager.addLine( SizeBox[1 + 4], SizeBox[2 + 4], color );
+		line_manager.addLine( SizeBox[2 + 4], SizeBox[3 + 4], color );
+		line_manager.addLine( SizeBox[3 + 4], SizeBox[0 + 4], color );
 
 		// connections between up and bottom
-		render::Line3dManager::Get().addLine( SizeBox[0], SizeBox[0 + 4], color );
-		render::Line3dManager::Get().addLine( SizeBox[1], SizeBox[1 + 4], color );
-		render::Line3dManager::Get().addLine( SizeBox[2], SizeBox[2 + 4], color );
-		render::Line3dManager::Get().addLine( SizeBox[3], SizeBox[3 + 4], color );
+		line_manager.addLine( SizeBox[0], SizeBox[0 + 4], color );
+		line_manager.addLine( SizeBox[1], SizeBox[1 + 4], color );
+		line_manager.addLine( SizeBox[2], SizeBox[2 + 4], color );
+		line_manager.addLine( SizeBox[3], SizeBox[3 + 4], color );
 	};
 
 
 	////////////////////////////////////////////////////////////////////////
 	// 
-	// CTObject
+	// TreeObject
 	//
 	////////////////////////////////////////////////////////////////////////
 
-	CTObject::CTObject( void )
+	TreeObject::TreeObject( void )
 		: m_pRoot(0), m_pPosOld(0)
 	{
 		// nothing
 	};
 
-	CTObject::~CTObject( void )
+	TreeObject::~TreeObject( void )
 	{
 		// at deletion if we are inserted - we must cleanup self NOW
 		if(getRoot())
@@ -138,12 +140,12 @@ namespace live_tree
 		}
 	};
 
-	AABoxf CTObject::getAABB( void )
+	AABoxf TreeObject::getAABB( void )
 	{
 		return AABoxf(getPos()-getExt(), getPos()+getExt());
 	};
 
-	AABoxf CTObject::getDynamicAABB( void )
+	AABoxf TreeObject::getDynamicAABB( void )
 	{
 		if(!m_pPosOld)
 			return getAABB();
@@ -153,18 +155,18 @@ namespace live_tree
 		return aabb;
 	};
 	
-	void CTObject::setAABB( const AABoxf& aabb )
+	void TreeObject::setAABB( const AABoxf& aabb )
 	{
 		setPos((aabb.getMin()+aabb.getMax())*0.5f);
 		setExt((aabb.getMax()-aabb.getMin())*0.5f);
 	};
 
-	const Point3f& CTObject::getPos( void ) const
+	const Point3f& TreeObject::getPos( void ) const
 	{
 		return m_Position;
 	};
 
-	void CTObject::setPos( const Point3f& pos )
+	void TreeObject::setPos( const Point3f& pos )
 	{
 		if(getRoot())
 			getRoot()->setPos(this,pos);
@@ -172,12 +174,12 @@ namespace live_tree
 			m_Position = pos;
 	};
 
-	const Point3f& CTObject::getExt( void ) const
+	const Point3f& TreeObject::getExt( void ) const
 	{
 		return m_Ext;
 	};
 	
-	void CTObject::setExt( const Point3f& ext )
+	void TreeObject::setExt( const Point3f& ext )
 	{
 		if(getRoot())
 			getRoot()->setExt(this,ext);
@@ -185,53 +187,53 @@ namespace live_tree
 			m_Ext = ext;
 	};
 
-	void CTObject::inject( CTRoot* p )
+	void TreeObject::inject( CTRoot* p )
 	{
 		p->inject(this);
 	};
 	
-	void CTObject::eject( void )
+	void TreeObject::eject( void )
 	{
 		if(getRoot())
 			getRoot()->eject(this);
 	};
 
-	void CTObject::move( const Point3f& pos )
+	void TreeObject::move( const Point3f& pos )
 	{
 		if(getRoot())
 			getRoot()->move(this,pos);
 	};
 
-	void CTObject::setRoot( CTRoot* p )
+	void TreeObject::setRoot( CTRoot* p )
 	{
 		m_pRoot = p;
 	};
 
-	CTRoot* CTObject::getRoot( void )
+	CTRoot* TreeObject::getRoot( void )
 	{
 		return m_pRoot;
 	};
 
-	void CTObject::draw( void )
+	void TreeObject::draw( void )
 	{
 		drawObjectCube(getDynamicAABB());
 	};
 
 
-//	void CTObject::remSelf( void )
+//	void TreeObject::remSelf( void )
 //	{
 //		if(getRoot())
 //			getRoot()->ejectNow(this);
 //	};
 
-	void CTObject::makeDynamic( void )
+	void TreeObject::makeDynamic( void )
 	{
 		if(!m_pPosOld)	
 			m_pPosOld = new Point3f();
 		updatePos();
 	};
 
-	bool CTObject::makeStatic( void )
+	bool TreeObject::makeStatic( void )
 	{
 		if(!m_pPosOld)
 			return 0;
@@ -251,19 +253,19 @@ namespace live_tree
 		return 0;
 	};
 	
-	bool CTObject::isDynamic( void )
+	bool TreeObject::isDynamic( void )
 	{
 		return m_pPosOld;
 	};
 
-	Point3f CTObject::getOldPos( void )
+	Point3f TreeObject::getOldPos( void )
 	{
 		if(!m_pPosOld)
 			return getPos();
 		return *m_pPosOld;
 	};
 
-	void CTObject::updatePos( void )
+	void TreeObject::updatePos( void )
 	{
 		assert(m_pPosOld);
 		*m_pPosOld = getPos();

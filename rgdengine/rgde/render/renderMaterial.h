@@ -8,11 +8,11 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class CMaterial> PMaterial;
+	typedef boost::shared_ptr<class Material> PMaterial;
 
-	class CMaterial : public core::NamedObject//, game::IDynamicObject
+	class Material : public core::NamedObject//, game::IDynamicObject
 	{
-		CMaterial(math::Color amb, math::Color diff, math::Color spec,
+		Material(math::Color amb, math::Color diff, math::Color spec,
 				  math::Color em, float power);
 
 		void load(const std::string& fileName);
@@ -30,10 +30,10 @@ namespace render
 
 			CMaterialMap(EDefaultTexture defaultTexture = White);
 
-			const PTexture& getTexture() const { return m_pTexture; }
+			const PTexture& getTexture() const { return m_texture; }
 			void setTexture(const PTexture& texure);
 
-			//Returns true if pTexture was valid for the last call of setTexture
+			//Returns true if texture was valid for the last call of setTexture
 			bool isTextureValid() const { return m_bTextureIsValid; }
 
 			const math::Matrix44f& getMatrix() const { return m_matrix; }
@@ -48,7 +48,7 @@ namespace render
 			const math::Vec3f&	getRotationCenter() const { return m_rotationCenter; }
 			void				setRotationCenter(const math::Vec3f& v)       {m_rotationCenter = v; }
 
-			void update(float fDt);
+			void update(float dt);
 
 		private:
 
@@ -56,13 +56,13 @@ namespace render
 
 			bool            m_bTextureIsValid;
 
-			PTexture        m_pTexture;
+			PTexture        m_texture;
 			math::Matrix44f m_matrix;
 			math::Vec3f     m_scrollSpeed;
 			float           m_fRotationSpeed;
 			math::Vec3f     m_rotationCenter;
 
-			float m_fTime;
+			float m_time;
 		};
 
 		typedef std::map<std::string, CMaterialMap> MaterialMaps;
@@ -75,7 +75,7 @@ namespace render
 
 		static PMaterial Create(const std::string& fileName);
 
-		virtual ~CMaterial();
+		virtual ~Material();
 
 		bool isTransparent() const;
 
@@ -100,7 +100,7 @@ namespace render
 		MaterialMaps&		getMaterialMaps()		{ return m_maps;}
 		const MaterialMaps& getMaterialMaps() const { return m_maps;}
 		
-		void update(float fDt);
+		void update(float dt);
 
 		void  setEffect(const PEffect& pEffect);
 		const PDynamicBinder& getDynamicBinder();
