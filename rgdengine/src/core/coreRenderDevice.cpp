@@ -227,7 +227,7 @@ namespace core
 		inline DWORD getVertexProcessingMode(const std::string& strVertexProcessingMode)
 		{
 			std::string strVertexProcessingModeUpper = strVertexProcessingMode;
-			base::Upper_case(strVertexProcessingModeUpper);
+			base::upper_case(strVertexProcessingModeUpper);
 
 			if(strVertexProcessingModeUpper == "SOFTWARE")
 				return D3DCREATE_SOFTWARE_VERTEXPROCESSING;

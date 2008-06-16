@@ -18,9 +18,9 @@ namespace scene
 	{
 	public:
 		CameraTrigger();
-		CameraTrigger(float fDistance, const math::PFrame& pFrame);
+		CameraTrigger(float distance, const math::PFrame& frame);
 
-		void init(float fDistance, const math::PFrame& pFrame);
+		void init(float distance, const math::PFrame& frame);
 
 		void update(float dt);
 

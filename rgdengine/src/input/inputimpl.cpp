@@ -450,16 +450,16 @@ namespace input
     /////////////////////////////////////
 
     //добавить команду
-    void InputImpl::addCommand (const std::wstring &sCommandName)
+    CommandPtr InputImpl::addCommand (const std::wstring &command_name)
     {
-        if (!m_bInit)
-            return;
-
-        if (!isCommandPresent(sCommandName))
+        if (m_bInit && !isCommandPresent(command_name))
         {
-            CommandPtr pCommand(new Command(sCommandName, *this));
-            m_commands.push_back(pCommand);
+            CommandPtr command(new Command(command_name, *this));
+            m_commands.push_back(command);
+			return command;
         }
+
+		return CommandPtr();
     }
 
     //получить команду

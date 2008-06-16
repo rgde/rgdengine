@@ -12,7 +12,7 @@ namespace render
 	{
 		std::string strModeLow	= strMode;
 
-		base::Lower_case<std::string>(strModeLow);
+		base::lower_case<std::string>(strModeLow);
 
 		if (strModeLow == "exp")
 			return CFog::Exp;

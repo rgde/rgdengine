@@ -3,13 +3,13 @@
 namespace base
 {
 	template<typename T> 
-	inline void Lower_case(T &src)
+	inline void lower_case(T &src)
 	{
 		std::transform(src.begin(), src.end(), src.begin(), tolower);
 	}
 
 	template<typename T> 
-	inline T Lower_case(const T &src)
+	inline T lower_case(const T &src)
 	{
 		T result = src;
 		std::transform(result.begin(), result.end(), result.begin(), tolower);
@@ -17,13 +17,13 @@ namespace base
 	}
 
 	template<typename T> 
-	inline void Upper_case(T &src)
+	inline void upper_case(T &src)
 	{
 		std::transform(src.begin(), src.end(), src.begin(), toupper);
 	}
 
 	template<typename T> 
-	inline T Upper_case(const T &src)
+	inline T upper_case(const T &src)
 	{
 		T result = src;
 		std::transform(result.begin(), result.end(), result.begin(), toupper);
@@ -31,7 +31,7 @@ namespace base
 	}
 
 	template<typename Target, typename Source> 
-	inline Target Lexical_cast(const Source &src)
+	inline Target lexical_cast(const Source &src)
 	{
 		std::stringstream stream;
 		stream << src;
@@ -41,22 +41,22 @@ namespace base
 	}
 
 	template<> 
-	inline bool Lexical_cast<bool, std::string>(const std::string &src)
+	inline bool lexical_cast<bool, std::string>(const std::string &src)
 	{
-		if(Lower_case<std::string>(src) == "true")
+		if(lower_case<std::string>(src) == "true")
 			return true;
 		else
 			return false;
 	}
 
 	template<> 
-	inline std::string Lexical_cast<std::string, std::string>(const std::string &src)
+	inline std::string lexical_cast<std::string, std::string>(const std::string &src)
 	{
 		return src;
 	}
 
 	template<typename T> 
-	inline void Find_replace(T &src, const T &what, const T &with)
+	inline void find_replace(T &src, const T &what, const T &with)
 	{
 		typename T::size_type offset = 0;
 		while ((offset = src.find(what, offset)) != T::npos)

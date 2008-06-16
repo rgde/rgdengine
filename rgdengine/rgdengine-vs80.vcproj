@@ -43,7 +43,7 @@
 				Optimization="0"
 				InlineFunctionExpansion="0"
 				EnableIntrinsicFunctions="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;;&quot;$(SolutionDir)external/directx/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;D3D_DEBUG_INFO;VC_EXTRALEAN;_CRT_SECURE_NO_DEPRECATE;TEST_NEW_BINDERS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -120,7 +120,7 @@
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="false"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;;&quot;$(SolutionDir)external/directx/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				StringPooling="true"
 				ExceptionHandling="2"
@@ -198,7 +198,7 @@
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="false"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;;&quot;$(SolutionDir)external/directx/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				StringPooling="true"
 				ExceptionHandling="2"
@@ -267,6 +267,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;;&quot;$(SolutionDir)external/directx/include&quot;"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -729,50 +730,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="audio"
-				>
-				<File
-					RelativePath=".\rgde\audio\Audio.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\audio\AudioListener.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\audio\AudioManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\audio\AudioTag.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\audio\Music.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\audio\MusicOggVorbis.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\audio\Sound.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\audio\Sound3D.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\audio\WaveFileFactory.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\audio\WorldObject.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="io"
 				>
 				<File
@@ -820,10 +777,6 @@
 					>
 				</File>
 				<Filter
-					Name="Camera"
-					>
-				</Filter>
-				<Filter
 					Name="triggers"
 					>
 					<File
@@ -835,18 +788,6 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="physic"
-				>
-				<File
-					RelativePath=".\rgde\physic\collider.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\physic\physic.h"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1085,318 +1026,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="audio"
-				>
-				<File
-					RelativePath=".\src\audio\AudioManager.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\audio\AudioManagerImpl.h"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\audio\AudioTag.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\audio\MusicOggVorbis.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\audio\OggVorbisFile.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\audio\OggVorbisFile.h"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\audio\Sound.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\audio\Sound3D.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\audio\WaveFile.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\audio\WaveFile.h"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCustomBuildTool"
-						/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\src\audio\WaveFileFactory.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32"
-						ExcludedFromBuild="true"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
-				</File>
-			</Filter>
-			<Filter
 				Name="io"
 				>
 				<File
@@ -1535,18 +1164,6 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="physic"
-				>
-				<File
-					RelativePath=".\src\physic\collider.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\physic\physic.cpp"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<Filter

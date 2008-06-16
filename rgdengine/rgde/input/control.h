@@ -42,7 +42,6 @@ namespace input
         int  m_delta;
 
     private:
-
         Device          &m_device; //устройство, которому принадлежит контрол
         EType            m_type;   //тип контрола
         types::EControl  m_name;   //'имя' контрола

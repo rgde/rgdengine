@@ -314,8 +314,8 @@ namespace math
 		const FloatInterp::Keys& keys = interp.getKeys();
 		for(FloatInterp::Keys::const_iterator iter = keys.begin(); iter != keys.end(); ++iter)
 		{
-			out << base::Lexical_cast<std::string, float>((*iter).position)	<< ","
-				<< base::Lexical_cast<std::string, float>((*iter).value)	<< ";";
+			out << base::lexical_cast<std::string, float>((*iter).position)	<< ","
+				<< base::lexical_cast<std::string, float>((*iter).value)	<< ";";
 		}
 		return out;
 	}
@@ -340,8 +340,8 @@ namespace math
 			CharTokenList elem = base::tokenize<char>(",", *iter);
 			
 			CharTokenList::iterator it = elem.begin(); // assume that stored position and value only
-			float position = base::Lexical_cast<float, std::string>(*it);
-			float value = base::Lexical_cast<float, std::string>(*(++it));
+			float position = base::lexical_cast<float, std::string>(*it);
+			float value = base::lexical_cast<float, std::string>(*(++it));
 			interp.addKey(position, value);
 		}
 

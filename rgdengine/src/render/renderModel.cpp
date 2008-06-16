@@ -214,7 +214,7 @@ namespace render
 				TiXmlElement *att = lt->FirstChildElement("far_att");
 				if(att)
 					if(att->Attribute("end"))
-						range = base::Lexical_cast<float, std::string>(att->Attribute("end"));
+						range = base::lexical_cast<float, std::string>(att->Attribute("end"));
 
 				pPointLight->setRange(range);
 				pPointLight->setConstantAttenuation(0.0f);
@@ -228,7 +228,7 @@ namespace render
 					if(enabled->Attribute("value"))
 						strEnabled = enabled->Attribute("value");
 
-				pPointLight->setEnabled(base::Lexical_cast<int, std::string>(strEnabled));
+				pPointLight->setEnabled(base::lexical_cast<int, std::string>(strEnabled));
 			}
 			else
 				base::lwrn<<"\""<<strType<<"\" light type temporally unsupported.";

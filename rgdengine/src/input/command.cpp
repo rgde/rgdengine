@@ -1,5 +1,6 @@
 #include "precompiled.h"
 
+//#include <rgde/input/base.h>
 #include <rgde/input/command.h>
 #include <rgde/input/control.h>
 #include <rgde/input/helper.h>
