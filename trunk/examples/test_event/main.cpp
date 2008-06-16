@@ -1,41 +1,62 @@
-//main.cpp
-#include <iostream>
 #include <rgde/engine.h>
 
-struct CClickEvent
+struct ClickEvent
 {
-    CClickEvent (int _x, int _y): x(_x), y(_y) {}
+    ClickEvent (int _x, int _y)
+		 : x(_x), y(_y) 
+	{
+	}
+
     int x,y;
 };
 
-struct CButton: public event::Sender
+struct Button : public event::Sender
 {
     void Click (int x, int y)
     {
-        send_event( CClickEvent(x,y) );
+        send_event( ClickEvent(x,y) );
     }
 };
 
-struct CMenu: public event::Listener
+struct Menu : public event::Listener
 {
-    CButton btnExit;
-    CButton btnHelp;
-
-    CMenu ()
+    Menu()
     {
-        subscribe<CClickEvent,CMenu> (&CMenu::onExit, &btnExit); //получать события только от btnExit
-        subscribe<CClickEvent,CMenu> (&CMenu::onHelp, &btnHelp); //получать события только от btnРудз
-        subscribe<CClickEvent,CMenu> (&CMenu::onBeep);           //получать события от всех
+		//получать события только от btnExit
+        subscribe<ClickEvent,Menu> (&Menu::onExit, &btnExit);
+
+		//получать события только от btnExit
+		subscribe<ClickEvent,Menu> (&Menu::onHelp, &btnExit);
+
+		//получать события только от btnРудз
+        subscribe<ClickEvent,Menu> (&Menu::onHelp, &btnHelp);
+
+		//получать события от всех
+        subscribe<ClickEvent,Menu> (&Menu::onBeep);
     }
 
-    void onExit (const CClickEvent &e) {std::cout << "CMenu::onExit()\n";}
-    void onHelp (const CClickEvent &e) {std::cout << "CMenu::onHelp()\n";}
-    void onBeep (const CClickEvent &e) {std::cout << "CMenu::onBeep()\n";}
+    void onExit (const ClickEvent &e) 
+	{
+		std::cout << "Menu::onExit()\n";
+	}
+
+    void onHelp (const ClickEvent &e) 
+	{
+		std::cout << "Menu::onHelp()\n";
+	}
+
+    void onBeep (const ClickEvent &e) 
+	{
+		std::cout << "Menu::onBeep()\n";
+	}
+
+	Button btnExit;
+	Button btnHelp;
 };
 
 int main ()
 {
-    CMenu menu;
+    Menu menu;
 
     menu.btnExit.Click(10,20);
     menu.btnHelp.Click(30,40);
