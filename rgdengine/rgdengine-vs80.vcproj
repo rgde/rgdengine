@@ -704,10 +704,6 @@
 					RelativePath=".\rgde\input\input.h"
 					>
 				</File>
-				<File
-					RelativePath=".\rgde\input\inputimpl.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="game"
@@ -1002,6 +998,10 @@
 				</File>
 				<File
 					RelativePath=".\src\input\inputimpl.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\input\inputimpl.h"
 					>
 				</File>
 			</Filter>

@@ -63,7 +63,7 @@ namespace math
 	/////////////////////////////////// CALCULATE FRUSTUM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 	void CFrustum::CalculateFrustum(const CBaseCamera& pCam)
 	{    
-		//CModelViewerCamera* g_Camera	 = reinterpret_cast<CModelViewerCamera*>(dx::CDevice::get()->getCurentCamera());
+		//ModelViewerCamera* g_Camera	 = reinterpret_cast<ModelViewerCamera*>(dx::CDevice::get()->getCurentCamera());
 		//D3DXMATRIX &mProj	= *g_Camera->GetProjMatrix();
 		//D3DXMATRIX &mView	= *g_Camera->GetViewMatrix();
 		math::Matrix44f mProj = pCam.getProjMatrix();
