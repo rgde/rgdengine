@@ -47,7 +47,7 @@ namespace core
 
 	class ApplicationImpl : public Forms::Window, 
 							public IApplication,
-							public event::CSender
+							public event::Sender
 	{
 	protected:
 		//cs_object m_cs;
@@ -144,37 +144,37 @@ namespace core
         switch (msg.uMsg)
         {
             case WM_MOUSEMOVE:
-                this->sendEvent<CCursorMove>(CCursorMove(LOWORD(msg.lParam), HIWORD(msg.lParam)));
+                this->send_event<CCursorMove>(CCursorMove(LOWORD(msg.lParam), HIWORD(msg.lParam)));
                 break;
             case WM_LBUTTONDOWN:
-                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::Down));
+                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::Down));
                 break;
             case WM_LBUTTONUP:
-                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::Up));
+                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::Up));
                 break;
             case WM_LBUTTONDBLCLK:
-                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::DoubleClick));
+                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::DoubleClick));
                 break;
             case WM_MBUTTONDOWN:
-                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::Down));
+                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::Down));
                 break;
             case WM_MBUTTONUP:
-                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::Up));
+                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::Up));
                 break;
             case WM_MBUTTONDBLCLK:
-                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::DoubleClick));
+                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::DoubleClick));
                 break;
             case WM_RBUTTONDOWN:
-                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::Down));
+                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::Down));
                 break;
             case WM_RBUTTONUP:
-                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::Up));
+                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::Up));
                 break;
             case WM_RBUTTONDBLCLK:
-                this->sendEvent<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::DoubleClick));
+                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::DoubleClick));
                 break;
             case WM_MOUSEWHEEL:
-                this->sendEvent<CMouseWhell>(CMouseWhell(HIWORD(msg.wParam)));
+                this->send_event<CMouseWhell>(CMouseWhell(HIWORD(msg.wParam)));
                 break;
         };
 	}
@@ -243,7 +243,7 @@ namespace core
 			// TODO: Send event with new sizes
 			int width = rcWindowClient.right - rcWindowClient.left;
 			int height = rcWindowClient.bottom - rcWindowClient.top;
-			this->sendEvent<CWindowResize>(CWindowResize(width, height));
+			this->send_event<CWindowResize>(CWindowResize(width, height));
 
 			m_bIsPaused = false;
 		}

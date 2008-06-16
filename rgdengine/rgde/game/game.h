@@ -1,6 +1,6 @@
 #pragma once
 
-#include "rgde/event/event.h"
+#include "rgde/event/events.h"
 
 #include "rgde/game/Level.h"
 #include "rgde/game/DynamicObject.h"
@@ -36,7 +36,7 @@ namespace game
 	};
 
 	//базовый класс игры
-	class CGame: public event::CListener
+	class CGame: public event::Listener
 	{
 	public:
         //инициализация из xml файла

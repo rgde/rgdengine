@@ -1,6 +1,6 @@
 #pragma once
 
-#include "rgde/event/event.h"
+#include "rgde/event/events.h"
 
 struct CWindowResize
 {

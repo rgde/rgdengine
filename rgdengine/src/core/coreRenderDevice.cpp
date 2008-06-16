@@ -65,7 +65,7 @@ namespace core
 		bool VSync;
 	};
 
-	class CDXRenderDevice : public IRenderSystem, public event::CSender
+	class CDXRenderDevice : public IRenderSystem, public event::Sender
 	{
 		mutable bool m_is_first_frame;
 	public:
