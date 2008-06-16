@@ -2,7 +2,7 @@
 /// Related methods associated with timer.
 #pragma once
 
-#include "rgde/base/singelton.h"
+#include <rgde/base/singelton.h>
 
 //-----------------------------------------------------------------------------
 namespace core

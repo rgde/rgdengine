@@ -113,14 +113,14 @@ namespace render
 			if(it->second.isTextureValid())
 			{
 				std::string parameterName = TextureNamePrefix +
-											base::Upper_case(it->first) +
+											base::upper_case(it->first) +
 											TextureNamePostfix;
 
 				if(binder->addParameter<PTexture>(it->second.getTexture(),
 												  parameterName))
 				{
-					std::string lower = base::Lower_case(it->first);
-					std::string upper = base::Upper_case(it->first);
+					std::string lower = base::lower_case(it->first);
+					std::string upper = base::upper_case(it->first);
 					std::string temp = upper.substr(0, 1) +
 									   lower.substr(1, lower.length() - 1);
 

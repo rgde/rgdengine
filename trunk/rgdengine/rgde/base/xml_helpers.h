@@ -36,7 +36,7 @@ namespace base
 			if (0 == str) return defaultValue;
 
 			std::string strValue = str;
-			return base::Lexical_cast<T>(strValue); 
+			return base::lexical_cast<T>(strValue); 
 		} catch(...)
 		{
 			base::lwrn<<"Can't get value of param \""<<strParameterName<<"\", using default value : \""<<defaultValue<<"\"";
@@ -50,7 +50,7 @@ namespace base
 	{ 
 		try {
 			std::string strValue = hBaseNode.FirstChild().Text()->Value();
-			return base::Lexical_cast<T>(strValue); 
+			return base::lexical_cast<T>(strValue); 
 		} catch(...)
 		{
 			base::lwrn<<"Can't get value of param, using default value : \""<<defaultValue<<"\"";
@@ -65,7 +65,7 @@ namespace base
 	{ 
 		try {
 			std::string strValue = pElement->FirstChildElement(strParameterName)->FirstChild()->ToText()->Value();
-			return base::Lexical_cast<T>(strValue); 
+			return base::lexical_cast<T>(strValue); 
 		} catch(...)
 		{
 			base::lwrn<<"Can't get value of param \""<<strParameterName<<"\", using default value : \""<<defaultValue<<"\"";
@@ -79,7 +79,7 @@ namespace base
 	{ 
 		try {
 			std::string strValue = pElement->FirstChild()->ToText()->Value();
-			return base::Lexical_cast<T>(strValue); 
+			return base::lexical_cast<T>(strValue); 
 		} catch(...)
 		{
 			base::lwrn<<"Can't get value of param, using default value : \""<<defaultValue<<"\"";
@@ -101,7 +101,7 @@ namespace base
 			const char* value = pEl->Attribute(strAttributeName.c_str());
 			if (0==value) return defaultValue;
 			std::string strValue(value);
-			return base::Lexical_cast<T>(strValue); 
+			return base::lexical_cast<T>(strValue); 
 		} catch(...)
 		{
 			base::lwrn<<"Can't get value of attribute \""<<strAttributeName<<"\" of parameter \""<<strParameterName<<"\", using default value : \""<<defaultValue<<"\"";
@@ -117,7 +117,7 @@ namespace base
 	{ 
 		try {
 			std::string strValue = pElement->FirstChildElement(strParameterName)->Attribute(strAttributeName);
-			return base::Lexical_cast<T>(strValue); 
+			return base::lexical_cast<T>(strValue); 
 		} catch(...)
 		{
 			base::lwrn<<"Can't get value of attribute \""<<strAttributeName<<"\" of parameter \""<<strParameterName<<"\", using default value : \""<<defaultValue<<"\"";
@@ -188,7 +188,7 @@ namespace base
 	{ 
 		try {
 			std::string strValue = pNode->Value();
-			return base::Lexical_cast<T>(strValue); 
+			return base::lexical_cast<T>(strValue); 
 		} catch(...)
 		{
 			base::lwrn<<"Can't get value of node, using default value : \""<<defaultValue<<"\"";
@@ -201,7 +201,7 @@ namespace base
 	{ 
 		try {
 			std::string strValue = pElement->Attribute(strAttributeName);
-			return base::Lexical_cast<T>(strValue); 
+			return base::lexical_cast<T>(strValue); 
 		} catch(...)
 		{
 			//base::lwrn << "Can't get value of attribute \""<<strAttributeName<<"\" of parameter, using default value : \""<<defaultValue<<"\"";

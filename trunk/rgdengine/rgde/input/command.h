@@ -1,20 +1,21 @@
 #pragma once
 
-#include <rgde/input/base.h>
 
 namespace input
 {
+	class InputImpl;
+	class Helper;
+
     //команда системы ввода
     class Command
     {
     public:
         Command(const std::wstring &sName, InputImpl &rInput);
 
-		/// Get command name
-        const std::wstring& getName () const {return m_sName;}
-        void lock     () {m_bLocked = true;}
-        void unlock   () {m_bLocked = false;}
-        bool islocked () const {return m_bLocked;}
+        const std::wstring& getName() const;
+        void lock();
+        void unlock();
+        bool islocked() const;
 
     protected:
         friend class Control;
@@ -35,4 +36,24 @@ namespace input
 
         HelpersList m_helpers;
     };
+
+	inline const std::wstring& Command::getName() const 
+	{
+		return m_sName;
+	}
+
+	inline void Command::lock() 
+	{
+		m_bLocked = true;
+	}
+
+	inline void Command::unlock() 
+	{
+		m_bLocked = false;
+	}
+
+	inline bool Command::islocked() const 
+	{
+		return m_bLocked;
+	}
 }
