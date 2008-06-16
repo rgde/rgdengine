@@ -9,7 +9,7 @@
 
 namespace math
 {
-	Matrix44f CFrame::makeTransformMatrix(const Point3f& pos, const Quatf& rot, const Vec3f& s)
+	Matrix44f Frame::makeTransformMatrix(const Point3f& pos, const Quatf& rot, const Vec3f& s)
 	{
 		math::Matrix44f rotation;
 		math::setRot(rotation, rot);		
@@ -23,28 +23,28 @@ namespace math
 		return translate*rotation*scale;
 	}
 
-	Matrix44f CFrame::makeTransformMatrix(const Point3f& pos, const EulerAngleXYZf& rot, const Vec3f& s)
+	Matrix44f Frame::makeTransformMatrix(const Point3f& pos, const EulerAngleXYZf& rot, const Vec3f& s)
 	{
 		math::Quatf quat = math::make<Quatf, EulerAngleXYZf>(rot);
 		return makeTransformMatrix(pos, quat, s);
 	}
 
-	CFrame::CFrame()
+	Frame::Frame()
 		: m_bIsNeedRecompute(false),
-		  core::XmlNode<CFrame>("Frame"),
+		  core::XmlNode<Frame>("Frame"),
 		  m_bNeedRecomputeGlobalMatrix(true),
 		  m_scale(1.0f,1.0f,1.0f)
 	{
-		//CPropertyOwner::addProperty(new TProperty<math::Vec3f>(m_scale, "Scale"));
-		//CPropertyOwner::addProperty(new TProperty<Point3f>(m_position, "Position", "Point"));
-		//CPropertyOwner::addProperty(new TProperty<Quatf>(m_rotation, "Rotation", "Quaternion"));
+		//PropertyOwner::addProperty(new TProperty<math::Vec3f>(m_scale, "Scale"));
+		//PropertyOwner::addProperty(new TProperty<Point3f>(m_position, "Position", "Point"));
+		//PropertyOwner::addProperty(new TProperty<Quatf>(m_rotation, "Rotation", "Quaternion"));
 	}
 
-	CFrame::~CFrame()
+	Frame::~Frame()
 	{
 	}
 
-	void CFrame::findFrames(const std::string& strTemplate, std::vector<PFrame>& container)
+	void Frame::findFrames(const std::string& strTemplate, std::vector<PFrame>& container)
 	{
 		const std::string &strFrameName = getName();
 
@@ -52,29 +52,29 @@ namespace math
 		if(nPos != -1)
 		{
 			size_t nBegin = strFrameName.find_first_not_of(" ");
-			std::string strName = strFrameName.substr(nBegin, nPos - nBegin);
+			std::string name = strFrameName.substr(nBegin, nPos - nBegin);
 
-			if(strName == strTemplate)
+			if(name == strTemplate)
 				container.push_back(this);
 		}
 
-		for (math::CFrame::ChildrenList::const_iterator it = getChildren().begin(); it != getChildren().end(); it++)
+		for (math::Frame::ChildrenList::const_iterator it = getChildren().begin(); it != getChildren().end(); it++)
 			(*it)->findFrames(strTemplate, container);
 	}
 
-	void CFrame::setPosition(const Point3f& pos)
+	void Frame::setPosition(const Point3f& pos)
 	{
 		m_position = pos;
 		m_bIsNeedRecompute = true;
 	}
 
-	void CFrame::setRotation(const Quatf& quat)
+	void Frame::setRotation(const Quatf& quat)
 	{
 		m_rotation = quat;
 		m_bIsNeedRecompute = true;
 	}
 
-	void CFrame::lookAt(const Vec3f& vEyePt, const Vec3f& vLookatPt, const Vec3f& vUpVec)
+	void Frame::lookAt(const Vec3f& vEyePt, const Vec3f& vLookatPt, const Vec3f& vUpVec)
 	{	
 		m_position = vEyePt;
 		const math::Vec3f& up = vUpVec;
@@ -93,25 +93,25 @@ namespace math
 		m_bIsNeedRecompute = true;
 	}
 
-	void CFrame::setScale(const Vec3f& s)
+	void Frame::setScale(const Vec3f& s)
 	{
 		m_scale = s;
 		m_bIsNeedRecompute = true;
 	}
 
-	const Matrix44f & CFrame::getLocalTransform() const
+	const Matrix44f & Frame::getLocalTransform() const
 	{
 		computeLocalTransform();
 		return m_localTransform;
 	}
 
-	const Matrix44f & CFrame::getFullTransform() const
+	const Matrix44f & Frame::getFullTransform() const
 	{
         computeFullTransform();
 		return m_fullTransform;
 	}
 
-	void CFrame::debugDraw() const
+	void Frame::debugDraw() const
 	{
 		const float l = 10.5f;
 		math::Point3f p = getGlobalPosition();
@@ -120,13 +120,13 @@ namespace math
 		math::Point3f Y = p + l * getUpGlobal();
 		math::Point3f Z = p + l * getAtGlobal();
 
-		render::CLine3dManager& pLine3dManager = render::Line3dManager::Get();
-		pLine3dManager.addLine( p, X, math::Red );
-		pLine3dManager.addLine( p, Y, math::Green );
-		pLine3dManager.addLine( p, Z, math::Blue );
+		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
+		line_manager.addLine( p, X, math::Red );
+		line_manager.addLine( p, Y, math::Green );
+		line_manager.addLine( p, Z, math::Blue );
 	}
 
-	void CFrame::computeLocalTransform() const
+	void Frame::computeLocalTransform() const
 	{
 		if (!m_bIsNeedRecompute)
 			return;
@@ -146,7 +146,7 @@ namespace math
 		m_bNeedRecomputeGlobalMatrix = true;
 	}
 
-	void CFrame::computeFullTransform() const 
+	void Frame::computeFullTransform() const 
 	{
 		if (m_bIsNeedRecompute)
 			computeLocalTransform();
@@ -164,12 +164,12 @@ namespace math
 		m_bNeedRecomputeGlobalMatrix = false;
 	}
 
-	void CFrame::onParentChange()
+	void Frame::onParentChange()
 	{
 		m_bIsNeedRecompute = true;
 	}
 
-	Point3f CFrame::getGlobalPosition() const 
+	Point3f Frame::getGlobalPosition() const 
 	{
 		computeFullTransform();
 		const  Matrix44f &m	= m_fullTransform;
@@ -180,40 +180,40 @@ namespace math
 	//xaxis.x     yaxis.x     zaxis.x
 	//xaxis.y     yaxis.y     zaxis.y
 	//xaxis.z     yaxis.z     zaxis.z
-	Vec3f CFrame::getUp() const 
+	Vec3f Frame::getUp() const 
 	{
 		computeLocalTransform();
 		const Matrix44f &m= m_localTransform;
 		return Vec3f(m[1][0], m[1][1], m[1][2]);
 	}
-	Vec3f CFrame::getAt() const 
+	Vec3f Frame::getAt() const 
 	{
 		computeLocalTransform();
 		const Matrix44f &m= m_localTransform;
 		return Vec3f(m[2][0], m[2][1], m[2][2]);
 	}
-	Vec3f CFrame::getLeft() const 
+	Vec3f Frame::getLeft() const 
 	{
 		computeLocalTransform();
 		const Matrix44f &m= m_localTransform;
 		return Vec3f(m[0][0], m[0][1], m[0][2]);
 	}
 
-	Vec3f CFrame::getUpGlobal() const
+	Vec3f Frame::getUpGlobal() const
 	{
 		computeFullTransform();
 		Matrix44f &m = m_fullTransform;
 		return Vec3f(m[1][0], m[1][1], m[1][2]);
 	}
 
-	Vec3f CFrame::getAtGlobal() const
+	Vec3f Frame::getAtGlobal() const
 	{
 		computeFullTransform();
 		Matrix44f &m = m_fullTransform;
 		return Vec3f(m[2][0], m[2][1], m[2][2]);
 	}
 
-	Vec3f CFrame::getLeftGlobal() const
+	Vec3f Frame::getLeftGlobal() const
 	{
 		computeFullTransform();
 		Matrix44f &m = m_fullTransform;
@@ -221,14 +221,14 @@ namespace math
 	}
 
 	//Neonic: octree
-	void CFrame::updateTree( bool NeedFullUpdate )
+	void Frame::updateTree( bool NeedFullUpdate )
 	{
-		for (math::CFrame::ChildrenList::const_iterator it = getChildren().begin(); it != getChildren().end(); it++)
+		for (math::Frame::ChildrenList::const_iterator it = getChildren().begin(); it != getChildren().end(); it++)
 			(*it)->updateTree(NeedFullUpdate);
 	};
 
 	//-----------------------------------------------------------------------------------
-	void CFrame::toStream(io::IWriteStream& wf) const
+	void Frame::toStream(io::IWriteStream& wf) const
 	{
 		wf	<< m_scale
 			<< m_position
@@ -241,7 +241,7 @@ namespace math
 	}
 
 	//-----------------------------------------------------------------------------------
-	void CFrame::fromStream(io::IReadStream& rf)
+	void Frame::fromStream(io::IReadStream& rf)
 	{
 		rf	>> m_scale
 			>> m_position
@@ -255,18 +255,18 @@ namespace math
 
 		for(unsigned i = 0; i < nChildren; i++)
 		{
-			PFrame child = new CFrame;
+			PFrame child = new Frame;
 			child->fromStream( rf );
 			addChild( child );
 		}
 	}
 
-	std::ostream& operator<<(std::ostream& out, const math::CFrame& f)
+	std::ostream& operator<<(std::ostream& out, const math::Frame& f)
 	{
 		return out;
 	}
 
-	std::istream& operator>>(std::istream& in, math::CFrame& f)
+	std::istream& operator>>(std::istream& in, math::Frame& f)
 	{
 		return in;
 	}

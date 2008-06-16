@@ -5,7 +5,7 @@
 
 namespace particles
 {
-	class CPTank
+	class PTank
 	{
 	public:
 		/// Структура с информацией по частице 
@@ -22,11 +22,11 @@ namespace particles
 		typedef std::vector< SParticle > ParticleArray;
 		typedef ParticleArray::iterator ParticleArrayIter;
 
-		CPTank();
-		virtual ~CPTank();
+		PTank();
+		virtual ~PTank();
 
 		void update();
-		void render(render::PTexture texture, math::CFrame& transform);
+		void render(render::PTexture texture, math::Frame& transform);
 
 		inline ParticleArray& getParticles() { return m_vParticleArray; }
 
@@ -56,5 +56,5 @@ namespace particles
 		float m_fInvTotalRows;
 	};
 
-	typedef boost::shared_ptr<CPTank> PPTank;
+	typedef boost::shared_ptr<PTank> PPTank;
 }

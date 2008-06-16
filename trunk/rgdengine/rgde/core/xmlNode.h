@@ -75,9 +75,9 @@ namespace core
 
 		struct _searcher
 		{
-			const std::string& m_strName;
-			_searcher(const std::string& name) : m_strName(name){}
-			bool operator()(const _PT& obj) const {return obj->getName() == m_strName;}
+			const std::string& m_name;
+			_searcher(const std::string& name) : m_name(name){}
+			bool operator()(const _PT& obj) const {return obj->getName() == m_name;}
 		};
 
 		XmlNode(const std::string& name) : XmlClass(name)

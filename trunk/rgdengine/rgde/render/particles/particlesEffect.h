@@ -25,7 +25,7 @@ namespace particles
 		virtual ~IEffect();
 		
 		friend class script::CEffectAdaptor;
-		inline const math::CFrame& getTransform() { return m_Transform; }
+		inline const math::Frame& getTransform() { return m_Transform; }
 		
 		void addEmitter(IEmitter* em);
 		void deleteEmitter(IEmitter* em);
@@ -51,7 +51,7 @@ namespace particles
 		void setEmittersToFade(bool b);
 
 	protected:
-		math::CFrame	m_Transform;
+		math::Frame	m_Transform;
 		tEmitters		m_Emitters;						// Ёмиттеры
 		bool			m_bIsFading;
 		float			m_fOldTime;

@@ -13,18 +13,18 @@ namespace render
 	typedef boost::shared_ptr<class ITexture> PTexture;
 	typedef boost::shared_ptr<class IEffect> PEffect;
 
-	struct SSprite
+	struct Sprite
 	{
 		math::Rect rect;					///> Прямоугольник текстурных координат спрайта
 		math::Vec2f pos;					///> Позиция спрайта (в экранных координатах)
 		math::Vec2f size;					///> Размер спрайта (в экранных координатах)
 		float spin;							///< Поворот
 		unsigned long uPriority;			///> Приоритет отрисовки
-		render::PTexture pTexture;			///> Адрес текстуры
+		render::PTexture texture;			///> Адрес текстуры
 		math::Color color;					///> Цвет
 
-		SSprite();
-		SSprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
+		Sprite();
+		Sprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
 			const math::Color& color_ = 0xffffffff,render::PTexture pTexture_ = render::PTexture(), 
 			float spin_ = 0, const math::Rect& rect_ = math::Rect(0, 0, 1, 1),			
 			unsigned long uPriority_ = 0 );
@@ -33,7 +33,7 @@ namespace render
 	class CSpriteManager : public IDeviceObject, public IRendererable
 	{
 	public:
-		typedef std::vector<SSprite> TSprites;
+		typedef std::vector<Sprite> TSprites;
 		typedef TSprites::iterator TSpritesIter;
 
 		CSpriteManager(int priority = 0);
@@ -47,7 +47,7 @@ namespace render
 		inline math::Vec2f& getOrigin() { return m_vOrigin; }
 		inline void			setOrigin(math::Vec2f& vNewOrigin) { m_vOrigin = vNewOrigin; }
 
-		virtual void addSprite(const SSprite& pSprite);
+		virtual void addSprite(const Sprite& pSprite);
 
 	protected:
 		void render();

@@ -21,13 +21,13 @@ namespace render
 
 	class Mesh;
 
-	class CRenderManager
+	class RenderManager
 	{
 		friend class IRendererable;
 
 	protected:
-		CRenderManager();
-		virtual ~CRenderManager();
+		RenderManager();
+		virtual ~RenderManager();
 
 	public:
 		void clear();
@@ -44,14 +44,14 @@ namespace render
 
 		PEffect& getDefaultEffect();
 		PFont&   getDefaultFont();
-		const CFog&    getDefaultFog()	const {return m_pDefaultFog;}
+		const Fog&    getDefaultFog()	const {return m_pDefaultFog;}
 
 		PTexture& getBlackTexture();
 		PTexture& getWhiteTexture();
 		PTexture& getDefaultNormalMap();
 
-		void setCurrentFog(const CFog& fog);
-		const CFog& getCurrentFog() const	{return m_pCurrentFog;}
+		void setCurrentFog(const Fog& fog);
+		const Fog& getCurrentFog() const	{return m_pCurrentFog;}
 
 	private:
 		void add(IRendererable* r);
@@ -69,24 +69,24 @@ namespace render
 
 		PEffect                                m_pDefaultEffect;
 		PFont                                  m_pDefaultFont;
-		CFog                                   m_pDefaultFog;
+		Fog                                   m_pDefaultFog;
 
 		PTexture                               m_pBlackTexture;
 		PTexture                               m_pWhiteTexture;
 		PTexture                               m_pDefaultNormalMap;
 
-		CFog                                   m_pCurrentFog;
+		Fog                                   m_pCurrentFog;
 
 		PStaticBinder                          m_pStaticBinder;
 	};
 
-	typedef base::TSingelton<CRenderManager> TheRenderManager;
+	typedef base::TSingelton<RenderManager> TheRenderManager;
 
 	struct SRenderableInfo
 	{
 		SRenderableInfo();
 
-		math::CFrame*				 pFrame;
+		math::Frame*				 pFrame;
 		PMaterial					 spMaterial;
 		boost::function<void (void)> pRenderFunc;
 		boost::function<void (void)> pDebugRenderFunc;

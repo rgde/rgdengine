@@ -14,7 +14,7 @@ extern  D3DVIEWPORT9	   g_DefaultViewport;
 
 namespace render
 {
-	CRenderCamera::CRenderCamera(unsigned priority, const SViewPort& viewport)
+	RenderCamera::RenderCamera(unsigned priority, const ViewPort& viewport)
 		: m_Priority(priority),
 		  m_Viewport(viewport),
 		  m_ClearColor(0),
@@ -23,13 +23,13 @@ namespace render
 		//TheCameraManager::Get().addCamera(this);
 	}
 
-	CRenderCamera::~CRenderCamera()
+	RenderCamera::~RenderCamera()
 	{
 		int i = 5;
 		//TheCameraManager::Get().removeCamera(this);
 	}
 
-	void CRenderCamera::activate()
+	void RenderCamera::activate()
 	{
 		D3DVIEWPORT9	viewport;
 		DWORD			clearFlags = 0;
@@ -111,38 +111,38 @@ namespace render
 		if (clearFlags)
 			V(g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_ClearColor.color, m_ClearDepth, 0));
 	
-		CBaseCamera::activate();
+		BaseCamera::activate();
 	}
 
-	void CRenderCamera::setDepthStencilTarget(const PRenderTexture& pTarget, float clearDepth)
+	void RenderCamera::setDepthStencilTarget(const PRenderTexture& pTarget, float clearDepth)
 	{
 		m_pDepthStencilTarget	= pTarget;
 		m_ClearDepth			= clearDepth;
 	}
 
-	void CRenderCamera::setColorTarget(const PRenderTexture& pTarget, const math::Color&  clearColor)
+	void RenderCamera::setColorTarget(const PRenderTexture& pTarget, const math::Color&  clearColor)
 	{
 		m_pColorTarget	= pTarget;
 		m_ClearColor	= clearColor;
 	}
 		
-	void CRenderCamera::setPriority(unsigned priority)
+	void RenderCamera::setPriority(unsigned priority)
 	{
 		m_Priority = priority;
 	}
 
-	unsigned CRenderCamera::getPriority() const
+	unsigned RenderCamera::getPriority() const
 	{
 		return m_Priority;
 	}
 
-	PCamera CRenderCamera::Create()
+	PCamera RenderCamera::Create()
 	{
-		return Create(0, SViewPort(g_DefaultViewport.X, g_DefaultViewport.Y, g_DefaultViewport.Width, g_DefaultViewport.Height));
+		return Create(0, ViewPort(g_DefaultViewport.X, g_DefaultViewport.Y, g_DefaultViewport.Width, g_DefaultViewport.Height));
 	}
 
-	PCamera CRenderCamera::Create(unsigned priority, const SViewPort& viewport)
+	PCamera RenderCamera::Create(unsigned priority, const ViewPort& viewport)
 	{
-		return PCamera(new CRenderCamera(priority, viewport));
+		return PCamera(new RenderCamera(priority, viewport));
 	}
 }

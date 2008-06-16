@@ -9,11 +9,11 @@ namespace render
 {
 	class IDeviceObject;
 
-	class CDevice
+	class Device
 	{
 	protected:
-		CDevice();
-		~CDevice();
+		Device();
+		~Device();
 
 	public:
 		void					onLost();
@@ -63,7 +63,7 @@ namespace render
 		DeviceObjects m_objects;
 	};
 
-	typedef base::TSingelton<CDevice> TheDevice;
+	typedef base::TSingelton<Device> TheDevice;
 
 	class IDeviceObject
 	{

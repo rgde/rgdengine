@@ -22,7 +22,7 @@ namespace particles
 		m_renderInfo.pDebugRenderFunc	= boost::bind(&IEffect::debugDraw, this);
 		
 		// public properties:
-		//REGISTER_PROPERTY(Transform, math::CFrame)
+		//REGISTER_PROPERTY(Transform, math::Frame)
 	}
 	//-----------------------------------------------------------------------------------
 	IEffect::~IEffect()

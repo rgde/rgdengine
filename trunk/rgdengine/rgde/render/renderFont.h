@@ -47,7 +47,7 @@ namespace render
 									   // used.
 		};
 	public:
-		static PFont Create(int height, const std::wstring& name, FontWeight eFontWeigh = Normal);
+		static PFont Create(int height, const std::wstring& name, FontWeight font_weigh = Normal);
 
 		virtual void disableDelayedRender(bool b) = 0;
 		void render(const std::wstring& text, const math::Rect& rect, unsigned int color = 0xFFFFFFFF);

@@ -12,10 +12,10 @@ extern LPDIRECT3DDEVICE9 g_pd3dDevice;
 
 namespace render
 {
-	CDevice::CDevice() : m_shaderFlags(0)
+	Device::Device() : m_shaderFlags(0)
 	{
         m_ClearColor = math::Color(0,0,0,255);
-		//base::lmsg << "CDevice::CDevice()";
+		//base::lmsg << "Device::Device()";
 	}
 
 	struct  _deleter
@@ -26,9 +26,9 @@ namespace render
 		}
 	};
 
-	CDevice::~CDevice()
+	Device::~Device()
 	{
-		//base::lmsg << "CDevice::~CDevice()";
+		//base::lmsg << "Device::~Device()";
 		onLost();
 		//std::for_each(m_objects.begin(), m_objects.end(), _deleter());
 	}
@@ -49,40 +49,40 @@ namespace render
 	};
 
 
-	void CDevice::onLost()
+	void Device::onLost()
 	{
 		std::for_each(m_objects.begin(), m_objects.end(), _loster());
 	}
 
-	void CDevice::onReset()
+	void Device::onReset()
 	{
 		std::for_each(m_objects.begin(), m_objects.end(), _reseter());
 	}
 
-	void CDevice::addDeviceObject(IDeviceObject *o)
+	void Device::addDeviceObject(IDeviceObject *o)
 	{
 		m_objects.push_back(o);
 	}
 
-	void CDevice::removeDeviceObject(IDeviceObject *o)
+	void Device::removeDeviceObject(IDeviceObject *o)
 	{
 		m_objects.remove(o);
 	}
 
-	void CDevice::addStatistic(unsigned verts, unsigned tris)
+	void Device::addStatistic(unsigned verts, unsigned tris)
 	{
 		m_verts += verts;
 		m_triangles += tris;
 	}
 
-	void CDevice::resetStats()
+	void Device::resetStats()
 	{
 		m_verts = 0;
 		m_triangles = 0;
 	}
 
 	//--------------------------------------------------------------------------------------
-	math::Vec2f CDevice::getBackBufferSize()
+	math::Vec2f Device::getBackBufferSize()
 	{
 		if (NULL == g_pd3dDevice)
 			return math::Vec2f(800, 600);
@@ -97,7 +97,7 @@ namespace render
 	}
 
 	//--------------------------------------------------------------------------------------
-	float CDevice::getFPS(float absoluteTime) const
+	float Device::getFPS(float absoluteTime) const
 	{
 		static float framesPerSecond;
 		static float lastTime		= 0.0f;
@@ -117,7 +117,7 @@ namespace render
 		return framesPerSecond;
 	}
 
-	void CDevice::showWiredFloorGrid(float size, unsigned num, const math::Color &color)
+	void Device::showWiredFloorGrid(float size, unsigned num, const math::Color &color)
 	{
 		float hsize	= size / 2;
 		float step	= size / num;
@@ -129,27 +129,27 @@ namespace render
 				float z			= i *step - hsize;
 				math::Vec3f v1	(-hsize, z, 0);
 				math::Vec3f v2(hsize, z, 0);
-				Line3dManager::Get().addLine(v1, v2, color);
+				TheLine3dManager::Get().addLine(v1, v2, color);
 			}
 			{
 				// Y
 				float x	= i *step - hsize;
 				math::Vec3f v1(x, -hsize, 0);
 				math::Vec3f v2(x, hsize, 0);
-				Line3dManager::Get().addLine(v1, v2, color);
+				TheLine3dManager::Get().addLine(v1, v2, color);
 			}
 		}
 	}
 
 	//--------------------------------------------------------------------------------------
-	void CDevice::showFPS(const PFont& font)
+	void Device::showFPS(const PFont& font)
 	{
 		WCHAR szFPSString[64];
 		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(core::TheTimer::Get().getAbsoluteTime()));
 		font->render(szFPSString, math::Rect(1, 1, 400, 400), 0xFFFFFFFF, true);
 	}
 
-	void CDevice::showStatistics(const PFont& font)
+	void Device::showStatistics(const PFont& font)
 	{
 		WCHAR szStatisticsString[512];
 		wsprintf(szStatisticsString, L"Tris: %d, Vertices: %d", m_triangles, m_verts);

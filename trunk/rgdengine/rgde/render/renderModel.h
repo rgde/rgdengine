@@ -13,7 +13,7 @@ namespace render
 
 	typedef boost::intrusive_ptr<class Model> PModel;
 
-	class Model :  public math::CFrame, public game::IDynamicObject
+	class Model : public math::Frame, public game::IDynamicObject
 	{
 	public:
 		typedef std::map<int, PMaterial>				MaterialMap;
@@ -56,9 +56,9 @@ namespace render
 		Meshes			m_vMeshes;
 		Controllers		m_vControllers;
 
-		bool			m_bVisible;
+		bool			m_is_visible;
         
-		std::string		m_strName;
+		std::string		m_name;
 		std::string		m_strComment;
 	};	
 }

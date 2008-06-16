@@ -4,7 +4,7 @@
 
 namespace render
 {
-	class CFog
+	class Fog
 	{
 	public:
 		enum Type
@@ -15,7 +15,7 @@ namespace render
 			Linear
 		};
 
-		CFog();
+		Fog();
 
 		void setMode(Type type);
 		void loadFromXML(const std::string& strFileName);

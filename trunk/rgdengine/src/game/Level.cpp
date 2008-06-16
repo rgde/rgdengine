@@ -4,28 +4,28 @@
 
 namespace game
 {
-	CLevel::CLevel(const std::string& strName, const std::string& strNextLevel)
-		:	m_strName(strName),
+	Level::Level(const std::string& name, const std::string& strNextLevel)
+		:	m_name(name),
 			m_strNextLevel(strNextLevel)
 	{
-		base::lmsg << "CLevel::CLevel() " << strName << base::endl;
+		base::lmsg << "Level::Level() " << name << base::endl;
 
-		core::Function::Func func = boost::bind(&CLevel::addTypeToCreate, this, _1);
-		core::CFunctionsOwner::addFunction(core::Function("AddTypeToCreate", func));
+		core::Function::Func func = boost::bind(&Level::addTypeToCreate, this, _1);
+		core::FunctionsOwner::addFunction(core::Function("AddTypeToCreate", func));
 	}
 
-	void CLevel::addTypeToCreate(const std::string& strTypeName)
+	void Level::addTypeToCreate(const std::string& type_name)
 	{
-		m_listTypes.push_back(strTypeName);
+		m_listTypes.push_back(type_name);
 	}
 
-	CLevel::~CLevel()
+	Level::~Level()
 	{
-		base::lmsg << "CLevel::~CLevel()" << base::endl;
+		base::lmsg << "Level::~Level()" << base::endl;
 	}
 
 	//инициализация уровня
-	void CLevel::enter()
+	void Level::enter()
 	{
 		typedef std::list<std::string> StringList;
 		for (StringList::iterator it = m_listTypes.begin(); it != m_listTypes.end(); ++it)
@@ -37,7 +37,7 @@ namespace game
 	}
 
 	//деинициализация уровня
-	void CLevel::leave()
+	void Level::leave()
 	{
 		//... кажется, что объекты созданные фабрикой надо удалять так:
 		//(но могу и соврать)

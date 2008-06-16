@@ -5,16 +5,16 @@
 namespace render
 {
 	//////////////////////////////////////////////////////////////////////////
-	SSprite::SSprite()	: spin(0), uPriority(0), rect(0, 0, 1, 1)
+	Sprite::Sprite()	: spin(0), uPriority(0), rect(0, 0, 1, 1)
 	{
 	}
 
-	SSprite::SSprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
+	Sprite::Sprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
 		const math::Color& color_,render::PTexture pTexture_,
 		float spin_, const math::Rect& rect_,
 		unsigned long uPriority_) :
 	rect (rect_), pos (pos_), size (size_), spin (spin_), uPriority (uPriority_), 
-		pTexture (pTexture_), color (color_)
+		texture (pTexture_), color (color_)
 	{
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -43,13 +43,13 @@ namespace render
 	{
 	}
 	//-----------------------------------------------------------------------------------
-	void CSpriteManager::addSprite(const SSprite &pSprite)
+	void CSpriteManager::addSprite(const Sprite &pSprite)
 	{
 		m_bUpdated = false;
 		m_vSprites.push_back(pSprite);
 	}
 	//-----------------------------------------------------------------------------------
-	bool sortPred (const SSprite& pSprite1, SSprite& pSprite2)
+	bool sortPred (const Sprite& pSprite1, Sprite& pSprite2)
 	{
 		return (pSprite1.uPriority < pSprite2.uPriority);
 	}
@@ -99,7 +99,7 @@ namespace render
 		for (TSpritesIter it = m_vSprites.begin(); it != m_vSprites.end(); ++it)
 		{
 			// Срайты масштабируются только при записи в буфер
-			const SSprite &sprite	= *it;
+			const Sprite &sprite	= *it;
 			const math::Color &color= sprite.color;
 			const math::Rect &rect	= sprite.rect;
 			// Сразу же масштабируем позицию и размер
@@ -166,13 +166,13 @@ namespace render
 			IEffect::IParameter *textureShaderParam	= m_pEffect->getParams()["SpriteTexture"];
 
 			uint start_sprite = 0;
-			PTexture cur_tex = m_vSprites[0].pTexture;
+			PTexture cur_tex = m_vSprites[0].texture;
 			for (uint i = 0; i < m_vSprites.size(); ++i)
 			{
-				SSprite &sprite = m_vSprites[i];
+				Sprite &sprite = m_vSprites[i];
 
 				// если = то отрисовать
-				if (cur_tex != sprite.pTexture)
+				if (cur_tex != sprite.texture)
 				{
 					int cur_sprite = i - 1;
 					int nSprites = cur_sprite - start_sprite + 1;
@@ -184,7 +184,7 @@ namespace render
 						m_Geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, nSprites * 4, 6 * start_sprite, nSprites * 2);
 						nSpritesRendered += nSprites;
 					}
-					cur_tex = sprite.pTexture;
+					cur_tex = sprite.texture;
 					start_sprite = i;
 				}
 

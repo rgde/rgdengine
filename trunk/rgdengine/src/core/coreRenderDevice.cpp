@@ -84,7 +84,7 @@ namespace core
 		{
 			::render::TheDevice::Destroy(); // here onLost calling
 			::render::TheLine2dManager::Destroy();
-			::render::Line3dManager::Destroy();
+			::render::TheLine3dManager::Destroy();
 			::render::TheRenderManager::Destroy();
 
 			::render::IEffect::ClearAll();

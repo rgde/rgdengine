@@ -15,7 +15,7 @@
 namespace render
 {
 	PDynamicBinder createDynamicBinder(const PEffect& pEffect,
-									   const CMaterial& mat,
+									   const Material& mat,
 									   std::string& techniqueName);
 
 	PStaticBinder createStaticBinder(const PEffect& pEffect);

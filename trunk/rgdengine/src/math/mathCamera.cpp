@@ -6,14 +6,14 @@
 
 namespace math
 {
-	const Matrix44f  CBaseCamera::getViewMatrix()	const 
+	const Matrix44f  BaseCamera::getViewMatrix()	const 
 	{
-		Matrix44f m = CFrame::getFullTransform();
+		Matrix44f m = Frame::getFullTransform();
 		math::invert(m);
 		return m;		
 	}
 
-	void CBaseCamera::setProjection(float fFovy, float fAspect, float zn, float zf)
+	void BaseCamera::setProjection(float fFovy, float fAspect, float zn, float zf)
 	{
 		float hfov = fFovy/2;
 		float yScale = ::cos(hfov)/::sin(hfov);
@@ -27,26 +27,26 @@ namespace math
 		gmtl::transpose(m_ProjMatrix);
 
 		//Neonic: octree
-		setRadius(zn);
+		//setRadius(zn);
 	}
 
-	void CBaseCamera::activate()
+	void BaseCamera::activate()
 	{
 		m_frustum.CalculateFrustum(*this);
 
 		//Neonic: octree. Этот код выполняет обновление положения камеры в дереве,
 		// т.к. вызывается из выведенных камерах.
-		if(getRoot())
-		{
-			move(getPosition());
-		}
-		else
-		{
-			// Neonic: next code appear repeatedly in sequence, cause camera (in tree) activation not instant
-			makeSphere(getPosition(),getRadius());
-			// usually camera is moving (dynamic) object
-			makeDynamic();
-			scene::TheScene::Get().inject(this);
-		}
+		//if(getRoot())
+		//{
+		//	move(getPosition());
+		//}
+		//else
+		//{
+		//	// Neonic: next code appear repeatedly in sequence, cause camera (in tree) activation not instant
+		//	makeSphere(getPosition(),getRadius());
+		//	// usually camera is moving (dynamic) object
+		//	makeDynamic();
+		//	scene::TheScene::Get().inject(this);
+		//}
 	}
 }

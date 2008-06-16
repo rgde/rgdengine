@@ -138,11 +138,11 @@ namespace core
 	};
 
 	/// вспомогательный класс для регистрации пропертей в хранилище.
-	class CPropertyOwner
+	class PropertyOwner
 	{
 
 	public:
-		virtual ~CPropertyOwner() {}
+		virtual ~PropertyOwner() {}
 
 		template<class Derived, typename Value>
 		void registerProperty(){}
@@ -183,7 +183,7 @@ namespace core
 		std::string m_name;
 	};
 
-	class CFunctionsOwner
+	class FunctionsOwner
 	{
 		struct _seacher
 		{
@@ -195,7 +195,7 @@ namespace core
 		typedef std::vector<Function> FuncList;
 		FuncList& getFunctions() {return m_functions;}
 		
-		virtual ~CFunctionsOwner(){}
+		virtual ~FunctionsOwner(){}
 
 		Function* getFunction(const std::string& function_name)
 		{

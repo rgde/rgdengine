@@ -52,7 +52,7 @@ namespace math
 		frustum[side][D] /= magnitude; 
 	}
 
-	CFrustum::CFrustum()
+	Frustum::Frustum()
 	{
 	}
 
@@ -61,9 +61,9 @@ namespace math
 	///////	This extracts our frustum from the projection and modelview matrix.
 	///////
 	/////////////////////////////////// CALCULATE FRUSTUM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-	void CFrustum::CalculateFrustum(const CBaseCamera& pCam)
+	void Frustum::CalculateFrustum(const BaseCamera& pCam)
 	{    
-		//ModelViewerCamera* g_Camera	 = reinterpret_cast<ModelViewerCamera*>(dx::CDevice::get()->getCurentCamera());
+		//ModelViewerCamera* g_Camera	 = reinterpret_cast<ModelViewerCamera*>(dx::Device::get()->getCurentCamera());
 		//D3DXMATRIX &mProj	= *g_Camera->GetProjMatrix();
 		//D3DXMATRIX &mView	= *g_Camera->GetViewMatrix();
 		math::Matrix44f mProj = pCam.getProjMatrix();
@@ -144,7 +144,7 @@ namespace math
 	///////	This determines if a point is inside of the frustum
 	///////
 	/////////////////////////////////// POINT IN FRUSTUM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-	bool CFrustum::PointInFrustum( float x, float y, float z ) const
+	bool Frustum::PointInFrustum( float x, float y, float z ) const
 	{
 		// Go through all the sides of the frustum
 		for(int i = 0; i < 6; i++ )
@@ -163,7 +163,7 @@ namespace math
 	///////	This determines if a sphere is inside of our frustum by it's center and radius.
 	///////
 	/////////////////////////////////// SPHERE IN FRUSTUM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-	bool CFrustum::SphereInFrustum( float x, float y, float z, float radius ) const
+	bool Frustum::SphereInFrustum( float x, float y, float z, float radius ) const
 	{
 		// Go through all the sides of the frustum
 		for(int i = 0; i < 6; i++ )	
@@ -182,7 +182,7 @@ namespace math
 	///////	This determines if a cube is in or around our frustum by it's center and 1/2 it's length
 	///////
 	/////////////////////////////////// CUBE IN FRUSTUM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-	bool CFrustum::CubeInFrustum( float x, float y, float z, float size ) const
+	bool Frustum::CubeInFrustum( float x, float y, float z, float size ) const
 	{
 		// Basically, what is going on is, that we are given the center of the cube,
 		// and half the length.  Think of it like a radius.  Then we checking each point

@@ -5,7 +5,7 @@
 namespace render
 {
 	//ILight
-	class ILight : public math::CFrame
+	class ILight : public math::Frame
 	{
 	public:
 		enum EType 
@@ -16,7 +16,7 @@ namespace render
 			Directional		= 3
 		};
 
-		ILight(const std::string& strName, EType eType);
+		ILight(const std::string& name, EType eType);
 		virtual ~ILight();
 
 		EType getType() const;
@@ -48,13 +48,13 @@ namespace render
 
 	typedef boost::intrusive_ptr<ILight> PLight;
 
-	//CPointLight
-	class CPointLight : public ILight
+	//PointLight
+	class PointLight : public ILight
 	{
 	public:
 
-		CPointLight(const std::string& strName);
-		~CPointLight();
+		PointLight(const std::string& name);
+		~PointLight();
 
 		float getRange() const;
 		void  setRange(float fRange);
@@ -77,13 +77,13 @@ namespace render
    
 	};
 
-	//CSpotLight
-	class CSpotLight : public ILight
+	//SpotLight
+	class SpotLight : public ILight
 	{
 	public:
 
-		CSpotLight(const std::string& strName);
-		~CSpotLight();
+		SpotLight(const std::string& name);
+		~SpotLight();
 
 		float getRange() const;
 		void  setRange(float fRange);
@@ -117,13 +117,13 @@ namespace render
 		float m_fPhi;                 //Outer angle of spotlight cone
 	};
 
-	//CDirectionalLight
-	class CDirectionalLight : public ILight
+	//DirectionalLight
+	class DirectionalLight : public ILight
 	{
 	public:
 
-		CDirectionalLight(const std::string& strName);
-		~CDirectionalLight();
+		DirectionalLight(const std::string& name);
+		~DirectionalLight();
 
 	protected:
 	

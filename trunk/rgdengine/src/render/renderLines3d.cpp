@@ -10,19 +10,19 @@
 namespace render
 {
 	//-----------------------------------------------------------------------------------
-	CLine3dManager::CLine3dManager(unsigned long uPriority)
+	Line3dManager::Line3dManager(unsigned long uPriority)
 		: render::IRendererable(1000),
 		  m_spEffect(IEffect::Create("Line3dManager.fxo")),
 		  m_uPriority(uPriority),
 		  m_Geometry(true)
 	{
-		//base::lmsg << "CLine3dManager::CLine3dManager()";
+		//base::lmsg << "Line3dManager::Line3dManager()";
 		m_pVertices = &(m_Geometry.lock());
-		m_renderInfo.pRenderFunc = boost::bind(&CLine3dManager::render, this);
+		m_renderInfo.pRenderFunc = boost::bind(&Line3dManager::render, this);
 	}
 
 	//-----------------------------------------------------------------------------------
-	void CLine3dManager::render()
+	void Line3dManager::render()
 	{
 		if (m_pVertices->size() == 0)
 			return;
@@ -64,13 +64,13 @@ namespace render
 	}
 
 	//-----------------------------------------------------------------------------------
-	void CLine3dManager::addLine(const math::Vec3f &vPoint1, const math::Vec3f &vPoint2, const math::Color &color)
+	void Line3dManager::addLine(const math::Vec3f &vPoint1, const math::Vec3f &vPoint2, const math::Color &color)
 	{
 		m_pVertices->push_back(Point(vPoint1, color));
 		m_pVertices->push_back(Point(vPoint2, color));
 	}
 	//-----------------------------------------------------------------------------------
-	void CLine3dManager::addBox(const math::Vec3f& size, const math::Color& color)
+	void Line3dManager::addBox(const math::Vec3f& size, const math::Color& color)
 	{
 		static const size_t nVerts = 8;
 		static math::Vec3f box[nVerts];
@@ -119,7 +119,7 @@ namespace render
 		addLine(size_box[3], size_box[3 + 4], color);
 	}
 	//-----------------------------------------------------------------------------------
-	void CLine3dManager::addBox(const math::AABoxf& box, const math::Color& color)
+	void Line3dManager::addBox(const math::AABoxf& box, const math::Color& color)
 	{
 		math::Point3f max = box.getMax();
 		math::Point3f min = box.getMin();
@@ -155,7 +155,7 @@ namespace render
 		addLine(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
 	}
 	//-----------------------------------------------------------------------------------
-	void CLine3dManager::addBox(const math::Matrix44f &m, const math::AABoxf &box, const math::Color &color)
+	void Line3dManager::addBox(const math::Matrix44f &m, const math::AABoxf &box, const math::Color &color)
 	{
 		math::Point3f max = box.getMax();
 		math::Point3f min = box.getMin();
@@ -196,7 +196,7 @@ namespace render
 		addLine(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
 	}
 	//-----------------------------------------------------------------------------------
-	void CLine3dManager::addBox(const math::Matrix44f &m, const math::Vec3f &size, const math::Color &color)
+	void Line3dManager::addBox(const math::Matrix44f &m, const math::Vec3f &size, const math::Color &color)
 	{
 		static const int nVerts = 8;
 		static math::Vec3f box[nVerts];				// for size(x,y,z) = 1
@@ -247,7 +247,7 @@ namespace render
 	}
 
 	//-----------------------------------------------------------------------------------
-	void CLine3dManager::addDirection(const math::Matrix44f &m, const math::Point3f &dir, const math::Color &color)
+	void Line3dManager::addDirection(const math::Matrix44f &m, const math::Point3f &dir, const math::Color &color)
 	{
 		math::Vec3f trans;
 		math::setTrans(trans, m);
@@ -255,7 +255,7 @@ namespace render
 	}
 
 	//-----------------------------------------------------------------------------------
-	void CLine3dManager::addSphere(const math::Matrix44f &m, float rad, int angle)
+	void Line3dManager::addSphere(const math::Matrix44f &m, float rad, int angle)
 	{
 		static math::Point3f circle[361];				// for radius = 1
 		static math::Point3f circle2[2][361];
@@ -307,7 +307,7 @@ namespace render
 		addLine(yTrans, circle2[0][359 - angle], math::Green);
 	}
 	//-----------------------------------------------------------------------------------
-	void CLine3dManager::addQuad(const math::Vec3f &center, const math::Vec2f &size, float fSpin)
+	void Line3dManager::addQuad(const math::Vec3f &center, const math::Vec2f &size, float fSpin)
 	{
 		const math::Matrix44f & mView = TheDevice::Get().getCurentCamera()->getViewMatrix();
 

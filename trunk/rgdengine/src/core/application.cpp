@@ -260,7 +260,7 @@ namespace core
 		buffer.resize(256);
 		GetCurrentDirectoryW(256, &buffer[0]);
 
-		std::wstring strName = window_name.empty() ? L"RGDE Window" : window_name;
+		std::wstring name = window_name.empty() ? L"RGDE Window" : window_name;
 		int  nWidth = 640;
 		int  nHeight = 480;
 		bool bFullscreen = false;
@@ -278,13 +278,13 @@ namespace core
 			TiXmlHandle pWindowNode = hConfigHandle.FirstChildElement("Engine").FirstChildElement("Window");//.FirstChildElement().Element();
 
 			std::string ansi_name = base::safeReadValue<std::string>(pWindowNode, "name", "");
-			strName = ansi_name.empty() ? strName : std::wstring(ansi_name.begin(), ansi_name.end());
+			name = ansi_name.empty() ? name : std::wstring(ansi_name.begin(), ansi_name.end());
 			nWidth = base::safeReadValue<int>(pWindowNode, "width", 640);
 			nHeight = base::safeReadValue<int>(pWindowNode, "height", 480);
 			bFullscreen = base::safeReadValue<bool>(pWindowNode, "Fullscreen", 0);
 		}
 
-		return Create(std::wstring(strName.begin(), strName.end()), nWidth, nHeight, bFullscreen);
+		return Create(std::wstring(name.begin(), name.end()), nWidth, nHeight, bFullscreen);
 	}
 
 	IApplication* IApplication::Create(const std::wstring& Name, int Width, int Height, bool Fullscreen, bool resize_enable)

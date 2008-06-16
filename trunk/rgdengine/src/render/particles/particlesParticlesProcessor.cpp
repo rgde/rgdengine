@@ -181,7 +181,7 @@ namespace particles{
 
 		if (!m_bIsGeometric)
 		{
-			m_spTank->render(m_pTexture, m_pParentEmitter->getTransform());
+			m_spTank->render(m_texture, m_pParentEmitter->getTransform());
 		}
 		else
 			geomRender();
@@ -204,7 +204,7 @@ namespace particles{
 
 		m_fNormalizedTime = m_pParentEmitter->getTime();
 
-		math::CFrame& rParentTransform = m_pParentEmitter->getTransform();
+		math::Frame& rParentTransform = m_pParentEmitter->getTransform();
 		//m_fScaling = (m_ParentTransform->getScaling()).x;
 		m_fScaling = rParentTransform.getScale();
 
@@ -324,7 +324,7 @@ namespace particles{
 			m = math::setTrans( m, math::Vec3f(0,0,0) );
 
 		math::Vec3f center, vel;
-		render::CLine3dManager& pLine3dManager = render::Line3dManager::Get();
+		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
 		for (TParticlesIter it = m_Particles.begin(); it != m_Particles.end(); ++it)
 		{
 			if ((*it).dead)
@@ -341,8 +341,8 @@ namespace particles{
 				vel = it->pos + (*it).sum_vel*5.0f;
 			}
 
-			pLine3dManager.addQuad( center, math::Vec2f (it->size, it->size), 0 );	
-			pLine3dManager.addLine( center, vel, math::Green );
+			line_manager.addQuad( center, math::Vec2f (it->size, it->size), 0 );	
+			line_manager.addLine( center, vel, math::Green );
 		}
 	}
 	//-----------------------------------------------------------------------------------
@@ -353,7 +353,7 @@ namespace particles{
 
 		const math::Matrix44f& ltm = getLTM();
 
-		CPTank::ParticleArray& array = m_spTank->getParticles();
+		PTank::ParticleArray& array = m_spTank->getParticles();
 		array.resize( m_Particles.size() );
 		int i = 0;
 
@@ -435,7 +435,7 @@ namespace particles{
 		//try{
 		//	agl::LocalImgPathSync p(pfx::tex_path.c_str());//"Effects\\tx\\");
 		//	
-		//	m_pTexture.load(m_TexName);
+		//	m_texture.load(m_TexName);
 
 		//	std::string ext_path = std::string::Concat(
 		//		pfx::tex_path.c_str(), pfx::tex_path.length(),
@@ -445,7 +445,7 @@ namespace particles{
 		//	if (base::ResourceMaster::Get()->isResourceExist(ext_path))
 		//	{
 		//		clx::rstream in(base::ResourceMaster::Get()->getResource(ext_path));//ResourseMaster
-		//		//m_pTexture.load(clx::cstr("anim_explode.png"));
+		//		//m_texture.load(clx::cstr("anim_explode.png"));
 		//		m_bIsAnimTextureUsed = true;
 		//		in  >> m_ucRow			// = 4;
 		//			>> m_ucCol			// = 4;
@@ -456,13 +456,13 @@ namespace particles{
 		//	else 
 		//		m_bIsAnimTextureUsed = false;
 
-		//	m_pTexture.setFilterMode(agl::filter_Linear);
+		//	m_texture.setFilterMode(agl::filter_Linear);
 		//}
 		//catch (...){
 		//	m_TexName.clear();
 		//	return;
 		//}
-		m_pTexture = render::ITexture::Create(m_TexName);//std::wstring(m_TexName.begin(), m_TexName.end()) );
+		m_texture = render::ITexture::Create(m_TexName);//std::wstring(m_TexName.begin(), m_TexName.end()) );
 		return;
 	}
 
@@ -503,12 +503,12 @@ namespace particles{
 
 		if( m_spTank ) 	delete m_spTank;
 
-		m_spTank = new CPTank();
+		m_spTank = new PTank();
 
 
 		if( m_TexName.length() )
 			// TODO: Проверять, загружена ли текстура
-			if( !(m_pTexture /*&& m_pTexture->isLoaded()*/ ) )
+			if( !(m_texture /*&& m_texture->isLoaded()*/ ) )
 				loadTexture();
 
 		setIntenseMode(m_bIntense);

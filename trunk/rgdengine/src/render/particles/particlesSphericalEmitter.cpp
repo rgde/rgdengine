@@ -66,7 +66,7 @@ namespace particles
 	{
 		IAbstractEmitter::debugDraw();
 
-		render::CLine3dManager& pLine3dManager = render::Line3dManager::Get();
+		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
 
 		float rad = m_Radius.getValue(m_fTimeNormalaized);// + 
 		float r_rand = m_RadiusSpread.getValue(m_fTimeNormalaized);
@@ -74,11 +74,11 @@ namespace particles
 
 		math::Matrix44f m = getTransform().getFullTransform();
 
-		pLine3dManager.addSphere( m , rad, angle );
+		line_manager.addSphere( m , rad, angle );
 		if( r_rand != 0 )
 		{
-			pLine3dManager.addSphere( m , rad-r_rand, angle );
-			pLine3dManager.addSphere( m , rad+r_rand, angle );
+			line_manager.addSphere( m , rad-r_rand, angle );
+			line_manager.addSphere( m , rad+r_rand, angle );
 		}
 	}
 

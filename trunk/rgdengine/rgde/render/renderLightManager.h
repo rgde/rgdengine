@@ -3,7 +3,7 @@
 // @date 14.07.2006
 // email: sidorenko.alexander@gmail.com
 // project: RGDE
-// description: CLightManager manages lights.
+// description: LightManager manages lights.
 // example of use:
 //////////////////////////////////////////////////////////////////////////
 
@@ -16,7 +16,7 @@ namespace render
 	//const int MAX_NUM_ACTIVE_LIGHTS = 8;
 	//const int MAX_NUM_LIGHTS = 8;
 
-	//class CLightManager
+	//class LightManager
 	//{
 	//friend class ILight;
 	//public:
@@ -81,7 +81,7 @@ namespace render
 	//	}
 
 	//protected:
-	//	CLightManager();
+	//	LightManager();
 
 	//private:
 	//	void addLight(const PLight& pLight);
@@ -121,5 +121,5 @@ namespace render
 	//	int m_nDirectionalLightsNum;
 	//};
 
-	//typedef base::TSingelton<CLightManager> TheLightManager;
+	//typedef base::TSingelton<LightManager> TheLightManager;
 }

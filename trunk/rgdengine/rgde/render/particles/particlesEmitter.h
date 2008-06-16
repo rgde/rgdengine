@@ -26,7 +26,7 @@ namespace particles
 		IEmitter(Type _type) : m_eType(_type), core::XmlClass("ParticleEmitter") 
 		{
 			// public properties:
-			//REGISTER_PROPERTY(Transform, math::CFrame)
+			//REGISTER_PROPERTY(Transform, math::Frame)
 		}
 
 		virtual void reset() = 0;
@@ -39,7 +39,7 @@ namespace particles
 		virtual void setFade (bool bFade) = 0;
 
 		// Акксессоры получения
-		inline math::CFrame& getTransform() { return m_Transform; }
+		inline math::Frame& getTransform() { return m_Transform; }
 		inline Type getEmitterType() const { return m_eType; }
 
 	protected:
@@ -48,7 +48,7 @@ namespace particles
 
 	protected:
 		const Type		m_eType;					// Тип эммитера
-		math::CFrame	m_Transform;				// Трансформация
+		math::Frame	m_Transform;				// Трансформация
 	};
 
 }

@@ -5,15 +5,15 @@
 
 namespace particles
 {
-	class CPTank;
-	typedef boost::shared_ptr<class CPTank> PPTank;
+	class PTank;
+	typedef boost::shared_ptr<class PTank> PPTank;
 }
 
 namespace render
 {
-	typedef boost::shared_ptr<class CFlameRenderer> PFlameRenderer;
+	typedef boost::shared_ptr<class FlameRenderer> PFlameRenderer;
 
-	class CFlameRenderer : public IRendererable, game::IDynamicObject
+	class FlameRenderer : public IRendererable, game::IDynamicObject
 	{
 	public:
 		static PFlameRenderer Create(const std::string& tex, const math::Color& color, 
@@ -25,7 +25,7 @@ namespace render
 		void  setFPS(float fFPS) {m_fFPS = fFPS;}
 
 	private:
-		CFlameRenderer(const std::string& tex, const math::Color& color, const math::Vec3f& pos, 
+		FlameRenderer(const std::string& tex, const math::Color& color, const math::Vec3f& pos, 
 			const math::Vec2f& size, uint fps, const std::vector<math::PFrame>& vVector);
 
 		void readTNF(const std::string& strFileName);

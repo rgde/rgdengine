@@ -6,19 +6,19 @@
 
 namespace math
 {
-	class CFrame;
-	typedef boost::intrusive_ptr<CFrame>  PFrame;
+	class Frame;
+	typedef boost::intrusive_ptr<Frame>  PFrame;
 
-	class CFrame :	public io::ISerializedObject,
+	class Frame :	public io::ISerializedObject,
 					boost::noncopyable, 
-					public core::XmlNode<CFrame>
+					public core::XmlNode<Frame>
 	{
 	public:
 		static Matrix44f makeTransformMatrix(const Point3f& pos, const Quatf& rot, const Vec3f& s);
 		static Matrix44f makeTransformMatrix(const Point3f& pos, const EulerAngleXYZf& rot, const Vec3f& s);
 
-							CFrame();
-		virtual				~CFrame();
+							Frame();
+		virtual				~Frame();
 
 		const Point3f&		getPosition()		const {return m_position;}
 		Point3f				getGlobalPosition() const;
@@ -75,6 +75,6 @@ namespace math
 		mutable Matrix44f		m_fullTransform;
 	};
 	
-	std::ostream& operator<<(std::ostream& out, const math::CFrame& f);
-	std::istream& operator>>(std::istream& in, math::CFrame& f);
+	std::ostream& operator<<(std::ostream& out, const math::Frame& f);
+	std::istream& operator>>(std::istream& in, math::Frame& f);
 }

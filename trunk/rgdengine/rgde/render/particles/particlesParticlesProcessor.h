@@ -21,7 +21,7 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 namespace particles{
 
 	class IAbstractEmitter;
-	class CPTank;
+	class PTank;
 
 
 	class  IParticlesProcessor : public io::ISerializedObject, public core::XmlClass
@@ -107,8 +107,8 @@ namespace particles{
 
 
 	protected:
-		CPTank* m_spTank;
-		render::PTexture m_pTexture;
+		PTank* m_spTank;
+		render::PTexture m_texture;
 
 		//////////////////////////////////////////////////////////////////////////
 		// для работы с анимированной текстурой

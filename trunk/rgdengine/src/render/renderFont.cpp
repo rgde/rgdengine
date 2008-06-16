@@ -9,8 +9,6 @@ extern LPDIRECT3DDEVICE9 g_pd3dDevice;
 
 namespace render
 {
-	//extern ID3DXSprite*	dxSprite;
-
 	class CFontRenderManager : public IRendererable
 	{
 	protected:
@@ -69,11 +67,10 @@ namespace render
 		render(text, rect, color, isDrawShadow, Top | Left | WordBreak);
 	}	
 
-	class CFontImpl : public IFont, public IDeviceObject
+	class FontImpl : public IFont, public IDeviceObject
 	{
-		//typedef core::com_ptr<ID3DXFont> SPID3DXFont;
 		int				m_nHeight;
-		std::wstring	m_strName;
+		std::wstring	m_name;
 		FontWeight		m_eFontWeght;
 		bool			m_useDelayedRender;
 
@@ -97,18 +94,18 @@ namespace render
 			if (g_pd3dDevice == NULL || m_pFont != NULL)
 				return;
 
-			if (FAILED(D3DXCreateFont(g_pd3dDevice, -m_nHeight, 0, m_eFontWeght, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 5, DEFAULT_PITCH | FF_DONTCARE, m_strName.c_str(), &m_pFont)))
+			if (FAILED(D3DXCreateFont(g_pd3dDevice, -m_nHeight, 0, m_eFontWeght, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 5, DEFAULT_PITCH | FF_DONTCARE, m_name.c_str(), &m_pFont)))
 			{
-				throw std::bad_exception("CFontImpl():Can't create device font object!");
+				throw std::bad_exception("FontImpl():Can't create device font object!");
 			}			fontsCreated++;
 		}
 
 	public:
-		CFontImpl(int height, const std::wstring &name, FontWeight eFontWeigh)
+		FontImpl(int height, const std::wstring &name, FontWeight font_weigh)
 			: m_pFont(0),
 			  m_nHeight(height),
-			  m_strName(name),
-			  m_eFontWeght(eFontWeigh),
+			  m_name(name),
+			  m_eFontWeght(font_weigh),
 			  m_useDelayedRender(true)
 		{
 			base::lmsg << "Creating Font:  \"" << std::string(name.begin(), name.end()) << "\"," << m_nHeight;
@@ -117,10 +114,8 @@ namespace render
 
 		void doRender(const std::wstring text, RECT textLocation, unsigned int color, int flags)
 		{
-			//dxSprite->Begin( D3DXSPRITE_ALPHABLEND );
 			if (m_pFont != NULL)
 				m_pFont->DrawText(NULL, text.c_str(), -1, &textLocation, flags, color);
-			//dxSprite->End();
 		}		
 
 		math::Rect getRect(const std::wstring &text, int flags)
@@ -150,8 +145,6 @@ namespace render
 				textShadowLocation.top = (LONG)((rect.position[1] + nShadowDistance) * ratio[1]);
 				textShadowLocation.right = textShadowLocation.left + (LONG)(rect.size[0] * ratio[0]);
 				textShadowLocation.bottom = textShadowLocation.top + (LONG)(rect.size[1] * ratio[1]);
-
-				//TheFontRenderManager::Get().addText(this, boost::bind(&CFontImpl::doRender, this, text, textShadowLocation, nShadowColor, flags));
 			}
 
 			RECT	textLocation;
@@ -159,8 +152,6 @@ namespace render
 			textLocation.top = (LONG)(rect.position[1] * ratio[1]);
 			textLocation.right = textLocation.left + (LONG)(rect.size[0] * ratio[0]);
 			textLocation.bottom = textLocation.top + (LONG)(rect.size[1] * ratio[1]);
-
-			//TheFontRenderManager::Get().addText(this, boost::bind(&CFontImpl::doRender, this, text, textLocation, color, flags));
 		}		
 
 		virtual void onLostDevice()
@@ -179,9 +170,8 @@ namespace render
 				m_pFont->OnResetDevice();
 		}
 
-		virtual ~CFontImpl()
+		virtual ~FontImpl()
 		{
-			//base::lmsg << "CFontImpl::~CFontImpl() ";
 			Destroy();
 
 			if (0 == fontsCreated)
@@ -194,11 +184,11 @@ namespace render
 		ID3DXFont	*m_pFont;
 	};
 
-	PFont IFont::Create(int height, const std::wstring &name, FontWeight eFontWeigh)
+	PFont IFont::Create(int height, const std::wstring &name, FontWeight font_weigh)
 	{
 		try
 		{
-			return PFont(new CFontImpl(height, name, eFontWeigh));
+			return PFont(new FontImpl(height, name, font_weigh));
 		}
 		catch (...)
 		{

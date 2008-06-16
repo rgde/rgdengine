@@ -12,11 +12,11 @@
 
 namespace render
 {
-	class CLine2dManager : public IRendererable
+	class Line2dManager : public IRendererable
 	{
 	protected:
-		CLine2dManager( unsigned long uPriority = 10);
-		~CLine2dManager() {};
+		Line2dManager( unsigned long uPriority = 10);
+		~Line2dManager() {};
 
 	public:
 		typedef vertex::PositionTransformedColored Point;
@@ -36,5 +36,5 @@ namespace render
 		std::vector<vertex::PositionTransformedColored>* m_pVertices;
 	};
 
-	typedef base::TSingelton<CLine2dManager> TheLine2dManager;
+	typedef base::TSingelton<Line2dManager> TheLine2dManager;
 } //~ namespace utility

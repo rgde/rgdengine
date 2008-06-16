@@ -5,14 +5,14 @@
 
 namespace render 
 {
-	class CBone : public math::CFrame, public render::IRendererable 
+	class Bone : public math::Frame, public render::IRendererable 
 	{
 	public:
-		CBone();
+		Bone();
 
 	protected: 		
 		void render();
 	};
 
-	typedef boost::shared_ptr<CBone> PBone;
+	typedef boost::shared_ptr<Bone> PBone;
 }

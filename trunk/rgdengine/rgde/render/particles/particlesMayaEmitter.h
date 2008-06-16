@@ -47,18 +47,18 @@ namespace particles{
 		{
 			m_fLastFrame = 0;
 			m_fLastTime = 0;
-			m_bVisible = true;
+			m_is_visible = true;
 			m_bIsFading = false;
 		}
 
 		inline bool isFading()		const	{return m_bIsFading;}
 		inline void setFade(bool b)			{m_bIsFading = b;}
 
-		inline int  getTimeShift()	const	{return m_fTimeShift;}
-		inline void setTimeShift(int t)		{m_fTimeShift = t;}		
+		inline int  getTimeShift()	const	{return m_time_shift;}
+		inline void setTimeShift(int t)		{m_time_shift = t;}		
 
-		inline bool isVisible()		const	{return m_bVisible;}
-		inline void	setVisible(bool b)		{m_bVisible = b;}
+		inline bool isVisible()		const	{return m_is_visible;}
+		inline void	setVisible(bool b)		{m_is_visible = b;}
 		
 		inline bool	isCycling()		const	{return m_bCycling;}
 		inline void	setCycling(bool b)		{m_bCycling = b;}
@@ -78,7 +78,7 @@ namespace particles{
 		virtual void fromStream(io::IReadStream& rf);
 
 	protected:
-		render::PTexture	m_pTexture;
+		render::PTexture	m_texture;
 		PTanks*				m_Frames;
 		
 		static PFrames ms_PFrames;
@@ -88,7 +88,7 @@ namespace particles{
 		bool		m_bIsSeqLoaded;
 		bool		m_bIsTexLoaded;
 
-		bool		m_bVisible;						// виден ли эффект
+		bool		m_is_visible;						// виден ли эффект
 		bool		m_bCycling;						// цикличен ли он 
 
 		float		m_fScale;
@@ -107,7 +107,7 @@ namespace particles{
 
 		float			m_fLastTime;				// время когда был отрисован последний кадр
 		float			m_fLastFrame;				// последний отрисованный кадр
-		int				m_fTimeShift;				// смещение в кадрах от начального кадра проигрывания
+		int				m_time_shift;				// смещение в кадрах от начального кадра проигрывания
 		bool			m_bIntense;
 		bool			m_bIsFading;
 	};

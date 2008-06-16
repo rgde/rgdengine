@@ -8,18 +8,18 @@
 
 namespace render
 {
-	CFader::CFader()
+	Fader::Fader()
 	{
 		init();
 	}
 
-	CFader::CFader(const std::string &strFileName)
+	Fader::Fader(const std::string &strFileName)
 	{
 		init();
 		loadFromXML(strFileName);
 	}
 
-	void CFader::init()
+	void Fader::init()
 	{
 		m_fTimeElapsed = 0.0f;
 		m_fFadingTime = 0.0f;
@@ -28,22 +28,22 @@ namespace render
 		m_state = Disabled;
 	}
 
-	void CFader::setColor(const math::Color &color)
+	void Fader::setColor(const math::Color &color)
 	{
 		m_color = color;
 	}
 
-	void CFader::setFadingTime(float fFadingTime)
+	void Fader::setFadingTime(float fFadingTime)
 	{
 		m_fFadingTime = fFadingTime;
 	}
 
-	void CFader::setUnfadingTime(float fUnfadingTime)
+	void Fader::setUnfadingTime(float fUnfadingTime)
 	{
 		m_fUnfadingTime = fUnfadingTime;
 	}
 
-	void CFader::activate(Mode mode)
+	void Fader::activate(Mode mode)
 	{
 		m_mode = mode;
 
@@ -62,7 +62,7 @@ namespace render
 	}
 
 
-	void CFader::loadFromXML(const std::string &strFileName)
+	void Fader::loadFromXML(const std::string &strFileName)
 	{
 		TiXmlDocument fader;
 		{
@@ -89,15 +89,15 @@ namespace render
 		m_color = math::Color(r, g, b, a);
 	}
 
-	void CFader::disable()
+	void Fader::disable()
 	{
 		m_fTimeElapsed = 0.0f;
 		m_state = Disabled;
 	}
 
-	void CFader::render()
+	void Fader::render()
 	{
-		SSprite sprite;
+		Sprite sprite;
 		sprite.color = m_color;
 		float fAlphaFactor	= 1.0f;
 
@@ -117,7 +117,7 @@ namespace render
 		//TheSpriteManager::Get().addSprite(sprite);
 	}
 
-	void CFader::update(float dt)
+	void Fader::update(float dt)
 	{
 		if (Disabled == m_state)
 			return;
