@@ -8,7 +8,7 @@
 
 namespace render
 {
-	class CMesh : public math::CFrame
+	class Mesh : public math::CFrame
 				, public render::IRendererable
 				, public collision::CCollisionObject
 	{
@@ -28,8 +28,8 @@ namespace render
 		typedef std::vector<PMaterial>						MaterialList;
 		typedef std::vector<SIndexedSubMeshInfo>			SubMeshes;
 
-		CMesh();
-		~CMesh();
+		Mesh();
+		~Mesh();
 
 		void		  load(const std::string& file_name); // load from xml file
 
@@ -60,5 +60,5 @@ namespace render
 		PrimitiveType	m_ePrimType;
 	};
 
-	typedef boost::intrusive_ptr<CMesh> PMesh;
+	typedef boost::intrusive_ptr<Mesh> PMesh;
 }

@@ -4,7 +4,6 @@
 #include <rgde/core/factory.h>
 #include <rgde/io/io.h>
 
-// гавно !!!
 namespace scene
 {
 	enum NodeType
@@ -20,35 +19,21 @@ namespace scene
 
 	class CNode : public core::XmlNode<CNode>
 	{
-	//public:
-	//	typedef std::list<CNode*> ChildrenList;
-	//	typedef std::list<CNode*>::iterator ChildIterator;
 	public:
 		CNode(std::string name) : core::XmlNode<CNode>(name) {}
-		virtual				~CNode(){m_children.clear();}
+		virtual	~CNode(){m_children.clear();}
 
-		//inline CNode*		 getParent() {return m_parent;}
-		//inline ChildrenList& getChildren(){return m_children;}
-		//
-		//inline void			 addChild(CNode* node){m_children.push_back(node);}
-		//inline void			 removeChild(CNode* node){m_children.remove(node);}
+		virtual void update(double dTime, double dElapsedTime);
+		virtual void clear();
 
-		//inline CNode*		 getChild(std::string name){return 0;} ///todo
-		//inline void			 removeChild(std::string name){} ///todo
-
-		virtual void		 update(double dTime, double dElapsedTime);
-		virtual void		 clear();
-
-		inline NodeType		 getNodeType() const {return m_node_type;}
+		inline NodeType	getNodeType() const {return m_node_type;}
 
 	protected:
-		virtual void		 toStream(io::IWriteStream& wf);
-		virtual void		 fromStream(io::IReadStream& rf);
+		virtual void toStream(io::IWriteStream& wf);
+		virtual void fromStream(io::IReadStream& rf);
+
 	protected:
 		NodeType	 m_node_type;
-		
-		//CNode*		 m_parent;
-		//ChildrenList m_children;
 	};
 
 	class NodeFolder : public CNode

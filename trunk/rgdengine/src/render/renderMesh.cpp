@@ -9,19 +9,19 @@
 
 namespace render
 {
-	CMesh::CMesh()
+	Mesh::Mesh()
 		: IRendererable(10)
 	{
 		m_renderInfo.pFrame = this;//m_pFrame;
-		m_renderInfo.pRenderFunc = boost::bind(&CMesh::render, this);
+		m_renderInfo.pRenderFunc = boost::bind(&Mesh::render, this);
 		m_renderInfo.bHaveVolumes = true;
 	}
 
-	CMesh::~CMesh()
+	Mesh::~Mesh()
 	{
 	}
 
-	void CMesh::render()
+	void Mesh::render()
 	{
 		//base::lwrn << "rendering mesh: " << m_file_name;
 
@@ -50,7 +50,7 @@ namespace render
 		}
 	}
 
-	unsigned int CMesh::getVertexNum()const
+	unsigned int Mesh::getVertexNum()const
 	{
 		unsigned int ret= 0;
 		for (SubMeshes::const_iterator it = m_sub_meshes.begin(); it != m_sub_meshes.end(); ++it)
@@ -62,7 +62,7 @@ namespace render
 		return ret;
 	}
 
-	void CMesh::load(const std::string& file_name)
+	void Mesh::load(const std::string& file_name)
 	{
 		m_file_name = file_name;
 		m_geometry = PGeometry(new Geometry());
@@ -86,11 +86,11 @@ namespace render
 		m_renderInfo.bsphere = m_geometry->getBSphere();
 
 		//Neonic: octree. Создание локального дерева для меша
-		createLocal( this, (m_renderInfo.bbox.getMax()-m_renderInfo.bbox.getMin()) * 0.5f);
+		//createLocal( this, (m_renderInfo.bbox.getMax()-m_renderInfo.bbox.getMin()) * 0.5f);
 	}
 
 	//Neonic: octree
-	void CMesh::updateTree( bool NeedFullUpdate )
+	void Mesh::updateTree( bool NeedFullUpdate )
 	{
 		if( !getRoot() )
 		{
@@ -135,7 +135,7 @@ namespace render
 		}
 	};
 
-	void CMesh::setEffect(PEffect spShader)
+	void Mesh::setEffect(PEffect spShader)
 	{
 		m_renderInfo.spShader = spShader;
 		MaterialList::iterator it;
@@ -145,7 +145,7 @@ namespace render
 		}
 	}
 
-	const SRenderableInfo & CMesh::getRenderableInfo() const
+	const SRenderableInfo & Mesh::getRenderableInfo() const
 	{
 		if (m_materials.size() > 0)
 			m_renderInfo.spMaterial = *m_materials.begin();

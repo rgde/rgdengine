@@ -19,7 +19,7 @@ namespace render
 		FillMode_OutOfRange = 0x7fffffff, /* force 32-bit size enum */
 	};
 
-	class CMesh;
+	class Mesh;
 
 	class CRenderManager
 	{

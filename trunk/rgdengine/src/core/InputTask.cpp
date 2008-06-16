@@ -2,11 +2,11 @@
 
 #include <rgde/core/InputTask.h>
 #include <rgde/core/application.h>
-
 #include <rgde/input/input.h> //библиотека ввода
-#include <rgde/input/inputimpl.h>
 
 #include <Windows.h>
+
+#include "../input/inputimpl.h"
 
 namespace core
 {

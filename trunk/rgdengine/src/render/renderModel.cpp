@@ -10,23 +10,23 @@ using math::Color;
 
 namespace render
 {
-	CModel::CModel() : m_bVisible(true)
+	Model::Model() : m_bVisible(true)
 	{
 	}
 
-	CModel::~CModel()
+	Model::~Model()
 	{
 		clear();
 	}
 
-	void ReadNode(TiXmlElement *elem, math::CFrame &rootFrame, CModel &model);
-	CMesh::PGeometry ReadGeometry(const std::string& fNm);
+	void ReadNode(TiXmlElement *elem, math::CFrame &rootFrame, Model &model);
+	Mesh::PGeometry ReadGeometry(const std::string& fNm);
 
-	PModel CModel::Create(const std::string& strFileName)
+	PModel Model::Create(const std::string& strFileName)
 	{
 		//try
 		{
-			PModel pModel = new CModel();
+			PModel pModel = new Model();
 			pModel->load(strFileName);
             pModel->setLooped(true);
 			pModel->play();
@@ -41,7 +41,7 @@ namespace render
 		return 	PModel();
 	}
 
-	void CModel::load(const std::string& strModelName)
+	void Model::load(const std::string& strModelName)
 	{
 		base::lmsg << "loading model: " << "\"" << strModelName << "\"";
 
@@ -52,8 +52,8 @@ namespace render
 
 		if (!in)
 		{
-			std::string error	= "CModel::load: can't load file ";// + strFileName;
-			base::lerr << "CModel::load: can't load file: " << strModelName << ".xml";
+			std::string error	= "Model::load: can't load file ";// + strFileName;
+			base::lerr << "Model::load: can't load file: " << strModelName << ".xml";
 			throw exception(error.c_str());
 		}
 
@@ -92,7 +92,7 @@ namespace render
 		updateTree();
 	}
 
-	void ReadNode(TiXmlElement *elem, math::CFrame &rootFrame, CModel &model)
+	void ReadNode(TiXmlElement *elem, math::CFrame &rootFrame, Model &model)
 	{
 		if (elem->Attribute("name"))
 		{
@@ -163,7 +163,7 @@ namespace render
 
 		if (gm)
 		{
-			PMesh pMesh(new CMesh);
+			PMesh pMesh(new Mesh);
 			std::string strMeshFile	= std::string(gm->Attribute("name")) + ".xml";
 
 			pMesh->load(strMeshFile);
@@ -245,12 +245,12 @@ namespace render
 		};
 	}
 
-	CMesh::PGeometry ReadGeometry(std::string fNm)
+	Mesh::PGeometry ReadGeometry(std::string fNm)
 	{
-		return CMesh::PGeometry();
+		return Mesh::PGeometry();
 	}
 
-	unsigned int CModel::getFaceNum() const
+	unsigned int Model::getFaceNum() const
 	{
 		unsigned int ret= 0;
 		Meshes::const_iterator i;
@@ -259,7 +259,7 @@ namespace render
 		return ret;
 	}
 
-	unsigned int CModel::getVertexNum() const
+	unsigned int Model::getVertexNum() const
 	{
 		unsigned int ret= 0;
 		Meshes::const_iterator i;
@@ -268,7 +268,7 @@ namespace render
 		return ret;
 	}
 
-	void CModel::clear( void )
+	void Model::clear( void )
 	{
 		m_vMaterials.clear();
 		m_vFrames.clear();
@@ -279,7 +279,7 @@ namespace render
 		m_vControllers.clear();
 	};
 
-	void CModel::update(float dt)
+	void Model::update(float dt)
 	{
 		Controllers::iterator i;
 		for (i = m_vControllers.begin(); i != m_vControllers.end(); ++i)
@@ -287,47 +287,47 @@ namespace render
 	}
 
 	//Neonic: octree
-	void CModel::updateTree( void )
+	void Model::updateTree( void )
 	{
 		Meshes::const_iterator i;
 		for ( i = m_vMeshes.begin(); i != m_vMeshes.end(); ++i )
 			( *i )->updateTree();
 	};
 
-	void CModel::play()
+	void Model::play()
 	{
 		Controllers::iterator i;
 		for (i = m_vControllers.begin(); i != m_vControllers.end(); ++i)
 			(*i).start();
 	}
 
-	void CModel::stop()
+	void Model::stop()
 	{
 		Controllers::iterator i;
 		for (i = m_vControllers.begin(); i != m_vControllers.end(); ++i)
 			(*i).stop();
 	}
 
-	void CModel::pause()
+	void Model::pause()
 	{
 		Controllers::iterator i;
 		for (i = m_vControllers.begin(); i != m_vControllers.end(); ++i)
 			(*i).pause();
 	}
 
-	void CModel::setLooped(bool flag)
+	void Model::setLooped(bool flag)
 	{
 		Controllers::iterator i;
 		for (i = m_vControllers.begin(); i != m_vControllers.end(); ++i)
 			(*i).setLooped(flag);
 	}
 
-	bool CModel::isVisible() const
+	bool Model::isVisible() const
 	{
 		return m_bVisible;
 	}
 
-	void CModel::setVisible(bool bVisible)
+	void Model::setVisible(bool bVisible)
 	{
 		if (bVisible == m_bVisible)
 			return;

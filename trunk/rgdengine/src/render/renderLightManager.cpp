@@ -129,7 +129,7 @@ namespace render
 	//	};
 
 	//	//std::string strLightModelName = lightTypeToStr(eType);
-	//	//PModel pModel = CModel::Create(std::wstring(strLightModelName.begin(), strLightModelName.end()));
+	//	//PModel pModel = Model::Create(std::wstring(strLightModelName.begin(), strLightModelName.end()));
 	//	//m_models.push_back(pModel);
 
 	//	//pLight->getParentFrame()->addChild(pModel->getRoot());

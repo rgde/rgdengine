@@ -11,9 +11,9 @@
 namespace render 
 {
 
-	typedef boost::intrusive_ptr<class CModel> PModel;
+	typedef boost::intrusive_ptr<class Model> PModel;
 
-	class CModel :  public math::CFrame, public game::IDynamicObject
+	class Model :  public math::CFrame, public game::IDynamicObject
 	{
 	public:
 		typedef std::map<int, PMaterial>				MaterialMap;
@@ -22,7 +22,7 @@ namespace render
 		typedef std::vector<math::CFrameAnimationController>	Controllers;
 
 		static PModel Create(const std::string& strFileName);
-		~CModel();
+		~Model();
 		
 		inline MaterialMap&  getMaterials()		{return m_vMaterials;}
 		inline Frames&		 getFrames()		{return m_vFrames;}
@@ -41,7 +41,7 @@ namespace render
 		void setLooped( bool );
 
 	protected:
-		CModel();
+		Model();
 
 		void clear( void );
 		void update( float dt );
