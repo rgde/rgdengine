@@ -45,22 +45,6 @@ namespace UIEditor
         public MainForm()
         {
             InitializeComponent();
-            //listBox1.Items.Clear();
-
-            //TextureRegion r1 = new TextureRegion();
-            //r1.rect = new Rectangle(10, 10, 30, 30);
-            //r1.name = "Button.Bkg";
-            //listBox1.Items.Add(r1);            
-
-            //TextureRegion r2 = new TextureRegion();
-            //r2.rect = new Rectangle(50, 10, 30, 30);
-            //r2.name = "Button.Pressed";
-            //listBox1.Items.Add(r2);
-
-            //TextureRegion r3 = new TextureRegion();
-            //r3.rect = new Rectangle(50, 50, 80, 30);
-            //r3.name = "Button.Hover";
-            //listBox1.Items.Add(r3);
 
             this.DoubleBuffered = true;
 
