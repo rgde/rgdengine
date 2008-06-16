@@ -83,7 +83,7 @@ typedef unsigned int  uint;
 #include "core\\xmlClass.h"
 #include "core\\xmlNode.h"
 
-#include "event\\event.h"
+#include "event\\events.h"
 
 #include "game\\game.h"
 

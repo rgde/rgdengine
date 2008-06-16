@@ -672,11 +672,7 @@
 				Name="event"
 				>
 				<File
-					RelativePath=".\rgde\event\Event.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\event\EventBase.h"
+					RelativePath=".\rgde\event\Events.h"
 					>
 				</File>
 			</Filter>
@@ -1032,7 +1028,7 @@
 				Name="event"
 				>
 				<File
-					RelativePath=".\src\event\EventBase.cpp"
+					RelativePath=".\src\event\Events.cpp"
 					>
 				</File>
 			</Filter>
