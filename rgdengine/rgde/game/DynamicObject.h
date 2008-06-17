@@ -3,7 +3,7 @@
 namespace game
 {
 	//динамический обьект для игры
-	//(у него вызывается метод update из CGameTask)
+	//(у него вызывается метод update из GameTask)
 	class IDynamicObject
 	{
 		friend class CGame;

@@ -1,24 +1,38 @@
 #pragma once
 #include <rgde/engine.h>
 
-class CSpriteTest : public game::IDynamicObject
+namespace rgde
 {
-public:
-    CSpriteTest();
+	namespace exapmles
+	{
+		namespace sprites
+		{
+			class SpriteExample : public game::IDynamicObject
+			{
+			public:
+				SpriteExample();
 
-protected:
-    void onEsc ();
-    void update (float dt);
+			protected:
+				void onEsc ();
+				void update (float dt);
 
-protected:
-    render::CSpriteManager				m_sprite_renderer;
-    render::CSpriteManager::TSprites	m_vSprites;
-    input::KeyDown                      m_cEsc;
-    unsigned							m_nPriorities;				// Число приоритетов спрайтов
-    unsigned							m_nSpritesPerPriority;		// Число спрайтов с одинаковым приоритетом
-    bool								m_bDebugLog;				// Стоит ли выводить отладочный лог
-    bool								m_bSortSpritesBeforeLog;	// Стоит ли сортировать спрайты перед логом
-    math::Vec2f							m_vSpritesSeed;				// Область разброса спрайтов
-    ::render::PFont						m_spFont;
-    math::PCamera						m_camera;
-};
+			protected:
+				render::SpriteManager			m_sprite_renderer;
+				render::SpriteManager::SpritesVector m_sprites;
+				input::KeyDown                  m_cEsc;
+				// Число приоритетов спрайтов
+				unsigned						m_priorities;
+				// Число спрайтов с одинаковым приоритетом
+				unsigned						m_nSpritesPerPriority;
+				// Стоит ли выводить отладочный лог
+				bool							m_bDebugLog;
+				// Стоит ли сортировать спрайты перед логом
+				bool							m_bSortSpritesBeforeLog;
+				// Область разброса спрайтов
+				math::Vec2f						m_sprites_seed;
+				::render::PFont					m_font;
+				math::PCamera					m_camera;
+			};
+		}
+	}
+}

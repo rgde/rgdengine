@@ -19,7 +19,7 @@ namespace render
 	}
 	//////////////////////////////////////////////////////////////////////////
 	//-----------------------------------------------------------------------------------
-	CSpriteManager::CSpriteManager(int priority)
+	SpriteManager::SpriteManager(int priority)
 		: m_cvScreenSize(800, 600),
 		  m_nReservedSize(0),
 		  m_nSpritesRendered(0),
@@ -28,7 +28,7 @@ namespace render
 		  IRendererable(priority),
 		  m_vOrigin(0, 0)
 	{
-		//base::lmsg << "CSpriteManager::CSpriteManager()";
+		//base::lmsg << "SpriteManager::SpriteManager()";
 		math::Vec2f vFrontBufferSize= render::TheDevice::Get().getBackBufferSize();
 		m_vScale = vFrontBufferSize / m_cvScreenSize;
 
@@ -36,17 +36,17 @@ namespace render
 		m_bAditive = false;
 
 		m_pEffect = IEffect::Create("SpriteManager.fxo");
-		m_renderInfo.pRenderFunc = boost::bind(&CSpriteManager::render, this);
+		m_renderInfo.pRenderFunc = boost::bind(&SpriteManager::render, this);
 	}
 	//-----------------------------------------------------------------------------------
-	CSpriteManager::~CSpriteManager()
+	SpriteManager::~SpriteManager()
 	{
 	}
 	//-----------------------------------------------------------------------------------
-	void CSpriteManager::addSprite(const Sprite &pSprite)
+	void SpriteManager::addSprite(const Sprite &pSprite)
 	{
 		m_bUpdated = false;
-		m_vSprites.push_back(pSprite);
+		m_sprites.push_back(pSprite);
 	}
 	//-----------------------------------------------------------------------------------
 	bool sortPred (const Sprite& pSprite1, Sprite& pSprite2)
@@ -59,19 +59,19 @@ namespace render
 		return math::Vec2f(x * cosa - y * sina, x * sina + y * cosa);
 	}
 	//--------------------------------------------------------------------------------------
-	void CSpriteManager::update()
+	void SpriteManager::update()
 	{
 		using namespace math;
 
-		std::sort( m_vSprites.begin(), m_vSprites.end(), sortPred );
+		std::sort( m_sprites.begin(), m_sprites.end(), sortPred );
 
-		if (m_vSprites.empty())
+		if (m_sprites.empty())
 		{
 			m_bUpdated = true;
 			return;
 		}
 
-		unsigned nSprites	= (unsigned)m_vSprites.size();
+		unsigned nSprites	= (unsigned)m_sprites.size();
 		// На случай, если число спрайтов в векторе больше, чем зарезервировано в буферах
 		if ((nSprites > m_nReservedSize))
 		{
@@ -96,7 +96,7 @@ namespace render
 		if (vVertices.size() < nSprites * 4)
 			vVertices.resize(nSprites * 4);
 		unsigned i	= 0;
-		for (TSpritesIter it = m_vSprites.begin(); it != m_vSprites.end(); ++it)
+		for (SpritesIter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 		{
 			// Срайты масштабируются только при записи в буфер
 			const Sprite &sprite	= *it;
@@ -143,9 +143,9 @@ namespace render
 	}
 
 	//-----------------------------------------------------------------------------------
-	void CSpriteManager::render()
+	void SpriteManager::render()
 	{
-		if (m_vSprites.empty()) return;
+		if (m_sprites.empty()) return;
 
 		update();
 
@@ -156,27 +156,31 @@ namespace render
 		else
 			pTech = m_pEffect->findTechnique("alpha");
 
+		assert(0 != pTech && "SpriteManager::render(): Can't find effect technique!");
 		pTech->begin();
 
 		for (unsigned iPass = 0; iPass < pTech->getPasses().size(); iPass++)
 		{
-			pTech->getPasses()[iPass]->begin();
+			IEffect::ITechnique::IPass& pass = *pTech->getPasses()[iPass];
+			pass.begin();
 
-			unsigned nSpritesRendered				= 0;
-			IEffect::IParameter *textureShaderParam	= m_pEffect->getParams()["SpriteTexture"];
+			unsigned nSpritesRendered = 0;
+			IEffect::IParameter *textureShaderParam	= m_pEffect->getParams()["spriteTexture"];
+
+			assert(0 != textureShaderParam && "m_pEffect->getParams()[\"spriteTexture\"] == NULL !");
 
 			uint start_sprite = 0;
-			PTexture cur_tex = m_vSprites[0].texture;
-			for (uint i = 0; i < m_vSprites.size(); ++i)
+			PTexture cur_tex = m_sprites[0].texture;
+			for (uint i = 0; i < m_sprites.size(); ++i)
 			{
-				Sprite &sprite = m_vSprites[i];
+				Sprite &sprite = m_sprites[i];
 
 				// если = то отрисовать
 				if (cur_tex != sprite.texture)
 				{
 					int cur_sprite = i - 1;
 					int nSprites = cur_sprite - start_sprite + 1;
-					//i == m_vSprites.size()-1
+					//i == m_sprites.size()-1
 					if (nSprites > 0)
 					{
 						textureShaderParam->set(cur_tex);
@@ -188,7 +192,7 @@ namespace render
 					start_sprite = i;
 				}
 
-				if (i == m_vSprites.size()-1)
+				if (i == m_sprites.size()-1)
 				{
 					int cur_sprite = i;
 					int nSprites = i - start_sprite + 1;
@@ -203,18 +207,18 @@ namespace render
 			}
 			m_nSpritesRendered = nSpritesRendered;
 
-			pTech->getPasses()[iPass]->end();
+			pass.end();
 		}
 		pTech->end();
 
-		m_vSprites.resize(0);
+		m_sprites.resize(0);
 	}
 	//-----------------------------------------------------------------------------------
-	void CSpriteManager::onLostDevice()
+	void SpriteManager::onLostDevice()
 	{
 	}
 	//-----------------------------------------------------------------------------------
-	void CSpriteManager::onResetDevice()
+	void SpriteManager::onResetDevice()
 	{
 		// Вычисляем коэффициенты масштабирования
 		math::Vec2f vFrontBufferSize= render::TheDevice::Get().getBackBufferSize();
