@@ -17,11 +17,11 @@ namespace scene
 		PartileEmitter
 	};
 
-	class CNode : public core::XmlNode<CNode>
+	class Node : public core::XmlNode<Node>
 	{
 	public:
-		CNode(std::string name) : core::XmlNode<CNode>(name) {}
-		virtual	~CNode(){m_children.clear();}
+		Node(std::string name) : core::XmlNode<Node>(name) {}
+		virtual	~Node(){m_children.clear();}
 
 		virtual void update(double dTime, double dElapsedTime);
 		virtual void clear();
@@ -36,34 +36,34 @@ namespace scene
 		NodeType	 m_node_type;
 	};
 
-	class NodeFolder : public CNode
+	class NodeFolder : public Node
 	{
 	public:
 		NodeFolder(const std::string& name) 
-			:	CNode(name)				
+			:	Node(name)				
 		{
 			m_node_type = Folder;
 		}
 	};
 
-	class CSceneTree : public io::ISerializedObject 
+	class SceneTree : public io::ISerializedObject 
 	{
 	public:
-		CSceneTree() :  m_root_node("Root") {}
-		virtual				~CSceneTree(){}
+		SceneTree() :  m_root_node("Root") {}
+		virtual				~SceneTree(){}
 
-		inline CNode&		 getRootNode(){return m_root_node;}
+		inline Node&		 getRootNode(){return m_root_node;}
 
 	protected:
 		virtual void		 toStream(io::IWriteStream& wf);
 		virtual void		 fromStream(io::IReadStream& rf);
 
 	protected:
-		CNode	m_root_node;
+		Node	m_root_node;
 	};
 
 
-	typedef  factory::TFactory<CNode> SceneFactory;
+	typedef  factory::TFactory<Node> SceneFactory;
 
 	template <class T>
 	class _registrator

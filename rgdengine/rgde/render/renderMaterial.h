@@ -18,7 +18,7 @@ namespace render
 		void load(const std::string& fileName);
 
 	public:
-		class CMaterialMap
+		class MaterialMap
 		{
 		public:
 			enum EDefaultTexture
@@ -28,7 +28,7 @@ namespace render
 				DefaultNormalMap = 3
 			};
 
-			CMaterialMap(EDefaultTexture defaultTexture = White);
+			MaterialMap(EDefaultTexture defaultTexture = White);
 
 			const PTexture& getTexture() const { return m_texture; }
 			void setTexture(const PTexture& texure);
@@ -65,7 +65,7 @@ namespace render
 			float m_time;
 		};
 
-		typedef std::map<std::string, CMaterialMap> MaterialMaps;
+		typedef std::map<std::string, MaterialMap> MaterialMaps;
 
 		static PMaterial Create(math::Color amb = math::Black,
 				  math::Color diff = math::White,
@@ -92,8 +92,8 @@ namespace render
 		float getSpecularPower()		const	{return m_fPower;}
 		void setSpecularPower(float p)			{m_fPower = p;}		
 
-		CMaterialMap&		getMaterialMap( const std::string& type);
-		const CMaterialMap& getMaterialMap( const std::string& type) const;
+		MaterialMap&		getMaterialMap( const std::string& type);
+		const MaterialMap& getMaterialMap( const std::string& type) const;
 
 		const PTexture&		getTextureMap( const std::string& type) const;
 
@@ -104,11 +104,11 @@ namespace render
 
 		void  setEffect(const PEffect& pEffect);
 		const PDynamicBinder& getDynamicBinder();
-		IEffect::ITechnique* getTechnique() const;
+		Effect::ITechnique* getTechnique() const;
 
 	protected:		
 		PDynamicBinder	m_pDynamicBinder;
-		IEffect::ITechnique* m_technique;
+		Effect::ITechnique* m_technique;
 		MaterialMaps	m_maps;
 		math::Color     m_diffuse;        // Diffuse color RGBA 
 		math::Color     m_ambient;        // Ambient color RGB 

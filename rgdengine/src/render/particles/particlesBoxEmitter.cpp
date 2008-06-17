@@ -10,7 +10,7 @@ namespace particles
 {
 
 	//-----------------------------------------------------------------------------------
-	IBoxEmitter::IBoxEmitter() : IAbstractEmitter(IEmitter::Box)
+	BoxEmitter::BoxEmitter() : AbstractEmitter(Emitter::Box)
 	{
 		m_name = "BoxEmitter";
 
@@ -29,14 +29,14 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	IBoxEmitter::~IBoxEmitter()
+	BoxEmitter::~BoxEmitter()
 	{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void IBoxEmitter::debugDraw()
+	void BoxEmitter::debugDraw()
 	{
-		IAbstractEmitter::debugDraw();
+		AbstractEmitter::debugDraw();
 
 		math::Vec3f size = m_BoxSize(m_fTimeNormalaized);
 		math::Vec3f size_rand = m_BoxSizeSpread(m_fTimeNormalaized);
@@ -55,9 +55,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void IBoxEmitter::getParticle(Particle& p)
+	void BoxEmitter::getParticle(Particle& p)
 	{
-		IAbstractEmitter::getParticle(p);
+		AbstractEmitter::getParticle(p);
 
 		math::Vec3f dir = m_Direction.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_DirectionSpread.getValue(m_fTimeNormalaized);
@@ -83,9 +83,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void IBoxEmitter::toStream(io::IWriteStream& wf) const
+	void BoxEmitter::toStream(io::IWriteStream& wf) const
 	{
-		IAbstractEmitter::toStream(wf);
+		AbstractEmitter::toStream(wf);
 
 		wf	<< (m_BoxSize)
 			<< (m_BoxSizeSpread)
@@ -94,9 +94,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void IBoxEmitter::fromStream(io::IReadStream& rf)
+	void BoxEmitter::fromStream(io::IReadStream& rf)
 	{
-		IAbstractEmitter::fromStream(rf);
+		AbstractEmitter::fromStream(rf);
 
 		rf  >> (m_BoxSize)
 			>> (m_BoxSizeSpread)

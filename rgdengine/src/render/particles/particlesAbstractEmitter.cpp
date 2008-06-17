@@ -7,7 +7,7 @@
 
 namespace particles{
 	//-----------------------------------------------------------------------------------
-	void IAbstractEmitter::getParticle(Particle& p) 
+	void AbstractEmitter::getParticle(Particle& p) 
 	{
 		p = Particle();
 
@@ -17,7 +17,7 @@ namespace particles{
 		p.rotation = m_Rand() * m_PRotationSpread.getValue(m_fTimeNormalaized);
 	}
 	//-----------------------------------------------------------------------------------
-	void IAbstractEmitter::addProcessor(IParticlesProcessor* pp)
+	void AbstractEmitter::addProcessor(ParticlesProcessor* pp)
 	{
 		if (0 == pp)
 			throw std::exception("AbstractEmitter::addProcessor(): zero pointer!");
@@ -26,7 +26,7 @@ namespace particles{
 		pp->setEmitter(this);
 	}
 	//-----------------------------------------------------------------------------------
-	void IAbstractEmitter::reset()
+	void AbstractEmitter::reset()
 	{
 		//m_vCurDisplacement = math::Vec3f();
 		//m_vCurSpeed = math::Vec3f();
@@ -41,13 +41,13 @@ namespace particles{
 			(*pi)->reset();
 	}
 	//////////////////////////////////////////////////////////////////////////
-	void IAbstractEmitter::setFade(bool b)
+	void AbstractEmitter::setFade(bool b)
 	{
 		for (tPProcessorsIter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
 			(*it)->setFade(b);
 	}
 	//////////////////////////////////////////////////////////////////////////
-	void IAbstractEmitter::update(float dt)
+	void AbstractEmitter::update(float dt)
 	{
 		//if (m_bIsJustCreated && dt > 0.02f)
 		//	dt = 0.02f;
@@ -103,7 +103,7 @@ namespace particles{
 		//m_bIsJustCreated = false;
 	}
 
-	void IAbstractEmitter::render()
+	void AbstractEmitter::render()
 	{
 		if (m_bIsVisible)
 		{
@@ -118,7 +118,7 @@ namespace particles{
 	}
 
 
-	IAbstractEmitter::IAbstractEmitter(IEmitter::Type eType) : IEmitter(eType)
+	AbstractEmitter::AbstractEmitter(Emitter::Type eType) : Emitter(eType)
 	{
 		//m_bIsJustCreated = true;
 		m_fCycleTime = 5.0f;
@@ -164,7 +164,7 @@ namespace particles{
 		//REGISTER_PROPERTY(GlobalVelocity,	math::Vec3Interp)
 	}
 
-	IAbstractEmitter::~IAbstractEmitter()
+	AbstractEmitter::~AbstractEmitter()
 	{
 		for( tPProcessorsIter it = m_lProcessors.begin(); it != m_lProcessors.end(); it++ )
 			delete(*it);
@@ -172,7 +172,7 @@ namespace particles{
 	}
 
 	//
-	//math::Vec3f IAbstractEmitter::getGlobalVelocity(bool global)
+	//math::Vec3f AbstractEmitter::getGlobalVelocity(bool global)
 	//{
 	//	if (!global)
 	//		return m_vGlobalVelPrecomputed;
@@ -180,7 +180,7 @@ namespace particles{
 	//		return m_vGlobalVel;
 	//}
 	//
-	//math::Vec3f IAbstractEmitter::getAcceleration(bool global)
+	//math::Vec3f AbstractEmitter::getAcceleration(bool global)
 	//{
 	//	if (!global)
 	//		return m_vAccelerationPrecomputed;
@@ -188,14 +188,14 @@ namespace particles{
 	//		return m_vPAcceleration;
 	//}
 	
-	void IAbstractEmitter::deleteProcessor(IParticlesProcessor* p)
+	void AbstractEmitter::deleteProcessor(ParticlesProcessor* p)
 	{
 		m_lProcessors.remove(p);
 	}
 
-	void IAbstractEmitter::toStream(io::IWriteStream& wf) const
+	void AbstractEmitter::toStream(io::IWriteStream& wf) const
 	{
-		IEmitter::toStream (wf);
+		Emitter::toStream (wf);
 
 		wf	<< m_fCycleTime
 			<< m_bIsCycling
@@ -216,9 +216,9 @@ namespace particles{
 			wf << *(*it);
 	}
 
-	void IAbstractEmitter::fromStream(io::IReadStream& rf)
+	void AbstractEmitter::fromStream(io::IReadStream& rf)
 	{
-		IEmitter::fromStream (rf);
+		Emitter::fromStream (rf);
 
 		rf	>> m_fCycleTime
 			>> m_bIsCycling
@@ -238,14 +238,14 @@ namespace particles{
 		rf >> nProcessors;
 		for( unsigned i = 0; i < nProcessors; i++ )
 		{
-			IParticlesProcessor* processor = new IParticlesProcessor();
+			ParticlesProcessor* processor = new ParticlesProcessor();
 			rf >> (*processor);
 			addProcessor(processor);
 			processor->load();
 		}
 	}
 
-	void IAbstractEmitter::debugDraw()
+	void AbstractEmitter::debugDraw()
 	{
 		m_Transform.debugDraw();
 

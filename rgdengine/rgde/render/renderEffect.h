@@ -6,9 +6,9 @@ namespace render
 {
 	typedef boost::shared_ptr<class ITexture> PTexture;
 
-	typedef boost::shared_ptr<class IEffect> PEffect;
+	typedef boost::shared_ptr<class Effect> PEffect;
 
-	class IEffect
+	class Effect
 	{
 	public:
 		struct Annotation
@@ -119,7 +119,7 @@ namespace render
 	protected:
 		virtual void load(const std::string& fileName) = 0;
 	public:
-		virtual ~IEffect(){}
+		virtual ~Effect(){}
 
 		static PEffect Create(const std::string& fileName);
 		static void ClearAll();

@@ -39,7 +39,7 @@ namespace render
 			m_pWhiteTexture(safeLoadDefaultTexture("White.jpg")),
 			m_pDefaultNormalMap(safeLoadDefaultTexture("DefaultNormalMap.jpg")),
 			m_pBlackTexture(safeLoadDefaultTexture("Black.jpg")),
-			m_pDefaultEffect(IEffect::Create("Default.fxo")),
+			m_pDefaultEffect(Effect::Create("Default.fxo")),
 			m_pDefaultFont(IFont::Create(11,  L"Arial", render::IFont::Heavy))			
 	{
 
@@ -156,18 +156,18 @@ namespace render
 					
 					pMaterial->getDynamicBinder()->setupParameters(info.pFrame);
 									
-					IEffect::ITechnique *pTechnique = pMaterial->getTechnique();
+					Effect::ITechnique *pTechnique = pMaterial->getTechnique();
 
 					if(NULL != pTechnique)
 					{	
 						pTechnique->begin();
 						//base::lmsg << "effect tech -=" << pTechnique->getName() << "=- begin";
 
-						std::vector<IEffect::ITechnique::IPass*>   &vecPasses = pTechnique->getPasses();
+						std::vector<Effect::ITechnique::IPass*>   &vecPasses = pTechnique->getPasses();
 
 						for (size_t i = 0; i < vecPasses.size(); i++)
 						{
-							IEffect::ITechnique::IPass	*pass = vecPasses[i];
+							Effect::ITechnique::IPass	*pass = vecPasses[i];
 							pass->begin();
 								info.pRenderFunc();
 							pass->end();

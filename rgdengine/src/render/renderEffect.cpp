@@ -14,7 +14,7 @@ extern LPDIRECT3DDEVICE9 g_pd3dDevice;
 
 namespace render
 {
-	void getAnnotation(ID3DXEffect* pEffect, D3DXHANDLE hParentHandle, int id, IEffect::Annotation& annotation)
+	void getAnnotation(ID3DXEffect* pEffect, D3DXHANDLE hParentHandle, int id, Effect::Annotation& annotation)
 	{
 		D3DXHANDLE hAnnotationHandle = pEffect->GetAnnotation(hParentHandle, id);
 					
@@ -60,12 +60,12 @@ namespace render
 	//------------------------------------------------------------------------------
 	// Effect parameter implementation.
 	//------------------------------------------------------------------------------
-	class Parameter: public IEffect::IParameter
+	class Parameter: public Effect::IParameter
 	{
 	public:
 		Parameter(ID3DXEffect* effect, unsigned int index)
 		{
-			//guard(render::IEffect::Parameter())
+			//guard(render::Effect::Parameter())
 			m_pEffect = effect;
 			D3DXHANDLE paramHandle = m_pEffect->GetParameter(NULL, index);
 
@@ -91,14 +91,14 @@ namespace render
 
 			for(unsigned int i = 0; i < paramDesc.Annotations; i++)
 			{
-				IEffect::Annotation annotation;
+				Effect::Annotation annotation;
 				getAnnotation(m_pEffect, m_Handle, i, annotation);
 				m_vecAnnotations.push_back(annotation);
 			}
 			//unguard
 		}
 
-		IEffect::AnnotationsVector& getAnnotations()
+		Effect::AnnotationsVector& getAnnotations()
 		{
 			return m_vecAnnotations;
 		}
@@ -356,13 +356,13 @@ namespace render
 		unsigned int m_nSize;
 		EType m_eType;
 		D3DXHANDLE m_Handle;
-		IEffect::AnnotationsVector m_vecAnnotations;
+		Effect::AnnotationsVector m_vecAnnotations;
 	};
 
 	//------------------------------------------------------------------------------
 	// Effect technique implementation.
 	//------------------------------------------------------------------------------
-	class Technique: public IEffect::ITechnique
+	class Technique: public Effect::ITechnique
 	{
 	public:
 		class Pass: public IPass
@@ -392,7 +392,7 @@ namespace render
 
 				for (unsigned int i = 0; i < passDesc.Annotations; i ++)
 				{
-					IEffect::Annotation annotation;
+					Effect::Annotation annotation;
 					getAnnotation(m_pEffect, pass, i, annotation);
 					m_vecAnnotations.push_back(annotation);
 				}
@@ -423,7 +423,7 @@ namespace render
 				return m_name;
 			}
 
-			IEffect::AnnotationsVector& getAnnotations()
+			Effect::AnnotationsVector& getAnnotations()
 			{
 				return m_vecAnnotations;
 			}
@@ -431,7 +431,7 @@ namespace render
 			unsigned int m_nCurrentPass;
 			std::string m_name;
 			ID3DXEffect* m_pEffect;
-			IEffect::AnnotationsVector m_vecAnnotations;
+			Effect::AnnotationsVector m_vecAnnotations;
 		};
 
 		Technique(ID3DXEffect* effect, unsigned int index)
@@ -460,7 +460,7 @@ namespace render
 
 			for (unsigned int i = 0; i < Desc.Annotations; i ++)
 			{
-				IEffect::Annotation annotation;
+				Effect::Annotation annotation;
 				getAnnotation(m_pEffect, techniqueHandle, i, annotation);
 				m_vecAnnotations.push_back(annotation);
 			}
@@ -483,7 +483,7 @@ namespace render
 			return m_name;
 		}
 
-		IEffect::AnnotationsVector& getAnnotations()
+		Effect::AnnotationsVector& getAnnotations()
 		{
 			return m_vecAnnotations;
 		}
@@ -520,13 +520,13 @@ namespace render
 		unsigned int m_nAnnotations;
 		std::vector <IPass*> m_arPasses;
 		D3DXHANDLE techniqueHandle;
-		IEffect::AnnotationsVector m_vecAnnotations;
+		Effect::AnnotationsVector m_vecAnnotations;
 	};
 
 	//------------------------------------------------------------------------------
 	// Effect implementation.
 	//------------------------------------------------------------------------------
-	class CEffect : public IEffect, IDeviceObject
+	class CEffect : public Effect, IDeviceObject
 	{
 	public:
 		friend PEffect;
@@ -687,9 +687,9 @@ namespace render
 	//------------------------------------------------------------------------------
 	// Static methods.
 	//------------------------------------------------------------------------------
-	PEffect IEffect::Create(const std::string& fileName)
+	PEffect Effect::Create(const std::string& fileName)
 	{
-		//guard(PEffect IEffect::Create(std::wstring fileName))
+		//guard(PEffect Effect::Create(std::wstring fileName))
 
 		EffectsList::iterator it = std::find_if(effects.begin(), effects.end(), _seacher(fileName));
 
@@ -708,9 +708,9 @@ namespace render
 		//unguard
 	}
 
-	void IEffect::ClearAll()
+	void Effect::ClearAll()
 	{
-		//guard(void IEffect::ClearAll())
+		//guard(void Effect::ClearAll())
 			effects.clear();
 		//unguard
 	}

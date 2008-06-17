@@ -12,23 +12,23 @@ namespace script
 
 namespace particles
 {
-	class IEmitter;
+	class Emitter;
 
-	class  IEffect : /*public io::ISerializedObject,*/ public render::IRendererable, 
+	class  Effect : /*public io::ISerializedObject,*/ public render::IRendererable, 
 					 public game::IDynamicObject, public core::XmlClass
 	{
 	public:
-		typedef std::list<IEmitter*> tEmitters;
+		typedef std::list<Emitter*> tEmitters;
 		typedef tEmitters::iterator	 tEmittersIter;
 
-		IEffect();
-		virtual ~IEffect();
+		Effect();
+		virtual ~Effect();
 		
 		friend class script::CEffectAdaptor;
 		inline const math::Frame& getTransform() { return m_Transform; }
 		
-		void addEmitter(IEmitter* em);
-		void deleteEmitter(IEmitter* em);
+		void addEmitter(Emitter* em);
+		void deleteEmitter(Emitter* em);
 
 		tEmitters& getEmitters() {return m_Emitters;}
 

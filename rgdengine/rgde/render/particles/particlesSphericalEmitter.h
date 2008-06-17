@@ -19,11 +19,11 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 
 namespace particles{
 
-	class  ISphericalEmitter : public IAbstractEmitter
+	class  SphericalEmitter : public AbstractEmitter
 	{
 	public: 
-		ISphericalEmitter();
-		virtual ~ISphericalEmitter();
+		SphericalEmitter();
+		virtual ~SphericalEmitter();
 
 		void		 debugDraw();
 		virtual void getParticle(Particle& p);

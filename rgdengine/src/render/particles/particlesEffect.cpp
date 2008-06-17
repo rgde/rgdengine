@@ -15,24 +15,24 @@
 namespace particles
 {
 	//-----------------------------------------------------------------------------------
-	IEffect::IEffect() : render::IRendererable(9), m_fOldTime(0), m_bIsFading(false), 
+	Effect::Effect() : render::IRendererable(9), m_fOldTime(0), m_bIsFading(false), 
 						 core::XmlClass("ParticleEffect")
 	{	
-		m_renderInfo.pRenderFunc		= boost::bind( &IEffect::render, this );
-		m_renderInfo.pDebugRenderFunc	= boost::bind(&IEffect::debugDraw, this);
+		m_renderInfo.pRenderFunc		= boost::bind( &Effect::render, this );
+		m_renderInfo.pDebugRenderFunc	= boost::bind(&Effect::debugDraw, this);
 		
 		// public properties:
 		//REGISTER_PROPERTY(Transform, math::Frame)
 	}
 	//-----------------------------------------------------------------------------------
-	IEffect::~IEffect()
+	Effect::~Effect()
 	{
 		for (tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
 			delete( *it );
 		m_Emitters.clear();
 	}
 	//-----------------------------------------------------------------------------------
-	void IEffect::reset()
+	void Effect::reset()
 	{
 		m_bIsFading = false;
 		setEmittersToFade(m_bIsFading);
@@ -41,19 +41,19 @@ namespace particles
 			(*it)->reset();
 	}
 	//-----------------------------------------------------------------------------------
-	void IEffect::render()
+	void Effect::render()
 	{
 		for (tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
 			(*it)->render();
 	}
 	//-----------------------------------------------------------------------------------
-	void IEffect::setEmittersToFade(bool b)
+	void Effect::setEmittersToFade(bool b)
 	{
 		for(tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
 			(*it)->setFade(b);
 	}
 	//-----------------------------------------------------------------------------------
-	void IEffect::update(float fDeltaTime)
+	void Effect::update(float fDeltaTime)
 	{
 		static float dt = 0.02f;
 
@@ -69,7 +69,7 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void IEffect::addEmitter(IEmitter* em)
+	void Effect::addEmitter(Emitter* em)
 	{
 		assert(0 != em);
 		m_Emitters.push_back(em);
@@ -77,7 +77,7 @@ namespace particles
 	}
 	
 	//-----------------------------------------------------------------------------------
-	void IEffect::deleteEmitter(IEmitter* em)
+	void Effect::deleteEmitter(Emitter* em)
 	{
 		assert(0 != em);
 		m_Transform.removeChild(&em->getTransform());		
@@ -85,14 +85,14 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void IEffect::debugDraw()
+	void Effect::debugDraw()
 	{
 		m_Transform.debugDraw();
 		for( tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it )
 			(*it)->debugDraw();
 	}
 	//-----------------------------------------------------------------------------------
-	void IEffect::toStream(io::IWriteStream& wf)
+	void Effect::toStream(io::IWriteStream& wf)
 	{
 		wf << ms_nVersion;
 		wf << m_Transform;
@@ -103,17 +103,17 @@ namespace particles
 			wf << *(*it);
 	}
 	//----------------------------------------------------------------------------------
-	render::SRenderableInfo&	IEffect::getRenderableInfo()
+	render::SRenderableInfo&	Effect::getRenderableInfo()
 	{
 		return m_renderInfo;		
 	}
 	//-----------------------------------------------------------------------------------
-	void IEffect::fromStream(io::IReadStream& rf)
+	void Effect::fromStream(io::IReadStream& rf)
 	{
 		unsigned version;
 		rf >> version;
 		if (version != ms_nVersion)
-			throw std::exception("pfx::IEffect::fromStream(...): Unknown version !");
+			throw std::exception("pfx::Effect::fromStream(...): Unknown version !");
 		
 		rf >> m_Transform;
 
@@ -123,14 +123,14 @@ namespace particles
 		{
 			unsigned em_type = 0;
 			rf >> em_type;
-			IEmitter::Type type = static_cast<IEmitter::Type> (em_type);
+			Emitter::Type type = static_cast<Emitter::Type> (em_type);
 		
-			IEmitter* em;
+			Emitter* em;
 			switch(type)
 			{
-				case IEmitter::Maya:		em = new IMayaEmitter;		break;
-				case IEmitter::Spherical:	em = new ISphericalEmitter;	break;
-				case IEmitter::Box:			em = new IBoxEmitter;		break;
+				case Emitter::Maya:		em = new IMayaEmitter;		break;
+				case Emitter::Spherical:	em = new SphericalEmitter;	break;
+				case Emitter::Box:			em = new BoxEmitter;		break;
 			}
 			rf >> (*em);
 			addEmitter(em);

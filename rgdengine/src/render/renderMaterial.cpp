@@ -8,7 +8,7 @@
 
 namespace render
 {
-	void Material::CMaterialMap::setTexture(const PTexture& texture)
+	void Material::MaterialMap::setTexture(const PTexture& texture)
 	{
 		if (texture != NULL)
 		{
@@ -23,7 +23,7 @@ namespace render
 		}
 	}
 
-	void Material::CMaterialMap::update(float dt)
+	void Material::MaterialMap::update(float dt)
 	{
 		m_time += dt;
 
@@ -42,15 +42,15 @@ namespace render
 		m_matrix *= tempMatrix;
 	}
 
-	PTexture& getDefaultTextureByType(Material::CMaterialMap::EDefaultTexture defaultTexture)
+	PTexture& getDefaultTextureByType(Material::MaterialMap::EDefaultTexture defaultTexture)
 	{
 		switch (defaultTexture)
 		{
-		case Material::CMaterialMap::Black:
+		case Material::MaterialMap::Black:
 			return TheRenderManager::Get().getBlackTexture();
-		case Material::CMaterialMap::White:
+		case Material::MaterialMap::White:
 			return TheRenderManager::Get().getWhiteTexture();
-		case Material::CMaterialMap::DefaultNormalMap:
+		case Material::MaterialMap::DefaultNormalMap:
 			return TheRenderManager::Get().getDefaultNormalMap();
 		}
 
@@ -58,7 +58,7 @@ namespace render
 		return empti_texture_ptr;
 	}
 
-	Material::CMaterialMap::CMaterialMap(EDefaultTexture defaultTexture)
+	Material::MaterialMap::MaterialMap(EDefaultTexture defaultTexture)
 	{
 		m_pDefaultTexture = getDefaultTextureByType(defaultTexture);
 		PTexture pNullTexture;
@@ -87,11 +87,11 @@ namespace render
 		  m_emissive(em),
 		  m_fPower(power)
 	{
-		m_maps["diffuse"] = CMaterialMap();
-		m_maps["illumination"] = CMaterialMap(CMaterialMap::Black);
-		m_maps["reflection"] = CMaterialMap(CMaterialMap::Black);
-		m_maps["bump"] = CMaterialMap(CMaterialMap::DefaultNormalMap);
-		m_maps["lightmap"] = CMaterialMap();
+		m_maps["diffuse"] = MaterialMap();
+		m_maps["illumination"] = MaterialMap(MaterialMap::Black);
+		m_maps["reflection"] = MaterialMap(MaterialMap::Black);
+		m_maps["bump"] = MaterialMap(MaterialMap::DefaultNormalMap);
+		m_maps["lightmap"] = MaterialMap();
 		//base::lmsg << "Material::Material()";
 	}
 
@@ -220,13 +220,13 @@ namespace render
 		m_fPower = 255.0f;
 	}
 
-	const Material::CMaterialMap & Material::getMaterialMap(const std::string &type) const
+	const Material::MaterialMap & Material::getMaterialMap(const std::string &type) const
 	{
 		MaterialMaps::const_iterator it	= m_maps.find(type);
 		return it->second;
 	}
 
-	Material::CMaterialMap & Material::getMaterialMap(const std::string &type)
+	Material::MaterialMap & Material::getMaterialMap(const std::string &type)
 	{
 		MaterialMaps::iterator it	= m_maps.find(type);
 		return it->second;
@@ -268,7 +268,7 @@ namespace render
 		return m_pDynamicBinder;
 	}
 
-	IEffect::ITechnique* Material::getTechnique() const
+	Effect::ITechnique* Material::getTechnique() const
 	{
 		return m_technique;
 	}

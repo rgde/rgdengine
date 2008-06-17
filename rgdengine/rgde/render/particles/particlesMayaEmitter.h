@@ -21,9 +21,9 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 
 namespace particles{
 
-	class  IMayaEmitter : public IEmitter
+	class  IMayaEmitter : public Emitter
 	{
-		friend class IEffect;
+		friend class Effect;
 
 		static const unsigned ms_nVersion = 1002;
 	public:
@@ -35,7 +35,7 @@ namespace particles{
 
 		static void ClearCachedData(); 
 
-		IMayaEmitter() : IEmitter(IEmitter::Maya) {};
+		IMayaEmitter() : Emitter(Emitter::Maya) {};
 		IMayaEmitter( const std::string& sequence_name, const std::string texture_name);
 		virtual ~IMayaEmitter();
 

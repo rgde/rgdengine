@@ -6,11 +6,11 @@
 
 namespace particles
 {
-	class  IBoxEmitter : public IAbstractEmitter
+	class  BoxEmitter : public AbstractEmitter
 	{
 	public:
-		IBoxEmitter();
-		virtual ~IBoxEmitter();
+		BoxEmitter();
+		virtual ~BoxEmitter();
 
 		virtual void getParticle(Particle& p);
 		void		 debugDraw();

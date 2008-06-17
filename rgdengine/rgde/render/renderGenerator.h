@@ -5,7 +5,7 @@
 namespace render
 {
 	template<class Vertex, bool Use32Indexes = false>
-	class CGenerator
+	class Generator
 	{
 	public:
 		typedef TIndexedGeometry<Vertex, Use32Indexes> TGeometry;

@@ -6,15 +6,15 @@
 namespace math
 {
 
-	class CFrameAnimationController
+	class FrameAnimationController
 	{
 		typedef math::TInterpolator<math::Vec3f> PositionInterpolyator;
 		typedef math::TInterpolator<math::Vec3f> RotationInterpolyator;
 		typedef math::TInterpolator<math::Vec3f> ScaleInterpolyator;
 
 	public:
-		CFrameAnimationController( TiXmlNode* pXmlNode = 0, math::PFrame spFrame = PFrame());
-		virtual ~CFrameAnimationController(){}
+		FrameAnimationController( TiXmlNode* pXmlNode = 0, math::PFrame spFrame = PFrame());
+		virtual ~FrameAnimationController(){}
 
 		bool load( TiXmlNode* pXmlNode );
 

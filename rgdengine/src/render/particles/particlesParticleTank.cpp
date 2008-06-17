@@ -10,9 +10,9 @@ namespace particles
 	//-----------------------------------------------------------------------------------
 	PTank::PTank() : m_nReservedSize(0)
 	{
-		m_spEffect = render::IEffect::Create( "particles.fxo" );
+		m_spEffect = render::Effect::Create( "particles.fxo" );
 
-		render::IEffect::Parameters& params = m_spEffect->getParams();
+		render::Effect::Parameters& params = m_spEffect->getParams();
 
 		m_paramUpVec			= params["m_vUp"];
 		m_paramRightVec			= params["m_vRight"];
@@ -64,7 +64,7 @@ namespace particles
 		m_paramUpVec->set(up);
 
 		
-		std::vector<render::IEffect::ITechnique::IPass*>& passes = m_pRenderTechnique->getPasses();
+		std::vector<render::Effect::ITechnique::IPass*>& passes = m_pRenderTechnique->getPasses();
 
 		m_spEffect->commitChanges();
 		m_pRenderTechnique->begin();
