@@ -8,7 +8,7 @@
 
 namespace render
 {
-	typedef base::TSingelton<CSpriteManager, 1> TheSpriteManager2;
+	typedef base::TSingelton<SpriteManager, 1> TheSpriteManager2;
 
 	PLensFlares LensFlares::Create(const std::string &strFileName, const math::PFrame &pFrame)
 	{

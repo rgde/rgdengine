@@ -333,6 +333,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\rgde\core\GameTask.h"
+					>
+				</File>
+				<File
 					RelativePath=".\rgde\core\InputTask.h"
 					>
 				</File>
@@ -1165,6 +1169,43 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="precompiled"
+				>
+				<File
+					RelativePath=".\src\precompiled.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="1"
+							PrecompiledHeaderThrough="precompiled.h"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="1"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="1"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath=".\src\precompiled.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="shaders"
@@ -1276,43 +1317,6 @@
 						Outputs="&quot;$(InputPath)o&quot;"
 					/>
 				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="precompiled"
-			>
-			<File
-				RelativePath=".\src\precompiled.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-						PrecompiledHeaderThrough="precompiled.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Profile|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\src\precompiled.h"
-				>
 			</File>
 		</Filter>
 	</Files>

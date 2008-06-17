@@ -30,18 +30,18 @@ namespace render
 			unsigned long uPriority_ = 0 );
 	};
 
-	class CSpriteManager : public IDeviceObject, public IRendererable
+	class SpriteManager : public IDeviceObject, public IRendererable
 	{
 	public:
-		typedef std::vector<Sprite> TSprites;
-		typedef TSprites::iterator TSpritesIter;
+		typedef std::vector<Sprite> SpritesVector;
+		typedef SpritesVector::iterator SpritesIter;
 
-		CSpriteManager(int priority = 0);
-		~CSpriteManager();
+		SpriteManager(int priority = 0);
+		~SpriteManager();
 	
 		void setAditiveBlending(bool bAditive) { m_bAditive = bAditive; }
 
-		inline TSprites& getSprites() { return m_vSprites; }
+		inline SpritesVector& getSprites() { return m_sprites; }
 		inline unsigned getNumSpritesRendered() { return m_nSpritesRendered; }
 
 		inline math::Vec2f& getOrigin() { return m_vOrigin; }
@@ -59,7 +59,7 @@ namespace render
 	protected:
 		bool m_bAditive;
 
-		TSprites m_vSprites;						// Спрайты
+		SpritesVector m_sprites;						// Спрайты
 		unsigned m_nSpritesRendered;				/// Число отрисованных в последний раз спрайтов
 
 		PEffect  m_pEffect;
@@ -80,5 +80,5 @@ namespace render
 		std::vector<unsigned> m_vEqualPrioritiesN;	/// Число спрайтов в группах с одинаковыми приоритетами
 	};
 
-	typedef base::TSingelton<CSpriteManager> TheSpriteManager;
+	typedef base::TSingelton<SpriteManager> TheSpriteManager;
 }
