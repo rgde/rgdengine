@@ -16,23 +16,6 @@
 
 #include <boost/filesystem/operations.hpp>
 
-#ifdef _DEBUG
-	#pragma comment (lib, "dxguid.lib")
-	#pragma comment (lib, "d3d9.lib")
-	#pragma comment (lib, "d3dx9d.lib")
-	#pragma comment (lib, "d3dxof.lib")	
-	#pragma comment (lib, "dinput8.lib")
-	#pragma comment (lib, "dxerr9.lib" )
-#else
-	#pragma comment (lib, "dxguid.lib")
-	#pragma comment (lib, "d3d9.lib")
-	#pragma comment (lib, "d3dx9.lib")
-	#pragma comment (lib, "d3dxof.lib")	
-	#pragma comment (lib, "dinput8.lib")
-	#pragma comment (lib, "dxerr9.lib" )
-#endif
-
-
 
 typedef unsigned long dword;
 
@@ -435,7 +418,8 @@ namespace core
 		//AdjustWindowRect(&Rect, Style, false);
 
 		// Register window class
-		RegisterCls(Name.c_str(), CS_HREDRAW | CS_VREDRAW | CS_OWNDC, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
+		//RegisterCls(Name.c_str(), CS_HREDRAW | CS_VREDRAW | CS_OWNDC, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
+		RegisterCls(Name.c_str(), 0/* CS_HREDRAW | CS_VREDRAW | CS_OWNDC*/, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
 
 
 		// Create window
@@ -498,7 +482,11 @@ namespace core
 		RegisterCls(Name.c_str(), NULL, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
 
 		// Create window
-		CreateWnd(NULL, Name.c_str(), Name.c_str(), Style, ExStyle, 0, Rect);
+		CreateWnd(NULL, Name.c_str(), Name.c_str(), WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN/*Style*/, 0/*ExStyle*/, 0, Rect);
+
+		// show window
+		::ShowWindow(Handle(), SW_SHOW);
+		::UpdateWindow(Handle());
 
 		WINDOWPLACEMENT wpFullscreen;
 		ZeroMemory( &wpFullscreen, sizeof(WINDOWPLACEMENT) );
@@ -517,9 +505,9 @@ namespace core
 		// Set message handlers
 		setupHandlers();
 
-		// show window
-		::ShowWindow(Handle(), SW_SHOW);
-		::UpdateWindow(Handle());
+		//// show window
+		//::ShowWindow(Handle(), SW_SHOW);
+		//::UpdateWindow(Handle());
 	}
 
 	bool ApplicationImpl::update()

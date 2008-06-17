@@ -4,21 +4,28 @@
 
 namespace render
 {
-	//////////////////////////////////////////////////////////////////////////
-	Sprite::Sprite()	: spin(0), uPriority(0), rect(0, 0, 1, 1)
+	Sprite::Sprite()
+		: spin(0), 
+		uPriority(0), 
+		rect(0, 0, 1, 1)
 	{
 	}
 
 	Sprite::Sprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
 		const math::Color& color_,render::PTexture pTexture_,
 		float spin_, const math::Rect& rect_,
-		unsigned long uPriority_) :
-	rect (rect_), pos (pos_), size (size_), spin (spin_), uPriority (uPriority_), 
-		texture (pTexture_), color (color_)
+		unsigned long uPriority_) 
+		:
+		rect (rect_), 
+		pos (pos_), 
+		size (size_), 
+		spin (spin_), 
+		uPriority (uPriority_), 
+		texture (pTexture_), 
+		color (color_)
 	{
 	}
-	//////////////////////////////////////////////////////////////////////////
-	//-----------------------------------------------------------------------------------
+
 	SpriteManager::SpriteManager(int priority)
 		: m_cvScreenSize(800, 600),
 		  m_nReservedSize(0),
@@ -38,27 +45,27 @@ namespace render
 		m_pEffect = IEffect::Create("SpriteManager.fxo");
 		m_renderInfo.pRenderFunc = boost::bind(&SpriteManager::render, this);
 	}
-	//-----------------------------------------------------------------------------------
+
 	SpriteManager::~SpriteManager()
 	{
 	}
-	//-----------------------------------------------------------------------------------
+
 	void SpriteManager::addSprite(const Sprite &pSprite)
 	{
 		m_bUpdated = false;
 		m_sprites.push_back(pSprite);
 	}
-	//-----------------------------------------------------------------------------------
+
 	bool sortPred (const Sprite& pSprite1, Sprite& pSprite2)
 	{
 		return (pSprite1.uPriority < pSprite2.uPriority);
 	}
-	//-----------------------------------------------------------------------------------
+
 	inline math::Vec2f rotatePos(float x, float y, float sina, float cosa)
 	{
 		return math::Vec2f(x * cosa - y * sina, x * sina + y * cosa);
 	}
-	//--------------------------------------------------------------------------------------
+
 	void SpriteManager::update()
 	{
 		using namespace math;
@@ -142,7 +149,6 @@ namespace render
 		m_bUpdated = true;
 	}
 
-	//-----------------------------------------------------------------------------------
 	void SpriteManager::render()
 	{
 		if (m_sprites.empty()) return;
@@ -213,11 +219,11 @@ namespace render
 
 		m_sprites.resize(0);
 	}
-	//-----------------------------------------------------------------------------------
+
 	void SpriteManager::onLostDevice()
 	{
 	}
-	//-----------------------------------------------------------------------------------
+
 	void SpriteManager::onResetDevice()
 	{
 		// Вычисляем коэффициенты масштабирования
