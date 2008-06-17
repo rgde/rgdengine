@@ -25,7 +25,7 @@ namespace particles{
 	}
 	//-----------------------------------------------------------------------------------
 	IMayaEmitter::IMayaEmitter(const std::string& sequence_name, const std::string texture_name) 
-		: m_fScale(1.0f), IEmitter(IEmitter::Maya)
+		: m_fScale(1.0f), Emitter(Emitter::Maya)
 	{
 		m_bIntense				= false;
 
@@ -320,7 +320,7 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void IMayaEmitter::fromStream(io::IReadStream& rf)
 	{
-		IEmitter::fromStream (rf);
+		Emitter::fromStream (rf);
 
 		unsigned version;
 		rf  >> version;
@@ -346,7 +346,7 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void IMayaEmitter::toStream(io::IWriteStream& wf) const
 	{
-		IEmitter::toStream (wf);
+		Emitter::toStream (wf);
 
 		wf  << ms_nVersion
 			<< m_Name

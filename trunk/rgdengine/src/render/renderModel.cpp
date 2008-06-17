@@ -142,7 +142,7 @@ namespace render
 
 		if (gm)
 		{
-			math::CFrameAnimationController control;
+			math::FrameAnimationController control;
 			control.load(elem);
 
 			control.atachToFrame(&rootFrame);

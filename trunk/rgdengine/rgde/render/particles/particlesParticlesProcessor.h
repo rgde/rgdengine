@@ -20,20 +20,20 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 
 namespace particles{
 
-	class IAbstractEmitter;
+	class AbstractEmitter;
 	class PTank;
 
 
-	class  IParticlesProcessor : public io::ISerializedObject, public core::XmlClass
+	class  ParticlesProcessor : public io::ISerializedObject, public core::XmlClass
 	{
 		// версию надо увеличивать на 1 после каждой мождификации формата входных данных
 		static const unsigned ms_nVersion = 1004;//1003; // old - 1002
 
 	public:
-		inline void setEmitter(IAbstractEmitter* em) { m_pParentEmitter = em; }
+		inline void setEmitter(AbstractEmitter* em) { m_pParentEmitter = em; }
 		
-		IParticlesProcessor(IAbstractEmitter* em = 0);   // конструктор
-		virtual ~IParticlesProcessor();
+		ParticlesProcessor(AbstractEmitter* em = 0);   // конструктор
+		virtual ~ParticlesProcessor();
 
 		void load();
 
@@ -138,7 +138,7 @@ namespace particles{
 		bool m_bIsPlayTexAnimation;
 		//////////////////////////////////////////////////////////////////////////
 
-		IAbstractEmitter* m_pParentEmitter;
+		AbstractEmitter* m_pParentEmitter;
 
 		math::UnitRandom2k  rnd;
 

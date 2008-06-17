@@ -19,7 +19,7 @@ namespace render
 		typedef std::map<int, PMaterial>				MaterialMap;
 		typedef std::vector<math::PFrame>				Frames;
 		typedef std::vector<PMesh>						Meshes;
-		typedef std::vector<math::CFrameAnimationController>	Controllers;
+		typedef std::vector<math::FrameAnimationController>	Controllers;
 
 		static PModel Create(const std::string& strFileName);
 		~Model();

@@ -14,7 +14,7 @@ namespace render
 		base::lmsg << "Line2dManager::Line2dManager()";
 		m_pVertices = &(m_Geometry.lock());
 		m_uPriority = uPriority;
-		m_spEffect = IEffect::Create("Line3dManager.fxo");
+		m_spEffect = Effect::Create("Line3dManager.fxo");
 		m_renderInfo.pRenderFunc = boost::bind(&Line2dManager::render, this);
 	}
 	//-----------------------------------------------------------------------------------
@@ -22,11 +22,11 @@ namespace render
 	{
 		if (m_pVertices->size() == 0) return;
 		m_Geometry.unlock();
-		render::IEffect::ITechnique *pTechnique	= m_spEffect->findTechnique("Lines2d");
+		render::Effect::ITechnique *pTechnique	= m_spEffect->findTechnique("Lines2d");
 		pTechnique->begin();
 		for (unsigned iPass = 0; iPass < pTechnique->getPasses().size(); ++iPass)
 		{
-			IEffect::ITechnique::IPass *pPass	= pTechnique->getPasses()[iPass];
+			Effect::ITechnique::IPass *pPass	= pTechnique->getPasses()[iPass];
 			pPass->begin();
 			m_Geometry.render(PrimTypeLineList);
 			pPass->end();

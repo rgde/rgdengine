@@ -39,13 +39,13 @@ namespace particles
 	private:
 		render::PEffect		m_spEffect;
 
-		typedef render::IEffect::IParameter* EffectParam;
+		typedef render::Effect::IParameter* EffectParam;
 		EffectParam m_paramUpVec;
 		EffectParam m_paramRightVec;
 		EffectParam m_paramParticleTexture;
 		EffectParam m_paramTransformMatrix;
 
-		render::IEffect::ITechnique* m_pRenderTechnique;
+		render::Effect::ITechnique* m_pRenderTechnique;
 
 		typedef render::TIndexedGeometry<vertex::PositionColoredTextured2, false> Geometry;
 		Geometry			m_Geometry;

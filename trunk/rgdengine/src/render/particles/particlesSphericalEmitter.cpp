@@ -11,7 +11,7 @@ namespace particles
 {
 
 	//-----------------------------------------------------------------------------------
-	ISphericalEmitter::ISphericalEmitter() : IAbstractEmitter(IEmitter::Spherical)
+	SphericalEmitter::SphericalEmitter() : AbstractEmitter(Emitter::Spherical)
 	{
 		m_Angle.addKey(1, 45.0f);
 		m_Radius.addKey(0, 0);
@@ -28,14 +28,14 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	ISphericalEmitter::~ISphericalEmitter()
+	SphericalEmitter::~SphericalEmitter()
 	{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ISphericalEmitter::getParticle(Particle& p)
+	void SphericalEmitter::getParticle(Particle& p)
 	{
-		IAbstractEmitter::getParticle(p);
+		AbstractEmitter::getParticle(p);
 
 		float radius = m_Radius.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_RadiusSpread.getValue(m_fTimeNormalaized);
@@ -62,9 +62,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ISphericalEmitter::debugDraw()
+	void SphericalEmitter::debugDraw()
 	{
-		IAbstractEmitter::debugDraw();
+		AbstractEmitter::debugDraw();
 
 		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
 
@@ -83,9 +83,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ISphericalEmitter::toStream(io::IWriteStream& wf) const
+	void SphericalEmitter::toStream(io::IWriteStream& wf) const
 	{
-		IAbstractEmitter::toStream(wf);
+		AbstractEmitter::toStream(wf);
 
 		wf	<< m_Radius
 			<< m_RadiusSpread
@@ -93,9 +93,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ISphericalEmitter::fromStream(io::IReadStream& rf)
+	void SphericalEmitter::fromStream(io::IReadStream& rf)
 	{
-		IAbstractEmitter::fromStream(rf);
+		AbstractEmitter::fromStream(rf);
 
 		rf  >> m_Radius
 			>> m_RadiusSpread

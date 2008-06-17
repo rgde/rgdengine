@@ -3,7 +3,7 @@
 // @date 11.06.2006
 // email: sidorenko.alexander@gmail.com
 // project: RGDE
-// description: TBinder class. See class description.
+// description: Binder class. See class description.
 // example of use:
 //
 // PTexture getTexture(int n)
@@ -22,7 +22,7 @@
 //
 // void testBinder()
 // {
-//    typedef TBinder<int> CBinder;
+//    typedef Binder<int> CBinder;
 //    CBinder* binder = new CBinder(pEffect);//pEffect is some non-null
 //                                           //PEffect pointer
 //
@@ -66,14 +66,14 @@
 
 namespace render
 {
-	/** TBinder template class.
-	  * TBinder is used to bind some parameters to IEffect. See example of use
+	/** Binder template class.
+	  * Binder is used to bind some parameters to Effect. See example of use
 	  * in the beginning of the file. FType is parameter type for GetFunction
 	  * and ParamTypeGetFunction. Binder calls GetFunction (or 
 	  * ParamTypeGetFunction) with Types<FType>::ParamType parameter...
 	  */
 	template <class FType>
-	class TBinder
+	class Binder
 	{
 	public:
 
@@ -82,32 +82,32 @@ namespace render
 		{
 			typedef typename boost::call_traits<PType>::param_type ParamType;
 			typedef typename Types<FType>::ParamType FTypeParamType;
-			//GetFunction is used to get value to be setup to IEffect. Returns
+			//GetFunction is used to get value to be setup to Effect. Returns
 			//PType
 			typedef boost::function<PType(FTypeParamType)>GetFunction;
-			//ParamTypeGetFunction is used to get value to be setup to IEffect
+			//ParamTypeGetFunction is used to get value to be setup to Effect
 			//too. Defference is that ParamTypeGetFunction returns ParamType
 			//instead of PType. It allows to setup parameter by more effective
 			//way when it's possible.
 			typedef boost::function<ParamType(FTypeParamType)>
 													ParamTypeGetFunction;
-			//IEffect set function.
-			typedef bool (IEffect::IParameter::*EffectSetFunction)(ParamType);
+			//Effect set function.
+			typedef bool (Effect::IParameter::*EffectSetFunction)(ParamType);
 		};
 
 		typedef boost::function<void(typename Types<FType>::ParamType)> Functor;
 
-		typedef boost::shared_ptr<TBinder> PBinder;
+		typedef boost::shared_ptr<Binder> PBinder;
 
 		static PBinder Create(const PEffect& pEffect)
 		{
 			if(pEffect)
-				return PBinder(new TBinder(pEffect));
+				return PBinder(new Binder(pEffect));
 			else
 				return PBinder();
 		}
 
-		virtual ~TBinder() { }
+		virtual ~Binder() { }
 
 		const PEffect& getEffect() const { return m_pEffect; }
 
@@ -122,12 +122,12 @@ namespace render
 		bool addParameter(typename Types<PType>::ParamType val,
 						  const std::string& name)
 		{
-			IEffect::IParameter* param = getParameter(name);
+			Effect::IParameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
 
-			addFunctor(TBinder::createFunctor<PType>(val, param));
+			addFunctor(Binder::createFunctor<PType>(val, param));
 
 			return true;
 		}
@@ -136,12 +136,12 @@ namespace render
 		bool addParameter(const typename Types<PType>::GetFunction& f,
 						  const std::string& name)
 		{
-			IEffect::IParameter* param = getParameter(name);
+			Effect::IParameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
 
-			addFunctor(TBinder::createFunctor<PType>(f, param));
+			addFunctor(Binder::createFunctor<PType>(f, param));
 
 			return true;
 		}
@@ -150,32 +150,32 @@ namespace render
 		bool addParameter(const typename Types<PType>::ParamTypeGetFunction& f,
 						  const std::string& name)
 		{
-			IEffect::IParameter* param = getParameter(name);
+			Effect::IParameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
 
-			addFunctor(TBinder::createFunctor<PType>(f, param));
+			addFunctor(Binder::createFunctor<PType>(f, param));
 
 			return true;
 		}
 
 	private:
-		TBinder(const PEffect& pEffect)
+		Binder(const PEffect& pEffect)
 			: m_pEffect(pEffect)
 		{
 		}
 
 		template <class PType>
 		static Functor createFunctor(typename Types<PType>::ParamType val,
-									 IEffect::IParameter* param)
+									 Effect::IParameter* param)
 		{
 			return boost::bind(getEffectSetFunction<PType>(), param, val);
 		}
 
 		template <class PType>
 		static Functor createFunctor(const typename Types<PType>::GetFunction& f,
-									 IEffect::IParameter* param)
+									 Effect::IParameter* param)
 		{
 			return boost::bind(getEffectSetFunction<PType>(), param,
 							   boost::bind(f, _1));
@@ -183,7 +183,7 @@ namespace render
 
 		template <class PType>
 		static Functor createFunctor(const typename Types<PType>::ParamTypeGetFunction& f,
-									 IEffect::IParameter* param)
+									 Effect::IParameter* param)
 		{
 			return boost::bind(getEffectSetFunction<PType>(), param,
 							   boost::bind(f, _1));
@@ -192,15 +192,15 @@ namespace render
 		template <class PType>
 		static inline typename Types<PType>::EffectSetFunction getEffectSetFunction()
 		{
-			return (typename Types<PType>::EffectSetFunction) &IEffect::IParameter::set;
+			return (typename Types<PType>::EffectSetFunction) &Effect::IParameter::set;
 		}
 
-		IEffect::IParameter* getParameter(const std::string& name) const
+		Effect::IParameter* getParameter(const std::string& name) const
 		{
-			const IEffect::Parameters& params = m_pEffect->getParams();
-			IEffect::Parameters::const_iterator it = params.find(name);
+			const Effect::Parameters& params = m_pEffect->getParams();
+			Effect::Parameters::const_iterator it = params.find(name);
 
-			IEffect::IParameter* result = NULL;
+			Effect::IParameter* result = NULL;
 
 			if(it != params.end())
 				result = it->second;
@@ -221,13 +221,13 @@ namespace render
 	};
 	//Dynamic binder is used to setup 'dynamic' parameters,
 	//i.e. parameters which change from object to object.
-	typedef TBinder<math::PFrame> DynamicBinder;
+	typedef Binder<math::PFrame> DynamicBinder;
 	typedef DynamicBinder::PBinder PDynamicBinder;
 
 	//Static binder is used to setup 'static' parameters,
 	//i.e. parameters which are the same for all objects.
 	//We don't need any parameters for this binder so let's
 	//use int.
-	typedef TBinder<int> StaticBinder;
+	typedef Binder<int> StaticBinder;
 	typedef StaticBinder::PBinder PStaticBinder;
 }

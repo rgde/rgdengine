@@ -102,7 +102,7 @@ namespace core
 			::render::TheLine3dManager::Destroy();
 			::render::TheRenderManager::Destroy();
 
-			::render::IEffect::ClearAll();
+			::render::Effect::ClearAll();
 
 			SAFE_RELEASE(g_pDefaultColorTarget);
 			SAFE_RELEASE(g_pDefaultDepthStencilTarget);

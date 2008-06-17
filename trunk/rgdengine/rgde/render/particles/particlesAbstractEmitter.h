@@ -8,18 +8,18 @@
 namespace particles
 {
 
-class IParticlesProcessor;
+class ParticlesProcessor;
 struct Particle;
 
 
-class  IAbstractEmitter : public IEmitter
+class  AbstractEmitter : public Emitter
 {
 public:
-	typedef std::list<IParticlesProcessor*> tPProcessors;
+	typedef std::list<ParticlesProcessor*> tPProcessors;
 	typedef tPProcessors::iterator tPProcessorsIter;
 
-	IAbstractEmitter(IEmitter::Type);
-	virtual ~IAbstractEmitter();
+	AbstractEmitter(Emitter::Type);
+	virtual ~AbstractEmitter();
 
 	virtual void		getParticle(Particle& p);
 
@@ -28,8 +28,8 @@ public:
 	void				render();
 	virtual void		debugDraw() = 0;
 
-	void				addProcessor(IParticlesProcessor*	 pProcessor);	
-	void				deleteProcessor(IParticlesProcessor* pProcessor);	
+	void				addProcessor(ParticlesProcessor*	 pProcessor);	
+	void				deleteProcessor(ParticlesProcessor* pProcessor);	
 	
 protected:
 	virtual void toStream(io::IWriteStream& wf) const;

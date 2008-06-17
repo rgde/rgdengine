@@ -5,7 +5,7 @@
 
 namespace math
 {
-	CFrameAnimationController::CFrameAnimationController( TiXmlNode* pXmlNode, PFrame spFrame)
+	FrameAnimationController::FrameAnimationController( TiXmlNode* pXmlNode, PFrame spFrame)
 	{
 		m_bPaused = false;
 		m_bPlaying = false;
@@ -23,7 +23,7 @@ namespace math
 		setWeight(1.0f);
 	}
 
-	bool CFrameAnimationController::load( TiXmlNode* pXmlNode )
+	bool FrameAnimationController::load( TiXmlNode* pXmlNode )
 	{
 		TiXmlElement *elem = pXmlNode->FirstChildElement("animation");
 
@@ -76,19 +76,19 @@ namespace math
 		return true;
 	}
 
-	float CFrameAnimationController::getWeight() const
+	float FrameAnimationController::getWeight() const
 	{
 		return m_fWeight;
 	}
 
-	void CFrameAnimationController::setWeight(float fWeight)
+	void FrameAnimationController::setWeight(float fWeight)
 	{ 
 		m_fWeight = fWeight;
 		if((m_fWeight < 0.0f) || (m_fWeight > 1.0f)) 
 			m_fWeight = 1.0f;
 	}
 
-	void CFrameAnimationController::update( float dt )
+	void FrameAnimationController::update( float dt )
 	{
 		if ( !m_bPlaying || !(m_fAnimationTime > 0) || m_bPaused)
 			return;
@@ -104,7 +104,7 @@ namespace math
 		updateMatrix();
 	}
 
-	void CFrameAnimationController::updateMatrix()
+	void FrameAnimationController::updateMatrix()
 	{
 		math::Vec3f vec = m_RotationInterpolyator.getValue( m_fCurrentTime );
 		math::EulerAngleXYZf ang( vec[ 0 ], vec[ 1 ], vec[ 2 ] );
@@ -146,19 +146,19 @@ namespace math
 		}
 	}
 
-	void CFrameAnimationController::stop()
+	void FrameAnimationController::stop()
 	{
 		m_bPlaying = false;
 		m_bPaused = false;
 		m_bLooped = false;
 	}
 
-	void CFrameAnimationController::pause()
+	void FrameAnimationController::pause()
 	{
 		m_bPaused = true;//!m_bPaused;
 	}
 
-	void CFrameAnimationController::start()
+	void FrameAnimationController::start()
 	{
 		m_bPlaying = true;
 		m_bPaused = false;
