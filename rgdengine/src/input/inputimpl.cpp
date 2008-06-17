@@ -8,7 +8,7 @@
 #define KEYBOARD_BUFFER_SIZE 1024
 #define    MOUSE_BUFFER_SIZE 1024
 
-#pragma comment (lib, "dxguid.lib")
+//#pragma comment (lib, "dxguid.lib")
 #pragma comment (lib, "dinput8.lib")
 
 namespace input

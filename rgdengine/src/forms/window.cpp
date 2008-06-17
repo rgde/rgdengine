@@ -8,6 +8,8 @@
 
 namespace Forms
 {
+	std::map<HWND, Window*> Window::ms_windows;
+
 	template <typename T>
 	void SetWndLong(HWND hWnd, int index, const T &value)
 	{
@@ -26,12 +28,12 @@ namespace Forms
 
 		if (uMsg == WM_NCCREATE)
 		{
-			CREATESTRUCT *cs= (CREATESTRUCT *)(lParam);
-			SetWndLong<void*>(hWnd, GWL_USERDATA, cs->lpCreateParams);
+			//CREATESTRUCT *cs= (CREATESTRUCT *)(lParam);
+			//SetWndLong<void*>(hWnd, GWL_USERDATA, cs->lpCreateParams);
 			return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
 		}
 
-		Window *wnd	= GetWndLong<Window*>(hWnd, GWL_USERDATA);
+		Window *wnd	= ms_windows[hWnd];//GetWndLong<Window*>(hWnd, GWL_USERDATA);
 
 		if (wnd)
 		{
@@ -42,10 +44,12 @@ namespace Forms
 					MessageT<WM_COMMAND> command_msg(msg);
 					if (!wnd->OnCommand(command_msg))
 					{
-						if (Window * subwnd = GetWndLong<Window*>(command_msg.Handle(), GWL_USERDATA))
-						{
-							subwnd->OnCommand(command_msg);
-						}
+						wnd->MessageDispatcher(msg);
+						//return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
+						//if (Window * subwnd = GetWndLong<Window*>(command_msg.Handle(), GWL_USERDATA))
+						//{
+						//	subwnd->OnCommand(command_msg);
+						//}
 					}
 				}
 				break;
@@ -55,10 +59,12 @@ namespace Forms
 					MessageT<WM_NOTIFY> notify_msg(msg);
 					if (!wnd->OnNotify(notify_msg))
 					{
-						if (Window * subwnd = GetWndLong<Window*>(notify_msg.Handle(), GWL_USERDATA))
-						{
-							subwnd->OnNotify(notify_msg);
-						}
+						wnd->MessageDispatcher(msg);
+						//return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
+						//if (Window * subwnd = GetWndLong<Window*>(notify_msg.Handle(), GWL_USERDATA))
+						//{
+						//	subwnd->OnNotify(notify_msg);
+						//}
 					}
 				}
 				break;
@@ -69,22 +75,25 @@ namespace Forms
 				}
 			}
 		}
+		else 
+			return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
+
 
 		return msg.lResult;
 	}
 
-	LRESULT CALLBACK Window::SubWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	{
-		Message msg(uMsg, wParam, lParam);
+	//LRESULT CALLBACK Window::SubWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	//{
+	//	Message msg(uMsg, wParam, lParam);
 
-		Window *wnd	= GetWndLong<Window*>(hWnd, GWL_USERDATA);
-		if (wnd)
-		{
-			wnd->MessageDispatcher(msg);
-		}
+	//	Window *wnd	= GetWndLong<Window*>(hWnd, GWL_USERDATA);
+	//	if (wnd)
+	//	{
+	//		wnd->MessageDispatcher(msg);
+	//	}
 
-		return msg.lResult;
-	}
+	//	return msg.lResult;
+	//}
 
 	void Window::MessageDispatcher(Message &msg)
 	{
@@ -111,7 +120,7 @@ namespace Forms
 
 	Window::Window()
 		: m_hWnd(NULL),
-		  m_SuperWindowProc(::DefWindowProc)
+		m_SuperWindowProc(::DefWindowProc)
 	{
 	}
 
@@ -119,6 +128,7 @@ namespace Forms
 	{
 		if (m_hWnd)
 		{
+			ms_windows.erase(m_hWnd);
 			::DestroyWindow(m_hWnd);
 		}
 	}
@@ -134,18 +144,33 @@ namespace Forms
 
 	void Window::CreateWnd(HWND Parent, const std::wstring ClassName, const std::wstring Name, DWORD Style, DWORD ExStyle, UINT ID, const Drawing::Rectangle &Rect)
 	{
-		m_hWnd = ::CreateWindowEx(ExStyle, ClassName.c_str(), Name.c_str(), Style, Rect.left, Rect.top, Rect.GetWidth(), Rect.GetHeight(), Parent, (HMENU)ID, ::GetModuleHandle(NULL), this);
+		int x = Rect.left;
+		int y = Rect.top;
+		int width = Rect.GetWidth();
+		int height = Rect.GetHeight();
+		m_hWnd = ::CreateWindowExW(ExStyle, ClassName.c_str(), Name.c_str(), Style, Rect.left, Rect.top, width, height, Parent, (HMENU)ID, ::GetModuleHandle(NULL), this);
+		ms_windows[m_hWnd]	= this;
 	}
 
-	void Window::Subclass(Window *wnd)
-	{
-		SetWndLong<void*>(wnd->m_hWnd, GWL_USERDATA, wnd);
-		wnd->m_SuperWindowProc = GetWndLong<WNDPROC>(wnd->m_hWnd, GWL_WNDPROC);
-		SetWndLong<WNDPROC>(wnd->m_hWnd, GWL_WNDPROC, SubWindowProc);
-	}
+	//void Window::Subclass(Window *wnd)
+	//{
+	//	SetWndLong<void*>(wnd->m_hWnd, GWL_USERDATA, wnd);
+	//	wnd->m_SuperWindowProc = GetWndLong<WNDPROC>(wnd->m_hWnd, GWL_WNDPROC);
+	//	SetWndLong<WNDPROC>(wnd->m_hWnd, GWL_WNDPROC, SubWindowProc);
+	//}
 
 	void Window::SetMessageEvent(UINT uMsg, const MessageEvent &Event)
 	{
 		m_MessageEventMap[uMsg] = Event;
+	}
+
+	void Window::Show(bool flag)
+	{
+		ShowWindow(Handle(), flag ? SW_SHOW : SW_HIDE);
+	}
+
+	void Window::Update()
+	{
+		UpdateWindow( Handle() );
 	}
 }

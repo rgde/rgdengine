@@ -18,6 +18,21 @@
 #include <rgde/render/renderLines3d.h>
 #include <rgde/render/renderSprites.h>
 
+#ifdef _DEBUG
+	#pragma comment (lib, "dxguid.lib")
+	#pragma comment (lib, "d3d9.lib")
+	#pragma comment (lib, "d3dx9d.lib")
+	#pragma comment (lib, "d3dxof.lib")	
+	#pragma comment (lib, "dinput8.lib")
+	#pragma comment (lib, "dxerr9.lib" )
+#else
+	#pragma comment (lib, "dxguid.lib")
+	#pragma comment (lib, "d3d9.lib")
+	#pragma comment (lib, "d3dx9.lib")
+	#pragma comment (lib, "d3dxof.lib")	
+	#pragma comment (lib, "dinput8.lib")
+	#pragma comment (lib, "dxerr9.lib" )
+#endif
 
 LPDIRECT3DDEVICE9       g_pd3dDevice					= NULL;
 LPDIRECT3DSURFACE9		g_pDefaultColorTarget			= NULL;
