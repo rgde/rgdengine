@@ -2,9 +2,9 @@
 
 #include "rgde/event/events.h"
 
-#include "rgde/game/Level.h"
-#include "rgde/game/DynamicObject.h"
-#include "rgde/game/LevelObject.h"
+#include "rgde/game/level.h"
+#include "rgde/game/dynamic_object.h"
+#include "rgde/game/level_object.h"
 
 #include "rgde/base/singelton.h"
 

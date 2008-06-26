@@ -1,6 +1,6 @@
 #pragma once
 
-#include "rgde/math/mathTypes3d.h"
+#include "rgde/math/types3d.h"
 
 namespace base
 {
@@ -207,4 +207,4 @@ namespace base
 	}
 }
 
-#include "logHelper.h"
+#include "log_helper.h"

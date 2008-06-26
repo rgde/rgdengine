@@ -12,7 +12,7 @@
 #pragma once
 
 #include "rgde/base/log.h"
-#include "rgde/base/logHelper.h"
+#include "rgde/base/log_helper.h"
 
 namespace base
 {
