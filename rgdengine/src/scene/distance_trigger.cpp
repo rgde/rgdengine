@@ -1,0 +1,49 @@
+#include "precompiled.h"
+
+#include <rgde/scene/distance_trigger.h>
+
+#include <rgde/math/transform.h>
+#include <rgde/math/camera.h>
+
+#include <rgde/render/device.h>
+
+namespace scene
+{
+	CameraTrigger::CameraTrigger()
+		: m_fDistance(0)
+	{
+	}
+
+	void CameraTrigger::init(float distance, const math::PFrame &frame)
+	{
+		m_pFrame = frame; 
+		m_fDistance = distance;
+	}
+
+	CameraTrigger::CameraTrigger(float fDistance, const math::PFrame &pFrame)
+		: m_pFrame(pFrame),
+		  m_fDistance(fDistance)
+	{
+	}
+
+	void CameraTrigger::update(float dt)
+	{
+		if (!m_pFrame)
+			return;
+
+		math::PCamera pCam = render::TheDevice::Get().getCurentCamera();
+
+		if (!pCam)
+			return;
+
+		float fDistance	= math::length<float, 3>(pCam->getPosition() - m_pFrame->getGlobalPosition());
+
+		bool isCameraInside	= fDistance <= m_fDistance;
+
+		if (isCameraInside != m_bIsTriggered)
+		{
+			m_bIsTriggered = isCameraInside;
+			trigger(m_bIsTriggered);
+		}
+	}
+}

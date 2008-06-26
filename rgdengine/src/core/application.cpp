@@ -2,7 +2,7 @@
 #include "precompiled.h"
 
 #include <rgde/core/application.h>
-#include <rgde/core/Task.h>
+#include <rgde/core/task.h>
 
 // Forms
 #include "../forms/window.h"
@@ -12,7 +12,7 @@
 #include <windows.h>
 #include "../base/exception.h"
 
-#include <rgde/render/renderManager.h>
+#include <rgde/render/manager.h>
 
 #include <boost/filesystem/operations.hpp>
 

@@ -325,23 +325,19 @@
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\core\coreRenderDevice.h"
-					>
-				</File>
-				<File
 					RelativePath=".\rgde\core\factory.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\core\GameTask.h"
+					RelativePath=".\rgde\core\game_task.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\core\InputTask.h"
+					RelativePath=".\rgde\core\input_task.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\core\NamedObject.h"
+					RelativePath=".\rgde\core\named_object.h"
 					>
 				</File>
 				<File
@@ -349,7 +345,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\core\RenderTask.h"
+					RelativePath=".\rgde\core\render_system.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rgde\core\render_task.h"
 					>
 				</File>
 				<File
@@ -361,11 +361,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\core\xmlClass.h"
+					RelativePath=".\rgde\core\xml_class.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\core\xmlNode.h"
+					RelativePath=".\rgde\core\xml_node.h"
 					>
 				</File>
 			</Filter>
@@ -389,7 +389,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\base\logHelper.h"
+					RelativePath=".\rgde\base\log_helper.h"
 					>
 				</File>
 				<File
@@ -413,54 +413,54 @@
 				Name="math"
 				>
 				<File
-					RelativePath=".\rgde\math\mathAnimationController.h"
+					RelativePath=".\rgde\math\animation_controller.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\math\mathFrustum.h"
+					RelativePath=".\rgde\math\frustum.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\math\mathRandom.h"
+					RelativePath=".\rgde\math\random.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\math\mathTransform.h"
+					RelativePath=".\rgde\math\transform.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\math\mathTypes3d.h"
+					RelativePath=".\rgde\math\types3d.h"
 					>
 				</File>
 				<Filter
 					Name="camera"
 					>
 					<File
-						RelativePath=".\rgde\math\mathCamera.h"
+						RelativePath=".\rgde\math\camera.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathCameraController.h"
+						RelativePath=".\rgde\math\camera_controller.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathFirstPersonCamera.h"
+						RelativePath=".\rgde\math\fly_camera.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathFlyCamera.h"
+						RelativePath=".\rgde\math\fps_camera.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathTargetCamera.h"
+						RelativePath=".\rgde\math\target_camera.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathTrack.h"
+						RelativePath=".\rgde\math\track.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathTrackCamera.h"
+						RelativePath=".\rgde\math\track_camera.h"
 						>
 					</File>
 				</Filter>
@@ -468,19 +468,19 @@
 					Name="spline"
 					>
 					<File
-						RelativePath=".\rgde\math\mathCatmulRomDistSpline.h"
+						RelativePath=".\rgde\math\catmulrom.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathCatmulRomSpline.h"
+						RelativePath=".\rgde\math\catmulrom_dist.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathSpline.h"
+						RelativePath=".\rgde\math\spline.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathSplines.h"
+						RelativePath=".\rgde\math\splines.h"
 						>
 					</File>
 				</Filter>
@@ -488,19 +488,19 @@
 					Name="Interpolator"
 					>
 					<File
-						RelativePath=".\rgde\math\mathInterpolator.h"
+						RelativePath=".\rgde\math\interpolator.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathInterpolators.h"
+						RelativePath=".\rgde\math\interpolators.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathInterpolyator.h"
+						RelativePath=".\rgde\math\interpolyator.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\mathLinearInterpolator.h"
+						RelativePath=".\rgde\math\linear_interpolator.h"
 						>
 					</File>
 				</Filter>
@@ -509,166 +509,166 @@
 				Name="render"
 				>
 				<File
-					RelativePath=".\rgde\render\renderAux.h"
+					RelativePath=".\rgde\render\auxilary.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderBinder.h"
+					RelativePath=".\rgde\render\binder.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderBinders.h"
+					RelativePath=".\rgde\render\binders.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderCamera.h"
+					RelativePath=".\rgde\render\camera.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderCameraManager.h"
+					RelativePath=".\rgde\render\camera_manager.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderCommon.h"
+					RelativePath=".\rgde\render\common.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderDevice.h"
+					RelativePath=".\rgde\render\device.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderEffect.h"
+					RelativePath=".\rgde\render\effect.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderEffectParameterNames.h"
+					RelativePath=".\rgde\render\effect_parameter_names.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderFader.h"
+					RelativePath=".\rgde\render\flame_renderer.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderFlameRenderer.h"
+					RelativePath=".\rgde\render\fog.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderFog.h"
+					RelativePath=".\rgde\render\font.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderFont.h"
+					RelativePath=".\rgde\render\geom_generator.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderGenerator.h"
+					RelativePath=".\rgde\render\geometry.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderGeometry.h"
+					RelativePath=".\rgde\render\lens_flares.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderLensFlares.h"
+					RelativePath=".\rgde\render\light.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderLight.h"
+					RelativePath=".\rgde\render\light_manager.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderLightManager.h"
+					RelativePath=".\rgde\render\lines2d.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderLines2d.h"
+					RelativePath=".\rgde\render\lines3d.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderLines3d.h"
+					RelativePath=".\rgde\render\manager.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderManager.h"
+					RelativePath=".\rgde\render\material.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderMaterial.h"
+					RelativePath=".\rgde\render\mesh.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderMesh.h"
+					RelativePath=".\rgde\render\model.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderModel.h"
+					RelativePath=".\rgde\render\render_target.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderRenderTarget.h"
+					RelativePath=".\rgde\render\screen_fader.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderSprites.h"
+					RelativePath=".\rgde\render\sprites.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderTexture.h"
+					RelativePath=".\rgde\render\texture.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\renderVertices.h"
+					RelativePath=".\rgde\render\vertices.h"
 					>
 				</File>
 				<Filter
 					Name="particles"
 					>
 					<File
-						RelativePath=".\rgde\render\particles\particlesAbstractEmitter.h"
+						RelativePath=".\rgde\render\particles\abstract_emitter.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesBoxEmitter.h"
+						RelativePath=".\rgde\render\particles\anim_structs.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesEffect.h"
+						RelativePath=".\rgde\render\particles\box_emitter.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesEmitter.h"
+						RelativePath=".\rgde\render\particles\effect.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesIncludes.h"
+						RelativePath=".\rgde\render\particles\emitter.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesMain.h"
+						RelativePath=".\rgde\render\particles\includes.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesMayaEmitter.h"
+						RelativePath=".\rgde\render\particles\main.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesMayaStructs.h"
+						RelativePath=".\rgde\render\particles\particle.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesParticle.h"
+						RelativePath=".\rgde\render\particles\processor.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesParticlesProcessor.h"
+						RelativePath=".\rgde\render\particles\spherical_emitter.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesParticleTank.h"
+						RelativePath=".\rgde\render\particles\static_emitter.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\particlesSphericalEmitter.h"
+						RelativePath=".\rgde\render\particles\tank.h"
 						>
 					</File>
 				</Filter>
@@ -713,7 +713,7 @@
 				Name="game"
 				>
 				<File
-					RelativePath=".\rgde\game\DynamicObject.h"
+					RelativePath=".\rgde\game\dynamic_object.h"
 					>
 				</File>
 				<File
@@ -725,7 +725,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\game\LevelObject.h"
+					RelativePath=".\rgde\game\level_object.h"
 					>
 				</File>
 			</Filter>
@@ -733,23 +733,23 @@
 				Name="io"
 				>
 				<File
+					RelativePath=".\rgde\io\file.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rgde\io\file_system.h"
+					>
+				</File>
+				<File
 					RelativePath=".\rgde\io\io.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\io\ioFile.h"
+					RelativePath=".\rgde\io\path.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\io\ioFileSystem.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\io\ioPath.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\io\ioSerializedObject.h"
+					RelativePath=".\rgde\io\serialized_object.h"
 					>
 				</File>
 			</Filter>
@@ -757,7 +757,11 @@
 				Name="scene"
 				>
 				<File
-					RelativePath=".\rgde\scene\liveTree.h"
+					RelativePath=".\rgde\scene\live_tree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rgde\scene\manager.h"
 					>
 				</File>
 				<File
@@ -765,26 +769,22 @@
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\scene\sceneManager.h"
+					RelativePath=".\rgde\scene\tree.h"
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\scene\sceneTree.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\scene\sceneVisitor.h"
+					RelativePath=".\rgde\scene\visitor.h"
 					>
 				</File>
 				<Filter
 					Name="triggers"
 					>
 					<File
-						RelativePath=".\rgde\scene\sceneBaseTrigger.h"
+						RelativePath=".\rgde\scene\base_trigger.h"
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\scene\sceneDistanceTrigger.h"
+						RelativePath=".\rgde\scene\distance_trigger.h"
 						>
 					</File>
 				</Filter>
@@ -817,7 +817,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\base\logHelper.cpp"
+					RelativePath=".\src\base\log_helper.cpp"
 					>
 				</File>
 				<File
@@ -829,138 +829,138 @@
 				Name="render"
 				>
 				<File
-					RelativePath=".\src\render\renderAux.cpp"
+					RelativePath=".\src\render\auxilary.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderBinders.cpp"
+					RelativePath=".\src\render\binders.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderCamera.cpp"
+					RelativePath=".\src\render\camera.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderCameraManager.cpp"
+					RelativePath=".\src\render\camera_manager.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderDevice.cpp"
+					RelativePath=".\src\render\effect.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderEffect.cpp"
+					RelativePath=".\src\render\flame_renderer.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderFader.cpp"
+					RelativePath=".\src\render\fog.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderFlameRenderer.cpp"
+					RelativePath=".\src\render\font.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderFog.cpp"
+					RelativePath=".\src\render\geometry.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderFont.cpp"
+					RelativePath=".\src\render\lens_flares.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderGeometry.cpp"
+					RelativePath=".\src\render\light.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderLensFlares.cpp"
+					RelativePath=".\src\render\light_manager.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderLight.cpp"
+					RelativePath=".\src\render\lines2d.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderLightManager.cpp"
+					RelativePath=".\src\render\lines3d.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderLines2d.cpp"
+					RelativePath=".\src\render\manager.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderLines3d.cpp"
+					RelativePath=".\src\render\material.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderManager.cpp"
+					RelativePath=".\src\render\mesh.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderMaterial.cpp"
+					RelativePath=".\src\render\model.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderMesh.cpp"
+					RelativePath=".\src\render\render_device.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderModel.cpp"
+					RelativePath=".\src\render\render_target.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderRenderTarget.cpp"
+					RelativePath=".\src\render\screen_fader.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderSprites.cpp"
+					RelativePath=".\src\render\sprites.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderTexture.cpp"
+					RelativePath=".\src\render\texture.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderTextureImpl.h"
+					RelativePath=".\src\render\texture_impl.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\renderVertices.cpp"
+					RelativePath=".\src\render\vertices.cpp"
 					>
 				</File>
 				<Filter
 					Name="particles"
 					>
 					<File
-						RelativePath=".\src\render\particles\particlesAbstractEmitter.cpp"
+						RelativePath=".\src\render\particles\abstract_emitter.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\render\particles\particlesBoxEmitter.cpp"
+						RelativePath=".\src\render\particles\box_emitter.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\render\particles\particlesEffect.cpp"
+						RelativePath=".\src\render\particles\effect.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\render\particles\particlesEmitter.cpp"
+						RelativePath=".\src\render\particles\emitter.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\render\particles\particlesMayaEmitter.cpp"
+						RelativePath=".\src\render\particles\processor.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\render\particles\particlesParticlesProcessor.cpp"
+						RelativePath=".\src\render\particles\spherical_emitter.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\render\particles\particlesParticleTank.cpp"
+						RelativePath=".\src\render\particles\static_emitter.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\render\particles\particlesSphericalEmitter.cpp"
+						RelativePath=".\src\render\particles\tank.cpp"
 						>
 					</File>
 				</Filter>
@@ -1013,7 +1013,7 @@
 				Name="game"
 				>
 				<File
-					RelativePath=".\src\game\DynamicObject.cpp"
+					RelativePath=".\src\game\dynamic_object.cpp"
 					>
 				</File>
 				<File
@@ -1025,7 +1025,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\game\LevelObject.cpp"
+					RelativePath=".\src\game\level_object.cpp"
 					>
 				</File>
 			</Filter>
@@ -1033,11 +1033,11 @@
 				Name="io"
 				>
 				<File
-					RelativePath=".\src\io\ioFile.cpp"
+					RelativePath=".\src\io\file.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\io\ioFileSystem.cpp"
+					RelativePath=".\src\io\file_system.cpp"
 					>
 				</File>
 			</Filter>
@@ -1045,7 +1045,7 @@
 				Name="scene"
 				>
 				<File
-					RelativePath=".\src\scene\liveTree.cpp"
+					RelativePath=".\src\scene\live_tree.cpp"
 					>
 				</File>
 				<File
@@ -1053,14 +1053,14 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\scene\sceneTree.cpp"
+					RelativePath=".\src\scene\tree.cpp"
 					>
 				</File>
 				<Filter
 					Name="triggers"
 					>
 					<File
-						RelativePath=".\src\scene\sceneDistanceTrigger.cpp"
+						RelativePath=".\src\scene\distance_trigger.cpp"
 						>
 					</File>
 				</Filter>
@@ -1069,50 +1069,50 @@
 				Name="math"
 				>
 				<File
-					RelativePath=".\src\math\mathAnimationController.cpp"
+					RelativePath=".\src\math\animation_controller.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\math\mathFrustum.cpp"
+					RelativePath=".\src\math\frustum.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\math\mathTransform.cpp"
+					RelativePath=".\src\math\transform.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\math\mathTypes3d.cpp"
+					RelativePath=".\src\math\types3d.cpp"
 					>
 				</File>
 				<Filter
 					Name="camera"
 					>
 					<File
-						RelativePath=".\src\math\mathCamera.cpp"
+						RelativePath=".\src\math\camera.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\math\mathCameraController.cpp"
+						RelativePath=".\src\math\camera_controller.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\math\mathFirstPersonCamera.cpp"
+						RelativePath=".\src\math\fly_Camera.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\math\mathFlyCamera.cpp"
+						RelativePath=".\src\math\fps_camera.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\math\mathTargetCamera.cpp"
+						RelativePath=".\src\math\target_camera.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\math\mathTrack.cpp"
+						RelativePath=".\src\math\track.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\math\mathTrackCamera.cpp"
+						RelativePath=".\src\math\track_camera.cpp"
 						>
 					</File>
 				</Filter>
@@ -1125,19 +1125,19 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\core\coreRenderDevice.cpp"
+					RelativePath=".\src\core\game_task.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\core\GameTask.cpp"
+					RelativePath=".\src\core\input_task.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\core\InputTask.cpp"
+					RelativePath=".\src\core\render_system.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\core\RenderTask.cpp"
+					RelativePath=".\src\core\render_task.cpp"
 					>
 				</File>
 				<File

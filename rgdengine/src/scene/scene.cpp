@@ -2,7 +2,7 @@
 
 #include <rgde/scene/scene.h>
 
-#include <rgde/math/mathTransform.h>
+#include <rgde/math/transform.h>
 
 namespace scene
 {

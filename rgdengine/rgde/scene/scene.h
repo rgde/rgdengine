@@ -4,7 +4,7 @@
 #include <rgde/base/singelton.h>
 
 //Neonic: octree
-#include <rgde/scene/livetree.h>
+#include <rgde/scene/live_tree.h>
 
 namespace math
 {

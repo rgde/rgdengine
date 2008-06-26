@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#include <rgde/core/Task.h>
+#include <rgde/core/task.h>
 #include "../base/exception.h"
 
 namespace core
