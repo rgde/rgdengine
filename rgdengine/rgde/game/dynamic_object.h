@@ -4,18 +4,18 @@ namespace game
 {
 	//динамический обьект для игры
 	//(у него вызывается метод update из GameTask)
-	class IDynamicObject
+	class dynamic_object
 	{
-		friend class CGame;
+		friend class game_system;
 	public:
-		IDynamicObject();
-		virtual ~IDynamicObject();
+		dynamic_object();
+		virtual ~dynamic_object();
 		virtual void update(float dt)=0;
 
 	private:
-		void unsubscribe() {m_bIsSubscribed = false;}
+		void unsubscribe() {m_is_subscribed = false;}
 
 	private:
-		bool m_bIsSubscribed;
+		bool m_is_subscribed;
 	};
 }

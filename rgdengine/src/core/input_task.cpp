@@ -10,10 +10,10 @@
 
 namespace core
 {
-    InputTask::InputTask(const IApplication& app, unsigned int priority, bool exclusive) 
-        : ITask(app, priority)
+    InputTask::InputTask(const application& app, unsigned int priority, bool exclusive) 
+        : base_task(app, priority)
     {
-        HWND hWnd = (HWND)IApplication::Get()->getWindowHandle();
+        HWND hWnd = (HWND)application::Get()->getWindowHandle();
 
         input::InputImpl *pImpl = new input::InputImpl();
         pImpl->Init(hWnd,exclusive);

@@ -433,10 +433,10 @@ namespace live_tree
 	};
 	
 	/*
-	bool CTRoot::test_obj_in_branch( PObject pBranch, PObject pObject )
+	bool CTRoot::test_obj_in_branch( PObject pBranch, PObject obj )
 	{
 		AABoxf BranchAABB(pBranch->getAABB()), aabb;
-		aabb = pObject->getDynamicAABB();
+		aabb = obj->getDynamicAABB();
 		return intersect(BranchAABB,aabb);
 	};
 	*/

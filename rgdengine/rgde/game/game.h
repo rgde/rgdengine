@@ -10,71 +10,71 @@
 
 namespace game
 {
-	//евент "закончить игру"
-	class CCloseGameEvent
+	namespace events
 	{
-	};
-
-	//евент "завершить текущий уровень"
-	class CCompliteLevelEvent
-	{
-	};
-
-	//евент "задать новый уровень"
-	class CSetLevelEvent
-	{
-	public:
-		CSetLevelEvent(const std::string& strNextLevel)
-			: m_strNextLevel(strNextLevel)
+		class on_close_game_event
 		{
-		}
+		};
 
-		const std::string& getNextLevel()  const { return m_strNextLevel; }
+		class on_complite_level_event
+		{
+		};
 
-	private:
-		std::string m_strNextLevel;
-	};
+		class on_level_set_event
+		{
+		public:
+			on_level_set_event(const std::string& next_level)
+				: m_next_level(next_level)
+			{
+			}
 
-	//базовый класс игры
-	class CGame: public event::Listener
+			const std::string& get_next_level()  const { return m_next_level; }
+
+		private:
+			std::string m_next_level;
+		};
+	}
+
+
+	class game_system: public event::listener
 	{
 	public:
         //инициализаци€ из xml файла
-		void init(const std::string&);
+		void init(const std::string&); 
 
         //или динамическое создание уровней игры
         void addLevel(const std::string &name, const std::string &nextlevel);
         void addLevelTypeToCreate(const std::string &name, const std::string& type_name);
 
 		//узнать им€ текущего уровн€
-		std::string getCurrentLevel() const {return m_strCurrentLevel;} 
+		const std::string& getCurrentLevel() const {return m_strCurrentLevel;} 
 
 		//задать текущий уровень (по имени)
 		void setCurrentLevel(const std::string&);   
 
 		void update();
 
-		void onCloseGame(CCloseGameEvent);
-		void onCompliteLevel(CCompliteLevelEvent);
-		void onSetLevel(CSetLevelEvent);
+		void onCloseGame(events::on_close_game_event);
+		void onCompliteLevel(events::on_complite_level_event);
+		void onSetLevel(events::on_level_set_event);
 
-		void registerDynamicObject(IDynamicObject*);   //зарегестрировать динамический (т.е. с методом update) объект
-		void unregisterDynamicObject(IDynamicObject*); //–ј«регестрировать динамический объект
+		void register_object(dynamic_object*);   //зарегестрировать динамический (т.е. с методом update) объект
+		void unregister_object(dynamic_object*); //–ј«регестрировать динамический объект
 
 	private:
-		Level* getLevel(std::string);
+		Level* get_level(const std::string& level_name);
 	
 	protected:
-		CGame();
-		~CGame();
+		game_system();
+		~game_system();
 
 	private:
 		std::string                m_strCurrentLevel;    //им€ текущего уровн€
-		std::string                m_strNextLevel;       //им€ следующего уровн€
+		std::string                m_next_level;       //им€ следующего уровн€
 		std::list<Level*>         m_listLevels;         //список уровней
-		std::list<IDynamicObject*> m_listDynamicObjects; //список динамических обьектов
-		bool                       m_bChangeLevel;
+		std::list<dynamic_object*> m_objects; //список динамических обьектов
+		bool                       m_change_level;
 	};
 
-	typedef base::TSingelton<CGame>	TheGame;
+	typedef base::TSingelton<game_system>	TheGame;
 }

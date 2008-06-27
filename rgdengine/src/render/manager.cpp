@@ -26,7 +26,7 @@ namespace render
 		if (!pResult)
 		{
 			base::lerr << "Can't load default texture \"" << strTextureName << "\"";
-			core::IApplication::Get()->close();
+			core::application::Get()->close();
 		}
 
 		return pResult;
@@ -50,13 +50,13 @@ namespace render
 		if (!m_pDefaultEffect)
 		{
 			base::lerr << "Can't load effect \"graphics/shaders/Default.fxo\"";
-			core::IApplication::Get()->close();
+			core::application::Get()->close();
 		}
 
 		if (!m_pDefaultFont)
 		{
 			base::lerr << "Can't create font \"" << "Arial" << "\"";
-			core::IApplication::Get()->close();
+			core::application::Get()->close();
 		}
 	}
 

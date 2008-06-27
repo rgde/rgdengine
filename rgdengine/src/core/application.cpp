@@ -21,16 +21,16 @@ typedef unsigned long dword;
 
 namespace core
 {
-	static IApplication* gs_pApplication = 0;
+	static application* gs_pApplication = 0;
 
-	IApplication* IApplication::Get()
+	application* application::Get()
 	{
 		return gs_pApplication;
 	}
 
 	class ApplicationImpl : public Forms::Window, 
-							public IApplication,
-							public event::Sender
+							public application,
+							public event::sender
 	{
 	protected:
 		//cs_object m_cs;
@@ -68,10 +68,10 @@ namespace core
 		virtual void Run();
 		virtual bool update();
 		virtual WindowHandle getWindowHandle() const;
-		virtual void addTask(PTask pTask);
+		virtual void addTask(task_ptr pTask);
 	private:
 		
-		typedef std::list<PTask> TaskList;
+		typedef std::list<task_ptr> TaskList;
 		TaskList m_tasks;
 		bool	m_bIsPaused;
 		bool	m_bIsClosing;
@@ -80,7 +80,7 @@ namespace core
 
     //////////////////////////////////////////////////////////////////////////
 
-	void ApplicationImpl::addTask(PTask pTask)
+	void ApplicationImpl::addTask(task_ptr pTask)
 	{
 		m_tasks.push_back(pTask);
 		m_tasks.sort();
@@ -235,7 +235,7 @@ namespace core
 		return false;
 	}
 
-	IApplication* IApplication::Create(const std::wstring& window_name)
+	application* application::Create(const std::wstring& window_name)
 	{
 		if ( 0 != gs_pApplication) return gs_pApplication;
 
@@ -252,7 +252,7 @@ namespace core
 
 		if(!base::loadXml("EngineConfig.xml", XmlConfig))
 		{
-			base::lwrn << "IApplication::Create(): Can't load config file: \"EngineConfig.xml\"";
+			base::lwrn << "application::Create(): Can't load config file: \"EngineConfig.xml\"";
 			base::lwrn << "Using default settings.";			
 		}
 		else
@@ -270,7 +270,7 @@ namespace core
 		return Create(std::wstring(name.begin(), name.end()), nWidth, nHeight, bFullscreen);
 	}
 
-	IApplication* IApplication::Create(const std::wstring& Name, int Width, int Height, bool Fullscreen, bool resize_enable)
+	application* application::Create(const std::wstring& Name, int Width, int Height, bool Fullscreen, bool resize_enable)
 	{
 		if ( 0 != gs_pApplication)
 			return gs_pApplication;
@@ -302,7 +302,7 @@ namespace core
 		return pApp;
 	}
 
-	IApplication* IApplication::Create(WindowHandle hParentWindow)
+	application* application::Create(WindowHandle hParentWindow)
 	{
 		if ( 0 != gs_pApplication)
 			return gs_pApplication;

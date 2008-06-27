@@ -5,15 +5,15 @@
 
 namespace game
 {
-	IDynamicObject::IDynamicObject()
+	dynamic_object::dynamic_object()
 	{
-		game::TheGame::Get().registerDynamicObject(this);
-		m_bIsSubscribed = true;
+		game::TheGame::Get().register_object(this);
+		m_is_subscribed = true;
 	}
 
-	IDynamicObject::~IDynamicObject()
+	dynamic_object::~dynamic_object()
 	{
-		if (m_bIsSubscribed)
-			game::TheGame::Get().unregisterDynamicObject(this);
+		if (m_is_subscribed)
+			game::TheGame::Get().unregister_object(this);
 	}
 }

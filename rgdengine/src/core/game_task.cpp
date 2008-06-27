@@ -5,8 +5,8 @@
 
 namespace core
 {
-	GameTask::GameTask(const IApplication& app,  unsigned int priority, const std::string& start_script) 
-		: ITask(app, priority)
+	GameTask::GameTask(const application& app,  unsigned int priority, const std::string& start_script) 
+		: base_task(app, priority)
 	{
 		game::TheGame::Get().init(start_script);
 	}

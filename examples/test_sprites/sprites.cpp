@@ -20,7 +20,7 @@ namespace rgde
 		namespace sprites
 		{
 
-			SpriteExample::SpriteExample() : 
+			sprite_example::sprite_example() : 
 				m_priorities (1),
 				m_nSpritesPerPriority (100),
 				m_bDebugLog (false),
@@ -32,7 +32,7 @@ namespace rgde
 
 					m_cEsc.attach(L"Quit");
 					Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Quit");            
-					m_cEsc += boost::bind(&SpriteExample::onEsc, this);
+					m_cEsc += boost::bind(&sprite_example::onEsc, this);
 				}
 
 				m_font = render::IFont::Create(12, L"Arial", render::IFont::Heavy);
@@ -70,12 +70,12 @@ namespace rgde
 					}
 			}
 
-			void SpriteExample::onEsc()
+			void sprite_example::onEsc()
 			{
-				core::IApplication::Get()->close();
+				core::application::Get()->close();
 			}
 
-			void SpriteExample::update(float dt)
+			void sprite_example::update(float dt)
 			{
 				render::TheDevice::Get().showFPS(m_font);
 

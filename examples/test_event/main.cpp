@@ -10,7 +10,7 @@ struct ClickEvent
     int x,y;
 };
 
-struct Button : public event::Sender
+struct Button : public event::sender
 {
     void Click (int x, int y)
     {
@@ -18,7 +18,7 @@ struct Button : public event::Sender
     }
 };
 
-struct Menu : public event::Listener
+struct Menu : public event::listener
 {
     Menu()
     {

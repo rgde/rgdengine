@@ -15,7 +15,7 @@ namespace particles
 	class Emitter;
 
 	class  Effect : /*public io::ISerializedObject,*/ public render::IRendererable, 
-					 public game::IDynamicObject, public core::XmlClass
+					 public game::dynamic_object, public core::XmlClass
 	{
 	public:
 		typedef std::list<Emitter*> tEmitters;

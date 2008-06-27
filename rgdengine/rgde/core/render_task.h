@@ -5,10 +5,10 @@
 
 namespace core
 {
-	class RenderTask : public ITask
+	class render_task : public base_task
 	{
 	public:
-		RenderTask(const IApplication& app, unsigned int priority = 0);
+		render_task(const application& app, unsigned int priority = 0);
 
 	protected:
 		virtual void run();

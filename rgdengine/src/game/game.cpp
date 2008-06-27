@@ -8,7 +8,7 @@
 namespace game
 {
 	//инициализаци€
-	void CGame::init(const std::string& strXmlGameConfig)
+	void game_system::init(const std::string& strXmlGameConfig)
 	{
         //ничего не делаем, если им€ конфига не задано
         if (strXmlGameConfig == "")
@@ -46,7 +46,7 @@ namespace game
 				std::string nextlevel = level->Attribute("nextlevel");
 
 				//добавить уровень
-				Level* pLevel = new game::Level(name,nextlevel);
+				Level* pLevel = new Level(name,nextlevel);
 				addLevel(name,nextlevel);
 
 				//прочитать список объектов, которые должен создать уровень	
@@ -66,25 +66,25 @@ namespace game
 		}
 	}
 
-    void CGame::addLevel(const std::string &name, const std::string &nextlevel)
+    void game_system::addLevel(const std::string &name, const std::string &nextlevel)
     {
         //убедимс€, что уровней с таким именем нет
-        if (getLevel(name) != 0)
+        if (get_level(name) != 0)
         {
             //... ругаемс€ в лог и выходим из функции (не добавл€€ нового уровн€)
             return;
         }
 
         //добавл€ем уровень
-		Level* pLevel = new game::Level(name,nextlevel);
+		Level* pLevel = new Level(name,nextlevel);
 		m_listLevels.push_back(pLevel);
     }
 
     //написана отдельна€ функци€, лишь бы не давать доступа к
     //укзателю на Level: у программиста есть доступ только по имени уровн€
-    void CGame::addLevelTypeToCreate(const std::string &name, const std::string& type_name)
+    void game_system::addLevelTypeToCreate(const std::string &name, const std::string& type_name)
     {
-        Level *pLevel = getLevel(name);
+        Level *pLevel = get_level(name);
 
         //если такого уровн€ нет
         if (!pLevel)
@@ -96,31 +96,31 @@ namespace game
         pLevel->callFunction("AddTypeToCreate", type_name);
     }
 
-	CGame::CGame(): m_bChangeLevel(false)
+	game_system::game_system(): m_change_level(false)
 	{
-		subscribe<CCloseGameEvent>     (&CGame::onCloseGame);
-		subscribe<CCompliteLevelEvent> (&CGame::onCompliteLevel);
-		subscribe<CSetLevelEvent>      (&CGame::onSetLevel);
+		subscribe<events::on_close_game_event>     (&game_system::onCloseGame);
+		subscribe<events::on_complite_level_event> (&game_system::onCompliteLevel);
+		subscribe<events::on_level_set_event>      (&game_system::onSetLevel);
 		core::TheTimer::Get().start();
 	}
 
-	CGame::~CGame()
+	game_system::~game_system()
 	{
-		typedef std::list<IDynamicObject*> DinamicObjects;
+		typedef std::list<dynamic_object*> DinamicObjects;
 		typedef DinamicObjects::iterator DinamicObjsIter;
 
 		//отписать все динамические объекты
-		for (DinamicObjsIter it = m_listDynamicObjects.begin();
-			it != m_listDynamicObjects.end(); ++it)
+		for (DinamicObjsIter it = m_objects.begin();
+			it != m_objects.end(); ++it)
 		{
 			(*it)->unsubscribe();
 		}
 
-		m_listDynamicObjects.clear();
+		m_objects.clear();
 
-		Level* pCurrentLevel = getLevel(m_strCurrentLevel);
-		if (0 != pCurrentLevel)
-			pCurrentLevel->leave();
+		Level* current_level = get_level(m_strCurrentLevel);
+		if (0 != current_level)
+			current_level->leave();
 
         while (m_listLevels.begin() != m_listLevels.end())
         {
@@ -129,105 +129,105 @@ namespace game
         }
 	}	
 	
-	void CGame::onCloseGame(CCloseGameEvent)
+	void game_system::onCloseGame(events::on_close_game_event)
 	{
 		setCurrentLevel("");
-		core::IApplication::Get()->close();
+		core::application::Get()->close();
 	}
 
-	void CGame::onCompliteLevel(CCompliteLevelEvent)
+	void game_system::onCompliteLevel(events::on_complite_level_event)
 	{
-		std::string strNextLevel;
-		Level *pLevel = getLevel(m_strCurrentLevel);
+		std::string next_level;
+		Level *pLevel = get_level(m_strCurrentLevel);
 
 		if (0 != pLevel)
-			strNextLevel = pLevel->getNextLevel();
+			next_level = pLevel->get_next_level();
 
-		setCurrentLevel(strNextLevel);
+		setCurrentLevel(next_level);
 	}
 
-	void CGame::onSetLevel(CSetLevelEvent event)
+	void game_system::onSetLevel(events::on_level_set_event event)
 	{
-		setCurrentLevel(event.getNextLevel());
+		setCurrentLevel(event.get_next_level());
 	}
 
-	void CGame::setCurrentLevel(const std::string& strNextLevel)
+	void game_system::setCurrentLevel(const std::string& next_level)
 	{
-		m_bChangeLevel = true;
-		m_strNextLevel = strNextLevel;
+		m_change_level = true;
+		m_next_level = next_level;
 	}
 
-	void CGame::update()
+	void game_system::update()
 	{
 		float dt = core::TheTimer::Get().getElapsedTime();
 
 		//static_cast<float>(m_timer.elapsed());
-		typedef std::list<IDynamicObject*> DinamicObjects;
+		typedef std::list<dynamic_object*> DinamicObjects;
 		typedef DinamicObjects::iterator DinamicObjsIter;
 
 		//проапдейтим все динамические обьекты
-		for (DinamicObjsIter it = m_listDynamicObjects.begin();
-			it != m_listDynamicObjects.end(); ++it)
+		for (DinamicObjsIter it = m_objects.begin();
+			it != m_objects.end(); ++it)
 		{
 			(*it)->update(dt);
 		}
 
 		//сменим уровень (если надо)
-		if (m_bChangeLevel)
+		if (m_change_level)
 		{
-			Level* pCurrentLevel = getLevel(m_strCurrentLevel);
+			Level* current_level = get_level(m_strCurrentLevel);
 
-			if (0 != pCurrentLevel)
-				pCurrentLevel->leave();
+			if (0 != current_level)
+				current_level->leave();
 
-			m_strCurrentLevel = m_strNextLevel;
+			m_strCurrentLevel = m_next_level;
 
-			pCurrentLevel = getLevel(m_strCurrentLevel);
+			current_level = get_level(m_strCurrentLevel);
 
-			if (0 != pCurrentLevel)
-				pCurrentLevel->enter();
+			if (0 != current_level)
+				current_level->enter();
 
-			m_bChangeLevel = false;
+			m_change_level = false;
 		}
 	}
 
 	//зарегестрировать динамический (т.е. с методом update) объект
-	void CGame::registerDynamicObject(IDynamicObject *pObject)
+	void game_system::register_object(dynamic_object *obj)
 	{
 #ifdef _DEBUG		
-		std::list<IDynamicObject*>::iterator i = find
+		std::list<dynamic_object*>::iterator i = find
 			(
-				m_listDynamicObjects.begin(),
-				m_listDynamicObjects.end(),
-				pObject
+				m_objects.begin(),
+				m_objects.end(),
+				obj
 			);
 
 		//страховка от двойной регистрации		//(типа, страдаем параноей :))
-		if (i != m_listDynamicObjects.end())
-			throw std::exception("List of DynamicObjects in CGame corrupted!");
+		if (i != m_objects.end())
+			throw std::exception("List of DynamicObjects in game_system corrupted!");
 
 #endif
-		m_listDynamicObjects.push_back(pObject);
+		m_objects.push_back(obj);
 	}
 
 	//–ј«регестрировать динамический объект	
-	void CGame::unregisterDynamicObject(IDynamicObject *pObject)
+	void game_system::unregister_object(dynamic_object *obj)
 	{
 #ifdef _DEBUG
-		std::list<IDynamicObject*>::iterator i = find
+		std::list<dynamic_object*>::iterator i = find
 			(
-				m_listDynamicObjects.begin(),
-				m_listDynamicObjects.end(),	
-				pObject
+				m_objects.begin(),
+				m_objects.end(),	
+				obj
 			);
 
-		if (i == m_listDynamicObjects.end())
-			throw std::exception("List of DynamicObjects in CGame corrupted!");
+		if (i == m_objects.end())
+			throw std::exception("List of DynamicObjects in game_system corrupted!");
 #endif
-		m_listDynamicObjects.remove(pObject);
+		m_objects.remove(obj);
 	}
 
-	Level* CGame::getLevel(std::string name)
+	Level* game_system::get_level(const std::string& name)
 	{
 		for(std::list<Level*>::iterator i = m_listLevels.begin(); i != m_listLevels.end(); ++i)
 		{
