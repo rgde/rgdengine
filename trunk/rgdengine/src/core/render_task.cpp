@@ -5,13 +5,13 @@
 
 namespace core
 {
-	RenderTask::RenderTask(const IApplication& app, unsigned int priority) 
-		:	ITask(app, priority), 
+	render_task::render_task(const application& app, unsigned int priority) 
+		:	base_task(app, priority), 
 			m_spRenderDevice(IRenderSystem::Create(app))
 	{
 	}
 
-	void RenderTask::run()
+	void render_task::run()
 	{
 		m_spRenderDevice->update();
 	}

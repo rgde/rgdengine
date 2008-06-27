@@ -13,7 +13,7 @@ namespace render
 {
 	typedef boost::shared_ptr<class FlameRenderer> PFlameRenderer;
 
-	class FlameRenderer : public IRendererable, game::IDynamicObject
+	class FlameRenderer : public IRendererable, game::dynamic_object
 	{
 	public:
 		static PFlameRenderer Create(const std::string& tex, const math::Color& color, 

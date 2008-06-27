@@ -2,13 +2,13 @@
 
 namespace core
 {
-	class IApplication;
+	class application;
 
-	class ITask
+	class base_task
 	{
 	public:
-		ITask(const IApplication& app, int nPriority = 0);
-		virtual ~ITask();
+		base_task(const application& app, int nPriority = 0);
+		virtual ~base_task();
 
 		int getPriority() const {return m_nPriority;}
 
@@ -17,7 +17,7 @@ namespace core
 		void pause();
 		void execute();
 
-		const IApplication& getApplication() const {return m_application;}
+		const application& getApplication() const {return m_application;}
 
 	protected:
 		virtual void run() = 0;
@@ -26,12 +26,12 @@ namespace core
 		bool m_bIsPaused;
 		bool m_bIsStarted;
 		int m_nPriority;
-		const IApplication& m_application;
+		const application& m_application;
 	};
 
-	typedef boost::shared_ptr<ITask> PTask;
+	typedef boost::shared_ptr<base_task> task_ptr;
 
-	inline bool operator<(const PTask& task1, const PTask& task2)
+	inline bool operator<(const task_ptr& task1, const task_ptr& task2)
 	{
 		return task1->getPriority() < task2->getPriority();
 	}

@@ -182,7 +182,7 @@ namespace input
 
 	// Cursor
 	//обьект-посредник "курсор мыши"
-    class Cursor: public Helper, public event::Listener
+    class Cursor: public Helper, public event::listener
 	{
 	public:
 		typedef boost::function<void(float,float)> CursorHandler;

@@ -162,7 +162,7 @@ namespace event
     };
 
 	// получатель
-	class Listener: private BaseListener
+	class listener: private BaseListener
 	{
 	public:
 		//подписаться на получение событий
@@ -199,7 +199,7 @@ namespace event
 
 
 	// отправитель
-	class Sender: public Listener, public BaseSender
+	class sender: public listener, public BaseSender
 	{
 	public:
 		template<typename Event>

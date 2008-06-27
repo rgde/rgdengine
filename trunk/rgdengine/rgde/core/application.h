@@ -47,50 +47,50 @@ typedef void *WindowHandle;
 
 namespace core
 {
-    class ITask;
-    typedef boost::shared_ptr<ITask> PTask;
+    class base_task;
+    typedef boost::shared_ptr<base_task> task_ptr;
 
-    class IApplication
+    class application
     {
     protected:
-		IApplication(){}
+		application(){}
 
     public:
-		virtual ~IApplication() {}
-        virtual void			addTask(PTask pTask) = 0;
+		virtual ~application() {}
+        virtual void			addTask(task_ptr pTask) = 0;
         virtual void			Run() = 0;
         virtual bool			update() = 0;
         virtual void			close() = 0;
         virtual WindowHandle	getWindowHandle() const = 0;
 
 		template<typename TaskType, typename P1, typename P2, typename P3>
-		IApplication& addTask(const P1& p1, const P2& p2, const P3& p3)
+		application& addTask(const P1& p1, const P2& p2, const P3& p3)
 		{
-			PTask task(new TaskType(*this, p1, p2, p3));
+			task_ptr task(new TaskType(*this, p1, p2, p3));
 			addTask(task);
 			return *this;
 		}
 
 		template<typename TaskType, typename P1, typename P2>
-		IApplication& addTask(const P1& p1, const P2& p2)
+		application& addTask(const P1& p1, const P2& p2)
 		{
-			PTask task(new TaskType(*this, p1, p2));
+			task_ptr task(new TaskType(*this, p1, p2));
 			addTask(task);
 			return *this;
 		}
 
 		template<typename TaskType, typename P1>
-		IApplication& addTask(const P1& p1)
+		application& addTask(const P1& p1)
 		{
-			PTask task(new TaskType(*this, p1));
+			task_ptr task(new TaskType(*this, p1));
 			addTask(task);
 			return *this;
 		}
 
-		static IApplication		*Create(const std::wstring& window_name = L"");
-        static IApplication		*Create(const std::wstring& window_name, int width, int height, bool fullscreen, bool resize_enable = true);
-        static IApplication		*Create(WindowHandle parent_window);
+		static application		*Create(const std::wstring& window_name = L"");
+        static application		*Create(const std::wstring& window_name, int width, int height, bool fullscreen, bool resize_enable = true);
+        static application		*Create(WindowHandle parent_window);
 
-        static IApplication		*Get();
+        static application		*Get();
     };
 }

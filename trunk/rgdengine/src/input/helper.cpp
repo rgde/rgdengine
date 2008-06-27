@@ -348,7 +348,7 @@ namespace input
 
         adjustPosToClient(x,y);
 
-        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+        HWND hwnd = (HWND)core::application::Get()->getWindowHandle();
         POINT pos;
         pos.x = (int)x;
         pos.y = (int)y;
@@ -381,7 +381,7 @@ namespace input
     {
         RECT client;
         RECT window;
-        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+        HWND hwnd = (HWND)core::application::Get()->getWindowHandle();
 
         GetClientRect(hwnd, &client);
         GetWindowRect(hwnd, &window);
@@ -397,7 +397,7 @@ namespace input
     {
         RECT client;
         RECT window;
-        HWND hwnd = (HWND)core::IApplication::Get()->getWindowHandle();
+        HWND hwnd = (HWND)core::application::Get()->getWindowHandle();
 
         GetClientRect(hwnd, &client);
         GetWindowRect(hwnd, &window);

@@ -9,7 +9,7 @@ namespace math
 	typedef boost::shared_ptr<class BaseCameraController> PCameraController;
 
 	//котроллер камеры 
-	class BaseCameraController : public game::IDynamicObject, boost::noncopyable
+	class BaseCameraController : public game::dynamic_object, boost::noncopyable
 	{
 	public:
 		virtual ~BaseCameraController() {}

@@ -19,12 +19,12 @@ namespace game
 		//узнать имя уровня
 		const std::string& getName() const		{return m_name;}
 		//узнать имя следущего уровня
-		const std::string& getNextLevel() const {return m_strNextLevel;}
+		const std::string& get_next_level() const {return m_next_level;}
 
 	private:
 		std::list<ILevelObject*> m_listLevelObjs; //список объектов, которые созданы уровнем
 		std::list<std::string>   m_listTypes;     //типы объектов которые надо создать
 		std::string              m_name;       //имя уровня
-		std::string              m_strNextLevel;  //имя уровня, который должен быть следующим
+		std::string              m_next_level;  //имя уровня, который должен быть следующим
 	};
 }

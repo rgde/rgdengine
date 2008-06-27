@@ -193,7 +193,7 @@ namespace live_tree
 		// clear main (static) branch
 		void					clear( void );
 		// test object containment in selected branch. function is obsolete
-//		bool					test_obj_in_branch( PObject pBranch, PObject pObject );
+//		bool					test_obj_in_branch( PObject pBranch, PObject obj );
 		// get tree base
 		unsigned				getBase( void );
 		// get tree extents

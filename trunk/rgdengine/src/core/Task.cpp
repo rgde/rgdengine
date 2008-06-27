@@ -5,38 +5,38 @@
 
 namespace core
 {
-	ITask::ITask(const IApplication& app, int nPriority)
+	base_task::base_task(const application& app, int nPriority)
 		: m_nPriority(nPriority), m_application(app)
 	{
 		m_bIsStarted = true;
 		m_bIsPaused = false;
 	}
 
-	ITask::~ITask()
+	base_task::~base_task()
 	{
 	}
 
 
-	void ITask::start()
+	void base_task::start()
 	{
 		m_bIsStarted = true;
 		m_bIsPaused = false;
 	}
-	void ITask::stop()
+	void base_task::stop()
 	{
 		m_bIsStarted = false;
 		m_bIsPaused = false;		
 	}
 
-	void ITask::pause()
+	void base_task::pause()
 	{
 		if (m_bIsStarted)
 			m_bIsPaused = !m_bIsPaused;	
 	}
 
-	void ITask::execute()
+	void base_task::execute()
 	{
-		//guard(ITask::execute())
+		//guard(base_task::execute())
 		if (m_bIsStarted && !m_bIsPaused)
 			run();
 		//unguard

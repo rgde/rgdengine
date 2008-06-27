@@ -13,7 +13,7 @@ namespace render
 
 	typedef boost::intrusive_ptr<class Model> PModel;
 
-	class Model : public math::Frame, public game::IDynamicObject
+	class Model : public math::Frame, public game::dynamic_object
 	{
 	public:
 		typedef std::map<int, PMaterial>				MaterialMap;

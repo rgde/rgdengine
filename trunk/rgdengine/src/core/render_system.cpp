@@ -80,7 +80,7 @@ namespace core
 		bool VSync;
 	};
 
-	class CDXRenderDevice : public IRenderSystem, public event::Sender
+	class CDXRenderDevice : public IRenderSystem, public event::sender
 	{
 		mutable bool m_is_first_frame;
 	public:
@@ -480,7 +480,7 @@ namespace core
 		SRenderDeviceInfo		m_info;
 	};
 
-	PRenderSystem IRenderSystem::Create(const IApplication& app)
+	PRenderSystem IRenderSystem::Create(const application& app)
 	{
 		return PRenderSystem(new CDXRenderDevice((HWND)app.getWindowHandle()));
 	}

@@ -7,10 +7,10 @@ namespace rgde
 	{
 		namespace sprites
 		{
-			class SpriteExample : public game::IDynamicObject
+			class sprite_example : public game::dynamic_object
 			{
 			public:
-				SpriteExample();
+				sprite_example();
 
 			protected:
 				void onEsc ();

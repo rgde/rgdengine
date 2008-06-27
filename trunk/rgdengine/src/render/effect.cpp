@@ -546,7 +546,7 @@ namespace render
 				if(NULL == m_spPool)
 				{
 					base::lerr<<"CEffect::load(std::wstring effect_name): Can't create Effect pool";
-					core::IApplication::Get()->close();
+					core::application::Get()->close();
 				}	
 			}
 
