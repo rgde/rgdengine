@@ -7,7 +7,6 @@ using System.Text;
 using System.Windows.Forms;
 using Rgde.Contols;
 using Rgde.Contols.UI;
-using TreeViewSerialization;
 
 namespace UIEditor
 {
@@ -381,10 +380,10 @@ namespace UIEditor
         {
             TextureRegion rec = new TextureRegion();
             owner.Tag = rec;
-            rec.tag = owner;
+            rec.Tag = owner;
             //propertyGrid1.SelectedObject = rec;
             owner.ForeColor = Color.Blue;
-            rec.name = owner.Text;
+            rec.Name = owner.Text;
             owner.ImageIndex = 0;
             owner.SelectedImageIndex = 0;
             return rec;
@@ -403,7 +402,7 @@ namespace UIEditor
             {
                 TextureRegion reg = (TextureRegion)node.Tag;
                 // remove reg from rendering control
-                reg.tag = null;
+                reg.Tag = null;
                 node.Tag = null;
             }
 
@@ -435,7 +434,7 @@ namespace UIEditor
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            regionName.Text = e.Node.FullPath;
+            //regionName.Text = e.Node.FullPath;
         }
 
         private void treeView1_AfterExpand(object sender, TreeViewEventArgs e)
@@ -456,13 +455,13 @@ namespace UIEditor
         {
             if (e.Node.Tag == null) return;
             TextureRegion reg = (TextureRegion)e.Node.Tag;
-            reg.name = e.Label;
+            reg.Name = e.Label;
         }
 
         private void saveToolStripButton_Click(object sender, EventArgs e)
         {
-            TreeViewSerializer out_ = new TreeViewSerializer();
-            out_.SerializeTreeView(treeView1, "test.xml");
+            //TreeViewSerializer out_ = new TreeViewSerializer();
+            //out_.SerializeTreeView(treeView1, "test.xml");
         }
     }
 }
