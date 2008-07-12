@@ -35,15 +35,16 @@ namespace Rgde.Contols
             public RectParts rect_part = RectParts.None;
         };
 
-        AppState m_state = new AppState();
+        private AppState m_state = new AppState();
+        private Image m_image = null;
+        private Rectangle m_visible_rect = new Rectangle();
+        private float m_scale = 1.0f;
+        private int old_x = 0;
+        private int old_y = 0;
 
-        Image m_image = null;
-        Rectangle m_visible_rect = new Rectangle();
-        float m_scale = 1.0f;
-        
-        List<UI.TextureRegion> regions = new List<UI.TextureRegion>();
-        List<UI.TextureRegion> hovered_regions = new List<UI.TextureRegion>();
-        List<UI.TextureRegion> selected_regions = new List<UI.TextureRegion>();
+        private List<UI.TextureRegion> regions = new List<UI.TextureRegion>();
+        private List<UI.TextureRegion> hovered_regions = new List<UI.TextureRegion>();
+        private List<UI.TextureRegion> selected_regions = new List<UI.TextureRegion>();
 
         public LayoutEditor()
         {
@@ -51,34 +52,104 @@ namespace Rgde.Contols
             InitializeComponent();
 
             UI.TextureRegion r1 = new UI.TextureRegion();
-            r1.rect = new Rectangle(10, 10, 30, 30);
-            r1.name = "Button.Bkg";
+            r1.Rectangle = new Rectangle(10, 10, 30, 30);
+            r1.Name = "Button.Bkg";
             regions.Add(r1);
 
             UI.TextureRegion r2 = new UI.TextureRegion();
-            r2.rect = new Rectangle(50, 10, 30, 30);
-            r2.name = "Button.Pressed";
+            r2.Rectangle = new Rectangle(50, 10, 30, 30);
+            r2.Name = "Button.Pressed";
             regions.Add(r2);
 
             UI.TextureRegion r3 = new UI.TextureRegion();
-            r3.rect = new Rectangle(50, 50, 80, 30);
-            r3.name = "Button.Hover";
+            r3.Rectangle = new Rectangle(50, 50, 80, 30);
+            r3.Name = "Button.Hover";
             regions.Add(r3);
         }
 
-        int old_x = 0;
-        int old_y = 0;
+        #region Public Properties
 
-        protected override void AdjustFormScrollbars(bool displayScrollbars)
+        public UI.TextureRegion SelectedRegion
         {
-            try
+            get
             {
-                HorizontalScroll.Value = m_visible_rect.X;
-                VerticalScroll.Value = m_visible_rect.Y;
+                return selected_regions.Count == 0 ?
+                           null
+                           :
+                           selected_regions[0];
             }
-            catch{}
         }
 
+        public UI.TextureRegion HoveredRegion
+        {
+            get
+            {
+                return hovered_regions.Count == 0 ?
+                           null
+                           :
+                           hovered_regions[0];
+            }
+        }
+
+        public  List<UI.TextureRegion> Regions
+        {
+            get { return regions; }
+            set { regions = value; }
+        }
+
+        public float Scale
+        {
+            get { return m_scale; }
+            set
+            {
+                m_scale = value;
+            }
+        }
+
+        public Image Image
+        {
+            get { return m_image; }
+            set
+            {
+                m_image = value;
+                m_visible_rect = ClientRectangle;
+                UpdateScroolBarsVisibility();
+            }
+        }
+
+        #endregion
+
+        public void AddTextureRegion(UI.TextureRegion reg)
+        {
+            regions.Add(reg);
+        }
+
+        public void SelectRegion(UI.TextureRegion reg)
+        {
+            ClearSelection();
+            AddToSelection(reg);
+        }
+
+        public void AddToSelection(UI.TextureRegion reg)
+        {
+            selected_regions.Add(reg);
+        }
+
+        public void ClearSelection()
+        {
+            selected_regions.Clear();
+        }
+
+        public void AddTextureRegion(UI.TextureRegion reg, bool select)
+        {
+            AddTextureRegion(reg);
+            if (select)
+            {
+                SelectRegion(reg);                
+            }
+        }
+
+        #region Parent control override
         protected override void OnMouseMove(MouseEventArgs e)
         {
             int dx = (int)((e.X - old_x) / m_scale);
@@ -163,55 +234,38 @@ namespace Rgde.Contols
                 Invalidate();
         }
 
-        void UpdateRegion(int dx, int dy, int dwidth, int dheight)
-        {
-            foreach (UI.TextureRegion r in selected_regions)
-            {
-                if (r == null) continue;
+        bool control_key = false;
+        bool shift_key = false;
 
-                if (MouseButtons == MouseButtons.Left)
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e.KeyCode == Keys.Delete)
+            {
+                foreach(UI.TextureRegion reg in selected_regions)
                 {
-                    r.rect.X += (int)(dx );
-                    r.rect.Y += (int)(dy );
-                    r.rect.Width += (int)(dwidth );
-                    r.rect.Height += (int)(dheight );
+                    regions.Remove(reg);
+                    hovered_regions.Clear();
+                    ClearSelection();
                 }
+                
+                return;
             }
+
+            control_key = e.Control;
+            shift_key = e.Shift;
         }
 
-        RectParts TestMouseHover(UI.TextureRegion r, int x, int y)
+        protected override void OnKeyUp(KeyEventArgs e)
         {
+            base.OnKeyUp(e);
 
-            float ox = (float)m_visible_rect.X;
-            float oy = (float)m_visible_rect.Y;
-            
-            Rectangle rect = r.GetRect(ox, oy, m_scale);
-            Rectangle[] rects = UI.TextureRegion.GetSelectionRectangles(rect);
+            if (control_key)
+                control_key = e.Control;
 
-            Point mouse_pos = new Point(x, y);
-
-            if (rects[0].Contains(mouse_pos))
-            {
-                return RectParts.LeftTopSizer;
-            }
-            else if (rects[1].Contains(mouse_pos))
-            {
-                return RectParts.RightTopSizer;
-            }
-            else if (rects[2].Contains(mouse_pos))
-            {
-                return RectParts.RightDownSizer;
-            }
-            else if (rects[3].Contains(mouse_pos))
-            {
-                return RectParts.LeftDownSizer;
-            }
-            else if (rect.Contains(mouse_pos))
-            {
-                return RectParts.Body;
-            }
-            else
-                return RectParts.None;
+            if (shift_key)
+                shift_key = e.Shift;
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -232,8 +286,34 @@ namespace Rgde.Contols
                 old_x = e.X;
                 old_y = e.Y;
             }
-            else
+            else if (e.Button == MouseButtons.Left)
             {
+                if (shift_key)
+                {
+                    foreach (UI.TextureRegion r in regions)
+                    {
+                        if (r.GetRect(x, y, m_scale).Contains(new Point(mouse_x, mouse_y)))
+                        {
+                            UI.TextureRegion r1 = new UI.TextureRegion(r);
+                            r1.Name += "Copy";
+                            AddTextureRegion(r1);
+                            m_state.action = AppState.Action.Moving;
+                            m_state.rect_part = RectParts.None;
+                            return;
+                        }
+                    }
+                }
+
+                if (control_key)
+                {
+                    UI.TextureRegion r1 = new UI.TextureRegion();
+                    r1.Rectangle = new Rectangle(mouse_x, mouse_y, 4, 4);
+                    r1.Name = "New Region";
+                    AddTextureRegion(r1);
+                    m_state.action = AppState.Action.Resizing;
+                    m_state.rect_part = RectParts.RightDownSizer;
+                    return;
+                }
 
                 foreach (UI.TextureRegion r in selected_regions)
                 {
@@ -261,7 +341,7 @@ namespace Rgde.Contols
 
                 foreach (UI.TextureRegion r in hovered_regions)
                 {
-                    selected_regions.Add(r);
+                    AddToSelection(r);
                     need_to_redraw = true;
 
                     RectParts p = TestMouseHover(r, e.X, e.Y);
@@ -284,7 +364,7 @@ namespace Rgde.Contols
             }
 
             if (need_to_redraw)
-                Invalidate();            
+                Invalidate();
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
@@ -293,24 +373,6 @@ namespace Rgde.Contols
             Cursor = Cursors.Arrow;
             old_x = 0;
             old_y = 0;
-        }
-
-        void ClampRect()
-        {
-            m_visible_rect.X = m_visible_rect.X < 0 ? 0 : m_visible_rect.X;
-            m_visible_rect.Y = m_visible_rect.Y < 0 ? 0 : m_visible_rect.Y;
-
-            int max_x = m_visible_rect.X + m_visible_rect.Width;
-            m_visible_rect.X = max_x > m_image.Width ? m_image.Width - m_visible_rect.Width : m_visible_rect.X;
-
-            int max_y = m_visible_rect.Y + m_visible_rect.Height;
-            m_visible_rect.Y = max_y > m_image.Height ? m_image.Height - m_visible_rect.Height : m_visible_rect.Y;
-        }
-
-        void RecalcVisibleRect()
-        {
-            m_visible_rect.Height = (int)(ClientRectangle.Height / m_scale);
-            m_visible_rect.Width = (int)(ClientRectangle.Width / m_scale);
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
@@ -322,7 +384,6 @@ namespace Rgde.Contols
 
             m_scale += e.Delta / 2000.0f;
             m_scale = m_scale < 0.05f ? 0.05f : m_scale; //min scale
-            //m_scale = m_scale > 1.0f ? 1.0f : m_scale;
 
             RecalcVisibleRect();
 
@@ -349,8 +410,6 @@ namespace Rgde.Contols
 
         protected override void OnScroll(ScrollEventArgs se)
         {
-            //base.OnScroll(se);
-
             bool horiz = se.ScrollOrientation == ScrollOrientation.HorizontalScroll;
 
             int cur_value = horiz ? m_visible_rect.X : m_visible_rect.Y;
@@ -393,94 +452,21 @@ namespace Rgde.Contols
             Invalidate();
         }
 
-        public float Scale
+        protected override void AdjustFormScrollbars(bool displayScrollbars)
         {
-            get { return m_scale; }
-            set 
+            try
             {
-                //OnScaleChanged(m_scale);
-                m_scale = value; 
+                HorizontalScroll.Value = m_visible_rect.X;
+                VerticalScroll.Value = m_visible_rect.Y;
             }
+            catch { }
         }
-
-        public Image Image
-        {
-            get { return m_image; }
-            set 
-            { 
-                m_image = value;
-                m_visible_rect = ClientRectangle;
-                UpdateScroolBarsVisibility();
-            }
-        }
-
-        private void DrawBoxes(System.Drawing.Graphics g)
-        {
-            float x = (float)m_visible_rect.X;
-            float y = (float)m_visible_rect.Y;
-
-            foreach (UI.TextureRegion r in regions)
-            {
-                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Normal);
-            }
-
-            foreach (UI.TextureRegion r in hovered_regions)
-            {
-                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Hovered);
-            }
-
-            foreach (UI.TextureRegion r in selected_regions)
-            {
-                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Selected);
-            }
-        }
-
-        private void UpdateScroolBarsVisibility()
-        {
-            if (m_image == null)
-            {
-                this.VerticalScroll.Visible = false;
-                this.HorizontalScroll.Visible = false;
-            }
-            else
-            {
-                if (m_visible_rect.Width < m_image.Width)
-                {
-                    HorizontalScroll.Visible = true;
-                    HorizontalScroll.Minimum = 0;
-                    
-                    HorizontalScroll.LargeChange = m_visible_rect.Width;
-                    HorizontalScroll.Maximum = m_image.Width;
-                    HorizontalScroll.SmallChange = 1;
-                    HorizontalScroll.Value = m_visible_rect.Left;
-                }
-                else
-                    HorizontalScroll.Visible = false;
-
-                if (m_visible_rect.Height < m_image.Height)
-                {
-                    VerticalScroll.Visible = true;
-                    VerticalScroll.Minimum = 0;
-                    VerticalScroll.SmallChange = 1;
-                    
-                    VerticalScroll.LargeChange = m_visible_rect.Height;
-                    VerticalScroll.Maximum = m_image.Height;
-                    VerticalScroll.Value = m_visible_rect.Top;
-                }
-                else
-                    VerticalScroll.Visible = false;
-            }
-        }
-
-
+       
         protected override void OnPaint(PaintEventArgs e)
         {
-            //ClampRect();
             HorizontalScroll.Value = m_visible_rect.X;
             VerticalScroll.Value = m_visible_rect.Y;
 
-            //base.OnPaint(e);
-            e.Graphics.DrawRectangle(Pens.Red, ClientRectangle);
             if (m_image != null)
             {
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;//.
@@ -489,8 +475,10 @@ namespace Rgde.Contols
 
             DrawBoxes(e.Graphics);
         }
+        #endregion
 
-        void SetCursor(int x, int y)
+        #region Private methods
+        private void SetCursor(int x, int y)
         {
             try
             {
@@ -532,5 +520,139 @@ namespace Rgde.Contols
             {
             }
         }
+
+        private void DrawBoxes(System.Drawing.Graphics g)
+        {
+            float x = (float)m_visible_rect.X;
+            float y = (float)m_visible_rect.Y;
+
+            foreach (UI.TextureRegion r in regions)
+            {
+                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Normal);
+            }
+
+            foreach (UI.TextureRegion r in hovered_regions)
+            {
+                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Hovered);
+            }
+
+            foreach (UI.TextureRegion r in selected_regions)
+            {
+                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Selected);
+            }
+        }
+
+        private void UpdateScroolBarsVisibility()
+        {
+            if (m_image == null)
+            {
+                this.VerticalScroll.Visible = false;
+                this.HorizontalScroll.Visible = false;
+            }
+            else
+            {
+                if (m_visible_rect.Width < m_image.Width)
+                {
+                    HorizontalScroll.Visible = true;
+                    HorizontalScroll.Minimum = 0;
+
+                    HorizontalScroll.LargeChange = m_visible_rect.Width;
+                    HorizontalScroll.Maximum = m_image.Width;
+                    HorizontalScroll.SmallChange = 1;
+                    HorizontalScroll.Value = m_visible_rect.Left;
+                }
+                else
+                    HorizontalScroll.Visible = false;
+
+                if (m_visible_rect.Height < m_image.Height)
+                {
+                    VerticalScroll.Visible = true;
+                    VerticalScroll.Minimum = 0;
+                    VerticalScroll.SmallChange = 1;
+
+                    VerticalScroll.LargeChange = m_visible_rect.Height;
+                    VerticalScroll.Maximum = m_image.Height;
+                    VerticalScroll.Value = m_visible_rect.Top;
+                }
+                else
+                    VerticalScroll.Visible = false;
+            }
+        }
+
+        private void UpdateRegion(int dx, int dy, int dwidth, int dheight)
+        {
+            foreach (UI.TextureRegion r in selected_regions)
+            {
+                if (r == null) continue;
+
+                if (MouseButtons == MouseButtons.Left)
+                {
+                    Rectangle rect = r.Rectangle;
+                    rect.X += (int)(dx);
+                    rect.Y += (int)(dy);
+                    rect.Width += (int)(dwidth);
+                    rect.Height += (int)(dheight);
+                    
+                    rect.Width = rect.Width > 1 ? rect.Width : 1;
+                    rect.Height = rect.Height > 1 ? rect.Height : 1;
+
+                    r.Rectangle = rect;
+                }
+            }
+        }
+
+        private RectParts TestMouseHover(UI.TextureRegion r, int x, int y)
+        {
+
+            float ox = (float)m_visible_rect.X;
+            float oy = (float)m_visible_rect.Y;
+
+            Rectangle rect = r.GetRect(ox, oy, m_scale);
+            Rectangle[] rects = UI.TextureRegion.GetSelectionRectangles(rect);
+
+            Point mouse_pos = new Point(x, y);
+
+            if (rects[0].Contains(mouse_pos))
+            {
+                return RectParts.LeftTopSizer;
+            }
+            else if (rects[1].Contains(mouse_pos))
+            {
+                return RectParts.RightTopSizer;
+            }
+            else if (rects[2].Contains(mouse_pos))
+            {
+                return RectParts.RightDownSizer;
+            }
+            else if (rects[3].Contains(mouse_pos))
+            {
+                return RectParts.LeftDownSizer;
+            }
+            else if (rect.Contains(mouse_pos))
+            {
+                return RectParts.Body;
+            }
+            else
+                return RectParts.None;
+        }
+
+        private void ClampRect()
+        {
+            m_visible_rect.X = m_visible_rect.X < 0 ? 0 : m_visible_rect.X;
+            m_visible_rect.Y = m_visible_rect.Y < 0 ? 0 : m_visible_rect.Y;
+
+            int max_x = m_visible_rect.X + m_visible_rect.Width;
+            m_visible_rect.X = max_x > m_image.Width ? m_image.Width - m_visible_rect.Width : m_visible_rect.X;
+
+            int max_y = m_visible_rect.Y + m_visible_rect.Height;
+            m_visible_rect.Y = max_y > m_image.Height ? m_image.Height - m_visible_rect.Height : m_visible_rect.Y;
+        }
+
+        private void RecalcVisibleRect()
+        {
+            m_visible_rect.Height = (int)(ClientRectangle.Height / m_scale);
+            m_visible_rect.Width = (int)(ClientRectangle.Width / m_scale);
+        }
+        #endregion
     }
 }
