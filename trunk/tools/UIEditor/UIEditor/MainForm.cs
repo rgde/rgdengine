@@ -118,27 +118,9 @@ namespace UIEditor
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            //e.Graphics
-
             if (bitmap != null)
                 e.Graphics.DrawImage(bitmap, new RectangleF(0, 0, bitmap.Width * scale, bitmap.Height * scale));
-
-            DrawBoxes(e.Graphics);
-
-            //e.Graphics = gr;
-            //e.Graphics.DrawRectangle(new Pen(Color.Green, 1), mouse_x, mouse_y, 10,10);
         }
-
-        //Rectangle GetBoxRect(int i)
-        //{
-        //    TextureRegion r = (TextureRegion)listBox1.Items[i];
-        //    int pos_x = (int)(r.rect.X * scale);
-        //    int pos_y = (int)(r.rect.Y * scale);
-        //    int width = (int)(r.rect.Width * scale);
-        //    int height = (int)(r.rect.Height * scale);
-        //    Rectangle frect = new Rectangle(pos_x, pos_y, width, height);
-        //    return frect;
-        //}
 
         bool IsInsideRect(Rectangle r, int x, int y)
         {
@@ -168,34 +150,6 @@ namespace UIEditor
             int x = (int)(mouse_x);
             int y = (int)(mouse_y);
             return RectParts.None != TestMouseHover(r.GetRect(0,0,scale), x, y);
-        }
-
-        private void DrawBoxes(System.Drawing.Graphics g)
-        {
-            //int x = (int)(mouse_x/scale);
-            //int y = (int)(mouse_y / scale);
-            //Point p = new Point(x, y);
-
-            //foreach(TextureRegion r in listBox1.Items)
-            //{
-            //    r.Draw(g, scale, IsMouseHovered(r) ? TextureRegion.DrawMode.Hovered : TextureRegion.DrawMode.Normal);
-            //}
-        }
-
-        void UpdateSelection(int dx, int dy, int dwidth, int dheight)
-        {
-            //TextureRegion r = GetSelectedItem();
-            //if (r == null) return;
-
-            //if (MouseButtons == MouseButtons.Left)
-            //{
-            //    r.rect.X += dx;
-            //    r.rect.Y += dy;
-            //    r.rect.Width += dwidth;
-            //    r.rect.Height += dheight;
-            //}
-
-            //pictureBox1.Invalidate();
         }
 
         void SetCursor(int x, int y)
@@ -312,32 +266,32 @@ namespace UIEditor
             mouse_x = e.X;
             mouse_y = e.Y;
 
-            if (m_state.action != AppState.Action.None)
-            {
-                if (m_state.action == AppState.Action.Resizing)
-                {
-                    switch(m_state.rect_part)
-                    {
-                        case RectParts.LeftTopSizer:
-                            UpdateSelection(dx, dy, -dx, -dy);
-                            break;
-                        case RectParts.RightTopSizer:
-                            UpdateSelection(0, dy, dx, -dy);
-                            break;
-                        case RectParts.RightDownSizer:
-                            UpdateSelection(0, 0, dx, dy);
-                            break;
-                        case RectParts.LeftDownSizer:
-                            UpdateSelection(dx, 0, -dx, dy);
-                            break;
-                    }
-                }
-                else if (m_state.action == AppState.Action.Moving)
-                {
-                    UpdateSelection(dx, dy, 0, 0);
-                }
-                return;
-            }
+            //if (m_state.action != AppState.Action.None)
+            //{
+            //    if (m_state.action == AppState.Action.Resizing)
+            //    {
+            //        switch(m_state.rect_part)
+            //        {
+            //            case RectParts.LeftTopSizer:
+            //                UpdateSelection(dx, dy, -dx, -dy);
+            //                break;
+            //            case RectParts.RightTopSizer:
+            //                UpdateSelection(0, dy, dx, -dy);
+            //                break;
+            //            case RectParts.RightDownSizer:
+            //                UpdateSelection(0, 0, dx, dy);
+            //                break;
+            //            case RectParts.LeftDownSizer:
+            //                UpdateSelection(dx, 0, -dx, dy);
+            //                break;
+            //        }
+            //    }
+            //    else if (m_state.action == AppState.Action.Moving)
+            //    {
+            //        UpdateSelection(dx, dy, 0, 0);
+            //    }
+            //    return;
+            //}
 
             IsMouseOverSelectedBox();
 

@@ -106,14 +106,14 @@ namespace Rgde.Contols
 
             base.OnMouseMove(e);
 
+            int mouse_x = e.X;
+            int mouse_y = e.Y;
+
+            float x = (float)m_visible_rect.X;
+            float y = (float)m_visible_rect.Y;
+
             if (e.Button == MouseButtons.None)
             {
-                int mouse_x = e.X;
-                int mouse_y = e.Y;
-
-                float x = (float)m_visible_rect.X;
-                float y = (float)m_visible_rect.Y;
-
                 foreach (UI.TextureRegion r in regions)
                 {
                     if (r.GetRect(x, y, m_scale).Contains(new Point(mouse_x, mouse_y)))
@@ -171,33 +171,13 @@ namespace Rgde.Contols
 
                 if (MouseButtons == MouseButtons.Left)
                 {
-                    r.rect.X += dx;
-                    r.rect.Y += dy;
-                    r.rect.Width += dwidth;
-                    r.rect.Height += dheight;
+                    r.rect.X += (int)(dx );
+                    r.rect.Y += (int)(dy );
+                    r.rect.Width += (int)(dwidth );
+                    r.rect.Height += (int)(dheight );
                 }
             }
         }
-
-        //private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    TextureRegion r = GetSelectedItem();
-
-        //    if (r != null)
-        //    {
-
-        //    }
-
-        //    if (old_hovered_item != -1)
-        //    {
-        //        if (listBox1.SelectedIndex != old_hovered_item)
-        //        {
-        //            listBox1.SelectedIndex = old_hovered_item;
-        //            pictureBox1.Invalidate();
-        //            return;
-        //        }
-        //    }
-        //}
 
         RectParts TestMouseHover(UI.TextureRegion r, int x, int y)
         {
@@ -240,6 +220,12 @@ namespace Rgde.Contols
 
             bool need_to_redraw = selected_regions.Count > 0;
 
+            int mouse_x = e.X;
+            int mouse_y = e.Y;
+
+            float x = (float)m_visible_rect.X;
+            float y = (float)m_visible_rect.Y;
+
             if (e.Button == MouseButtons.Right)
             {
                 Cursor = Cursors.Hand;
@@ -248,6 +234,29 @@ namespace Rgde.Contols
             }
             else
             {
+
+                foreach (UI.TextureRegion r in selected_regions)
+                {
+                    need_to_redraw = true;
+
+                    RectParts p = TestMouseHover(r, e.X, e.Y);
+
+                    m_state.rect_part = p;
+
+                    switch (p)
+                    {
+                        case RectParts.Body:
+                            m_state.action = AppState.Action.Moving;
+                            return;
+                        case RectParts.LeftDownSizer:
+                        case RectParts.LeftTopSizer:
+                        case RectParts.RightDownSizer:
+                        case RectParts.RightTopSizer:
+                            m_state.action = AppState.Action.Resizing;
+                            return;
+                    }
+                }
+
                 selected_regions.Clear();
 
                 foreach (UI.TextureRegion r in hovered_regions)
@@ -483,7 +492,6 @@ namespace Rgde.Contols
 
         void SetCursor(int x, int y)
         {
-            return;
             try
             {
                 float ox = (float)m_visible_rect.X;

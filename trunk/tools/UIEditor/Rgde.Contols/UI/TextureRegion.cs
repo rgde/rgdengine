@@ -89,7 +89,7 @@ namespace Rgde.Contols.UI
             int width = r.Width;
             int height = r.Height;
 
-            const int half_size = 3;
+            const int half_size = 5;
             const int full_size = half_size * 2;
 
             Rectangle r1 = new Rectangle(pos_x - half_size, pos_y - half_size, full_size, full_size);
