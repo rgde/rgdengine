@@ -18,14 +18,55 @@ namespace Rgde.Contols.UI
             None
         };
 
-        public string group_name;
-        public string name;
-        public Rectangle rect;
-        public bool visible = true;
-        public Object tag = null;
-        public bool selected = false;
+        public TextureRegion()
+        {
 
-        public bool IsSelected() { return selected; }
+        }
+
+        public TextureRegion(TextureRegion src)
+        {
+            group_name = src.group_name;
+            name = src.name;
+            visible = true;
+            tag = null;
+            rect = src.rect;
+        }
+
+        string group_name = "Root";
+        string name;
+        Rectangle rect;
+        bool visible = true;
+        Object tag = null;
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public string GroupName
+        {
+            get { return group_name; }
+            set { group_name = value; }
+        }
+
+        public bool Visible
+        {
+            get { return visible; }
+            set { visible = value; }
+        }
+
+        public Object Tag
+        {
+            get {return tag;}
+            set {tag = value;}
+        }
+
+        public Rectangle Rectangle
+        {
+            get { return rect; }
+            set { rect = value; }
+        }
 
         public Rectangle GetRect(float scale)
         {
@@ -109,33 +150,6 @@ namespace Rgde.Contols.UI
         public override string ToString()
         {
             return name;
-        }
-
-        public string GroupName
-        {
-            get { return group_name; }
-            set { group_name = value; }
-        }
-
-        public Rectangle Rectangle
-        {
-            get { return rect; }
-            set { rect = value; }
-        }
-
-        public string Name
-        {
-            get { return name; }
-            set 
-            { 
-                name = value;
-                
-                if (tag != null)
-                {
-                    TreeNode owner = tag as TreeNode;
-                    owner.Text = value;
-                }
-            }
         }
     }
 }
