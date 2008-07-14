@@ -10,8 +10,12 @@ using System.Windows.Forms;
 
 namespace Rgde.Contols
 {
+    public delegate void TextureRegionEventDelegate(UI.TextureRegion reg);
+    
     public partial class LayoutEditor : UserControl
     {
+        public delegate void LayoutEditorEventDelegate(object sender);
+
         enum RectParts
         {
             Body,
@@ -48,23 +52,32 @@ namespace Rgde.Contols
 
         public LayoutEditor()
         {
+            this.BorderStyle = BorderStyle.FixedSingle;
             this.DoubleBuffered = true;
             InitializeComponent();
 
+            this.Load += new EventHandler(LayoutEditor_Load);
+        }
+
+        void LayoutEditor_Load(object sender, EventArgs e)
+        {
             UI.TextureRegion r1 = new UI.TextureRegion();
             r1.Rectangle = new Rectangle(10, 10, 30, 30);
             r1.Name = "Button.Bkg";
-            regions.Add(r1);
+
 
             UI.TextureRegion r2 = new UI.TextureRegion();
             r2.Rectangle = new Rectangle(50, 10, 30, 30);
             r2.Name = "Button.Pressed";
-            regions.Add(r2);
+
 
             UI.TextureRegion r3 = new UI.TextureRegion();
             r3.Rectangle = new Rectangle(50, 50, 80, 30);
             r3.Name = "Button.Hover";
-            regions.Add(r3);
+
+            AddTextureRegion(r1);
+            AddTextureRegion(r2);
+            AddTextureRegion(r3);
         }
 
         #region Public Properties
@@ -119,25 +132,59 @@ namespace Rgde.Contols
 
         #endregion
 
+        public event TextureRegionEventDelegate OnAddRegion;
+        public event TextureRegionEventDelegate OnDeleteRegion;
+        public event TextureRegionEventDelegate OnSelectRegion;
+        public event LayoutEditorEventDelegate OnSelectionChange;
+
+        public void DeleteTextureRegion(UI.TextureRegion reg)
+        {
+            if (null == reg)
+                return;
+
+            regions.Remove(reg);
+            ClearSelection();
+            if (OnDeleteRegion != null)
+                OnDeleteRegion(reg);
+        }
+
         public void AddTextureRegion(UI.TextureRegion reg)
         {
+            if (null == reg)
+                return;
+
             regions.Add(reg);
+
+            if (OnAddRegion != null)
+                OnAddRegion(reg);
         }
 
         public void SelectRegion(UI.TextureRegion reg)
         {
+            if (null == reg)
+                return;
+
             ClearSelection();
             AddToSelection(reg);
         }
 
         public void AddToSelection(UI.TextureRegion reg)
         {
+            if (null == reg)
+                return;
+
             selected_regions.Add(reg);
+
+            if (null != OnSelectRegion)
+                OnSelectRegion(reg);
         }
 
         public void ClearSelection()
         {
             selected_regions.Clear();
+
+            if (null != OnSelectionChange)
+                OnSelectionChange(this);
         }
 
         public void AddTextureRegion(UI.TextureRegion reg, bool select)
@@ -241,15 +288,19 @@ namespace Rgde.Contols
         {
             base.OnKeyDown(e);
 
-            if (e.KeyCode == Keys.Delete)
+            if (e.KeyCode == Keys.Delete && selected_regions.Count > 0)
             {
-                foreach(UI.TextureRegion reg in selected_regions)
+                hovered_regions.Clear();
+
+                List<UI.TextureRegion> old_selected_regions = new List<UI.TextureRegion>(selected_regions);
+
+                foreach (UI.TextureRegion reg in old_selected_regions)
                 {
-                    regions.Remove(reg);
-                    hovered_regions.Clear();
-                    ClearSelection();
+                    DeleteTextureRegion(reg);
                 }
-                
+
+                Invalidate();
+
                 return;
             }
 
@@ -296,7 +347,7 @@ namespace Rgde.Contols
                         {
                             UI.TextureRegion r1 = new UI.TextureRegion(r);
                             r1.Name += "Copy";
-                            AddTextureRegion(r1);
+                            AddTextureRegion(r1, true);
                             m_state.action = AppState.Action.Moving;
                             m_state.rect_part = RectParts.None;
                             return;
@@ -309,7 +360,7 @@ namespace Rgde.Contols
                     UI.TextureRegion r1 = new UI.TextureRegion();
                     r1.Rectangle = new Rectangle(mouse_x, mouse_y, 4, 4);
                     r1.Name = "New Region";
-                    AddTextureRegion(r1);
+                    AddTextureRegion(r1, true);
                     m_state.action = AppState.Action.Resizing;
                     m_state.rect_part = RectParts.RightDownSizer;
                     return;
@@ -464,6 +515,10 @@ namespace Rgde.Contols
        
         protected override void OnPaint(PaintEventArgs e)
         {
+            //m_visible_rect.Width = (int)(ClientRectangle.Width);//*m_scale);
+            //m_visible_rect.Height = (int)(ClientRectangle.Height);//*m_scale);
+            RecalcVisibleRect();
+            
             HorizontalScroll.Value = m_visible_rect.X;
             VerticalScroll.Value = m_visible_rect.Y;
 
@@ -640,6 +695,9 @@ namespace Rgde.Contols
         {
             m_visible_rect.X = m_visible_rect.X < 0 ? 0 : m_visible_rect.X;
             m_visible_rect.Y = m_visible_rect.Y < 0 ? 0 : m_visible_rect.Y;
+
+            m_visible_rect.Width = m_visible_rect.Width > m_image.Width ? m_image.Width : m_visible_rect.Width;
+            m_visible_rect.Height = m_visible_rect.Height > m_image.Height ? m_image.Height : m_visible_rect.Height;
 
             int max_x = m_visible_rect.X + m_visible_rect.Width;
             m_visible_rect.X = max_x > m_image.Width ? m_image.Width - m_visible_rect.Width : m_visible_rect.X;

@@ -35,6 +35,7 @@ namespace UIEditor
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addRootNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,7 +43,6 @@ namespace UIEditor
             this.addFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addRectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.treeViewImageList = new System.Windows.Forms.ImageList(this.components);
-            this.treeView1 = new System.Windows.Forms.TreeView();
             this.toolStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -104,6 +104,29 @@ namespace UIEditor
             this.splitContainer1.SplitterDistance = 167;
             this.splitContainer1.TabIndex = 2;
             // 
+            // treeView1
+            // 
+            this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.treeView1.CausesValidation = false;
+            this.treeView1.CheckBoxes = true;
+            this.treeView1.ContextMenuStrip = this.contextMenuStrip1;
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.HideSelection = false;
+            this.treeView1.LabelEdit = true;
+            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.ShowLines = false;
+            this.treeView1.ShowPlusMinus = false;
+            this.treeView1.ShowRootLines = false;
+            this.treeView1.Size = new System.Drawing.Size(167, 441);
+            this.treeView1.TabIndex = 1;
+            this.treeView1.TabStop = false;
+            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
+            this.treeView1.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCollapse);
+            this.treeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView1_AfterLabelEdit);
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.treeView1.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterExpand);
+            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -149,8 +172,6 @@ namespace UIEditor
             // 
             this.addRectToolStripMenuItem.Name = "addRectToolStripMenuItem";
             this.addRectToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
-            this.addRectToolStripMenuItem.Text = "Add Rect";
-            this.addRectToolStripMenuItem.Click += new System.EventHandler(this.addRectToolStripMenuItem_Click);
             // 
             // treeViewImageList
             // 
@@ -162,27 +183,6 @@ namespace UIEditor
             this.treeViewImageList.Images.SetKeyName(3, "NewFolderHS.png");
             this.treeViewImageList.Images.SetKeyName(4, "XPfolder_closed.bmp");
             this.treeViewImageList.Images.SetKeyName(5, "XPfolder_Open.bmp");
-            // 
-            // treeView1
-            // 
-            this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.treeView1.CheckBoxes = true;
-            this.treeView1.ContextMenuStrip = this.contextMenuStrip1;
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.HideSelection = false;
-            this.treeView1.HotTracking = true;
-            this.treeView1.ImageIndex = 0;
-            this.treeView1.ImageList = this.treeViewImageList;
-            this.treeView1.LabelEdit = true;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.SelectedImageIndex = 0;
-            this.treeView1.Size = new System.Drawing.Size(167, 441);
-            this.treeView1.TabIndex = 1;
-            this.treeView1.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCollapse);
-            this.treeView1.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.treeView1_AfterLabelEdit);
-            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
-            this.treeView1.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterExpand);
             // 
             // MainForm
             // 

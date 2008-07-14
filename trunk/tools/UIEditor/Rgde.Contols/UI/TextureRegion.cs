@@ -20,7 +20,6 @@ namespace Rgde.Contols.UI
 
         public TextureRegion()
         {
-
         }
 
         public TextureRegion(TextureRegion src)
@@ -92,23 +91,27 @@ namespace Rgde.Contols.UI
 
         public void Draw(System.Drawing.Graphics g, float scale, float x, float y, DrawMode mode)
         {
+            if (!Visible)
+                return;
+
             Rectangle frect = GetRect(x, y, scale);
 
             g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            int pen_width = mode == DrawMode.Hovered || mode == DrawMode.Selected ? 3 : 1;
+            int pen_width = 1;// mode == DrawMode.Hovered || mode == DrawMode.Selected ? 2 : 1;
 
             if (mode == DrawMode.Selected)
             {
                 g.DrawRectangle(new Pen(Color.Red, pen_width), frect);
 
-                Rectangle[] rects = GetSelectionRectangles(frect);
-                g.FillRectangles(Brushes.Aqua, rects);
+                //Rectangle[] rects = GetSelectionRectangles(frect);
+                //g.FillRectangles(Brushes.Aqua, rects);
             }
             else
             {
-                g.DrawRectangle(new Pen(Color.RoyalBlue, pen_width), frect);
+                Color color = mode == DrawMode.Hovered ? Color.AliceBlue : Color.RoyalBlue;
+                g.DrawRectangle(new Pen(color, pen_width), frect);
             }
         }
 
