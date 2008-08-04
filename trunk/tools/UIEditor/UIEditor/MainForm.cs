@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
+using System.IO;
+using System.Xml;
 using System.Windows.Forms;
 using Rgde.Contols;
 using Rgde.Contols.UI;
@@ -58,8 +60,6 @@ namespace UIEditor
             layout_editor.OnDeleteRegion += new TextureRegionEventDelegate(layout_editor_OnDeleteRegion);
             layout_editor.OnSelectRegion += new TextureRegionEventDelegate(layout_editor_OnSelectRegion);
             layout_editor.OnSelectionChange += new LayoutEditor.LayoutEditorEventDelegate(layout_editor_OnSelectionChange);
-
-            //CreateTreeNode("Root");
         }
 
         void layout_editor_OnSelectionChange(object sender)
@@ -91,14 +91,103 @@ namespace UIEditor
             layout_editor.Focus();            
         }
 
+        string imageset_name = "";
+        string imageset_filename = "";
+        string imagefile = "";
+        int NativeHorzRes = 512;
+        int NativeVertRes = 512;
+        bool AutoScaled = true;
+
         private void openToolStripButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Imageset Files|*.imageset";            
+
             if (DialogResult.OK == ofd.ShowDialog(this))
             {
-                layout_editor.Image = new Bitmap(ofd.FileName);
-                layout_editor.Invalidate();
+                layout_editor.Regions.Clear();
+                treeView1.Nodes.Clear();
+                imageset_filename = ofd.FileName;
+
+                using(FileStream fs = new FileStream(ofd.FileName, FileMode.Open))
+                {
+                    System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+
+                    doc.Load(fs);                    
+                    XmlNode imageset_node = doc["Imageset"];
+
+                    //<Imageset Name="Abilities" Imagefile="Abilities.tga" 
+                    imageset_name = imageset_node.Attributes["Name"].Value;
+                    imagefile = imageset_node.Attributes["Imagefile"].Value;                 
+                    
+                    //NativeHorzRes="1024" NativeVertRes="1024"
+                    NativeHorzRes = System.Convert.ToInt32(imageset_node.Attributes["NativeHorzRes"].Value);
+                    NativeVertRes = System.Convert.ToInt32(imageset_node.Attributes["NativeVertRes"].Value);
+                    // AutoScaled="true">
+                    AutoScaled = System.Convert.ToBoolean(imageset_node.Attributes["AutoScaled"].Value);
+
+                    foreach (XmlNode node in imageset_node.ChildNodes)
+                    {
+                        TextureRegion t = new TextureRegion();
+
+                        //<Image Name="TestAbility_2" YPos="0" XPos="40" Width="40" Height="40" />
+                        t.Name = node.Attributes["Name"].Value;
+                        int x = System.Convert.ToInt32(node.Attributes["XPos"].Value);
+                        int y = System.Convert.ToInt32(node.Attributes["YPos"].Value);
+                        int w = System.Convert.ToInt32(node.Attributes["Width"].Value);
+                        int h = System.Convert.ToInt32(node.Attributes["Height"].Value);
+
+                        Rectangle r = new Rectangle(x, y, w, h);
+                        t.Rectangle = r;
+
+                        layout_editor.AddTextureRegion(t, false);
+                    }
+
+                    layout_editor.Image = DevIL.DevIL.LoadBitmap(imagefile);
+                    layout_editor.Invalidate();
+                }
             }
+        }
+
+        private void saveToolStripButton_Click(object sender, EventArgs e)
+        {
+            if (imageset_filename.Length == 0)
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Imageset Files|*.imageset";
+                if (DialogResult.OK == sfd.ShowDialog(this))
+                {
+                    imageset_filename = sfd.FileName;
+                }
+                else
+                    return;
+            }
+
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+            XmlElement imageset_el = doc.CreateElement("Imageset");
+            imageset_el.SetAttribute("Name", imageset_name);
+            imageset_el.SetAttribute("Imagefile", imagefile);
+
+            imageset_el.SetAttribute("NativeHorzRes", NativeHorzRes.ToString());
+            imageset_el.SetAttribute("NativeVertRes", NativeVertRes.ToString());
+            imageset_el.SetAttribute("AutoScaled", AutoScaled.ToString());
+
+            doc.AppendChild(imageset_el);
+
+            foreach (TextureRegion reg in layout_editor.Regions)
+            {
+                XmlElement el = doc.CreateElement("Image");
+                el.SetAttribute("Name", reg.Name);
+
+                el.SetAttribute("XPos", reg.Rectangle.X.ToString());
+                el.SetAttribute("YPos", reg.Rectangle.Y.ToString());
+                el.SetAttribute("Width", reg.Rectangle.Width.ToString());
+                el.SetAttribute("Height", reg.Rectangle.Height.ToString());
+                imageset_el.AppendChild(el);
+            }
+
+            doc.Normalize();
+            doc.Save(imageset_filename);
         }
 
         private void addRootNodeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -109,43 +198,6 @@ namespace UIEditor
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
             treeView1.Nodes.Clear();
-        }
-
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-            if(treeView1.Nodes.Count > 0)
-            {
-                clearToolStripMenuItem.Visible = true;
-                addRootNodeToolStripMenuItem.Visible = false;
-            }
-            else
-            {
-                clearToolStripMenuItem.Visible = false;
-                addRootNodeToolStripMenuItem.Visible = true;
-            }
-
-            if (treeView1.SelectedNode != null)
-            {
-                deleteToolStripMenuItem.Visible = true;
-
-                if (treeView1.SelectedNode.Tag == null)
-                {
-                    addRectToolStripMenuItem.Visible = true;
-                    addFolderToolStripMenuItem.Visible = true;
-                }
-                else
-                {
-                    addRectToolStripMenuItem.Visible = false;
-                    addFolderToolStripMenuItem.Visible = false;
-                }
-            }
-            else
-            {
-                addFolderToolStripMenuItem.Visible = false;
-                deleteToolStripMenuItem.Visible = false;
-                addRectToolStripMenuItem.Visible = false;
-                addFolderToolStripMenuItem.Visible = false;
-            }
         }
 
         TreeNode CreateTreeNode(string name)
@@ -198,8 +250,6 @@ namespace UIEditor
                 treeView1.Nodes.Add(node);
             }
 
-            //treeView1.SelectedNode = node;
-
             return node;
         }
 
@@ -243,7 +293,13 @@ namespace UIEditor
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            //regionName.Text = e.Node.FullPath;
+            TextureRegion tr = e.Node.Tag as TextureRegion;
+            if (layout_editor.SelectedRegion != tr)
+            {
+                layout_editor.ClearSelection();
+                layout_editor.AddToSelection(tr);
+                layout_editor.Invalidate();
+            }
         }
 
         private void treeView1_AfterExpand(object sender, TreeViewEventArgs e)
@@ -267,12 +323,6 @@ namespace UIEditor
             reg.Name = e.Label;
         }
 
-        private void saveToolStripButton_Click(object sender, EventArgs e)
-        {
-            //TreeViewSerializer out_ = new TreeViewSerializer();
-            //out_.SerializeTreeView(treeView1, "test.xml");
-        }
-
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Tag != null)
@@ -280,6 +330,29 @@ namespace UIEditor
                 TextureRegion reg = e.Node.Tag as TextureRegion;
                 reg.Visible = e.Node.Checked;
                 layout_editor.Invalidate();
+            }
+        }
+
+        private void newToolStripButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Image Files|*.dds; *.tga";
+
+            if (DialogResult.OK == ofd.ShowDialog(this))
+            {
+                imageset_name = "";
+                imageset_filename = "";
+                
+                AutoScaled = true;
+
+                layout_editor.Regions.Clear();
+                treeView1.Nodes.Clear();
+
+                imagefile = ofd.FileName;
+                layout_editor.Image = DevIL.DevIL.LoadBitmap(ofd.FileName);
+
+                NativeHorzRes = layout_editor.Image.Width;
+                NativeVertRes = layout_editor.Image.Height;
             }
         }
     }

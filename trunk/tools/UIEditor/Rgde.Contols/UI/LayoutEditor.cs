@@ -434,25 +434,27 @@ namespace Rgde.Contols
                 return;
 
             m_scale += e.Delta / 2000.0f;
-            m_scale = m_scale < 0.05f ? 0.05f : m_scale; //min scale
-
-            RecalcVisibleRect();
-
-            if (m_visible_rect.Height > m_image.Height || m_visible_rect.Width > m_image.Width)
+            if( m_scale < 0.05f )
             {
-                if (m_visible_rect.Height > m_visible_rect.Width)
-                {
-                    m_visible_rect.Height = m_image.Height;
-                    m_scale = (1.0f * m_visible_rect.Height) / ClientRectangle.Height;
-                }
-                else
-                {
-                    m_visible_rect.Width = m_image.Width;
-                    m_scale = (1.0f * m_visible_rect.Width) / ClientRectangle.Width;
-                }
+                m_scale = 0.05f; //min scale
                 RecalcVisibleRect();
             }
 
+            //if (m_visible_rect.Height > m_image.Height || m_visible_rect.Width > m_image.Width)
+            //{
+            //    if (m_visible_rect.Height > m_visible_rect.Width)
+            //    {
+            //        m_visible_rect.Height = m_image.Height;
+            //        m_scale = (1.0f * m_visible_rect.Height) / ClientRectangle.Height;
+            //    }
+            //    else
+            //    {
+            //        m_visible_rect.Width = m_image.Width;
+            //        m_scale = (1.0f * m_visible_rect.Width) / ClientRectangle.Width;
+            //    }
+            RecalcVisibleRect();
+            //}
+            //else
             ClampRect();
 
             UpdateScroolBarsVisibility();
