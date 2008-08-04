@@ -199,8 +199,11 @@ namespace Rgde.Contols
         #region Parent control override
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            int dx = (int)((e.X - old_x) / m_scale);
-            int dy = (int)((e.Y - old_y) / m_scale);
+            float fdx = (e.X - old_x) / m_scale;
+            float fdy = (e.Y - old_y) / m_scale;
+
+            int dx = (int)fdx;
+            int dy = (int)fdy;
 
             int delta_x = e.X - old_x;
             int delta_y = e.Y - old_y;
@@ -213,8 +216,8 @@ namespace Rgde.Contols
 
             if (e.Button == MouseButtons.Right && null != m_image)
             {
-                m_visible_rect.X -= (int)(delta_x / m_scale);
-                m_visible_rect.Y -= (int)(delta_y / m_scale);
+                m_visible_rect.X -= dx;
+                m_visible_rect.Y -= dy;
 
                 ClampRect();
 
@@ -232,6 +235,8 @@ namespace Rgde.Contols
 
             if (e.Button == MouseButtons.None)
             {
+                m_state.action = AppState.Action.None;
+
                 foreach (UI.TextureRegion r in regions)
                 {
                     if (r.GetRect(x, y, m_scale).Contains(new Point(mouse_x, mouse_y)))
@@ -253,26 +258,26 @@ namespace Rgde.Contols
                     switch (m_state.rect_part)
                     {
                         case RectParts.LeftTopSizer:
-                            UpdateRegion(dx, dy, -dx, -dy);
+                            UpdateRegion(fdx, fdy, -fdx, -fdy);
                             need_to_redraw = true;
                             break;
                         case RectParts.RightTopSizer:
-                            UpdateRegion(0, dy, dx, -dy);
+                            UpdateRegion(0, fdy, fdx, -fdy);
                             need_to_redraw = true;
                             break;
                         case RectParts.RightDownSizer:
-                            UpdateRegion(0, 0, dx, dy);
+                            UpdateRegion(0, 0, fdx, fdy);
                             need_to_redraw = true;
                             break;
                         case RectParts.LeftDownSizer:
-                            UpdateRegion(dx, 0, -dx, dy);
+                            UpdateRegion(fdx, 0, -fdx, fdy);
                             need_to_redraw = true;
                             break;
                     }
                 }
                 else if (m_state.action == AppState.Action.Moving)
                 {
-                    UpdateRegion(dx, dy, 0, 0);
+                    UpdateRegion(fdx, fdy, 0, 0);
                     need_to_redraw = true;
                 }
             }
@@ -636,7 +641,7 @@ namespace Rgde.Contols
             }
         }
 
-        private void UpdateRegion(int dx, int dy, int dwidth, int dheight)
+        private void UpdateRegion(float dx, float dy, float dwidth, float dheight)
         {
             foreach (UI.TextureRegion r in selected_regions)
             {
@@ -645,13 +650,21 @@ namespace Rgde.Contols
                 if (MouseButtons == MouseButtons.Left)
                 {
                     Rectangle rect = r.Rectangle;
-                    rect.X += (int)(dx);
-                    rect.Y += (int)(dy);
-                    rect.Width += (int)(dwidth);
-                    rect.Height += (int)(dheight);
+
+                    if (rect.X + dx < rect.X + rect.Width + dwidth)
+                    {
+                        rect.X = (int)(rect.X + (int)dx);
+                        rect.Width = (int)(rect.Width + (int)dwidth);
+                    }
+
+                    if (rect.Y + dy < rect.Y + rect.Height + dheight)
+                    {
+                        rect.Y = (int)(rect.Y + (int)dy);
+                        rect.Height = (int)(rect.Height + (int)dheight);
+                    }
                     
-                    rect.Width = rect.Width > 1 ? rect.Width : 1;
-                    rect.Height = rect.Height > 1 ? rect.Height : 1;
+                    //rect.Width = rect.Width > 1 ? rect.Width : 1;
+                    //rect.Height = rect.Height > 1 ? rect.Height : 1;
 
                     r.Rectangle = rect;
                 }
