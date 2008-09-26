@@ -6,9 +6,9 @@
 // description: Binder class. See class description.
 // example of use:
 //
-// PTexture getTexture(int n)
+// texture_ptr getTexture(int n)
 // {
-//    PTexture textures[3];
+//    texture_ptr textures[3];
 //    return textures[n];
 // }
 // 
@@ -28,7 +28,7 @@
 //
 //    //Functor parameter. Binder calls taken GetFunction with taken int
 //    //parameter and setups result to effect.
-//    binder->addParameter<PTexture>(CBinder::Types<PTexture>::GetFunction(
+//    binder->addParameter<texture_ptr>(CBinder::Types<texture_ptr>::GetFunction(
 //                                           boost::bind(&getTexture, _1)),
 //                                           "TEXTURE_PARAMETER");
 //
@@ -99,7 +99,7 @@ namespace render
 
 		typedef boost::shared_ptr<Binder> PBinder;
 
-		static PBinder Create(const PEffect& pEffect)
+		static PBinder create(const PEffect& pEffect)
 		{
 			if(pEffect)
 				return PBinder(new Binder(pEffect));
@@ -109,7 +109,7 @@ namespace render
 
 		virtual ~Binder() { }
 
-		const PEffect& getEffect() const { return m_pEffect; }
+		const PEffect& getEffect() const { return m_effect; }
 
 		void setupParameters(typename Types<FType>::ParamType param) const
 		{
@@ -162,7 +162,7 @@ namespace render
 
 	private:
 		Binder(const PEffect& pEffect)
-			: m_pEffect(pEffect)
+			: m_effect(pEffect)
 		{
 		}
 
@@ -197,7 +197,7 @@ namespace render
 
 		Effect::IParameter* getParameter(const std::string& name) const
 		{
-			const Effect::Parameters& params = m_pEffect->getParams();
+			const Effect::Parameters& params = m_effect->getParams();
 			Effect::Parameters::const_iterator it = params.find(name);
 
 			Effect::IParameter* result = NULL;
@@ -215,13 +215,13 @@ namespace render
 
 		typedef std::vector<Functor> Functors;
 
-		PEffect  m_pEffect;
+		PEffect  m_effect;
 		Functors m_functors;
 
 	};
 	//Dynamic binder is used to setup 'dynamic' parameters,
 	//i.e. parameters which change from object to object.
-	typedef Binder<math::PFrame> DynamicBinder;
+	typedef Binder<math::frame_ptr> DynamicBinder;
 	typedef DynamicBinder::PBinder PDynamicBinder;
 
 	//Static binder is used to setup 'static' parameters,

@@ -26,7 +26,7 @@ namespace particles
 		virtual ~PTank();
 
 		void update();
-		void render(render::PTexture texture, math::Frame& transform);
+		void render(render::texture_ptr texture, math::Frame& transform);
 
 		inline ParticleArray& getParticles() { return m_vParticleArray; }
 

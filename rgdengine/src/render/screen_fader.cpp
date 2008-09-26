@@ -8,18 +8,18 @@
 
 namespace render
 {
-	Fader::Fader()
+	fader::fader()
 	{
 		init();
 	}
 
-	Fader::Fader(const std::string &strFileName)
+	fader::fader(const std::string &file_name)
 	{
 		init();
-		loadFromXML(strFileName);
+		loadFromXML(file_name);
 	}
 
-	void Fader::init()
+	void fader::init()
 	{
 		m_fTimeElapsed = 0.0f;
 		m_fFadingTime = 0.0f;
@@ -28,22 +28,22 @@ namespace render
 		m_state = Disabled;
 	}
 
-	void Fader::setColor(const math::Color &color)
+	void fader::setColor(const math::Color &color)
 	{
 		m_color = color;
 	}
 
-	void Fader::setFadingTime(float fFadingTime)
+	void fader::setFadingTime(float fFadingTime)
 	{
 		m_fFadingTime = fFadingTime;
 	}
 
-	void Fader::setUnfadingTime(float fUnfadingTime)
+	void fader::setUnfadingTime(float fUnfadingTime)
 	{
 		m_fUnfadingTime = fUnfadingTime;
 	}
 
-	void Fader::activate(Mode mode)
+	void fader::activate(Mode mode)
 	{
 		m_mode = mode;
 
@@ -62,14 +62,14 @@ namespace render
 	}
 
 
-	void Fader::loadFromXML(const std::string &strFileName)
+	void fader::loadFromXML(const std::string &file_name)
 	{
 		TiXmlDocument fader;
 		{
 			io::ScopePathAdd p	("Faders/");
-			if (!base::loadXml(strFileName, fader))
+			if (!base::load_xml(file_name, fader))
 			{
-				base::lerr << "Can't load fader \"" << strFileName << "\".";
+				base::lerr << "Can't load fader \"" << file_name << "\".";
 				return;
 			}
 		}
@@ -89,13 +89,13 @@ namespace render
 		m_color = math::Color(r, g, b, a);
 	}
 
-	void Fader::disable()
+	void fader::disable()
 	{
 		m_fTimeElapsed = 0.0f;
 		m_state = Disabled;
 	}
 
-	void Fader::render()
+	void fader::render()
 	{
 		Sprite sprite;
 		sprite.color = m_color;
@@ -114,10 +114,10 @@ namespace render
 		sprite.uPriority = 20;
 
 		//TODO: create own sprite renderer
-		//TheSpriteManager::Get().addSprite(sprite);
+		//TheSpriteManager::get().addSprite(sprite);
 	}
 
-	void Fader::update(float dt)
+	void fader::update(float dt)
 	{
 		if (Disabled == m_state)
 			return;

@@ -837,10 +837,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\camera.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\render\camera_manager.cpp"
 					>
 				</File>
@@ -898,6 +894,10 @@
 				</File>
 				<File
 					RelativePath=".\src\render\model.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\render\render_camera.cpp"
 					>
 				</File>
 				<File

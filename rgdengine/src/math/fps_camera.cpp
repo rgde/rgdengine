@@ -5,7 +5,7 @@
 namespace math
 {
 
-    CFirstPersonCamera::CFirstPersonCamera(PCamera pCamera)
+    CFirstPersonCamera::CFirstPersonCamera(camera_ptr pCamera)
     {
         setCamera(pCamera);
 
@@ -15,7 +15,7 @@ namespace math
         m_vLookatPt = Vec3f(0.0f, 0.0f, 1.0f);
     }
 
-    PFirstPersonCamera CFirstPersonCamera::Create(PCamera pCamera)
+    PFirstPersonCamera CFirstPersonCamera::create(camera_ptr pCamera)
     {
         return PFirstPersonCamera(new CFirstPersonCamera(pCamera));
     }

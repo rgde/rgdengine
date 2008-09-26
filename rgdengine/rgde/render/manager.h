@@ -23,7 +23,7 @@ namespace render
 
 	class RenderManager
 	{
-		friend class IRendererable;
+		friend class rendererable;
 
 	protected:
 		RenderManager();
@@ -46,23 +46,23 @@ namespace render
 		PFont&   getDefaultFont();
 		const Fog&    getDefaultFog()	const {return m_pDefaultFog;}
 
-		PTexture& getBlackTexture();
-		PTexture& getWhiteTexture();
-		PTexture& getDefaultNormalMap();
+		texture_ptr& getBlackTexture();
+		texture_ptr& getWhiteTexture();
+		texture_ptr& getDefaultNormalMap();
 
 		void setCurrentFog(const Fog& fog);
 		const Fog& getCurrentFog() const	{return m_pCurrentFog;}
 
 	private:
-		void add(IRendererable* r);
-		void remove(IRendererable* r);
+		void add(rendererable* r);
+		void remove(rendererable* r);
 
 		void createBinder();
 
 	protected:
-		typedef std::vector<IRendererable*> Renderables;
+		typedef std::vector<rendererable*> Renderables;
 		Renderables m_lRenderables;
-		//std::list<IRendererable*>	           m_lRenderables;
+		//std::list<rendererable*>	           m_lRenderables;
 		bool						           m_bVolumes;
 		bool                                   m_bLightingEnabled;
 		FillMode                               m_nFillMode;
@@ -71,16 +71,16 @@ namespace render
 		PFont                                  m_pDefaultFont;
 		Fog                                   m_pDefaultFog;
 
-		PTexture                               m_pBlackTexture;
-		PTexture                               m_pWhiteTexture;
-		PTexture                               m_pDefaultNormalMap;
+		texture_ptr                               m_pBlackTexture;
+		texture_ptr                               m_pWhiteTexture;
+		texture_ptr                               m_pDefaultNormalMap;
 
 		Fog                                   m_pCurrentFog;
 
 		PStaticBinder                          m_pStaticBinder;
 	};
 
-	typedef base::TSingelton<RenderManager> TheRenderManager;
+	typedef base::singelton<RenderManager> TheRenderManager;
 
 	struct SRenderableInfo
 	{
@@ -96,11 +96,11 @@ namespace render
 		math::Spheref				 bsphere;
 	};
 
-	class IRendererable
+	class rendererable
 	{
 	public:
-		IRendererable(unsigned priority = 1);
-		virtual ~IRendererable();
+		rendererable(unsigned priority = 1);
+		virtual ~rendererable();
 
 		void			setPriority(unsigned priority) {m_nRenderPriority = priority;}
 		unsigned		getPriority() const {return m_nRenderPriority;}

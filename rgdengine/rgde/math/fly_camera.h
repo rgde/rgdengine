@@ -9,10 +9,10 @@ namespace math
     //контроллер свободной(летающей) камеры
     class CFlyCamera: public BaseCameraController
     {
-        CFlyCamera(PCamera pCamera);
+        CFlyCamera(camera_ptr pCamera);
 
     public:
-        static PFlyCamera Create(PCamera pCamera);
+        static PFlyCamera create(camera_ptr pCamera);
 
         //положение
         void setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);

@@ -4,7 +4,7 @@
 
 namespace math
 {
-	typedef boost::intrusive_ptr<class BaseCamera> PCamera;
+	typedef boost::intrusive_ptr<class BaseCamera> camera_ptr;
 }
 
 namespace render
@@ -16,12 +16,12 @@ namespace render
 		virtual ~CameraManager();		
 
 	public:
-		typedef std::list<math::PCamera>	CameraList;
+		typedef std::list<math::camera_ptr>	CameraList;
 		typedef CameraList::iterator		CameraListIterator;
 
 		void			clear		();
-		void			addCamera	(const math::PCamera& camera);
-		void			removeCamera(const math::PCamera& camera);
+		void			addCamera	(const math::camera_ptr& camera);
+		void			removeCamera(const math::camera_ptr& camera);
 
 		void			sortCameras	();
 		void			setCamera	(CameraListIterator it);
@@ -29,12 +29,12 @@ namespace render
 		CameraListIterator	begin();
 		CameraListIterator	end();
 
-		//const math::PCamera& getCurCamera() const {return m_curCamera;}
+		//const math::camera_ptr& getCurCamera() const {return m_curCamera;}
 
 	protected:
-		//math::PCamera	m_curCamera;
+		//math::camera_ptr	m_curCamera;
 		CameraList					m_lCameras;
 	};
 
-	typedef base::TSingelton<CameraManager> TheCameraManager;
+	typedef base::singelton<CameraManager> TheCameraManager;
 }

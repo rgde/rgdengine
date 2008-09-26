@@ -14,30 +14,30 @@ extern  D3DVIEWPORT9	   g_DefaultViewport;
 
 namespace render
 {
-	RenderCamera::RenderCamera(unsigned priority, const ViewPort& viewport)
-		: m_Priority(priority),
-		  m_Viewport(viewport),
-		  m_ClearColor(0),
-		  m_ClearDepth(1.0f)
+	render_camera::render_camera(unsigned priority, const viewport& viewport)
+		: m_priority(priority),
+		  m_viewport(viewport),
+		  m_clear_color(0),
+		  m_clear_depth(1.0f)
 	{
-		//TheCameraManager::Get().addCamera(this);
+		//TheCameraManager::get().addCamera(this);
 	}
 
-	RenderCamera::~RenderCamera()
+	render_camera::~render_camera()
 	{
 		int i = 5;
-		//TheCameraManager::Get().removeCamera(this);
+		//TheCameraManager::get().removeCamera(this);
 	}
 
-	void RenderCamera::activate()
+	void render_camera::activate()
 	{
 		D3DVIEWPORT9	viewport;
 		DWORD			clearFlags = 0;
 
-		viewport.X		= (DWORD) m_Viewport.x;
-		viewport.Y		= (DWORD) m_Viewport.y;
-		viewport.Width	= (DWORD) m_Viewport.w;
-		viewport.Height = (DWORD) m_Viewport.h;
+		viewport.X		= (DWORD) m_viewport.x;
+		viewport.Y		= (DWORD) m_viewport.y;
+		viewport.Width	= (DWORD) m_viewport.w;
+		viewport.Height = (DWORD) m_viewport.h;
 		viewport.MinZ	= 0.0f;
 		viewport.MaxZ	= 1.0f;
 
@@ -109,40 +109,40 @@ namespace render
 		}
 
 		if (clearFlags)
-			V(g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_ClearColor.color, m_ClearDepth, 0));
+			V(g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_clear_color.color, m_clear_depth, 0));
 	
 		BaseCamera::activate();
 	}
 
-	void RenderCamera::setDepthStencilTarget(const PRenderTexture& pTarget, float clearDepth)
+	void render_camera::setDepthStencilTarget(const PRenderTexture& pTarget, float clearDepth)
 	{
 		m_pDepthStencilTarget	= pTarget;
-		m_ClearDepth			= clearDepth;
+		m_clear_depth			= clearDepth;
 	}
 
-	void RenderCamera::setColorTarget(const PRenderTexture& pTarget, const math::Color&  clearColor)
+	void render_camera::setColorTarget(const PRenderTexture& pTarget, const math::Color&  clearColor)
 	{
 		m_pColorTarget	= pTarget;
-		m_ClearColor	= clearColor;
+		m_clear_color	= clearColor;
 	}
 		
-	void RenderCamera::setPriority(unsigned priority)
+	void render_camera::setPriority(unsigned priority)
 	{
-		m_Priority = priority;
+		m_priority = priority;
 	}
 
-	unsigned RenderCamera::getPriority() const
+	unsigned render_camera::getPriority() const
 	{
-		return m_Priority;
+		return m_priority;
 	}
 
-	PCamera RenderCamera::Create()
+	camera_ptr render_camera::create()
 	{
-		return Create(0, ViewPort(g_DefaultViewport.X, g_DefaultViewport.Y, g_DefaultViewport.Width, g_DefaultViewport.Height));
+		return create(0, viewport(g_DefaultViewport.X, g_DefaultViewport.Y, g_DefaultViewport.Width, g_DefaultViewport.Height));
 	}
 
-	PCamera RenderCamera::Create(unsigned priority, const ViewPort& viewport)
+	camera_ptr render_camera::create(unsigned priority, const viewport& viewport)
 	{
-		return PCamera(new RenderCamera(priority, viewport));
+		return camera_ptr(new render_camera(priority, viewport));
 	}
 }

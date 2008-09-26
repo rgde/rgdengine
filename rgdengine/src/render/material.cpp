@@ -8,7 +8,7 @@
 
 namespace render
 {
-	void Material::MaterialMap::setTexture(const PTexture& texture)
+	void Material::MaterialMap::setTexture(const texture_ptr& texture)
 	{
 		if (texture != NULL)
 		{
@@ -42,40 +42,40 @@ namespace render
 		m_matrix *= tempMatrix;
 	}
 
-	PTexture& getDefaultTextureByType(Material::MaterialMap::EDefaultTexture defaultTexture)
+	texture_ptr& getDefaultTextureByType(Material::MaterialMap::EDefaultTexture defaultTexture)
 	{
 		switch (defaultTexture)
 		{
 		case Material::MaterialMap::Black:
-			return TheRenderManager::Get().getBlackTexture();
+			return TheRenderManager::get().getBlackTexture();
 		case Material::MaterialMap::White:
-			return TheRenderManager::Get().getWhiteTexture();
+			return TheRenderManager::get().getWhiteTexture();
 		case Material::MaterialMap::DefaultNormalMap:
-			return TheRenderManager::Get().getDefaultNormalMap();
+			return TheRenderManager::get().getDefaultNormalMap();
 		}
 
-		static PTexture empti_texture_ptr;
+		static texture_ptr empti_texture_ptr;
 		return empti_texture_ptr;
 	}
 
 	Material::MaterialMap::MaterialMap(EDefaultTexture defaultTexture)
 	{
 		m_pDefaultTexture = getDefaultTextureByType(defaultTexture);
-		PTexture pNullTexture;
+		texture_ptr pNullTexture;
 		setTexture(pNullTexture);
 
 		m_fRotationSpeed = 0.0f;
 		m_time = 0.0;
 	}
 
-	PMaterial Material::Create(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
+	PMaterial Material::create(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
 	{
 		return PMaterial(new Material(amb, diff, spec, em, power));
 	}
 
-	PMaterial Material::Create(const std::string& fileName)
+	PMaterial Material::create(const std::string& fileName)
 	{
-		PMaterial mat = Material::Create();
+		PMaterial mat = Material::create();
 		mat->load(fileName);
 		return mat;
 	}
@@ -123,7 +123,7 @@ namespace render
 		return id;
 	}
 
-	TiXmlElement * assignMap(TiXmlElement *elem, std::string name, std::vector<PTexture> &textures, Material::MaterialMaps &maps)
+	TiXmlElement * assignMap(TiXmlElement *elem, std::string name, std::vector<texture_ptr> &textures, Material::MaterialMaps &maps)
 	{
 		TiXmlElement *pMapEl= elem->FirstChildElement(name);
 		if (NULL == pMapEl)
@@ -153,7 +153,7 @@ namespace render
 		return (float)value;
 	}
 
-	void loadMaterialTextures(TiXmlElement *elem, std::vector<PTexture> &textures)
+	void loadMaterialTextures(TiXmlElement *elem, std::vector<texture_ptr> &textures)
 	{
 		TiXmlElement *maps	= elem->FirstChildElement("maps");
 		if (maps)
@@ -165,12 +165,12 @@ namespace render
 				if (0 != tx->Attribute("file"))
 				{
 					std::string str	= tx->Attribute("file");
-					PTexture tex	= ITexture::Create(str);
+					texture_ptr tex	= texture::create(str);
 					textures.push_back(tex);
 				}
 				else
 				{
-					textures.push_back(PTexture());
+					textures.push_back(texture_ptr());
 				}
 			};
 		}
@@ -184,7 +184,7 @@ namespace render
 		TiXmlDocument mat;
 		{
 			io::ScopePathAdd p	("Materials/");
-			if (!base::loadXml(fileName, mat))
+			if (!base::load_xml(fileName, mat))
 			{
 				base::lerr << "Не могу загрузить файл материала!" << "\"" << fileName << "\"";
 				return;
@@ -193,7 +193,7 @@ namespace render
 
 		TiXmlElement *elem	= mat.RootElement();
 
-		std::vector<PTexture> textures;
+		std::vector<texture_ptr> textures;
 		loadMaterialTextures(elem, textures);
 
 		float a		= readFloatValue(elem, "opacity", 1.0f);
@@ -232,7 +232,7 @@ namespace render
 		return it->second;
 	}
 
-	const PTexture & Material::getTextureMap(const std::string &type) const
+	const texture_ptr & Material::getTextureMap(const std::string &type) const
 	{
 		return getMaterialMap(type).getTexture();
 	}
@@ -264,7 +264,7 @@ namespace render
 	const PDynamicBinder& Material::getDynamicBinder()
 	{
 		if(!m_pDynamicBinder)
-			setEffect(TheRenderManager::Get().getDefaultEffect());
+			setEffect(TheRenderManager::get().getDefaultEffect());
 		return m_pDynamicBinder;
 	}
 

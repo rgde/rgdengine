@@ -66,33 +66,33 @@ namespace render
 		Parameter(ID3DXEffect* effect, unsigned int index)
 		{
 			//guard(render::Effect::Parameter())
-			m_pEffect = effect;
-			D3DXHANDLE paramHandle = m_pEffect->GetParameter(NULL, index);
+			m_effect = effect;
+			D3DXHANDLE paramHandle = m_effect->GetParameter(NULL, index);
 
 			if( NULL == paramHandle )
 				throw std::exception("NULL parameter handler");
 				//base::lerr << "EffectParam::EffectParam(): NULL parameter handler at position " << index;
 
 			D3DXPARAMETER_DESC paramDesc;
-			m_pEffect->GetParameterDesc(paramHandle, &paramDesc);
+			m_effect->GetParameterDesc(paramHandle, &paramDesc);
 
-			m_eType = (EType)paramDesc.Type;
+			m_type = (EType)paramDesc.Type;
 			m_name = paramDesc.Name;
-			m_nSize = paramDesc.Bytes;
+			m_size = paramDesc.Bytes;
 
 			if (NULL != paramDesc.Semantic)
-				m_strSemantic = paramDesc.Semantic;
+				m_semantic = paramDesc.Semantic;
 			else
-				m_strSemantic = m_name;
+				m_semantic = m_name;
 
-			m_Handle = m_pEffect->GetParameterByName(NULL, m_name.c_str());
+			m_Handle = m_effect->GetParameterByName(NULL, m_name.c_str());
 
 			//base::lmsg << "Annotations: " << paramDesc.Annotations;
 
 			for(unsigned int i = 0; i < paramDesc.Annotations; i++)
 			{
 				Effect::Annotation annotation;
-				getAnnotation(m_pEffect, m_Handle, i, annotation);
+				getAnnotation(m_effect, m_Handle, i, annotation);
 				m_vecAnnotations.push_back(annotation);
 			}
 			//unguard
@@ -110,22 +110,22 @@ namespace render
 
 		const std::string& getSemantic() const
 		{
-			return m_strSemantic;
+			return m_semantic;
 		}
 
 		unsigned int getSize() const
 		{
-			return m_nSize;
+			return m_size;
 		}
 
 		EType getType() const
 		{
-			return m_eType;
+			return m_type;
 		}
 
 		bool set(const void* pData, unsigned int iSize)
 		{
-			if (FAILED(m_pEffect->SetValue(m_Handle, pData, iSize)))
+			if (FAILED(m_effect->SetValue(m_Handle, pData, iSize)))
 			{
 				base::lwrn << "const void* pData, unsigned int iSize.";
 				return false;
@@ -136,7 +136,7 @@ namespace render
 
 		bool set(int value)
 		{
-			if (FAILED(m_pEffect->SetInt(m_Handle, value)))
+			if (FAILED(m_effect->SetInt(m_Handle, value)))
 			{
 				base::lwrn << "EffectParam::set(int value) failed.";
 				return false;
@@ -147,7 +147,7 @@ namespace render
 
 		bool set(bool value)
 		{
-			if (FAILED(m_pEffect->SetBool(m_Handle, value)))
+			if (FAILED(m_effect->SetBool(m_Handle, value)))
 			{
 				base::lwrn << "EffectParam::set(bool value) failed.";
 				return false;
@@ -158,7 +158,7 @@ namespace render
 
 		bool set(float value)
 		{
-			if (FAILED(m_pEffect->SetFloat(m_Handle, value)))
+			if (FAILED(m_effect->SetFloat(m_Handle, value)))
 			{
 				base::lwrn << "EffectParam::set(float value) failed.";
 				return false;
@@ -169,7 +169,7 @@ namespace render
 
 		bool set(const std::string& value)
 		{
-			if (FAILED(m_pEffect->SetString(m_Handle, value.c_str())))
+			if (FAILED(m_effect->SetString(m_Handle, value.c_str())))
 			{
 				base::lwrn << "EffectParam::set(std::string value) failed.";
 				return false;
@@ -180,7 +180,7 @@ namespace render
 
 		bool set(const math::Matrix33f& value)
 		{
-			if (FAILED(m_pEffect->SetMatrix(m_Handle, (const D3DXMATRIX*)&value)))
+			if (FAILED(m_effect->SetMatrix(m_Handle, (const D3DXMATRIX*)&value)))
 			{
 				base::lwrn << "EffectParam::set(math::Matrix33f& value) failed.";
 				return false;
@@ -191,7 +191,7 @@ namespace render
 
 		bool set(const math::Matrix44f& value)
 		{
-			if (FAILED(m_pEffect->SetMatrix(m_Handle, (const D3DXMATRIX*)&value)))
+			if (FAILED(m_effect->SetMatrix(m_Handle, (const D3DXMATRIX*)&value)))
 			{
 				base::lwrn << "EffectParam::set(math::Matrix44f& value) failed.";
 				return false;
@@ -202,7 +202,7 @@ namespace render
 
 		bool set(const math::Color& value)
 		{
-			if (FAILED(m_pEffect->SetVector(m_Handle, (const D3DXVECTOR4*)&math::Vec4f(value))))
+			if (FAILED(m_effect->SetVector(m_Handle, (const D3DXVECTOR4*)&math::Vec4f(value))))
 			{
 				base::lwrn << "EffectParam::set(math::Color& value) failed.";
 				return false;
@@ -213,7 +213,7 @@ namespace render
 
 		bool set(const math::Vec4f& value)
 		{
-			if (FAILED(m_pEffect->SetVector(m_Handle, (const D3DXVECTOR4*)&value)))
+			if (FAILED(m_effect->SetVector(m_Handle, (const D3DXVECTOR4*)&value)))
 			{
 				base::lwrn << "EffectParam::set(math::Vec4f& value) failed.";
 				return false;
@@ -224,7 +224,7 @@ namespace render
 
 		bool set(const math::Vec3f& value)
 		{
-			if (FAILED(m_pEffect->SetVector(m_Handle, (const D3DXVECTOR4*)&value)))
+			if (FAILED(m_effect->SetVector(m_Handle, (const D3DXVECTOR4*)&value)))
 			{
 				base::lwrn << "EffectParam::set(math::Vec3f& value) failed.";
 				return false;
@@ -235,7 +235,7 @@ namespace render
 
 		bool set(const math::Vec2f& value)
 		{
-			if (FAILED(m_pEffect->SetVector(m_Handle, (const D3DXVECTOR4*)&value)))
+			if (FAILED(m_effect->SetVector(m_Handle, (const D3DXVECTOR4*)&value)))
 			{
 				base::lwrn << "EffectParam::set(math::Vec2f& value) failed.";
 				return false;
@@ -244,27 +244,24 @@ namespace render
 			return true;
 		}
 
-		bool set(const PTexture& texture)
+		bool set(const texture_ptr& texture)
 		{
-			ITexture* pTex = NULL;
-			if (texture) pTex = texture.get();
-
-			if (pTex != NULL)
+			if (texture)
 			{
-				TextureImpl *pTexImpl = static_cast<TextureImpl*>(pTex);
+				texture_d3d9 *pTexImpl = static_cast<texture_d3d9*>(texture.get());
 				//base::lmsg << "bind texture: " << pTexImpl->getFileName();
 				IDirect3DTexture9* pDxTex = pTexImpl->getDxTexture();
-				if (FAILED(m_pEffect->SetTexture(m_Handle, pDxTex)))
+				if (FAILED(m_effect->SetTexture(m_Handle, pDxTex)))
 				{
-					base::lwrn << "EffectParam::set(PTexture texture) failed.";
+					base::lwrn << "EffectParam::set(texture_ptr texture) failed.";
 					return false;
 				}
 			}
 			else 
 			{
-				if (FAILED(m_pEffect->SetTexture(m_Handle, NULL)))
+				if (FAILED(m_effect->SetTexture(m_Handle, NULL)))
 				{
-					base::lwrn << "EffectParam::set(PTexture texture = NULL) failed.";
+					base::lwrn << "EffectParam::set(texture_ptr texture = NULL) failed.";
 					return false;
 				}
 			}
@@ -274,7 +271,7 @@ namespace render
 
 		bool set(const int* value, int num)
 		{
-			if (FAILED(m_pEffect->SetIntArray(m_Handle, value, num)))
+			if (FAILED(m_effect->SetIntArray(m_Handle, value, num)))
 			{
 				base::lwrn << "EffectParam::set(int* value, int num) failed.";
 				return false;
@@ -285,7 +282,7 @@ namespace render
 
 		bool set(const float* value, int num)
 		{
-			if (FAILED(m_pEffect->SetFloatArray(m_Handle, value, num)))
+			if (FAILED(m_effect->SetFloatArray(m_Handle, value, num)))
 			{
 				base::lwrn << "EffectParam::set(float* value, int num) failed.";
 				return false;
@@ -296,7 +293,7 @@ namespace render
 
 		bool set(const math::Matrix33f* value, int num)
 		{
-			if (FAILED(m_pEffect->SetMatrixArray(m_Handle, (const D3DXMATRIX*)value, num)))
+			if (FAILED(m_effect->SetMatrixArray(m_Handle, (const D3DXMATRIX*)value, num)))
 			{
 				base::lwrn << "EffectParam::set(math::Matrix33f* value, int num) failed.";
 				return false;
@@ -307,7 +304,7 @@ namespace render
 
 		bool set(const math::Matrix44f* value, int num)
 		{
-			if (FAILED(m_pEffect->SetMatrixArray(m_Handle, (const D3DXMATRIX*)value, num)))
+			if (FAILED(m_effect->SetMatrixArray(m_Handle, (const D3DXMATRIX*)value, num)))
 			{
 				base::lwrn << "EffectParam::set(math::Matrix44f* value, int num) failed.";
 				return false;
@@ -318,7 +315,7 @@ namespace render
 
 		bool set(const math::Vec4f* value, int num)
 		{
-			if (FAILED(m_pEffect->SetVectorArray(m_Handle, (const D3DXVECTOR4*)value, num)))
+			if (FAILED(m_effect->SetVectorArray(m_Handle, (const D3DXVECTOR4*)value, num)))
 			{
 				base::lwrn << "EffectParam::set(math::Vec4f* value, int num) failed.";
 				return false;
@@ -329,7 +326,7 @@ namespace render
 
 		bool set(const math::Vec3f* value, int num)
 		{
-			if (FAILED(m_pEffect->SetVectorArray(m_Handle, (const D3DXVECTOR4*)value, num)))
+			if (FAILED(m_effect->SetVectorArray(m_Handle, (const D3DXVECTOR4*)value, num)))
 			{
 				base::lwrn << "EffectParam::set(math::Vec3f* value, int num) failed.";
 				return false;
@@ -340,7 +337,7 @@ namespace render
 
 		bool set(const math::Vec2f* value, int num)
 		{
-			if (FAILED(m_pEffect->SetVectorArray(m_Handle, (const D3DXVECTOR4*)value, num)))
+			if (FAILED(m_effect->SetVectorArray(m_Handle, (const D3DXVECTOR4*)value, num)))
 			{
 				base::lwrn << "EffectParam::set(math::Vec2f* value, int num) failed.";
 				return false;
@@ -350,11 +347,11 @@ namespace render
 		}
 
 	private:
-		ID3DXEffect* m_pEffect;
+		ID3DXEffect* m_effect;
 		std::string m_name;
-		std::string m_strSemantic;
-		unsigned int m_nSize;
-		EType m_eType;
+		std::string m_semantic;
+		unsigned int m_size;
+		EType m_type;
 		D3DXHANDLE m_Handle;
 		Effect::AnnotationsVector m_vecAnnotations;
 	};
@@ -372,11 +369,11 @@ namespace render
 			{
 				//guard(Technique::Pass())
 
-				m_pEffect = effect;
+				m_effect = effect;
 				D3DXPASS_DESC passDesc;
 
-				D3DXHANDLE pass = m_pEffect->GetPass(technique, index);
-				if (FAILED(m_pEffect->GetPassDesc(pass, &passDesc)))
+				D3DXHANDLE pass = m_effect->GetPass(technique, index);
+				if (FAILED(m_effect->GetPassDesc(pass, &passDesc)))
 					base::lerr << "Unable to get pass description";
 
 				m_nCurrentPass = index;
@@ -393,7 +390,7 @@ namespace render
 				for (unsigned int i = 0; i < passDesc.Annotations; i ++)
 				{
 					Effect::Annotation annotation;
-					getAnnotation(m_pEffect, pass, i, annotation);
+					getAnnotation(m_effect, pass, i, annotation);
 					m_vecAnnotations.push_back(annotation);
 				}
 
@@ -407,14 +404,14 @@ namespace render
 			void begin()
 			{
 				//guard(Technique::Pass::begin())
-					m_pEffect->BeginPass(m_nCurrentPass);
+					m_effect->BeginPass(m_nCurrentPass);
 				//unguard
 			}
 
 			void end()
 			{
 				//guard(Technique::Pass::end())
-					m_pEffect->EndPass();
+					m_effect->EndPass();
 				//unguard
 			}
 
@@ -430,7 +427,7 @@ namespace render
 		private:
 			unsigned int m_nCurrentPass;
 			std::string m_name;
-			ID3DXEffect* m_pEffect;
+			ID3DXEffect* m_effect;
 			Effect::AnnotationsVector m_vecAnnotations;
 		};
 
@@ -438,17 +435,17 @@ namespace render
 		{
 			//guard(Technique())
 
-			m_pEffect = effect;
-			techniqueHandle = m_pEffect->GetTechnique(index);
+			m_effect = effect;
+			techniqueHandle = m_effect->GetTechnique(index);
 			if( !techniqueHandle )
 				base::lerr << "Technique::Technique(): NULL parameter handler at position " << index;
 
-			m_pEffect->GetTechniqueDesc(techniqueHandle, &Desc);
+			m_effect->GetTechniqueDesc(techniqueHandle, &Desc);
 
 			//base::lmsg << "Num passes in technique '" << Desc.Name << "': " << Desc.Passes;
 			for (unsigned int i = 0; i < Desc.Passes; i ++)
 			{
-				IPass* pass = new Pass(m_pEffect, techniqueHandle, i);
+				IPass* pass = new Pass(m_effect, techniqueHandle, i);
 				m_arPasses.push_back(pass);
 			}
 
@@ -461,7 +458,7 @@ namespace render
 			for (unsigned int i = 0; i < Desc.Annotations; i ++)
 			{
 				Effect::Annotation annotation;
-				getAnnotation(m_pEffect, techniqueHandle, i, annotation);
+				getAnnotation(m_effect, techniqueHandle, i, annotation);
 				m_vecAnnotations.push_back(annotation);
 			}
 
@@ -470,7 +467,7 @@ namespace render
 
 		~Technique()
 		{
-			m_pEffect = NULL;
+			m_effect = NULL;
 		}
 
 		std::vector <IPass*>& getPasses()
@@ -491,11 +488,11 @@ namespace render
 		void begin()
 		{
 			//guard(Technique::begin())
-			if(NULL != m_pEffect)
+			if(NULL != m_effect)
 			{
-				m_pEffect->SetTechnique(m_name.c_str());
+				m_effect->SetTechnique(m_name.c_str());
 				unsigned int numPasses = 0;
-				m_pEffect->Begin(&numPasses, 0);
+				m_effect->Begin(&numPasses, 0);
 			}
 			//unguard
 		}
@@ -503,8 +500,8 @@ namespace render
 		void end()
 		{
 			//guard(Technique::end())
-			if(NULL != m_pEffect)
-				m_pEffect->End();
+			if(NULL != m_effect)
+				m_effect->End();
 			//unguard
 		}
 
@@ -513,7 +510,7 @@ namespace render
 			return techniqueHandle;
 		}
 	private:
-		ID3DXEffect* m_pEffect;
+		ID3DXEffect* m_effect;
 		std::string m_name;
 		D3DXTECHNIQUE_DESC Desc;
 		unsigned int m_nPasses;
@@ -533,7 +530,7 @@ namespace render
 
 		CEffect()
 		{
-			m_pEffect = 0;
+			m_effect = 0;
 		}
 
 		void load(const std::string& effect_name)
@@ -546,7 +543,7 @@ namespace render
 				if(NULL == m_spPool)
 				{
 					base::lerr<<"CEffect::load(std::wstring effect_name): Can't create Effect pool";
-					core::application::Get()->close();
+					core::application::get()->close();
 				}	
 			}
 
@@ -555,9 +552,9 @@ namespace render
 			ID3DXBuffer* pErrors;
 
 			try{
-				io::CFileSystem& fs = io::TheFileSystem::Get();
+				io::CFileSystem& fs = io::TheFileSystem::get();
 				io::ScopePathAdd p("Common/shaders/");
-				io::PReadStream in = fs.findFile(m_name);
+				io::readstream_ptr in = fs.findFile(m_name);
 
 				if (!in)
 				{
@@ -566,12 +563,12 @@ namespace render
 				}
 				
 				std::vector<byte> data;
-				io::StreamToVector(data, in);
+				io::stream_to_vector(data, in);
 
-				V(D3DXCreateEffect(g_pd3dDevice, (void*)&(data[0]), (uint)data.size() , NULL, NULL, TheDevice::Get().getShaderFlags(), 
-					m_spPool, &m_pEffect, &pErrors));
-				//V(D3DXCreateEffectFromFile( g_pd3dDevice, m_name.c_str() , NULL, NULL, Device::Get().getShaderFlags(), 
-				//	m_spPool, &m_pEffect, &pErrors));
+				V(D3DXCreateEffect(g_pd3dDevice, (void*)&(data[0]), (uint)data.size() , NULL, NULL, TheDevice::get().getShaderFlags(), 
+					m_spPool, &m_effect, &pErrors));
+				//V(D3DXCreateEffectFromFile( g_pd3dDevice, m_name.c_str() , NULL, NULL, Device::get().getShaderFlags(), 
+				//	m_spPool, &m_effect, &pErrors));
 			}
 			catch(...)
 			{
@@ -581,21 +578,21 @@ namespace render
 			}
 
 			D3DXEFFECT_DESC desc;
-			V(m_pEffect->GetDesc(&desc));
+			V(m_effect->GetDesc(&desc));
 
 			// Retrieve parameters.
 			for(unsigned int i = 0; i < desc.Parameters; i ++)
 			{
-				IParameter* effectParam = new Parameter(m_pEffect, i);
+				IParameter* effectParam = new Parameter(m_effect, i);
 				m_mapParameters[effectParam->getSemantic()] = effectParam;
 			}
 
 			// Retrieve techniques.
 			for(unsigned int i = 0; i < desc.Techniques; i ++)
 			{
-				Technique* technique = new Technique(m_pEffect, i);
+				Technique* technique = new Technique(m_effect, i);
 
-				if(FAILED(m_pEffect->ValidateTechnique(technique->getHandle())))
+				if(FAILED(m_effect->ValidateTechnique(technique->getHandle())))
 					base::lerr << "ValidateTechnique fault. effect file: " << effect_name << " tech: " << technique->getName();
 				else
 					m_listTechniques.push_back(technique);
@@ -606,12 +603,12 @@ namespace render
 			//unguard
 		}
 
-		ID3DXEffect* m_pEffect;
+		ID3DXEffect* m_effect;
 
 		~CEffect()
 		{
 			//guard(~CEffect())
-				SAFE_RELEASE(m_pEffect);
+				SAFE_RELEASE(m_effect);
 				if(m_sNumEffects == 1)
 					SAFE_RELEASE(m_spPool);
 				m_sNumEffects--;
@@ -621,24 +618,24 @@ namespace render
 		void commitChanges()
 		{
 			//guard(CEffect::commitChanges())
-			if(NULL != m_pEffect)
-				m_pEffect->CommitChanges();
+			if(NULL != m_effect)
+				m_effect->CommitChanges();
 			//unguard
 		}
 
 		void onLostDevice()
 		{
 			//guard(CEffect::onLostDevice())
-			if(NULL != m_pEffect)
-				m_pEffect->OnLostDevice();
+			if(NULL != m_effect)
+				m_effect->OnLostDevice();
 			//unguard
 		}
 
 		void onResetDevice()
 		{
 			//guard(CEffect::onResetDevice())
-			if(NULL != m_pEffect)
-				m_pEffect->OnResetDevice();
+			if(NULL != m_effect)
+				m_effect->OnResetDevice();
 			//unguard
 		}
 
@@ -687,9 +684,9 @@ namespace render
 	//------------------------------------------------------------------------------
 	// Static methods.
 	//------------------------------------------------------------------------------
-	PEffect Effect::Create(const std::string& fileName)
+	PEffect Effect::create(const std::string& fileName)
 	{
-		//guard(PEffect Effect::Create(std::wstring fileName))
+		//guard(PEffect Effect::create(std::wstring fileName))
 
 		EffectsList::iterator it = std::find_if(effects.begin(), effects.end(), _seacher(fileName));
 

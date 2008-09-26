@@ -11,7 +11,7 @@ namespace render
 	{
 		struct SPrioritySorter_Less
 		{
-			bool operator()(math::PCamera &c1, math::PCamera &c2)
+			bool operator()(math::camera_ptr &c1, math::camera_ptr &c2)
 			{
 				return c1->getPriority() < c2->getPriority() ? true : false;
 			}
@@ -26,12 +26,12 @@ namespace render
 	{
 	}
 
-	void CameraManager::addCamera(const math::PCamera& c)
+	void CameraManager::addCamera(const math::camera_ptr& c)
 	{
 		m_lCameras.push_back(c);
 	}
 
-	void CameraManager::removeCamera(const math::PCamera& c)
+	void CameraManager::removeCamera(const math::camera_ptr& c)
 	{
 		m_lCameras.remove(c);
 	}
@@ -65,6 +65,6 @@ namespace render
 
 		//m_curCamera = *it;
 		(*it)->activate();
-		render::TheDevice::Get().setCurentCamera(*it);
+		render::TheDevice::get().setCurentCamera(*it);
 	}
 }

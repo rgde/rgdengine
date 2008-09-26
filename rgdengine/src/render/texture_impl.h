@@ -5,15 +5,15 @@
 
 namespace render
 {
-	class TextureImpl : public ITexture
+	class texture_d3d9 : public texture
 	{
 	public:
-							TextureImpl(const std::string& file_name);
-							~TextureImpl();
+							texture_d3d9(const std::string& file_name);
+							~texture_d3d9();
 
-		static PTexture		CreateFromFile(const std::string& strFileName);
+		static texture_ptr		CreateFromFile(const std::string& file_name);
 
-		void				createTextureFromFile(const std::string& strFileName);
+		void				createTextureFromFile(const std::string& file_name);
 		void				createRenderTexture(const math::Vec2i &size, TextureFormat format);
 
 		IDirect3DTexture9*	getDxTexture();
@@ -22,7 +22,7 @@ namespace render
 		TextureUsage		getUsage()		const { return m_eUsage;  }
 		int					getHeight()		const { return m_nHeight; }
 		int					getWidth()		const { return m_nWidth;  }
-		ETextureType		getType()		const { return m_eType;   }
+		ETextureType		getType()		const { return m_type;   }
 
 		const std::string& getFileName() const {return m_strFileName;}
 
@@ -32,7 +32,7 @@ namespace render
 		}
 
 	protected:
-		TextureImpl() {}
+		texture_d3d9() {}
 		ETextureType	convertType(D3DRESOURCETYPE d3dType);
 		
 	protected:
@@ -44,6 +44,6 @@ namespace render
 		unsigned			m_nHeight;
 		unsigned			m_nWidth;
 		TextureFormat		m_eFormat;
-		ETextureType		m_eType;
+		ETextureType		m_type;
 	};
 }

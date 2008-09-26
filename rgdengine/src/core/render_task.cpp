@@ -7,7 +7,7 @@ namespace core
 {
 	render_task::render_task(const application& app, unsigned int priority) 
 		:	base_task(app, priority), 
-			m_spRenderDevice(IRenderSystem::Create(app))
+			m_spRenderDevice(IRenderSystem::create(app))
 	{
 	}
 

@@ -9,10 +9,10 @@ namespace math
     //контроллер камеры аля "камера в FPS"
     class CFirstPersonCamera: public BaseCameraController
     {
-        CFirstPersonCamera(PCamera pCamera);
+        CFirstPersonCamera(camera_ptr pCamera);
 
     public:
-        static PFirstPersonCamera Create(PCamera pCamera);
+        static PFirstPersonCamera create(camera_ptr pCamera);
 
         //положение
         void setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);

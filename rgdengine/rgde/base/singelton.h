@@ -2,49 +2,49 @@
 
 namespace base
 {
-	template<class T, int ___v = 0>
-	class TSingelton : T, boost::noncopyable
+	template<class T, int tag = 0>
+	class singelton : T, boost::noncopyable
 	{
 	private:
-		TSingelton()				{}
-		virtual ~TSingelton()		{}
+		singelton()				{}
+		virtual ~singelton()		{}
 
 	public:
-		static T& Get();
-		static void Destroy();
-		static bool IsCreated();
+		static T& get();
+		static void destroy();
+		static bool is_created();
 
 	private:
-		static TSingelton<T, ___v>*	ms_pInstance;
+		static singelton<T, tag>*	ms_instance;
 	};
 
-	template<class T, int ___v>
-	TSingelton<T, ___v>* TSingelton<T, ___v>::ms_pInstance = 0;
+	template<class T, int tag>
+	singelton<T, tag>* singelton<T, tag>::ms_instance = 0;
 
-	template<class T, int ___v>
-	T&	TSingelton<T, ___v>::Get()
+	template<class T, int tag>
+	T&	singelton<T, tag>::get()
 	{
-		if (0 == ms_pInstance) 
+		if (0 == ms_instance) 
 		{
-			ms_pInstance = new TSingelton<T, ___v>();
+			ms_instance = new singelton<T, tag>();
 		}
 
-		return  *ms_pInstance;
+		return  *ms_instance;
 	}
 
-	template<class T, int ___v>
-	void	TSingelton<T, ___v>::Destroy()
+	template<class T, int tag>
+	void	singelton<T, tag>::destroy()
 	{
-		if (0 != ms_pInstance)
+		if (0 != ms_instance)
 		{
-			delete ms_pInstance;
-			ms_pInstance = 0;
+			delete ms_instance;
+			ms_instance = 0;
 		}
 	}
 
-	template<class T, int ___v>
-	bool TSingelton<T, ___v>::IsCreated()
+	template<class T, int tag>
+	bool singelton<T, tag>::is_created()
 	{
-		return 0 != ms_pInstance;
+		return 0 != ms_instance;
 	}
 }

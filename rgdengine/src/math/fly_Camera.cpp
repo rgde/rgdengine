@@ -5,7 +5,7 @@
 namespace math
 {
 
-    CFlyCamera::CFlyCamera(PCamera pCamera)
+    CFlyCamera::CFlyCamera(camera_ptr pCamera)
     {
         setCamera(pCamera);
 
@@ -16,7 +16,7 @@ namespace math
         doOrthoNormal();
     }
 
-    PFlyCamera CFlyCamera::Create(PCamera pCamera)
+    PFlyCamera CFlyCamera::create(camera_ptr pCamera)
     {
         return PFlyCamera(new CFlyCamera(pCamera));
     }

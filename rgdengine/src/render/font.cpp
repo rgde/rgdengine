@@ -9,10 +9,10 @@ extern LPDIRECT3DDEVICE9 g_pd3dDevice;
 
 namespace render
 {
-	class CFontRenderManager : public IRendererable
+	class CFontRenderManager : public rendererable
 	{
 	protected:
-		CFontRenderManager() : IRendererable(10002)
+		CFontRenderManager() : rendererable(10002)
 		{
 			m_renderInfo.pRenderFunc = boost::bind(&CFontRenderManager::renderAll, this);
 		}
@@ -53,7 +53,7 @@ namespace render
 		}
 	};	
 
-	typedef base::TSingelton<CFontRenderManager> TheFontRenderManager;
+	typedef base::singelton<CFontRenderManager> TheFontRenderManager;
 
 	static int fontsCreated	= 0;
 
@@ -89,7 +89,7 @@ namespace render
 			}
 		}
 
-		void Create()
+		void create()
 		{
 			if (g_pd3dDevice == NULL || m_pFont != NULL)
 				return;
@@ -109,7 +109,7 @@ namespace render
 			  m_useDelayedRender(true)
 		{
 			base::lmsg << "Creating Font:  \"" << std::string(name.begin(), name.end()) << "\"," << m_nHeight;
-			Create();
+			create();
 		}		
 
 		void doRender(const std::wstring text, RECT textLocation, unsigned int color, int flags)
@@ -135,7 +135,7 @@ namespace render
 
 			unsigned	nShadowDistance	= 2;
 			unsigned	nShadowColor	= 0xFF000000; //Black
-			math::Vec2f	screen_size		= render::TheDevice::Get().getBackBufferSize();
+			math::Vec2f	screen_size		= render::TheDevice::get().getBackBufferSize();
 			math::Vec2f	ratio = screen_size / virtSize;
 
 			if (isDrawShadow)
@@ -165,7 +165,7 @@ namespace render
 
 		virtual void onResetDevice()
 		{
-			Create();
+			create();
 			if (m_pFont != NULL) 
 				m_pFont->OnResetDevice();
 		}
@@ -184,7 +184,7 @@ namespace render
 		ID3DXFont	*m_pFont;
 	};
 
-	PFont IFont::Create(int height, const std::wstring &name, FontWeight font_weigh)
+	PFont IFont::create(int height, const std::wstring &name, FontWeight font_weigh)
 	{
 		try
 		{

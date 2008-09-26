@@ -56,9 +56,9 @@ namespace live_tree
 			if(pObj->isEmpty())
 			{
 //				max = math::Point3f(min[0]+1,min[1]+1,min[2]+1);
-//				render::Line3dManager::Get().addLine( min, max, color );
+//				render::Line3dManager::get().addLine( min, max, color );
 				// or
-				render::ThePoint3dManager::Get().addPoint( min, color );
+				render::ThePoint3dManager::get().addPoint( min, color );
 				return;
 			}
 		}
@@ -94,7 +94,7 @@ namespace live_tree
 			SizeBox[i] = Point3f(box[i][0]?max[0]:min[0], box[i][1]?max[1]:min[1], box[i][2]?max[2]:min[2]);
 
 
-		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
+		render::Line3dManager& line_manager = render::TheLine3dManager::get();
 		// Добавляем линии
 		// up size
 		line_manager.addLine( SizeBox[0], SizeBox[1], color );

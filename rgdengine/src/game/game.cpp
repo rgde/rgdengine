@@ -101,7 +101,7 @@ namespace game
 		subscribe<events::on_close_game_event>     (&game_system::onCloseGame);
 		subscribe<events::on_complite_level_event> (&game_system::onCompliteLevel);
 		subscribe<events::on_level_set_event>      (&game_system::onSetLevel);
-		core::TheTimer::Get().start();
+		core::TheTimer::get().start();
 	}
 
 	game_system::~game_system()
@@ -132,7 +132,7 @@ namespace game
 	void game_system::onCloseGame(events::on_close_game_event)
 	{
 		setCurrentLevel("");
-		core::application::Get()->close();
+		core::application::get()->close();
 	}
 
 	void game_system::onCompliteLevel(events::on_complite_level_event)
@@ -159,7 +159,7 @@ namespace game
 
 	void game_system::update()
 	{
-		float dt = core::TheTimer::Get().getElapsedTime();
+		float dt = core::TheTimer::get().getElapsedTime();
 
 		//static_cast<float>(m_timer.elapsed());
 		typedef std::list<dynamic_object*> DinamicObjects;

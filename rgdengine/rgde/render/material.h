@@ -30,8 +30,8 @@ namespace render
 
 			MaterialMap(EDefaultTexture defaultTexture = White);
 
-			const PTexture& getTexture() const { return m_texture; }
-			void setTexture(const PTexture& texure);
+			const texture_ptr& getTexture() const { return m_texture; }
+			void setTexture(const texture_ptr& texure);
 
 			//Returns true if texture was valid for the last call of setTexture
 			bool isTextureValid() const { return m_bTextureIsValid; }
@@ -52,11 +52,11 @@ namespace render
 
 		private:
 
-			PTexture        m_pDefaultTexture;
+			texture_ptr        m_pDefaultTexture;
 
 			bool            m_bTextureIsValid;
 
-			PTexture        m_texture;
+			texture_ptr        m_texture;
 			math::Matrix44f m_matrix;
 			math::Vec3f     m_scrollSpeed;
 			float           m_fRotationSpeed;
@@ -67,13 +67,13 @@ namespace render
 
 		typedef std::map<std::string, MaterialMap> MaterialMaps;
 
-		static PMaterial Create(math::Color amb = math::Black,
+		static PMaterial create(math::Color amb = math::Black,
 				  math::Color diff = math::White,
 				  math::Color spec = math::Black,
 				  math::Color em = math::Black,
 				  float power = 1.0f);
 
-		static PMaterial Create(const std::string& fileName);
+		static PMaterial create(const std::string& fileName);
 
 		virtual ~Material();
 
@@ -95,7 +95,7 @@ namespace render
 		MaterialMap&		getMaterialMap( const std::string& type);
 		const MaterialMap& getMaterialMap( const std::string& type) const;
 
-		const PTexture&		getTextureMap( const std::string& type) const;
+		const texture_ptr&		getTextureMap( const std::string& type) const;
 
 		MaterialMaps&		getMaterialMaps()		{ return m_maps;}
 		const MaterialMaps& getMaterialMaps() const { return m_maps;}

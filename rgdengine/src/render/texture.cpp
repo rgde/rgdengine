@@ -14,11 +14,11 @@ extern IDirect3DDevice9 *g_pd3dDevice;
 
 namespace render
 {
-	typedef ::base::TResourceManager<std::string, ITexture> TextureManager;
-	TextureManager manager(boost::bind(&TextureImpl::CreateFromFile, _1), true, "default.jpg");
+	typedef ::base::resource_manager<std::string, texture> TextureManager;
+	TextureManager manager(boost::bind(&texture_d3d9::CreateFromFile, _1), true, "default.jpg");
 
 
-	PTexture ITexture::Create(const std::string& file_name)
+	texture_ptr texture::create(const std::string& file_name)
 	{
 		return manager.get(file_name);
 	}
@@ -28,7 +28,7 @@ namespace render
 	//IDirect3DDevice9::CreateCubeTexture, 
 	//IDirect3DDevice9::CreateVolumeTexture
 	//For more information about usage constants, see D3DUSAGE.
-	void TextureImpl::createRenderTexture(const math::Vec2i &size, TextureFormat format)
+	void texture_d3d9::createRenderTexture(const math::Vec2i &size, TextureFormat format)
 	{
 		m_eUsage = RenderTarget;
 
@@ -52,53 +52,53 @@ namespace render
 		m_eFormat = format;
 	}
 
-	io::PReadStream findTexture(const std::string& file_name)
+	io::readstream_ptr findTexture(const std::string& file_name)
 	{
-		io::CFileSystem &fs	= io::TheFileSystem::Get();
-		if (io::PReadStream in	= fs.findFile(file_name))
+		io::CFileSystem &fs	= io::TheFileSystem::get();
+		if (io::readstream_ptr in	= fs.findFile(file_name))
 			return in;
 
 		{
 			std::string file = io::helpers::getFileNameWithoutExtension(file_name);
-			if (io::PReadStream in	= fs.findFile(file + ".jpg"))
+			if (io::readstream_ptr in	= fs.findFile(file + ".jpg"))
 				return in;
 		}
 
 		{
 			io::ScopePathAdd p	("Textures/");
-			if (io::PReadStream in	= fs.findFile(file_name))
+			if (io::readstream_ptr in	= fs.findFile(file_name))
 				return in;
 		}
 
 		{
 			io::ScopePathChange p	("Media/Common/Textures/");
-			if (io::PReadStream in = fs.findFile(file_name))
+			if (io::readstream_ptr in = fs.findFile(file_name))
 				return in;
 		}
 
-		return io::PReadStream();
+		return io::readstream_ptr();
 	}
 
-	PTexture TextureImpl::CreateFromFile(const std::string& strFileName)
+	texture_ptr texture_d3d9::CreateFromFile(const std::string& file_name)
 	{
-		return PTexture(new TextureImpl(strFileName));
+		return texture_ptr(new texture_d3d9(file_name));
 	}
 
-	void TextureImpl::createTextureFromFile(const std::string& strFileName)
+	void texture_d3d9::createTextureFromFile(const std::string& file_name)
 	{	
 		if (NULL == g_pd3dDevice) return;
 
 		std::vector<byte> data;
-		io::PReadStream in = findTexture(strFileName);
+		io::readstream_ptr in = findTexture(file_name);
 
 		if (!in)
 		{
-			base::lerr << "Не могу загрузить текстуру!" << "\"" << strFileName << "\"";
+			base::lerr << "Не могу загрузить текстуру!" << "\"" << file_name << "\"";
 			return; //false
 		}
 
 		unsigned int size	= in->getSize();
-		io::StreamToVector(data, in);
+		io::stream_to_vector(data, in);
 
 		m_eUsage = DefaultUsage;
 
@@ -125,12 +125,12 @@ namespace render
 		m_nHeight = m_desc.Height;
 		m_nWidth = m_desc.Width;
 		m_eFormat = (TextureFormat)m_desc.Format;
-		m_eType = convertType(m_texture->GetType());
-		if (m_eType == Unknown)
-			base::lwrn << "Warning: texture \"" << strFileName << "\" has unknown type";
+		m_type = convertType(m_texture->GetType());
+		if (m_type == Unknown)
+			base::lwrn << "Warning: texture \"" << file_name << "\" has unknown type";
 	}
 
-	TextureImpl::TextureImpl(const std::string& file_name)
+	texture_d3d9::texture_d3d9(const std::string& file_name)
 		: m_texture(0),
 		m_strFileName(file_name)
 	{
@@ -138,19 +138,19 @@ namespace render
 		createTextureFromFile(m_strFileName);
 	}
 
-	IDirect3DTexture9 * TextureImpl::getDxTexture()
+	IDirect3DTexture9 * texture_d3d9::getDxTexture()
 	{
 		return m_texture;
 	}
 
-	TextureImpl::~TextureImpl()
+	texture_d3d9::~texture_d3d9()
 	{
 		//std::string base_name = std::string("Media\\")+m_texName;
 		//base::lmsg << "deleting texture.";
 		SAFE_RELEASE(m_texture);
 	}
 
-	ETextureType TextureImpl::convertType(D3DRESOURCETYPE d3dType)
+	ETextureType texture_d3d9::convertType(D3DRESOURCETYPE d3dType)
 	{
 		switch (d3dType)
 		{

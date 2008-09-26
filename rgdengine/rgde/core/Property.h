@@ -10,33 +10,33 @@
 namespace core
 {
 
-	class IProperty : boost::noncopyable
+	class base_property : boost::noncopyable
 	{
 	public:
 		virtual std::string	get()	const			= 0;
 		virtual void		set(const std::string&)	= 0;
 
 		const std::wstring& getName() const {return m_name;}
-		const std::string& getType() const {return m_typeName;}
+		const std::string& getType() const {return m_type_name;}
 
-		virtual bool isReadOnly() = 0;
+		virtual bool is_read_only() = 0;
 
-		IProperty(const std::wstring& name, std::string type = "string") 
-			: m_name(name), m_typeName(type)
+		base_property(const std::wstring& name, std::string type = "string") 
+			: m_name(name), m_type_name(type)
 		{
 		}
 		
-		virtual ~IProperty(){}
+		virtual ~base_property(){}
 
 	protected:
 		std::wstring m_name;
-		std::string m_typeName;
+		std::string m_type_name;
 	};
 
-	typedef boost::shared_ptr<IProperty> PProperty;
+	typedef boost::shared_ptr<base_property> PProperty;
 
 	template <class T>
-	class TProperty : public IProperty
+	class TProperty : public base_property
 	{
 	public:
 		typedef typename boost::call_traits<T>::param_type param_type;
@@ -44,14 +44,14 @@ namespace core
 		typedef boost::function<void (param_type)>	SetFunction;
 
 		TProperty(const std::string& name, GetFunction gf, SetFunction sf = SetFunction()) 
-			: IProperty(name, std::string(typeid(T).name())), 
+			: base_property(name, std::string(typeid(T).name())), 
 			m_get_function(gf), 
 			m_set_function(sf)
 		{
 		}
 
 		TProperty(const std::string& name, const std::string& type_name, GetFunction gf, SetFunction sf = SetFunction()) 
-			: IProperty(name, type_name), 
+			: base_property(name, type_name), 
 			m_get_function(gf), 
 			m_set_function(sf)
 		{
@@ -60,7 +60,7 @@ namespace core
 		GetFunction getFunction() const {return m_get_function;}
 		SetFunction setFunction() const {return m_set_function;}
 
-		virtual bool isReadOnly() {return m_set_function ? false : true;}
+		virtual bool is_read_only() {return m_set_function ? false : true;}
 
 		std::string get() const 
 		{
@@ -129,7 +129,7 @@ namespace core
 		}
 
 		/// если вернет True - кто-то уже скорей всего создал все пропертя.
-		static bool IsCreated();
+		static bool is_created();
 		static PropertyStorage& GetInstance();
 
 	private:

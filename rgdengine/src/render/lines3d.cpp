@@ -11,8 +11,8 @@ namespace render
 {
 	//-----------------------------------------------------------------------------------
 	Line3dManager::Line3dManager(unsigned long uPriority)
-		: render::IRendererable(1000),
-		  m_spEffect(Effect::Create("Line3dManager.fxo")),
+		: render::rendererable(1000),
+		  m_spEffect(Effect::create("Line3dManager.fxo")),
 		  m_uPriority(uPriority),
 		  m_Geometry(true)
 	{
@@ -27,7 +27,7 @@ namespace render
 		if (m_pVertices->size() == 0)
 			return;
 
-		math::PCamera pCamera	= render::TheDevice::Get().getCurentCamera();
+		math::camera_ptr pCamera	= render::TheDevice::get().get_curent_camera();
 
 		if (!pCamera)
 			return;
@@ -309,7 +309,7 @@ namespace render
 	//-----------------------------------------------------------------------------------
 	void Line3dManager::addQuad(const math::Vec3f &center, const math::Vec2f &size, float fSpin)
 	{
-		const math::Matrix44f & mView = TheDevice::Get().getCurentCamera()->getViewMatrix();
+		const math::Matrix44f & mView = TheDevice::get().get_curent_camera()->getViewMatrix();
 
 		math::Vec3f up	(mView.mData[0], mView.mData[4], mView.mData[8]);
 		math::normalize(up);

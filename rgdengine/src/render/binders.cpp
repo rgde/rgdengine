@@ -22,28 +22,28 @@ namespace render
 ///---------------------------------------------------------------------------\
 //|                              Dynamic Binder                               |
 //\---------------------------------------------------------------------------/
-	inline const math::PCamera& getCamera()
+	inline const math::camera_ptr& get_camera()
 	{
-		return TheDevice::Get().getCurentCamera();
+		return TheDevice::get().get_curent_camera();
 	}
 
-	math::Matrix44f makeWorldViewProjMatrix(const math::PFrame& frame)
+	math::Matrix44f makeWorldViewProjMatrix(const math::frame_ptr& frame)
 	{
-		const math::PCamera& pCamera = getCamera();
+		const math::camera_ptr& pCamera = get_camera();
 		const math::Matrix44f& mView = pCamera->getViewMatrix();
 		const math::Matrix44f& mProj = pCamera->getProjMatrix();
 		return mProj*(mView*frame->getFullTransform());
 	}
 
-	math::Matrix44f makeWorldViewMatrix(const math::PFrame& frame)
+	math::Matrix44f makeWorldViewMatrix(const math::frame_ptr& frame)
 	{
-		return frame->getFullTransform()*getCamera()->getViewMatrix();
+		return frame->getFullTransform()*get_camera()->getViewMatrix();
 	}
 
-	math::Matrix44f makeWorldViewInvTranspMatrix(const math::PFrame& frame)
+	math::Matrix44f makeWorldViewInvTranspMatrix(const math::frame_ptr& frame)
 	{
 		math::Matrix44f result = frame->getFullTransform();
-		result *= getCamera()->getViewMatrix();
+		result *= get_camera()->getViewMatrix();
 		math::invert(result);
 		math::transpose(result);
 		return result;
@@ -116,7 +116,7 @@ namespace render
 											base::upper_case(it->first) +
 											TextureNamePostfix;
 
-				if(binder->addParameter<PTexture>(it->second.getTexture(),
+				if(binder->addParameter<texture_ptr>(it->second.getTexture(),
 												  parameterName))
 				{
 					std::string lower = base::lower_case(it->first);
@@ -153,7 +153,7 @@ namespace render
 									   const Material& mat,
 									   std::string& techniqueName)
 	{
-		PDynamicBinder result = DynamicBinder::Create(pEffect);
+		PDynamicBinder result = DynamicBinder::create(pEffect);
 
 		if(result)
 		{
@@ -181,11 +181,11 @@ namespace render
 		ParamTypeGetFogFunction getFogFunction;
 
 		getIntFunction = bind(&RenderManager::getFillMode,
-							  &TheRenderManager::Get());
+							  &TheRenderManager::get());
 		binder->addParameter<int>(getIntFunction,
 								  FillModeParamName);
 		getFogFunction = bind(&RenderManager::getCurrentFog,
-							  &TheRenderManager::Get());
+							  &TheRenderManager::get());
 		binder->addParameter<Fog>(getFogFunction,
 								   FogParamName);
 	}
@@ -208,65 +208,65 @@ namespace render
 		//GetLightsFunction         getLightsFunction;
 
 		//getColorFunction = bind(&LightManager::getAmbientColor,
-		//						&TheLightManager::Get());
+		//						&TheLightManager::get());
 		//binder->addParameter<Color>(getColorFunction,
 		//							AmbientLightColorParamName);
 
 		//getIntFunction = bind(&LightManager::getActivePointLightsIni,
-		//					  &TheLightManager::Get());
+		//					  &TheLightManager::get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTPOINTINI");
 
 		//getIntFunction = bind(&LightManager::getActivePointLightsNum,
-		//					  &TheLightManager::Get());
+		//					  &TheLightManager::get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTPOINTNUM");
 
 		//getIntFunction = bind(&LightManager::getActiveSpotLightsIni,
-		//					  &TheLightManager::Get());
+		//					  &TheLightManager::get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTSPOTINI");
 
 		//getIntFunction = bind(&LightManager::getActiveSpotLightsNum,
-		//					  &TheLightManager::Get());
+		//					  &TheLightManager::get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTSPOTNUM");
 
 		//getIntFunction = bind(&LightManager::getActiveDirectionalLightsIni,
-		//					  &TheLightManager::Get());
+		//					  &TheLightManager::get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTDIRINI");
 
 		//getIntFunction = bind(&LightManager::getActiveDirectionalLightsNum,
-		//					  &TheLightManager::Get());
+		//					  &TheLightManager::get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTDIRNUM");
 
 		//getBoolFunction = bind(&RenderManager::isLightingEnabled,
-		//					   &TheRenderManager::Get());
+		//					   &TheRenderManager::get());
 		//binder->addParameter<bool>(getBoolFunction, "LIGHTING_ENABLED");
 
 		//getLightsFunction = bind(&LightManager::getDatas,
-		//						 &TheLightManager::Get());
+		//						 &TheLightManager::get());
 		//binder->addParameter<LightDatas>(getLightsFunction, "LIGHTS");
 	}
 
 	math::Matrix44f getViewMatrix()
 	{
-		if(!getCamera())
+		if(!get_camera())
 			return math::Matrix44f();
 
-		return getCamera()->getViewMatrix();
+		return get_camera()->getViewMatrix();
 	}
 
 	math::Matrix44f getProjMatrix()
 	{
-		if(!getCamera())
+		if(!get_camera())
 			return math::Matrix44f();
 
-		return getCamera()->getProjMatrix();
+		return get_camera()->getProjMatrix();
 	}
 
 	math::Matrix44f makeViewInvTranspMatrix()
 	{
-		if(!getCamera())
+		if(!get_camera())
 			return math::Matrix44f();
 
-		math::Matrix44f result = getCamera()->getViewMatrix();
+		math::Matrix44f result = get_camera()->getViewMatrix();
 		math::invert(result);
 		math::transpose(result);
 		return result;
@@ -292,7 +292,7 @@ namespace render
 
 	PStaticBinder createStaticBinder(const PEffect& pEffect)
 	{
-		PStaticBinder binder = StaticBinder::Create(pEffect);
+		PStaticBinder binder = StaticBinder::create(pEffect);
 
 		if(binder)
 		{

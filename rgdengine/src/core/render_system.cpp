@@ -52,7 +52,7 @@ namespace core
 			m_VertexProcessingMode = 0;
 			VSync = false;
 
-			m_ClearColor = math::Color(100,100,100,255);
+			m_clear_color = math::Color(100,100,100,255);
 
 			m_VertexProcessingMode = D3DCREATE_HARDWARE_VERTEXPROCESSING;
 		}
@@ -67,7 +67,7 @@ namespace core
 			m_BackBufferFormat     = BackBufferFormat;
 			m_nRefreshRate         = nRefreshRate;
 			m_VertexProcessingMode = VertexProcessingMode;
-			m_ClearColor           = ClearColor;
+			m_clear_color           = ClearColor;
 			VSync = vsync;
 		}
 
@@ -76,7 +76,7 @@ namespace core
 		D3DFORMAT m_BackBufferFormat;
 		int m_nRefreshRate;
 		DWORD m_VertexProcessingMode;
-		math::Color m_ClearColor;
+		math::Color m_clear_color;
 		bool VSync;
 	};
 
@@ -97,10 +97,10 @@ namespace core
 		// Releases all previously initialized objects
 		virtual ~CDXRenderDevice()
 		{
-			::render::TheDevice::Destroy(); // here onLost calling
-			::render::TheLine2dManager::Destroy();
-			::render::TheLine3dManager::Destroy();
-			::render::TheRenderManager::Destroy();
+			::render::TheDevice::destroy(); // here onLost calling
+			::render::TheLine2dManager::destroy();
+			::render::TheLine3dManager::destroy();
+			::render::TheRenderManager::destroy();
 
 			::render::Effect::ClearAll();
 
@@ -116,7 +116,7 @@ namespace core
 		void onWindowResizeEvent(CWindowResize e) 
 		{
 			return;
-			::render::TheDevice::Get().onLost();
+			::render::TheDevice::get().onLost();
 
 			// do some device updates if needed
 			m_d3dpp.BackBufferWidth = e.width;
@@ -139,10 +139,10 @@ namespace core
 			g_DefaultViewport.MinZ	= 0.0f;
 			g_DefaultViewport.MaxZ	= 1.0f;
 
-			::render::TheDevice::Get().onReset();
+			::render::TheDevice::get().onReset();
 		}
 
-		virtual void saveScreenShot(const std::wstring& strFileName)
+		virtual void saveScreenShot(const std::wstring& file_name)
 		{
 			D3DDISPLAYMODE display;
 			m_pd3dDevice->GetDisplayMode(0, &display);
@@ -151,7 +151,7 @@ namespace core
 
 			// Save the back buffer to the surface.  Then save the file. 
 			m_pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &ScreenShotSurface);
-			D3DXSaveSurfaceToFile((strFileName + L".png").c_str(), D3DXIFF_PNG, ScreenShotSurface, NULL, NULL);
+			D3DXSaveSurfaceToFile((file_name + L".png").c_str(), D3DXIFF_PNG, ScreenShotSurface, NULL, NULL);
 
 			SAFE_RELEASE(ScreenShotSurface);
 		}
@@ -181,13 +181,13 @@ namespace core
 			//V(g_pd3dDevice->SetViewport(&g_DefaultViewport));
 
 			// Clear the backbuffer
-            math::Color color = render::TheDevice::Get().getClearColor();
+            math::Color color = render::TheDevice::get().getClearColor();
             V(m_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(color.a, color.r, color.g, color.b), 1.0f, 0 ));
 			
 			// Begin the scene
 			if( SUCCEEDED( m_pd3dDevice->BeginScene() ) )
 			{
-				::render::TheRenderManager::Get().renderScene();
+				::render::TheRenderManager::get().renderScene();
 			
 			    // End the scene
 			    V(m_pd3dDevice->EndScene());
@@ -263,7 +263,7 @@ namespace core
 
 			TiXmlDocument XmlConfig;
 
-			if(!base::loadXml(strConfigName, XmlConfig))
+			if(!base::load_xml(strConfigName, XmlConfig))
 			{
 				base::lwrn << "readRenderDeviceParameters(): Can't open config file: \""<<strConfigName<<"\"";
 				base::lwrn << "Using default settings";
@@ -287,13 +287,13 @@ namespace core
 				deviceInfo.m_nRefreshRate = 0;
 			}
 
-			deviceInfo.m_ClearColor.r = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "r", 100);
-			deviceInfo.m_ClearColor.g = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "g", 100);
-			deviceInfo.m_ClearColor.b = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "b", 100);
-			deviceInfo.m_ClearColor.a = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "a", 255);
+			deviceInfo.m_clear_color.r = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "r", 100);
+			deviceInfo.m_clear_color.g = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "g", 100);
+			deviceInfo.m_clear_color.b = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "b", 100);
+			deviceInfo.m_clear_color.a = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "a", 255);
             //->
-            math::Color color = deviceInfo.m_ClearColor;
-            render::TheDevice::Get().setClearColor(color);
+            math::Color color = deviceInfo.m_clear_color;
+            render::TheDevice::get().setClearColor(color);
             //-<
 
 			std::string strColorBufferFormat = base::safeReadValue<std::string>(RenderDeviceNode, "ColorFormat", "A8R8G8B8");
@@ -316,7 +316,7 @@ namespace core
 		virtual void init( void* hHostWindow )
 		{
 			m_hWnd = (HWND)hHostWindow;
-			// Create the D3D object, which is needed to create the D3DDevice.
+			// create the D3D object, which is needed to create the D3DDevice.
 			if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) )
 			{
 				m_pD3D = NULL;
@@ -325,7 +325,7 @@ namespace core
 
 			SRenderDeviceInfo deviceInfo = readRenderDeviceInfo("EngineConfig.xml");
 
-			m_ClearColor = deviceInfo.m_ClearColor;
+			m_clear_color = deviceInfo.m_clear_color;
 
 			if(!initDevice(deviceInfo))
 			{
@@ -476,11 +476,11 @@ namespace core
 		HWND					m_hWnd;
 		LPDIRECT3D9             m_pD3D;			// Used to create the D3DDevice
 		LPDIRECT3DDEVICE9       m_pd3dDevice;	// Our rendering device
-		math::Color             m_ClearColor;   // Back Buffer clear color
+		math::Color             m_clear_color;   // Back Buffer clear color
 		SRenderDeviceInfo		m_info;
 	};
 
-	PRenderSystem IRenderSystem::Create(const application& app)
+	PRenderSystem IRenderSystem::create(const application& app)
 	{
 		return PRenderSystem(new CDXRenderDevice((HWND)app.getWindowHandle()));
 	}

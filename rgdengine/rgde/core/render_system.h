@@ -10,7 +10,7 @@ namespace core
 	class IRenderSystem : boost::noncopyable
 	{
 	public:		
-		static PRenderSystem Create(const application& app);
+		static PRenderSystem create(const application& app);
 
 		virtual void saveScreenShot(const std::wstring& file_name) = 0;
 		virtual void update() const = 0;

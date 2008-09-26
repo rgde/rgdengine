@@ -9,7 +9,7 @@
 #ifndef FORMS_MESSAGE_H
 #define FORMS_MESSAGE_H
 
-namespace Forms
+namespace forms
 {
 	// Windows message wrapper class
 	class Message

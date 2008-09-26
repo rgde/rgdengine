@@ -8,23 +8,23 @@
 
 namespace render
 {
-	typedef base::TSingelton<SpriteManager, 1> TheSpriteManager2;
+	typedef base::singelton<SpriteManager, 1> TheSpriteManager2;
 
-	PLensFlares LensFlares::Create(const std::string &strFileName, const math::PFrame &pFrame)
+	PLensFlares LensFlares::create(const std::string &file_name, const math::frame_ptr &pFrame)
 	{
 		PLensFlares p	= PLensFlares(new LensFlares(pFrame));
 
-		p->loadFromXML(strFileName);
+		p->loadFromXML(file_name);
 
 		return p;
 	}
 
-	LensFlares::LensFlares(math::PFrame pFrame)
-		: m_pFrame(pFrame)
+	LensFlares::LensFlares(math::frame_ptr pFrame)
+		: m_frame(pFrame)
 	{
-		m_renderInfo.pFrame = m_pFrame.get();
+		m_renderInfo.pFrame = m_frame.get();
 		m_renderInfo.pRenderFunc = boost::bind(&LensFlares::render, this);
-		TheSpriteManager2::Get().setAditiveBlending(true);
+		TheSpriteManager2::get().setAditiveBlending(true);
 	}
 
 	void LensFlares::addFlare(const Flare &flare, const std::string &strTextureName)
@@ -33,7 +33,7 @@ namespace render
 		if ((temp_flare.texture == NULL) && (!strTextureName.empty()))
 		{
 			io::ScopePathAdd p	("common/");
-			temp_flare.texture = render::ITexture::Create(strTextureName);
+			temp_flare.texture = render::texture::create(strTextureName);
 		}
 		m_flares.push_back(temp_flare);
 	}
@@ -51,7 +51,7 @@ namespace render
 		sprite.spin = fAngle * flare.fAngleScale;
 		sprite.uPriority = 1;
 
-		TheSpriteManager2::Get().addSprite(sprite);
+		TheSpriteManager2::get().addSprite(sprite);
 	}
 
 	void progressNode(TiXmlNode *pNode, LensFlares *pLensFlares)
@@ -75,16 +75,16 @@ namespace render
 			pLensFlares->addFlare(flare, strTextureName);
 	}
 
-	void LensFlares::loadFromXML(const std::string &strFileName)
+	void LensFlares::loadFromXML(const std::string &file_name)
 	{
 		TiXmlDocument lens;
 
-		if (!base::loadXml(strFileName, lens))
+		if (!base::load_xml(file_name, lens))
 		{
 			io::ScopePathAdd p	("LensFlares/");
-			if (!base::loadXml(strFileName, lens))
+			if (!base::load_xml(file_name, lens))
 			{
-				base::lerr << "Can't load Lens Flares effect \"" << strFileName << "\".";
+				base::lerr << "Can't load Lens Flares effect \"" << file_name << "\".";
 				return;
 			}
 		}
@@ -105,11 +105,11 @@ namespace render
 
 	void LensFlares::render()
 	{
-		math::PCamera pCamera	= TheDevice::Get().getCurentCamera();
+		math::camera_ptr pCamera	= TheDevice::get().get_curent_camera();
 
 		math::Matrix44f projView= pCamera->getProjMatrix() * pCamera->getViewMatrix();
 
-		math::Vec3f framePos3	= m_pFrame->getGlobalPosition();
+		math::Vec3f framePos3	= m_frame->getGlobalPosition();
 		math::Vec4f framePos4	= math::Vec4f(framePos3[0], framePos3[1], framePos3[2], 1.0f);
 		math::Vec4f lightPos4	= projView *framePos4;
 

@@ -4,8 +4,8 @@
 
 namespace render
 {
-	//ILight
-	class ILight : public math::Frame
+	//base_light
+	class base_light : public math::Frame
 	{
 	public:
 		enum EType 
@@ -16,8 +16,8 @@ namespace render
 			Directional		= 3
 		};
 
-		ILight(const std::string& name, EType eType);
-		virtual ~ILight();
+		base_light(const std::string& name, EType eType);
+		virtual ~base_light();
 
 		EType getType() const;
 
@@ -43,13 +43,13 @@ namespace render
 
 		bool m_bEnabled;       //Is light enabled
 
-		EType m_eType;         //Light type
+		EType m_type;         //Light type
 	};
 
-	typedef boost::intrusive_ptr<ILight> PLight;
+	typedef boost::intrusive_ptr<base_light> PLight;
 
 	//PointLight
-	class PointLight : public ILight
+	class PointLight : public base_light
 	{
 	public:
 
@@ -78,7 +78,7 @@ namespace render
 	};
 
 	//SpotLight
-	class SpotLight : public ILight
+	class SpotLight : public base_light
 	{
 	public:
 
@@ -118,7 +118,7 @@ namespace render
 	};
 
 	//DirectionalLight
-	class DirectionalLight : public ILight
+	class DirectionalLight : public base_light
 	{
 	public:
 

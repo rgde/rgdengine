@@ -4,15 +4,13 @@
 
 namespace base
 {
-
-class LogHelper
+namespace log_internal
 {
+	class log_helper
+	{
 	public:
-
-		LogHelper(int in_col, int in_style = 0, const char* in_prefix = 0) 
-			: print_time(true), col(in_col), style(in_style), prefix(in_prefix) {}
-
-		~LogHelper() {}
+		log_helper(int in_col, int in_style = 0, const char* in_prefix = 0);
+		~log_helper();
 
 		template<class T> 
 		log& operator << ( T &data )
@@ -40,12 +38,9 @@ class LogHelper
 		}
 
 		// работа с манипуляторами (время)
-		LogHelper& operator << ( LogHelper& (*manip)(LogHelper&) )
-		{
-			return (*manip)(*this);
-		}
+		log_helper& operator << ( log_helper& (*manip)(log_helper&) );
 
-		friend LogHelper& time_off( LogHelper& );
+		friend log_helper& time_off( log_helper& );
 
 	protected:
 		// надо ли выводить текущее время
@@ -53,14 +48,14 @@ class LogHelper
 		// цвет и стиль
 		int col, style;
 		const char* prefix;
-};
+	};
+}
 
-
-extern LogHelper lmsg;
-extern LogHelper lnote;
-extern LogHelper lwrn;
-extern LogHelper lerr;
-extern LogHelper fatal_error;
+extern log_internal::log_helper lmsg;
+extern log_internal::log_helper lnote;
+extern log_internal::log_helper lwrn;
+extern log_internal::log_helper lerr;
+extern log_internal::log_helper fatal_error;
 
 
 #define ferr fatal_error << "FATAL ERROR in <a href=" << __FILE__ << ">" << __FILE__ << "</a>" << "(" << __LINE__ << ") : "

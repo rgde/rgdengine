@@ -4,11 +4,11 @@
 
 namespace core
 {
-	class InputTask: public base_task
+	class input_task: public base_task
 	{
 	public:
-		InputTask(const application& app, unsigned int priority = 0, bool exclusive = true);
-		virtual ~InputTask();
+		input_task(const application& app, unsigned int priority = 0, bool exclusive = true);
+		virtual ~input_task();
 
 	protected:
 		virtual void run();

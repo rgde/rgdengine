@@ -10,24 +10,24 @@
 
 namespace core
 {
-    InputTask::InputTask(const application& app, unsigned int priority, bool exclusive) 
+    input_task::input_task(const application& app, unsigned int priority, bool exclusive) 
         : base_task(app, priority)
     {
-        HWND hWnd = (HWND)application::Get()->getWindowHandle();
+        HWND hWnd = (HWND)application::get()->getWindowHandle();
 
-        input::InputImpl *pImpl = new input::InputImpl();
+        input::input_impl *pImpl = new input::input_impl();
         pImpl->Init(hWnd,exclusive);
 
-        input::Input::Get().init( pImpl );
+        input::Input::get().init( pImpl );
     }
 
-    InputTask::~InputTask ()
+    input_task::~input_task ()
     {
         input::Input::Destroy();
     }
 
-    void InputTask::run()
+    void input_task::run()
     {
-        input::Input::Update();
+        input::Input::update();
     }
 }

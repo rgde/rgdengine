@@ -5,7 +5,7 @@
 namespace math
 {
 
-    CTargetCamera::CTargetCamera(PCamera pCamera)
+    CTargetCamera::CTargetCamera(camera_ptr pCamera)
     {
         setCamera(pCamera);
 
@@ -16,7 +16,7 @@ namespace math
         doOrthoNormal();
     }
 
-    PTargetCamera CTargetCamera::Create(PCamera pCamera)
+    PTargetCamera CTargetCamera::create(camera_ptr pCamera)
     {
         return PTargetCamera(new CTargetCamera(pCamera));
     }

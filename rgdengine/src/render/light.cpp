@@ -5,74 +5,74 @@
 
 namespace render
 {
-	//ILight
-	ILight::ILight(const std::string &name, EType eType)
+	//base_light
+	base_light::base_light(const std::string &name, EType eType)
 	{
 		m_name     = name;
 		m_bEnabled = true;
-		m_eType    = eType;
-		//TheLightManager::Get().addLight(this);
+		m_type    = eType;
+		//TheLightManager::get().addLight(this);
 	}
 
-	ILight::~ILight()
+	base_light::~base_light()
 	{
-		//TheLightManager::Get().removeLight(this);
+		//TheLightManager::get().removeLight(this);
 	}
 
-	ILight::EType ILight::getType() const
+	base_light::EType base_light::getType() const
 	{
-		return m_eType;
+		return m_type;
 	}
 
-	const math::Color& ILight::getDiffuse() const
+	const math::Color& base_light::getDiffuse() const
 	{
 		return m_diffuse;
 	}
 
-	void ILight::setDiffuse(const math::Color& diffuse)
+	void base_light::setDiffuse(const math::Color& diffuse)
 	{
 		m_diffuse = diffuse;
 	}
 
-	const math::Color& ILight::getSpecular() const
+	const math::Color& base_light::getSpecular() const
 	{
 		return m_specular;
 	}
 
-	void ILight::setSpecular(const math::Color& specular)
+	void base_light::setSpecular(const math::Color& specular)
 	{
 		m_specular = specular;
 	}
 
-	const math::Color& ILight::getAmbient() const
+	const math::Color& base_light::getAmbient() const
 	{
 		return m_ambient;
 	}
 
-	void ILight::setAmbient(const math::Color& ambient)
+	void base_light::setAmbient(const math::Color& ambient)
 	{
 		m_ambient = ambient;
 	}
 
-	void ILight::setDirection(const math::Vec3f& direction)
+	void base_light::setDirection(const math::Vec3f& direction)
 	{
 		math::Vec3f position= getPosition();
 		lookAt(position, position + direction, getUp());
 	}
 
-	bool ILight::isEnabled() const
+	bool base_light::isEnabled() const
 	{
 		return m_bEnabled;
 	}
 
-	void ILight::setEnabled(bool bEnabled)
+	void base_light::setEnabled(bool bEnabled)
 	{
 		m_bEnabled = bEnabled;
 	}
 
 	//PointLight
 	PointLight::PointLight(const std::string &name)
-		: ILight(name, ILight::Point)
+		: base_light(name, base_light::Point)
 	{
 		m_fRange                = 0.0f;
 		m_fConstantAttenuation  = 1.0f;
@@ -126,7 +126,7 @@ namespace render
 
 	//SpotLight
 	SpotLight::SpotLight(const std::string &name)
-		: ILight(name, ILight::Spot)
+		: base_light(name, base_light::Spot)
 	{
 		m_fRange   = 0.0f;
 		m_fConstantAttenuation  = 1.0f;
@@ -213,7 +213,7 @@ namespace render
 
 	//DirectionalLight
 	DirectionalLight::DirectionalLight(const std::string &name)
-		: ILight(name, ILight::Directional)
+		: base_light(name, base_light::Directional)
 	{
 	}
 

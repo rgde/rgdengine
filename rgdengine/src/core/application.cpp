@@ -4,7 +4,7 @@
 #include <rgde/core/application.h>
 #include <rgde/core/task.h>
 
-// Forms
+// forms
 #include "../forms/window.h"
 
 #include <rgde/base/xml_helpers.h>
@@ -23,28 +23,28 @@ namespace core
 {
 	static application* gs_pApplication = 0;
 
-	application* application::Get()
+	application* application::get()
 	{
 		return gs_pApplication;
 	}
 
-	class ApplicationImpl : public Forms::Window, 
+	class application_impl : public forms::Window, 
 							public application,
 							public event::sender
 	{
 	protected:
 		//cs_object m_cs;
-		bool m_Active;
+		bool m_active;
 
 		// Message handles
-		void OnActivate(Forms::Message &msg);
-		void OnClose(Forms::Message &msg);
-		void OnKeyUpDown(Forms::Message &msg);
-		void OnMouse(Forms::Message &msg);
-		void OnSize(Forms::Message &msg);
+		void on_activate(forms::Message &msg);
+		void on_close(forms::Message &msg);
+		void on_key_updown(forms::Message &msg);
+		void on_mouse(forms::Message &msg);
+		void on_size(forms::Message &msg);
 
-		void OnEnterSizeMove(Forms::Message &msg);
-		void OnExitSizeMove(Forms::Message &msg);
+		void OnEnterSizeMove(forms::Message &msg);
+		void OnExitSizeMove(forms::Message &msg);
 
 		virtual void close()
 		{
@@ -58,9 +58,9 @@ namespace core
 		RECT getRect() const {return m_rcClientOld;}
 
 	public:
-		ApplicationImpl();
+		application_impl();
 
-		virtual ~ApplicationImpl();
+		virtual ~application_impl();
 
 		void init(WindowHandle hParent);
 		void init(std::wstring Name, int Width, int Height, bool Fullscreen, bool resize_enable);
@@ -80,13 +80,13 @@ namespace core
 
     //////////////////////////////////////////////////////////////////////////
 
-	void ApplicationImpl::addTask(task_ptr pTask)
+	void application_impl::addTask(task_ptr pTask)
 	{
 		m_tasks.push_back(pTask);
 		m_tasks.sort();
 	}
 
-	void ApplicationImpl::OnKeyUpDown(Forms::Message &msg)
+	void application_impl::on_key_updown(forms::Message &msg)
 	{
 		if (msg.uMsg == WM_KEYDOWN)
 			switch(msg.wParam)
@@ -94,7 +94,7 @@ namespace core
 				case VK_F8:
 					{
 						static bool bIsRenderDebugInfo = true;
-						::render::TheRenderManager::Get().enableVolumes(bIsRenderDebugInfo);
+						::render::TheRenderManager::get().enableVolumes(bIsRenderDebugInfo);
 						bIsRenderDebugInfo = !bIsRenderDebugInfo;
 						break;
 					}
@@ -122,7 +122,7 @@ namespace core
 		}
 	}
 
-	void ApplicationImpl::OnMouse(Forms::Message &msg)
+	void application_impl::on_mouse(forms::Message &msg)
 	{
         switch (msg.uMsg)
         {
@@ -162,7 +162,7 @@ namespace core
         };
 	}
 
-	void ApplicationImpl::OnSize(Forms::Message &msg)
+	void application_impl::on_size(forms::Message &msg)
 	{
 		const UINT uMsg = msg.uMsg;
 		LPARAM lParam = msg.lParam;
@@ -196,23 +196,23 @@ namespace core
 		}
 	}
 	//------------------------------------------------------------------
-	void ApplicationImpl::OnEnterSizeMove(Forms::Message &msg)
+	void application_impl::OnEnterSizeMove(forms::Message &msg)
 	{
 		m_bIsPaused = true;
 	}
 	//------------------------------------------------------------------
-	void ApplicationImpl::OnExitSizeMove(Forms::Message &msg)
+	void application_impl::OnExitSizeMove(forms::Message &msg)
 	{
 		m_bIsPaused = false;
 		CheckForWindowSizeChange();
 	}
 	//------------------------------------------------------------------
-	bool ApplicationImpl::CheckForWindowSizeChange()
+	bool application_impl::CheckForWindowSizeChange()
 	{
 		//if (inFullScreenMode) return false;
 		RECT rcClientOld = m_rcClientOld;
 
-		// Update window properties
+		// update window properties
 		RECT rcWindowClient;
 		GetClientRect( Handle(), &rcWindowClient );
 		m_rcClientOld = rcWindowClient;
@@ -235,7 +235,7 @@ namespace core
 		return false;
 	}
 
-	application* application::Create(const std::wstring& window_name)
+	application* application::create(const std::wstring& window_name)
 	{
 		if ( 0 != gs_pApplication) return gs_pApplication;
 
@@ -250,9 +250,9 @@ namespace core
 
 		TiXmlDocument XmlConfig;
 
-		if(!base::loadXml("EngineConfig.xml", XmlConfig))
+		if(!base::load_xml("EngineConfig.xml", XmlConfig))
 		{
-			base::lwrn << "application::Create(): Can't load config file: \"EngineConfig.xml\"";
+			base::lwrn << "application::create(): Can't load config file: \"EngineConfig.xml\"";
 			base::lwrn << "Using default settings.";			
 		}
 		else
@@ -267,10 +267,10 @@ namespace core
 			bFullscreen = base::safeReadValue<bool>(pWindowNode, "Fullscreen", 0);
 		}
 
-		return Create(std::wstring(name.begin(), name.end()), nWidth, nHeight, bFullscreen);
+		return create(std::wstring(name.begin(), name.end()), nWidth, nHeight, bFullscreen);
 	}
 
-	application* application::Create(const std::wstring& Name, int Width, int Height, bool Fullscreen, bool resize_enable)
+	application* application::create(const std::wstring& Name, int Width, int Height, bool Fullscreen, bool resize_enable)
 	{
 		if ( 0 != gs_pApplication)
 			return gs_pApplication;
@@ -296,13 +296,13 @@ namespace core
 		SetCurrentDirectoryW(path.c_str());
 		
 
-		ApplicationImpl* pApp = new ApplicationImpl();
+		application_impl* pApp = new application_impl();
 		pApp->init(Name, Width, Height, Fullscreen, resize_enable);
 	
 		return pApp;
 	}
 
-	application* application::Create(WindowHandle hParentWindow)
+	application* application::create(WindowHandle hParentWindow)
 	{
 		if ( 0 != gs_pApplication)
 			return gs_pApplication;
@@ -311,35 +311,35 @@ namespace core
 		buffer.resize(256);
 		GetCurrentDirectoryW(256, &buffer[0]);
 
-		ApplicationImpl* pApp = new ApplicationImpl();
+		application_impl* pApp = new application_impl();
 		pApp->init(hParentWindow);
 		
 		return pApp;
 	}
 
-	ApplicationImpl::ApplicationImpl() : m_bIsPaused(false), m_bIsClosing(false)
+	application_impl::application_impl() : m_bIsPaused(false), m_bIsClosing(false)
 	{
 		gs_pApplication = this;
 		base::log::init();
 	}
 
-	ApplicationImpl::~ApplicationImpl()
+	application_impl::~application_impl()
 	{
 		base::log::destroy();
 		gs_pApplication = 0;
 	}
 
-	WindowHandle ApplicationImpl::getWindowHandle() const 
+	WindowHandle application_impl::getWindowHandle() const 
 	{
 		return Handle();
 	}
 
-	void ApplicationImpl::OnActivate(Forms::Message &msg)
+	void application_impl::on_activate(forms::Message &msg)
 	{
 		if (msg.wParam == WA_ACTIVE)
 		{
 			GetClientRect(Handle(), &m_rcClientOld);
-			m_Active = true;
+			m_active = true;
 
 			//RECT rcWindowClient;
 			//GetClientRect( Handle(), &rcWindowClient );
@@ -349,54 +349,54 @@ namespace core
 		}
 		else
 		{
-			m_Active = false;
+			m_active = false;
 		} 
 	}
 
-	void ApplicationImpl::OnClose(Forms::Message &msg)
+	void application_impl::on_close(forms::Message &msg)
 	{
 		m_bIsClosing = true;
 	}
 
-	void ApplicationImpl::setupHandlers()
+	void application_impl::setupHandlers()
 	{
 		// Set message handlers
-		SetMessageEvent(WM_ACTIVATE,		 boost::bind(&ApplicationImpl::OnActivate, this, _1));
-		SetMessageEvent(WM_CLOSE,			boost::bind(&ApplicationImpl::OnClose, this, _1));
+		SetMessageEvent(WM_ACTIVATE,		 boost::bind(&application_impl::on_activate, this, _1));
+		SetMessageEvent(WM_CLOSE,			boost::bind(&application_impl::on_close, this, _1));
 
 		// Keyboard
-		SetMessageEvent(WM_KEYDOWN,			boost::bind(&ApplicationImpl::OnKeyUpDown, this, _1));
-		SetMessageEvent(WM_SYSKEYDOWN,		boost::bind(&ApplicationImpl::OnKeyUpDown, this, _1));
-		SetMessageEvent(WM_KEYUP,			boost::bind(&ApplicationImpl::OnKeyUpDown, this, _1));
-		SetMessageEvent(WM_SYSKEYUP,		boost::bind(&ApplicationImpl::OnKeyUpDown, this, _1));
+		SetMessageEvent(WM_KEYDOWN,			boost::bind(&application_impl::on_key_updown, this, _1));
+		SetMessageEvent(WM_SYSKEYDOWN,		boost::bind(&application_impl::on_key_updown, this, _1));
+		SetMessageEvent(WM_KEYUP,			boost::bind(&application_impl::on_key_updown, this, _1));
+		SetMessageEvent(WM_SYSKEYUP,		boost::bind(&application_impl::on_key_updown, this, _1));
 
 		// Mouse
-		SetMessageEvent(WM_LBUTTONDOWN,		boost::bind(&ApplicationImpl::OnMouse, this, _1));
-		SetMessageEvent(WM_LBUTTONUP,		boost::bind(&ApplicationImpl::OnMouse, this, _1));
-		SetMessageEvent(WM_LBUTTONDBLCLK,	boost::bind(&ApplicationImpl::OnMouse, this, _1));
+		SetMessageEvent(WM_LBUTTONDOWN,		boost::bind(&application_impl::on_mouse, this, _1));
+		SetMessageEvent(WM_LBUTTONUP,		boost::bind(&application_impl::on_mouse, this, _1));
+		SetMessageEvent(WM_LBUTTONDBLCLK,	boost::bind(&application_impl::on_mouse, this, _1));
 
-		SetMessageEvent(WM_MBUTTONDOWN,		boost::bind(&ApplicationImpl::OnMouse, this, _1));
-		SetMessageEvent(WM_MBUTTONUP,		boost::bind(&ApplicationImpl::OnMouse, this, _1));
-		SetMessageEvent(WM_MBUTTONDBLCLK,	boost::bind(&ApplicationImpl::OnMouse, this, _1));
+		SetMessageEvent(WM_MBUTTONDOWN,		boost::bind(&application_impl::on_mouse, this, _1));
+		SetMessageEvent(WM_MBUTTONUP,		boost::bind(&application_impl::on_mouse, this, _1));
+		SetMessageEvent(WM_MBUTTONDBLCLK,	boost::bind(&application_impl::on_mouse, this, _1));
 
-		SetMessageEvent(WM_RBUTTONDOWN,		boost::bind(&ApplicationImpl::OnMouse, this, _1));
-		SetMessageEvent(WM_RBUTTONUP,		boost::bind(&ApplicationImpl::OnMouse, this, _1));
-		SetMessageEvent(WM_RBUTTONDBLCLK,	boost::bind(&ApplicationImpl::OnMouse, this, _1));
+		SetMessageEvent(WM_RBUTTONDOWN,		boost::bind(&application_impl::on_mouse, this, _1));
+		SetMessageEvent(WM_RBUTTONUP,		boost::bind(&application_impl::on_mouse, this, _1));
+		SetMessageEvent(WM_RBUTTONDBLCLK,	boost::bind(&application_impl::on_mouse, this, _1));
 
-		//SetMessageEvent(WM_XBUTTONDOWN,	boost::bind(&ApplicationImpl::OnMouse, this, _1));
-		//SetMessageEvent(WM_XBUTTONUP,		boost::bind(&ApplicationImpl::OnMouse, this, _1));
-		//SetMessageEvent(WM_XBUTTONDBLCLK,	boost::bind(&ApplicationImpl::OnMouse, this, _1));
-		SetMessageEvent(WM_MOUSEWHEEL,	boost::bind(&ApplicationImpl::OnMouse, this, _1));
+		//SetMessageEvent(WM_XBUTTONDOWN,	boost::bind(&application_impl::on_mouse, this, _1));
+		//SetMessageEvent(WM_XBUTTONUP,		boost::bind(&application_impl::on_mouse, this, _1));
+		//SetMessageEvent(WM_XBUTTONDBLCLK,	boost::bind(&application_impl::on_mouse, this, _1));
+		SetMessageEvent(WM_MOUSEWHEEL,	boost::bind(&application_impl::on_mouse, this, _1));
 
-		SetMessageEvent(WM_MOUSEMOVE,		boost::bind(&ApplicationImpl::OnMouse, this, _1));
+		SetMessageEvent(WM_MOUSEMOVE,		boost::bind(&application_impl::on_mouse, this, _1));
 
-		SetMessageEvent(WM_SIZE,			boost::bind(&ApplicationImpl::OnSize, this, _1));
+		SetMessageEvent(WM_SIZE,			boost::bind(&application_impl::on_size, this, _1));
 
-		SetMessageEvent(WM_ENTERSIZEMOVE,	boost::bind(&ApplicationImpl::OnEnterSizeMove, this, _1));
-		SetMessageEvent(WM_EXITSIZEMOVE,	boost::bind(&ApplicationImpl::OnExitSizeMove, this, _1));
+		SetMessageEvent(WM_ENTERSIZEMOVE,	boost::bind(&application_impl::OnEnterSizeMove, this, _1));
+		SetMessageEvent(WM_EXITSIZEMOVE,	boost::bind(&application_impl::OnExitSizeMove, this, _1));
 	}
 
-	void ApplicationImpl::init(WindowHandle hParent)
+	void application_impl::init(WindowHandle hParent)
 	{
 		// Styles and position
 		dword Style;
@@ -405,7 +405,7 @@ namespace core
 		std::wstring Name(L"engine_wnd");
 
 		// Window rectangle
-		Forms::Drawing::Rectangle Rect;
+		forms::Drawing::Rectangle Rect;
 		GetWindowRect((HWND)hParent, &Rect);
 
 		{
@@ -422,9 +422,9 @@ namespace core
 		RegisterCls(Name.c_str(), 0/* CS_HREDRAW | CS_VREDRAW | CS_OWNDC*/, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
 
 
-		// Create window
+		// create window
 		{
-			Forms::Drawing::Rectangle _rect(0, 0, Rect.GetWidth(), Rect.GetHeight());
+			forms::Drawing::Rectangle _rect(0, 0, Rect.GetWidth(), Rect.GetHeight());
 			CreateWnd((HWND)hParent, Name.c_str(), Name.c_str(), Style, ExStyle, 0, _rect);
 		}
 
@@ -436,7 +436,7 @@ namespace core
 		::UpdateWindow(Handle());
 	}
 
-	void ApplicationImpl::init(std::wstring Name, int Width, int Height, bool Fullscreen, bool resize_enable)
+	void application_impl::init(std::wstring Name, int Width, int Height, bool Fullscreen, bool resize_enable)
 	{
 		// Styles and position
 		dword Style;
@@ -469,7 +469,7 @@ namespace core
 		}
 
 		// Window rectangle
-		Forms::Drawing::Rectangle Rect(y, x, x + Width, y + Height);
+		forms::Drawing::Rectangle Rect(y, x, x + Width, y + Height);
 		
 		/*if (!Fullscreen)
 			AdjustWindowRect(&Rect, Style, false);*/
@@ -481,7 +481,7 @@ namespace core
 		//RegisterCls(Name.c_str(), CS_HREDRAW | CS_VREDRAW, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
 		RegisterCls(Name.c_str(), NULL, NULL, LoadCursor(NULL,IDC_ARROW), (HBRUSH)(COLOR_WINDOW));
 
-		// Create window
+		// create window
 		CreateWnd(NULL, Name.c_str(), Name.c_str(), WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN/*Style*/, 0/*ExStyle*/, 0, Rect);
 
 		// show window
@@ -510,7 +510,7 @@ namespace core
 		//::UpdateWindow(Handle());
 	}
 
-	bool ApplicationImpl::update()
+	bool application_impl::update()
 	{
 		{
 			bool MessagePumpActive = true;
@@ -530,7 +530,7 @@ namespace core
 			}
 			else
 			{
-				//if (!m_Active)
+				//if (!m_active)
 				//{
 				//	WaitMessage();
 				//}
@@ -547,7 +547,7 @@ namespace core
 		}
 	}
 
-	void ApplicationImpl::Run()
+	void application_impl::Run()
 	{
 		while (update() && !m_bIsClosing)
 		{

@@ -7,7 +7,7 @@
 namespace math
 {
 	class Frame;
-	typedef boost::intrusive_ptr<Frame>  PFrame;
+	typedef boost::intrusive_ptr<Frame>  frame_ptr;
 
 	class Frame :	public io::ISerializedObject,
 					boost::noncopyable, 
@@ -51,7 +51,7 @@ namespace math
 		virtual void				updateTree( bool NeedFullUpdate =0 );
 
 		//Finds frames with names wich contain substring strTemplate + "_"
-		void findFrames(const std::string& strTemplate, std::vector<PFrame>& container);
+		void findFrames(const std::string& strTemplate, std::vector<frame_ptr>& container);
 		
 	protected:
 		virtual void onParentChange();

@@ -91,9 +91,9 @@ namespace particles{
 		//		m_TexName.c_str(), m_TexName.length() - 3);
 		//	ext_path += "tnf";
 
-		//	if (base::ResourceMaster::Get()->isResourceExist(ext_path))
+		//	if (base::ResourceMaster::get()->isResourceExist(ext_path))
 		//	{
-		//		clx::rstream in(base::ResourceMaster::Get()->getResource(ext_path));//ResourseMaster
+		//		clx::rstream in(base::ResourceMaster::get()->getResource(ext_path));//ResourseMaster
 
 		//		m_bIsAnimTextureUsed = true;
 
@@ -109,7 +109,7 @@ namespace particles{
 		//		m_bIsAnimTextureUsed = false;
 		//}
 
-		m_texture = render::ITexture::Create(m_TexName);// std::wstring(m_TexName.begin(), m_TexName.end()) );
+		m_texture = render::texture::create(m_TexName);// std::wstring(m_TexName.begin(), m_TexName.end()) );
 		m_bIsTexLoaded = true;
 	}
 	//-----------------------------------------------------------------------------------
@@ -302,7 +302,7 @@ namespace particles{
 
 		math::Matrix44f m = m_Transform.getFullTransform();
 
-		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
+		render::Line3dManager& line_manager = render::TheLine3dManager::get();
 
 		PPTank spTank = psyst[frame_num];
 		PTank::ParticleArray& array = spTank->getParticles();

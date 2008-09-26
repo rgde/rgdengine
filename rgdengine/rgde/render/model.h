@@ -17,11 +17,11 @@ namespace render
 	{
 	public:
 		typedef std::map<int, PMaterial>				MaterialMap;
-		typedef std::vector<math::PFrame>				Frames;
+		typedef std::vector<math::frame_ptr>				Frames;
 		typedef std::vector<PMesh>						Meshes;
 		typedef std::vector<math::FrameAnimationController>	Controllers;
 
-		static PModel Create(const std::string& strFileName);
+		static PModel create(const std::string& file_name);
 		~Model();
 		
 		inline MaterialMap&  getMaterials()		{return m_vMaterials;}
@@ -48,7 +48,7 @@ namespace render
 		//Neonic: octree
 		void updateTree( void );
 
-		void load(const std::string& strFileName);
+		void load(const std::string& file_name);
 
 	protected:
 		MaterialMap		m_vMaterials;

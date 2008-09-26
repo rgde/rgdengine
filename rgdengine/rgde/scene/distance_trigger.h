@@ -9,24 +9,24 @@ position.
 
 namespace math
 {
-	typedef boost::intrusive_ptr<class Frame> PFrame;
+	typedef boost::intrusive_ptr<class Frame> frame_ptr;
 }
 
 namespace scene
 {
-	class CameraTrigger : public IBaseTrigger<bool>
+	class camera_trigger : public IBaseTrigger<bool>
 	{
 	public:
-		CameraTrigger();
-		CameraTrigger(float distance, const math::PFrame& frame);
+		camera_trigger();
+		camera_trigger(float distance, const math::frame_ptr& frame);
 
-		void init(float distance, const math::PFrame& frame);
+		void init(float distance, const math::frame_ptr& frame);
 
 		void update(float dt);
 
 		//TODO: make get/set interface
 	private:
-		float         m_fDistance;
-		math::PFrame  m_pFrame;
+		float         m_distance;
+		math::frame_ptr  m_frame;
 	};
 }

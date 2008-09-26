@@ -7,20 +7,20 @@
 namespace base
 {
 	template<class Param, class Resource> 
-	class TResourceManager
+	class resource_manager
 	{
 	public:
-		typedef boost::shared_ptr<Resource> ResourcePtr;
-		typedef boost::function <ResourcePtr (const Param&)> CreatorFunc;
+		typedef boost::shared_ptr<Resource> resource_ptr;
+		typedef boost::function <resource_ptr (const Param&)> creator_func;
 
-		TResourceManager(CreatorFunc creator, bool hasDefault = false, const Param& p = Param())
-			: m_creator(creator),m_defaultParam(p), m_hasDefault(hasDefault)
+		resource_manager(creator_func creator, bool hasDefault = false, const Param& p = Param())
+			: m_creator(creator),m_default_param(p), m_has_default(hasDefault)
 		{
 		}
 
-		ResourcePtr get(const Param& p) 
+		resource_ptr get(const Param& p) 
 		{
-			ResourceMap::iterator it = m_resources.find(p);
+			resource_map::iterator it = m_resources.find(p);
 			if (it != m_resources.end() && !it->second.expired())
 			{
 				return it->second.lock();
@@ -30,28 +30,28 @@ namespace base
 		}
 
 	private:
-		ResourcePtr create(const Param& p)
+		resource_ptr create(const Param& p)
 		{
-			if (ResourcePtr r = m_creator(p))
+			if (resource_ptr r = m_creator(p))
 			{
 				m_resources[p] = r;
 				return r;
 			}
-			else if (m_hasDefault && p != m_defaultParam)
+			else if (m_has_default && p != m_default_param)
 			{
-				return get(m_defaultParam);
+				return get(m_default_param);
 			}
 			else 
-				return ResourcePtr();
+				return resource_ptr();
 		}
 
 	private:
-		typedef boost::weak_ptr<Resource> ResourceWeakPtr;
-		typedef std::map<Param, ResourceWeakPtr> ResourceMap;
+		typedef boost::weak_ptr<Resource> resource_wptr;
+		typedef std::map<Param, resource_wptr> resource_map;
 
-		CreatorFunc m_creator;
-		Param		m_defaultParam; // для дефолтного ресурса
-		bool		m_hasDefault;
-		ResourceMap m_resources;
+		creator_func m_creator;
+		Param		m_default_param; // для дефолтного ресурса
+		bool		m_has_default;
+		resource_map m_resources;
 	};
 }

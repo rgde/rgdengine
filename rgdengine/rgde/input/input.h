@@ -4,22 +4,22 @@
 
 namespace input
 {
-	class InputImpl;
+	class input_impl;
 
 	// основной класс системы ввода
 	class Input: boost::noncopyable
 	{
 	public:
-		static Input& Get  ();
+		static Input& get  ();
 		static void Destroy ();
 
-		void init (InputImpl*);
+		void init (input_impl*);
 
         // функции самой системы ввода
         static bool SetMode (bool exclusive=false, bool foreground=true); //изменить режим работы устройств ввода
         static void LoadFromString (const std::string &sXml);      //загрузить раскладку
         static void LoadFromFile   (const std::string &sFileName); //загрузить раскладку
-        static void Update  ();                        //считать из буфера все событи€ от устройств ввода
+        static void update  ();                        //считать из буфера все событи€ от устройств ввода
         static void Save    (std::string &sXml);       //сохранить раскладку
 
         // доступ к устройствам ввода
@@ -46,7 +46,7 @@ namespace input
 		Input();
 		~Input();
 
-		static Input            *ms_pInstance; //указатель на едиственный экземпл€р System
-		std::auto_ptr<InputImpl> m_pImpl;      //конкретна€ реализаци€ системы ввода
+		static Input            *ms_instance; //указатель на едиственный экземпл€р System
+		std::auto_ptr<input_impl> m_pImpl;      //конкретна€ реализаци€ системы ввода
 	};
 }

@@ -13,7 +13,7 @@
 
 namespace input
 {
-    InputImpl::InputImpl ():
+    input_impl::input_impl ():
         m_bInit     (false), //считаем, что система ввода не инициализированна
         m_pDI       (NULL),  //устройство DInput
         m_pKeyboard (NULL),  //устройство ввода "клавиатура"
@@ -23,7 +23,7 @@ namespace input
     {
     }
 
-    InputImpl::~InputImpl ()
+    input_impl::~input_impl ()
     {
         if (m_bInit)
             Done();
@@ -34,7 +34,7 @@ namespace input
     /////////////////////////////////////////////////
 
     //изменить режим работы устройств ввода
-    bool InputImpl::SetMode (bool exclusive/*=false*/, bool foreground/*=true*/)
+    bool input_impl::SetMode (bool exclusive/*=false*/, bool foreground/*=true*/)
     {
         if (!m_bInit)
             return false;
@@ -54,7 +54,7 @@ namespace input
     }
 
     //проинициализировать систему ввода
-    bool InputImpl::Init (HWND hWnd, bool exclusive/*=false*/, bool foreground/*=true*/)
+    bool input_impl::Init (HWND hWnd, bool exclusive/*=false*/, bool foreground/*=true*/)
     {
         if (m_bInit)
             Done();
@@ -218,7 +218,7 @@ namespace input
     }
 
     //загрузить раскладку
-    void InputImpl::Load (const std::string &sXml)
+    void input_impl::Load (const std::string &sXml)
     {
         if (!m_bInit)
             return;
@@ -249,7 +249,7 @@ namespace input
 							Device *d = getDevice(String2Device(std::wstring(sDevice.begin(), sDevice.end())));
 							if (d)
 							{
-								Control *c = d->getControl(String2Control(std::wstring(sControl.begin(), sControl.end())));
+								Control *c = d->get_control(String2Control(std::wstring(sControl.begin(), sControl.end())));
 								if (c)
 									c->bind(getCommand(std::wstring(sCommandName.begin(), sCommandName.end())));
 							}
@@ -265,7 +265,7 @@ namespace input
     }
 
     //считать из буфера все события от устройств ввода
-    void InputImpl::Update ()
+    void input_impl::update ()
     {
         if (!m_bInit)
             return;
@@ -325,7 +325,7 @@ namespace input
     }
 
     //сохранить раскладку
-    void InputImpl::Save (std::string &sXml)
+    void input_impl::Save (std::string &sXml)
     {
         if (!m_bInit)
             return;
@@ -377,7 +377,7 @@ namespace input
     }
 
     //завершить работу системы ввода
-    void InputImpl::Done ()
+    void input_impl::Done ()
     {
         if (!m_bInit)
             return;
@@ -402,7 +402,7 @@ namespace input
     ////////////////////////////////
 
     //получить устройство
-    Device* InputImpl::getDevice (types::EDevice eDeviceName, int indx/*=0*/)
+    Device* input_impl::getDevice (types::EDevice eDeviceName, int indx/*=0*/)
     {
         if (!m_bInit)
             return 0;
@@ -418,13 +418,13 @@ namespace input
         return 0;
     }
 
-    Device* InputImpl::getDevice (const std::wstring &sDeviceName, int indx/*=0*/)
+    Device* input_impl::getDevice (const std::wstring &sDeviceName, int indx/*=0*/)
     {
         return getDevice(String2Device(sDeviceName), indx);
     }
 
     //есть ли такое устройство
-    bool InputImpl::isDevicePresent (types::EDevice eDeviceName, int indx/*=0*/) const
+    bool input_impl::isDevicePresent (types::EDevice eDeviceName, int indx/*=0*/) const
     {
         if (!m_bInit)
             return false;
@@ -440,7 +440,7 @@ namespace input
         return false;
     }
 
-    bool InputImpl::isDevicePresent (const std::wstring &sDeviceName, int indx/*=0*/) const
+    bool input_impl::isDevicePresent (const std::wstring &sDeviceName, int indx/*=0*/) const
     {
         return isDevicePresent(String2Device(sDeviceName), indx);
     }
@@ -450,7 +450,7 @@ namespace input
     /////////////////////////////////////
 
     //добавить команду
-    CommandPtr InputImpl::addCommand (const std::wstring &command_name)
+    CommandPtr input_impl::addCommand (const std::wstring &command_name)
     {
         if (m_bInit && !isCommandPresent(command_name))
         {
@@ -463,7 +463,7 @@ namespace input
     }
 
     //получить команду
-    CommandPtr InputImpl::getCommand (const std::wstring &sCommandName)
+    CommandPtr input_impl::getCommand (const std::wstring &sCommandName)
     {
         if (!m_bInit)
             return CommandPtr();
@@ -480,7 +480,7 @@ namespace input
     }
 
     //есть ли такая команда
-    bool InputImpl::isCommandPresent (const std::wstring &sCommandName) const
+    bool input_impl::isCommandPresent (const std::wstring &sCommandName) const
     {
         if (!m_bInit)
             return false;
@@ -497,7 +497,7 @@ namespace input
     }
 
     //отвязать команду ото всех контролов
-    void InputImpl::detachCommand (CommandPtr pCommand)
+    void input_impl::detachCommand (CommandPtr pCommand)
     {
         if (!m_bInit)
             return;
@@ -512,7 +512,7 @@ namespace input
     }
 
     //инициализация DXInput
-    bool InputImpl::initDXInput (HWND hWnd, bool exclusive, bool foreground)
+    bool input_impl::initDXInput (HWND hWnd, bool exclusive, bool foreground)
     {
         //получаем окно верхнего уровня
         {
@@ -651,7 +651,7 @@ namespace input
     }
 
     //ДЕинициализация DXInput
-    void InputImpl::doneDXInput()
+    void input_impl::doneDXInput()
     {
         if (m_pMouse)    m_pMouse   ->Unacquire();
         if (m_pKeyboard) m_pKeyboard->Unacquire();
@@ -666,7 +666,7 @@ namespace input
     }
 
     //обработка клавиатурных событий
-    void InputImpl::kProcess (DIDEVICEOBJECTDATA dod)
+    void input_impl::kProcess (DIDEVICEOBJECTDATA dod)
     {
 		//определим, от какого контрола пришло сообщение
 		types::EControl eControl = types::InvalidControl;
@@ -809,7 +809,7 @@ namespace input
 		if (eControl == types::InvalidControl)
 			return; //... такой контрол не поддерживается
 
-        Control *pControl = keyboard->getControl(eControl);
+        Control *pControl = keyboard->get_control(eControl);
 		if (!pControl)
 			return; //... такой контрол для клавиатуры не предусмотрен 
 
@@ -821,7 +821,7 @@ namespace input
     }
 
     //обработка мышиных событий
-    void InputImpl::mProcess (DIDEVICEOBJECTDATA dod)
+    void input_impl::mProcess (DIDEVICEOBJECTDATA dod)
     {
         //определим, от какого контрола пришло сообщение
         types::EControl eControl = types::InvalidControl;
@@ -838,7 +838,7 @@ namespace input
 		if (eControl == types::InvalidControl)
 			return; //... такой контрол не поддерживается
 
-        Control *pControl = mouse->getControl(eControl);
+        Control *pControl = mouse->get_control(eControl);
 		if (!pControl)
 			return; //... такой контрол для мыши не предусмотрен 
 

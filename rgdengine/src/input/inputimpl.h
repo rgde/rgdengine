@@ -8,11 +8,11 @@
 
 namespace input
 {
-    class InputImpl
+    class input_impl
     {
     public:
-        InputImpl();
-       ~InputImpl();
+        input_impl();
+       ~input_impl();
 
 	    //изменить режим работы устройств ввода
         bool SetMode (bool exclusive=false, bool foreground=true);
@@ -25,7 +25,7 @@ namespace input
 		void Save(std::string &sXml);
 
 		//считать из буфера все события от устройств ввода
-        void Update();
+        void update();
 		//завершить работу системы ввода
         void Done();
 
@@ -49,8 +49,8 @@ namespace input
         void detachCommand(CommandPtr pCommand);
 
 	private:
-		InputImpl (const InputImpl&);
-		InputImpl& operator= (const InputImpl&);
+		input_impl (const input_impl&);
+		input_impl& operator= (const input_impl&);
 
 		bool initDXInput(HWND hWnd, bool exclusive, bool foreground);
 		void doneDXInput();

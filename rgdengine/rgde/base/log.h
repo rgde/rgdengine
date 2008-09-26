@@ -17,7 +17,7 @@ namespace base
 		int i;
 	};
 
-	enum LogStyle
+	enum log_style
 	{
 		LS_BOLD		= 1 << 0,
 		LS_ITALIC	= 1 << 1,

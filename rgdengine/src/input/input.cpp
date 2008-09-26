@@ -9,87 +9,87 @@
 
 namespace input
 {
-    Input* Input::ms_pInstance = 0;
+    Input* Input::ms_instance = 0;
 
     //только для конструирования синглтона
     Input::Input ()
     {
-        assert(!ms_pInstance);
-        ms_pInstance = this;
+        assert(!ms_instance);
+        ms_instance = this;
     }
 
     Input::~Input ()
     {
-        assert(ms_pInstance);
-        ms_pInstance = 0;
+        assert(ms_instance);
+        ms_instance = 0;
     }
 
-    Input& Input::Get ()
+    Input& Input::get ()
     {
-        if (!ms_pInstance)
-            ms_pInstance = new Input;
-        return *ms_pInstance;
+        if (!ms_instance)
+            ms_instance = new Input;
+        return *ms_instance;
     }
 
     //удалить синглтон системы ввода
     void Input::Destroy ()
     {
-        if (ms_pInstance)
-            delete ms_pInstance;
-        ms_pInstance = 0;
+        if (ms_instance)
+            delete ms_instance;
+        ms_instance = 0;
     }
 
     //инициализировать систему ввода
-    void Input::init (InputImpl *pImpl)
+    void Input::init (input_impl *pImpl)
     {
         m_pImpl.reset(pImpl);
     }
 
     bool Input::SetMode (bool exclusive, bool foreground)
     {
-        return Get().m_pImpl->SetMode(exclusive,foreground);
+        return get().m_pImpl->SetMode(exclusive,foreground);
     }
 
     void Input::LoadFromString (const std::string &sXml)
     {
-        Get().m_pImpl->Load(sXml);
+        get().m_pImpl->Load(sXml);
     }
 
     void Input::LoadFromFile (const std::string &sFileName)
     {
         std::vector<char> data;
 
-        io::CFileSystem &fs    = io::TheFileSystem::Get();
-        io::PReadStream stream = fs.findFile(sFileName);
-        io::StreamToVector<char>(data, stream);
+        io::CFileSystem &fs    = io::TheFileSystem::get();
+        io::readstream_ptr stream = fs.findFile(sFileName);
+        io::stream_to_vector<char>(data, stream);
 
-        Get().m_pImpl->Load(std::string(data.begin(), data.end()));
+        get().m_pImpl->Load(std::string(data.begin(), data.end()));
     }
 
-    void Input::Update ()
+    void Input::update ()
     {
-        Get().m_pImpl->Update();
+        get().m_pImpl->update();
     }
 
     void Input::Save (std::string &sXml)
     {
-        Get().m_pImpl->Save(sXml);
+        get().m_pImpl->Save(sXml);
     }
 
     Device* Input::getDevice (types::EDevice eDeviceName, int indx)
     {
-        return Get().m_pImpl->getDevice(eDeviceName, indx);
+        return get().m_pImpl->getDevice(eDeviceName, indx);
     }
 
     Device* Input::getDevice (const std::wstring &sDeviceName, int indx)
     {
-        return Get().m_pImpl->getDevice(sDeviceName, indx);
+        return get().m_pImpl->getDevice(sDeviceName, indx);
     }
 
 	Control* Input::GetControl(types::EDevice device, int dev_index, types::EControl control)
 	{
 		if (Device* dev = getDevice(device, dev_index))
-			return dev->getControl(control);
+			return dev->get_control(control);
 
 		return NULL;
 	}
@@ -97,36 +97,36 @@ namespace input
     //есть ли такое устройство
     bool Input::isDevicePresent (types::EDevice eDeviceName, int indx)
     {
-        return Get().m_pImpl->isDevicePresent(eDeviceName,indx);
+        return get().m_pImpl->isDevicePresent(eDeviceName,indx);
     }
 
     //есть ли такое устройство
     bool Input::isDevicePresent (const std::wstring &sDeviceName, int indx)
     {
-        return Get().m_pImpl->isDevicePresent(sDeviceName, indx);
+        return get().m_pImpl->isDevicePresent(sDeviceName, indx);
     }
 
     //добавить команду
     void Input::addCommand (const std::wstring &sCommandName)
     {
-        Get().m_pImpl->addCommand(sCommandName);
+        get().m_pImpl->addCommand(sCommandName);
     }
 
     //получить команду
     CommandPtr Input::getCommand (const std::wstring &sCommandName)
     {
-        return Get().m_pImpl->getCommand(sCommandName);
+        return get().m_pImpl->getCommand(sCommandName);
     }
 
     //есть ли такая команда
     bool Input::isCommandPresent (const std::wstring &sCommandName)
     {
-        return Get().m_pImpl->isCommandPresent(sCommandName);
+        return get().m_pImpl->isCommandPresent(sCommandName);
     }
 
     //отвязать команду ото всех контролов
     void Input::detachCommand (CommandPtr pCommand)
     {
-        Get().m_pImpl->detachCommand(pCommand);
+        get().m_pImpl->detachCommand(pCommand);
     }
 }

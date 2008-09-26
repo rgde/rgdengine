@@ -1,12 +1,12 @@
 #include "precompiled.h"
-// Forms
+// forms
 #include "window.h"
 #include "drawing.h"
 
 #pragma warning(disable: 4311) // warning C4311: 'type cast' : pointer truncation from '' to ''
 #pragma warning(disable: 4312) // warning C4312: 'type cast' : conversion from '' to '' of greater size
 
-namespace Forms
+namespace forms
 {
 	std::map<HWND, Window*> Window::ms_windows;
 
@@ -169,7 +169,7 @@ namespace Forms
 		ShowWindow(Handle(), flag ? SW_SHOW : SW_HIDE);
 	}
 
-	void Window::Update()
+	void Window::update()
 	{
 		UpdateWindow( Handle() );
 	}

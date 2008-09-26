@@ -12,7 +12,7 @@ namespace render
 	}
 
 	Sprite::Sprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
-		const math::Color& color_,render::PTexture pTexture_,
+		const math::Color& color_,render::texture_ptr pTexture_,
 		float spin_, const math::Rect& rect_,
 		unsigned long uPriority_) 
 		:
@@ -32,17 +32,17 @@ namespace render
 		  m_nSpritesRendered(0),
 		  m_bSorted(false),
 		  m_bUpdated(true),
-		  IRendererable(priority),
+		  rendererable(priority),
 		  m_vOrigin(0, 0)
 	{
 		//base::lmsg << "SpriteManager::SpriteManager()";
-		math::Vec2f vFrontBufferSize= render::TheDevice::Get().getBackBufferSize();
+		math::Vec2f vFrontBufferSize= render::TheDevice::get().getBackBufferSize();
 		m_vScale = vFrontBufferSize / m_cvScreenSize;
 
 
 		m_bAditive = false;
 
-		m_pEffect = Effect::Create("SpriteManager.fxo");
+		m_effect = Effect::create("SpriteManager.fxo");
 		m_renderInfo.pRenderFunc = boost::bind(&SpriteManager::render, this);
 	}
 
@@ -158,9 +158,9 @@ namespace render
 		render::Effect::ITechnique *pTech	= NULL;
 
 		if (m_bAditive)
-			pTech = m_pEffect->findTechnique("aditive");
+			pTech = m_effect->findTechnique("aditive");
 		else
-			pTech = m_pEffect->findTechnique("alpha");
+			pTech = m_effect->findTechnique("alpha");
 
 		assert(0 != pTech && "SpriteManager::render(): Can't find effect technique!");
 		pTech->begin();
@@ -171,12 +171,12 @@ namespace render
 			pass.begin();
 
 			unsigned nSpritesRendered = 0;
-			Effect::IParameter *textureShaderParam	= m_pEffect->getParams()["spriteTexture"];
+			Effect::IParameter *textureShaderParam	= m_effect->getParams()["spriteTexture"];
 
-			assert(0 != textureShaderParam && "m_pEffect->getParams()[\"spriteTexture\"] == NULL !");
+			assert(0 != textureShaderParam && "m_effect->getParams()[\"spriteTexture\"] == NULL !");
 
 			uint start_sprite = 0;
-			PTexture cur_tex = m_sprites[0].texture;
+			texture_ptr cur_tex = m_sprites[0].texture;
 			for (uint i = 0; i < m_sprites.size(); ++i)
 			{
 				Sprite &sprite = m_sprites[i];
@@ -190,7 +190,7 @@ namespace render
 					if (nSprites > 0)
 					{
 						textureShaderParam->set(cur_tex);
-						m_pEffect->commitChanges();
+						m_effect->commitChanges();
 						m_Geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, nSprites * 4, 6 * start_sprite, nSprites * 2);
 						nSpritesRendered += nSprites;
 					}
@@ -205,7 +205,7 @@ namespace render
 					if (nSprites > 0)
 					{
 						textureShaderParam->set(cur_tex);
-						m_pEffect->commitChanges();
+						m_effect->commitChanges();
 						m_Geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, nSprites * 4, 6 * start_sprite, nSprites * 2);
 						nSpritesRendered += nSprites;
 					}
@@ -227,7 +227,7 @@ namespace render
 	void SpriteManager::onResetDevice()
 	{
 		// Вычисляем коэффициенты масштабирования
-		math::Vec2f vFrontBufferSize= render::TheDevice::Get().getBackBufferSize();
+		math::Vec2f vFrontBufferSize= render::TheDevice::get().getBackBufferSize();
 		m_vScale = vFrontBufferSize / m_cvScreenSize;
 		update();
 	}

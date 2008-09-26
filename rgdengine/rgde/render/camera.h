@@ -5,43 +5,43 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class IRenderTexture> PRenderTexture;
+	typedef boost::shared_ptr<class render_texture> PRenderTexture;
 
-	struct ViewPort : math::Rect
+	struct viewport : math::Rect
  	{
-		ViewPort(int x, int y, int width, int height)
+		viewport(int x, int y, int width, int height)
 			: Rect((float)x, (float)y, (float)width, (float)height)
 		{}
     };
 
-	class RenderCamera;
-	typedef boost::intrusive_ptr<class RenderCamera> PCamera;
+	class render_camera;
+	typedef boost::intrusive_ptr<class render_camera> camera_ptr;
 
-	class RenderCamera : public math::BaseCamera
+	class render_camera : public math::BaseCamera
 	{
 	public:		
-		~RenderCamera();
+		~render_camera();
 
 		void activate();
 
 		void setDepthStencilTarget(const PRenderTexture& pTarget, float clearDepth);
 		void setColorTarget(const PRenderTexture& pTarget, const math::Color& clearColor);
 		
-		static PCamera RenderCamera::Create();
-		static PCamera RenderCamera::Create(uint priority, const ViewPort& viewport);
+		static camera_ptr render_camera::create();
+		static camera_ptr render_camera::create(uint priority, const viewport& viewport);
 
 		void	 setPriority(uint priority);
 		uint getPriority() const;
 
 	private:
-		RenderCamera(uint priority, const ViewPort& viewport);
+		render_camera(uint priority, const viewport& viewport);
 
 	private:		
-		ViewPort		m_Viewport;
-		math::Color		m_ClearColor;
-		float			m_ClearDepth;
+		viewport		m_viewport;
+		math::Color		m_clear_color;
+		float			m_clear_depth;
 		PRenderTexture	m_pColorTarget;
 		PRenderTexture	m_pDepthStencilTarget;
-		unsigned		m_Priority;
+		unsigned		m_priority;
 	};	
 }

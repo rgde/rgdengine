@@ -7,7 +7,7 @@
 
 namespace input
 {
-	Command::Command(const std::wstring &sName, InputImpl &rInput):
+	Command::Command(const std::wstring &sName, input_impl &rInput):
 		m_rInput  (rInput),
 		m_sName   (sName),
 		m_bLocked (false)

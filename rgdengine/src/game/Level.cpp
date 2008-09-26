@@ -31,7 +31,7 @@ namespace game
 		for (StringList::iterator it = m_listTypes.begin(); it != m_listTypes.end(); ++it)
 		{
 			std::string& type_name = *it;
-			ILevelObject* pLevelObj = LevelObjFactory::Instance().Create(type_name);
+			ILevelObject* pLevelObj = LevelObjFactory::Instance().create(type_name);
 			m_listLevelObjs.push_back(pLevelObj);
 		}
 	}
