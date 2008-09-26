@@ -10,10 +10,10 @@ namespace math
     //контроллер камеры аля "нацеленная камера"
     class CTargetCamera: public BaseCameraController
     {
-        CTargetCamera(PCamera pCamera);
+        CTargetCamera(camera_ptr pCamera);
 
     public:
-        static PTargetCamera Create(PCamera pCamera);
+        static PTargetCamera create(camera_ptr pCamera);
 
         //положение
         void setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);

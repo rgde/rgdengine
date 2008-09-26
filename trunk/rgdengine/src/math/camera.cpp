@@ -46,7 +46,7 @@ namespace math
 		//	makeSphere(getPosition(),getRadius());
 		//	// usually camera is moving (dynamic) object
 		//	makeDynamic();
-		//	scene::TheScene::Get().inject(this);
+		//	scene::TheScene::get().inject(this);
 		//}
 	}
 }

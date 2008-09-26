@@ -92,7 +92,7 @@ namespace render
 			D3DPRIMITIVETYPE dxPrimTypeEnum = (D3DPRIMITIVETYPE)ePrimType;
 			g_pd3dDevice->DrawPrimitive(dxPrimTypeEnum, 0, nPrimNum);
 
-			TheDevice::Get().addStatistic(nPrimNum * 3, nPrimNum);
+			TheDevice::get().addStatistic(nPrimNum * 3, nPrimNum);
 		}
 	private:
 		size_t							m_used_size;
@@ -103,7 +103,7 @@ namespace render
 		SPDirect3DVertexBuffer9			m_spVB;// Buffer to hold vertices
 	};
 
-	IGeometry* IGeometry::Create(const vertex::VertexDecl decl, bool isDynamic)
+	IGeometry* IGeometry::create(const vertex::VertexDecl decl, bool isDynamic)
 	{
 		return new GeometryImpl(decl, isDynamic);
 	}
@@ -237,7 +237,7 @@ namespace render
 			D3DPRIMITIVETYPE dxPrimTypeEnum = (D3DPRIMITIVETYPE)ePrimType;
 			g_pd3dDevice->DrawIndexedPrimitive(dxPrimTypeEnum, nBaseVertexIndex, nMinIndex, nNumVertices, nStartIndex, nPrimitiveCount);
 
-			TheDevice::Get().addStatistic(nNumVertices, nPrimitiveCount);
+			TheDevice::get().addStatistic(nNumVertices, nPrimitiveCount);
 		}
 
 	private:
@@ -254,22 +254,22 @@ namespace render
 		IDirect3DIndexBuffer9*			m_pIB;
 	};
 
-	IIndexedGeometry* IIndexedGeometry::Create(const vertex::VertexDecl decl, bool bUse32bitIndixes)
+	IIndexedGeometry* IIndexedGeometry::create(const vertex::VertexDecl decl, bool bUse32bitIndixes)
 	{
 		return new IndexedGeometryImpl(decl, bUse32bitIndixes);
 	}
 
-	//IIndexedGeometry* IIndexedGeometry::Create( std::wstring xml_filename )
+	//IIndexedGeometry* IIndexedGeometry::create( std::wstring xml_filename )
 	//{
 	//	//TiXmlDocument xml( xml_filename ) ;
 
 	//	//if ( !xml.LoadFile() )
 	//	//	return 0;
 
-	//	return 0;//Create( xml.FirstChild( "mesh" ) );
+	//	return 0;//create( xml.FirstChild( "mesh" ) );
 	//}
 
-	//IIndexedGeometry* IIndexedGeometry::Create( TiXmlNode* root_geom_node )
+	//IIndexedGeometry* IIndexedGeometry::create( TiXmlNode* root_geom_node )
 	//{
 	//	/*TiXmlElement *elem = root_geom_node->FirstChildElement("faces");            
 	//	TiXmlElement* ev = 0;

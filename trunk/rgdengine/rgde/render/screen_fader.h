@@ -4,7 +4,7 @@
 
 namespace render
 {
-	class Fader
+	class fader
 	{
 	public:
 		enum Mode
@@ -22,8 +22,8 @@ namespace render
 			Disabled
 		};
 
-		Fader();
-		Fader(const std::string& strFileName);
+		fader();
+		fader(const std::string& file_name);
 
 		void               setColor(const math::Color& color);
 		const math::Color& getColor() const {return m_color;}
@@ -40,7 +40,7 @@ namespace render
 
 		void update(float dt);
 
-		void loadFromXML(const std::string& strFileName);
+		void loadFromXML(const std::string& file_name);
 
 	private:
 		void init();

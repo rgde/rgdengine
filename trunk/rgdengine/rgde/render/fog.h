@@ -18,7 +18,7 @@ namespace render
 		Fog();
 
 		void setMode(Type type);
-		void loadFromXML(const std::string& strFileName);
+		void loadFromXML(const std::string& file_name);
 		void loadFromXML(TiXmlElement* node);
 
 	private:

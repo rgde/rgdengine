@@ -9,7 +9,7 @@
 #ifndef FORMS_DRAWING_H
 #define FORMS_DRAWING_H
 
-namespace Forms
+namespace forms
 {
 	namespace Drawing
 	{

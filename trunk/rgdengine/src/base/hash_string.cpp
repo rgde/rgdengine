@@ -31,8 +31,8 @@ public:
 
 	void Reset();
 
-	// Update the hash value
-	void Update(unsigned char *data, size_t len);
+	// update the hash value
+	void update(unsigned char *data, size_t len);
 
 	// Finalize hash and report
 	void Final();
@@ -103,7 +103,7 @@ void hash_string::calc_hash()
 	CSHA1 sha1;
 
 	sha1.Reset();
-	sha1.Update((unsigned char *)m_string.c_str(), m_string.size());
+	sha1.update((unsigned char *)m_string.c_str(), m_string.size());
 	sha1.Final();
 
 	m_hash_value = sha1.GetHash();
@@ -205,7 +205,7 @@ void CSHA1::Transform(unsigned long state[5], unsigned char buffer[64])
 }
 
 // Use this function to hash in binary data and strings
-void CSHA1::Update(unsigned char *data, size_t _len)
+void CSHA1::update(unsigned char *data, size_t _len)
 {
 	unsigned long i = 0, j;
 	unsigned len = (unsigned)_len;
@@ -242,12 +242,12 @@ void CSHA1::Final()
 		finalcount[i] = (unsigned char)((m_count[(i >= 4 ? 0 : 1)]
 		>> ((3 - (i & 3)) * 8) ) & 255); // Endian independent
 
-		Update((unsigned char *)"\200", 1);
+		update((unsigned char *)"\200", 1);
 
 		while ((m_count[0] & 504) != 448)
-			Update((unsigned char *)"\0", 1);
+			update((unsigned char *)"\0", 1);
 
-		Update(finalcount, 8); // Cause a SHA1Transform()
+		update(finalcount, 8); // Cause a SHA1Transform()
 
 		for (i = 0; i < 20; i++)
 		{

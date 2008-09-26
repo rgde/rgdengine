@@ -12,17 +12,17 @@ namespace scene
 
 	Scene::~Scene(){}
 
-	math::PFrame& Scene::getRootFrame()
+	math::frame_ptr& Scene::getRootFrame()
 	{
 		return m_pRoot;
 	}
 
-	void Scene::addManager(const PSceneManager& manager)
+	void Scene::addManager(const scene_manager_ptr& manager)
 	{
 		m_Managers.push_back(manager);
 	}
 
-	void Scene::removeManager( const PSceneManager& manager )
+	void Scene::removeManager( const scene_manager_ptr& manager )
 	{
 		m_Managers.remove( manager );
 	}
@@ -32,7 +32,7 @@ namespace scene
 		auxDraw( m_pRoot );
 	}
 
-	void Scene::auxDraw( math::PFrame frame )
+	void Scene::auxDraw( math::frame_ptr frame )
 	{
 		//frame->debugDraw();
 		//for( math::Frame::ChildrenList::iterator it = frame->getChildren().begin(); it != frame->getChildren().end(); ++it)

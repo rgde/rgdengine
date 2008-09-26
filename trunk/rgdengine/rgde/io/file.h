@@ -40,7 +40,7 @@ namespace io
 		virtual ~IReadStream(){}
 	};
 
-	typedef boost::shared_ptr<IReadStream> PReadStream;
+	typedef boost::shared_ptr<IReadStream> readstream_ptr;
 
 	class IWriteStream : public virtual IStream
 	{

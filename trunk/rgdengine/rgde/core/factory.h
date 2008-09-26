@@ -6,12 +6,12 @@ namespace factory
 	class TFactory
 	{
 	public:
-		typedef boost::function<T* (void)> CreatorFunc;
+		typedef boost::function<T* (void)> creator_func;
 
 	private:
 		TFactory() {}
 
-		typedef std::map <std::string, CreatorFunc>	TypeMap;
+		typedef std::map <std::string, creator_func>	TypeMap;
 		TypeMap m_typeMap;
 
 		template<class Derived>
@@ -31,9 +31,9 @@ namespace factory
 			return tlist;
 		}
 
-		T* Create(const std::string& name)
+		T* create(const std::string& name)
 		{
-			CreatorFunc creator = m_typeMap[name];
+			creator_func creator = m_typeMap[name];
 			if (creator)
 				return creator();
 			else 
@@ -41,9 +41,9 @@ namespace factory
 		}
 
 		template<class Derived>
-		void RegisterType(const std::string& type_name = std::string(), CreatorFunc creator = CreatorFunc())
+		void RegisterType(const std::string& type_name = std::string(), creator_func creator = creator_func())
 		{
-			CreatorFunc cf = creator ? cf : boost::bind(&TFactory::default_creator<Derived>, this);
+			creator_func cf = creator ? cf : boost::bind(&TFactory::default_creator<Derived>, this);
 			if (type_name.empty() || type_name == "")
 			{
 				std::string	temp(typeid(Derived).name());

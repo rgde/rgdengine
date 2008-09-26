@@ -22,12 +22,12 @@ namespace render
 	void ReadNode(TiXmlElement *elem, math::Frame &rootFrame, Model &model);
 	Mesh::PGeometry ReadGeometry(const std::string& fNm);
 
-	PModel Model::Create(const std::string& strFileName)
+	PModel Model::create(const std::string& file_name)
 	{
 		//try
 		{
 			PModel pModel = new Model();
-			pModel->load(strFileName);
+			pModel->load(file_name);
             pModel->setLooped(true);
 			pModel->play();
 			pModel->update(0.0001f);			
@@ -35,7 +35,7 @@ namespace render
 		}
 		//catch (...)
 		//{
-		//	base::lwrn << "Fail to load model: " << strFileName;
+		//	base::lwrn << "Fail to load model: " << file_name;
 		//}
 
 		return 	PModel();
@@ -45,20 +45,20 @@ namespace render
 	{
 		base::lmsg << "loading model: " << "\"" << strModelName << "\"";
 
-		io::CFileSystem &fs	= io::TheFileSystem::Get();
+		io::CFileSystem &fs	= io::TheFileSystem::get();
 
 		io::ScopePathAdd p	("Models/" + strModelName + "/");
-		io::PReadStream in	= fs.findFile(strModelName + ".xml");
+		io::readstream_ptr in	= fs.findFile(strModelName + ".xml");
 
 		if (!in)
 		{
-			std::string error	= "Model::load: can't load file ";// + strFileName;
+			std::string error	= "Model::load: can't load file ";// + file_name;
 			base::lerr << "Model::load: can't load file: " << strModelName << ".xml";
 			throw exception(error.c_str());
 		}
 
 		std::vector<byte> data;
-		io::StreamToVector(data, in);
+		io::stream_to_vector(data, in);
 
 		TiXmlDocument xml;//(std::string(strModelName.begin(), strModelName.end()));
 		xml.Parse((const char*)&(data[0]));
@@ -78,7 +78,7 @@ namespace render
 				tx->Attribute("id", &m_id);
 
 				std::string str	= tx->Attribute("file");
-				m_vMaterials[m_id] = Material::Create(str);
+				m_vMaterials[m_id] = Material::create(str);
 			}
 		}
 		{
@@ -238,7 +238,7 @@ namespace render
 		TiXmlNode *cd	= 0;
 		while (cd = elem->IterateChildren("node", cd))
 		{
-			math::PFrame child	= new math::Frame;
+			math::frame_ptr child	= new math::Frame;
 			ReadNode(cd->ToElement(), *(child.get()), model);
 			rootFrame.addChild(child);
 			model.getFrames().push_back(child); // а это нафига??

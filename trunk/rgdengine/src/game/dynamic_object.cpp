@@ -7,13 +7,13 @@ namespace game
 {
 	dynamic_object::dynamic_object()
 	{
-		game::TheGame::Get().register_object(this);
+		game::TheGame::get().register_object(this);
 		m_is_subscribed = true;
 	}
 
 	dynamic_object::~dynamic_object()
 	{
 		if (m_is_subscribed)
-			game::TheGame::Get().unregister_object(this);
+			game::TheGame::get().unregister_object(this);
 	}
 }

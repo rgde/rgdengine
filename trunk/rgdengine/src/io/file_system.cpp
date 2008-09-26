@@ -21,13 +21,13 @@ namespace io
 			return 100;
 		}
 
-		PReadStream findFile(const std::string& strFilePath) const
+		readstream_ptr findFile(const std::string& strFilePath) const
 		{
-			PReadStream	s(new CReadFileStream(strFilePath));
+			readstream_ptr	s(new CReadFileStream(strFilePath));
 
 			if (s->isValid()) return s;
 
-			return PReadStream();
+			return readstream_ptr();
 		}
 
 		bool isExist(const std::string& strFilePath) const
@@ -78,9 +78,9 @@ namespace io
 		//std::sort(m_sources.begin(), m_sources.end(), functors::PrioritySorter());
 	}
 
-	PReadStream CFileSystem::findFile(const std::string& strFilePath) const
+	readstream_ptr CFileSystem::findFile(const std::string& strFilePath) const
 	{
-		PReadStream s;
+		readstream_ptr s;
 		std::string total_path	= m_rootPath.string();
 		if(total_path != "")
 		{
@@ -117,26 +117,26 @@ namespace io
 	}
 
 	ScopePathChange::ScopePathChange(const std::string& strNewPath)
-		: m_oldPath(TheFileSystem::Get().getRootDir())
+		: m_oldPath(TheFileSystem::get().getRootDir())
 	{
-		TheFileSystem::Get().setRootDir(Path(strNewPath));
+		TheFileSystem::get().setRootDir(Path(strNewPath));
 	}
 
 	ScopePathChange::~ScopePathChange()
 	{
-		TheFileSystem::Get().setRootDir(m_oldPath);
+		TheFileSystem::get().setRootDir(m_oldPath);
 	}
 
 
 	ScopePathAdd::ScopePathAdd(const std::string& strNewPath)
-		: m_oldPath(TheFileSystem::Get().getRootDir())
+		: m_oldPath(TheFileSystem::get().getRootDir())
 	{
 		std::string total_path	= m_oldPath.string() + "/" + strNewPath;
-		TheFileSystem::Get().setRootDir(Path(total_path));
+		TheFileSystem::get().setRootDir(Path(total_path));
 	}
 
 	ScopePathAdd::~ScopePathAdd()
 	{
-		TheFileSystem::Get().setRootDir(m_oldPath);
+		TheFileSystem::get().setRootDir(m_oldPath);
 	}
 }

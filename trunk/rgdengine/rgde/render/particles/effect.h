@@ -14,7 +14,7 @@ namespace particles
 {
 	class Emitter;
 
-	class  Effect : /*public io::ISerializedObject,*/ public render::IRendererable, 
+	class  Effect : /*public io::ISerializedObject,*/ public render::rendererable, 
 					 public game::dynamic_object, public core::XmlClass
 	{
 	public:

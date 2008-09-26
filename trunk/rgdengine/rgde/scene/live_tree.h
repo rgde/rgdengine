@@ -63,7 +63,7 @@ namespace live_tree
 	////////////////////////////////////////////////////////////////////////
 
 	class TreeObject
-		: virtual public base::BaseRefCounted
+		: virtual public base::refcounted
 	{
 	public:
 
@@ -183,7 +183,7 @@ namespace live_tree
 	////////////////////////////////////////////////////////////////////////
 
 	class CTRoot
-		: virtual public base::BaseRefCounted
+		: virtual public base::refcounted
 	{
 	public:
 		// ext is maximum tree extents, base is minimum container size

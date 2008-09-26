@@ -6,7 +6,7 @@
 namespace render
 {
 	//LightManager::SLightData::SLightData()
-	//	:	m_nType(ILight::Point),
+	//	:	m_nType(base_light::Point),
 	//		m_fRange(0),
 	//		m_attenuations(math::Vec3f(1, 0, 0)),
 	//		m_bEnable(false)
@@ -111,25 +111,25 @@ namespace render
 
 	//void LightManager::addLight(const PLight& pLight)
 	//{
-	//	ILight::EType eType = pLight->getType();
+	//	base_light::EType eType = pLight->getType();
 
 	//	switch(eType)
 	//	{
-	//		case ILight::Point:
+	//		case base_light::Point:
 	//			m_nPointLightsNum++;
 	//		break;
 
-	//		case ILight::Spot:
+	//		case base_light::Spot:
 	//			m_nSpotLightsNum++;
 	//		break;
 
-	//		case ILight::Directional:
+	//		case base_light::Directional:
 	//			m_nDirectionalLightsNum++;
 	//		break;
 	//	};
 
 	//	//std::string strLightModelName = lightTypeToStr(eType);
-	//	//PModel pModel = Model::Create(std::wstring(strLightModelName.begin(), strLightModelName.end()));
+	//	//PModel pModel = Model::create(std::wstring(strLightModelName.begin(), strLightModelName.end()));
 	//	//m_models.push_back(pModel);
 
 	//	//pLight->getParentFrame()->addChild(pModel->getRoot());
@@ -150,15 +150,15 @@ namespace render
 	//			//m_models.erase(it2);
 	//			switch(pLight->getType())
 	//			{
-	//				case ILight::Point:
+	//				case base_light::Point:
 	//					m_nPointLightsNum--;
 	//				break;
 
-	//				case ILight::Spot:
+	//				case base_light::Spot:
 	//					m_nSpotLightsNum--;
 	//				break;
 
-	//				case ILight::Directional:
+	//				case base_light::Directional:
 	//					m_nDirectionalLightsNum--;
 	//				break;
 	//			};
@@ -191,7 +191,7 @@ namespace render
 	//	for(it = m_lights.begin(); it != m_lights.end(); it++)
 	//		if(*it)
 	//			if((*it)->isEnabled())
-	//				if((*it)->getType() == ILight::Point)
+	//				if((*it)->getType() == base_light::Point)
 	//				{
 	//					if(i >= MAX_NUM_ACTIVE_LIGHTS)
 	//						return;
@@ -216,7 +216,7 @@ namespace render
 	//	for(it = m_lights.begin(); it != m_lights.end(); it++)
 	//		if(*it)
 	//			if((*it)->isEnabled())
-	//				if((*it)->getType() == ILight::Spot)
+	//				if((*it)->getType() == base_light::Spot)
 	//				{
 	//					if(i >= MAX_NUM_ACTIVE_LIGHTS)
 	//						return;
@@ -244,7 +244,7 @@ namespace render
 	//	for(it = m_lights.begin(); it != m_lights.end(); it++)
 	//		if(*it)
 	//			if((*it)->isEnabled())
-	//				if((*it)->getType() == ILight::Directional)
+	//				if((*it)->getType() == base_light::Directional)
 	//				{
 	//					if(i >= MAX_NUM_ACTIVE_LIGHTS)
 	//						return;
@@ -268,7 +268,7 @@ namespace render
 	//	io::ScopePathAdd("Common/");
 
 	//	TiXmlDocument XmlConfig;
-	//	if(!base::loadXml(strConfigName, XmlConfig))
+	//	if(!base::load_xml(strConfigName, XmlConfig))
 	//	{
 	//		base::lerr<<"LightManager::readModelsNames(): Can't open"<<
 	//					" config file: "<<strConfigName;
@@ -295,22 +295,22 @@ namespace render
 	//	m_bModelNamesReaded = true;
 	//}
 
-	//const std::string& LightManager::lightTypeToStr(ILight::EType eType)
+	//const std::string& LightManager::lightTypeToStr(base_light::EType eType)
 	//{
 	//	if(!m_bModelNamesReaded)
 	//		readModelNames();
 
 	//	switch(eType)
 	//	{
-	//		case ILight::Point:
+	//		case base_light::Point:
 	//			return m_strPointLightModelName;
 	//		break;
 
-	//		case ILight::Spot:
+	//		case base_light::Spot:
 	//			return m_strSpotLightModelName;
 	//		break;
 
-	//		case ILight::Directional:
+	//		case base_light::Directional:
 	//			return m_strDirectionalLightModelName;
 	//		break;
 	//	};

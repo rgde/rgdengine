@@ -5,11 +5,11 @@
 
 namespace core
 {
-	class GameTask: public core::base_task
+	class game_task: public core::base_task
 	{
 	public:
-		GameTask(const application& app, unsigned int priority = 0, const std::string& start_script = "");
-		virtual ~GameTask();
+		game_task(const application& app, unsigned int priority = 0, const std::string& start_script = "");
+		virtual ~game_task();
 
 	protected:
 		virtual void run();

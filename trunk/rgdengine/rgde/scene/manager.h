@@ -13,7 +13,7 @@ namespace scene
 	//	virtual ISceneVisitor* get_visitor()const = 0;
 	//};
 
-	//typedef boost::shared_ptr<ISceneManager> PSceneManager;
+	//typedef boost::shared_ptr<ISceneManager> scene_manager_ptr;
 
 	//class MeshVisitor: public ISceneVisitor
 	//{

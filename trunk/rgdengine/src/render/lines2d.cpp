@@ -8,13 +8,13 @@ namespace render
 {
 	//-----------------------------------------------------------------------------------
 	Line2dManager::Line2dManager(unsigned long uPriority)
-		: render::IRendererable(1111),
+		: render::rendererable(1111),
 		  m_Geometry(true)
 	{
 		base::lmsg << "Line2dManager::Line2dManager()";
 		m_pVertices = &(m_Geometry.lock());
 		m_uPriority = uPriority;
-		m_spEffect = Effect::Create("Line3dManager.fxo");
+		m_spEffect = Effect::create("Line3dManager.fxo");
 		m_renderInfo.pRenderFunc = boost::bind(&Line2dManager::render, this);
 	}
 	//-----------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ namespace render
 	void Line2dManager::addLine(const math::Vec2f &vPoint1, const math::Vec2f vPoint2, math::Color color)
 	{
 		math::Vec2f screenSize(800, 600); //virtual screen size
-		math::Vec2f vFrontBufferSize= render::TheDevice::Get().getBackBufferSize();
+		math::Vec2f vFrontBufferSize= render::TheDevice::get().getBackBufferSize();
 		math::Vec2f m_vScale		= vFrontBufferSize / screenSize;
 		m_pVertices->push_back(Point(vPoint1 * m_vScale, color));
 		m_pVertices->push_back(Point(vPoint2 * m_vScale, color));

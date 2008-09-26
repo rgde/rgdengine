@@ -15,7 +15,7 @@
 namespace particles
 {
 	//-----------------------------------------------------------------------------------
-	Effect::Effect() : render::IRendererable(9), m_fOldTime(0), m_bIsFading(false), 
+	Effect::Effect() : render::rendererable(9), m_fOldTime(0), m_bIsFading(false), 
 						 core::XmlClass("ParticleEffect")
 	{	
 		m_renderInfo.pRenderFunc		= boost::bind( &Effect::render, this );

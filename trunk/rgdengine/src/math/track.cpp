@@ -92,8 +92,8 @@ namespace math
 	void CTrack::load(const std::string& strTrackFileName)
     {
 		//base::lmsg << "loading track: " << "\"" << strTrackFileName << "\"";
-		io::CFileSystem& fs = io::TheFileSystem::Get();
-		io::PReadStream in = fs.findFile(strTrackFileName);
+		io::CFileSystem& fs = io::TheFileSystem::get();
+		io::readstream_ptr in = fs.findFile(strTrackFileName);
 
 		if (!in)
 		{
@@ -110,7 +110,7 @@ namespace math
 		}
 
 		std::vector<byte> data;
-		io::StreamToVector(data, in);
+		io::stream_to_vector(data, in);
 
 		TiXmlDocument xml;
 		xml.Parse((const char*)&(data[0]));

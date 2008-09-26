@@ -28,5 +28,5 @@ namespace math
 		math::Frustum m_frustum;
 	};
 
-	typedef boost::intrusive_ptr<BaseCamera> PCamera;
+	typedef boost::intrusive_ptr<BaseCamera> camera_ptr;
 }

@@ -10,7 +10,7 @@ namespace particles
 	//-----------------------------------------------------------------------------------
 	PTank::PTank() : m_nReservedSize(0)
 	{
-		m_spEffect = render::Effect::Create( "particles.fxo" );
+		m_spEffect = render::Effect::create( "particles.fxo" );
 
 		render::Effect::Parameters& params = m_spEffect->getParams();
 
@@ -29,13 +29,13 @@ namespace particles
 	{
 	}
 	//-----------------------------------------------------------------------------------
-	void PTank::render(render::PTexture texture, math::Frame& frame)
+	void PTank::render(render::texture_ptr texture, math::Frame& frame)
 	{
 		if( (m_nReservedSize == 0) )
 			return;
 
 		const math::Matrix44f& mLocal	= frame.getFullTransform();
-		math::PCamera pCamera		= render::TheDevice::Get().getCurentCamera();
+		math::camera_ptr pCamera		= render::TheDevice::get().get_curent_camera();
 		const math::Matrix44f& mProj	= pCamera->getProjMatrix();
 		const math::Matrix44f& mView	= pCamera->getViewMatrix();
 		

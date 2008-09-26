@@ -44,7 +44,7 @@ namespace math
 	{
 	}
 
-	void Frame::findFrames(const std::string& strTemplate, std::vector<PFrame>& container)
+	void Frame::findFrames(const std::string& strTemplate, std::vector<frame_ptr>& container)
 	{
 		const std::string &strFrameName = getName();
 
@@ -120,7 +120,7 @@ namespace math
 		math::Point3f Y = p + l * getUpGlobal();
 		math::Point3f Z = p + l * getAtGlobal();
 
-		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
+		render::Line3dManager& line_manager = render::TheLine3dManager::get();
 		line_manager.addLine( p, X, math::Red );
 		line_manager.addLine( p, Y, math::Green );
 		line_manager.addLine( p, Z, math::Blue );
@@ -255,7 +255,7 @@ namespace math
 
 		for(unsigned i = 0; i < nChildren; i++)
 		{
-			PFrame child = new Frame;
+			frame_ptr child = new Frame;
 			child->fromStream( rf );
 			addChild( child );
 		}

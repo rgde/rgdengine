@@ -87,10 +87,10 @@ namespace core
 			return *this;
 		}
 
-		static application		*Create(const std::wstring& window_name = L"");
-        static application		*Create(const std::wstring& window_name, int width, int height, bool fullscreen, bool resize_enable = true);
-        static application		*Create(WindowHandle parent_window);
+		static application		*create(const std::wstring& window_name = L"");
+        static application		*create(const std::wstring& window_name, int width, int height, bool fullscreen, bool resize_enable = true);
+        static application		*create(WindowHandle parent_window);
 
-        static application		*Get();
+        static application		*get();
     };
 }

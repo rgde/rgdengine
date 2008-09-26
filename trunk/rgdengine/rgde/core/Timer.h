@@ -45,5 +45,5 @@ namespace core
 		__int64 TicksPerSecond;
 	};
 
-	typedef base::TSingelton<Timer> TheTimer;
+	typedef base::singelton<Timer> TheTimer;
 }

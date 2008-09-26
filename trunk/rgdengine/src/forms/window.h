@@ -11,11 +11,11 @@
 #define BOOST_FUNCTION_MAX_ARGS 3
 #include <boost/function.hpp>
 
-// Forms
+// forms
 #include "message.h"
 #include "drawing.h"
 
-namespace Forms
+namespace forms
 {
 	class Window
 	{
@@ -32,7 +32,7 @@ namespace Forms
 		void SetMessageEvent(UINT uMsg, const MessageEvent &Event);
 
 		void Show(bool flag);
-		void Update();
+		void update();
 
 	protected:
 		virtual bool OnCommand(MessageT<WM_COMMAND> &msg);

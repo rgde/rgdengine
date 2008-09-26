@@ -7,7 +7,7 @@
 namespace render
 {
 	class Mesh : public math::Frame
-				, public render::IRendererable
+				, public render::rendererable
 	{
 	public:
 		struct IndexedSubMeshInfo		

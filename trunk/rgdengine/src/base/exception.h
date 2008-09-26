@@ -146,7 +146,7 @@ void my_unexpected();
 							set_unexpected( old_un );\
 							}
 
-#define V(x) { unsigned hr = x; if( 0 != hr ) { throw base::CBaseException( #x, hr, __FILE__, __LINE__); } }
+#define V(x) { unsigned hr = x; if( 0 != hr ) { throw base::base_exception( #x, hr, __FILE__, __LINE__); } }
 
 #ifndef SAFE_RELEASE
 #define SAFE_RELEASE(p)      { if(p) { (p)->Release(); (p)=0; } }

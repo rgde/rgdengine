@@ -324,7 +324,7 @@ namespace particles{
 			m = math::setTrans( m, math::Vec3f(0,0,0) );
 
 		math::Vec3f center, vel;
-		render::Line3dManager& line_manager = render::TheLine3dManager::Get();
+		render::Line3dManager& line_manager = render::TheLine3dManager::get();
 		for (TParticlesIter it = m_Particles.begin(); it != m_Particles.end(); ++it)
 		{
 			if ((*it).dead)
@@ -442,9 +442,9 @@ namespace particles{
 		//		 m_TexName.c_str(), m_TexName.length() - 3);
 		//	ext_path += "tnf";
 
-		//	if (base::ResourceMaster::Get()->isResourceExist(ext_path))
+		//	if (base::ResourceMaster::get()->isResourceExist(ext_path))
 		//	{
-		//		clx::rstream in(base::ResourceMaster::Get()->getResource(ext_path));//ResourseMaster
+		//		clx::rstream in(base::ResourceMaster::get()->getResource(ext_path));//ResourseMaster
 		//		//m_texture.load(clx::cstr("anim_explode.png"));
 		//		m_bIsAnimTextureUsed = true;
 		//		in  >> m_ucRow			// = 4;
@@ -462,7 +462,7 @@ namespace particles{
 		//	m_TexName.clear();
 		//	return;
 		//}
-		m_texture = render::ITexture::Create(m_TexName);//std::wstring(m_TexName.begin(), m_TexName.end()) );
+		m_texture = render::texture::create(m_TexName);//std::wstring(m_TexName.begin(), m_TexName.end()) );
 		return;
 	}
 

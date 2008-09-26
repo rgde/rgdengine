@@ -5,7 +5,7 @@
 
 namespace render
 {
-	class Line3dManager : public IRendererable
+	class Line3dManager : public rendererable
 	{
 	protected:
 		Line3dManager( unsigned long uPriority = 10);
@@ -42,5 +42,5 @@ namespace render
 		std::vector<vertex::PositionColored>* m_pVertices;
 	};
 
-	typedef base::TSingelton<Line3dManager> TheLine3dManager;
+	typedef base::singelton<Line3dManager> TheLine3dManager;
 } //~ namespace utility

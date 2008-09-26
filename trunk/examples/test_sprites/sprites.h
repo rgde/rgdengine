@@ -31,7 +31,7 @@ namespace rgde
 				// Область разброса спрайтов
 				math::Vec2f						m_sprites_seed;
 				::render::PFont					m_font;
-				math::PCamera					m_camera;
+				math::camera_ptr					m_camera;
 			};
 		}
 	}

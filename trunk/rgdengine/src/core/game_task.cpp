@@ -5,20 +5,20 @@
 
 namespace core
 {
-	GameTask::GameTask(const application& app,  unsigned int priority, const std::string& start_script) 
+	game_task::game_task(const application& app,  unsigned int priority, const std::string& start_script) 
 		: base_task(app, priority)
 	{
-		game::TheGame::Get().init(start_script);
+		game::TheGame::get().init(start_script);
 	}
 
-	GameTask::~GameTask ()
+	game_task::~game_task ()
 	{
-		game::TheGame::Destroy();
+		game::TheGame::destroy();
 	}
 
-	void GameTask::run()
+	void game_task::run()
 	{
-		game::TheGame::Get().update();
+		game::TheGame::get().update();
 	}
 
 }

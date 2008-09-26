@@ -108,7 +108,7 @@ namespace particles{
 
 	protected:
 		PTank* m_spTank;
-		render::PTexture m_texture;
+		render::texture_ptr m_texture;
 
 		//////////////////////////////////////////////////////////////////////////
 		// для работы с анимированной текстурой

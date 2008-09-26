@@ -5,13 +5,13 @@
 namespace math
 {
 
-    CTrackCamera::CTrackCamera(PCamera pCamera): m_fPosition(0)
+    CTrackCamera::CTrackCamera(camera_ptr pCamera): m_fPosition(0)
     {
         setCamera(pCamera);
         base::lmsg << "CTrackCamera::CTrackCamera()";
     }
 
-    PTrackCamera CTrackCamera::Create(PCamera pCamera)
+    PTrackCamera CTrackCamera::create(camera_ptr pCamera)
     {
         return PTrackCamera(new CTrackCamera(pCamera));
     }

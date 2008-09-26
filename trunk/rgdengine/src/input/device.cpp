@@ -5,7 +5,7 @@
 
 namespace input
 {
-	Device::Device(types::EDevice eName, int nIndx, InputImpl &rInput):
+	Device::Device(types::EDevice eName, int nIndx, input_impl &rInput):
 		m_nIndx  (nIndx),
 		m_eName  (eName),
 		m_rInput (rInput)
@@ -22,7 +22,7 @@ namespace input
     }
 
     //получить контрол
-    Control* Device::getControl(types::EControl eControlName)
+    Control* Device::get_control(types::EControl eControlName)
     {
         std::map<types::EControl,Control*>::iterator pos = m_controls.find(eControlName);
 
@@ -32,9 +32,9 @@ namespace input
         return pos->second;
     }
 
-    Control* Device::getControl(const std::wstring &sControlName)
+    Control* Device::get_control(const std::wstring &sControlName)
     {
-        return getControl(String2Control(sControlName));
+        return get_control(String2Control(sControlName));
     }
 
     //есть ли такой контрол

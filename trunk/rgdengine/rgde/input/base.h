@@ -2,7 +2,7 @@
 
 namespace input
 {
-    class InputImpl; //система ввода
+    class input_impl; //система ввода
     class Device;    //устройство ввода
     class Control;   //элемент (кнопка или ось) ввода
     class Command;   //команда ввода

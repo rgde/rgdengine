@@ -5,7 +5,7 @@
 
 namespace math
 {
-	FrameAnimationController::FrameAnimationController( TiXmlNode* pXmlNode, PFrame spFrame)
+	FrameAnimationController::FrameAnimationController( TiXmlNode* pXmlNode, frame_ptr spFrame)
 	{
 		m_bPaused = false;
 		m_bPlaying = false;

@@ -35,14 +35,14 @@ namespace render
 		m_fEnd = base::safeReadValue<float>(node, "end", 0.0f);
 	}
 
-	void Fog::loadFromXML(const std::string &strFileName)
+	void Fog::loadFromXML(const std::string &file_name)
 	{
 		TiXmlDocument fog;
 		{
 			io::ScopePathAdd p	("Fogs/");
-			if (!base::loadXml(strFileName, fog))
+			if (!base::load_xml(file_name, fog))
 			{
-				base::lerr << "Can't load fog \"" << strFileName << "\".";
+				base::lerr << "Can't load fog \"" << file_name << "\".";
 				return;
 			}
 		}

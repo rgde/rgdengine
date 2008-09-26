@@ -40,7 +40,7 @@ namespace event
 
     public:
         //синглтон
-        static EventsManager& Get()
+        static EventsManager& get()
         {
             static EventsManager instance;
             return instance;
@@ -121,20 +121,20 @@ namespace event
         template <typename Event>
         void subscribe( boost::function<void(Event)> f, BaseSender *sender = 0)
         {
-            EventsManager<Event>::Get().subscribe(this,f,sender);
+            EventsManager<Event>::get().subscribe(this,f,sender);
         }
 
         //отписаться от получения событий
         template <typename Event>
         void unsubscribe(BaseSender *sender)
         {
-            EventsManager<Event>::Get().unsubscribe(this, sender);
+            EventsManager<Event>::get().unsubscribe(this, sender);
         }
 
 		template <typename Event>
 		void unsubscribe()
 		{
-			EventsManager<Event>::Get().unsubscribe(this);
+			EventsManager<Event>::get().unsubscribe(this);
 		}
 
 
@@ -153,7 +153,7 @@ namespace event
         template<typename Event>
         void base_send_event(const Event& event)
         {
-			EventsManager<Event>::Get().sendEvent(event,this);
+			EventsManager<Event>::get().sendEvent(event,this);
         }
 
     private:

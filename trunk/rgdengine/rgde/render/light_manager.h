@@ -18,7 +18,7 @@ namespace render
 
 	//class LightManager
 	//{
-	//friend class ILight;
+	//friend class base_light;
 	//public:
 
 	//	typedef std::list<PLight> Lights;
@@ -91,7 +91,7 @@ namespace render
 
 	//	void readModelNames(const std::string& strConfigName =
 	//										"LightsModelsNames.xml");
-	//	const std::string& lightTypeToStr(ILight::EType eType);
+	//	const std::string& lightTypeToStr(base_light::EType eType);
 
 	//private:
 	//	math::Color m_ambientColor;
@@ -121,5 +121,5 @@ namespace render
 	//	int m_nDirectionalLightsNum;
 	//};
 
-	//typedef base::TSingelton<LightManager> TheLightManager;
+	//typedef base::singelton<LightManager> TheLightManager;
 }

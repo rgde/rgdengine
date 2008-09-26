@@ -19,7 +19,7 @@ namespace render
 	{
 	public:
 		virtual ~IGeometry(){}
-		static IGeometry* Create(const vertex::VertexDecl decl, bool isDynamic);
+		static IGeometry* create(const vertex::VertexDecl decl, bool isDynamic);
 		virtual void update(const void* pdata, size_t bytes, size_t size_of_vertex) = 0;
 		virtual void render(PrimitiveType ePrimType, unsigned int nPrimNum) = 0;		
 	};
@@ -31,7 +31,7 @@ namespace render
 		typedef std::vector<Vertex> Vertexes;
 
 		TGeometry(bool isDynamic = false) : 
-			m_spImpl(IGeometry::Create(Vertex::GetDecl(), isDynamic)),
+			m_spImpl(IGeometry::create(Vertex::GetDecl(), isDynamic)),
 			m_bIsDynamic(isDynamic)
 		{			
 			m_bChanged = false;
@@ -64,11 +64,11 @@ namespace render
 		void load( const std::string& filename )
 		{
 			//std::vector<byte> data;
-			//io::CFileSystem& fs = io::TheFileSystem::Get();
+			//io::CFileSystem& fs = io::TheFileSystem::get();
 
 			////first try to find binary file
 			//std::wstring bin_filename = filename + L".mesh";
-			//io::PReadStream bin_in = fs.findFile(bin_filename);
+			//io::readstream_ptr bin_in = fs.findFile(bin_filename);
 			////io::IReadStream& rs = *bin_in
 
 			//uint vertex_size = 0;//Vertex size
@@ -77,9 +77,9 @@ namespace render
 			////Vertex Data
 
 
-			//io::PReadStream in = fs.findFile(filename);
+			//io::readstream_ptr in = fs.findFile(filename);
 			//unsigned int size = in->getSize();
-			//io::StreamToVector(data, in);
+			//io::stream_to_vector(data, in);
 
 			//TiXmlDocument xml;//( xml_filename );
 			//xml.Parse((const char*)&(data[0]));
@@ -175,10 +175,10 @@ namespace render
 	{
 	public:
 		virtual ~IIndexedGeometry(){}
-		static IIndexedGeometry* Create(const vertex::VertexDecl decl, bool bUse32bitIndixes);
-		//static IIndexedGeometry* Create(std::wstring xml_filename);
+		static IIndexedGeometry* create(const vertex::VertexDecl decl, bool bUse32bitIndixes);
+		//static IIndexedGeometry* create(std::wstring xml_filename);
 
-		//static IIndexedGeometry* Create(TiXmlNode* root_geom_node);
+		//static IIndexedGeometry* create(TiXmlNode* root_geom_node);
 		virtual void updateVB(const void* pData, size_t nBytes, size_t size_of_vertex) = 0;
 		virtual void updateIB(const void* pData, size_t nBytes) = 0;
 		virtual void render(PrimitiveType ePrimType, unsigned nBaseVertexIndex, 
@@ -321,12 +321,12 @@ namespace render
 				)
 	{
 		std::vector<byte> data;
-		io::CFileSystem& fs = io::TheFileSystem::Get();
-		io::PReadStream in = fs.findFile(xml_filename);
+		io::CFileSystem& fs = io::TheFileSystem::get();
+		io::readstream_ptr in = fs.findFile(xml_filename);
 		if (in && in->getSize() > 0)
 		{
 			unsigned int size = in->getSize();
-			io::StreamToVector(data, in);
+			io::stream_to_vector(data, in);
 
 			TiXmlDocument xml;//( xml_filename );
 			xml.Parse((const char*)&(data[0]));
@@ -344,7 +344,7 @@ namespace render
 		typedef std::vector<Vertex>			Vertexes;
 		typedef std::vector<unsigned int>	Indexes;
 
-		TIndexedGeometry() : m_spImpl(IIndexedGeometry::Create(Vertex::GetDecl(), true))
+		TIndexedGeometry() : m_spImpl(IIndexedGeometry::create(Vertex::GetDecl(), true))
 		{
 			m_bChanged = false;
 		}
@@ -360,7 +360,7 @@ namespace render
 		void render(PrimitiveType ePrimType, unsigned nPrimitiveCount)
 		{
 			unsigned int nNumVertices = (unsigned int)m_vVertexes.size();
-			Device::Get().addStatistic(nNumVertices, nPrimitiveCount);
+			Device::get().addStatistic(nNumVertices, nPrimitiveCount);
 			m_spImpl->render(ePrimType, 0, 0, nNumVertices, 0, nPrimitiveCount);
 		}
 
@@ -368,7 +368,7 @@ namespace render
 		{
 			//TODO for other primitive types
 			unsigned int nNumVertices = (unsigned int)m_vVertexes.size();
-			Device::Get().addStatistic(nNumVertices, nPrimitiveCount-nStartPrimitive);
+			Device::get().addStatistic(nNumVertices, nPrimitiveCount-nStartPrimitive);
 			m_spImpl->render(ePrimType, 0, 0, nPrimitiveCount*4, 6*nStartPrimitive, nPrimitiveCount );
 		}
 
@@ -448,7 +448,7 @@ namespace render
 		typedef std::vector<unsigned short>	Indexes;
 
 		TIndexedGeometry() 
-			: m_spImpl(IIndexedGeometry::Create(Vertex::GetDecl(), false))
+			: m_spImpl(IIndexedGeometry::create(Vertex::GetDecl(), false))
 		{			
 			m_bChanged = false;
 		}
@@ -486,13 +486,13 @@ namespace render
 		void load( const std::string& filename )
 		{
 			std::vector<byte> data;
-			io::CFileSystem& fs = io::TheFileSystem::Get();
+			io::CFileSystem& fs = io::TheFileSystem::get();
 
 			bool use_binary = false;
 
 			//first try to find binary file
 			std::string bin_filename = filename + ".mesh";
-			io::PReadStream bin_in = fs.findFile(bin_filename);
+			io::readstream_ptr bin_in = fs.findFile(bin_filename);
 			if (!bin_in)
 			{
 				bin_filename = io::helpers::getFileNameWithoutExtension(filename);

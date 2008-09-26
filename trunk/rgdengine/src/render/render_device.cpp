@@ -14,7 +14,7 @@ namespace render
 {
 	Device::Device() : m_shaderFlags(0)
 	{
-        m_ClearColor = math::Color(0,0,0,255);
+        m_clear_color = math::Color(0,0,0,255);
 		//base::lmsg << "Device::Device()";
 	}
 
@@ -129,14 +129,14 @@ namespace render
 				float z			= i *step - hsize;
 				math::Vec3f v1	(-hsize, z, 0);
 				math::Vec3f v2(hsize, z, 0);
-				TheLine3dManager::Get().addLine(v1, v2, color);
+				TheLine3dManager::get().addLine(v1, v2, color);
 			}
 			{
 				// Y
 				float x	= i *step - hsize;
 				math::Vec3f v1(x, -hsize, 0);
 				math::Vec3f v2(x, hsize, 0);
-				TheLine3dManager::Get().addLine(v1, v2, color);
+				TheLine3dManager::get().addLine(v1, v2, color);
 			}
 		}
 	}
@@ -145,7 +145,7 @@ namespace render
 	void Device::showFPS(const PFont& font)
 	{
 		WCHAR szFPSString[64];
-		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(core::TheTimer::Get().getAbsoluteTime()));
+		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(core::TheTimer::get().getAbsoluteTime()));
 		font->render(szFPSString, math::Rect(1, 1, 400, 400), 0xFFFFFFFF, true);
 	}
 
@@ -159,7 +159,7 @@ namespace render
 	IDeviceObject::IDeviceObject()
 	{
 		//base::lmsg << "IDeviceObject::IDeviceObject()";
-		TheDevice::Get().addDeviceObject(this);
+		TheDevice::get().addDeviceObject(this);
 		//m_bIsAtachedToDevice = true;
 	}
 
@@ -167,6 +167,6 @@ namespace render
 	{
 		//base::lmsg << "IDeviceObject::~IDeviceObject()";
 		//if (m_bIsAtachedToDevice)
-		TheDevice::Get().removeDeviceObject(this);
+		TheDevice::get().removeDeviceObject(this);
 	}
 }

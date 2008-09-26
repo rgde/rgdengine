@@ -30,28 +30,26 @@ namespace base
 	*  @note file&line info is for debug builds only and are not expected to be placed manually
 	*  @warning normal way to provide file&line info is to use BASE_EXCEPTION_ARGS macro
 	*  eg 
-	*    class MyEx:public CBaseException{ 
+	*    class MyEx:public base_exception{ 
 	*    public: 
 	*        MyEx(const std::string&msg):BASE_EXCEPTION_ARGS1(msg) {} 
 	*    };
 	*/
-	class CBaseException : public std::exception
+	class base_exception : public std::exception
 	{
 	public:
-		CBaseException(const std::string& strCode, unsigned code=0, const char* f="", int l=0)
-			: std::exception(""), m_strWhat(strCode), 
-			m_Code(code), m_File(f), m_Line(l)
+		base_exception(const std::string& str, unsigned code=0, const char* f="", int l=0)
+			: std::exception(str.c_str()),
+			m_code(code), m_file(f), m_line(l)
 		{
-			base::lerr << "CBaseException::CBaseException() " << m_strWhat << base::endl;
+			base::lerr << "base_exception::base_exception() " << str << base::endl;
 		}
-		const char* what(){return m_strWhat.c_str();}
 
 	protected:
-		std::string m_strWhat;
-		unsigned m_Code;
-		const char* m_File;
-		const int   m_Line;
+		unsigned m_code;
+		const char* m_file;
+		const int   m_line;
 	};
 }
-#define BASE_EXCEPTION_ARGS1(what) CBaseException((what), 0, __FILE__, __LINE__)
-#define BASE_EXCEPTION_ARGS2(what, code) CBaseException((what), (code), __FILE__, __LINE__)
+#define BASE_EXCEPTION_ARGS1(what) base_exception((what), 0, __FILE__, __LINE__)
+#define BASE_EXCEPTION_ARGS2(what, code) base_exception((what), (code), __FILE__, __LINE__)

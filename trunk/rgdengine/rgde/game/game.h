@@ -76,5 +76,5 @@ namespace game
 		bool                       m_change_level;
 	};
 
-	typedef base::TSingelton<game_system>	TheGame;
+	typedef base::singelton<game_system>	TheGame;
 }

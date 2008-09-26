@@ -31,18 +31,18 @@ namespace rgde
 					using namespace input;
 
 					m_cEsc.attach(L"Quit");
-					Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Quit");            
+					Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");            
 					m_cEsc += boost::bind(&sprite_example::onEsc, this);
 				}
 
-				m_font = render::IFont::Create(12, L"Arial", render::IFont::Heavy);
+				m_font = render::IFont::create(12, L"Arial", render::IFont::Heavy);
 
-				std::vector<render::PTexture> vTextures;
-				vTextures.push_back(render::ITexture::Create( "Sprites/test01.jpg" ));
-				vTextures.push_back(render::ITexture::Create( "Sprites/test02.jpg" ));
-				vTextures.push_back(render::ITexture::Create( "Sprites/test03.jpg" ));
-				vTextures.push_back(render::ITexture::Create( "Sprites/test04.jpg" ));
-				vTextures.push_back(render::ITexture::Create( "Sprites/test05.bmp" ));
+				std::vector<render::texture_ptr> vTextures;
+				vTextures.push_back(render::texture::create( "Sprites/test01.jpg" ));
+				vTextures.push_back(render::texture::create( "Sprites/test02.jpg" ));
+				vTextures.push_back(render::texture::create( "Sprites/test03.jpg" ));
+				vTextures.push_back(render::texture::create( "Sprites/test04.jpg" ));
+				vTextures.push_back(render::texture::create( "Sprites/test05.bmp" ));
 
 				for( unsigned priority = m_priorities; priority > 0; --priority )
 					for( unsigned sprite = m_nSpritesPerPriority; sprite > 0; --sprite )
@@ -72,12 +72,12 @@ namespace rgde
 
 			void sprite_example::onEsc()
 			{
-				core::application::Get()->close();
+				core::application::get()->close();
 			}
 
 			void sprite_example::update(float dt)
 			{
-				render::TheDevice::Get().showFPS(m_font);
+				render::TheDevice::get().showFPS(m_font);
 
 				for (render::SpriteManager::SpritesIter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 				{

@@ -9,36 +9,36 @@
 
 namespace scene
 {
-	CameraTrigger::CameraTrigger()
-		: m_fDistance(0)
+	camera_trigger::camera_trigger()
+		: m_distance(0)
 	{
 	}
 
-	void CameraTrigger::init(float distance, const math::PFrame &frame)
+	void camera_trigger::init(float distance, const math::frame_ptr &frame)
 	{
-		m_pFrame = frame; 
-		m_fDistance = distance;
+		m_frame = frame; 
+		m_distance = distance;
 	}
 
-	CameraTrigger::CameraTrigger(float fDistance, const math::PFrame &pFrame)
-		: m_pFrame(pFrame),
-		  m_fDistance(fDistance)
+	camera_trigger::camera_trigger(float fDistance, const math::frame_ptr &pFrame)
+		: m_frame(pFrame),
+		  m_distance(fDistance)
 	{
 	}
 
-	void CameraTrigger::update(float dt)
+	void camera_trigger::update(float dt)
 	{
-		if (!m_pFrame)
+		if (!m_frame)
 			return;
 
-		math::PCamera pCam = render::TheDevice::Get().getCurentCamera();
+		math::camera_ptr pCam = render::TheDevice::get().get_curent_camera();
 
 		if (!pCam)
 			return;
 
-		float fDistance	= math::length<float, 3>(pCam->getPosition() - m_pFrame->getGlobalPosition());
+		float fDistance	= math::length<float, 3>(pCam->getPosition() - m_frame->getGlobalPosition());
 
-		bool isCameraInside	= fDistance <= m_fDistance;
+		bool isCameraInside	= fDistance <= m_distance;
 
 		if (isCameraInside != m_bIsTriggered)
 		{

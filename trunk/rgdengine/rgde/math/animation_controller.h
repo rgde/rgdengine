@@ -13,7 +13,7 @@ namespace math
 		typedef math::TInterpolator<math::Vec3f> ScaleInterpolyator;
 
 	public:
-		FrameAnimationController( TiXmlNode* pXmlNode = 0, math::PFrame spFrame = PFrame());
+		FrameAnimationController( TiXmlNode* pXmlNode = 0, math::frame_ptr spFrame = frame_ptr());
 		virtual ~FrameAnimationController(){}
 
 		bool load( TiXmlNode* pXmlNode );
@@ -21,8 +21,8 @@ namespace math
 		float getWeight() const;
 		void  setWeight(float fWeight);
 
-		void atachToFrame( PFrame spFrame ) { m_spFrame = spFrame; }
-		PFrame& getFrame() {return m_spFrame;} 
+		void atachToFrame( frame_ptr spFrame ) { m_spFrame = spFrame; }
+		frame_ptr& getFrame() {return m_spFrame;} 
 
 		inline void setRate( float rate ) { m_fAnimationRate = rate; }
 		inline float getRate() const { return m_fAnimationRate; }
@@ -57,7 +57,7 @@ namespace math
 		float m_fAnimationRate;
 		float m_fWeight;
 
-		math::PFrame m_spFrame;
+		math::frame_ptr m_spFrame;
 
 		bool m_bPaused;
 		bool m_bPlaying;

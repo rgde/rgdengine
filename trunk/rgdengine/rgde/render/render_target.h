@@ -10,20 +10,20 @@ namespace render
 		TextureFormat	format;
 	};
 
-	class IRenderTarget
+	class render_target
 	{
 	public:
-		virtual ~IRenderTarget(){}
+		virtual ~render_target(){}
 		virtual void activate() = 0;
 	};
 
-	class IRenderTexture;
-	typedef boost::shared_ptr<IRenderTexture> PRenderTexture;
+	class render_texture;
+	typedef boost::shared_ptr<render_texture> PRenderTexture;
 
 
-	class IRenderTexture : public IRenderTarget, public ITexture
+	class render_texture : public render_target, public texture
 	{
 	public:
-		static PRenderTexture Create(const RenderTargetInfo& params);
+		static PRenderTexture create(const RenderTargetInfo& params);
 	};
 }

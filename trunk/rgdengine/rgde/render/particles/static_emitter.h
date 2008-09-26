@@ -78,7 +78,7 @@ namespace particles{
 		virtual void fromStream(io::IReadStream& rf);
 
 	protected:
-		render::PTexture	m_texture;
+		render::texture_ptr	m_texture;
 		PTanks*				m_Frames;
 		
 		static PFrames ms_PFrames;

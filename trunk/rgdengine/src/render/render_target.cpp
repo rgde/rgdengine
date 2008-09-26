@@ -10,22 +10,22 @@ extern IDirect3DDevice9* g_pd3dDevice;
 
 namespace render
 {
-	class RenderTextureImpl : public IRenderTexture, public TextureImpl
+	class render_texture_d3d9 : public render_texture, public texture_d3d9
 	{
 	public:
-		TextureFormat getFormat() const {return TextureImpl::getFormat();}
-		TextureUsage  getUsage()  const {return TextureImpl::getUsage();}
-		int			  getHeight() const {return TextureImpl::getHeight();}
-		int			  getWidth()  const {return TextureImpl::getWidth();}
-		ETextureType  getType()	  const {return TextureImpl::getType();}
-		bool		  hasAlpha()  const {return TextureImpl::hasAlpha();}
+		TextureFormat getFormat() const {return texture_d3d9::getFormat();}
+		TextureUsage  getUsage()  const {return texture_d3d9::getUsage();}
+		int			  getHeight() const {return texture_d3d9::getHeight();}
+		int			  getWidth()  const {return texture_d3d9::getWidth();}
+		ETextureType  getType()	  const {return texture_d3d9::getType();}
+		bool		  hasAlpha()  const {return texture_d3d9::hasAlpha();}
 
-		RenderTextureImpl(const RenderTargetInfo& params)
+		render_texture_d3d9(const RenderTargetInfo& params)
 		{
 			createRenderTexture(params.size, params.format);
 		}
 
-		~RenderTextureImpl()
+		~render_texture_d3d9()
 		{
 		}
 
@@ -35,7 +35,7 @@ namespace render
 
 			V(m_texture->GetSurfaceLevel(0, &pSurfaceLevel));
 
-			if (DepthStencil == TextureImpl::getUsage()){
+			if (DepthStencil == texture_d3d9::getUsage()){
 				V(g_pd3dDevice->SetDepthStencilSurface(pSurfaceLevel));
 			} else {
 				V(g_pd3dDevice->SetRenderTarget(0, pSurfaceLevel));
@@ -43,8 +43,8 @@ namespace render
 		}
 	};
 
-	PRenderTexture IRenderTexture::Create(const RenderTargetInfo& params)
+	PRenderTexture render_texture::create(const RenderTargetInfo& params)
 	{
-		return PRenderTexture(new RenderTextureImpl(params));
+		return PRenderTexture(new render_texture_d3d9(params));
 	}
 }

@@ -6,7 +6,7 @@
 namespace io
 {
 	typedef boost::shared_ptr<class IFileSource> PFileSource;
-	typedef boost::shared_ptr<class IReadStream> PReadStream;
+	typedef boost::shared_ptr<class IReadStream> readstream_ptr;
 
 	class IFileSource
 	{
@@ -14,7 +14,7 @@ namespace io
 		virtual ~IFileSource(){}
 
 		virtual int			getPriority() const = 0;
-		virtual PReadStream findFile(const std::string& strFilePath) const = 0;
+		virtual readstream_ptr findFile(const std::string& strFilePath) const = 0;
 		virtual bool		isExist	(const std::string& strFilePath) const = 0;
 
 		static PFileSource  CreateDirectorySource(const Path& path);
@@ -32,7 +32,7 @@ namespace io
 		void		setRootDir(const Path& path);
 
 		void		addFileSource(const PFileSource& spFileSource);
-		PReadStream findFile(const std::string& strFilePath) const;
+		readstream_ptr findFile(const std::string& strFilePath) const;
 		bool		isExist	(const std::string& strFilePath) const;
 
 	public:
@@ -41,7 +41,7 @@ namespace io
 		Path	m_rootPath;
 	};
 
-	typedef base::TSingelton<CFileSystem> TheFileSystem;
+	typedef base::singelton<CFileSystem> TheFileSystem;
 
 	class ScopePathChange
 	{
@@ -65,7 +65,7 @@ namespace io
 
 
 	template<typename DataType>
-	void StreamToVector(std::vector<DataType>& v, PReadStream& s, bool from_current_pos = false)
+	void stream_to_vector(std::vector<DataType>& v, readstream_ptr& s, bool from_current_pos = false)
 	{
 		if (!s) 
 		{

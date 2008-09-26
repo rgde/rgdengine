@@ -10,9 +10,9 @@
 namespace render
 {
 	Mesh::Mesh()
-		: IRendererable(10)
+		: rendererable(10)
 	{
-		m_renderInfo.pFrame = this;//m_pFrame;
+		m_renderInfo.pFrame = this;//m_frame;
 		m_renderInfo.pRenderFunc = boost::bind(&Mesh::render, this);
 		m_renderInfo.bHaveVolumes = true;
 	}
@@ -67,7 +67,7 @@ namespace render
 		m_file_name = file_name;
 		m_geometry = PGeometry(new Geometry());
 
-		io::CFileSystem &fs	= io::TheFileSystem::Get();
+		io::CFileSystem &fs	= io::TheFileSystem::get();
 		io::ScopePathAdd p	("Meshes/");
 
 		m_geometry->load(file_name);
@@ -96,7 +96,7 @@ namespace render
 		//{
 		////	// calc global AABB from OOB
 		////	AABoxf global_aabb;
-		////	Matrix44f m = m_pFrame.get()->getFullTransform();
+		////	Matrix44f m = m_frame.get()->getFullTransform();
 		////	float	Xmax = m_renderInfo.bbox.getMax()[0],
 		////			Ymax = m_renderInfo.bbox.getMax()[1],
 		////			Zmax = m_renderInfo.bbox.getMax()[2],
@@ -119,7 +119,7 @@ namespace render
 		//	//Neonic: корректируем динамические меши в пространстве 
 		//	if(isDynamic())
 		//		updatePos();
-		//	scene::TheScene::Get().inject(this);
+		//	scene::TheScene::get().inject(this);
 		//}
 		//else 
 		//if( NeedFullUpdate )
@@ -127,7 +127,7 @@ namespace render
 		//	math::AABoxf global_aabb = m_renderInfo.bbox;
 		//	collision::calcAABB(getFullTransform(),global_aabb);
 		//	setAABB(global_aabb);
-		//	scene::TheScene::Get().inject(this);
+		//	scene::TheScene::get().inject(this);
 		//}
 		//else
 		//{

@@ -23,7 +23,7 @@ namespace particles
 	public:
 		enum Type {	Maya, Spherical, Box };
 
-		Emitter(Type _type) : m_eType(_type), core::XmlClass("ParticleEmitter") 
+		Emitter(Type _type) : m_type(_type), core::XmlClass("ParticleEmitter") 
 		{
 			// public properties:
 			//REGISTER_PROPERTY(Transform, math::Frame)
@@ -40,14 +40,14 @@ namespace particles
 
 		// Акксессоры получения
 		inline math::Frame& getTransform() { return m_Transform; }
-		inline Type getEmitterType() const { return m_eType; }
+		inline Type getEmitterType() const { return m_type; }
 
 	protected:
 		virtual void toStream(io::IWriteStream& wf) const;
 		virtual void fromStream(io::IReadStream& rf);
 
 	protected:
-		const Type		m_eType;					// Тип эммитера
+		const Type		m_type;					// Тип эммитера
 		math::Frame	m_Transform;				// Трансформация
 	};
 

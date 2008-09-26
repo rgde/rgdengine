@@ -18,15 +18,15 @@ extern LPDIRECT3DDEVICE9 g_pd3dDevice;
 
 namespace render
 {
-	PTexture safeLoadDefaultTexture(const std::string &strTextureName)
+	texture_ptr safeLoadDefaultTexture(const std::string &strTextureName)
 	{
 		io::ScopePathAdd p	("Common/");
-		PTexture pResult	= ITexture::Create(strTextureName);
+		texture_ptr pResult	= texture::create(strTextureName);
 
 		if (!pResult)
 		{
 			base::lerr << "Can't load default texture \"" << strTextureName << "\"";
-			core::application::Get()->close();
+			core::application::get()->close();
 		}
 
 		return pResult;
@@ -39,8 +39,8 @@ namespace render
 			m_pWhiteTexture(safeLoadDefaultTexture("White.jpg")),
 			m_pDefaultNormalMap(safeLoadDefaultTexture("DefaultNormalMap.jpg")),
 			m_pBlackTexture(safeLoadDefaultTexture("Black.jpg")),
-			m_pDefaultEffect(Effect::Create("Default.fxo")),
-			m_pDefaultFont(IFont::Create(11,  L"Arial", render::IFont::Heavy))			
+			m_pDefaultEffect(Effect::create("Default.fxo")),
+			m_pDefaultFont(IFont::create(11,  L"Arial", render::IFont::Heavy))			
 	{
 
 		m_pDefaultFog.loadFromXML("Default.xml");
@@ -50,13 +50,13 @@ namespace render
 		if (!m_pDefaultEffect)
 		{
 			base::lerr << "Can't load effect \"graphics/shaders/Default.fxo\"";
-			core::application::Get()->close();
+			core::application::get()->close();
 		}
 
 		if (!m_pDefaultFont)
 		{
 			base::lerr << "Can't create font \"" << "Arial" << "\"";
-			core::application::Get()->close();
+			core::application::get()->close();
 		}
 	}
 
@@ -74,17 +74,17 @@ namespace render
 		return m_pDefaultFont;
 	}
 
-	PTexture& RenderManager::getBlackTexture()
+	texture_ptr& RenderManager::getBlackTexture()
 	{
 		return m_pBlackTexture;
 	}
 
-	PTexture& RenderManager::getWhiteTexture()
+	texture_ptr& RenderManager::getWhiteTexture()
 	{
 		return m_pWhiteTexture;
 	}
 
-	PTexture& RenderManager::getDefaultNormalMap()
+	texture_ptr& RenderManager::getDefaultNormalMap()
 	{
 		return m_pDefaultNormalMap;
 	}
@@ -94,12 +94,12 @@ namespace render
 		m_pCurrentFog = pFog;
 	}
 
-	void RenderManager::add(IRendererable *r)
+	void RenderManager::add(rendererable *r)
 	{
 		m_lRenderables.push_back(r);
 	}
 
-	void RenderManager::remove(IRendererable *r)
+	void RenderManager::remove(rendererable *r)
 	{
 		//m_lRenderables.remove(r);
 		Renderables::iterator it = std::find(m_lRenderables.begin(), m_lRenderables.end(), r);
@@ -129,7 +129,7 @@ namespace render
 		{
 			PEffect& defaultEffect;
 			SDefaultRender() 
-				: defaultEffect(TheRenderManager::Get().getDefaultEffect())
+				: defaultEffect(TheRenderManager::get().getDefaultEffect())
 			{
 			}
 
@@ -143,7 +143,7 @@ namespace render
 			{
 				if(info.pFrame)
 				{
-					static PMaterial pDefaultMaterial = Material::Create();
+					static PMaterial pDefaultMaterial = Material::create();
 
 					//const PMaterial& pMaterial = info.spMaterial ? info.spMaterial : pDefaultMaterial;
 					//const PEffect&	 pEffect	= info.spShader ? info.spShader : defaultEffect;
@@ -201,7 +201,7 @@ namespace render
 
 		struct SPrioritySorter_Less
 		{
-			bool operator()(IRendererable *r1, IRendererable *r2)
+			bool operator()(rendererable *r1, rendererable *r2)
 			{
 				return r1->getPriority() < r2->getPriority() ? true : false;
 			}
@@ -217,8 +217,8 @@ namespace render
 
 			bool operator()(SRenderableInfo const * r1, SRenderableInfo const * r2)
 			{
-				const math::PFrame& pFrame1 = r1->pFrame;
-				const math::PFrame& pFrame2 = r2->pFrame;
+				const math::frame_ptr& pFrame1 = r1->pFrame;
+				const math::frame_ptr& pFrame2 = r2->pFrame;
 
 				math::Vec3f		pos1, pos2;
 				if (pFrame1)
@@ -248,7 +248,7 @@ namespace render
 		{
 		}
 
-		void operator()(IRendererable const * r)
+		void operator()(rendererable const * r)
 		{
 			if ((NULL == r) || (r->isVisible() == false))
 				return;
@@ -280,19 +280,19 @@ namespace render
 
 	void RenderManager::renderScene()
 	{
-		render::TheDevice::Get().resetStats();
+		render::TheDevice::get().resetStats();
 
 		//m_lRenderables.sort(functors::SPrioritySorter_Less());
 		std::sort(m_lRenderables.begin(), m_lRenderables.end(), functors::SPrioritySorter_Less());
 
-		TheCameraManager::Get().sortCameras();
+		TheCameraManager::get().sortCameras();
 
 		static std::vector<SRenderableInfo const *> vPostTransparet(1000);
 		static std::vector<SRenderableInfo const *> vTransparet(1000);
 		static std::vector<SRenderableInfo const *> vSolid(1000);
 
 		// draw scene through every active camera
-		CameraManager &cm	= TheCameraManager::Get();
+		CameraManager &cm	= TheCameraManager::get();
 		if (cm.begin() != cm.end())
 		{
 			for (CameraManager::CameraListIterator camera = cm.begin(); camera != cm.end(); ++camera)
@@ -301,13 +301,13 @@ namespace render
 				vTransparet.resize(0);
 				vPostTransparet.resize(0);
 
-				TheCameraManager::Get().setCamera(camera);
+				TheCameraManager::get().setCamera(camera);
 
 				if(!m_pStaticBinder)
 					createBinder();
 				m_pStaticBinder->setupParameters(0);
 
-				const math::Frustum& frustum = TheDevice::Get().getCurentCamera()->getFrustum();
+				const math::Frustum& frustum = TheDevice::get().get_curent_camera()->getFrustum();
 				std::for_each(m_lRenderables.begin(), m_lRenderables.end(), SRenderblesSorter(vSolid, vTransparet, vPostTransparet, frustum));
 
 				int nVisibleObjects = static_cast<int>(vTransparet.size() + vSolid.size());
@@ -315,11 +315,11 @@ namespace render
 				//std::wstring wstr(str.begin(), str.end());
 				//getDefaultFont()->renderText(wstr, math::Rect(1, 29, 400, 400), 0xFFFFFFFF, true);
 
-				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(TheDevice::Get().getCurentCamera()->getPosition()));
+				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(TheDevice::get().get_curent_camera()->getPosition()));
 
 				{
 					{
-						const math::PCamera& pCamera = *camera;
+						const math::camera_ptr& pCamera = *camera;
 						const math::Matrix44f& mView = pCamera->getViewMatrix();
 						const math::Matrix44f& mProj = pCamera->getProjMatrix();
 						//return mProj*(mView*frame->getFullTransform());
@@ -352,8 +352,8 @@ namespace render
 		}
 
 		// draw debug information
-		//scene::TheScene::Get().debugDraw();
-		//render::TheDevice::Get().showStatistics(getDefaultFont());
+		//scene::TheScene::get().debugDraw();
+		//render::TheDevice::get().showStatistics(getDefaultFont());
 	}
 
 	void RenderManager::createBinder()
@@ -361,24 +361,24 @@ namespace render
 		m_pStaticBinder = createStaticBinder(m_pDefaultEffect);
 	}
 
-	IRendererable::IRendererable(unsigned priority)
+	rendererable::rendererable(unsigned priority)
 		: m_nRenderPriority(priority),
 		  m_bIsVisible(true)
 	{
-		TheRenderManager::Get().add(this);
+		TheRenderManager::get().add(this);
 	}
 
-	IRendererable::~IRendererable()
+	rendererable::~rendererable()
 	{
-		if (TheRenderManager::IsCreated())
-			TheRenderManager::Get().remove(this);
+		if (TheRenderManager::is_created())
+			TheRenderManager::get().remove(this);
 	}
 
 
 	SRenderableInfo::SRenderableInfo()
 		: pFrame(0),
 		  bHaveVolumes(false),
-		  spMaterial(Material::Create())
+		  spMaterial(Material::create())
 	{
 	}
 }

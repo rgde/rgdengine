@@ -104,14 +104,14 @@ namespace render
 		CubeTexture   = 4
 	};
 
-	typedef boost::shared_ptr<class ITexture> PTexture;
+	typedef boost::shared_ptr<class texture> texture_ptr;
 
-	class ITexture
+	class texture
 	{
 	public:
-		virtual ~ITexture(){}
+		virtual ~texture(){}
 
-		static PTexture		  Create(const std::string& file_name);
+		static texture_ptr		  create(const std::string& file_name);
 
 		virtual TextureFormat getFormat() const = 0; 
 		virtual TextureUsage  getUsage()  const = 0;

@@ -4,7 +4,7 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class ITexture> PTexture;
+	typedef boost::shared_ptr<class texture> texture_ptr;
 
 	typedef boost::shared_ptr<class Effect> PEffect;
 
@@ -65,7 +65,7 @@ namespace render
 			virtual bool set(const math::Vec4f& value) = 0;
 			virtual bool set(const math::Vec3f& value) = 0;
 			virtual bool set(const math::Vec2f& value) = 0;
-			virtual bool set(const PTexture& value) = 0;
+			virtual bool set(const texture_ptr& value) = 0;
 
 			template <class T>
 			bool set(const T& val)
@@ -121,7 +121,7 @@ namespace render
 	public:
 		virtual ~Effect(){}
 
-		static PEffect Create(const std::string& fileName);
+		static PEffect create(const std::string& fileName);
 		static void ClearAll();
 
 		///////////////////////////////////////////////////

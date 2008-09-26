@@ -22,8 +22,8 @@ namespace render
 		void					addDeviceObject(IDeviceObject* pObj);
 		void					removeDeviceObject(IDeviceObject* pObj);
 
-		void					setCurentCamera(const math::PCamera& cam){m_curCam = cam; }
-		const math::PCamera&	getCurentCamera() const {return m_curCam;}
+		void					setCurentCamera(const math::camera_ptr& cam){m_curCam = cam; }
+		const math::camera_ptr&	get_curent_camera() const {return m_curCam;}
 
 		void					setShaderFlags(unsigned long flag)	{m_shaderFlags = flag;}
 		unsigned long			getShaderFlags() const				{return m_shaderFlags;}
@@ -44,17 +44,17 @@ namespace render
 		void                    showStatistics(const PFont& font);
 
         //->
-        void                    setClearColor (math::Color color) {m_ClearColor = color;}
-        math::Color             getClearColor () {return m_ClearColor;}
+        void                    setClearColor (math::Color color) {m_clear_color = color;}
+        math::Color             getClearColor () {return m_clear_color;}
         //-<
 
 	protected:
         //->
-        math::Color             m_ClearColor;
+        math::Color             m_clear_color;
         //-<
 
 		unsigned long			m_shaderFlags;
-		math::PCamera			m_curCam;
+		math::camera_ptr			m_curCam;
 
 		unsigned				m_verts;
 		unsigned				m_triangles;
@@ -63,7 +63,7 @@ namespace render
 		DeviceObjects m_objects;
 	};
 
-	typedef base::TSingelton<Device> TheDevice;
+	typedef base::singelton<Device> TheDevice;
 
 	class IDeviceObject
 	{

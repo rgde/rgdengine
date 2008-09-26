@@ -8,14 +8,14 @@ namespace render
 {
 	typedef boost::shared_ptr<class LensFlares> PLensFlares;
 	
-	class LensFlares : public IRendererable
+	class LensFlares : public rendererable
 	{
 	public:
-		static PLensFlares Create(const std::string& strFileName, const math::PFrame& pFrame);
+		static PLensFlares create(const std::string& file_name, const math::frame_ptr& pFrame);
 
 		struct Flare
 		{
-			PTexture texture;
+			texture_ptr texture;
 			float fDistance;
 			float fImageScale;
 			float fAngleScale;
@@ -26,15 +26,15 @@ namespace render
 		void addFlare(const Flare& flare, const std::string& strTextureName = "");
 
 	protected:
-		LensFlares(math::PFrame pFrame);//pFrame is light pos
+		LensFlares(math::frame_ptr pFrame);//pFrame is light pos
 
 	private:
-		void loadFromXML(const std::string& strFileName);
+		void loadFromXML(const std::string& file_name);
 		void render();
 		inline void progressFlare(Flare& flare, const math::Vec2f& toLightVector, float fToLightLength, float fAngle, float fAlphaScale);
 
 	private:
-		math::PFrame m_pFrame;
+		math::frame_ptr m_frame;
 		std::vector<Flare> m_flares;
 	};
 

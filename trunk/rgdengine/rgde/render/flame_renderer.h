@@ -13,22 +13,22 @@ namespace render
 {
 	typedef boost::shared_ptr<class FlameRenderer> PFlameRenderer;
 
-	class FlameRenderer : public IRendererable, game::dynamic_object
+	class FlameRenderer : public rendererable, game::dynamic_object
 	{
 	public:
-		static PFlameRenderer Create(const std::string& tex, const math::Color& color, 
-			const math::Vec3f& pos, const math::Vec2f& size, uint fps,  const std::vector<math::PFrame>& vVector);
+		static PFlameRenderer create(const std::string& tex, const math::Color& color, 
+			const math::Vec3f& pos, const math::Vec2f& size, uint fps,  const std::vector<math::frame_ptr>& vVector);
 
-		static PFlameRenderer Create(const std::string& strFileName, const std::vector<math::PFrame>& vVector);
+		static PFlameRenderer create(const std::string& file_name, const std::vector<math::frame_ptr>& vVector);
 	
 		float getFPS() const	 {return m_fFPS;}
 		void  setFPS(float fFPS) {m_fFPS = fFPS;}
 
 	private:
 		FlameRenderer(const std::string& tex, const math::Color& color, const math::Vec3f& pos, 
-			const math::Vec2f& size, uint fps, const std::vector<math::PFrame>& vVector);
+			const math::Vec2f& size, uint fps, const std::vector<math::frame_ptr>& vVector);
 
-		void readTNF(const std::string& strFileName);
+		void readTNF(const std::string& file_name);
 		void render();
 
 		virtual void update(float dt);
@@ -43,6 +43,6 @@ namespace render
 		float m_fFramesToAdd;
 
 		particles::PPTank m_pTank;
-		PTexture          m_pParticleTexture;
+		texture_ptr          m_pParticleTexture;
 	};
 }

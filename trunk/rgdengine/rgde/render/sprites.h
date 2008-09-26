@@ -10,7 +10,7 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class ITexture> PTexture;
+	typedef boost::shared_ptr<class texture> texture_ptr;
 	typedef boost::shared_ptr<class Effect> PEffect;
 
 	struct Sprite
@@ -20,17 +20,17 @@ namespace render
 		math::Vec2f size;					///> Размер спрайта (в экранных координатах)
 		float spin;							///< Поворот
 		unsigned long uPriority;			///> Приоритет отрисовки
-		render::PTexture texture;			///> Адрес текстуры
+		render::texture_ptr texture;			///> Адрес текстуры
 		math::Color color;					///> Цвет
 
 		Sprite();
 		Sprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
-			const math::Color& color_ = 0xffffffff,render::PTexture pTexture_ = render::PTexture(), 
+			const math::Color& color_ = 0xffffffff,render::texture_ptr pTexture_ = render::texture_ptr(), 
 			float spin_ = 0, const math::Rect& rect_ = math::Rect(0, 0, 1, 1),			
 			unsigned long uPriority_ = 0 );
 	};
 
-	class SpriteManager : public IDeviceObject, public IRendererable
+	class SpriteManager : public IDeviceObject, public rendererable
 	{
 	public:
 		typedef std::vector<Sprite> SpritesVector;
@@ -62,7 +62,7 @@ namespace render
 		SpritesVector m_sprites;						// Спрайты
 		unsigned m_nSpritesRendered;				/// Число отрисованных в последний раз спрайтов
 
-		PEffect  m_pEffect;
+		PEffect  m_effect;
 
 		typedef TIndexedGeometry<vertex::PositionTransformedColoredTextured, false> Geometry;
 		Geometry m_Geometry;						/// Геометрия
@@ -80,5 +80,5 @@ namespace render
 		std::vector<unsigned> m_vEqualPrioritiesN;	/// Число спрайтов в группах с одинаковыми приоритетами
 	};
 
-	typedef base::TSingelton<SpriteManager> TheSpriteManager;
+	typedef base::singelton<SpriteManager> TheSpriteManager;
 }

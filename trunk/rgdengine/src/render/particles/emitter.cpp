@@ -9,7 +9,7 @@ namespace particles
 	//-----------------------------------------------------------------------------------
 	void Emitter::toStream (io::IWriteStream& wf) const
 	{
-		wf	<< (unsigned)m_eType
+		wf	<< (unsigned)m_type
 			<< m_Transform;
 	}
 

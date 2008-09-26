@@ -3,14 +3,14 @@
 
 namespace input
 {
-	class InputImpl;
+	class input_impl;
 	class Helper;
 
     //команда системы ввода
     class Command
     {
     public:
-        Command(const std::wstring &sName, InputImpl &rInput);
+        Command(const std::wstring &sName, input_impl &rInput);
 
         const std::wstring& getName() const;
         void lock();
@@ -28,7 +28,7 @@ namespace input
 
     private:
         bool          m_bLocked;
-        InputImpl     &m_rInput;
+        input_impl     &m_rInput;
         std::wstring  m_sName;
 
 		typedef std::list<Helper*> HelpersList;
