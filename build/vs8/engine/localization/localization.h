@@ -14,8 +14,6 @@ namespace rgde
 
 		typedef boost::shared_ptr<base_localization_table> localization_table_ptr;
 
-		
-
 		// любая подсистема движка, которой нужно иметь дело с языковой информацией
 		// должна содержать в себе такую таблицу
 		class localization_table : public base_localization_table
