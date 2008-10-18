@@ -91,8 +91,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory=".\..\..\..\objs\debug_mt"
-			IntermediateDirectory=".\..\..\..\objs\debug_mt"
+			OutputDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="0"
@@ -123,10 +123,6 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				DisableLanguageExtensions="true"
-				PrecompiledHeaderFile=".\..\..\..\objs\debug_mt/freetype.pch"
-				AssemblerListingLocation=".\..\..\..\objs\debug_mt/"
-				ObjectFile=".\..\..\..\objs\debug_mt/"
-				ProgramDataBaseFileName=".\..\..\..\objs\debug_mt/"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 				CompileAs="0"
