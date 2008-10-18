@@ -19,7 +19,7 @@ namespace base
 	/** wraps all throw statements to make life/debug/log easier
 	*/
 	template <class X>
-		void throw_(const X& ex)
+	void throw_(const X& ex)
 	{
 		///@todo log what and when
 		assert(false); /// for debug - we just wanna break - if not comment it out

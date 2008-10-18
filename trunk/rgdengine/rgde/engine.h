@@ -55,13 +55,11 @@ typedef unsigned int  uint;
 #include "base\\log.h"
 #include "base\\log_helper.h"
 #include "base\\exceptions.h"
-#include "base\\hash_string.h"
 #include "base\\lexical_cast.h"
 #include "base\\manager.h"
 #include "base\\multitree.h"
 #include "base\\singelton.h"
 #include "base\\tree.h"
-//#include "base\\visitor.h"
 #include "base\\smart_ptr_helpers.h"
 
 #include "io\\io.h"
@@ -110,17 +108,6 @@ typedef unsigned int  uint;
 #include "math\\splines.h"
 #include "math\\interpolators.h"
 
-//#include "sound\\soundDirectAudioTypes.h"
-//#include "sound\\soundAbstractSound.h"
-//#include "sound\\soundAbstractManager.h"
-//#include "sound\\soundLoader.h"
-//#include "sound\\soundWaveFile.h"
-//#include "sound\\sound3d.h"
-//#include "sound\\soundMusic.h"
-//#include "sound\\sound3dManager.h"
-//#include "sound\\soundMusicManager.h"
-//#include "sound\\soundFrameSoundManager.h"
-
 #include "render\\common.h"
 #include "render\\font.h"
 #include "render\\device.h"
@@ -149,11 +136,9 @@ typedef unsigned int  uint;
 #include "render\\screen_fader.h"
 
 #include "scene\\tree.h"
-//#include "scene\\visitor.h"
 #include "scene\\scene.h"
 #include "scene\\manager.h"
 #include "scene\\base_trigger.h"
 #include "scene\\distance_trigger.h"
 
 #include "ui/ui.h"
-//#include "script\\script.h"
