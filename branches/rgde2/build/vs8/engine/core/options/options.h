@@ -39,7 +39,7 @@ namespace rgde
 
 			struct section_sorter
 			{
-				bool operator<(const section& l, const section& r)
+				bool operator()(const section& l, const section& r)
 				{
 					return l.m_name < r.m_name;
 				}
@@ -56,8 +56,9 @@ namespace rgde
 
 			section& operator[](const std::string& section_name)
 			{
-				std::binary_search(m_sub_sections.begin(), m_sub_sections.end(), section_name, 
-					)
+				return *m_sub_sections.begin();
+				//std::binary_search(m_sub_sections.begin(), m_sub_sections.end(), section_name, 
+				//	)
 
 			}
 		};
@@ -65,11 +66,11 @@ namespace rgde
 		void load(const std::string& filename);
 		void save(const std::string& filename);
 
-		static operator[](const std::string& section_name);
-		static operator[](const std::string& section_name);
+		//static operator[](const std::string& section_name);
+		//static operator[](const std::string& section_name);
 
 	private:
 		section m_root_section;
 		section m_empty_section;
-	}
+	};
 }
