@@ -338,6 +338,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="options"
+				>
+				<File
+					RelativePath=".\options\options.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
