@@ -39,7 +39,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scene", "scene\scene.vcproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "platform_specific", "platform_specific", "{71FE945C-C6B9-4E7C-9E7D-07F212F59759}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{7833305A-3DA1-466C-9B3E-134BDF44F624}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "..\..\external\freetype\builds\win32\visualc\freetype.vcproj", "{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}"
+EndProject
 Global
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
@@ -81,6 +88,10 @@ Global
 		{6C7EFBA0-0A07-4E1E-8B1F-725BD44C8276}.Debug|Win32.Build.0 = Debug|Win32
 		{6C7EFBA0-0A07-4E1E-8B1F-725BD44C8276}.Release|Win32.ActiveCfg = Release|Win32
 		{6C7EFBA0-0A07-4E1E-8B1F-725BD44C8276}.Release|Win32.Build.0 = Release|Win32
+		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Debug|Win32.Build.0 = Debug|Win32
+		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Release|Win32.ActiveCfg = Release|Win32
+		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +106,6 @@ Global
 		{2730B8D5-6D9E-41BA-975C-0DF08030BF83} = {64D121FF-0272-4189-B61A-2FA431241D01}
 		{FB4E3B2B-37D2-48CA-9A73-AFFD02DF4C33} = {64D121FF-0272-4189-B61A-2FA431241D01}
 		{DD993359-1DA6-4B02-A429-827CDC85D983} = {71FE945C-C6B9-4E7C-9E7D-07F212F59759}
+		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B} = {7833305A-3DA1-466C-9B3E-134BDF44F624}
 	EndGlobalSection
 EndGlobal
