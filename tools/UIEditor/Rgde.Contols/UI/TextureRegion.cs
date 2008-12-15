@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace Rgde.Contols.UI
@@ -89,7 +90,8 @@ namespace Rgde.Contols.UI
             Selected
         };
 
-        public void Draw(System.Drawing.Graphics g, float scale, float x, float y, DrawMode mode)
+        public void Draw(System.Drawing.Graphics g, float scale, float x, float y,
+                        DrawMode mode, Image image)
         {
             if (!Visible)
                 return;
@@ -99,25 +101,26 @@ namespace Rgde.Contols.UI
             g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            int pen_width = 1;// mode == DrawMode.Hovered || mode == DrawMode.Selected ? 2 : 1;
+            int pen_width = mode == DrawMode.Hovered ? 2 : 1;
 
             if (mode == DrawMode.Selected)
             {
-                g.DrawRectangle(new Pen(Color.Red, pen_width), frect);
+                g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                g.FillRectangle(new SolidBrush(Color.FromArgb(60, Color.Red)), frect);
 
-                //Rectangle[] rects = GetSelectionRectangles(frect);
-                //g.FillRectangles(Brushes.Aqua, rects);
+                g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                g.DrawRectangle(new Pen(Color.Red, pen_width), frect);                
             }
             else
             {
-                Color color = mode == DrawMode.Hovered ? Color.AliceBlue : Color.RoyalBlue;
+                Color color = Color.RoyalBlue;
                 g.DrawRectangle(new Pen(color, pen_width), frect);
             }
         }
 
-        public void Draw(System.Drawing.Graphics g, float scale, DrawMode mode)
+        public void Draw(System.Drawing.Graphics g, float scale, DrawMode mode, Image image)
         {
-            Draw(g, scale, 0, 0, mode);
+            Draw(g, scale, 0, 0, mode, image);
         }
 
         public bool IsMouseOver()
@@ -148,7 +151,6 @@ namespace Rgde.Contols.UI
             rectangles[3] = r4;
             return rectangles;
         }
-
 
         public override string ToString()
         {

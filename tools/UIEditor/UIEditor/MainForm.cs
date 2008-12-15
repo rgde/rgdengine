@@ -105,7 +105,7 @@ namespace UIEditor
 
             if (DialogResult.OK == ofd.ShowDialog(this))
             {
-                layout_editor.Regions.Clear();
+                layout_editor.Clear();
                 treeView1.Nodes.Clear();
                 imageset_filename = ofd.FileName;
 
@@ -118,16 +118,52 @@ namespace UIEditor
 
                     //<Imageset Name="Abilities" Imagefile="Abilities.tga" 
                     imageset_name = imageset_node.Attributes["Name"].Value;
-                    imagefile = imageset_node.Attributes["Imagefile"].Value;                 
-                    
+                    imagefile = imageset_node.Attributes["Imagefile"].Value;
+
+                    imagefile = System.IO.Path.GetDirectoryName(ofd.FileName) + "\\" + imagefile;
+                    imagefile = imagefile.ToLower();
+
+                    layout_editor.Image = DevIL.DevIL.LoadBitmap(imagefile);
+
+                    if (null == layout_editor.Image && imagefile.Contains(".tga"))
+                    {
+                        string imagefile_copy = imagefile.Replace(".tga", ".dds");
+                        
+                        Image image = DevIL.DevIL.LoadBitmap(imagefile);
+                        
+                        if (null != image)
+                        {
+                            imagefile = imagefile_copy;
+                            layout_editor.Image = image;
+                        }
+                    }
+
+                    if (null != layout_editor.Image)
+                    {
+                        NativeHorzRes = layout_editor.Image.Width;
+                        NativeVertRes = layout_editor.Image.Height;
+                    }
+
                     //NativeHorzRes="1024" NativeVertRes="1024"
-                    NativeHorzRes = System.Convert.ToInt32(imageset_node.Attributes["NativeHorzRes"].Value);
-                    NativeVertRes = System.Convert.ToInt32(imageset_node.Attributes["NativeVertRes"].Value);
+                    if (null != imageset_node.Attributes["NativeHorzRes"])
+                        NativeHorzRes = System.Convert.ToInt32(imageset_node.Attributes["NativeHorzRes"].Value);
+
+                    if (null != imageset_node.Attributes["NativeHorzRes"])
+                        NativeVertRes = System.Convert.ToInt32(imageset_node.Attributes["NativeVertRes"].Value);
+
                     // AutoScaled="true">
-                    AutoScaled = System.Convert.ToBoolean(imageset_node.Attributes["AutoScaled"].Value);
+                    AutoScaled = true;
+
+                    if (null != imageset_node.Attributes["AutoScaled"])
+                        AutoScaled = System.Convert.ToBoolean(imageset_node.Attributes["AutoScaled"].Value);
 
                     foreach (XmlNode node in imageset_node.ChildNodes)
                     {
+                        //XmlElement 
+                        XmlElement el = node as XmlElement;
+                        if (null == el)
+                            continue;
+
                         TextureRegion t = new TextureRegion();
 
                         //<Image Name="TestAbility_2" YPos="0" XPos="40" Width="40" Height="40" />
@@ -142,8 +178,7 @@ namespace UIEditor
 
                         layout_editor.AddTextureRegion(t, false);
                     }
-
-                    layout_editor.Image = DevIL.DevIL.LoadBitmap(imagefile);
+                    
                     layout_editor.Invalidate();
                 }
             }
@@ -353,6 +388,23 @@ namespace UIEditor
 
                 NativeHorzRes = layout_editor.Image.Width;
                 NativeVertRes = layout_editor.Image.Height;
+            }
+        }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Control)
+            {
+                switch(e.KeyCode)
+                {
+                    case Keys.O:
+                        openToolStripButton_Click(null, new EventArgs());
+                        break;
+                    case Keys.S:
+                        saveToolStripButton_Click(null, new EventArgs());
+                        break;
+                }
+
             }
         }
     }

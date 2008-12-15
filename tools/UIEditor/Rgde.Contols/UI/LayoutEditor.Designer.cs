@@ -28,8 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // LayoutEditor
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Name = "LayoutEditor";
+            this.MouseLeave += new System.EventHandler(this.LayoutEditor_MouseLeave);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
