@@ -50,6 +50,13 @@ namespace Rgde.Contols
         private List<UI.TextureRegion> hovered_regions = new List<UI.TextureRegion>();
         private List<UI.TextureRegion> selected_regions = new List<UI.TextureRegion>();
 
+        public void Clear()
+        {
+            regions.Clear();
+            hovered_regions.Clear();
+            selected_regions.Clear();
+        }
+
         public LayoutEditor()
         {
             this.BorderStyle = BorderStyle.FixedSingle;
@@ -445,21 +452,8 @@ namespace Rgde.Contols
                 RecalcVisibleRect();
             }
 
-            //if (m_visible_rect.Height > m_image.Height || m_visible_rect.Width > m_image.Width)
-            //{
-            //    if (m_visible_rect.Height > m_visible_rect.Width)
-            //    {
-            //        m_visible_rect.Height = m_image.Height;
-            //        m_scale = (1.0f * m_visible_rect.Height) / ClientRectangle.Height;
-            //    }
-            //    else
-            //    {
-            //        m_visible_rect.Width = m_image.Width;
-            //        m_scale = (1.0f * m_visible_rect.Width) / ClientRectangle.Width;
-            //    }
             RecalcVisibleRect();
-            //}
-            //else
+
             ClampRect();
 
             UpdateScroolBarsVisibility();
@@ -522,8 +516,6 @@ namespace Rgde.Contols
        
         protected override void OnPaint(PaintEventArgs e)
         {
-            //m_visible_rect.Width = (int)(ClientRectangle.Width);//*m_scale);
-            //m_visible_rect.Height = (int)(ClientRectangle.Height);//*m_scale);
             RecalcVisibleRect();
             
             HorizontalScroll.Value = m_visible_rect.X;
@@ -590,17 +582,17 @@ namespace Rgde.Contols
 
             foreach (UI.TextureRegion r in regions)
             {
-                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Normal);
+                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Normal, m_image);
             }
 
             foreach (UI.TextureRegion r in hovered_regions)
             {
-                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Hovered);
+                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Hovered, m_image);
             }
 
             foreach (UI.TextureRegion r in selected_regions)
             {
-                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Selected);
+                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Selected, m_image);
             }
         }
 
@@ -727,5 +719,11 @@ namespace Rgde.Contols
             m_visible_rect.Width = (int)(ClientRectangle.Width / m_scale);
         }
         #endregion
+
+        private void LayoutEditor_MouseLeave(object sender, EventArgs e)
+        {
+            hovered_regions.Clear();
+            Invalidate();
+        }
     }
 }

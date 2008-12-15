@@ -138,8 +138,10 @@ namespace UIEditor
             this.ClientSize = new System.Drawing.Size(763, 466);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
+            this.KeyPreview = true;
             this.Name = "MainForm";
             this.Text = "UI Layout Editor";
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
