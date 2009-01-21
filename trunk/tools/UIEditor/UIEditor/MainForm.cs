@@ -364,6 +364,8 @@ namespace UIEditor
                 layout_editor.AddToSelection(tr);
                 layout_editor.Invalidate();
             }
+
+            e.Node.NodeFont = new Font(e.Node.TreeView.Font, FontStyle.Underline | FontStyle.Bold);
         }
 
         private void treeView1_AfterExpand(object sender, TreeViewEventArgs e)
@@ -509,6 +511,14 @@ namespace UIEditor
                         MoveSelectedRegion(0, 1, e.Shift);
                         break;
                 }
+            }
+        }
+
+        private void treeView1_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            if (e.Node.TreeView.SelectedNode != null)
+            {
+                e.Node.TreeView.SelectedNode.NodeFont = null;
             }
         }
     }
