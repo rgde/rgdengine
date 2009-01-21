@@ -4,6 +4,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace Rgde.Contols.UI
 {
@@ -43,7 +44,8 @@ namespace Rgde.Contols.UI
             get { return name; }
             set { name = value; }
         }
-
+        
+        [Browsable(false)]
         public string GroupName
         {
             get { return group_name; }
@@ -56,6 +58,7 @@ namespace Rgde.Contols.UI
             set { visible = value; }
         }
 
+        [Browsable(false)]
         public Object Tag
         {
             get {return tag;}

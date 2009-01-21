@@ -60,6 +60,32 @@ namespace UIEditor
             layout_editor.OnDeleteRegion += new TextureRegionEventDelegate(layout_editor_OnDeleteRegion);
             layout_editor.OnSelectRegion += new TextureRegionEventDelegate(layout_editor_OnSelectRegion);
             layout_editor.OnSelectionChange += new LayoutEditor.LayoutEditorEventDelegate(layout_editor_OnSelectionChange);
+
+            propertyGrid.Validated += new EventHandler(propertyGrid_Validated);
+        }
+
+        void propertyGrid_Validated(object sender, EventArgs e)
+        {
+            if (propertyGrid.SelectedObject != null)
+            {
+                TextureRegion reg = propertyGrid.SelectedObject as TextureRegion;
+
+                if (reg == null)
+                    return;
+
+                TreeNode node = reg.Tag as TreeNode;
+
+                if (node == null)
+                    return;
+
+                if (node.Text != reg.Name)
+                {
+                    node.Text = reg.Name;
+                    treeView1.SelectedNode = node;
+                }
+
+                layout_editor.Invalidate();                
+            }
         }
 
         void layout_editor_OnSelectionChange(object sender)
@@ -70,6 +96,7 @@ namespace UIEditor
         void layout_editor_OnSelectRegion(TextureRegion reg)
         {
             treeView1.SelectedNode = reg.Tag as TreeNode;
+            propertyGrid.SelectedObject = reg;
         }
 
         void layout_editor_OnDeleteRegion(TextureRegion reg)
@@ -108,6 +135,8 @@ namespace UIEditor
                 layout_editor.Clear();
                 treeView1.Nodes.Clear();
                 imageset_filename = ofd.FileName;
+
+                this.Text = ofd.FileName;
 
                 using(FileStream fs = new FileStream(ofd.FileName, FileMode.Open))
                 {
@@ -391,6 +420,52 @@ namespace UIEditor
             }
         }
 
+        void ResizeSelectedRegion(int dw, int dh, bool is_shift_pressed)
+        {
+            TextureRegion reg = layout_editor.SelectedRegion;
+
+            if (reg == null)
+                return;
+
+            if (is_shift_pressed)
+            {
+                dw *= 10;
+                dh *= 10;
+            }
+
+            Rectangle rect = reg.Rectangle;
+            rect.Width += dw;
+            rect.Height += dh;
+
+            reg.Rectangle = rect;
+
+            layout_editor.Invalidate();
+            propertyGrid.SelectedObject = reg;
+        }
+
+        void MoveSelectedRegion(int dx, int dy, bool is_shift_pressed)
+        {
+            TextureRegion reg = layout_editor.SelectedRegion;
+
+            if (reg == null)
+                return;
+
+            if (is_shift_pressed)
+            {
+                dx *= 10;
+                dy *= 10;
+            }
+
+            Rectangle rect = reg.Rectangle;
+            rect.X += dx;
+            rect.Y += dy;
+
+            reg.Rectangle = rect;
+
+            layout_editor.Invalidate();
+            propertyGrid.SelectedObject = reg;
+        }
+
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
             if(e.Control)
@@ -403,8 +478,37 @@ namespace UIEditor
                     case Keys.S:
                         saveToolStripButton_Click(null, new EventArgs());
                         break;
+                    case Keys.Left:
+                        ResizeSelectedRegion(-1, 0, e.Shift);
+                        break;
+                    case Keys.Right:
+                        ResizeSelectedRegion(1, 0, e.Shift);
+                        break;
+                    case Keys.Up:
+                        ResizeSelectedRegion(0, -1, e.Shift);
+                        break;
+                    case Keys.Down:
+                        ResizeSelectedRegion(0, 1, e.Shift);
+                        break;
                 }
-
+            }
+            else
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.Left:
+                        MoveSelectedRegion(-1, 0, e.Shift);
+                        break;
+                    case Keys.Right:
+                        MoveSelectedRegion(1, 0, e.Shift);
+                        break;
+                    case Keys.Up:
+                        MoveSelectedRegion(0, -1, e.Shift);
+                        break;
+                    case Keys.Down:
+                        MoveSelectedRegion(0, 1, e.Shift);
+                        break;
+                }
             }
         }
     }
