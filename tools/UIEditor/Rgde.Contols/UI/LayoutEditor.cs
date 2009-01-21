@@ -68,23 +68,23 @@ namespace Rgde.Contols
 
         void LayoutEditor_Load(object sender, EventArgs e)
         {
-            UI.TextureRegion r1 = new UI.TextureRegion();
-            r1.Rectangle = new Rectangle(10, 10, 30, 30);
-            r1.Name = "Button.Bkg";
+            //UI.TextureRegion r1 = new UI.TextureRegion();
+            //r1.Rectangle = new Rectangle(10, 10, 30, 30);
+            //r1.Name = "Button.Bkg";
 
 
-            UI.TextureRegion r2 = new UI.TextureRegion();
-            r2.Rectangle = new Rectangle(50, 10, 30, 30);
-            r2.Name = "Button.Pressed";
+            //UI.TextureRegion r2 = new UI.TextureRegion();
+            //r2.Rectangle = new Rectangle(50, 10, 30, 30);
+            //r2.Name = "Button.Pressed";
 
 
-            UI.TextureRegion r3 = new UI.TextureRegion();
-            r3.Rectangle = new Rectangle(50, 50, 80, 30);
-            r3.Name = "Button.Hover";
+            //UI.TextureRegion r3 = new UI.TextureRegion();
+            //r3.Rectangle = new Rectangle(50, 50, 80, 30);
+            //r3.Name = "Button.Hover";
 
-            AddTextureRegion(r1);
-            AddTextureRegion(r2);
-            AddTextureRegion(r3);
+            //AddTextureRegion(r1);
+            //AddTextureRegion(r2);
+            //AddTextureRegion(r3);
         }
 
         #region Public Properties
