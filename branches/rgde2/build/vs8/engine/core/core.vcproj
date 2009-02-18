@@ -348,6 +348,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="events"
+				>
+				<File
+					RelativePath=".\events.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

@@ -127,18 +127,18 @@ void Application::run()
 			//m_arc_ball
 
 			m_device.frame_begin();
-			//m_device.clear(Grey);
-			m_device.clear(0x00595979);
-			m_device.set_stream_source( 0, m_vb, sizeof(tVertex) );
+				m_device.clear(Grey);
+				m_device.clear(0x00595979);
+				m_device.set_stream_source( 0, m_vb, sizeof(tVertex) );
 
-			m_device.draw( render::triangle_strip,  0, 2 ); // Draw Front
-			m_device.draw( render::triangle_strip,  4, 2 ); // Draw Back
-			m_device.draw( render::triangle_strip,  8, 2 ); // Draw Top
-			m_device.draw( render::triangle_strip,  12, 2 ); // Draw Bottom
-			m_device.draw( render::triangle_strip,  16, 2 ); // Draw Right
-			m_device.draw( render::triangle_strip,  20, 2 ); // Draw Left
+				m_device.draw( render::triangle_strip,  0, 2 ); // Draw Front
+				m_device.draw( render::triangle_strip,  4, 2 ); // Draw Back
+				m_device.draw( render::triangle_strip,  8, 2 ); // Draw Top
+				m_device.draw( render::triangle_strip,  12, 2 ); // Draw Bottom
+				m_device.draw( render::triangle_strip,  16, 2 ); // Draw Right
+				m_device.draw( render::triangle_strip,  20, 2 ); // Draw Left
 
-			m_font->render(L"Hello", rect(10,10,100,100),Red, true);
+				m_font->render(L"Hello", rect(10,10,100,100),Red, true);
 			m_device.frame_end();
 			m_device.present();
 		}
