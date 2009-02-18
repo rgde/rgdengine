@@ -16,7 +16,7 @@ namespace rgde
 		math::vec2f TempPt((float)x,(float)y);
 
 		//Adjust point coords and scale down to range of [-1 ... 1]
-		TempPt[0]  =        (TempPt[0] * AdjustWidth)  - 1.0f;
+		TempPt[0]  = (TempPt[0] * AdjustWidth)  - 1.0f;
 		TempPt[1]  = 1.0f - (TempPt[1] * AdjustHeight);
 
 		TempPt[0] *= -0.1f;
@@ -24,7 +24,7 @@ namespace rgde
 
 
 		//Compute the square of the length of the vector to the point from the center
-		float length    = (TempPt[0] * TempPt[0]) + (TempPt[1] * TempPt[1]);
+		float length = (TempPt[0] * TempPt[0]) + (TempPt[1] * TempPt[1]);
 
 		//If the point is mapped outside of the sphere... (length > radius squared)
 		if (length > 1.0f)
@@ -52,13 +52,13 @@ namespace rgde
 		: m_accum_quaternion(0,0,0,1)
 	{
 		//Clear initial values
-		StVec[0]     =
-		StVec[1]     = 
-		StVec[2]     = 
+		StVec[0] =
+		StVec[1] = 
+		StVec[2] = 
 
-		EnVec[0]     =
-		EnVec[1]     = 
-		EnVec[2]     = 0.0f;
+		EnVec[0] =
+		EnVec[1] = 
+		EnVec[2] = .0f;
 
 		//Set initial bounds
 		set_bounds(NewWidth, NewHeight);
