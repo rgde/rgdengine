@@ -259,10 +259,10 @@ std::ostream& operator <<(std::ostream& out, const boost::any& value)
 	{
 		out << boost::any_cast<float>(value);
 	}
-	else if ()
-	{
+	//else if ()
+	//{
 
-	}
+	//}
 
 	return out;
 }
