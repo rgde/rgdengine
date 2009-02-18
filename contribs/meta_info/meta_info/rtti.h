@@ -120,7 +120,7 @@ namespace meta
 	{
 		property_holder() {}
 
-		property_holder(struct object* obj = 0, property_ptr property)
+		property_holder(struct object* obj, property_ptr property)
 		{
 		}
 	};
@@ -130,18 +130,18 @@ namespace meta
 		virtual ~object() {}
 		virtual type_information_ptr get_type_info(const class types_info_storage& storage) = 0;
 
-		virtual property_holder get_property(const string& name)
-		{
-			get_type_info();
-			property_ptr p = m_type_info->find_property(name);
+		//virtual property_holder get_property(const string& name)
+		//{
+		//	//get_type_info();
+		//	property_ptr p = m_type_info->find_property(name);
 
-			if (p)
-			{
+		//	if (p)
+		//	{
 
-			}
+		//	}
 
-			return 
-		}
+		//	return 
+		//}
 
 	protected:
 		// to speed up request, we will cash it here.

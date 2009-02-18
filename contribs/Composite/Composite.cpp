@@ -140,6 +140,7 @@ namespace meta
 	}
 
 	typedef boost::shared_ptr<struct type_information> type_information_ptr;
+	typedef type_information_ptr type;
 
 	//typedef std::list<property_ptr> properties_list;
 	//typedef properties_list::iterator iter;
@@ -346,11 +347,11 @@ private:
 };
 
 
-template <class T>
-struct mem_func_types_holder
-{
-	//void (T::* ptfptr) (int) = &X::f;
-};
+//template <class T>
+//struct mem_func_types_holder
+//{
+//	//void (T::* ptfptr) (int) = &X::f;
+//};
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -373,7 +374,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	// так же можно и так:
 	//storage.get_module("engine").def_class<test>("test");
 
-	meta::type_information_ptr ti = storage.get_module("engine").types["test"];
+	meta::type ti = storage.get_module("engine").types["test"];
 
 	__asm nop;
 
