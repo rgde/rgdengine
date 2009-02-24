@@ -60,7 +60,7 @@ namespace lines_test
 	//-----------------------------------------------------------------------------------
 	void CTriangle::render()
 	{
-		render::CLine3dManager& pLineManager = render::Line3dManager::Get();
+		render::Line3dManager& pLineManager = render::TheLine3dManager::get();
 
 		for( tPointsIter it = m_vPoints.begin(); it != (m_vPoints.end()-1); ++it )
 			pLineManager.addLine( it->getPos(), (it+1)->getPos(), m_Color.color );

@@ -1,4 +1,8 @@
-#include "base\shared.fx"
+//#include "base\shared.fx"
+
+#define DISABLE_FOG  \
+FogEnable = false;   \
+FogTableMode = None;
 
 float4x4 g_mLVP;
 

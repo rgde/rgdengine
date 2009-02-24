@@ -69,7 +69,7 @@
 				AdditionalDependencies=""
 				OutputFile="$(OutDir)/D_$(ProjectName).exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)lib/$(ConfigurationName)"
+				AdditionalLibraryDirectories="$(SolutionDir)lib/$(ConfigurationName);$(SolutionDir)external\directx\lib"
 				IgnoreDefaultLibraryNames="libcmt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)/$D_(ProjectName).pdb"

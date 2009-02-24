@@ -99,7 +99,12 @@ namespace Rgde.Contols.UI
             if (!Visible)
                 return;
 
-            Rectangle frect = GetRect(x, y, scale);
+            GraphicsState old_state = g.Save();
+
+            g.ScaleTransform(scale, scale);
+            g.TranslateTransform(x, y);
+
+            Rectangle frect = rect;// GetRect(x, y, scale);
 
             g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -119,6 +124,10 @@ namespace Rgde.Contols.UI
                 Color color = Color.RoyalBlue;
                 g.DrawRectangle(new Pen(color, pen_width), frect);
             }
+
+            g.Restore(old_state);
+
+            //GraphicsState old_state = g.Save();
         }
 
         public void Draw(System.Drawing.Graphics g, float scale, DrawMode mode, Image image)

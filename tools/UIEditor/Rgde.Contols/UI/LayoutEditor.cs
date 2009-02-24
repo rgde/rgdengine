@@ -50,6 +50,55 @@ namespace Rgde.Contols
         private List<UI.TextureRegion> hovered_regions = new List<UI.TextureRegion>();
         private List<UI.TextureRegion> selected_regions = new List<UI.TextureRegion>();
 
+        public class UndoRedoState
+        {
+            public List<UI.TextureRegion> regions;
+            public List<UI.TextureRegion> selected_regions;
+
+            LayoutEditor owner;
+
+            public UndoRedoState(LayoutEditor owner)
+            {
+                this.owner = owner;
+
+                regions = new List<UI.TextureRegion>(owner.regions);
+                selected_regions = new List<UI.TextureRegion>(owner.selected_regions);
+            }
+
+            public void Restore()
+            {
+                owner.regions = regions;
+                owner.hovered_regions.Clear();
+                owner.selected_regions = selected_regions;
+            }
+
+        }
+
+        private List<UndoRedoState> undo_redo_list = new List<UndoRedoState>();
+
+        public void ClearUndoRedo()
+        {
+            undo_redo_list.Clear();
+        }
+
+        private void PushUndo()
+        {
+            undo_redo_list.Add(new UndoRedoState(this));
+            if(undo_redo_list.Count > 15)
+            {
+                undo_redo_list.RemoveAt(0);
+            }
+        }
+
+        public void Undo()
+        {
+            int last = undo_redo_list.Count;
+            if (last == 0) return;
+            UndoRedoState state = undo_redo_list[last - 1];
+            undo_redo_list.RemoveAt(last-1);
+            state.Restore();
+        }
+
         public void Clear()
         {
             regions.Clear();
@@ -85,6 +134,8 @@ namespace Rgde.Contols
             //AddTextureRegion(r1);
             //AddTextureRegion(r2);
             //AddTextureRegion(r3);
+
+            ClearUndoRedo();
         }
 
         #region Public Properties
@@ -160,6 +211,8 @@ namespace Rgde.Contols
             if (null == reg)
                 return;
 
+            PushUndo();
+
             regions.Add(reg);
 
             if (OnAddRegion != null)
@@ -173,6 +226,8 @@ namespace Rgde.Contols
 
             ClearSelection();
             AddToSelection(reg);
+
+            PushUndo();
         }
 
         public void AddToSelection(UI.TextureRegion reg)
