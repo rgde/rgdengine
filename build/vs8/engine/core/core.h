@@ -18,3 +18,6 @@
 
 //log
 #include <engine/core/log.h>
+
+// events
+#include <engine/core/event/events.h>

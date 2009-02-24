@@ -8,6 +8,16 @@ namespace rgde
 {
 	namespace math
 	{
+		const color color::DarkGreen	(0,127,0,255);
+		const color color::Green		(0,255,0,255);
+		const color color::DarkRed		(127,0,0,255);
+		const color color::Red			(255,0,0,255);
+		const color color::DarkBlue		(0,0,127,255);
+		const color color::Blue			(0,0,255,255);		
+		const color color::White		(255,255,255,255);
+		const color color::Grey			(127,127,127,255);
+		const color color::Black		(0,0,0,255);
+
 		color::color(const vec3f& v)
 		{
 			set(v[0], v[1], v[2], 1.0f);

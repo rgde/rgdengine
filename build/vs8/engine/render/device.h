@@ -66,6 +66,7 @@ namespace rgde
 
 			bool present();
 
+			void set_index_buffer(index_buffer_ptr ib);
 			void set_stream_source(uint stream_number, vertex_buffer_ptr stream_data, uint stride);
 			
 			device_impl& get_impl();

@@ -47,7 +47,8 @@ namespace rgde
 				m_dx_index_buffer->Unlock();
 			}
 
-			const IDirect3DIndexBuffer9* get_dx_index_buffer() {return m_dx_index_buffer;}
+			IDirect3DIndexBuffer9* get_dx_index_buffer() {return m_dx_index_buffer;}
+			const IDirect3DIndexBuffer9* get_dx_index_buffer() const {return m_dx_index_buffer;}
 
 		private:
 			device& m_device;

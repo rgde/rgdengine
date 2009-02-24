@@ -29,17 +29,17 @@ namespace rgde
 				unsigned int data;
 				struct {uchar b, g, r, a;};
 			};
-		};
 
-		const color DarkGreen (0,127,0,255);
-		const color Green (0,255,0,255);
-		const color DarkRed	 (127,0,0,255);
-		const color Red	  (255,0,0,255);
-		const color DarkBlue (0,0,127,255);
-		const color Blue  (0,0,255,255);		
-		const color White (255,255,255,255);
-		const color Grey (127,127,127,255);
-		const color Black (0,0,0,255);
+			static const color DarkGreen;	//(0,127,0,255);
+			static const color Green;		//(0,255,0,255);
+			static const color DarkRed;		//(127,0,0,255);
+			static const color Red;			//(255,0,0,255);
+			static const color DarkBlue;	//(0,0,127,255);
+			static const color Blue;		//(0,0,255,255);		
+			static const color White;		//(255,255,255,255);
+			static const color Grey;		//(127,127,127,255);
+			static const color Black;		//(0,0,0,255);
+		};
 
 		color operator*( const color& color, float factor );
 		color operator+( const color& c1, const color& c2 );

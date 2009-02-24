@@ -10,6 +10,8 @@ using namespace math;
 
 #include "Application.h"
 
+#include <windows.h>
+
 float g_rot_x = 0;
 float g_rot_y = 0;
 
@@ -29,14 +31,23 @@ vertex_element custom_vertex_desc[] =
 };
 
 
-struct tVertex				// Our new vertex struct
+struct color_vertex				// Our new vertex struct
 {
 	float x, y, z;			// 3D position
 	ulong color;			// Hex Color Value
 };
 
+unsigned short cube_ib[] = 
+{
+	0,1,2,		1,3,2,
+	4,5,6,		5,7,6,
+	8,9,10,		9,11,10,
+	12,13,14,	13,15,14,
+	16,17,18,	17,19,18,
+	20,21,22,	21,23,22
+};
 
-tVertex cube[24] =			// Vertex Array
+color_vertex cube_geom[] =			// Vertex Array
 {	
 	// Front Blue Color
 	{-1.0f, 1.0f,-1.0f,  0xF00FF00F },
@@ -78,19 +89,51 @@ Application::Application()
 	m_font(font::create(m_device, 18, L"Arial", font::heavy)),
 	m_arc_ball(640, 480)
 {
+	SetCurrentDirectoryW(L"../data/");
+
+	std::wstring buf;
+	buf.resize(256);
+	GetModuleFileNameW(NULL, &buf[0], 256);
+
+	std::wstring module_path;
+	module_path.resize(256);
+	GetFullPathNameW(&buf[0], 256, &module_path[0], NULL);
+
+	//using boost::filesystem::path;
+	//boost::filesystem::wpath p(buffer);
+	//std::wstring path = p.branch_path().string();
+	//SetCurrentDirectoryW(path.c_str());
+
 	show();
 	update();
+
+	doc.load_file("sample.xml");
+
+	//doc()
 
 	using namespace rgde::render;
 	vertex_declaration_ptr decl = vertex_declaration::create(m_device, custom_vertex_desc, 3);
 
-	m_vb = vertex_buffer::create
-						(
-							m_device, decl, 
-							24*sizeof(tVertex), 
-							resource::default, 
-							buffer::write_only
-						);
+	{
+		m_vb = vertex_buffer::create
+			(
+			m_device, decl, 
+			sizeof(cube_geom), 
+			resource::default, 
+			buffer::write_only
+			);
+
+		void *pVertices = m_vb->lock( 0, sizeof(cube_geom), 0 );
+			memcpy( pVertices, cube_geom, sizeof(cube_geom) );
+		m_vb->unlock();
+	}
+
+	{
+		m_ib = index_buffer::create(m_device, sizeof(cube_ib), false, resource::default, buffer::write_only);
+		void *indices = m_ib->lock( 0, sizeof(cube_ib), 0 );
+			memcpy( indices, cube_ib, sizeof(cube_ib) );
+		m_ib->unlock();
+	}
 
 	m_device.set_ztest(true);
 	m_device.set_cull_mode(rgde::render::cull_none);
@@ -98,16 +141,14 @@ Application::Application()
 	m_device.set_alpha_blend(false);
 	m_device.set_alpha_test(false);
 
-	void *pVertices = m_vb->lock( 0, sizeof(cube), 0 );
-	memcpy( pVertices, cube, sizeof(cube) );
-	m_vb->unlock();
-
 	math::vec3f cam_pos(-5, 0, 0);
 	m_camera.lookAt(cam_pos, (math::vec3f(1,0,0) + cam_pos), math::vec3f(0,1,0));
 }
 
 Application::~Application()
 {
+	m_vb.reset();
+	m_ib.reset();
 }
 
 void Application::run()
@@ -122,23 +163,28 @@ void Application::run()
 			matWorld = math::MAT_IDENTITY44F;
 
 			m_device.set_transform( render::view_transform, m_camera.getViewMatrix());
-			m_device.set_transform( render::world_transform, /*getWorldMatrix()*/ m_arc_ball.get_matrix());	// Set The Transformation
-			//m_device.set_transform( render::view_transform, m_arc_ball.get_matrix());
-			//m_arc_ball
+			m_device.set_transform( render::world_transform, m_arc_ball.get_matrix());	// Set The Transformation
+
 
 			m_device.frame_begin();
-				m_device.clear(Grey);
-				m_device.clear(0x00595979);
-				m_device.set_stream_source( 0, m_vb, sizeof(tVertex) );
+			m_device.clear(color::Black);
+			m_device.set_stream_source( 0, m_vb, sizeof(color_vertex) );
+			m_device.set_index_buffer(m_ib);
 
-				m_device.draw( render::triangle_strip,  0, 2 ); // Draw Front
-				m_device.draw( render::triangle_strip,  4, 2 ); // Draw Back
-				m_device.draw( render::triangle_strip,  8, 2 ); // Draw Top
-				m_device.draw( render::triangle_strip,  12, 2 ); // Draw Bottom
-				m_device.draw( render::triangle_strip,  16, 2 ); // Draw Right
-				m_device.draw( render::triangle_strip,  20, 2 ); // Draw Left
 
-				m_font->render(L"Hello", rect(10,10,100,100),Red, true);
+			m_device.draw(render::triangle_list, 0, 0, 24, 0, 12);
+
+			//m_device.draw( render::triangle_strip,  0, 2 ); // Draw Front
+			//m_device.draw( render::triangle_strip,  4, 2 ); // Draw Back
+			//m_device.draw( render::triangle_strip,  8, 2 ); // Draw Top
+			//m_device.draw( render::triangle_strip,  12, 2 ); // Draw Bottom
+			//m_device.draw( render::triangle_strip,  16, 2 ); // Draw Right
+			//m_device.draw( render::triangle_strip,  20, 2 ); // Draw Left
+
+			m_font->render(L"Hello", rect(10,10,100,100),color::Red, true);
+			xml::node l = doc("Song")("Text")("Line");
+			const std::wstring text = xml::as_utf16(l.first_child().value());
+			//m_font->render(text,rect(10,10,620,100),color::Red, true);
 			m_device.frame_end();
 			m_device.present();
 		}
@@ -202,7 +248,6 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 
 	case WM_KEYUP:
 		{
-			//keys[wParam] = false;
 			return 0;
 		}
 
@@ -230,10 +275,6 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 				m_arc_ball.drag(xPos, yPos);
 				int dx = xPos - old_x;
 				int dy = yPos - old_y;
-
-				//m_arc_ball.drag(dx, dy);
-				//m_camera.rotateRight(-dx/100.0f);
-				//m_camera.rotateUp(dy/100.0f);
 			}
 
 			old_x = xPos;

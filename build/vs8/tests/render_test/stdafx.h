@@ -42,6 +42,7 @@
 #include <boost/type_traits.hpp>
 
 #include <engine/core/core.h>
+#include <engine/core/xml/xml.h>
 #include <engine/render/render.h>
 
 #define COM_NO_WINDOWS_H

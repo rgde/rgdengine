@@ -230,6 +230,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="events"
+				>
+				<File
+					RelativePath=".\event\Events.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -275,6 +283,26 @@
 			<Filter
 				Name="xml"
 				>
+				<File
+					RelativePath=".\xml\xml.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\xml\xml.h"
+					>
+				</File>
+				<File
+					RelativePath=".\xml\xml.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\xml\xml_forward.h"
+					>
+				</File>
+				<File
+					RelativePath=".\xml\xml_options.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="windows"
@@ -352,7 +380,7 @@
 				Name="events"
 				>
 				<File
-					RelativePath=".\events.h"
+					RelativePath=".\event\Events.h"
 					>
 				</File>
 			</Filter>
