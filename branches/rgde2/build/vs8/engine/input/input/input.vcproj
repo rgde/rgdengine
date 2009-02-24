@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="render_test"
-	ProjectGUID="{2730B8D5-6D9E-41BA-975C-0DF08030BF83}"
-	RootNamespace="core_test"
+	Name="input"
+	ProjectGUID="{9DCBA5A5-4488-4996-8751-088C8A5327FF}"
+	RootNamespace="input"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -17,9 +17,9 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="1"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
 			CharacterSet="1"
 			>
 			<Tool
@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -60,20 +60,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName)_d.exe"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
-				SubSystem="1"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -85,20 +75,14 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="1"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -120,7 +104,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
@@ -137,22 +121,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName).exe"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -164,12 +136,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -178,20 +144,64 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Application.cpp"
+				RelativePath="..\base.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ArcBall.cpp"
+				RelativePath="..\base.h"
 				>
 			</File>
 			<File
-				RelativePath=".\render_test.cpp"
+				RelativePath="..\command.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\command.h"
+				>
+			</File>
+			<File
+				RelativePath="..\control.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\control.h"
+				>
+			</File>
+			<File
+				RelativePath="..\device.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\device.h"
+				>
+			</File>
+			<File
+				RelativePath="..\helper.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\helper.h"
+				>
+			</File>
+			<File
+				RelativePath="..\input.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\input.h"
+				>
+			</File>
+			<File
+				RelativePath="..\inputimpl.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\inputimpl.h"
 				>
 			</File>
 			<File
@@ -205,32 +215,6 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath=".\Application.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ArcBall.h"
-				>
-			</File>
-			<File
-				RelativePath=".\camera.h"
-				>
 			</File>
 			<File
 				RelativePath=".\stdafx.h"

@@ -128,16 +128,6 @@ int _tmain(int argc, wchar_t* argv[])
 
 		window.show();
 		window.update();
-
-		MSG msg = {0};
-		//while( window.is_created() )
-		//{
-		//	if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
-		//	{
-		//		TranslateMessage( &msg );
-		//		DispatchMessage( &msg );
-		//	}
-		//}
 	}
 
 	try

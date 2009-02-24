@@ -49,12 +49,16 @@ namespace rgde
 			return *m_pimpl;
 		}
 
+		void device::set_index_buffer(index_buffer_ptr ib)
+		{
+			get_impl().get_dx_device()->SetIndices(ib->get_impl().get_dx_index_buffer());
+		}
+
 		void device::set_stream_source(uint stream_number, vertex_buffer_ptr stream_data, uint stride)
 		{
 			get_impl().get_dx_device()->SetStreamSource(stream_number, stream_data->get_impl().get_dx_vertex_buffer(),0, stride);
 			DWORD fvf = convert_to_fvf(stream_data->get_declaration()->get_vertex_elemets());
 			HRESULT hr = get_impl().get_dx_device()->SetFVF(fvf);
-			__asm nop;
 		}
 
 		void device::set_lighting(bool enable)
@@ -156,7 +160,9 @@ namespace rgde
 			uint num_vertices, uint start_index, uint primitive_count)
 		{
 			D3DPRIMITIVETYPE prim_type = convert(type);
-			get_impl().get_dx_device()->DrawIndexedPrimitive(prim_type, base_vertex_index, min_vertex_index,
+
+			IDirect3DDevice9* dev = get_impl().get_dx_device();
+			dev->DrawIndexedPrimitive(prim_type, base_vertex_index, min_vertex_index,
 				num_vertices, start_index, primitive_count);
 		}
 

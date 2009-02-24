@@ -124,7 +124,6 @@ namespace rgde
 
 			vertex_buffer(device& dev, vertex_declaration_ptr decl, size_t size, resource::pool pool, uint usage_flags);
 		public:
-			//buffer(dev, resource::vertexbuffer, resource::vertex_data) 
 			static vertex_buffer_ptr create(device& dev, vertex_declaration_ptr decl, 
 								size_t size, resource::pool pool, uint usage_flags = 0);
 			
@@ -147,12 +146,23 @@ namespace rgde
 		{
 			class index_buffer_impl;
 			typedef boost::scoped_ptr<index_buffer_impl> pimpl;
-		public:
+
+		protected:
 			index_buffer(device& dev, size_t size, bool use_32bit, resource::pool pool, uint usage_flags = 0);
+
+		public:
+			static index_buffer_ptr create(device& dev, size_t size, bool use_32bit, 
+											resource::pool pool, uint usage_flags = 0);
 			~index_buffer();
 
 			void* lock(uint offset_to_lock, uint size_to_lock, ulong flags);
 			void unlock();
+
+			index_buffer_impl& get_impl();
+			const index_buffer_impl& get_impl() const;
+
+		private:
+			pimpl m_pimpl;
 		};
 	}
 }

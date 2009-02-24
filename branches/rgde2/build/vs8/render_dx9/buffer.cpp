@@ -72,7 +72,6 @@ namespace rgde
 			m_decl(decl),
 			m_pimpl(new vertex_buffer_impl(dev, decl, size, usage_flags, pool))			
 		{
-			//vertex_declaration_ptr decl, size_t size, uint usage, resource::pool pool
 		}
 
 		vertex_buffer::~vertex_buffer() 
@@ -99,5 +98,42 @@ namespace rgde
 			return *m_pimpl;
 		}
 
+		index_buffer::index_buffer(device& dev, size_t size, bool use_32bit, resource::pool pool, uint usage_flags)
+			: buffer(dev, resource::indexbuffer, use_32bit ? resource::index32 : resource::index16, pool, usage_flags, false),
+			m_pimpl(new index_buffer_impl(dev, size, usage_flags, use_32bit, pool))	
+		{
+
+		}
+
+		index_buffer_ptr index_buffer::create(device& dev, size_t size, bool use_32bit, 
+			resource::pool pool, uint usage_flags)
+		{
+			return index_buffer_ptr(new index_buffer(dev, size, use_32bit, pool, usage_flags));
+		}
+
+		index_buffer::~index_buffer()
+		{
+
+		}
+
+		void* index_buffer::lock(uint offset_to_lock, uint size_to_lock, ulong flags)
+		{
+			return m_pimpl->lock(offset_to_lock, size_to_lock, flags);
+		}
+
+		void index_buffer::unlock()
+		{
+			m_pimpl->unlock();
+		}
+
+		index_buffer::index_buffer_impl& index_buffer::get_impl()
+		{
+			return *m_pimpl;
+		}
+
+		const index_buffer::index_buffer_impl& index_buffer::get_impl() const
+		{
+			return *m_pimpl;
+		}
 	}
 }
