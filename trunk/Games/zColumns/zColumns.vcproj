@@ -63,7 +63,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)/external/bin_libs"
+				AdditionalLibraryDirectories="$(SolutionDir)/external/bin_libs;$(SolutionDir)lib/$(ConfigurationName);$(SolutionDir)external\directx\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
