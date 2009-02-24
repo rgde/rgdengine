@@ -42,7 +42,7 @@ namespace render
 
 		m_bAditive = false;
 
-		m_effect = Effect::create("SpriteManager.fxo");
+		m_effect = Effect::create("SpriteManager.fx");
 		m_renderInfo.pRenderFunc = boost::bind(&SpriteManager::render, this);
 	}
 

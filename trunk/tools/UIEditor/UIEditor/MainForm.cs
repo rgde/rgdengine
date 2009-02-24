@@ -14,7 +14,6 @@ namespace UIEditor
 {
     public partial class MainForm : Form
     {
-
         enum RectParts
         {
             Body,
@@ -132,6 +131,8 @@ namespace UIEditor
 
             if (DialogResult.OK == ofd.ShowDialog(this))
             {
+                layout_editor.ClearUndoRedo();
+
                 layout_editor.Clear();
                 treeView1.Nodes.Clear();
                 imageset_filename = ofd.FileName;
@@ -226,6 +227,8 @@ namespace UIEditor
                 else
                     return;
             }
+
+            layout_editor.ClearUndoRedo();
 
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
             XmlElement imageset_el = doc.CreateElement("Imageset");
@@ -406,6 +409,8 @@ namespace UIEditor
 
             if (DialogResult.OK == ofd.ShowDialog(this))
             {
+                layout_editor.ClearUndoRedo();
+
                 imageset_name = "";
                 imageset_filename = "";
                 
@@ -479,6 +484,10 @@ namespace UIEditor
                         break;
                     case Keys.S:
                         saveToolStripButton_Click(null, new EventArgs());
+                        break;
+					case Keys.Z:
+                        layout_editor.Undo();
+                        layout_editor.Invalidate();
                         break;
                     case Keys.Left:
                         ResizeSelectedRegion(-1, 0, e.Shift);

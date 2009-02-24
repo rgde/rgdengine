@@ -535,6 +535,8 @@ namespace render
 
 		void load(const std::string& effect_name)
 		{
+			base::lmsg << "Loading Shader Effect: " << effect_name;// std::string((char*)pErrors->GetBufferPointer());
+
 			//guard(CEffect::load(std::wstring effect_name))
 
 			if(NULL == m_spPool)

@@ -23,16 +23,16 @@ struct Menu : public event::listener
     Menu()
     {
 		//получать события только от exit_button
-        subscribe<click_event,Menu> (&Menu::on_exit, &exit_button);
+        subscribe<click_event> (&Menu::on_exit, &exit_button);
 
 		//получать события только от exit_button
-		subscribe<click_event,Menu> (&Menu::on_help, &exit_button);
+		subscribe<click_event> (&Menu::on_help, &exit_button);
 
 		//получать события только от btnРудз
-        subscribe<click_event,Menu> (&Menu::on_help, &help_button);
+        subscribe<click_event> (&Menu::on_help, &help_button);
 
 		//получать события от всех
-        subscribe<click_event,Menu> (&Menu::on_beep);
+        subscribe<click_event> (&Menu::on_beep);
     }
 
     void on_exit (const click_event &e) 

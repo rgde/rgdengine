@@ -14,7 +14,7 @@ namespace render
 		base::lmsg << "Line2dManager::Line2dManager()";
 		m_pVertices = &(m_Geometry.lock());
 		m_uPriority = uPriority;
-		m_spEffect = Effect::create("Line3dManager.fxo");
+		m_spEffect = Effect::create("Line3dManager.fx");
 		m_renderInfo.pRenderFunc = boost::bind(&Line2dManager::render, this);
 	}
 	//-----------------------------------------------------------------------------------

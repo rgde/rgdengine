@@ -39,7 +39,7 @@ namespace render
 			m_pWhiteTexture(safeLoadDefaultTexture("White.jpg")),
 			m_pDefaultNormalMap(safeLoadDefaultTexture("DefaultNormalMap.jpg")),
 			m_pBlackTexture(safeLoadDefaultTexture("Black.jpg")),
-			m_pDefaultEffect(Effect::create("Default.fxo")),
+			m_pDefaultEffect(Effect::create("Default.fx")),
 			m_pDefaultFont(IFont::create(11,  L"Arial", render::IFont::Heavy))			
 	{
 
@@ -49,7 +49,7 @@ namespace render
 
 		if (!m_pDefaultEffect)
 		{
-			base::lerr << "Can't load effect \"graphics/shaders/Default.fxo\"";
+			base::lerr << "Can't load effect \"graphics/shaders/Default.fx\"";
 			core::application::get()->close();
 		}
 

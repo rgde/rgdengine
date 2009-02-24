@@ -12,7 +12,7 @@ namespace render
 	//-----------------------------------------------------------------------------------
 	Line3dManager::Line3dManager(unsigned long uPriority)
 		: render::rendererable(1000),
-		  m_spEffect(Effect::create("Line3dManager.fxo")),
+		  m_spEffect(Effect::create("Line3dManager.fx")),
 		  m_uPriority(uPriority),
 		  m_Geometry(true)
 	{

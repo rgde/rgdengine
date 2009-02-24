@@ -4,20 +4,20 @@
 
 #include <boost/scoped_ptr.hpp>
 
-class HelloMessage :  public game::IDynamicObject
+class HelloMessage :  public game::dynamic_object
 {
 public:
 	HelloMessage() :  
-	  spApp(core::IApplication::Create(L"Test_Lines Example", 800, 600, false, false)),
+	  spApp(core::application::create(L"Test_Lines Example", 800, 600, false, false)),
 	  m_TrianglesManager(9)
 	{
-		spApp->addTask(core::PTask(new core::RenderTask(*spApp, 1)));
-		spApp->addTask(core::PTask(new core::InputTask(*spApp,0)));
-		spApp->addTask(core::PTask(new core::CGameTask(*spApp,2)));
+		spApp->addTask(core::task_ptr(new core::render_task(*spApp, 1)));
+		spApp->addTask(core::task_ptr(new core::input_task(*spApp,0)));
+		spApp->addTask(core::task_ptr(new core::game_task(*spApp,2)));
 
-		m_pFont = render::IFont::Create(20, L"Arial", render::IFont::Heavy);
+		m_pFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
 
-		m_camera = render::CRenderCamera::Create();
+		m_camera = render::render_camera::create();
 
 		math::Vec3f vEyePt( 0.0f, 0, -50 );
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
@@ -30,12 +30,12 @@ public:
             using namespace input;
 
             m_cEsc.attach(L"Quit");
-			Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Quit");
+			Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
             
             m_cEsc += boost::bind(&HelloMessage::onEsc, this);
         }
 
-		render::TheCameraManager::Get().addCamera(m_camera);
+		render::TheCameraManager::get().addCamera(m_camera);
 		
 		spApp->Run();
 	}
@@ -43,21 +43,21 @@ public:
 protected:
 	void update (float dt)
 	{
-		render::TheDevice::Get().showFPS(m_pFont);
+		render::TheDevice::get().showFPS(m_pFont);
 		m_TrianglesManager.update();
 		m_TrianglesManager.render();
 	}
 
 	void onEsc ()
 	{
-		core::IApplication::Get()->close();
+		core::application::get()->close();
 	}
 
 protected:
 	render::PFont                         m_pFont;
-	render::PCamera                       m_camera;
+	render::camera_ptr                       m_camera;
 	lines_test::CTriangleManager          m_TrianglesManager;
-	boost::scoped_ptr<core::IApplication> spApp;
+	boost::scoped_ptr<core::application> spApp;
 	input::KeyDown                       m_cEsc;
 };
 
