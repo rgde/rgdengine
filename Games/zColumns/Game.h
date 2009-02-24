@@ -2,17 +2,17 @@
 
 namespace zcollumns
 {
-	class Game : public game::IDynamicObject
+	class Game : public game::dynamic_object
 	{
 	public:
 		Game(){}
 
-		render::CSpriteManager& getSpriteRenderer() {return m_sprite_renderer;}
+		render::SpriteManager& getSpriteRenderer() {return m_sprite_renderer;}
 
 	private:
 		void update(float dt){}
 
 	private:
-		render::CSpriteManager m_sprite_renderer;
+		render::SpriteManager m_sprite_renderer;
 	};
 }
