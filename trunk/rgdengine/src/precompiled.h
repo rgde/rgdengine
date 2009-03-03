@@ -51,6 +51,8 @@ namespace math
 #include <boost/bind/apply.hpp>
 #include <boost/call_traits.hpp>
 
+#define ASSERT _ASSERTE
+
 typedef unsigned char uchar;
 typedef	uchar		  byte;
 typedef unsigned int  uint;

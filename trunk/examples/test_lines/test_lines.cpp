@@ -54,7 +54,7 @@ protected:
 	}
 
 protected:
-	render::PFont                         m_pFont;
+	render::font_ptr                         m_pFont;
 	render::camera_ptr                       m_camera;
 	lines_test::CTriangleManager          m_TrianglesManager;
 	boost::scoped_ptr<core::application> spApp;

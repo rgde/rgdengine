@@ -69,7 +69,7 @@ namespace render
 		return m_pDefaultEffect;
 	}
 
-	PFont& RenderManager::getDefaultFont()
+	font_ptr& RenderManager::getDefaultFont()
 	{
 		return m_pDefaultFont;
 	}
@@ -378,7 +378,7 @@ namespace render
 	SRenderableInfo::SRenderableInfo()
 		: pFrame(0),
 		  bHaveVolumes(false),
-		  spMaterial(Material::create())
+		  spMaterial()
 	{
 	}
 }

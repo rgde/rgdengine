@@ -2,7 +2,7 @@
 #include <rgde/engine.h>
 
 //проигрывание роликов
-class AviLevelObject: public game::ILevelObject, public event::CSender
+class AviLevelObject: public game::level_object, public event::sender
 {
 public:
     AviLevelObject();

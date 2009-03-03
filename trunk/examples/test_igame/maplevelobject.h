@@ -2,7 +2,7 @@
 #include <rgde/engine.h>
 
 //карта
-class MapLevelObject : public game::ILevelObject, public event::CSender
+class MapLevelObject : public game::level_object, public event::sender
 {	
 public:
     MapLevelObject();

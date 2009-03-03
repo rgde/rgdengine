@@ -68,7 +68,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/D_$(ProjectName).exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)external/directx/lib&quot;;&quot;$(SolutionDir)external/bin_libs&quot;"
+				AdditionalLibraryDirectories="$(SolutionDir)lib/$(ConfigurationName);$(SolutionDir)external\directx\lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)/$D_(ProjectName).pdb"
 				SubSystem="1"
@@ -102,7 +102,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)/bin"
-			IntermediateDirectory="$(TEMP)\rgde_tmp\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
@@ -158,7 +158,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)external/directx/lib&quot;;&quot;$(SolutionDir)external/bin_libs&quot;"
+				AdditionalLibraryDirectories="$(SolutionDir)lib/$(ConfigurationName);$(SolutionDir)external\directx\lib"
 				GenerateDebugInformation="false"
 				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="1"
@@ -285,6 +285,7 @@
 		</Configuration>
 		<Configuration
 			Name="Product|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			>

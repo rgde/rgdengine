@@ -5,7 +5,7 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class IFont> PFont;
+	typedef boost::shared_ptr<class IFont> font_ptr;
 
 	class IFont
 	{
@@ -47,7 +47,7 @@ namespace render
 									   // used.
 		};
 	public:
-		static PFont create(int height, const std::wstring& name, FontWeight font_weigh = Normal);
+		static font_ptr create(int height, const std::wstring& name, FontWeight font_weigh = Normal);
 
 		virtual void disableDelayedRender(bool b) = 0;
 		void render(const std::wstring& text, const math::Rect& rect, unsigned int color = 0xFFFFFFFF);

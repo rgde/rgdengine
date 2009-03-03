@@ -345,7 +345,7 @@ namespace core
 			//GetClientRect( Handle(), &rcWindowClient );
 			//int width = rcWindowClient.right - rcWindowClient.left;
 			//int height = rcWindowClient.bottom - rcWindowClient.top;
-			//this->sendEvent(CWindowResize(width, height));
+			//this->send_event(CWindowResize(width, height));
 		}
 		else
 		{

@@ -17,7 +17,7 @@ TestInput::TestInput():
     m_btnPrimaryFire   (L"PrimaryFire"),
     m_btnSecondaryFire (L"SecondaryFire")
 {
-    render::TheDevice::Get().setClearColor(math::Color(0,0,0,255));
+    render::TheDevice::get().setClearColor(math::Color(0,0,0,255));
 
     input::Input::LoadFromFile("TestInput/input.xml");
 
@@ -38,7 +38,7 @@ TestInput::TestInput():
     //->
     {
 	    using namespace math;
-        m_cursor.pTexture = render::ITexture::Create("TestInput/cursor.png");
+        m_cursor.texture = render::texture::create("TestInput/cursor.png");
 	    m_cursor.uPriority = (uint)1000;
 	    m_cursor.size = Vec2f(32, 32);
 	    m_cursor.color = Color(255, 255, 255, 255);
@@ -98,21 +98,21 @@ void TestInput::update (float dt)
 
 void TestInput::onQuit ()
 {
-    core::IApplication::Get()->close();
+    core::application::get()->close();
 }
 
 void TestInput::onPause (bool pause)
 {
     if (pause)
     {
-        input::Input::Get().SetMode(false);
+        input::Input::get().SetMode(false);
         m_mouse.setPos(400,300);
         ShowCursor(FALSE);
     }
     else
     {
         ShowCursor(TRUE);
-        input::Input::Get().SetMode(true);
+        input::Input::get().SetMode(true);
     }
 }
 
@@ -140,6 +140,6 @@ void TestInput::onPrimaryFire (bool press)
 
 void TestInput::onSecondaryFire (bool press)
 {
-    if (!m_trigPause)
+    if (!m_trigPause && press)
         m_space.fireSecondaryWeapon();
 }

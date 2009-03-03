@@ -3,7 +3,7 @@
 #include "glass.h"
 
 //игра
-class PlayLevelObject : public game::ILevelObject, public event::CSender
+class PlayLevelObject : public game::level_object, public event::sender
 {
 public:
 	PlayLevelObject();

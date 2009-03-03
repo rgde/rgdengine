@@ -228,7 +228,7 @@ namespace render
 					if(enabled->Attribute("value"))
 						strEnabled = enabled->Attribute("value");
 
-				pPointLight->setEnabled(base::lexical_cast<int, std::string>(strEnabled));
+				pPointLight->setEnabled(base::lexical_cast<int, std::string>(strEnabled)>0);
 			}
 			else
 				base::lwrn<<"\""<<strType<<"\" light type temporally unsupported.";

@@ -1,42 +1,42 @@
 //RGDE
-#include "engine.h"
-#include "test_tetris.h"
+#include <rgde/engine.h>
+#include "tetris.h"
 
 DWORD interval;
 
 #define numboxes 225
 #define numboxesinablock 16
 
-class My : public game::IDynamicObject
+class My : public game::dynamic_object
 {
 public:
 	// теперь использовать вместо массива моделей
 	struct Stone
 	{
-		math::PFrame frame;
+		math::frame_ptr frame;
 		uint model_index;		
 	};
 
 
-	My() :  m_spApp(core::IApplication::Create(L"Tetris",600,600,32,85,false))
+	My() :  m_spApp(core::application::create(L"Tetris",600,600,32,85,false))
 	{
-		m_spApp->addTask(core::PTask(new core::CInputTask(0, false)));
-		m_spApp->addTask(core::PTask(new core::CGameTask(1)));
-		m_spApp->addTask(core::PTask(new core::CRenderTask(2)));
+		m_spApp->addTask(core::task_ptr(new core::input_task(0, false)));
+		m_spApp->addTask(core::task_ptr(new core::game_task(1)));
+		m_spApp->addTask(core::task_ptr(new core::render_task(2)));
 
 		math::Vec3f vEyePt( 0.0f, 0.f, -8.f );
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
 		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
 
-		m_camera = render::CRenderCamera::Create();
+		m_camera = render::render_camera::create();
 		m_camera->setProjection(math::Math::PI/2, 1.0f, 1.0f, 100.0f);
 		render::TheCameraManager::Get().addCamera(m_camera);
 
 		m_cTargetCamera.setCamera( m_camera );
 		m_cTargetCamera.setPosition(vEyePt,vLookatPt,vUpVec);
 
-		m_spFont = render::IFont::Create(18, L"Courier New", render::IFont::Heavy);
-		m_spFontBig = render::IFont::Create(40,L"Arial", render::IFont::Medium);
+		m_spFont = render::IFont::create(18, L"Courier New", render::IFont::Heavy);
+		m_spFontBig = render::IFont::create(40,L"Arial", render::IFont::Medium);
 		//инициализация ввода
 		m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
 		m_cEsc.addHandler(this,&My::onEsc);
@@ -135,9 +135,9 @@ protected:
 			bl->move(2); 
 			elapsed=0;
 		}
-		render::TheDevice::Get().showFPS(m_spFont);
+		render::TheDevice::get().showFPS(m_spFont);
 		
-		render::TheDevice::Get().showWiredFloorGrid(15.0f, 15, math::Color(60, 60, 60, 255));
+		render::TheDevice::get().showWiredFloorGrid(15.0f, 15, math::Color(60, 60, 60, 255));
 		renderMatr();
 		renderBlock();
 		switch(bl->m_ilastnum)
@@ -158,67 +158,61 @@ protected:
 	}
 
 	//выход из программы
-	void onEsc(const input::CButtonEvent&)
+	void onEsc(const input::Button&)
 	{
-		core::IApplication::Get()->close();
+		core::application::get()->close();
 	}
 
-	void onLeft(const input::CButtonEvent& event)
+	void onLeft(const input::Button& e)
 	{
-		if(event.m_bPress) 
-		{
+		if(e)
 			bl->move(0);
-		}
 	}
-	void onRight(const input::CButtonEvent& event)
+
+	void onRight(const input::Button& e)
 	{
-		if(event.m_bPress) 
-		{
+		if(e)
 			bl->move(1);
-		}
 	}
-	void onDown(const input::CButtonEvent& event)
+
+	void onDown(const input::Button& e)
 	{
-		if(event.m_bPress) 
-		{
+		if(e) 
 			interval=100;
-		} else
+		else
 			interval=500;
 	}
-	void onSpace(const input::CButtonEvent& event)
+
+	void onSpace(const input::Button& e)
 	{
-		if(event.m_bPress) 
-		{
+		if(e) 
 			bl->rotate();
-		}
 	}
 
 	void renderStone(const Stone& stone)
 	{
 		render::PModel& model = m_models[stone.model_index]; // следить что бы не было выхода за пределы вектора
 		render::PMesh& mesh = model->getMeshes()[0]; // мы знаем что у нас только 1 меш в модели. но нет проблем так сделать и для других вариантов
-		render::CMesh::PGeometry geom = mesh->getGeometry();
+		render::Mesh::PGeometry geom = mesh->getGeometry();
 		render::PMaterial& material = mesh->getMaterials()[0];		
 
-		material->bind();
+		//material->bind();
 	}
 
 protected:
 	std::vector<render::PModel> m_models; // тут храним исходные модели камушков
 	render::PEffect				m_effect;
-	
 
-
-	math::PCamera       m_camera;            //указатель на камеру
-	::render::PFont m_spFont,m_spFontBig;
+	math::camera_ptr       m_camera;            //указатель на камеру
+	::render::font_ptr m_spFont,m_spFontBig;
 
 	//данные для ввода
-	input::CButtonCommand       m_cEsc,m_cLeft,m_cRight,m_cDown,m_cSpace;
+	input::Command       m_cEsc,m_cLeft,m_cRight,m_cDown,m_cSpace;
 	
 	//данные для камеры
 	math::CTargetCamera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"
 
-	std::auto_ptr<core::IApplication> m_spApp;
+	std::auto_ptr<core::application> m_spApp;
 
 	render::PModel boxes[numboxes];
 	render::PModel blocks[numboxesinablock];

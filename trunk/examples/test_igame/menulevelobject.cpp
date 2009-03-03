@@ -1,7 +1,6 @@
 //MenuLevelObject.cpp
 #include "MenuLevelObject.h"
 #include <iostream>
-//#include <render/renderFont.h>
 #include <rgde/engine.h>
 
 MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
@@ -16,10 +15,10 @@ MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
 		m_cSpace.attach(L"Space");
 		m_cEsc  .attach(L"Escape");
 
-		Input::getDevice(types::Keyboard)->getControl(types::KeyUp    )->bind(L"Up");
-        Input::getDevice(types::Keyboard)->getControl(types::KeyDown  )->bind(L"Down");
-        Input::getDevice(types::Keyboard)->getControl(types::KeySpace )->bind(L"Space");
-        Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Escape");
+		Input::getDevice(types::Keyboard)->get_control(types::KeyUp    )->bind(L"Up");
+        Input::getDevice(types::Keyboard)->get_control(types::KeyDown  )->bind(L"Down");
+        Input::getDevice(types::Keyboard)->get_control(types::KeySpace )->bind(L"Space");
+        Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Escape");
 
         m_up     += boost::bind(&MenuLevelObject::onUpKey,   this);
         m_down   += boost::bind(&MenuLevelObject::onDownKey, this);
@@ -28,12 +27,12 @@ MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
     }
 
 	using render::IFont;
-	m_menu_font = IFont::Create(40, L"Arial", IFont::ExtraBold);
+	m_menu_font = IFont::create(40, L"Arial", IFont::ExtraBold);
 
 	using namespace game;
-	PMenuItem item(new TMenuItem<CCompliteLevelEvent>(L"PLAY GAME", CCompliteLevelEvent()));
+	PMenuItem item(new TMenuItem<events::on_complite_level>(L"PLAY GAME", events::on_complite_level()));
 	m_items.push_back(item);
-	item = PMenuItem(new TMenuItem<CCloseGameEvent>(L"EXIT", CCloseGameEvent()));
+	item = PMenuItem(new TMenuItem<events::on_close_game>(L"EXIT", events::on_close_game()));
 	m_items.push_back(item);	
 }
 
@@ -74,14 +73,14 @@ void MenuLevelObject::onDownKey()
 void MenuLevelObject::onSpace() 
 {
 	m_items[m_active_menu_item]->send(this);
-	//sendEvent(m_items[m_active_menu_item].e);
-	//sendEvent(game::CCompliteLevelEvent()); // активируется уровень который прописан как следующий
-	//sendEvent(game::CSetLevelEvent("play")); // окончание текущего уровня и начало уровня "play"
+	//send_event(m_items[m_active_menu_item].e);
+	//send_event(game::events::on_complite_level()); // активируется уровень который прописан как следующий
+	//send_event(game::CSetLevelEvent("play")); // окончание текущего уровня и начало уровня "play"
 }
 
 void MenuLevelObject::onEsc() 
 {
-	sendEvent<game::CCloseGameEvent>(game::CCloseGameEvent());
+	send_event<game::events::on_close_game>(game::events::on_close_game());
 }
 
 

@@ -142,3 +142,5 @@ typedef unsigned int  uint;
 #include "scene\\distance_trigger.h"
 
 #include "ui/ui.h"
+
+#include "audio/audio.h"

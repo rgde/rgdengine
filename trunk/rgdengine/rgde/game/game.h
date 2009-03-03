@@ -12,18 +12,18 @@ namespace game
 {
 	namespace events
 	{
-		class on_close_game_event
+		class on_close_game
 		{
 		};
 
-		class on_complite_level_event
+		class on_complite_level
 		{
 		};
 
-		class on_level_set_event
+		class on_level_set
 		{
 		public:
-			on_level_set_event(const std::string& next_level)
+			on_level_set(const std::string& next_level)
 				: m_next_level(next_level)
 			{
 			}
@@ -54,9 +54,9 @@ namespace game
 
 		void update();
 
-		void onCloseGame(events::on_close_game_event);
-		void onCompliteLevel(events::on_complite_level_event);
-		void onSetLevel(events::on_level_set_event);
+		void onCloseGame(events::on_close_game);
+		void onCompliteLevel(events::on_complite_level);
+		void onSetLevel(events::on_level_set);
 
 		void register_object(dynamic_object*);   //зарегестрировать динамический (т.е. с методом update) объект
 		void unregister_object(dynamic_object*); //РАЗрегестрировать динамический объект

@@ -7,14 +7,14 @@ namespace game
 	//базовый объект для всех объектов, которые создает уровень
 	//(может быть нужен, если надо будет предьявлять общие требования
 	//к таким объектам)
-	class ILevelObject
+	class level_object
 	{
 	public:
-		virtual ~ILevelObject(){}
+		virtual ~level_object(){}
 	};
 
 	//фабрика обьектов, которые могут создавать уровни
-	typedef factory::TFactory<game::ILevelObject> LevelObjFactory;
+	typedef factory::TFactory<game::level_object> LevelObjFactory;
 
 	template <class T>
 	class _registrator

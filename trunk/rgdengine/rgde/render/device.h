@@ -40,8 +40,8 @@ namespace render
 		void					showWiredFloorGrid(float size, unsigned num = 20, const math::Color& color = math::Green);
 
 		float                   getFPS(float absoluteTime) const;
-		void                    showFPS(const PFont& font);
-		void                    showStatistics(const PFont& font);
+		void                    showFPS(const font_ptr& font);
+		void                    showStatistics(const font_ptr& font);
 
         //->
         void                    setClearColor (math::Color color) {m_clear_color = color;}

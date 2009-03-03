@@ -6,7 +6,7 @@ namespace game
 {
 	namespace effects
 	{
-		struct SnowSprite : public render::SSprite
+		struct SnowSprite : public render::Sprite
 		{
 			void init();
 
@@ -14,7 +14,7 @@ namespace game
 			math::Vec2f velocity;
 		};
 
-		class SnowEffect : public game::IDynamicObject
+		class SnowEffect : public game::dynamic_object
 		{
 		public:
 			SnowEffect(uint numSprites = 500);
@@ -29,14 +29,14 @@ namespace game
 			float m_rate;
 			float m_time;
 			float m_gravity;
-			render::CSpriteManager m_sprite_renderer;
+			render::SpriteManager m_sprite_renderer;
 
-			render::PTexture m_texture;
+			render::texture_ptr m_texture;
 
 			typedef std::vector<SnowSprite> Sprites;
 			Sprites m_sprites;
 
-			render::PFont m_font;
+			render::font_ptr m_font;
 		};
 	}
 }

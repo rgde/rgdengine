@@ -107,7 +107,7 @@ public:
 			WCHAR str[80];
 			swprintf(str,L"¬аш счЄт %d \n—ыграть ещЄ?",m_ipoints);
 			if(MessageBox(0,str,L"»гра закончилась",MB_YESNO|MB_ICONQUESTION)==IDYES)
-				reinit(); else core::IApplication::Get()->close();
+				reinit(); else core::application::get()->close();
 		}
 		if(m_bstopped) initBlock(); else
 		switch(dir)

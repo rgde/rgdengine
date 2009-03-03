@@ -2,9 +2,9 @@
 #include <rgde/engine.h>
 
 //меню
-class MenuLevelObject : public game::ILevelObject, 
-						public event::CSender,
-						public game::IDynamicObject
+class MenuLevelObject : public game::level_object, 
+						public event::sender,
+						public game::dynamic_object
 {
 public:
     MenuLevelObject();
@@ -35,7 +35,7 @@ private:
 			text = str;
 		}
 
-		virtual void send(MenuLevelObject* obj) {obj->sendEvent<EventType>(event);}
+		virtual void send(MenuLevelObject* obj) {obj->send_event<EventType>(event);}
 
 		EventType event;
 	};
@@ -48,7 +48,7 @@ private:
 	int m_active_menu_item;
 	enum {NumMenuItems = 2};
 
-	render::PFont m_menu_font;
+	render::font_ptr m_menu_font;
 	input::KeyDown m_up;
 	input::KeyDown m_down;
 	input::KeyDown m_cSpace;

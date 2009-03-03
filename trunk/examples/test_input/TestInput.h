@@ -5,7 +5,7 @@
 
 #include "Space.h"
 
-class TestInput: public game::IDynamicObject
+class TestInput: public game::dynamic_object
 {
 public:
     TestInput();
@@ -41,7 +41,7 @@ private:
 
     //->
     input::Mouse           m_mouse;
-    render::SSprite        m_cursor;
-	render::CSpriteManager m_sprite_renderer;
+    render::Sprite        m_cursor;
+	render::SpriteManager m_sprite_renderer;
     //-<
 };

@@ -30,7 +30,7 @@ namespace rgde
 				bool							m_bSortSpritesBeforeLog;
 				// Область разброса спрайтов
 				math::Vec2f						m_sprites_seed;
-				::render::PFont					m_font;
+				::render::font_ptr					m_font;
 				math::camera_ptr					m_camera;
 			};
 		}

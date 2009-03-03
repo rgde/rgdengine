@@ -4,11 +4,11 @@
 
 class Space
 {
-	struct ParticleSprite: public render::SSprite
+	struct ParticleSprite: public render::Sprite
 	{
-        void initParticle(render::PTexture &texture);
-		void initStar(render::PTexture &texture);
-        void initAlien(render::PTexture &texture);
+        void initParticle(render::texture_ptr &texture);
+		void initStar(render::texture_ptr &texture);
+        void initAlien(render::texture_ptr &texture);
 
         void initParticle();
 		void initStar();
@@ -49,14 +49,14 @@ private:
 	float m_speed;
     bool  m_bFirePrimaryWeapon;
 
-	render::PFont          m_font;
-	render::PTexture       m_textureShip;
-	render::PTexture       m_textureParticle;
-	render::PTexture       m_textureLazer;
-	render::PTexture       m_textureStars;
-    render::PTexture       m_textureAlien;
-	render::SSprite        m_spriteShip;
-	render::SSprite        m_spriteLazer;
-	render::SSprite        m_spriteStars;
-	render::CSpriteManager m_sprite_renderer;
+	render::font_ptr          m_font;
+	render::texture_ptr       m_textureShip;
+	render::texture_ptr       m_textureParticle;
+	render::texture_ptr       m_textureLazer;
+	render::texture_ptr       m_textureStars;
+    render::texture_ptr       m_textureAlien;
+	render::Sprite        m_spriteShip;
+	render::Sprite        m_spriteLazer;
+	render::Sprite        m_spriteStars;
+	render::SpriteManager m_sprite_renderer;
 };
