@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8,00"
 	Name="test_primitives"
-	ProjectGUID="{94AC13F0-9362-4AC0-8947-5BEB9DE5D839}"
+	ProjectGUID="{FB5A905C-E321-4A49-9F6E-4FA31851D200}"
 	RootNamespace="test_primitives"
 	Keyword="Win32Proj"
 	>
@@ -67,7 +67,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/D_$(ProjectName).exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)lib/$(ConfigurationName)"
+				AdditionalLibraryDirectories="$(SolutionDir)lib/$(ConfigurationName);$(SolutionDir)external\directx\lib"
 				IgnoreDefaultLibraryNames="libcmt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)/$D_(ProjectName).pdb"
@@ -102,7 +102,7 @@
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)/bin"
-			IntermediateDirectory="$(TEMP)\rgde_tmp\$(ProjectName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="1"
@@ -157,7 +157,7 @@
 				AdditionalDependencies="../../bin/Engine.lib"
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)/external/bin_libs"
+				AdditionalLibraryDirectories="$(SolutionDir)lib/$(ConfigurationName);$(SolutionDir)external\directx\lib"
 				GenerateDebugInformation="false"
 				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
@@ -284,6 +284,7 @@
 		</Configuration>
 		<Configuration
 			Name="Product|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			>

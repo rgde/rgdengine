@@ -19,31 +19,21 @@ namespace render
 
 	public:
 		typedef boost::function<void(void)>	FontRenderCallback;
+		typedef std::list<FontRenderCallback>	CBList;
 
-		struct STextInfo
-		{
-			STextInfo() {}
-			STextInfo(PFont pFont, FontRenderCallback rcb) : cb(rcb), m_pFont(pFont) {}
+		CBList texts;		
 
-			PFont m_pFont;
-			FontRenderCallback	cb;
-		};		
-
-		typedef std::list<STextInfo>	TextList;
-
-		TextList texts;		
-
-		void addText(PFont font, FontRenderCallback cb)
+		void addText(FontRenderCallback cb)
 		{
 			// тут и вообще мы легко упадем, если у нас не будет рендера.
 			// надо делать проверки.
-			texts.push_back(STextInfo(font, cb));
+			texts.push_back(cb);
 		}		
 
 		void renderAll()
 		{
-			for (TextList::iterator it = texts.begin(); it != texts.end(); ++it)
-				it->cb();
+			for (CBList::iterator it = texts.begin(); it != texts.end(); ++it)
+				(*it)();
 			texts.clear();
 		}		
 
@@ -138,6 +128,8 @@ namespace render
 			math::Vec2f	screen_size		= render::TheDevice::get().getBackBufferSize();
 			math::Vec2f	ratio = screen_size / virtSize;
 
+			CFontRenderManager& rm = TheFontRenderManager::get();
+
 			if (isDrawShadow)
 			{
 				RECT	textShadowLocation;
@@ -145,6 +137,9 @@ namespace render
 				textShadowLocation.top = (LONG)((rect.position[1] + nShadowDistance) * ratio[1]);
 				textShadowLocation.right = textShadowLocation.left + (LONG)(rect.size[0] * ratio[0]);
 				textShadowLocation.bottom = textShadowLocation.top + (LONG)(rect.size[1] * ratio[1]);
+
+				//doRender(text, textShadowLocation, nShadowColor, flags);
+				rm.addText(boost::bind(&FontImpl::doRender, this, text, textShadowLocation, nShadowColor, flags));
 			}
 
 			RECT	textLocation;
@@ -152,6 +147,10 @@ namespace render
 			textLocation.top = (LONG)(rect.position[1] * ratio[1]);
 			textLocation.right = textLocation.left + (LONG)(rect.size[0] * ratio[0]);
 			textLocation.bottom = textLocation.top + (LONG)(rect.size[1] * ratio[1]);
+
+			
+			//doRender(text, textLocation, color, flags);
+			rm.addText(boost::bind(&FontImpl::doRender, this, text, textLocation, color, flags));
 		}		
 
 		virtual void onLostDevice()
@@ -184,15 +183,15 @@ namespace render
 		ID3DXFont	*m_pFont;
 	};
 
-	PFont IFont::create(int height, const std::wstring &name, FontWeight font_weigh)
+	font_ptr IFont::create(int height, const std::wstring &name, FontWeight font_weigh)
 	{
 		try
 		{
-			return PFont(new FontImpl(height, name, font_weigh));
+			return font_ptr(new FontImpl(height, name, font_weigh));
 		}
 		catch (...)
 		{
-			return PFont();
+			return font_ptr();
 		}
 	}
 }

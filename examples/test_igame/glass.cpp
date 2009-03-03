@@ -18,9 +18,9 @@ namespace game
 	{
 		m_textures.resize(3);
 
-		m_textures[0] = render::ITexture::Create("ZColumns/Circle.jpg");
-		m_textures[1] = render::ITexture::Create("ZColumns/Rect.jpg");
-		m_textures[2] = render::ITexture::Create("ZColumns/Triangle.jpg");
+		m_textures[0] = render::texture::create("ZColumns/Circle.jpg");
+		m_textures[1] = render::texture::create("ZColumns/Rect.jpg");
+		m_textures[2] = render::texture::create("ZColumns/Triangle.jpg");
 	}
 	
 	void Glass::initField(uint w, uint h)
@@ -144,7 +144,7 @@ namespace game
 
 	void Glass::renderSprites()
 	{
-		render::SSprite sprite;
+		render::Sprite sprite;
 		sprite.color = 0xFFFFFFFF;
 		sprite.rect = math::Rect(0,0,1,1);
 		sprite.spin = 0;
@@ -158,7 +158,7 @@ namespace game
 			{
 				if (-1 != l[j].id)
 				{
-					sprite.pTexture = m_textures[l[j].id];
+					sprite.texture = m_textures[l[j].id];
 					sprite.pos = l[j].rect.position;
 					m_spriteRenderer.addSprite(sprite);
 				}

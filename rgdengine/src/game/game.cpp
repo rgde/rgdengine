@@ -98,9 +98,9 @@ namespace game
 
 	game_system::game_system(): m_change_level(false)
 	{
-		subscribe<events::on_close_game_event>     (&game_system::onCloseGame);
-		subscribe<events::on_complite_level_event> (&game_system::onCompliteLevel);
-		subscribe<events::on_level_set_event>      (&game_system::onSetLevel);
+		subscribe<events::on_close_game>     (&game_system::onCloseGame);
+		subscribe<events::on_complite_level> (&game_system::onCompliteLevel);
+		subscribe<events::on_level_set>      (&game_system::onSetLevel);
 		core::TheTimer::get().start();
 	}
 
@@ -129,13 +129,13 @@ namespace game
         }
 	}	
 	
-	void game_system::onCloseGame(events::on_close_game_event)
+	void game_system::onCloseGame(events::on_close_game)
 	{
 		setCurrentLevel("");
 		core::application::get()->close();
 	}
 
-	void game_system::onCompliteLevel(events::on_complite_level_event)
+	void game_system::onCompliteLevel(events::on_complite_level)
 	{
 		std::string next_level;
 		Level *pLevel = get_level(m_strCurrentLevel);
@@ -146,7 +146,7 @@ namespace game
 		setCurrentLevel(next_level);
 	}
 
-	void game_system::onSetLevel(events::on_level_set_event event)
+	void game_system::onSetLevel(events::on_level_set event)
 	{
 		setCurrentLevel(event.get_next_level());
 	}

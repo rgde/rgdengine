@@ -1,5 +1,10 @@
 #pragma once
 
+#include <string>
+#include <map>
+
+namespace audio
+{
 class WaveFile;
 
 // This is a singleton factory that manages .wav file memory.
@@ -14,7 +19,7 @@ class WaveFileFactory
 
 		static WaveFileFactory* Instance();
 
-		WaveFile* Get(const std::string& file_name);
+		WaveFile* Get(const char*);
 
     protected:
 		static WaveFileFactory* s_pInstance;
@@ -24,3 +29,12 @@ class WaveFileFactory
 		
 		WavMap m_wavs;
 };
+
+inline WaveFileFactory* WaveFileFactory::Instance()
+{
+	if (!s_pInstance)
+		s_pInstance = new WaveFileFactory();
+
+	return s_pInstance;
+}
+}

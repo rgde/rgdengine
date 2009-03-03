@@ -18,7 +18,7 @@ namespace game
 		uint x, y;
 	};
 
-	class Glass  : public IDynamicObject
+	class Glass  : public dynamic_object
 	{
 	public:
 		typedef std::vector<Brick> Line;
@@ -44,8 +44,8 @@ namespace game
 		void fixPos(Brick& b);
 
 	private:
-		render::CSpriteManager m_spriteRenderer;
-		std::vector<render::PTexture> m_textures;
+		render::SpriteManager m_spriteRenderer;
+		std::vector<render::texture_ptr> m_textures;
 		GameField m_field;
 		float m_brickSize;
 		math::Rect m_rect;

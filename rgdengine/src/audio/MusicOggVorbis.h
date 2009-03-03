@@ -2,6 +2,8 @@
 
 #include "music.h"
 
+namespace audio
+{
 class OggVorbisFile;
 
 // MusicOggVorbis is an implementation of the abstract Music
@@ -9,15 +11,15 @@ class OggVorbisFile;
 class MusicOggVorbis : public Music
 {
     public:
-		MusicOggVorbis(const char* szVorbisFile);
-		virtual ~MusicOggVorbis();
+        MusicOggVorbis(const char* szVorbisFile);
+        virtual ~MusicOggVorbis();
 
-		virtual bool FillBuffer(IDirectSoundBuffer* pDSB,
+		virtual bool FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
 								DWORD startIndex,
 								DWORD amount,
 								DWORD* pAmtRead = NULL);
 
-		virtual void Reset() ;
+		virtual void Reset();
 
 		virtual unsigned int GetTotalTime();
 
@@ -25,3 +27,4 @@ class MusicOggVorbis : public Music
     protected:
 		OggVorbisFile* m_pOVFile;
 };
+}

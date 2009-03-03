@@ -43,7 +43,7 @@ namespace render
 		FillMode  getFillMode() const			{ return m_nFillMode; }
 
 		PEffect& getDefaultEffect();
-		PFont&   getDefaultFont();
+		font_ptr&   getDefaultFont();
 		const Fog&    getDefaultFog()	const {return m_pDefaultFog;}
 
 		texture_ptr& getBlackTexture();
@@ -68,7 +68,7 @@ namespace render
 		FillMode                               m_nFillMode;
 
 		PEffect                                m_pDefaultEffect;
-		PFont                                  m_pDefaultFont;
+		font_ptr                                  m_pDefaultFont;
 		Fog                                   m_pDefaultFog;
 
 		texture_ptr                               m_pBlackTexture;

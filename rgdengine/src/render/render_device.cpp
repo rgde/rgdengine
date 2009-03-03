@@ -142,14 +142,14 @@ namespace render
 	}
 
 	//--------------------------------------------------------------------------------------
-	void Device::showFPS(const PFont& font)
+	void Device::showFPS(const font_ptr& font)
 	{
 		WCHAR szFPSString[64];
 		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(core::TheTimer::get().getAbsoluteTime()));
 		font->render(szFPSString, math::Rect(1, 1, 400, 400), 0xFFFFFFFF, true);
 	}
 
-	void Device::showStatistics(const PFont& font)
+	void Device::showStatistics(const font_ptr& font)
 	{
 		WCHAR szStatisticsString[512];
 		wsprintf(szStatisticsString, L"Tris: %d, Vertices: %d", m_triangles, m_verts);

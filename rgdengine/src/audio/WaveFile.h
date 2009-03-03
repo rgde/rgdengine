@@ -1,36 +1,44 @@
 #pragma once
 
-#include <Windows.h>
-#include <MMReg.h>
-
-#include <rgde/io/io.h>
+#include <windows.h>
+#include <mmsystem.h>
+#include <mmreg.h>
+#include <dsound.h>
 
 namespace audio
 {
-	//-----------------------------------------------------------------------------
-	// Name: class CWaveFile
-	// Desc: Encapsulates reading or writing sound data to or from a wave file
-	//-----------------------------------------------------------------------------
-	class CWaveFile
-	{
-	public:
-		CWaveFile(byte* pbData, uint ulDataSize, WAVEFORMATEX* pwfx, uint dwFlags);
-		~CWaveFile();
+// The Wavefile class implements readim PCM data from a .wav file.
+// This implementation is based on the DirectSound SDK samples,
+// for more info download the DirectX sdk at http://www.msdn.com/directx
+class WaveFile
+{
+    public:
+        WAVEFORMATEX* m_pwfx;        // Pointer to WAVEFORMATEX structure
+        HMMIO         m_hmmio;       // MM I/O handle for the WAVE
+        MMCKINFO      m_ck;          // Multimedia RIFF chunk
+        MMCKINFO      m_ckRiff;      // Use in opening a WAVE file
+        DWORD         m_dwSize;      // The size of the wave file
+        MMIOINFO      m_mmioinfoOut;
+        BOOL          m_bIsReadingFromMemory;
+        BYTE*         m_pbData;
+        BYTE*         m_pbDataCur;
+        ULONG         m_ulDataSize;
 
-		bool Read( byte* pBuffer, uint dwSizeToRead, uint* pdwSizeRead );
-		uint GetSize();
-		
-		WAVEFORMATEX* GetFormat() { return m_pwfx; }
+        WaveFile();
+        ~WaveFile();
 
-	protected:
-		bool Reset();
+        bool Open(const char* strFileName, WAVEFORMATEX* pwfx);
 
-	public:
-		WAVEFORMATEX* m_pwfx;        // Pointer to WAVEFORMATEX structure
-		uint         m_dwSize;      // The size of the wave file
-		uint         m_dwFlags;
-		byte*         m_pbData;
-		byte*         m_pbDataCur;
-		uint         m_ulDataSize;
-	};
+        void Close();
+
+        bool Read(BYTE* pBuffer, DWORD dwOffset, DWORD dwSizeToRead, DWORD* pdwSizeRead);
+
+        DWORD   GetSize();
+        HRESULT ResetFile();
+        WAVEFORMATEX* GetFormat()  {  return m_pwfx;  };
+
+
+    protected:
+        HRESULT ReadMMIO();
+};
 }

@@ -31,7 +31,7 @@ namespace game
 		for (StringList::iterator it = m_listTypes.begin(); it != m_listTypes.end(); ++it)
 		{
 			std::string& type_name = *it;
-			ILevelObject* pLevelObj = LevelObjFactory::Instance().create(type_name);
+			level_object* pLevelObj = LevelObjFactory::Instance().create(type_name);
 			m_listLevelObjs.push_back(pLevelObj);
 		}
 	}
@@ -41,7 +41,7 @@ namespace game
 	{
 		//... кажется, что объекты созданные фабрикой надо удалять так:
 		//(но могу и соврать)
-		std::list<ILevelObject*>::iterator i = m_listLevelObjs.begin();
+		std::list<level_object*>::iterator i = m_listLevelObjs.begin();
 		while (i != m_listLevelObjs.end())
 		{
 			delete (*i);
