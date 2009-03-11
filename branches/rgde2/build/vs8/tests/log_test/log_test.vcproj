@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(SolutionDir);$(SolutionDir)..\..\external\"
+				AdditionalIncludeDirectories="$(SolutionDir);$(SolutionDir)..\..\external\;$(SolutionDir)..\..\external\boost\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,6 +63,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName)_d.exe"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\boost\lib\"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="1"
@@ -118,7 +119,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="$(SolutionDir);$(SolutionDir)..\..\external\"
+				AdditionalIncludeDirectories="$(SolutionDir);$(SolutionDir)..\..\external\;$(SolutionDir)..\..\external\boost\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -139,6 +140,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName).exe"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\boost\lib\"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
 				SubSystem="1"
