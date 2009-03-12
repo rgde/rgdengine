@@ -38,6 +38,12 @@ namespace rgde
 		{
 		}
 
+		color::color(const color& c, float alpha)
+			: data(c.data)
+		{
+			this->a = (unsigned char)(alpha*255);
+		}
+
 		color::color(uchar r, uchar g, uchar b, uchar a)
 		{
 			set(r, g, b, a);
@@ -73,7 +79,10 @@ namespace rgde
 		color operator*( const color& c, float factor )
 		{
 			color out;
-			out.set(c.r * factor, c.g * factor, c.b * factor, c.a * factor);
+			out.set((uchar )(c.r * factor), 
+					(uchar )(c.g * factor),
+					(uchar )(c.b * factor),
+					(uchar )(c.a * factor));
 			return out;
 		}
 

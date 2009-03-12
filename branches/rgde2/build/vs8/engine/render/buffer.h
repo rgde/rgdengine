@@ -148,7 +148,8 @@ namespace rgde
 			typedef boost::scoped_ptr<index_buffer_impl> pimpl;
 
 		protected:
-			index_buffer(device& dev, size_t size, bool use_32bit, resource::pool pool, uint usage_flags = 0);
+			index_buffer(device& dev, size_t size, bool use_32bit, resource::pool pool, 
+						uint usage_flags = 0);
 
 		public:
 			static index_buffer_ptr create(device& dev, size_t size, bool use_32bit, 
