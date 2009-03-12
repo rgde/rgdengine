@@ -35,15 +35,15 @@ namespace rgde
 
 			enum format
 			{				
-				top,			// Top-justifies text.
-				left,			// Aligns text to the left. 
+				top = 0,			// Top-justifies text.
+				left = 0,			// Aligns text to the left. 
 				center,			// Centers text horizontally in the rectangle.
 				right,			// Aligns text to the right. 
 				vcenter,		// Centers text vertically (single line only). 
 				bottom,			// Justifies the text to the bottom of the rectangle. This value must be 
 								// combined with SingleLine.
 
-				word_break,		// Breaks words. Lines are automatically broken between words if a word would 
+				word_break = 0,		// Breaks words. Lines are automatically broken between words if a word would 
 								// extend past the edge of the rectangle specified by the pRect parameter. A 
 								// carriage return/line feed sequence also breaks the line.
 

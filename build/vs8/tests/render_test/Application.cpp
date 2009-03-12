@@ -12,16 +12,6 @@ using namespace math;
 
 #include <windows.h>
 
-float g_rot_x = 0;
-float g_rot_y = 0;
-
-int old_x = -1;
-int old_y = -1;
-
-int clicked_x = 0;
-int clicked_y = 0;
-
-
 using rgde::render::vertex_element;
 vertex_element custom_vertex_desc[] = 
 {
@@ -89,6 +79,12 @@ Application::Application()
 	m_font(font::create(m_device, 18, L"Arial", font::heavy)),
 	m_arc_ball(640, 480)
 {
+	old_x = -1;
+	old_y = -1;
+
+	clicked_x = 0;
+	clicked_y = 0;
+
 	SetCurrentDirectoryW(L"../data/");
 
 	std::wstring buf;
@@ -107,10 +103,23 @@ Application::Application()
 	show();
 	update();
 
-	doc.load_file("sample.xml");
+	m_karaoke = new game::karaoke(*this);
 
 	//doc()
+	init_render_data();
+}
 
+Application::~Application()
+{
+	m_vb.reset();
+	m_ib.reset();
+
+	delete m_karaoke;
+	m_karaoke = 0;
+}
+
+void Application::init_render_data()
+{
 	using namespace rgde::render;
 	vertex_declaration_ptr decl = vertex_declaration::create(m_device, custom_vertex_desc, 3);
 
@@ -124,14 +133,14 @@ Application::Application()
 			);
 
 		void *pVertices = m_vb->lock( 0, sizeof(cube_geom), 0 );
-			memcpy( pVertices, cube_geom, sizeof(cube_geom) );
+		memcpy( pVertices, cube_geom, sizeof(cube_geom) );
 		m_vb->unlock();
 	}
 
 	{
 		m_ib = index_buffer::create(m_device, sizeof(cube_ib), false, resource::default, buffer::write_only);
 		void *indices = m_ib->lock( 0, sizeof(cube_ib), 0 );
-			memcpy( indices, cube_ib, sizeof(cube_ib) );
+		memcpy( indices, cube_ib, sizeof(cube_ib) );
 		m_ib->unlock();
 	}
 
@@ -145,50 +154,49 @@ Application::Application()
 	m_camera.lookAt(cam_pos, (math::vec3f(1,0,0) + cam_pos), math::vec3f(0,1,0));
 }
 
-Application::~Application()
-{
-	m_vb.reset();
-	m_ib.reset();
-}
-
 void Application::run()
 {		
 	while( is_created() )
 	{
 		if( !do_events() && m_active)
 		{
-			static float rotqube = 0.0f;
-			rotqube  += 0.9f;
-
-			matWorld = math::MAT_IDENTITY44F;
-
-			m_device.set_transform( render::view_transform, m_camera.getViewMatrix());
-			m_device.set_transform( render::world_transform, m_arc_ball.get_matrix());	// Set The Transformation
-
-
-			m_device.frame_begin();
-			m_device.clear(color::Black);
-			m_device.set_stream_source( 0, m_vb, sizeof(color_vertex) );
-			m_device.set_index_buffer(m_ib);
-
-
-			m_device.draw(render::triangle_list, 0, 0, 24, 0, 12);
-
-			//m_device.draw( render::triangle_strip,  0, 2 ); // Draw Front
-			//m_device.draw( render::triangle_strip,  4, 2 ); // Draw Back
-			//m_device.draw( render::triangle_strip,  8, 2 ); // Draw Top
-			//m_device.draw( render::triangle_strip,  12, 2 ); // Draw Bottom
-			//m_device.draw( render::triangle_strip,  16, 2 ); // Draw Right
-			//m_device.draw( render::triangle_strip,  20, 2 ); // Draw Left
-
-			m_font->render(L"Hello", rect(10,10,100,100),color::Red, true);
-			xml::node l = doc("Song")("Text")("Line");
-			const std::wstring text = xml::as_utf16(l.first_child().value());
-			//m_font->render(text,rect(10,10,620,100),color::Red, true);
-			m_device.frame_end();
-			m_device.present();
+			render();
 		}
 	}
+}
+
+void Application::render()
+{
+	m_device.set_transform( render::view_transform, m_camera.getViewMatrix());
+	m_device.set_transform( render::world_transform, m_arc_ball.get_matrix());	// Set The Transformation
+
+	m_device.frame_begin();
+	//m_device.clear(color::Black);
+	m_device.clear(color::DarkBlue);
+
+	draw_cube();
+
+	m_karaoke->render();
+
+	m_font->render(L"Hello", rect(10,100,100,100),color::Red, true);
+
+	m_device.frame_end();
+	m_device.present();
+}
+
+void Application::draw_cube()
+{
+	m_device.set_stream_source( 0, m_vb, sizeof(color_vertex) );
+	m_device.set_index_buffer(m_ib);
+
+	//m_device.draw(render::triangle_list, 0, 0, 24, 0, 12);
+
+	//m_device.draw( render::triangle_strip,  0, 2 ); // Draw Front
+	//m_device.draw( render::triangle_strip,  4, 2 ); // Draw Back
+	//m_device.draw( render::triangle_strip,  8, 2 ); // Draw Top
+	//m_device.draw( render::triangle_strip,  12, 2 ); // Draw Bottom
+	//m_device.draw( render::triangle_strip,  16, 2 ); // Draw Right
+	//m_device.draw( render::triangle_strip,  20, 2 ); // Draw Left
 }
 
 core::windows::result Application::wnd_proc(ushort message, uint wparam, long lparam )
@@ -216,6 +224,10 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 			{
 				m_cam_pos -= math::vec3f(0.05f,0,0);
 			}
+			else if (VK_SPACE == wparam)
+			{
+				m_karaoke->on_key_pressed(wparam);
+			}
 
 
 			return 0;
@@ -234,6 +246,7 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 			int yPos = HIWORD(lparam); 
 
 			m_arc_ball.click(xPos, yPos);
+			m_karaoke->on_mouse_click(xPos, yPos);
 		}
 		return 0;
 

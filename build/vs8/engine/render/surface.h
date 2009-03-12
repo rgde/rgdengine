@@ -8,9 +8,10 @@ namespace rgde
 	{
 		class surface : public resource
 		{
-		public:
+		protected:
 			explicit surface(device& dev);
 
+		public:
 			virtual size_t get_width() const = 0;
 			virtual size_t get_height() const = 0;
 
@@ -19,13 +20,23 @@ namespace rgde
 
 		class base_texture : public resource
 		{
-		public:
+		protected:
 			explicit base_texture(device& dev);
 
-			virtual void set_lod(unsigned int new_lod) = 0;
-			virtual unsigned int get_lod() = 0;
+		public:
+			void set(size_t slot);
 
-			virtual unsigned int get_level_count() const = 0;
+			//virtual size_t get_width() const = 0;
+			//virtual size_t get_height() const = 0;
+
+			//virtual format get_format() const = 0;
+
+			static texture_ptr create(device& dev, void* data, size_t size);
+
+			//virtual void set_lod(unsigned int new_lod) = 0;
+			//virtual unsigned int get_lod() = 0;
+
+			//virtual unsigned int get_level_count() const = 0;
 
 			//STDMETHOD(SetAutoGenFilterType)(THIS_ D3DTEXTUREFILTERTYPE FilterType) PURE;
 			//STDMETHOD_(D3DTEXTUREFILTERTYPE, GetAutoGenFilterType)(THIS) PURE;

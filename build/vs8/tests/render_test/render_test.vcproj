@@ -237,6 +237,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="game"
+			>
+			<File
+				RelativePath=".\karaoke.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\karaoke.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

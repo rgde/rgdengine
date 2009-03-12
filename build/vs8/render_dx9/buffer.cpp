@@ -6,39 +6,6 @@ namespace rgde
 {
 	namespace render
 	{
-		buffer::buffer(device& dev, resource::type type, resource::format format, 
-			resource::pool pool, uint buffer_usage, bool register_on_lost_reset)
-			: resource(dev, type, format, pool, register_on_lost_reset), 
-			m_buffer_usage(buffer_usage)
-		{
-		}
-
-		const vertex_element vertex_element::end_element = 
-		{
-			0xFF,
-			0,
-			vertex_element::unused, 
-			(vertex_element::decl_method)0,
-			(vertex_element::decl_usage)0,
-			0
-		};
-
-		vertex_declaration_ptr vertex_declaration::create(device& dev, 
-			const vertex_element* vertex_elements_array, 
-			size_t size)
-		{
-			return vertex_declaration_ptr(
-					new vertex_declaration(dev, vertex_elements_array, size)
-				);
-		}
-
-		vertex_declaration_ptr vertex_declaration::create(device& dev, 
-			const vertex_elements_vector& vertex_elements)
-		{
-			return vertex_declaration_ptr(
-				new vertex_declaration(dev, vertex_elements)
-				);
-		}
 
 		vertex_declaration::vertex_declaration(device& dev, const vertex_element* vertex_elements_array, size_t num_elements)
 			: m_vertex_elements(num_elements), device_object(dev)
@@ -58,13 +25,6 @@ namespace rgde
 		{
 		}
 
-		vertex_buffer_ptr vertex_buffer::create(device& dev, vertex_declaration_ptr decl, 
-			size_t size, resource::pool pool, uint usage_flags)
-		{
-			return vertex_buffer_ptr(
-					new vertex_buffer(dev, decl, size, pool, usage_flags)
-				);
-		}
 
 		vertex_buffer::vertex_buffer(device& dev, vertex_declaration_ptr decl, size_t size, 
 									resource::pool pool, uint usage_flags)
@@ -105,11 +65,6 @@ namespace rgde
 
 		}
 
-		index_buffer_ptr index_buffer::create(device& dev, size_t size, bool use_32bit, 
-			resource::pool pool, uint usage_flags)
-		{
-			return index_buffer_ptr(new index_buffer(dev, size, use_32bit, pool, usage_flags));
-		}
 
 		index_buffer::~index_buffer()
 		{

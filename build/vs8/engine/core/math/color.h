@@ -14,6 +14,7 @@ namespace rgde
 
 			color(unsigned long c = 0);
 			color(const color& c);
+			color(const color& c, float alpha);
 			color(uchar r, uchar g, uchar b, uchar a);
 
 			void set(uchar r, uchar g, uchar b, uchar a);

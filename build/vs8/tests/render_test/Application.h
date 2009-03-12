@@ -2,10 +2,12 @@
 
 #include "ArcBall.h"
 #include "camera.h"
+#include <boost/timer.hpp>
+#include "karaoke.h"
 
 namespace rgde
 {
-	class Application : window
+	class Application : core::windows::window
 	{
 	public:
 		Application();
@@ -13,37 +15,43 @@ namespace rgde
 
 		void run();
 
+		render::device& get_render_device()
+		{
+			return m_device;
+		}
+
 	protected:
 		virtual core::windows::result wnd_proc(ushort message, uint wparam, long lparam );
 		void resize_scene(unsigned int width, unsigned int height);
 		bool do_events();
 
-		const rgde::math::mat44f& getWorldMatrix() const {return matWorld;}
+		void init_render_data();
+
+		void render();
+
+		void draw_cube();	
+
 
 	private:
-		math::mat44f matWorld;
 		ArcBall m_arc_ball;
 		bool m_active;
-		device m_device;
+		render::device m_device;
+
 		render::font_ptr m_font;
 		render::vertex_buffer_ptr m_vb;
 		render::index_buffer_ptr m_ib;
+
 		math::vec3f m_cam_pos;
 		Camera m_camera;
 
-		struct line_info
-		{
-			int start_time;
-			int end_time;
-			std::string text;
-			std::vector<int> line_timings;
-			std::vector<int> text_poses;
-		};
+		int old_x;
+		int old_y;
 
-		std::vector<int> timings;
-		std::vector<line_info> lines;
+		int clicked_x;
+		int clicked_y;
 
+		boost::timer timer;
 
-		xml::document doc;
+		game::karaoke *m_karaoke;
 	};
 }
