@@ -20,18 +20,24 @@ namespace rgde
 
 		class base_texture : public resource
 		{
+		public:
+			class texture_impl;
+			typedef boost::shared_ptr<texture_impl> impl_ptr;
+
 		protected:
-			explicit base_texture(device& dev);
+			impl_ptr pimpl;		
+			base_texture(device& dev, void* data, size_t size);
 
 		public:
-			void set(size_t slot);
+			static texture_ptr create(device& dev, void* data, size_t size);
+
+			impl_ptr get_pimpl() {return pimpl;}
+			const impl_ptr& get_pimpl() const {return pimpl;}
 
 			//virtual size_t get_width() const = 0;
 			//virtual size_t get_height() const = 0;
 
-			//virtual format get_format() const = 0;
-
-			static texture_ptr create(device& dev, void* data, size_t size);
+			//virtual format get_format() const = 0;			
 
 			//virtual void set_lod(unsigned int new_lod) = 0;
 			//virtual unsigned int get_lod() = 0;
