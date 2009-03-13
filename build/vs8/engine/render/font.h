@@ -35,24 +35,21 @@ namespace rgde
 
 			enum format
 			{				
-				top = 0,			// Top-justifies text.
-				left = 0,			// Aligns text to the left. 
-				center,			// Centers text horizontally in the rectangle.
-				right,			// Aligns text to the right. 
-				vcenter,		// Centers text vertically (single line only). 
-				bottom,			// Justifies the text to the bottom of the rectangle. This value must be 
-								// combined with SingleLine.
+				top = 0,				// Top-justifies text.
+				left = 0,					// Aligns text to the left. 
+				center = 0x00000001,		// Centers text horizontally in the rectangle.
+				right = 0x00000002,			// Aligns text to the right. 
+				vcenter = 0x00000004,		// Centers text vertically (single line only). 
+				bottom = 0x00000008,		// Justifies the text to the bottom of the rectangle. This value must be 
+											// combined with SingleLine.
 
-				word_break = 0,		// Breaks words. Lines are automatically broken between words if a word would 
-								// extend past the edge of the rectangle specified by the pRect parameter. A 
-								// carriage return/line feed sequence also breaks the line.
+				word_break = 0x00000010,	// Breaks words. Lines are automatically broken between words if a word would 
+											// extend past the edge of the rectangle specified by the pRect parameter. A 
+											// carriage return/line feed sequence also breaks the line.
 
-				single_line,	// Displays text on a single line only. Carriage returns and line feeds do not 
-								// break the line. 
-
-				ExpandTabs,		// Expands tab characters. The default number of characters per tab is eight
-
-				NoClip,			// Draws without clipping. IFont::renderText is somewhat faster when NoClip is 
+				single_line = 0x00000020,	// Displays text on a single line only. Carriage returns and line feeds do not 
+											// break the line. 
+				no_clip = 0x00000100,		// Draws without clipping. IFont::renderText is somewhat faster when NoClip is 
 			};
 
 			static font_ptr create(device& dev, size_t height, const std::wstring& name, weight w = normal);
@@ -66,7 +63,7 @@ namespace rgde
 			~font();
 
 		private:
-			font(device& dev, size_t height, const std::wstring& name, weight w = normal);			
+			font(device& dev, size_t height, const std::wstring& name, weight w);			
 
 		private:
 			pimpl m_pimpl;
