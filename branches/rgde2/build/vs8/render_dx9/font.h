@@ -14,7 +14,7 @@ namespace rgde
 			{
 				if (S_OK != D3DXCreateFont(m_device.get_impl().get_dx_device(), -(int)height, 0, w, 1, FALSE, 
 					DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 
-					5, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &m_font))
+					ANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name.c_str(), &m_font))
 				{
 					throw std::bad_exception("CFontImpl():Can't create device font object!");
 				}
