@@ -205,6 +205,10 @@
 				RelativePath=".\stdafx.h"
 				>
 			</File>
+			<File
+				RelativePath=".\texture.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
