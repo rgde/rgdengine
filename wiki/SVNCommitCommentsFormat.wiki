@@ -1,4 +1,4 @@
-#labels work,svn
+#labels work,svn,Featured
 ==SVN commit comments format==
 
 every SVN commit should contain comment in that format:
