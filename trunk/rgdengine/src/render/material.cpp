@@ -258,7 +258,7 @@ namespace render
 		m_technique = pEffect->findTechnique(techName);
 
 		if(!m_technique)
-			base::lwrn<<"Technique \""<<techName<<"\" not found in effect \""<<pEffect->getName()<<"\".";
+			base::lwrn<<"Technique \""<<techName<<"\" not found in effect \""<<pEffect->get_name()<<"\".";
 	}
 
 	const PDynamicBinder& Material::getDynamicBinder()

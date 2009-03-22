@@ -13,7 +13,7 @@ namespace render
 		{
 			bool operator()(math::camera_ptr &c1, math::camera_ptr &c2)
 			{
-				return c1->getPriority() < c2->getPriority() ? true : false;
+				return c1->get_priority() < c2->get_priority() ? true : false;
 			}
 		};
 	}

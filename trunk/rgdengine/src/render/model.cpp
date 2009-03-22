@@ -96,7 +96,7 @@ namespace render
 	{
 		if (elem->Attribute("name"))
 		{
-			rootFrame.setName(elem->Attribute("name"));
+			rootFrame.set_name(elem->Attribute("name"));
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -195,7 +195,7 @@ namespace render
 
 			if(strType == "point")
 			{
-				PointLight *pPointLight = new PointLight(rootFrame.getName());
+				PointLight *pPointLight = new PointLight(rootFrame.get_name());
 				rootFrame.addChild(pPointLight);
 
 				math::Color color;

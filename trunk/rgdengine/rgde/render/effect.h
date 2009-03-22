@@ -46,7 +46,7 @@ namespace render
 
 			virtual ~IParameter(){}
 
-			virtual const std::string& getName() const = 0;
+			virtual const std::string& get_name() const = 0;
 			virtual const std::string& getSemantic() const = 0;
 			virtual unsigned int getSize() const = 0;
 			virtual EType getType() const = 0;
@@ -99,13 +99,13 @@ namespace render
 				virtual void begin() = 0;
 				virtual void end() = 0;
 
-				virtual const std::string& getName() const = 0;
+				virtual const std::string& get_name() const = 0;
 				virtual AnnotationsVector& getAnnotations() = 0;
 			};
 
 			virtual ~ITechnique(){}
 			virtual std::vector <IPass*>& getPasses() = 0;
-			virtual const std::string& getName() const = 0;
+			virtual const std::string& get_name() const = 0;
 			virtual AnnotationsVector& getAnnotations() = 0;
 			
 			virtual void begin() = 0;
@@ -129,7 +129,7 @@ namespace render
 		virtual void commitChanges() = 0;
 		virtual void onLostDevice() = 0;
 		virtual void onResetDevice() = 0;
-		virtual const std::string& getName() const= 0;
+		virtual const std::string& get_name() const= 0;
 		virtual Parameters& getParams() = 0;
 		virtual Techniques& getTechnics() = 0;
 		virtual ITechnique* findTechnique(const std::string& name) = 0;

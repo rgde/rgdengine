@@ -17,7 +17,7 @@ namespace game
 		void leave();											//деинициализация уровня
 
 		//узнать имя уровня
-		const std::string& getName() const		{return m_name;}
+		const std::string& get_name() const		{return m_name;}
 		//узнать имя следущего уровня
 		const std::string& get_next_level() const {return m_next_level;}
 

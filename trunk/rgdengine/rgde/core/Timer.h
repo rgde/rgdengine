@@ -7,10 +7,10 @@
 //-----------------------------------------------------------------------------
 namespace core
 {
-	class Timer
+	class timer
 	{
 	public:
-		Timer();
+		timer();
 	
 		/// Starts timer
 		void start();
@@ -45,5 +45,5 @@ namespace core
 		__int64 TicksPerSecond;
 	};
 
-	typedef base::singelton<Timer> TheTimer;
+	typedef base::singelton<timer> TheTimer;
 }

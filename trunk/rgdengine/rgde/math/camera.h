@@ -21,7 +21,7 @@ namespace math
 		const math::Frustum& getFrustum() const { return m_frustum; }
 
 		virtual void	 setPriority(unsigned priority) {}
-		virtual unsigned getPriority() const {return 0;}
+		virtual unsigned get_priority() const {return 0;}
 
 	protected:
 		math::Matrix44f m_ProjMatrix;

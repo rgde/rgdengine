@@ -12,7 +12,7 @@ namespace input
     public:
         Command(const std::wstring &sName, input_impl &rInput);
 
-        const std::wstring& getName() const;
+        const std::wstring& get_name() const;
         void lock();
         void unlock();
         bool islocked() const;
@@ -37,7 +37,7 @@ namespace input
         HelpersList m_helpers;
     };
 
-	inline const std::wstring& Command::getName() const 
+	inline const std::wstring& Command::get_name() const 
 	{
 		return m_sName;
 	}

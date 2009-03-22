@@ -339,7 +339,7 @@ namespace input
             CommandPtr pCommand = *i;
 
             TiXmlElement *command = (TiXmlElement*)(input->InsertEndChild(TiXmlElement("command")));
-            std::wstring sCommandNameW = pCommand->getName();
+            std::wstring sCommandNameW = pCommand->get_name();
             std::string sCommandName(sCommandNameW.begin(), sCommandNameW.end());
             command->SetAttribute("name", sCommandName.c_str());
 
@@ -348,16 +348,16 @@ namespace input
             {
                 Device *pDevice = *j;
 
-                std::wstring sDeviseNameW = Device2String(pDevice->getName());
+                std::wstring sDeviseNameW = Device2String(pDevice->get_name());
                 std::string sDeviceName(sDeviseNameW.begin(), sDeviseNameW.end());
 
-				std::map<types::EControl, Control*>::iterator k = pDevice->m_controls.begin();
+				std::map<types::control, Control*>::iterator k = pDevice->m_controls.begin();
                 while (k != pDevice->m_controls.end())
                 {
                     Control *pControl = k->second;
                     if (pControl->isbind(pCommand))
                     {
-                        std::wstring sControlNameW = Control2String(pControl->getName());
+                        std::wstring sControlNameW = Control2String(pControl->get_name());
                         std::string sControlName(sControlNameW.begin(), sControlNameW.end());
 
                         TiXmlElement *control = (TiXmlElement*)(command->InsertEndChild(TiXmlElement("control")));
@@ -402,7 +402,7 @@ namespace input
     ////////////////////////////////
 
     //получить устройство
-    Device* input_impl::getDevice (types::EDevice eDeviceName, int indx/*=0*/)
+    Device* input_impl::getDevice (types::device eDeviceName, int indx/*=0*/)
     {
         if (!m_bInit)
             return 0;
@@ -410,7 +410,7 @@ namespace input
         std::list<Device*>::iterator i = m_devices.begin();
         while (i != m_devices.end())
         {
-            if ((*i)->getName() == eDeviceName && (*i)->getIndx() == indx)
+            if ((*i)->get_name() == eDeviceName && (*i)->getIndx() == indx)
                 return *i;
             ++i;
         }
@@ -424,7 +424,7 @@ namespace input
     }
 
     //есть ли такое устройство
-    bool input_impl::isDevicePresent (types::EDevice eDeviceName, int indx/*=0*/) const
+    bool input_impl::isDevicePresent (types::device eDeviceName, int indx/*=0*/) const
     {
         if (!m_bInit)
             return false;
@@ -432,7 +432,7 @@ namespace input
         std::list<Device*>::const_iterator i = m_devices.begin();
         while (i != m_devices.end())
         {
-            if ((*i)->getName() == eDeviceName && (*i)->getIndx() == indx)
+            if ((*i)->get_name() == eDeviceName && (*i)->getIndx() == indx)
                 return true;
             ++i;
         }
@@ -471,7 +471,7 @@ namespace input
         std::list<CommandPtr>::iterator i = m_commands.begin();
         while (i != m_commands.end())
         {
-            if ((*i)->getName() == sCommandName)
+            if ((*i)->get_name() == sCommandName)
                 return (*i);
             ++i;
         }
@@ -488,7 +488,7 @@ namespace input
         std::list<CommandPtr>::const_iterator i = m_commands.begin();
         while (i != m_commands.end())
         {
-            if ((*i)->getName() == sCommandName)
+            if ((*i)->get_name() == sCommandName)
                 return true;
             ++i;
         }
@@ -669,7 +669,7 @@ namespace input
     void input_impl::kProcess (DIDEVICEOBJECTDATA dod)
     {
 		//определим, от какого контрола пришло сообщение
-		types::EControl eControl = types::InvalidControl;
+		types::control eControl = types::InvalidControl;
 		switch (dod.dwOfs)
 		{
 		    case DIK_ESCAPE       : eControl = types::KeyEscape	; break;
@@ -824,7 +824,7 @@ namespace input
     void input_impl::mProcess (DIDEVICEOBJECTDATA dod)
     {
         //определим, от какого контрола пришло сообщение
-        types::EControl eControl = types::InvalidControl;
+        types::control eControl = types::InvalidControl;
         switch (dod.dwOfs)
         {
             case DIMOFS_BUTTON0: eControl = types::ButtonLeft  ; break;

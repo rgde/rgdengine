@@ -103,7 +103,7 @@ namespace render
 		virtual ~rendererable();
 
 		void			setPriority(unsigned priority) {m_nRenderPriority = priority;}
-		unsigned		getPriority() const {return m_nRenderPriority;}
+		unsigned		get_priority() const {return m_nRenderPriority;}
 
 		void			hide() {m_bIsVisible = false;}
 		void			show() {m_bIsVisible = true;}

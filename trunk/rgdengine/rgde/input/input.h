@@ -24,14 +24,14 @@ namespace input
 
         // доступ к устройствам ввода
         //получить устройство
-        static Device* getDevice (types::EDevice eDeviceName, int indx=0);
+        static Device* getDevice (types::device eDeviceName, int indx=0);
         static Device* getDevice (const std::wstring &sDeviceName, int indx=0);
         //есть ли такое устройство
-        static bool isDevicePresent (types::EDevice eDeviceName, int indx=0);
+        static bool isDevicePresent (types::device eDeviceName, int indx=0);
         static bool isDevicePresent (const std::wstring &sDeviceName, int indx=0);
 
-		static Control* GetControl(types::EDevice device, int dev_index, types::EControl control);
-		static Control* GetControl(types::EDevice device, types::EControl control)
+		static Control* GetControl(types::device device, int dev_index, types::control control);
+		static Control* GetControl(types::device device, types::control control)
 		{
 			return GetControl(device, 0, control);
 		}

@@ -131,7 +131,7 @@ namespace render
 		m_priority = priority;
 	}
 
-	unsigned render_camera::getPriority() const
+	unsigned render_camera::get_priority() const
 	{
 		return m_priority;
 	}

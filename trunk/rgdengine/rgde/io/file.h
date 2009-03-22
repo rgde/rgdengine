@@ -173,7 +173,7 @@ namespace io
 		bool isValid()					const {return m_isValid;}
 		bool isHasError()				const {return m_isError;}
 		const Path& GetPath()			const {return m_path;}
-		const std::string& getName()	const {return m_name;}
+		const std::string& get_name()	const {return m_name;}
 
 		bool open(const std::string& name, Path path = Path());
 

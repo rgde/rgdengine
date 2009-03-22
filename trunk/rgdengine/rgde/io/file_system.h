@@ -13,7 +13,7 @@ namespace io
 	public:
 		virtual ~IFileSource(){}
 
-		virtual int			getPriority() const = 0;
+		virtual int			get_priority() const = 0;
 		virtual readstream_ptr findFile(const std::string& strFilePath) const = 0;
 		virtual bool		isExist	(const std::string& strFilePath) const = 0;
 

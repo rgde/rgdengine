@@ -1,15 +1,15 @@
 #pragma once
 
-namespace factory
+namespace core
 {
 	template <class T>
-	class TFactory
+	class factory
 	{
 	public:
 		typedef boost::function<T* (void)> creator_func;
 
 	private:
-		TFactory() {}
+		factory() {}
 
 		typedef std::map <std::string, creator_func>	TypeMap;
 		TypeMap m_typeMap;
@@ -20,7 +20,7 @@ namespace factory
 	public:
 		typedef std::list<std::string>	TypeList;
 
-		TypeList getTypeList() const
+		TypeList get_type_list() const
 		{
 			TypeList	tlist;
 			for (TypeMap::const_iterator it = m_typeMap.begin(); it != m_typeMap.end(); ++it)
@@ -41,9 +41,9 @@ namespace factory
 		}
 
 		template<class Derived>
-		void RegisterType(const std::string& type_name = std::string(), creator_func creator = creator_func())
+		void register_type(const std::string& type_name = std::string(), creator_func creator = creator_func())
 		{
-			creator_func cf = creator ? cf : boost::bind(&TFactory::default_creator<Derived>, this);
+			creator_func cf = creator ? cf : boost::bind(&factory::default_creator<Derived>, this);
 			if (type_name.empty() || type_name == "")
 			{
 				std::string	temp(typeid(Derived).name());
@@ -54,14 +54,14 @@ namespace factory
 
 		}
 
-		static TFactory<T> &Instance();
+		static factory<T> &Instance();
 	};
 
 
 	template <class T>
-	TFactory<T> & TFactory<T>::Instance()
+	factory<T> & factory<T>::Instance()
 	{
-		static TFactory<T> m_factory;
+		static factory<T> m_factory;
 		return m_factory;
 	}
 }

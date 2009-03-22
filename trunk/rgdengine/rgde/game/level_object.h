@@ -14,16 +14,19 @@ namespace game
 	};
 
 	//фабрика обьектов, которые могут создавать уровни
-	typedef factory::TFactory<game::level_object> LevelObjFactory;
+	typedef core::factory<game::level_object> LevelObjFactory;
 
-	template <class T>
-	class _registrator
+	namespace details
 	{
-	public:
-		_registrator(){LevelObjFactory::Instance().RegisterType<T>();}
-	protected:
-		static _registrator<T> instance;
-	};
+		template <class T>
+		class _registrator
+		{
+		public:
+			_registrator(){LevelObjFactory::Instance().register_type<T>();}
+		protected:
+			static _registrator<T> instance;
+		};
+	}
 
-	#define REGISTER_LEVEL_TYPE(type) _registrator<type> _registrator<type>::instance;
+#define REGISTER_LEVEL_TYPE(type) details::_registrator<type> details::_registrator<type>::instance;
 }
