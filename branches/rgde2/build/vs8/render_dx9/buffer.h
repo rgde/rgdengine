@@ -1,7 +1,6 @@
 #pragma once
 
 #include "device.h"
-#include <engine/render/buffer.h>
 
 namespace rgde
 {
