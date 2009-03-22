@@ -42,9 +42,10 @@ namespace rgde
 		class device : boost::noncopyable
 		{
 			friend class device_object;
+		public:
 			class device_impl;
 			typedef boost::scoped_ptr<device_impl> pimpl;
-		public:
+
 			device(core::windows::handle hwnd = NULL, bool windowed = true);
 			virtual ~device();
 

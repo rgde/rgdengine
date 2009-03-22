@@ -29,8 +29,7 @@ namespace rgde
 
 		void render();
 
-		void draw_cube();	
-
+		void draw_cube();
 
 	private:
 		ArcBall m_arc_ball;

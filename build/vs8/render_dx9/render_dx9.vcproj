@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="render_dx9"
+	Name="render_win32_dx9"
 	ProjectGUID="{DD993359-1DA6-4B02-A429-827CDC85D983}"
 	RootNamespace="render_dx9"
 	Keyword="Win32Proj"
@@ -182,6 +182,10 @@
 						UsePrecompiledHeader="1"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\texture.cpp"
+				>
 			</File>
 		</Filter>
 		<Filter
