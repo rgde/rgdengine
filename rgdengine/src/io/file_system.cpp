@@ -16,7 +16,7 @@ namespace io
 		{
 		}
 
-		int getPriority() const
+		int get_priority() const
 		{
 			return 100;
 		}
@@ -67,7 +67,7 @@ namespace io
 		{
 			bool operator()(const PFileSource &s1, const PFileSource &s2)
 			{
-				return s1->getPriority() < s2->getPriority();
+				return s1->get_priority() < s2->get_priority();
 			}
 		};
 	}	

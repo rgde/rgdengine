@@ -10,14 +10,14 @@ namespace core
 		base_task(const application& app, int nPriority = 0);
 		virtual ~base_task();
 
-		int getPriority() const {return m_nPriority;}
+		int get_priority() const {return m_nPriority;}
 
 		void start();
 		void stop();
 		void pause();
 		void execute();
 
-		const application& getApplication() const {return m_application;}
+		const application& get_application() const {return m_application;}
 
 	protected:
 		virtual void run() = 0;
@@ -33,6 +33,6 @@ namespace core
 
 	inline bool operator<(const task_ptr& task1, const task_ptr& task2)
 	{
-		return task1->getPriority() < task2->getPriority();
+		return task1->get_priority() < task2->get_priority();
 	}
 }

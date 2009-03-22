@@ -7,8 +7,8 @@ namespace input
 {
 	struct InputMap
 	{
-		std::map<std::wstring, types::EDevice>  m_mapString2Device;
-		std::map<std::wstring, types::EControl> m_mapString2Control;
+		std::map<std::wstring, types::device>  m_mapString2Device;
+		std::map<std::wstring, types::control> m_mapString2Control;
 
 		InputMap()
 		{
@@ -158,9 +158,9 @@ namespace input
 	static InputMap s_map;
 
     //получение строки, соответствующей enum-значению
-	std::wstring Device2String (types::EDevice eName)
+	std::wstring Device2String (types::device eName)
     {
-		std::map<std::wstring, types::EDevice>::iterator i = s_map.m_mapString2Device.begin();
+		std::map<std::wstring, types::device>::iterator i = s_map.m_mapString2Device.begin();
 		while (i != s_map.m_mapString2Device.end())
 		{
 			if (i->second == eName)
@@ -172,9 +172,9 @@ namespace input
     }
 
     //получение enum-значения, соответствующего строке
-    types::EDevice String2Device (const std::wstring &str)
+    types::device String2Device (const std::wstring &str)
     {
-		std::map<std::wstring, types::EDevice>::iterator i = s_map.m_mapString2Device.find(str);
+		std::map<std::wstring, types::device>::iterator i = s_map.m_mapString2Device.find(str);
 		if (i != s_map.m_mapString2Device.end())
 			return i->second;
 
@@ -182,9 +182,9 @@ namespace input
     }
 
     //получение строки, соответствующей enum-значению
-    std::wstring Control2String (types::EControl eName)
+    std::wstring Control2String (types::control eName)
     {
-		std::map<std::wstring, types::EControl>::iterator i = s_map.m_mapString2Control.begin();
+		std::map<std::wstring, types::control>::iterator i = s_map.m_mapString2Control.begin();
 		while (i != s_map.m_mapString2Control.end())
 		{
 			if (i->second == eName)
@@ -196,9 +196,9 @@ namespace input
     }
 
     //получение enu m-значения, соответствующего строке
-    types::EControl String2Control (const std::wstring &str)
+    types::control String2Control (const std::wstring &str)
     {
-		std::map<std::wstring, types::EControl>::iterator i = s_map.m_mapString2Control.find(str);
+		std::map<std::wstring, types::control>::iterator i = s_map.m_mapString2Control.find(str);
 		if (i != s_map.m_mapString2Control.end())
 			return i->second;
 

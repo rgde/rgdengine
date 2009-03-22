@@ -1,12 +1,12 @@
 #include "precompiled.h"
 
-#include <rgde/core/Timer.h>
+#include <rgde/core/timer.h>
 #include <windows.h>
 
 //-----------------------------------------------------------------------------
 namespace core
 {
-	Timer::Timer()
+	timer::timer()
 	{
 		Stopped = true;
 
@@ -22,7 +22,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	void Timer::start()
+	void timer::start()
 	{
 		LARGE_INTEGER time;
 
@@ -40,7 +40,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	void Timer::stop()
+	void timer::stop()
 	{
 		if( Stopped )
 		{
@@ -58,7 +58,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	void Timer::reset()
+	void timer::reset()
 	{
 		LARGE_INTEGER time;
 
@@ -75,13 +75,13 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	void Timer::advance()
+	void timer::advance()
 	{
 		StopTime += TicksPerSecond/10;
 	}
 
 	//-----------------------------------------------------------------------------
-	float Timer::getAbsoluteTime()
+	float timer::getAbsoluteTime()
 	{
 		LARGE_INTEGER time;
 
@@ -95,7 +95,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float Timer::getCurrentTime()
+	float timer::getCurrentTime()
 	{
 		LARGE_INTEGER time;
 
@@ -109,7 +109,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float Timer::getElapsedTime()
+	float timer::getElapsedTime()
 	{
 		LARGE_INTEGER time;
 
@@ -127,7 +127,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	bool Timer::isStoped()
+	bool timer::isStoped()
 	{
 		return Stopped;
 	}

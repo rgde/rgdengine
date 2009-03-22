@@ -63,7 +63,7 @@ namespace scene
 	};
 
 
-	typedef  factory::TFactory<Node> SceneFactory;
+	typedef  core::factory<Node> SceneFactory;
 
 	template <class T>
 	class _registrator

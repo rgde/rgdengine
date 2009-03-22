@@ -103,7 +103,7 @@ namespace render
 			return m_vecAnnotations;
 		}
 		
-		const std::string& getName() const
+		const std::string& get_name() const
 		{
 			return m_name;
 		}
@@ -415,7 +415,7 @@ namespace render
 				//unguard
 			}
 
-			const std::string& getName() const
+			const std::string& get_name() const
 			{
 				return m_name;
 			}
@@ -475,7 +475,7 @@ namespace render
 			return m_arPasses;
 		}
 
-		const std::string& getName() const
+		const std::string& get_name() const
 		{
 			return m_name;
 		}
@@ -595,7 +595,7 @@ namespace render
 				Technique* technique = new Technique(m_effect, i);
 
 				if(FAILED(m_effect->ValidateTechnique(technique->getHandle())))
-					base::lerr << "ValidateTechnique fault. effect file: " << effect_name << " tech: " << technique->getName();
+					base::lerr << "ValidateTechnique fault. effect file: " << effect_name << " tech: " << technique->get_name();
 				else
 					m_listTechniques.push_back(technique);
 			}
@@ -641,7 +641,7 @@ namespace render
 			//unguard
 		}
 
-		const std::string& getName() const
+		const std::string& get_name() const
 		{
 			return m_name;
 		}
@@ -663,7 +663,7 @@ namespace render
 			Techniques::iterator technique = m_listTechniques.begin();
 			while (technique != m_listTechniques.end())
 			{
-				if ((*technique)->getName() == name)
+				if ((*technique)->get_name() == name)
 					return *technique;
 
 				++ technique;

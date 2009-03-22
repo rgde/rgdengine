@@ -2,7 +2,7 @@
 
 #include <rgde/game/game.h>
 
-#include <rgde/core/Timer.h>
+#include <rgde/core/timer.h>
 #include <rgde/core/application.h>
 
 namespace game
@@ -231,7 +231,7 @@ namespace game
 	{
 		for(std::list<Level*>::iterator i = m_listLevels.begin(); i != m_listLevels.end(); ++i)
 		{
-			if ((*i)->getName() == name)
+			if ((*i)->get_name() == name)
 				return (*i);
 		}
 		return 0;

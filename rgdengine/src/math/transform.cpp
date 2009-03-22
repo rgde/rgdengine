@@ -46,7 +46,7 @@ namespace math
 
 	void Frame::findFrames(const std::string& strTemplate, std::vector<frame_ptr>& container)
 	{
-		const std::string &strFrameName = getName();
+		const std::string &strFrameName = get_name();
 
 		size_t nPos = strFrameName.find_first_of("_");
 		if(nPos != -1)

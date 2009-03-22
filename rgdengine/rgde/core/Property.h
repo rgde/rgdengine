@@ -16,7 +16,7 @@ namespace core
 		virtual std::string	get()	const			= 0;
 		virtual void		set(const std::string&)	= 0;
 
-		const std::wstring& getName() const {return m_name;}
+		const std::wstring& get_name() const {return m_name;}
 		const std::string& getType() const {return m_type_name;}
 
 		virtual bool is_read_only() = 0;
@@ -110,7 +110,7 @@ namespace core
 		{
 			const std::string& str;
 			_seacher(const std::string& str_to_cmp) : str(str_to_cmp)	{}
-			bool operator()(PProperty p) { return p->getName() == str; }
+			bool operator()(PProperty p) { return p->get_name() == str; }
 		};
 	public:
 		typedef std::vector<PProperty> PropList;
@@ -173,7 +173,7 @@ namespace core
 			: m_name(name), m_func(f)
 		{}
 
-		const std::string& getName() const  { return m_name; }
+		const std::string& get_name() const  { return m_name; }
 
 		void call(const std::string& params) {if (m_func) m_func(params);}
 		void operator()(const std::string& params) {call(params);}
@@ -189,7 +189,7 @@ namespace core
 		{
 			const std::string& str;
 			_seacher(const std::string& str_to_cmp) : str(str_to_cmp){}
-			bool operator()(const Function& p){return p.getName() == str;}
+			bool operator()(const Function& p){return p.get_name() == str;}
 		};
 	public:
 		typedef std::vector<Function> FuncList;

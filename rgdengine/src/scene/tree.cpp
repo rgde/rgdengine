@@ -42,7 +42,7 @@ namespace scene
 		//{
 		//	std::string type_name;
 		//	rf >> type_name;
-		//	Node *n = factory::TFactory<Node>::create(type_name);
+		//	Node *n = core::factory<Node>::create(type_name);
 		//	rf >> *n;
 		//	m_children.push_back(n);
 		//}

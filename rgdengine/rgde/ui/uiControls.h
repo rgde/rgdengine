@@ -2,7 +2,7 @@
 
 namespace ui
 {
-	class IControl : public core::NamedObject/*, 
+	class IControl : public core::named_object/*, 
 					 virtual public CPropertyOwner*/
 	{
 	public:

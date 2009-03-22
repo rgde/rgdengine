@@ -10,7 +10,7 @@ namespace render
 {
 	typedef boost::shared_ptr<class Material> PMaterial;
 
-	class Material : public core::NamedObject//, game::dynamic_object
+	class Material : public core::named_object//, game::dynamic_object
 	{
 		Material(math::Color amb, math::Color diff, math::Color spec,
 				  math::Color em, float power);

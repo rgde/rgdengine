@@ -21,7 +21,7 @@ namespace input
 	namespace types
 	{
 		//перечисление существующих устройств ввода
-		enum EDevice
+		enum device
 		{
 			Keyboard,
 			Mouse,
@@ -31,7 +31,7 @@ namespace input
 		};
 
 		//перечисление существующих элементов ввода
-		enum EControl
+		enum control
 		{
 			KeyEscape,
 			Key1,
@@ -179,14 +179,14 @@ namespace input
 	}
 
 	//получение строки, соответствующей enum-значению
-	std::wstring Device2String (types::EDevice eName);
+	std::wstring Device2String (types::device eName);
 
 	//получение enum-значения, соответствующего строке
-    types::EDevice String2Device (const std::wstring &str); 
+    types::device String2Device (const std::wstring &str); 
 
 	//получение строки, соответствующей enum-значению
-    std::wstring Control2String (types::EControl eName);
+    std::wstring Control2String (types::control eName);
 
 	//получение enum-значения, соответствующего строке
-    types::EControl String2Control (const std::wstring &str); 
+    types::control String2Control (const std::wstring &str); 
 }

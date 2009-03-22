@@ -9,11 +9,11 @@ namespace core
 {
 	class XmlClass :  public PropertyOwner, 
 					  public FunctionsOwner, 
-					  public virtual NamedObject, 
+					  public virtual named_object, 
 					  public virtual base::refcounted
 	{
 	public:
-		XmlClass(const std::string& name) : NamedObject(name)
+		XmlClass(const std::string& name) : named_object(name)
 		{
 			//REGISTER_PROPERTY(Name, std::string)
 		}

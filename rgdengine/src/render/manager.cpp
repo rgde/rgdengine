@@ -161,7 +161,7 @@ namespace render
 					if(NULL != pTechnique)
 					{	
 						pTechnique->begin();
-						//base::lmsg << "effect tech -=" << pTechnique->getName() << "=- begin";
+						//base::lmsg << "effect tech -=" << pTechnique->get_name() << "=- begin";
 
 						std::vector<Effect::ITechnique::IPass*>   &vecPasses = pTechnique->getPasses();
 
@@ -174,7 +174,7 @@ namespace render
 						}
 
 						pTechnique->end();
-						//base::lmsg << "effect tech <" << pTechnique->getName() << "> end";
+						//base::lmsg << "effect tech <" << pTechnique->get_name() << "> end";
 					}
 					else
 					{
@@ -203,7 +203,7 @@ namespace render
 		{
 			bool operator()(rendererable *r1, rendererable *r2)
 			{
-				return r1->getPriority() < r2->getPriority() ? true : false;
+				return r1->get_priority() < r2->get_priority() ? true : false;
 			}
 		};
 
@@ -269,7 +269,7 @@ namespace render
 					return;
 			}
 
-			if (r->getPriority() >= 1000)
+			if (r->get_priority() >= 1000)
 				vposttrans.push_back(&ri);
 			else if (ri.spMaterial && ri.spMaterial->isTransparent())
 				vtrans.push_back(&ri);

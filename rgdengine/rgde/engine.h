@@ -70,7 +70,7 @@ typedef unsigned int  uint;
 #include "core\\property.h"
 #include "core\\named_object.h"
 #include "core\\factory.h"
-#include "core\\Timer.h"
+#include "core\\timer.h"
 #include "core\\task.h"
 #include "core\\coreComPtr.h"
 #include "core\\application.h"
