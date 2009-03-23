@@ -238,7 +238,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="game"
+			Name="karaoke"
 			>
 			<File
 				RelativePath=".\karaoke.cpp"
@@ -246,6 +246,18 @@
 			</File>
 			<File
 				RelativePath=".\karaoke.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="game"
+			>
+			<File
+				RelativePath=".\game.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\game.h"
 				>
 			</File>
 		</Filter>

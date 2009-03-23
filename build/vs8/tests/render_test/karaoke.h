@@ -1,5 +1,7 @@
 #pragma once
 
+#include "game.h"
+
 namespace rgde
 {
 	class Application;
@@ -7,7 +9,7 @@ namespace rgde
 
 namespace game
 {
-	class karaoke
+	class karaoke : rgde::game::object
 	{
 	public:
 		karaoke(rgde::Application& app);

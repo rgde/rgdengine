@@ -24,6 +24,32 @@ namespace rgde
 				else
 					return file_name.substr(0, pos);
 			}
+
+
+			void system::add_file_source(file_source_ptr fs)
+			{
+				m_sources.push_back(fs);
+			}
+
+			read_stream_ptr system::open_read(const std::string& file_name)
+			{
+				for (src_it it = m_sources.begin(); it != m_sources.end(); ++it)
+				{
+					if (read_stream_ptr s = (*it)->open_read(file_name))
+						return s;
+				}
+				return read_stream_ptr();
+			}
+
+			bool system::is_file_exist(const std::string& file_name)
+			{
+				for (src_it it = m_sources.begin(); it != m_sources.end(); ++it)
+				{
+					if ((*it)->is_file_exist(file_name))
+						return true;
+				}
+				return false;
+			}
 		}
 	}
 }

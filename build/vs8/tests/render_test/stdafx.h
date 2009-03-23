@@ -40,6 +40,7 @@
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/type_traits.hpp>
+#include <boost/timer.hpp>
 
 #include <engine/core/core.h>
 #include <engine/core/xml/xml.h>

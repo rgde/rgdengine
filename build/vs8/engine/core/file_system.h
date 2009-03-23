@@ -44,6 +44,37 @@ namespace rgde
 					out_stream->write((const byte*)&var, sizeof(T));
 				return out_stream;
 			}
+			
+			struct file_source
+			{
+				virtual ~file_source() {}
+				virtual int get_priority() = 0;
+
+				virtual bool is_support_write() = 0;
+				
+				virtual bool is_file_exist(const std::string& file_name) = 0;
+				virtual read_stream_ptr open_read(const std::string& file_name) = 0;
+			};
+
+			typedef boost::shared_ptr<file_source> file_source_ptr;
+			
+
+			class system
+			{
+			public:
+				system();
+				~system();
+
+				void add_file_source(file_source_ptr fs);
+
+				read_stream_ptr open_read(const std::string& file_name);
+				bool is_file_exist(const std::string& file_name);
+
+			private:
+				typedef std::vector<file_source_ptr> sources;
+				typedef sources::iterator src_it;
+				sources m_sources;
+			};
 		}
 	}
 }
