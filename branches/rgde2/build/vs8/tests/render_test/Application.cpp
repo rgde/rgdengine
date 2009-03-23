@@ -77,7 +77,8 @@ Application::Application()
 	window(L"RenderTest"),
 	m_device(get_handle()),
 	m_font(font::create(m_device, 18, L"Arial", font::heavy)),
-	m_arc_ball(640, 480)
+	m_arc_ball(640, 480), 
+	m_elapsed(0)
 {
 	old_x = -1;
 	old_y = -1;
@@ -103,7 +104,7 @@ Application::Application()
 	show();
 	update();
 
-	m_karaoke = new game::karaoke(*this);
+	m_karaoke = new ::game::karaoke(*this);
 
 	//doc()
 	init_render_data();
@@ -155,14 +156,22 @@ void Application::init_render_data()
 }
 
 void Application::run()
-{		
+{	
+	m_timer.restart();
+
 	while( is_created() )
 	{
 		if( !do_events() && m_active)
 		{
+			m_elapsed = m_timer.elapsed();
 			render();
 		}
 	}
+}
+
+void Application::update()
+{
+	m_game.do_update(m_elapsed/1000.0f);
 }
 
 void Application::render()

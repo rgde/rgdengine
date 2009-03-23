@@ -2,8 +2,8 @@
 
 #include "ArcBall.h"
 #include "camera.h"
-#include <boost/timer.hpp>
 #include "karaoke.h"
+#include "game.h"
 
 namespace rgde
 {
@@ -27,11 +27,13 @@ namespace rgde
 
 		void init_render_data();
 
+		void update();
 		void render();
 
 		void draw_cube();
 
 	private:
+		game::system m_game;
 		ArcBall m_arc_ball;
 		bool m_active;
 		render::device m_device;
@@ -49,8 +51,9 @@ namespace rgde
 		int clicked_x;
 		int clicked_y;
 
-		boost::timer timer;
+		double m_elapsed;
+		boost::timer m_timer;
 
-		game::karaoke *m_karaoke;
+		::game::karaoke *m_karaoke;
 	};
 }
