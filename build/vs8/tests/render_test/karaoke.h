@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game.h"
+#include "audio/audio.h"
 
 namespace rgde
 {
@@ -28,6 +29,8 @@ namespace game
 
 	private:
 		rgde::render::font_ptr m_font;
+
+		audio::system		m_sound_system;
 
 		float m_cur_time;
 		int m_cur_symbol_total;

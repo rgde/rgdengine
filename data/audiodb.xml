@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <AudioTagDatabase>
-	<MUSIC ID="music1" FILE="./media/music/music1.ogg" VOLUMEADJUST="8"/>
-	<MUSIC ID="music2" FILE="./media/music/music2.ogg" VOLUMEADJUST="8"/>
-	<MUSIC ID="music3" FILE="./media/music/music3.ogg" VOLUMEADJUST="8"/>
-	<MUSIC ID="music4" FILE="./media/music/music4.ogg" VOLUMEADJUST="8"/>
+	<MUSIC ID="music1" FILE="music/music1.ogg" VOLUMEADJUST="8"/>
+	<MUSIC ID="music2" FILE="music/music2.ogg" VOLUMEADJUST="8"/>
+	<MUSIC ID="music3" FILE="music/music3.ogg" VOLUMEADJUST="8"/>
+	<MUSIC ID="music4" FILE="music/music4.ogg" VOLUMEADJUST="8"/>
 
-	<EFFECT ID="sound_helicopter" FILE="./media/sound/helicopter.wav"/>
-	<EFFECT ID="sound_helicopter_loopped" FILE="./media/sound/helicopter.wav" LOOP_DELAY="0.0"/>
+	<EFFECT ID="sound_helicopter" FILE="sound/helicopter.wav"/>
+	<EFFECT ID="sound_helicopter_loopped" FILE="sound/helicopter.wav" LOOP_DELAY="0.0"/>
 </AudioTagDatabase>
