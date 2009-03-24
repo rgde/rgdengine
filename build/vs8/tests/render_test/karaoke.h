@@ -23,9 +23,14 @@ namespace game
 	protected:
 		void load_game_data();
 		void render_text_line(std::wstring text, size_t pos, rgde::math::rect& r, rgde::math::color c);
+		void switch_line();
+		void switch_world();
 
 	private:
 		rgde::render::font_ptr m_font;
+
+		float m_cur_time;
+		int m_cur_symbol_total;
 
 		size_t cur_line;
 		size_t cur_symbol;
@@ -34,12 +39,12 @@ namespace game
 		{
 			int start_time;
 			int end_time;
-			std::string text;
+			std::wstring text;
 			std::vector<int> line_timings;
 			std::vector<int> text_poses;
 		};
 
-		std::vector<int> timings;
+		std::vector<int> m_timings;
 		std::vector<line_info> lines;
 
 		xml::document doc;

@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\external\ogg\include\&quot;;&quot;$(SolutionDir)..\..\external\vorbis\include\&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -119,7 +119,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\external\vorbis\include\&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -258,6 +258,90 @@
 			</File>
 			<File
 				RelativePath=".\game.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="audio"
+			>
+			<File
+				RelativePath=".\audio\Audio.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\audio.h"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\AudioManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\AudioManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\AudioTag.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\AudioTag.h"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\base_audio.h"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\Music.h"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\MusicOggVorbis.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\MusicOggVorbis.h"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\OggVorbisFile.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\OggVorbisFile.h"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\Sound.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\Sound.h"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\Sound3D.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\Sound3D.h"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\WaveFile.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\WaveFile.h"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\WaveFileFactory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\audio\WaveFileFactory.h"
 				>
 			</File>
 		</Filter>

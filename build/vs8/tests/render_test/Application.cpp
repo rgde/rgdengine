@@ -164,6 +164,7 @@ void Application::run()
 		if( !do_events() && m_active)
 		{
 			m_elapsed = m_timer.elapsed();
+			update();
 			render();
 		}
 	}
@@ -171,7 +172,7 @@ void Application::run()
 
 void Application::update()
 {
-	m_game.do_update(m_elapsed/1000.0f);
+	m_game.do_update(m_elapsed);
 }
 
 void Application::render()

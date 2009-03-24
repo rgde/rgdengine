@@ -102,7 +102,6 @@ namespace xml
 		typedef node_struct* node::*unspecified_bool_type;
 
 	public:
-
 		node();
 
 		inline operator unspecified_bool_type() const;
