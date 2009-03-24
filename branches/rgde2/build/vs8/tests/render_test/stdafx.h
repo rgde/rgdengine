@@ -32,7 +32,10 @@
 #include <windows.h>
 #include <mmsystem.h>
 #include <mmreg.h>
+
 #include <dsound.h>
+#include <dxerr9.h>
+#include <d3dx9math.h>
 
 #include <map>
 #include <vector>
@@ -57,3 +60,5 @@
 
 #define COM_NO_WINDOWS_H
 #include <objbase.h>
+
+#include <vorbis\vorbisfile.h>

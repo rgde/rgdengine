@@ -153,7 +153,7 @@ typedef enum D3DX10_CHANNEL_FLAG
 //
 //----------------------------------------------------------------------------
 
-typedef enum D3DX10_IMAGE_FILE_FORMAT
+typedef enum _D3DX10_IMAGE_FILE_FORMAT
 {
     D3DX10_IFF_BMP         = 0,
     D3DX10_IFF_JPG         = 1,
@@ -165,20 +165,6 @@ typedef enum D3DX10_IMAGE_FILE_FORMAT
     D3DX10_IFF_FORCE_DWORD = 0x7fffffff
 
 } D3DX10_IMAGE_FILE_FORMAT;
-
-
-//----------------------------------------------------------------------------
-// D3DX10_SAVE_TEXTURE_FLAG:
-// ---------------------
-// This enum is used to support texture saving options.
-//
-//----------------------------------------------------------------------------
-
-typedef enum D3DX10_SAVE_TEXTURE_FLAG
-{
-    D3DX10_STF_USEINPUTBLOB      = 0x0001,
-} D3DX10_SAVE_TEXTURE_FLAG;
-
 
 
 //----------------------------------------------------------------------------
@@ -206,9 +192,10 @@ typedef enum D3DX10_SAVE_TEXTURE_FLAG
 //      D3D10_RESOURCE_DIMENSION_TEXTURE1D, 2D, 3D
 //  ImageFileFormat
 //      D3DX10_IMAGE_FILE_FORMAT representing the format of the image file.
+//
 //----------------------------------------------------------------------------
 
-typedef struct D3DX10_IMAGE_INFO
+typedef struct _D3DX10_IMAGE_INFO
 {
     UINT                        Width;
     UINT                        Height;
@@ -219,6 +206,7 @@ typedef struct D3DX10_IMAGE_INFO
     DXGI_FORMAT                 Format;
     D3D10_RESOURCE_DIMENSION    ResourceDimension;
     D3DX10_IMAGE_FILE_FORMAT    ImageFileFormat;
+
 } D3DX10_IMAGE_INFO;
 
 
@@ -270,10 +258,12 @@ extern "C" {
 //  pSrcInfo
 //      (optional) pointer to a D3DX10_IMAGE_INFO structure that will get 
 //      populated with source image information
+//
 //----------------------------------------------------------------------------
 
+#define D3DX10_IMAGE_LOAD_VALID_FLAGS       (0)
 
-typedef struct D3DX10_IMAGE_LOAD_INFO
+typedef struct _D3DX10_IMAGE_LOAD_INFO
 {
     UINT                       Width;
     UINT                       Height;
@@ -290,7 +280,7 @@ typedef struct D3DX10_IMAGE_LOAD_INFO
     D3DX10_IMAGE_INFO*         pSrcInfo;
     
 #ifdef __cplusplus
-    D3DX10_IMAGE_LOAD_INFO()
+    _D3DX10_IMAGE_LOAD_INFO()
     {
         Width = D3DX10_DEFAULT;
         Height = D3DX10_DEFAULT;
@@ -310,7 +300,7 @@ typedef struct D3DX10_IMAGE_LOAD_INFO
 
 } D3DX10_IMAGE_LOAD_INFO;
 
-//-------------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 // GetImageInfoFromFile/Resource/Memory:
 // ------------------------------
 // Fills in a D3DX10_IMAGE_INFO struct with information about an image file.
@@ -332,26 +322,20 @@ typedef struct D3DX10_IMAGE_LOAD_INFO
 //  pSrcInfo
 //      Pointer to a D3DX10_IMAGE_INFO structure to be filled in with the 
 //      description of the data in the source image file.
-//  pHResult
-//      Pointer to a memory location to receive the return value upon completion.
-//      Maybe NULL if not needed.
-//      If pPump != NULL, pHResult must be a valid memory location until the
-//      the asynchronous execution completes.
-//-------------------------------------------------------------------------------
+//
+//----------------------------------------------------------------------------
 
 HRESULT WINAPI
     D3DX10GetImageInfoFromFileA(
         LPCSTR                    pSrcFile,
         ID3DX10ThreadPump*        pPump,
-        D3DX10_IMAGE_INFO*        pSrcInfo,
-        HRESULT*                  pHResult);
+        D3DX10_IMAGE_INFO*         pSrcInfo);
 
 HRESULT WINAPI
     D3DX10GetImageInfoFromFileW(
         LPCWSTR                   pSrcFile,
         ID3DX10ThreadPump*        pPump,
-        D3DX10_IMAGE_INFO*        pSrcInfo,
-        HRESULT*                  pHResult);
+        D3DX10_IMAGE_INFO*         pSrcInfo);
 
 #ifdef UNICODE
 #define D3DX10GetImageInfoFromFile D3DX10GetImageInfoFromFileW
@@ -365,16 +349,14 @@ HRESULT WINAPI
         HMODULE                   hSrcModule,
         LPCSTR                    pSrcResource,
         ID3DX10ThreadPump*        pPump,
-        D3DX10_IMAGE_INFO*        pSrcInfo,
-        HRESULT*                  pHResult);
+        D3DX10_IMAGE_INFO*         pSrcInfo);
 
 HRESULT WINAPI
     D3DX10GetImageInfoFromResourceW(
         HMODULE                   hSrcModule,
         LPCWSTR                   pSrcResource,
         ID3DX10ThreadPump*        pPump,
-        D3DX10_IMAGE_INFO*        pSrcInfo,
-        HRESULT*                  pHResult);
+        D3DX10_IMAGE_INFO*         pSrcInfo);
 
 #ifdef UNICODE
 #define D3DX10GetImageInfoFromResource D3DX10GetImageInfoFromResourceW
@@ -388,13 +370,12 @@ HRESULT WINAPI
         LPCVOID                   pSrcData,
         SIZE_T                    SrcDataSize,
         ID3DX10ThreadPump*        pPump,
-        D3DX10_IMAGE_INFO*        pSrcInfo,
-        HRESULT*                  pHResult);
-
+        D3DX10_IMAGE_INFO*         pSrcInfo);
 
 //////////////////////////////////////////////////////////////////////////////
 // Create/Save Texture APIs //////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
+
 
 //----------------------------------------------------------------------------
 // D3DX10CreateTextureFromFile/Resource/Memory:
@@ -425,11 +406,6 @@ HRESULT WINAPI
 //      [out] Created texture object.
 //  ppShaderResourceView
 //      [out] Shader resource view object created.
-//  pHResult
-//      Pointer to a memory location to receive the return value upon completion.
-//      Maybe NULL if not needed.
-//      If pPump != NULL, pHResult must be a valid memory location until the
-//      the asynchronous execution completes.
 //
 //----------------------------------------------------------------------------
 
@@ -442,8 +418,7 @@ HRESULT WINAPI
         LPCSTR                      pSrcFile,
         D3DX10_IMAGE_LOAD_INFO      *pLoadInfo,
         ID3DX10ThreadPump*          pPump,
-        ID3D10ShaderResourceView**  ppShaderResourceView,
-        HRESULT*                    pHResult);
+        ID3D10ShaderResourceView**  ppShaderResourceView);
 
 HRESULT WINAPI
     D3DX10CreateShaderResourceViewFromFileW(
@@ -451,8 +426,7 @@ HRESULT WINAPI
         LPCWSTR                     pSrcFile,
         D3DX10_IMAGE_LOAD_INFO      *pLoadInfo,
         ID3DX10ThreadPump*          pPump,
-        ID3D10ShaderResourceView**  ppShaderResourceView,
-        HRESULT*                    pHResult);
+        ID3D10ShaderResourceView**  ppShaderResourceView);
 
 #ifdef UNICODE
 #define D3DX10CreateShaderResourceViewFromFile D3DX10CreateShaderResourceViewFromFileW
@@ -466,8 +440,7 @@ HRESULT WINAPI
         LPCSTR                      pSrcFile,
         D3DX10_IMAGE_LOAD_INFO      *pLoadInfo,
         ID3DX10ThreadPump*          pPump,
-        ID3D10Resource**            ppTexture,
-        HRESULT*                    pHResult);
+        ID3D10Resource**            ppTexture);
 
 HRESULT WINAPI
     D3DX10CreateTextureFromFileW(
@@ -475,15 +448,13 @@ HRESULT WINAPI
         LPCWSTR                     pSrcFile,
         D3DX10_IMAGE_LOAD_INFO      *pLoadInfo,
         ID3DX10ThreadPump*          pPump,
-        ID3D10Resource**            ppTexture,
-        HRESULT*                    pHResult);
+        ID3D10Resource**            ppTexture);
 
 #ifdef UNICODE
 #define D3DX10CreateTextureFromFile D3DX10CreateTextureFromFileW
 #else
 #define D3DX10CreateTextureFromFile D3DX10CreateTextureFromFileA
 #endif
-
 
 // FromResource (resources in dll/exes)
 
@@ -492,20 +463,18 @@ HRESULT WINAPI
         ID3D10Device*              pDevice,
         HMODULE                    hSrcModule,
         LPCSTR                     pSrcResource,
-        D3DX10_IMAGE_LOAD_INFO*    pLoadInfo,
+        D3DX10_IMAGE_LOAD_INFO     *pLoadInfo,
         ID3DX10ThreadPump*         pPump,
-        ID3D10ShaderResourceView** ppShaderResourceView,
-        HRESULT*                   pHResult);
+        ID3D10ShaderResourceView** ppShaderResourceView);
 
 HRESULT WINAPI
     D3DX10CreateShaderResourceViewFromResourceW(
-        ID3D10Device*              pDevice,
-        HMODULE                    hSrcModule,
-        LPCWSTR                    pSrcResource,
-        D3DX10_IMAGE_LOAD_INFO*    pLoadInfo,
-        ID3DX10ThreadPump*         pPump,
-        ID3D10ShaderResourceView** ppShaderResourceView,
-        HRESULT*                   pHResult);
+        ID3D10Device*             pDevice,
+        HMODULE                   hSrcModule,
+        LPCWSTR                   pSrcResource,
+        D3DX10_IMAGE_LOAD_INFO    *pLoadInfo,
+        ID3DX10ThreadPump*        pPump,
+        ID3D10ShaderResourceView** ppShaderResourceView);
 
 #ifdef UNICODE
 #define D3DX10CreateShaderResourceViewFromResource D3DX10CreateShaderResourceViewFromResourceW
@@ -520,18 +489,16 @@ HRESULT WINAPI
         LPCSTR                   pSrcResource,
         D3DX10_IMAGE_LOAD_INFO   *pLoadInfo,  
         ID3DX10ThreadPump*       pPump,   
-        ID3D10Resource**         ppTexture,
-        HRESULT*                 pHResult);
+        ID3D10Resource**         ppTexture);
 
 HRESULT WINAPI
     D3DX10CreateTextureFromResourceW(
-        ID3D10Device*           pDevice,
-        HMODULE                 hSrcModule,
-        LPCWSTR                 pSrcResource,
-        D3DX10_IMAGE_LOAD_INFO* pLoadInfo,
-        ID3DX10ThreadPump*      pPump,
-        ID3D10Resource**        ppTexture,
-        HRESULT*                pHResult);
+        ID3D10Device*         pDevice,
+        HMODULE               hSrcModule,
+        LPCWSTR               pSrcResource,
+        D3DX10_IMAGE_LOAD_INFO *pLoadInfo,
+        ID3DX10ThreadPump*    pPump,
+        ID3D10Resource**      ppTexture);
 
 #ifdef UNICODE
 #define D3DX10CreateTextureFromResource D3DX10CreateTextureFromResourceW
@@ -544,105 +511,21 @@ HRESULT WINAPI
 
 HRESULT WINAPI
     D3DX10CreateShaderResourceViewFromMemory(
-        ID3D10Device*              pDevice,
-        LPCVOID                    pSrcData,
-        SIZE_T                     SrcDataSize,
-        D3DX10_IMAGE_LOAD_INFO*    pLoadInfo,
-        ID3DX10ThreadPump*         pPump,        
-        ID3D10ShaderResourceView** ppShaderResourceView,
-        HRESULT*                   pHResult);
+        ID3D10Device*             pDevice,
+        LPCVOID                   pSrcData,
+        SIZE_T                    SrcDataSize,
+        D3DX10_IMAGE_LOAD_INFO    *pLoadInfo,
+        ID3DX10ThreadPump*        pPump,        
+        ID3D10ShaderResourceView** ppShaderResourceView);
 
 HRESULT WINAPI
     D3DX10CreateTextureFromMemory(
         ID3D10Device*             pDevice,
         LPCVOID                   pSrcData,
         SIZE_T                    SrcDataSize,
-        D3DX10_IMAGE_LOAD_INFO*   pLoadInfo,    
+        D3DX10_IMAGE_LOAD_INFO    *pLoadInfo,    
         ID3DX10ThreadPump*        pPump,    
-        ID3D10Resource**          ppTexture,
-        HRESULT*                  pHResult);
-
-
-//////////////////////////////////////////////////////////////////////////////
-// Misc Texture APIs /////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-
-//----------------------------------------------------------------------------
-// D3DX10_TEXTURE_LOAD_INFO:
-// ------------------------
-//
-//----------------------------------------------------------------------------
-
-typedef struct _D3DX10_TEXTURE_LOAD_INFO
-{
-    D3D10_BOX       *pSrcBox;
-    D3D10_BOX       *pDstBox;
-    UINT            SrcFirstMip;
-    UINT            DstFirstMip;
-    UINT            NumMips;
-    UINT            SrcFirstElement;
-    UINT            DstFirstElement;
-    UINT            NumElements;
-    UINT            Filter;
-    UINT            MipFilter;
-    
-#ifdef __cplusplus
-    _D3DX10_TEXTURE_LOAD_INFO()
-    {
-        pSrcBox = NULL;
-        pDstBox = NULL;
-        SrcFirstMip = 0;
-        DstFirstMip = 0;
-        NumMips = D3DX10_DEFAULT;
-        SrcFirstElement = 0;
-        DstFirstElement = 0;
-        NumElements = D3DX10_DEFAULT;
-        Filter = D3DX10_DEFAULT;
-        MipFilter = D3DX10_DEFAULT;
-    }  
-#endif
-
-} D3DX10_TEXTURE_LOAD_INFO;
-
-
-//----------------------------------------------------------------------------
-// D3DX10LoadTextureFromTexture:
-// ----------------------------
-// Load a texture from a texture.
-//
-// Parameters:
-//
-//----------------------------------------------------------------------------
-
-
-HRESULT WINAPI
-    D3DX10LoadTextureFromTexture(
-        ID3D10Resource            *pSrcTexture,
-        D3DX10_TEXTURE_LOAD_INFO  *pLoadInfo,
-        ID3D10Resource            *pDstTexture);
-
-
-//----------------------------------------------------------------------------
-// D3DX10FilterTexture:
-// ------------------
-// Filters mipmaps levels of a texture.
-//
-// Parameters:
-//  pBaseTexture
-//      The texture object to be filtered
-//  SrcLevel
-//      The level whose image is used to generate the subsequent levels. 
-//  MipFilter
-//      D3DX10_FILTER flags controlling how each miplevel is filtered.
-//      Or D3DX10_DEFAULT for D3DX10_FILTER_BOX,
-//
-//----------------------------------------------------------------------------
-
-HRESULT WINAPI
-    D3DX10FilterTexture(
-        ID3D10Resource            *pTexture,
-        UINT                      SrcLevel,
-        UINT                      MipFilter);
+        ID3D10Resource**          ppTexture);
 
 
 //----------------------------------------------------------------------------
@@ -659,6 +542,7 @@ HRESULT WINAPI
 //      Source texture, containing the image to be saved
 //
 //----------------------------------------------------------------------------
+
 
 HRESULT WINAPI
     D3DX10SaveTextureToFileA(
@@ -678,29 +562,26 @@ HRESULT WINAPI
 #define D3DX10SaveTextureToFile D3DX10SaveTextureToFileA
 #endif
 
-
 //----------------------------------------------------------------------------
 // D3DX10SaveTextureToMemory:
 // ----------------------
-// Save a texture to a blob.
+// Save a texture to a file.
 //
 // Parameters:
-//  pSrcTexture
-//      Source texture, containing the image to be saved
-//  DestFormat
-//      D3DX10_IMAGE_FILE_FORMAT specifying file format to use when saving.
 //  ppDestBuf
 //      address of a d3dxbuffer pointer to return the image data
-//  Flags
-//      optional flags
+//  DestFormat
+//      D3DX10_IMAGE_FILE_FORMAT specifying file format to use when saving.
+//  pSrcTexture
+//      Source texture, containing the image to be saved
+//
 //----------------------------------------------------------------------------
 
 HRESULT WINAPI
     D3DX10SaveTextureToMemory(
-        ID3D10Resource*            pSrcTexture,
-        D3DX10_IMAGE_FILE_FORMAT   DestFormat,
-        LPD3D10BLOB*               ppDestBuf,
-        UINT                       Flags);
+        ID3D10Resource            *pSrcTexture,
+        D3DX10_IMAGE_FILE_FORMAT      DestFormat,
+        LPD3D10BLOB*                ppDestBuf);
 
 
 //----------------------------------------------------------------------------
@@ -729,34 +610,6 @@ HRESULT WINAPI
         UINT                      Channel,
         FLOAT                     Amplitude,
         ID3D10Texture2D		     *pDestTexture);
-
-
-//----------------------------------------------------------------------------
-// D3DX10SHProjectCubeMap:
-// ----------------------
-//  Projects a function represented in a cube map into spherical harmonics.
-//
-//  Parameters:
-//   Order
-//      Order of the SH evaluation, generates Order^2 coefs, degree is Order-1
-//   pCubeMap
-//      CubeMap that is going to be projected into spherical harmonics
-//   pROut
-//      Output SH vector for Red.
-//   pGOut
-//      Output SH vector for Green
-//   pBOut
-//      Output SH vector for Blue        
-//
-//---------------------------------------------------------------------------
-
-HRESULT WINAPI
-    D3DX10SHProjectCubeMap(
-        __in_range(2,6) UINT                                Order,
-        ID3D10Texture2D                                    *pCubeMap,
-        __out_ecount(Order*Order) FLOAT                    *pROut,
-        __out_ecount_opt(Order*Order) FLOAT                *pGOut,
-        __out_ecount_opt(Order*Order) FLOAT                *pBOut);
 
 #ifdef __cplusplus
 }

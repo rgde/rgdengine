@@ -3,13 +3,13 @@
 //
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //
-//  File:       D3DX10Async.h
-//  Content:    D3DX10 Asynchronous Effect / Shader loaders / compilers
+//  File:       D3DX10Effect.h
+//  Content:    D3DX10 Effect / Shader loaders
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef __D3DX10ASYNC_H__
-#define __D3DX10ASYNC_H__
+#ifndef __D3DX10EFFECT_H__
+#define __D3DX10EFFECT_H__
 
 #include "d3dx10.h"
 
@@ -19,9 +19,9 @@ extern "C" {
 
 
 //----------------------------------------------------------------------------
-// D3DX10Compile:
+// D3DX10CompileShader:
 // ------------------
-// Compiles an effect or shader.
+// Compiles a shader.
 //
 // Parameters:
 //  pSrcFile
@@ -46,10 +46,8 @@ extern "C" {
 //      Instruction set to be used when generating code.  Currently supported
 //      profiles are "vs_1_1", "vs_2_0", "vs_2_a", "vs_2_sw", "ps_1_1", 
 //      "ps_1_2", "ps_1_3", "ps_1_4", "ps_2_0", "ps_2_a", "ps_2_sw", "tx_1_0"
-//  Flags1
+//  Flags
 //      See D3D10_SHADER_xxx flags.
-//  Flags2
-//      See D3D10_EFFECT_xxx flags.
 //  ppShader
 //      Returns a buffer containing the created shader.  This buffer contains
 //      the compiled shader code, as well as any embedded debug and symbol
@@ -58,42 +56,37 @@ extern "C" {
 //      Returns a buffer containing a listing of errors and warnings that were
 //      encountered during the compile.  If you are running in a debugger,
 //      these are the same messages you will see in your debug output.
-//  pHResult
-//      Pointer to a memory location to receive the return value upon completion.
-//      Maybe NULL if not needed.
-//      If pPump != NULL, pHResult must be a valid memory location until the
-//      the asynchronous execution completes.
 //----------------------------------------------------------------------------
 
-HRESULT WINAPI D3DX10CompileFromFileA(LPCSTR pSrcFile,CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude,
-        LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags1, UINT Flags2, ID3DX10ThreadPump* pPump, ID3D10Blob** ppShader, ID3D10Blob** ppErrorMsgs, HRESULT* pHResult);
+HRESULT WINAPI D3DX10CompileShaderFromFileA(LPCSTR pSrcFile,CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude,
+        LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags, ID3DX10ThreadPump* pPump, ID3D10Blob** ppShader, ID3D10Blob** ppErrorMsgs);
 
-HRESULT WINAPI D3DX10CompileFromFileW(LPCWSTR pSrcFile, CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude,
-        LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags1, UINT Flags2, ID3DX10ThreadPump* pPump, ID3D10Blob** ppShader, ID3D10Blob** ppErrorMsgs, HRESULT* pHResult);
-
-#ifdef UNICODE
-#define D3DX10CompileFromFile D3DX10CompileFromFileW
-#else
-#define D3DX10CompileFromFile D3DX10CompileFromFileA
-#endif
-
-HRESULT WINAPI D3DX10CompileFromResourceA(HMODULE hSrcModule, LPCSTR pSrcResource, LPCSTR pSrcFileName, CONST D3D10_SHADER_MACRO* pDefines, 
-    LPD3D10INCLUDE pInclude, LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags1, UINT Flags2, ID3DX10ThreadPump* pPump, ID3D10Blob** ppShader, ID3D10Blob** ppErrorMsgs, HRESULT* pHResult);
-
-HRESULT WINAPI D3DX10CompileFromResourceW(HMODULE hSrcModule, LPCWSTR pSrcResource, LPCWSTR pSrcFileName, CONST D3D10_SHADER_MACRO* pDefines, 
-    LPD3D10INCLUDE pInclude, LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags1, UINT Flags2, ID3DX10ThreadPump* pPump, ID3D10Blob** ppShader, ID3D10Blob** ppErrorMsgs, HRESULT* pHResult);
+HRESULT WINAPI D3DX10CompileShaderFromFileW(LPCWSTR pSrcFile, CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude,
+        LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags, ID3DX10ThreadPump* pPump, ID3D10Blob** ppShader, ID3D10Blob** ppErrorMsgs);
 
 #ifdef UNICODE
-#define D3DX10CompileFromResource D3DX10CompileFromResourceW
+#define D3DX10CompileShaderFromFile D3DX10CompileShaderFromFileW
 #else
-#define D3DX10CompileFromResource D3DX10CompileFromResourceA
+#define D3DX10CompileShaderFromFile D3DX10CompileShaderFromFileA
 #endif
 
-HRESULT WINAPI D3DX10CompileFromMemory(LPCSTR pSrcData, SIZE_T SrcDataLen, LPCSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude, 
-    LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags1, UINT Flags2, ID3DX10ThreadPump* pPump, ID3D10Blob** ppShader, ID3D10Blob** ppErrorMsgs, HRESULT* pHResult);
+HRESULT WINAPI D3DX10CompileShaderFromResourceA(HMODULE hSrcModule, LPCSTR pSrcResource, LPCSTR pSrcFileName, CONST D3D10_SHADER_MACRO* pDefines, 
+    LPD3D10INCLUDE pInclude, LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags, ID3DX10ThreadPump* pPump, ID3D10Blob** ppShader, ID3D10Blob** ppErrorMsgs);
+
+HRESULT WINAPI D3DX10CompileShaderFromResourceW(HMODULE hSrcModule, LPCWSTR pSrcResource, LPCWSTR pSrcFileName, CONST D3D10_SHADER_MACRO* pDefines, 
+    LPD3D10INCLUDE pInclude, LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags, ID3DX10ThreadPump* pPump, ID3D10Blob** ppShader, ID3D10Blob** ppErrorMsgs);
+
+#ifdef UNICODE
+#define D3DX10CompileShaderFromResource D3DX10CompileShaderFromResourceW
+#else
+#define D3DX10CompileShaderFromResource D3DX10CompileShaderFromResourceA
+#endif
+
+HRESULT WINAPI D3DX10CompileShaderFromMemory(LPCSTR pSrcData, SIZE_T SrcDataLen, LPCSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude, 
+    LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags, ID3DX10ThreadPump* pPump, ID3D10Blob** ppShader, ID3D10Blob** ppErrorMsgs);
 
 //----------------------------------------------------------------------------
-// D3DX10CreateEffectFromXXXX:
+// D3D10CreateEffectFromXXXX:
 // --------------------------
 // Creates an effect from a binary effect or file
 //
@@ -101,6 +94,8 @@ HRESULT WINAPI D3DX10CompileFromMemory(LPCSTR pSrcData, SIZE_T SrcDataLen, LPCST
 //
 // [in]
 //
+//  TODO: Unicode support
+//  TODO: Support for binary (and not just ASCII)
 //
 //  pFileName
 //      Name of the ASCII (uncompiled) or binary (compiled) Effect file to load
@@ -121,8 +116,6 @@ HRESULT WINAPI D3DX10CompileFromMemory(LPCSTR pSrcData, SIZE_T SrcDataLen, LPCST
 //      Optional interface pointer to use for handling #include directives.
 //      If this parameter is NULL, #includes will be honored when compiling
 //      from file, and will error when compiling from resource or memory.
-//  pProfile
-//      Profile to use when compiling the effect.
 //  HLSLFlags
 //      Compilation flags pertaining to shaders and data types, honored by
 //      the HLSL compiler
@@ -143,33 +136,57 @@ HRESULT WINAPI D3DX10CompileFromMemory(LPCSTR pSrcData, SIZE_T SrcDataLen, LPCST
 //  ppErrors
 //      If non-NULL, address of a buffer with error messages that occurred 
 //      during parsing or compilation
-//  pHResult
-//      Pointer to a memory location to receive the return value upon completion.
-//      Maybe NULL if not needed.
-//      If pPump != NULL, pHResult must be a valid memory location until the
-//      the asynchronous execution completes.
+//
 //----------------------------------------------------------------------------
 
 
+HRESULT WINAPI D3DX10CompileEffectFromFileA(LPCSTR pFileName, CONST D3D10_SHADER_MACRO *pDefines, 
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3DX10ThreadPump* pPump, 
+    ID3D10Blob **ppCompiledEffect, ID3D10Blob **ppErrors);
+
+HRESULT WINAPI D3DX10CompileEffectFromFileW(LPCWSTR pFileName, CONST D3D10_SHADER_MACRO *pDefines, 
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3DX10ThreadPump* pPump, 
+    ID3D10Blob **ppCompiledEffect, ID3D10Blob **ppErrors);
+
+HRESULT WINAPI D3DX10CompileEffectFromMemory(LPCVOID pData, SIZE_T DataLength, LPCSTR pSrcFileName, CONST D3D10_SHADER_MACRO *pDefines, 
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, 
+    ID3DX10ThreadPump* pPump, ID3D10Blob **ppCompiledEffect, ID3D10Blob **ppErrors);
+
+HRESULT WINAPI D3DX10CompileEffectFromResourceA(HMODULE hModule, LPCSTR pResourceName, LPCSTR pSrcFileName, CONST D3D10_SHADER_MACRO *pDefines, 
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, 
+    ID3DX10ThreadPump* pPump, ID3D10Blob **ppCompiledEffect, ID3D10Blob **ppErrors);
+
+HRESULT WINAPI D3DX10CompileEffectFromResourceW(HMODULE hModule, LPCWSTR pResourceName, LPCWSTR pSrcFileName, CONST D3D10_SHADER_MACRO *pDefines, 
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, 
+    ID3DX10ThreadPump* pPump, ID3D10Blob **ppCompiledEffect, ID3D10Blob **ppErrors);
+
+#ifdef UNICODE
+#define D3DX10CompileEffectFromFile         D3DX10CompileEffectFromFileW
+#define D3DX10CompileEffectFromResource     D3DX10CompileEffectFromResourceW
+#else
+#define D3DX10CompileEffectFromFile         D3DX10CompileEffectFromFileA
+#define D3DX10CompileEffectFromResource     D3DX10CompileEffectFromResourceA
+#endif
+
 HRESULT WINAPI D3DX10CreateEffectFromFileA(LPCSTR pFileName, CONST D3D10_SHADER_MACRO *pDefines, 
-    ID3D10Include *pInclude, LPCSTR pProfile, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, 
-    ID3D10EffectPool *pEffectPool, ID3DX10ThreadPump* pPump, ID3D10Effect **ppEffect, ID3D10Blob **ppErrors, HRESULT* pHResult);
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, 
+    ID3D10EffectPool *pEffectPool, ID3DX10ThreadPump* pPump, ID3D10Effect **ppEffect, ID3D10Blob **ppErrors);
 
 HRESULT WINAPI D3DX10CreateEffectFromFileW(LPCWSTR pFileName, CONST D3D10_SHADER_MACRO *pDefines, 
-    ID3D10Include *pInclude, LPCSTR pProfile, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, 
-    ID3D10EffectPool *pEffectPool, ID3DX10ThreadPump* pPump, ID3D10Effect **ppEffect, ID3D10Blob **ppErrors, HRESULT* pHResult);
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, 
+    ID3D10EffectPool *pEffectPool, ID3DX10ThreadPump* pPump, ID3D10Effect **ppEffect, ID3D10Blob **ppErrors);
 
 HRESULT WINAPI D3DX10CreateEffectFromMemory(LPCVOID pData, SIZE_T DataLength, LPCSTR pSrcFileName, CONST D3D10_SHADER_MACRO *pDefines, 
-    ID3D10Include *pInclude, LPCSTR pProfile, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, 
-    ID3D10EffectPool *pEffectPool, ID3DX10ThreadPump* pPump, ID3D10Effect **ppEffect, ID3D10Blob **ppErrors, HRESULT* pHResult);
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, 
+    ID3D10EffectPool *pEffectPool, ID3DX10ThreadPump* pPump, ID3D10Effect **ppEffect, ID3D10Blob **ppErrors);
 
 HRESULT WINAPI D3DX10CreateEffectFromResourceA(HMODULE hModule, LPCSTR pResourceName, LPCSTR pSrcFileName, CONST D3D10_SHADER_MACRO *pDefines, 
-    ID3D10Include *pInclude, LPCSTR pProfile, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, 
-    ID3D10EffectPool *pEffectPool, ID3DX10ThreadPump* pPump, ID3D10Effect **ppEffect, ID3D10Blob **ppErrors, HRESULT* pHResult);
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, 
+    ID3D10EffectPool *pEffectPool, ID3DX10ThreadPump* pPump, ID3D10Effect **ppEffect, ID3D10Blob **ppErrors);
 
 HRESULT WINAPI D3DX10CreateEffectFromResourceW(HMODULE hModule, LPCWSTR pResourceName, LPCWSTR pSrcFileName, CONST D3D10_SHADER_MACRO *pDefines, 
-    ID3D10Include *pInclude, LPCSTR pProfile, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, 
-    ID3D10EffectPool *pEffectPool, ID3DX10ThreadPump* pPump, ID3D10Effect **ppEffect, ID3D10Blob **ppErrors, HRESULT* pHResult);
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, 
+    ID3D10EffectPool *pEffectPool, ID3DX10ThreadPump* pPump, ID3D10Effect **ppEffect, ID3D10Blob **ppErrors);
 
 
 #ifdef UNICODE
@@ -181,24 +198,24 @@ HRESULT WINAPI D3DX10CreateEffectFromResourceW(HMODULE hModule, LPCWSTR pResourc
 #endif
 
 HRESULT WINAPI D3DX10CreateEffectPoolFromFileA(LPCSTR pFileName, CONST D3D10_SHADER_MACRO *pDefines, 
-    ID3D10Include *pInclude, LPCSTR pProfile, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, ID3DX10ThreadPump* pPump, 
-    ID3D10EffectPool **ppEffectPool, ID3D10Blob **ppErrors, HRESULT* pHResult);
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, ID3DX10ThreadPump* pPump, 
+    ID3D10EffectPool **ppEffectPool, ID3D10Blob **ppErrors);
 
 HRESULT WINAPI D3DX10CreateEffectPoolFromFileW(LPCWSTR pFileName, CONST D3D10_SHADER_MACRO *pDefines, 
-    ID3D10Include *pInclude, LPCSTR pProfile, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, ID3DX10ThreadPump* pPump, 
-    ID3D10EffectPool **ppEffectPool, ID3D10Blob **ppErrors, HRESULT* pHResult);
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice, ID3DX10ThreadPump* pPump, 
+    ID3D10EffectPool **ppEffectPool, ID3D10Blob **ppErrors);
 
 HRESULT WINAPI D3DX10CreateEffectPoolFromMemory(LPCVOID pData, SIZE_T DataLength, LPCSTR pSrcFileName, CONST D3D10_SHADER_MACRO *pDefines, 
-    ID3D10Include *pInclude, LPCSTR pProfile, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice,
-    ID3DX10ThreadPump* pPump, ID3D10EffectPool **ppEffectPool, ID3D10Blob **ppErrors, HRESULT* pHResult);
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice,
+    ID3DX10ThreadPump* pPump, ID3D10EffectPool **ppEffectPool, ID3D10Blob **ppErrors);
 
 HRESULT WINAPI D3DX10CreateEffectPoolFromResourceA(HMODULE hModule, LPCSTR pResourceName, LPCSTR pSrcFileName, CONST D3D10_SHADER_MACRO *pDefines, 
-    ID3D10Include *pInclude, LPCSTR pProfile, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice,
-    ID3DX10ThreadPump* pPump, ID3D10EffectPool **ppEffectPool, ID3D10Blob **ppErrors, HRESULT* pHResult);
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice,
+    ID3DX10ThreadPump* pPump, ID3D10EffectPool **ppEffectPool, ID3D10Blob **ppErrors);
                                          
 HRESULT WINAPI D3DX10CreateEffectPoolFromResourceW(HMODULE hModule, LPCWSTR pResourceName, LPCWSTR pSrcFileName, CONST D3D10_SHADER_MACRO *pDefines, 
-    ID3D10Include *pInclude, LPCSTR pProfile, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice,
-    ID3DX10ThreadPump* pPump, ID3D10EffectPool **ppEffectPool, ID3D10Blob **ppErrors, HRESULT* pHResult);
+    ID3D10Include *pInclude, UINT HLSLFlags, UINT FXFlags, ID3D10Device *pDevice,
+    ID3DX10ThreadPump* pPump, ID3D10EffectPool **ppEffectPool, ID3D10Blob **ppErrors);
 
 #ifdef UNICODE
 #define D3DX10CreateEffectPoolFromFile      D3DX10CreateEffectPoolFromFileW
@@ -209,19 +226,19 @@ HRESULT WINAPI D3DX10CreateEffectPoolFromResourceW(HMODULE hModule, LPCWSTR pRes
 #endif
 
 HRESULT WINAPI D3DX10PreprocessShaderFromFileA(LPCSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, 
-    LPD3D10INCLUDE pInclude, ID3DX10ThreadPump *pPump, ID3D10Blob** ppShaderText, ID3D10Blob** ppErrorMsgs, HRESULT* pHResult);
+    LPD3D10INCLUDE pInclude, ID3DX10ThreadPump *pPump, ID3D10Blob** ppShaderText, ID3D10Blob** ppErrorMsgs);
 
 HRESULT WINAPI D3DX10PreprocessShaderFromFileW(LPCWSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, 
-    LPD3D10INCLUDE pInclude, ID3DX10ThreadPump *pPump, ID3D10Blob** ppShaderText, ID3D10Blob** ppErrorMsgs, HRESULT* pHResult);
+    LPD3D10INCLUDE pInclude, ID3DX10ThreadPump *pPump, ID3D10Blob** ppShaderText, ID3D10Blob** ppErrorMsgs);
 
 HRESULT WINAPI D3DX10PreprocessShaderFromMemory(LPCSTR pSrcData, SIZE_T SrcDataSize, LPCSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, 
-    LPD3D10INCLUDE pInclude, ID3DX10ThreadPump *pPump, ID3D10Blob** ppShaderText, ID3D10Blob** ppErrorMsgs, HRESULT* pHResult);
+    LPD3D10INCLUDE pInclude, ID3DX10ThreadPump *pPump, ID3D10Blob** ppShaderText, ID3D10Blob** ppErrorMsgs);
 
 HRESULT WINAPI D3DX10PreprocessShaderFromResourceA(HMODULE hModule, LPCSTR pResourceName, LPCSTR pSrcFileName, CONST D3D10_SHADER_MACRO* pDefines, 
-    LPD3D10INCLUDE pInclude, ID3DX10ThreadPump *pPump, ID3D10Blob** ppShaderText, ID3D10Blob** ppErrorMsgs, HRESULT* pHResult);
+    LPD3D10INCLUDE pInclude, ID3DX10ThreadPump *pPump, ID3D10Blob** ppShaderText, ID3D10Blob** ppErrorMsgs);
 
 HRESULT WINAPI D3DX10PreprocessShaderFromResourceW(HMODULE hModule, LPCWSTR pResourceName, LPCWSTR pSrcFileName, CONST D3D10_SHADER_MACRO* pDefines, 
-    LPD3D10INCLUDE pInclude, ID3DX10ThreadPump *pPump, ID3D10Blob** ppShaderText, ID3D10Blob** ppErrorMsgs, HRESULT* pHResult);
+    LPD3D10INCLUDE pInclude, ID3DX10ThreadPump *pPump, ID3D10Blob** ppShaderText, ID3D10Blob** ppErrorMsgs);
 
 #ifdef UNICODE
 #define D3DX10PreprocessShaderFromFile      D3DX10PreprocessShaderFromFileW
@@ -235,21 +252,24 @@ HRESULT WINAPI D3DX10PreprocessShaderFromResourceW(HMODULE hModule, LPCWSTR pRes
 // Async processors
 //----------------------------------------------------------------------------
 
-HRESULT WINAPI D3DX10CreateAsyncCompilerProcessor(LPCSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude, 
-        LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags1, UINT Flags2,
+HRESULT WINAPI D3DX10CreateAsyncShaderCompilerProcessor(LPCSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude, 
+        LPCSTR pFunctionName, LPCSTR pProfile, UINT Flags,
+        ID3D10Blob **ppCompiledShader, ID3D10Blob **ppErrorBuffer, ID3DX10DataProcessor **ppProcessor);
+
+HRESULT WINAPI D3DX10CreateAsyncEffectCompilerProcessor(LPCSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude, 
+        UINT Flags, UINT FXFlags,
         ID3D10Blob **ppCompiledShader, ID3D10Blob **ppErrorBuffer, ID3DX10DataProcessor **ppProcessor);
 
 HRESULT WINAPI D3DX10CreateAsyncEffectCreateProcessor(LPCSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude, 
-        LPCSTR pProfile, UINT Flags, UINT FXFlags, ID3D10Device *pDevice,
+        UINT Flags, UINT FXFlags, ID3D10Device *pDevice,
         ID3D10EffectPool *pPool, ID3D10Blob **ppErrorBuffer, ID3DX10DataProcessor **ppProcessor);
 
 HRESULT WINAPI D3DX10CreateAsyncEffectPoolCreateProcessor(LPCSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude, 
-        LPCSTR pProfile, UINT Flags, UINT FXFlags, ID3D10Device *pDevice,
+        UINT Flags, UINT FXFlags, ID3D10Device *pDevice,
         ID3D10Blob **ppErrorBuffer, ID3DX10DataProcessor **ppProcessor);
 
 HRESULT WINAPI D3DX10CreateAsyncShaderPreprocessProcessor(LPCSTR pFileName, CONST D3D10_SHADER_MACRO* pDefines, LPD3D10INCLUDE pInclude, 
         ID3D10Blob** ppShaderText, ID3D10Blob **ppErrorBuffer, ID3DX10DataProcessor **ppProcessor);
-
 
 
 //----------------------------------------------------------------------------
@@ -278,6 +298,6 @@ HRESULT WINAPI D3DX10CreateAsyncShaderResourceViewProcessor(ID3D10Device *pDevic
 }
 #endif //__cplusplus
 
-#endif //__D3DX10ASYNC_H__
+#endif //__D3D10EFFECT_H__
 
 

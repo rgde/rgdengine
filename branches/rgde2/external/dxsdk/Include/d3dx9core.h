@@ -24,7 +24,7 @@
 ///////////////////////////////////////////////////////////////////////////
 
 #define D3DX_VERSION 0x0902
-#define D3DX_SDK_VERSION 33
+#define D3DX_SDK_VERSION 31
 
 #ifdef __cplusplus
 extern "C" {
@@ -146,9 +146,6 @@ DECLARE_INTERFACE_(ID3DXBuffer, IUnknown)
 // D3DXSPRITE_SORT_DEPTH_BACKTOFRONT
 //   Sprites are sorted by depth back-to-front prior to drawing.  This is 
 //   recommended when drawing transparent sprites of varying depths.
-// D3DXSPRITE_DO_NOT_ADDREF_TEXTURE
-//   Disables calling AddRef() on every draw, and Release() on Flush() for
-//   better performance.
 //////////////////////////////////////////////////////////////////////////////
 
 #define D3DXSPRITE_DONOTSAVESTATE               (1 << 0)
@@ -159,7 +156,6 @@ DECLARE_INTERFACE_(ID3DXBuffer, IUnknown)
 #define D3DXSPRITE_SORT_TEXTURE                 (1 << 5)
 #define D3DXSPRITE_SORT_DEPTH_FRONTTOBACK       (1 << 6)
 #define D3DXSPRITE_SORT_DEPTH_BACKTOFRONT       (1 << 7)
-#define D3DXSPRITE_DO_NOT_ADDREF_TEXTURE        (1 << 8)
 
 
 //////////////////////////////////////////////////////////////////////////////

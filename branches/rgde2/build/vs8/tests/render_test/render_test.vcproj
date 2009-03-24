@@ -61,6 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="dsound.lib DxErr9.lib DxErr.lib X3DAudio.lib dxguid.lib"
 				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86;$(SolutionDir)..\..\external\boost\lib\"

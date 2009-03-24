@@ -48,29 +48,13 @@ D3DXFLOAT16::operator FLOAT ()
 D3DX10INLINE BOOL
 D3DXFLOAT16::operator == ( CONST D3DXFLOAT16& f ) const
 {
-    // At least one is NaN
-    if(((value & D3DX_16F_EXP_MASK) == D3DX_16F_EXP_MASK && (value & D3DX_16F_FRAC_MASK))
-        || ((f.value & D3DX_16F_EXP_MASK) == D3DX_16F_EXP_MASK && (f.value & D3DX_16F_FRAC_MASK)))
-        return false;
-    // +/- Zero
-    else if((value & ~D3DX_16F_SIGN_MASK) == 0 && (f.value & ~D3DX_16F_SIGN_MASK) == 0)
-        return true;
-    else
-        return value == f.value;
+    return value == f.value;
 }
 
 D3DX10INLINE BOOL
 D3DXFLOAT16::operator != ( CONST D3DXFLOAT16& f ) const
 {
-    // At least one is NaN
-    if(((value & D3DX_16F_EXP_MASK) == D3DX_16F_EXP_MASK && (value & D3DX_16F_FRAC_MASK))
-        || ((f.value & D3DX_16F_EXP_MASK) == D3DX_16F_EXP_MASK && (f.value & D3DX_16F_FRAC_MASK)))
-        return true;
-    // +/- Zero
-    else if((value & ~D3DX_16F_SIGN_MASK) == 0 && (f.value & ~D3DX_16F_SIGN_MASK) == 0)
-        return false;
-    else
-        return value != f.value;
+    return value != f.value;
 }
 
 
@@ -270,13 +254,13 @@ D3DXVECTOR2_16F::operator CONST D3DXFLOAT16* () const
 D3DX10INLINE BOOL 
 D3DXVECTOR2_16F::operator == ( CONST D3DXVECTOR2_16F &v ) const
 {
-    return x == v.x && y == v.y;
+    return *((UINT *) &x) == *((UINT *) &v.x);
 }
 
 D3DX10INLINE BOOL 
 D3DXVECTOR2_16F::operator != ( CONST D3DXVECTOR2_16F &v ) const
 {
-    return x != v.x || y != v.y;
+    return *((UINT *) &x) != *((UINT *) &v.x);
 }
 
 
@@ -501,13 +485,15 @@ D3DXVECTOR3_16F::operator CONST D3DXFLOAT16* () const
 D3DX10INLINE BOOL 
 D3DXVECTOR3_16F::operator == ( CONST D3DXVECTOR3_16F &v ) const
 {
-    return x == v.x && y == v.y && z == v.z;
+    return *((UINT *) &x) == *((UINT *) &v.x) &&
+           *((WORD  *) &z) == *((WORD  *) &v.z);
 }
 
 D3DX10INLINE BOOL 
 D3DXVECTOR3_16F::operator != ( CONST D3DXVECTOR3_16F &v ) const
 {
-    return x != v.x || y != v.y || z != v.z;
+    return *((UINT *) &x) != *((UINT *) &v.x) ||
+           *((WORD  *) &z) != *((WORD  *) &v.z);
 }
 
 
@@ -740,13 +726,15 @@ D3DXVECTOR4_16F::operator CONST D3DXFLOAT16* () const
 D3DX10INLINE BOOL 
 D3DXVECTOR4_16F::operator == ( CONST D3DXVECTOR4_16F &v ) const
 {
-    return x == v.x && y == v.y && z == v.z && w == v.w;
+    return *((UINT *) &x) == *((UINT *) &v.x) &&
+           *((UINT *) &z) == *((UINT *) &v.z);
 }
 
 D3DX10INLINE BOOL 
 D3DXVECTOR4_16F::operator != ( CONST D3DXVECTOR4_16F &v ) const
 {
-    return x != v.x || y != v.y || z != v.z || w != v.w;
+    return *((UINT *) &x) != *((UINT *) &v.x) ||
+           *((UINT *) &z) != *((UINT *) &v.z);
 }
 
 

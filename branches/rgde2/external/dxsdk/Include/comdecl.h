@@ -4,15 +4,7 @@
 #ifndef _COMDECL_H_
 #define _COMDECL_H_
 
-#ifndef _XBOX
-    #include <basetyps.h>   // For standard COM interface macros
-#else
-    #pragma warning(push)
-    #pragma warning(disable:4061)
-    #include <xtl.h>        // Required by xobjbase.h
-    #include <xobjbase.h>   // Special definitions for Xbox build
-    #pragma warning(pop)
-#endif
+#include <basetyps.h>   // For standard COM interface macros
 
 // The DEFINE_CLSID() and DEFINE_IID() macros defined below allow COM GUIDs to
 // be declared and defined in such a way that clients can obtain the GUIDs using
