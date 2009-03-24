@@ -50,6 +50,8 @@
 #include <boost/function.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/timer.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <engine/core/core.h>
 #include <engine/core/xml/xml.h>

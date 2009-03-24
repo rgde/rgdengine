@@ -1,16 +1,17 @@
 #include "stdafx.h"
 #include "karaoke.h"
 #include "Application.h"
-#include <boost/tokenizer.hpp>
-#include <boost/lexical_cast.hpp>
+
 
 using namespace rgde;
 
 namespace game
 {
 	karaoke::karaoke(Application& app)
-		: m_app(app), m_cur_time(0)
+		: m_app(app)
+		, m_cur_time(0)
 		, m_cur_symbol_total(0)
+		, m_sound_system(app.get_handle())
 	{
 		m_font = render::font::create(m_app.get_render_device(), 30, L"Arial", render::font::heavy);
 		load_game_data();
@@ -65,6 +66,10 @@ namespace game
 
 	void karaoke::update(float dt)
 	{
+		float dtf = dt - m_cur_time/1000;
+
+		m_sound_system.update(dtf);
+
 		m_cur_time = dt*1000;
 
 		if(m_cur_time >= m_timings[m_cur_symbol_total] )
@@ -76,6 +81,9 @@ namespace game
 	void karaoke::load_game_data()
 	{
 		doc.load_file("sample.xml");
+
+		m_sound_system.load("audiodb.xml");
+		m_sound_system.play(0);
 
 		xml::node timings = doc("Song")("Timings");
 		{

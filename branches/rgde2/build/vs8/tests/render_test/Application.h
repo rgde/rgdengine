@@ -7,7 +7,7 @@
 
 namespace rgde
 {
-	class Application : core::windows::window
+	class Application : public core::windows::window
 	{
 	public:
 		Application();

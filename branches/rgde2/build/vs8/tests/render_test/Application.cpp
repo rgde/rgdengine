@@ -188,7 +188,7 @@ void Application::render()
 
 	m_karaoke->render();
 
-	m_font->render(L"Hello", rect(10,100,100,100),color::Red, true);
+	//m_font->render(L"Hello", rect(10,100,100,100),color::Red, true);
 
 	m_device.frame_end();
 	m_device.present();
