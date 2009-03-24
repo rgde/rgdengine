@@ -28,6 +28,12 @@
 #include <stdio.h>
 #include <tchar.h>
 
+
+#include <windows.h>
+#include <mmsystem.h>
+#include <mmreg.h>
+#include <dsound.h>
+
 #include <map>
 #include <vector>
 #include <string>
@@ -45,6 +51,9 @@
 #include <engine/core/core.h>
 #include <engine/core/xml/xml.h>
 #include <engine/render/render.h>
+
+#include <windows.h>
+#define ASSERT _ASSERTE
 
 #define COM_NO_WINDOWS_H
 #include <objbase.h>
