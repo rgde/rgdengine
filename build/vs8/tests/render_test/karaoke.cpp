@@ -29,6 +29,14 @@ namespace game
 			std::min(text_pos, text.size()), 
 			math::rect(10,10,620,100), 
 			math::color::Red);
+
+		const line_info& second_line = lines[(cur_line+1)%lines.size()];
+		const std::wstring& second_text = second_line.text;
+
+		render_text_line(second_text, 
+			second_text.size(), 
+			math::rect(10,40,620,100), 
+			math::color(math::color::Red, 0.2f));
 	}
 
 	void karaoke::render_text_line(std::wstring text, size_t pos, rgde::math::rect& r, 
@@ -41,10 +49,18 @@ namespace game
 		math::rect new_rect = r;
 		new_rect.x = (r.w - r.x)/2 - text_rect.w/2;
 
-		const math::color shadow_color(c * 0.5f, 1.0f);
+		math::rect shadow_rect = new_rect;
 
-		m_font->render(text, new_rect, shadow_color, true);
-		m_font->render(part_text,new_rect,c, true);
+		shadow_rect.x += 2;
+		shadow_rect.y += 2;
+
+		
+		{
+			const math::color shadow_color(c * 0.5f, c.a/255.0f);
+
+			m_font->render(text, shadow_rect, shadow_color, false);
+			m_font->render(part_text,new_rect,c, false);
+		}
 	}
 
 	void karaoke::update(float dt)

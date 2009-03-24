@@ -182,7 +182,7 @@ void Application::render()
 
 	m_device.frame_begin();
 	//m_device.clear(color::Black);
-	m_device.clear(color::DarkBlue);
+	m_device.clear(color(60,30,120,255));
 
 	draw_cube();
 
