@@ -346,6 +346,26 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="gfx"
+			>
+			<File
+				RelativePath=".\geometry.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\geometry.h"
+				>
+			</File>
+			<File
+				RelativePath=".\sprite.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sprite.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
