@@ -177,13 +177,13 @@ namespace audio
 		{
 			AudioTag* pTag = NULL;
 
-			for(xml::node child_el = pDOMDoc.first_child(); child_el.next_sibling(); 
+			for(xml::node child_el = pDOMDoc("AudioTagDatabase").first_child(); child_el.next_sibling(); 
 				child_el = child_el.next_sibling())
 			{
 				pTag = NULL;
 				//TiXmlElement* pDOMElement = child_el;
 
-				std::string strTagName = child_el.value();
+				std::string strTagName = child_el.name();
 
 				if ( _stricmp("Effect", strTagName.c_str()) == 0)
 				{
@@ -308,7 +308,7 @@ namespace audio
 		}
 
 		wfx.nSamplesPerSec  = m_frequency; 
-		wfx.wBitsPerSample  = m_bitRate; 
+		wfx.wBitsPerSample  = (WORD)m_bitRate; 
 		wfx.nBlockAlign     = wfx.wBitsPerSample / 8 * wfx.nChannels;
 		wfx.nAvgBytesPerSec = wfx.nSamplesPerSec * wfx.nBlockAlign;
 		wfx.cbSize = 0;

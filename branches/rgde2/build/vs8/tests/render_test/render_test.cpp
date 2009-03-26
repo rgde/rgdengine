@@ -11,12 +11,12 @@
 #include "Application.h"
 
 
-int _tmain(int argc, wchar_t* argv[])
+//int _tmain(int argc, wchar_t* argv[])
+int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 {
 	rgde::Application app;
 
 	app.run();
-
 	
 	return 0;
 }

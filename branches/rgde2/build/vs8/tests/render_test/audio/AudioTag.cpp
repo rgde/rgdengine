@@ -602,14 +602,14 @@ namespace audio
 				// the delay to play this tag when starting the group
 				float delay = -1;
 				if (safe_read(el, "DELAY", delay))
-					m_delays.push_back(delay*1000.0f);
+					m_delays.push_back((int)(delay*1000.0f));
 				else
 					m_delays.push_back(-1);
 
 				// randomization for the delay
 				float delay_range = 0;
 				if (safe_read(el, "DELAY_RANGE", delay_range))
-					m_delayRanges.push_back(delay_range*1000.0f);
+					m_delayRanges.push_back((int)(delay_range*1000.0f));
 				else
 					m_delayRanges.push_back(0);
 			}

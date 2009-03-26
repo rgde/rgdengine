@@ -74,7 +74,7 @@ color_vertex cube_geom[] =			// Vertex Array
 
 Application::Application() 
 	: m_active(true),
-	window(L"RenderTest"),
+	window(L"Music game proto"),
 	m_device(get_handle()),
 	m_font(font::create(m_device, 18, L"Arial", font::heavy)),
 	m_arc_ball(640, 480), 
@@ -172,7 +172,7 @@ void Application::run()
 
 void Application::update()
 {
-	m_game.do_update(m_elapsed);
+	m_game.do_update((float)m_elapsed);
 }
 
 void Application::render()
