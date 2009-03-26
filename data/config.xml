@@ -1,0 +1,10 @@
+<root>
+	<app>
+		<pos x="50" y="50"/>
+		<title>Karaoke Prototype</title>
+	</app>
+	<game>
+		<score_font name="" size="" style=""/>
+		<worlds_font name="" size="" style=""/>
+	</game>
+</root>
