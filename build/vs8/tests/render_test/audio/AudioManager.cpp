@@ -167,79 +167,90 @@ namespace audio
 		return S_OK;
 	}
 
+	bool AudioManager::LoadAudioTags(xml::node audio_db_node)
+	{
+		AudioTag* pTag = NULL;
+
+		for(xml::node child_el = audio_db_node.first_child(); child_el.next_sibling(); 
+			child_el = child_el.next_sibling())
+		{
+			pTag = NULL;
+			//TiXmlElement* pDOMElement = child_el;
+
+			std::string strTagName = child_el.name();
+
+			if ( _stricmp("Effect", strTagName.c_str()) == 0)
+			{
+				pTag = new AudioEffectTag();
+			}
+			else if ( _stricmp("Music", strTagName.c_str()) == 0)
+			{
+				pTag = new AudioMusicTag();
+			}
+			else if ( _stricmp("Ambient", strTagName.c_str()) == 0)
+			{
+				pTag = new AudioAmbientTag();
+			}
+			else if ( _stricmp("Composition", strTagName.c_str()) == 0)
+			{
+				pTag = new AudioCompositionTag();
+			}
+			else if ( _stricmp("Group", strTagName.c_str()) == 0)
+			{
+				pTag = new AudioGroupTag();
+			}
+			else if ( _stricmp("Random", strTagName.c_str()) == 0)
+			{
+				pTag = new AudioRandomTag();
+			}
+			else
+			{
+				ASSERT(!"Bad internal::base_audio Tag");
+			}
+
+			if (pTag)
+			{
+				if (!pTag->LoadTag(child_el))
+				{
+					delete pTag;
+					return false;
+				}
+
+				std::string  strTagName = child_el["ID"].value();
+				if (strTagName.empty())
+				{
+					delete pTag;
+					return false;
+				}
+
+				m_tags.insert(AudioTagMap::value_type(strTagName.c_str(), pTag));
+			}
+		}
+
+		return true;
+	}
+
 
 	bool AudioManager::LoadAudioTags(const char* szFileName)
 	{
 		xml::document pDOMDoc;
 		bool varbSuccess = pDOMDoc.load_file(szFileName);
 
-		if (varbSuccess)
-		{
-			AudioTag* pTag = NULL;
-
-			for(xml::node child_el = pDOMDoc("AudioTagDatabase").first_child(); child_el.next_sibling(); 
-				child_el = child_el.next_sibling())
-			{
-				pTag = NULL;
-				//TiXmlElement* pDOMElement = child_el;
-
-				std::string strTagName = child_el.name();
-
-				if ( _stricmp("Effect", strTagName.c_str()) == 0)
-				{
-					pTag = new AudioEffectTag();
-				}
-				else if ( _stricmp("Music", strTagName.c_str()) == 0)
-				{
-					pTag = new AudioMusicTag();
-				}
-				else if ( _stricmp("Ambient", strTagName.c_str()) == 0)
-				{
-					pTag = new AudioAmbientTag();
-				}
-				else if ( _stricmp("Composition", strTagName.c_str()) == 0)
-				{
-					pTag = new AudioCompositionTag();
-				}
-				else if ( _stricmp("Group", strTagName.c_str()) == 0)
-				{
-					pTag = new AudioGroupTag();
-				}
-				else if ( _stricmp("Random", strTagName.c_str()) == 0)
-				{
-					pTag = new AudioRandomTag();
-				}
-				else
-				{
-					ASSERT(!"Bad internal::base_audio Tag");
-				}
-
-				if (pTag)
-				{
-					if (!pTag->LoadTag(child_el))
-					{
-						delete pTag;
-						return false;
-					}
-
-					std::string  strTagName = child_el["ID"].value();
-					if (strTagName.empty())
-					{
-						delete pTag;
-						return false;
-					}
-
-					m_tags.insert(AudioTagMap::value_type(strTagName.c_str(), pTag));
-				}
-			}
-		}
-		else 
+		if (!varbSuccess)
 		{
 			MessageBoxA(NULL, "Unable to process the XML document.", "Error", MB_OK);
 			return false;
 		}
 
-		return true;
+		xml::node audio_db_node = pDOMDoc("AudioTagDatabase");
+
+		if (!audio_db_node)
+		{
+			MessageBoxA(NULL, "Unable to process the XML document.", "Error", MB_OK);
+			return false;
+		}
+
+		return LoadAudioTags(audio_db_node);
 	}
 
 
@@ -836,7 +847,7 @@ namespace audio
 	// the audio tags for the simple testing interface.
 	int AudioManager::GetNumAudioTags()
 	{
-		return m_tags.size();
+		return (int)m_tags.size();
 	}
 
 	const char* AudioManager::GetAudioTagName(unsigned int index)

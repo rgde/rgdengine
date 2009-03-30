@@ -105,6 +105,7 @@ namespace audio
 		void stop_all();
 		void set_volume(int volume);
 
+		bool load(xml::node node);
 		bool load(const char* file);
 
 		int get_num_tags();

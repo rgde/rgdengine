@@ -43,6 +43,7 @@
 #include <list>
 #include <exception>
 #include <iostream>
+#include <algorithm>
 
 #include <boost/smart_ptr.hpp>
 #include <boost/any.hpp>
