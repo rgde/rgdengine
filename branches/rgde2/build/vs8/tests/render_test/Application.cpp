@@ -72,41 +72,29 @@ color_vertex cube_geom[] =			// Vertex Array
 };
 
 
-Application::Application() 
+Application::Application(int x, int y, int w, int h, const std::wstring& title) 
 	: m_active(true),
-	window(L"Music game proto"),
+	window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU),
 	m_device(get_handle()),
 	m_font(font::create(m_device, 18, L"Arial", font::heavy)),
-	m_arc_ball(640, 480), 
-	m_elapsed(0)
+	m_arc_ball(w, h), 
+	m_elapsed(0),
+	m_karaoke(0), 
+	m_sound_system(get_handle())
 {
+	m_size.w = w;
+	m_size.h = h;
+
 	old_x = -1;
 	old_y = -1;
 
 	clicked_x = 0;
 	clicked_y = 0;
 
-	SetCurrentDirectoryW(L"../data/");
-
-	std::wstring buf;
-	buf.resize(256);
-	GetModuleFileNameW(NULL, &buf[0], 256);
-
-	std::wstring module_path;
-	module_path.resize(256);
-	GetFullPathNameW(&buf[0], 256, &module_path[0], NULL);
-
-	//using boost::filesystem::path;
-	//boost::filesystem::wpath p(buffer);
-	//std::wstring path = p.branch_path().string();
-	//SetCurrentDirectoryW(path.c_str());
-
 	show();
 	update();
 
-	m_karaoke = new ::game::karaoke(*this);
-
-	//doc()
+	init_game_data();
 	init_render_data();
 }
 
@@ -227,12 +215,15 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 			//keys[wParam] = true;
 			if (VK_UP == wparam)
 			{
-				m_cam_pos += math::vec3f(0.05f,0,0);
-
+				//m_cam_pos += math::vec3f(0.05f,0,0);
+			}
+			else if (VK_F5 == wparam)
+			{
+				init_game_data();
 			}
 			else if (VK_DOWN == wparam)
 			{
-				m_cam_pos -= math::vec3f(0.05f,0,0);
+				//m_cam_pos -= math::vec3f(0.05f,0,0);
 			}
 			else if (VK_SPACE == wparam)
 			{
@@ -318,6 +309,19 @@ void Application::resize_scene(unsigned int width, unsigned int height)
 	m_camera.setProjection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
 	m_device.set_transform( render::projection_transform, m_camera.getProjMatrix());
 }
+
+void Application::init_game_data()
+{
+	if(m_karaoke)
+	{
+		delete m_karaoke;
+	}
+
+	bool res = m_config.load_file("config.xml");
+	m_back_color = xml_color(m_config("root")("app")("background")("color"));
+	m_karaoke = new ::game::karaoke(*this);
+}
+
 
 bool Application::do_events()
 {

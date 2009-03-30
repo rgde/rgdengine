@@ -42,6 +42,11 @@ namespace audio
 		return manager->LoadAudioTags(file);
 	}
 
+	bool system::load(xml::node node)
+	{
+		return manager->LoadAudioTags(node);
+	}
+
 	int system::get_num_tags()
 	{
 		return manager->GetNumAudioTags();

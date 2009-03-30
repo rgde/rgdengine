@@ -14,7 +14,7 @@ namespace rgde
 			public:		
 				explicit window(const std::wstring& title = L"Window");
 				window(const point& pos, const size& s, const std::wstring& title = L"Window");
-				window(const point& pos, const size& s, const std::wstring& title = L"Window", handle parent_handle = NULL, 
+				window(const point& pos, const size& s, const std::wstring& title, handle parent_handle, 
 					ulong style = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
 				virtual ~window();
 

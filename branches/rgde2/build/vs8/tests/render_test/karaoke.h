@@ -1,11 +1,15 @@
 #pragma once
 
 #include "game.h"
-#include "audio/audio.h"
 
 namespace rgde
 {
 	class Application;
+}
+
+namespace audio
+{
+	class system;
 }
 
 namespace game
@@ -17,7 +21,7 @@ namespace game
 		friend karaoke;
 		typedef std::list<sprite*>::iterator handle;
 	public:
-		sprite(rgde::math::rect& r, karaoke& k);
+		sprite(const rgde::math::rect& r, karaoke& k);
 		~sprite();
 
 		virtual void render() {}
@@ -65,6 +69,9 @@ namespace game
 		void render();
 
 	private:
+		int m_vert_move_dir;
+		float m_vert_move_speed;
+		bool m_clicked;
 		int m_line;
 		int m_world;
 		std::wstring m_text;
@@ -117,9 +124,25 @@ namespace game
 			}
 		};
 
+		void swith_pause();
+
 		const line_info& get_line(int line) const {return lines[line];}
 		rgde::render::font_ptr get_worlds_font() {return m_worlds_font;}
 
+		const rgde::math::color& get_song_color() const {return m_song_color;}
+
+		const rgde::math::color& get_worlds_color() const {return m_worlds_color;}
+
+		rgde::render::font_ptr get_score_font() const {return m_score_font;}
+		const rgde::math::color& get_score_color() const {return m_score_color;}
+
+		const rgde::math::rect& get_score_rect() const {return m_score_rect;}
+
+		float get_min_vert_speed() const {return m_min_vert_speed;}
+		float get_max_vert_speed() const {return m_max_vert_speed;}
+
+		int get_worlds_min_height() const {return m_worlds_min_height;}
+		int get_worlds_max_height() const {return m_worlds_max_height;}
 
 	protected:
 		void load_game_data();
@@ -129,16 +152,36 @@ namespace game
 		void create_sprites();
 
 	private:
+		bool m_pause;
 		int m_game_score;
 		int m_score_multiplier;
 
+		int first_line_height;
+		int second_line_height;
+
+		int m_worlds_min_height;
+		int m_worlds_max_height;
+
+		float m_min_vert_speed;
+		float m_max_vert_speed;
+
+		bool m_randomize_order;
+
 		rgde::render::font_ptr m_font;
+		rgde::math::color m_song_color;
+
 		rgde::render::font_ptr m_worlds_font;
+		rgde::math::color m_worlds_color;
+
+		rgde::render::font_ptr m_score_font;
+		rgde::math::color m_score_color;
+
+		rgde::math::rect m_score_rect;
 
 		bool first_update;
 		float timer_offset;
 
-		audio::system		m_sound_system;
+		audio::system& m_sound_system;
 
 		float m_cur_time;
 		int m_cur_symbol_total;

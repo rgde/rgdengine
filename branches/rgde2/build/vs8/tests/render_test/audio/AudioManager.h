@@ -59,6 +59,7 @@ namespace audio
 
 		// loads tags from an XML file
 		bool LoadAudioTags(const char* szFileName);
+		bool LoadAudioTags(xml::node node);
 
 		void ClearAudioTags();
 
