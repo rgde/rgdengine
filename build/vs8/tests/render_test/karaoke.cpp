@@ -2,96 +2,14 @@
 #include "karaoke.h"
 #include "Application.h"
 
+#include "game_gui.h"
+#include "main_menu.h"
+
 
 using namespace rgde;
 
 namespace game
 {
-	sprite::sprite(const rgde::math::rect& r, karaoke& k)
-		: m_game(k), m_rect(r), m_visible(true)
-	{
-		m_handle = m_game.m_sprites.insert(m_game.m_sprites.end(), this);
-	}
-
-	sprite::~sprite()
-	{
-		m_game.m_sprites.erase(m_handle);
-	}
-
-	score::score(karaoke& k) 
-		: sprite(k.get_score_rect(), k)
-	{
-		m_font = k.get_score_font();
-	}
-
-
-	song_world::song_world(int line, int world, rgde::math::rect& r, karaoke& k)
-		: sprite(r, k)
-		, m_clicked(false)
-		, m_line(line)
-		, m_world(world)
-		, m_font(k.get_worlds_font())
-	{		
-		m_text = m_game.get_line(line).get_world(world);
-		m_vert_move_dir = math::Math::unitRandom() >= 0.5f ? 1 : -1;
-		float rand = math::Math::unitRandom();
-		float min_speed = k.get_min_vert_speed();
-		float max_speed = k.get_max_vert_speed();
-		m_vert_move_speed = min_speed + (max_speed-min_speed)*rand;
-	}
-
-	void song_world::on_click()
-	{
-		if (!m_clicked)
-		{
-			m_clicked = true;
-			m_game.add_score(10);
-			m_text = boost::lexical_cast<std::wstring>(10);
-		}
-	}
-
-	void song_world::update(float dt)
-	{		
-		if (m_line < m_game.get_cur_line())
-			hide();
-
-		if (!is_visible())
-			delete this;
-
-		if (m_clicked)
-			return;
-
-		m_rect.y += dt*m_vert_move_speed*m_vert_move_dir;
-
-		if (m_rect.y >= m_game.get_worlds_max_height())
-		{
-			m_rect.y = m_game.get_worlds_max_height();
-			m_vert_move_speed = -m_vert_move_speed;
-		}
-		else if (m_rect.y <= m_game.get_worlds_min_height())
-		{
-			m_rect.y = m_game.get_worlds_min_height();
-			m_vert_move_speed = -m_vert_move_speed;
-		}
-	}
-
-	void song_world::render()
-	{
-		m_font->render(m_text, m_rect, m_game.get_worlds_color(), true, 
-			render::font::top | render::font::center);
-	}
-
-
-	void score::render()
-	{
-		int score = m_game.get_game_score();
-		std::wstring score_txt = boost::lexical_cast<std::wstring>(score);
-		const math::color text_color = m_game.get_score_color();//(130, 120, 100, 255);
-		m_font->render(score_txt, m_rect, text_color, false, render::font::left|render::font::top);
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-
 	karaoke::karaoke(Application& app)
 		: m_app(app)
 		, m_cur_time(0)
@@ -102,6 +20,7 @@ namespace game
 		, first_update(true)
 		, m_game_score(0)
 		, m_pause(false)
+		, m_state(state_menu)
 	{
 
 		rgde::render::device& dev = app.get_render_device();
@@ -133,10 +52,17 @@ namespace game
 
 		load_game_data();
 
+	}
+
+	void karaoke::start_game()
+	{
 		cur_symbol = 0;
 		cur_line = 0;
 
 		new score(*this);
+
+		m_sound_system.play(0);
+		create_sprites();
 	}
 
 	rgde::render::device& karaoke::get_render_device() {return m_app.get_render_device();}
@@ -207,25 +133,25 @@ namespace game
 			first_update = false;
 			timer_offset = dt;
 
-			m_sound_system.play(0);
-			create_sprites();
+			start_game();
 		}
+
+		float dtf = (dt-timer_offset) - m_cur_time/1000;
 
 		{
 			sprites temp_copy = m_sprites;
 			typedef std::list<sprite*>::iterator sit;
 			for(sit it = temp_copy.begin(); it != temp_copy.end(); ++it)
-				(*it)->update(dt);
-		}
-
-
-		float dtf = (dt-timer_offset) - m_cur_time/1000;
+				(*it)->update(dtf);
+		}		
 
 		m_sound_system.update((int)dtf);
 
 		m_cur_time = (dt-timer_offset)*1000;
 
-		if(m_cur_time >= m_timings[m_cur_symbol_total-cur_line%lines.size()] )
+		size_t timing_index = m_cur_symbol_total-cur_line%lines.size();
+
+		if( timing_index < m_timings.size() && m_cur_time >= m_timings[timing_index] )
 		{
 			switch_world();
 		}
@@ -338,7 +264,8 @@ namespace game
 	{
 		const line_info& l = get_line(cur_line);
 
-		float step = 640.0f/l.text_poses.size();
+		//float step = 640.0f/l.text_poses.size();
+		float width = m_app.get_size().w - 40;
 
 		int dh = m_worlds_max_height - m_worlds_min_height;
 
@@ -352,12 +279,44 @@ namespace game
 		if (m_randomize_order)
 			std::random_shuffle(poses.begin(), poses.end());
 
+		std::vector<float> sizes(poses.size());
+
+		render::font_ptr font = get_worlds_font();
+		float total_size = 0;
+
+		for(size_t i = 0; i < poses.size(); ++i)
+		{
+			int line = cur_line;
+			int world = (int)poses[i];
+			std::wstring text = get_line(line).get_world(world);
+			
+			math::rect text_rect = font->measure_test(text);
+			sizes[i] = text_rect.w;
+			total_size += text_rect.w;
+		}
+
+		for(size_t i = 0; i < poses.size(); ++i)
+		{
+			sizes[i] = sizes[i]/total_size;
+		}
+
+		float cur_dw = 20;
+
 		for(size_t i = 0;  i < poses.size(); ++i)
 		{
+			int line = cur_line;
+			int world = (int)poses[i];
+
 			float r = math::Math::unitRandom();
-			new song_world(cur_line, 
-				(int)poses[i], 
-				math::rect(20+i*step, m_worlds_min_height + dh*r, step, 40.0f), *this);
+
+			float world_width = width * sizes[i];
+			
+			new song_world(line, 
+				world, 
+				math::rect(cur_dw, m_worlds_min_height + dh*r, world_width, 40.0f),
+				*this);
+
+			cur_dw += world_width;
 		}
 	}
 
@@ -382,5 +341,23 @@ namespace game
 			sprite* s = *it;
 			delete s;
 		}
+	}
+
+	void karaoke::set_state(game_state state)
+	{
+		m_state = state;
+
+		switch (state)
+		{
+		case state_menu:
+			break;
+		case state_song_selection:
+			break;
+		}
+	}
+
+	karaoke::game_state karaoke::get_state() const
+	{
+		return m_state;
 	}
 }

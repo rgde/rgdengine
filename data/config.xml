@@ -23,7 +23,7 @@
 			<color value="20 220 200 255" />
 			<height min="100" max="300"/>
 			<randomize_order value="1" />
-			<vertical_speed min="0.005" max="0.04"/>			
+			<vertical_speed min="5" max="10"/>			
 		</worlds>
 		<mech>
 			<grade time="100" abs="false" score="5" mult="-1">
