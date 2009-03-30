@@ -47,8 +47,8 @@ namespace rgde
 					D3DFMT_D24S8,	// 16Bit Z-Buffer (Depth Buffer)
 					0,				// No Flags
 					D3DPRESENT_RATE_DEFAULT,   // Default Refresh Rate
-					D3DPRESENT_INTERVAL_IMMEDIATE
-					//D3DPRESENT_INTERVAL_DEFAULT	// Presentation Interval (vertical sync)
+					//D3DPRESENT_INTERVAL_IMMEDIATE
+					D3DPRESENT_INTERVAL_DEFAULT	// Presentation Interval (vertical sync)
 				};
 
 				// Check The Wanted Surface Format
