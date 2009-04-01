@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game.h"
+#include "game_mech.h"
 
 namespace rgde
 {
@@ -14,6 +15,8 @@ namespace audio
 
 namespace game
 {
+	class song_world;
+
 	class karaoke : rgde::game::object
 	{
 		friend class sprite;
@@ -34,6 +37,10 @@ namespace game
 
 		void start_game();
 
+		float get_time() const;
+
+		float on_world_clicked(song_world& world);
+
 		void set_state(game_state state);
 		game_state get_state() const;
 
@@ -51,6 +58,8 @@ namespace game
 
 		size_t get_cur_line() const {return cur_line;}
 		size_t get_cur_symbol() const {return cur_symbol;}
+
+		rgde::math::color get_world_color(float dt) const;
 
 		struct line_info
 		{
@@ -93,6 +102,8 @@ namespace game
 
 		int get_worlds_min_height() const {return m_worlds_min_height;}
 		int get_worlds_max_height() const {return m_worlds_max_height;}
+
+		const game_mech& get_mech() const {return m_mech;}
 
 	protected:
 		void load_game_data();
@@ -147,5 +158,7 @@ namespace game
 		xml::document doc;
 
 		rgde::Application& m_app;
+
+		game_mech m_mech;
 	};
 }
