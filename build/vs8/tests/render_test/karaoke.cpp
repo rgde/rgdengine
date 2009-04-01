@@ -25,7 +25,9 @@ namespace game
 
 		rgde::render::device& dev = app.get_render_device();
 
-		xml::node game_cfg = app.get_config()("root")("game");		
+		xml::node game_cfg = app.get_config()("root")("game");
+
+		m_mech.read(game_cfg("mech"));
 
 		m_score_font = xml_font(dev, game_cfg("score")("font"));
 		m_worlds_font = xml_font(dev, game_cfg("worlds")("font"));
@@ -51,7 +53,6 @@ namespace game
 		m_max_vert_speed = worlds("vertical_speed")["max"].as_float();
 
 		load_game_data();
-
 	}
 
 	void karaoke::start_game()
@@ -121,12 +122,30 @@ namespace game
 		}
 	}
 
+	float karaoke::get_time() const
+	{
+		return m_cur_time;
+	}
+
+	rgde::math::color karaoke::get_world_color(float dt) const
+	{
+		return m_mech.get_grade(dt).color;
+		//return rgde::math::color::DarkGreen;
+	}
+
+	float karaoke::on_world_clicked(song_world& world)
+	{
+		float dt = world.get_time() - m_cur_time;
+		const grade& g = m_mech.get_grade(dt);
+		float resulting_score = g.score;
+		add_score(resulting_score);
+		return resulting_score;
+	}
+
 	void karaoke::update(float dt)
 	{
 		if (m_pause)
-		{
 			return;
-		}
 
 		if (first_update)
 		{
@@ -271,10 +290,15 @@ namespace game
 
 		bool do_rand = m_randomize_order;
 
-		std::vector<int> poses(l.text_poses.size());
+		std::vector<int> poses;
+		poses.reserve(l.text_poses.size());
 		
-		for(size_t i = 0; i < poses.size(); ++i)
-			poses[i] = i;
+		for(size_t i = 0; i < l.text_poses.size(); ++i)
+		{
+			std::wstring text = get_line(cur_line).get_world(i);
+			if (!text.empty())
+				poses.push_back(i);
+		}
 
 		if (m_randomize_order)
 			std::random_shuffle(poses.begin(), poses.end());
@@ -310,6 +334,9 @@ namespace game
 			float r = math::Math::unitRandom();
 
 			float world_width = width * sizes[i];
+
+			//size_t timing_index = m_cur_symbol_total-cur_line%lines.size();
+			//float time = m_timings[timing_index];
 			
 			new song_world(line, 
 				world, 
