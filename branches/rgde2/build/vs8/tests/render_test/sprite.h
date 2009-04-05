@@ -30,9 +30,12 @@ namespace rgde
 			renderer2d(device& dev);
 			~renderer2d();
 
-			inline sprites_vector& get_sprites() { return m_sprites; }
+			//inline sprites_vector& get_sprites() { return m_sprites; }
 
 			void draw(const sprite& s);
+			void draw(const math::rect& r, const math::color& c, texture_ptr t = texture_ptr());
+
+			void clear();
 
 			void render();
 			void update();
@@ -54,6 +57,10 @@ namespace rgde
 			unsigned m_reserved_size;				/// Число спрайтов, под которое зарезервированы буферы
 
 			device& m_device;
+
+			math::vec2f m_scale;
+
+			bool m_need_ib_update;
 		};
 	}
 }

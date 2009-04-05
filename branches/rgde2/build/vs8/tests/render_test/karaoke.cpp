@@ -21,6 +21,7 @@ namespace game
 		, m_game_score(0)
 		, m_pause(false)
 		, m_state(state_menu)
+		, m_drawer2d(app.get_render_device())
 	{
 
 		rgde::render::device& dev = app.get_render_device();
@@ -29,15 +30,20 @@ namespace game
 
 		m_mech.read(game_cfg("mech"));
 
-		m_score_font = xml_font(dev, game_cfg("score")("font"));
+		
 		m_worlds_font = xml_font(dev, game_cfg("worlds")("font"));
 		m_font = xml_font(dev, game_cfg("song")("font"));
 
 		m_song_color = xml_color(game_cfg("song")("color"));
 		m_worlds_color = xml_color(game_cfg("worlds")("color"));
-		m_score_color = xml_color(game_cfg("score")("color"));
+		
+		m_worlds_bkcolor = xml_color(game_cfg("worlds")("bkcolor"));
 
+
+		m_score_font = xml_font(dev, game_cfg("score")("font"));
 		m_score_rect = xml_rect(game_cfg("score")("rect"));
+		m_score_color = xml_color(game_cfg("score")("color"));
+		m_score_bkcolor = xml_color(game_cfg("score")("bkcolor"));
 
 		first_line_height = game_cfg("song")("lines")["height0"].as_int();
 		second_line_height = game_cfg("song")("lines")["height1"].as_int();
@@ -52,6 +58,11 @@ namespace game
 		m_min_vert_speed = worlds("vertical_speed")["min"].as_float();
 		m_max_vert_speed = worlds("vertical_speed")["max"].as_float();
 
+		m_mult_font = xml_font(dev, game_cfg("mult")("font"));
+		m_mult_rect = xml_rect(game_cfg("mult")("rect"));
+		m_mult_color = xml_color(game_cfg("mult")("color"));
+		m_mult_bkcolor = xml_color(game_cfg("mult")("bkcolor"));
+
 		load_game_data();
 	}
 
@@ -59,8 +70,11 @@ namespace game
 	{
 		cur_symbol = 0;
 		cur_line = 0;
+		m_score_multiplier = 1;
+		m_game_score = 0;
 
 		new score(*this);
+		new mult(*this);
 
 		m_sound_system.play(0);
 		create_sprites();
@@ -72,8 +86,13 @@ namespace game
 	{
 		if (m_pause)
 		{
-			return;
+			return;		
 		}
+
+		m_drawer2d.update();
+		m_drawer2d.render();
+		m_drawer2d.clear();
+
 		const line_info& line = lines[cur_line%lines.size()];
 		const std::wstring& text = line.text;
 		size_t text_pos = line.text_poses[cur_symbol];
@@ -112,7 +131,6 @@ namespace game
 
 		shadow_rect.x += 2;
 		shadow_rect.y += 2;
-
 		
 		{
 			const math::color shadow_color(c * 0.5f, c.a/255.0f);
@@ -129,8 +147,14 @@ namespace game
 
 	rgde::math::color karaoke::get_world_color(float dt) const
 	{
-		return m_mech.get_grade(dt).color;
-		//return rgde::math::color::DarkGreen;
+		const grade& g = m_mech.get_grade(dt);
+		return g.color;
+	}
+
+	rgde::math::color karaoke::get_world_bkcolor(float dt) const
+	{
+		const grade& g = m_mech.get_grade(dt);
+		return g.bkcolor;
 	}
 
 	float karaoke::on_world_clicked(song_world& world)
@@ -138,7 +162,12 @@ namespace game
 		float dt = world.get_time() - m_cur_time;
 		const grade& g = m_mech.get_grade(dt);
 		float resulting_score = g.score;
-		add_score(resulting_score);
+		
+		m_score_multiplier += g.mult;
+		m_score_multiplier = m_score_multiplier > 0 ? m_score_multiplier : 1;
+
+		add_score(resulting_score*m_score_multiplier);
+
 		return resulting_score;
 	}
 
@@ -173,7 +202,7 @@ namespace game
 		if( timing_index < m_timings.size() && m_cur_time >= m_timings[timing_index] )
 		{
 			switch_world();
-		}
+		}		
 	}
 
 	void karaoke::load_game_data()

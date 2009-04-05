@@ -2,6 +2,7 @@
 
 #include "game.h"
 #include "game_mech.h"
+#include "sprite.h"
 
 namespace rgde
 {
@@ -23,6 +24,8 @@ namespace game
 		typedef std::list<sprite*> sprites;
 		sprites m_sprites;
 
+		rgde::render::renderer2d m_drawer2d;
+
 	public:
 		enum game_state
 		{
@@ -34,6 +37,10 @@ namespace game
 
 		karaoke(rgde::Application& app);
 		~karaoke();
+
+		typedef rgde::render::renderer2d batcher2d;
+
+		batcher2d& get_batcher() {return m_drawer2d;}
 
 		void start_game();
 
@@ -60,6 +67,7 @@ namespace game
 		size_t get_cur_symbol() const {return cur_symbol;}
 
 		rgde::math::color get_world_color(float dt) const;
+		rgde::math::color get_world_bkcolor(float dt) const;
 
 		struct line_info
 		{
@@ -91,11 +99,18 @@ namespace game
 		const rgde::math::color& get_song_color() const {return m_song_color;}
 
 		const rgde::math::color& get_worlds_color() const {return m_worlds_color;}
+		const rgde::math::color& get_worlds_bkcolor() const {return m_worlds_bkcolor;}
 
 		rgde::render::font_ptr get_score_font() const {return m_score_font;}
 		const rgde::math::color& get_score_color() const {return m_score_color;}
-
+		const rgde::math::color& get_score_bkcolor() const {return m_score_bkcolor;}
 		const rgde::math::rect& get_score_rect() const {return m_score_rect;}
+
+		rgde::render::font_ptr get_mult_font() const {return m_mult_font;}
+		const rgde::math::color& get_mult_color() const {return m_mult_color;}
+		const rgde::math::color& get_mult_bkcolor() const {return m_mult_bkcolor;}
+		const rgde::math::rect& get_mult_rect() const {return m_mult_rect;}
+
 
 		float get_min_vert_speed() const {return m_min_vert_speed;}
 		float get_max_vert_speed() const {return m_max_vert_speed;}
@@ -133,12 +148,18 @@ namespace game
 		rgde::math::color m_song_color;
 
 		rgde::render::font_ptr m_worlds_font;
+		rgde::math::color m_worlds_bkcolor;
 		rgde::math::color m_worlds_color;
 
 		rgde::render::font_ptr m_score_font;
 		rgde::math::color m_score_color;
-
+		rgde::math::color m_score_bkcolor;
 		rgde::math::rect m_score_rect;
+
+		rgde::render::font_ptr m_mult_font;
+		rgde::math::color m_mult_color;
+		rgde::math::color m_mult_bkcolor;
+		rgde::math::rect m_mult_rect;
 
 		bool first_update;
 		float timer_offset;

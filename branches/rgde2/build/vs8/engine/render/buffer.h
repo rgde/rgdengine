@@ -47,17 +47,17 @@ namespace rgde
 			enum decl_usage
 			{
 				position = 0,
-				blend_weight,  // 1
-				blend_indices, // 2
-				normal,        // 3
-				psize,         // 4
-				texcoord,      // 5
-				tangent,       // 6
-				binormal,      // 7
-				positiont,     // 9
-				color,         // 10
-				fog,           // 11
-				depth,         // 12
+				blend_weight = 1,  // 1
+				blend_indices = 2, // 2
+				normal = 3,        // 3
+				psize = 4,         // 4
+				texcoord = 5,      // 5
+				tangent = 6,       // 6
+				binormal = 7,      // 7
+				positiont = 9,     // 9
+				color = 10,         // 10
+				fog = 11,           // 11
+				depth = 12,         // 12
 				decl_usage_max_value = 0xFF
 			};
 
