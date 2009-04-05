@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <engine/render/render_forward.h>
 
 namespace rgde
 {

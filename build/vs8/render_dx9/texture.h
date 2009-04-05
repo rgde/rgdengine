@@ -8,6 +8,7 @@ namespace rgde
 		{
 		public:
 			texture_impl(device& dev, const void* data, size_t size);
+			texture_impl(device& dev, const std::wstring& file_name);
 
 		private:
 			D3DXIMAGE_INFO m_info;
