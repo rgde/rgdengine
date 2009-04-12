@@ -405,7 +405,7 @@ namespace UIEditor
         private void newToolStripButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Image Files|*.dds; *.tga";
+            ofd.Filter = "Image Files|*.dds; *.tga; *.png";
 
             if (DialogResult.OK == ofd.ShowDialog(this))
             {
