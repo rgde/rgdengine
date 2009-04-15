@@ -34,6 +34,15 @@
 			<randomize_order value="1" />
 			<vertical_speed min="5" max="10"/>
 		</worlds>
+		<progress>
+			<rect value="10 420 615 10" />
+			<bkcolor value="100 100 100 255" />
+			<color value="210 200 200 255" />
+			<marker>
+				<rect value="0 0 3 16" />
+				<color value="200 20 20 255" />				
+			</marker>			
+		</progress>		
 		<mech>
 			<grade time="100000" abs="true" score="-1" mult="-99">
 				<color value="50 50 50 255" />
