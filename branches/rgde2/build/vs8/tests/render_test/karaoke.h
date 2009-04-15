@@ -161,8 +161,15 @@ namespace game
 		rgde::math::color m_mult_bkcolor;
 		rgde::math::rect m_mult_rect;
 
+		rgde::math::color m_progress_color;
+		rgde::math::color m_progress_bkcolor;
+		rgde::math::rect m_progress_rect;
+		rgde::math::color m_progress_marker_color;
+		rgde::math::rect m_progress_marker_rect;
+
 		bool first_update;
 		float timer_offset;
+		int m_song_length;
 
 		audio::system& m_sound_system;
 

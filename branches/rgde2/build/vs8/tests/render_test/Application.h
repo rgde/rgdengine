@@ -77,24 +77,22 @@ namespace rgde
 		void update();
 		void render();
 
-		void draw_cube();
-
 	private:
 		xml::document m_config;
 		game::system m_game;
-		ArcBall m_arc_ball;
+		//ArcBall m_arc_ball;
 		bool m_active;
 		render::device m_device;
 
 		//math::vec2i m_size;
 		size m_size;
 
-		render::font_ptr m_font;
-		render::vertex_buffer_ptr m_vb;
-		render::index_buffer_ptr m_ib;
+		//render::font_ptr m_font;
+		//render::vertex_buffer_ptr m_vb;
+		//render::index_buffer_ptr m_ib;
 
 		//math::vec3f m_cam_pos;
-		Camera m_camera;
+		//Camera m_camera;
 
 		int old_x;
 		int old_y;
