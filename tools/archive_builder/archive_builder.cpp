@@ -35,7 +35,7 @@ namespace rgde
 
 			~property() {delete m_holder;}
 
-			typedef<typename T>
+			template<typename T>
 			bool operator=(const T& value)
 			{
 				return false;
