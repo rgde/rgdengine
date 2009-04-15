@@ -32,7 +32,7 @@ void save_mesh(const char* file_name, const mesh_info& mesh)
 		+ sizeof(int)*mesh.num_mats
 		+ sizeof(attribute_range)*mesh.num_mats;
 
-	out.write((const char*)mesh, sizeof(mesh_info));
+	out.write((const char*)&mesh, sizeof(mesh_info));
 }
 
 bool read_mesh(const char* file_name, mesh_info& mesh)
