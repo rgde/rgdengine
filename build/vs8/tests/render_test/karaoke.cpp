@@ -63,6 +63,19 @@ namespace game
 		m_mult_color = xml_color(game_cfg("mult")("color"));
 		m_mult_bkcolor = xml_color(game_cfg("mult")("bkcolor"));
 
+		{
+			xml::node progress_node = game_cfg("progress");
+
+			m_progress_color = xml_color(progress_node("color"));
+			m_progress_bkcolor = xml_color(progress_node("bkcolor"));
+			m_progress_rect = xml_rect(progress_node("rect"));
+
+			xml::node marker_node = progress_node("marker");
+
+			m_progress_marker_color = xml_color(marker_node("color"));
+			m_progress_marker_rect = xml_rect(marker_node("rect"));
+		}
+
 		load_game_data();
 	}
 
@@ -92,6 +105,29 @@ namespace game
 		m_drawer2d.update();
 		m_drawer2d.render();
 		m_drawer2d.clear();
+
+		{// render progress line
+			karaoke::batcher2d& b = get_batcher();
+			rgde::math::rect progress_rect = m_progress_rect;
+
+			float progress =  m_cur_time/m_song_length;
+
+			progress = progress > 1.0f ? 1.0f : progress;
+
+			b.draw(progress_rect, m_progress_bkcolor);
+
+			rgde::math::rect cur_progress_rect = progress_rect;
+			cur_progress_rect.w *= progress;
+			b.draw(cur_progress_rect, m_progress_color);
+
+			float marker_pos = m_progress_rect.w*progress;
+			rgde::math::rect progress_marker_rect = m_progress_marker_rect;
+
+			progress_marker_rect.x += m_progress_rect.x + marker_pos - progress_marker_rect.w*0.5f;
+			progress_marker_rect.y = m_progress_rect.y - (progress_marker_rect.h - m_progress_rect.h)*0.5;
+
+			b.draw(progress_marker_rect, m_progress_marker_color);
+		}
 
 		const line_info& line = lines[cur_line%lines.size()];
 		const std::wstring& text = line.text;
@@ -223,6 +259,8 @@ namespace game
 
 		//m_sound_system.load("audiodb.xml");
 		m_sound_system.load(audio_db_file_name.c_str());
+
+		m_song_length = doc("root")("track_length")["value"].as_int();
 
 		for(xml::node l = doc("root")("text"); 
 			l.next_sibling("text"); 
@@ -362,17 +400,20 @@ namespace game
 
 			float r = math::Math::unitRandom();
 
-			float world_width = width * sizes[i];
+			float sector_width = width * sizes[i];
+			float world_width = total_size * sizes[i];
 
-			//size_t timing_index = m_cur_symbol_total-cur_line%lines.size();
-			//float time = m_timings[timing_index];
+			world_width += world_width*0.1f;
+
+			float dw = (sector_width-world_width)*0.5f;
+
 			
 			new song_world(line, 
 				world, 
-				math::rect(cur_dw, m_worlds_min_height + dh*r, world_width, 40.0f),
+				math::rect(cur_dw+dw, m_worlds_min_height + dh*r, world_width, 30.0f),
 				*this);
 
-			cur_dw += world_width;
+			cur_dw += sector_width;
 		}
 	}
 
