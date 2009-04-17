@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 
-#include "utility.h"
 #include "archive.h"
 
 #include <boost/bind.hpp>
@@ -140,10 +139,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	using namespace rgde;
 	namespace fs = rgde::filesystem;
 
-	fs::file_info_vector files; 
-	fs::utility::find_files(start_path, files);
-
-	fs::archive::build(files, L"test.archive");
+	fs::archive::build(start_path, L"test.archive");
 
 	fs::archive archive(L"test.archive");
 

@@ -28,7 +28,7 @@ namespace rgde
 			const path& get_archive_file_path() const {return m_archive_file;}
 			bool is_loaded() const					  {return !m_entries.empty();}
 
-			static bool build(const file_info_vector& files, const path& out_arhive_file);
+			static bool build(const path& dir_path, const path& out_arhive_file);
 
 			const entries_vector& get_entries() const {return m_entries;}
 
