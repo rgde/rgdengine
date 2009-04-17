@@ -8,14 +8,16 @@ namespace rgde
 	{
 		namespace utility
 		{
-
 			bool find_files(const path& dir_path, file_info_vector& files_list)
 			{
 				using namespace boost::filesystem;
-				//search_result.clear();				
-				//return !search_result.empty();
-				if ( !exists( dir_path ) ) return false;
-				wdirectory_iterator end_it; // default construction yields past-the-end
+
+				if ( !exists( dir_path ) )
+					return false;
+
+				// default construction yields past-the-end
+				wdirectory_iterator end_it;
+
 				for ( wdirectory_iterator it( dir_path ); it != end_it; ++it )
 				{
 					if ( is_directory( *it ) )

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "archive.h"
+#include "utility.h"
 
 #include <boost/filesystem/fstream.hpp>
 
@@ -34,8 +35,7 @@ namespace rgde
 			size_t archive_header_size()
 			{
 				return sizeof(end_of_archive_mark) + sizeof(int) + sizeof(size_t)*2;
-			}
-		
+			}		
 
 			size_t write(boost::filesystem::ofstream& out , const file_info& finfo)
 			{
@@ -89,7 +89,6 @@ namespace rgde
 
 		archive::archive()
 		{
-
 		}
 
 		bool archive::open(const path& archive_file_path)
@@ -100,7 +99,6 @@ namespace rgde
 
 			if (!fs::exists(archive_file_path))
 				return false;
-
 			
 			//fs::ifstream archive_file(archive_file_path, std::ios::binary);
 			m_archive_stream.open(archive_file_path, std::ios::binary);
@@ -185,9 +183,12 @@ namespace rgde
 			return true;
 		}
 
-		bool archive::build(const file_info_vector& files, const path& out_arhive_file)
+		bool archive::build(const path& dir_path, const path& out_arhive_file)
 		{
 			namespace fs = boost::filesystem;
+
+			file_info_vector files;
+			utility::find_files(dir_path, files);
 
 			fs::remove(out_arhive_file);
 			
