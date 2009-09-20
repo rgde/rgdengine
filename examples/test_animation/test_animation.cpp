@@ -5,7 +5,7 @@
 //#include <windows.h> //для HWND и SendMessage
 //#include <sstream> 
 
-class AnimationTest : public game::IDynamicObject
+class AnimationTest : public game::dynamic_object
 {
 public:
 	AnimationTest() :  m_spApp(core::IApplication::Create(L"Animation Test", 640, 480, 32, 85, false)),
