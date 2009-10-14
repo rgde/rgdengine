@@ -22,7 +22,6 @@
 
 namespace rgde
 {
-	typedef std::vector<char> buffer;
 	typedef unsigned int uint;
 
 	namespace file_system
@@ -37,79 +36,78 @@ namespace rgde
 			bool is_directory(const std::wstring& full_name) {return !is_file(full_name);}
 		}
 
-		struct IStream
+		struct stream
 		{
-			virtual ~IStream() {}
+			virtual ~stream() {}
 
 			virtual uint get_position() const = 0;
 			virtual bool set_position() = 0;
 			virtual uint get_size() const = 0;
 		};
-
-		typedef boost::shared_ptr<IStream> PStream;
-
-		struct IWriteStream : public IStream
+		
+		struct write_stream : public stream
 		{
-			virtual bool write(const buffer& data, uint size) = 0;
+			virtual bool write(const char* const src, uint size) = 0;
+		};		
+
+		struct read_stream : public stream
+		{
+			/// return size of readed data
+			virtual uint read(const char* dst, uint size) = 0;
 		};
 
-		typedef boost::shared_ptr<IWriteStream> PWriteStream;
+		typedef boost::shared_ptr<stream>		stream_ptr;
+		typedef boost::shared_ptr<write_stream> write_stream_ptr;
+		typedef boost::shared_ptr<read_stream>	read_stream_ptr;
 
-		struct IReadStream : public IStream
-		{
-			virtual bool read(buffer& data, uint size) = 0;
-		};
-
-		typedef boost::shared_ptr<IReadStream> PReadStream;
-
-		class IFile
+		class file
 		{
 		public:
-			virtual ~IFile(){}
+			virtual ~file(){}
 
 			bool is_read_only() const {return m_read_only;}
 			const std::wstring& get_full_name() const {return m_full_name;}
 
-			virtual PReadStream  open_read_stream() const = 0;
+			virtual read_stream_ptr  open_read_stream() const = 0;
 
 			/// returns empty pointer if READ_ONLY.
-			virtual PWriteStream open_write_stream() = 0;
+			virtual write_stream_ptr open_write_stream() = 0;
 
 		protected:
 			bool		 m_read_only;
 			std::wstring m_full_name;
 		};
 
-		typedef boost::shared_ptr<IFile> PFile;
+		typedef boost::shared_ptr<file> file_ptr;
 
-		struct IFileSource
+		struct file_source
 		{
-			virtual ~IFileSource() {}
+			virtual ~file_source() {}
 
 			/// returns empty shared_ptr if file not found 
-			virtual PFile find(const std::wstring full_name) const = 0;
+			virtual file_ptr find(const std::wstring& full_name) const = 0;
 
-			virtual bool is_support_enumeration() const {return false;}
-			virtual void enumerate(std::vector<PFile>& files, const std::wstring& path) const {}
+			virtual bool has_enumeration_support() const {return false;}
+			virtual void enumerate(std::vector<file_ptr>& files, const std::wstring& path) const = 0;
 		};
 
-		typedef boost::shared_ptr<IFileSource> PFileSource;
+		typedef boost::shared_ptr<file_source> file_source_ptr;
 
-		class FileSystem : boost::noncopyable
+		class file_system : boost::noncopyable
 		{
 		public:
-			FileSystem();
-			~FileSystem();
+			file_system();
+			~file_system();
 
-			void add_source(PFileSource file_source, uint priority = 0);
+			void add_source(file_source_ptr source, uint priority = 0);
 
 			/// returns empty shared_ptr if file not found 
-			PFile find(const std::wstring full_name) const;
+			file_ptr find(const std::wstring& full_name) const;
+			void enumerate(std::vector<file_ptr>& files, const std::wstring& path) const;
 
 		protected:
-			typedef std::vector<PFileSource> FileSources;
-			FileSources m_sources;
+			typedef std::vector<file_source_ptr> sources;
+			sources m_sources;
 		};
-
 	}
 }
