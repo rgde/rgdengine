@@ -1,0 +1,5 @@
+<Imageset Name="karaoke" Imagefile="tiles.png" NativeHorzRes="794" NativeVertRes="134" AutoScaled="True">
+  <Image Name="score" XPos="17" YPos="2" Width="136" Height="51" />
+  <Image Name="mult" XPos="160" YPos="2" Width="50" Height="49" />
+  <Image Name="progress" XPos="216" YPos="1" Width="380" Height="35" />
+</Imageset>
