@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<root>
+	<app>
+		<rect value="250 50 640 480"/>
+		<title>Karaoke Prototype</title>
+		<background> 
+			<color value="60 30 120 255" />
+		</background>
+	</app>
+	<game>
+		<song>
+			<lines height0="20" height1="40"/>
+			<font name = "Harlow Solid Italic" size="26" style="normal"/>
+			<color value="255 0 0 255"/>
+			<bkcolor value="160 155 100 255" />
+		</song>
+		<score>
+			<rect value="0 0 100 30" />
+			<font name="Arial" size="20" style="bold"/>
+			<color value="60 130 120 255" />
+			<bkcolor value="100 155 200 255" />
+		</score>
+		<mult>
+			<rect value="0 32 100 30" />
+			<font name="Arial" size="22" style="bold"/>
+			<color value="90 130 120 255" />
+			<bkcolor value="200 155 100 255" />
+		</mult>		
+		<worlds>
+			<font name="Arial" size="23" style="bold"/>
+			<color value="20 220 200 255" />
+			<bkcolor value="100 255 100 255" />
+			<height min="100" max="300"/>
+			<randomize_order value="1" />
+			<vertical_speed min="5" max="10"/>
+		</worlds>
+		<progress>
+			<rect value="10 420 615 10" />
+			<bkcolor value="100 100 100 255" />
+			<color value="210 200 200 255" />
+			<marker>
+				<rect value="0 0 3 16" />
+				<color value="200 20 20 255" />				
+			</marker>			
+		</progress>		
+		<mech>
+			<grade time="100000" abs="true" score="-1" mult="-99">
+				<color value="50 50 50 255" />
+				<bkcolor value="12 12 12 255" />
+			</grade>
+			<grade time="100000" abs="false" score="-1" mult="-99">
+				<color value="0 255 0 255" />
+				<bkcolor value="0 50 0 255" />
+			</grade>
+			<grade time="200" abs="false" score="5" mult="-1">
+				<color value="100 255 100 255" />
+				<bkcolor value="50 100 50 255" />
+			</grade>
+			<grade time="100" abs="false" score="50" mult="0">
+				<color value="100 255 100 255" />
+				<bkcolor value="50 100 50 255" />
+			</grade>
+			<grade time="50" abs="false" score="80" mult="0">
+				<color value="0 0 255 255" />
+				<bkcolor value="0 0 100 255" />
+			</grade>
+			<grade time="30" abs="true" score="100" mult="1">
+				<color value="255 0 0 255" />
+				<bkcolor value="100 0 0 255" />
+			</grade>
+		</mech>
+	</game>
+</root>
