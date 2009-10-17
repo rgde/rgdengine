@@ -7,23 +7,37 @@ namespace rgde
 		class renderer_2d
 		{
 		public:
-			std::vector<primitive::line_desc> line_vector;
-			std::vector<primitive::sprite_desc> sprite_vector;
+			typedef std::vector<primitive::line_desc> lines_vector;
+			typedef std::vector<primitive::sprite_desc> sprites_vector;
+			typedef lines_vector::iterator line_iter;
+			typedef sprites_vector::iterator sprite_iter;
 
-			renderer_2d();
+			renderer_2d(device& dev);
 			~renderer_2d();
 
-			void add_line(line_desc& line);
-			void add_line(/* params*/);
+			void add_line(const primitive::line_desc& line);
+			void add_line(/* param*/);
 
-			void add_sprite(sprite_desc& sprite);
-			void add_sprite(/* params*/);
 
+			void add_sprite(const primitive::sprite_desc& sprite);
+			void add_sprite(const math::vec2f& pos_, const math::vec2f& size_,
+						    const math::rect tex_coord_, const float spin_, 
+						    const texture_ptr texture_=default_texture);
 			void render_all();
 
 		private:
-			line_vector lines;
-			sprite_vector sprites;
+			lines_vector m_lines;
+			sprites_vector m_sprites;
+
+			vertex_declaration_ptr m_lines_decl;
+			vertex_declaration_ptr m_sprites_decl;
+
+			vertex_buffer_ptr m_vb;
+			index_buffer_ptr m_ib;
+
+			base_texture_ptr default_texture;
+
+			device& m_device;
 		};
 	}
 }
