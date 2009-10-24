@@ -1,0 +1,57 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DevIL.NET", "DevIL.NET.vcproj", "{30D94686-D452-4A73-B59D-178288807EE5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B46B180B-6079-4CE6-8647-A7D712774255} = {B46B180B-6079-4CE6-8647-A7D712774255}
+		{1E0FF575-39C1-4A99-820F-8397E9D1351F} = {1E0FF575-39C1-4A99-820F-8397E9D1351F}
+		{CCEBAA77-521A-4CC3-A4E0-C6B062FC2009} = {CCEBAA77-521A-4CC3-A4E0-C6B062FC2009}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageViewCs", "ImageViewCs\ImageViewCs.csproj", "{C6EF7F8A-0CCB-4DAD-A70E-CCCB25608A5E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "il", "..\..\src-il\msvc9\il.vcproj", "{B46B180B-6079-4CE6-8647-A7D712774255}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ilu", "..\..\src-ilu\msvc9\ilu.vcproj", "{CCEBAA77-521A-4CC3-A4E0-C6B062FC2009}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B46B180B-6079-4CE6-8647-A7D712774255} = {B46B180B-6079-4CE6-8647-A7D712774255}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ilut", "..\..\src-ilut\msvc9\ilut.vcproj", "{1E0FF575-39C1-4A99-820F-8397E9D1351F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B46B180B-6079-4CE6-8647-A7D712774255} = {B46B180B-6079-4CE6-8647-A7D712774255}
+		{CCEBAA77-521A-4CC3-A4E0-C6B062FC2009} = {CCEBAA77-521A-4CC3-A4E0-C6B062FC2009}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30D94686-D452-4A73-B59D-178288807EE5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{30D94686-D452-4A73-B59D-178288807EE5}.Debug|Win32.Build.0 = Debug|Win32
+		{30D94686-D452-4A73-B59D-178288807EE5}.Release|Win32.ActiveCfg = Release|Win32
+		{30D94686-D452-4A73-B59D-178288807EE5}.Release|Win32.Build.0 = Release|Win32
+		{C6EF7F8A-0CCB-4DAD-A70E-CCCB25608A5E}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{C6EF7F8A-0CCB-4DAD-A70E-CCCB25608A5E}.Debug|Win32.Build.0 = Debug|Any CPU
+		{C6EF7F8A-0CCB-4DAD-A70E-CCCB25608A5E}.Release|Win32.ActiveCfg = Release|Any CPU
+		{B46B180B-6079-4CE6-8647-A7D712774255}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B46B180B-6079-4CE6-8647-A7D712774255}.Debug|Win32.Build.0 = Debug|Win32
+		{B46B180B-6079-4CE6-8647-A7D712774255}.Release|Win32.ActiveCfg = Release|Win32
+		{B46B180B-6079-4CE6-8647-A7D712774255}.Release|Win32.Build.0 = Release|Win32
+		{CCEBAA77-521A-4CC3-A4E0-C6B062FC2009}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CCEBAA77-521A-4CC3-A4E0-C6B062FC2009}.Debug|Win32.Build.0 = Debug|Win32
+		{CCEBAA77-521A-4CC3-A4E0-C6B062FC2009}.Release|Win32.ActiveCfg = Release|Win32
+		{CCEBAA77-521A-4CC3-A4E0-C6B062FC2009}.Release|Win32.Build.0 = Release|Win32
+		{1E0FF575-39C1-4A99-820F-8397E9D1351F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1E0FF575-39C1-4A99-820F-8397E9D1351F}.Debug|Win32.Build.0 = Debug|Win32
+		{1E0FF575-39C1-4A99-820F-8397E9D1351F}.Release|Win32.ActiveCfg = Release|Win32
+		{1E0FF575-39C1-4A99-820F-8397E9D1351F}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
+	EndGlobalSection
+EndGlobal
