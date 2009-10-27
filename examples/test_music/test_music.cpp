@@ -12,105 +12,19 @@ struct TextQuad
 
 class TestMusic :  public game::dynamic_object
 {
-	input::Mouse           m_mouse;
-	TextQuad CreateQuad(std::wstring text)
-	{
-		TextQuad q;
-		q.text = text;
-		q.color = math::Color(255*unitRandom(),255*unitRandom(),255*unitRandom(), 255);
-
-		q.rect = m_pFont->getRect(q.text, render::IFont::SingleLine | render::IFont::VCenter);		
-		math::Vec2f size(800-40-q.rect.size[0], 600-40-q.rect.size[1]);
-
-		float x = 20+unitRandom()*size[0];
-		float y = 20+unitRandom()*size[1];
-
-		q.rect.position = math::Vec2f(x, y);
-
-		return q;
-	}
-
-	std::vector<TextQuad> quads;
-
 public:
-	TestMusic() 
-		: m_sound_system(core::application::get()->getWindowHandle()),
-		cur_music_index(0)
-	  {
-		  m_sound_system.load("./media/audiodb.xml");
-
-		  m_pFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
-
-		  m_camera = render::render_camera::create();
-
-		  math::Vec3f vEyePt( 0.0f, 0, -50 );
-		  math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
-		  math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
-
-		  m_camera->lookAt(vEyePt, vLookatPt, vUpVec);
-		  m_camera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
-
-		  init_input();
-
-		  render::TheCameraManager::get().addCamera(m_camera);
-
-		  m_sound_system.play(cur_music_index);
-
-		  for (size_t t = 0; t < 50; ++t)
-			  quads.push_back(CreateQuad(L"Bla-blajh"));
-	  }
+	TestMusic();
 
 protected:
-	void init_input()
-	{
-		using namespace input;
+	void init_input();
 
-		m_cSpace.attach(L"NextMusic");
-		Input::getDevice(types::Keyboard)->get_control(types::KeySpace)->bind(L"NextMusic");
-		m_cSpace += boost::bind(&TestMusic::NextMusic, this);
+	void update (float dt);
 
-		m_cEsc.attach(L"Quit");
-		Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(m_cEsc.getCommand());
-		m_cEsc += boost::bind(&TestMusic::onEsc, this);
-	}
+	void NextMusic ();
 
+	void onEsc ();
 
-	void update (float dt)
-	{
-		using render::IFont;
-
-		for (size_t i = 0; i < quads.size(); ++i)
-		{
-			m_pFont->render(quads[i].text, quads[i].rect, quads[i].color.color, false, IFont::SingleLine | IFont::VCenter);
-		}
-
-		render::TheDevice::get().showFPS(m_pFont);
-
-		
-		unsigned int flags = IFont::SingleLine | IFont::Bottom;
-		math::Vec2f size(800, 600);
-
-		const char *cur_music_name = m_sound_system.get_tag_name(cur_music_index);
-
-		std::string s(cur_music_name);
-		std::wstring ws(s.begin(), s.end());
-		m_pFont->render(ws, math::Rect(0, 0, 800, 600), 0xFFFFFFFF, true, flags);
-
-		m_sound_system.update((int)dt*1000);
-	}
-
-	void NextMusic ()
-	{
-		cur_music_index++;
-		cur_music_index %= m_sound_system.get_num_tags();
-		m_sound_system.stop_all();
-		m_sound_system.play(cur_music_index);
-	}
-
-	void onEsc ()
-	{
-		core::application::get()->close();
-	}
+	TextQuad CreateQuad(std::wstring text);
 
 protected:
 	int cur_music_index;
@@ -119,6 +33,9 @@ protected:
 	input::KeyDown		m_cEsc;
 	input::KeyDown		m_cSpace;
 	audio::system		m_sound_system;
+
+	input::Mouse           m_mouse;
+	std::vector<TextQuad> quads;
 };
 
 
@@ -175,4 +92,101 @@ int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 ////	CMusicTest test;
 //
 	spApp->Run();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+TestMusic::TestMusic() 
+: m_sound_system(core::application::get()->getWindowHandle())
+, cur_music_index(0)
+{
+	m_sound_system.load("./media/audiodb.xml");
+
+	m_pFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
+
+	m_camera = render::render_camera::create();
+
+	math::Vec3f vEyePt( 0.0f, 0, -50 );
+	math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
+	math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
+
+	m_camera->lookAt(vEyePt, vLookatPt, vUpVec);
+	m_camera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+
+	init_input();
+
+	render::TheCameraManager::get().addCamera(m_camera);
+
+	m_sound_system.play(cur_music_index);
+
+	for (size_t t = 0; t < 50; ++t)
+		quads.push_back(CreateQuad(L"Bla-blajh"));
+}
+
+void TestMusic::init_input()
+{
+	using namespace input;
+
+	m_cSpace.attach(L"NextMusic");
+	Input::getDevice(types::Keyboard)->get_control(types::KeySpace)->bind(L"NextMusic");
+	m_cSpace += boost::bind(&TestMusic::NextMusic, this);
+
+	m_cEsc.attach(L"Quit");
+	Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(m_cEsc.getCommand());
+	m_cEsc += boost::bind(&TestMusic::onEsc, this);
+}
+
+
+void TestMusic::update (float dt)
+{
+	using render::IFont;
+
+	for (size_t i = 0; i < quads.size(); ++i)
+	{
+		m_pFont->render(quads[i].text, quads[i].rect, quads[i].color.color, false, IFont::SingleLine | IFont::VCenter);
+	}
+
+	render::TheDevice::get().showFPS(m_pFont);
+
+
+	unsigned int flags = IFont::SingleLine | IFont::Bottom;
+	math::Vec2f size(800, 600);
+
+	const char *cur_music_name = m_sound_system.get_tag_name(cur_music_index);
+
+	std::string s(cur_music_name);
+	std::wstring ws(s.begin(), s.end());
+	m_pFont->render(ws, math::Rect(0, 0, 800, 600), 0xFFFFFFFF, true, flags);
+
+	m_sound_system.update((int)dt*1000);
+}
+
+void TestMusic::NextMusic ()
+{
+	cur_music_index++;
+	cur_music_index %= m_sound_system.get_num_tags();
+	m_sound_system.stop_all();
+	m_sound_system.play(cur_music_index);
+}
+
+void TestMusic::onEsc ()
+{
+	core::application::get()->close();
+}
+
+TextQuad TestMusic::CreateQuad(std::wstring text)
+{
+	TextQuad q;
+	q.text = text;
+	q.color = math::Color(255*math::unitRandom(),255*math::unitRandom(),255*math::unitRandom(), 255);
+
+	q.rect = m_pFont->getRect(q.text, render::IFont::SingleLine | render::IFont::VCenter);		
+	math::Vec2f size(800-40-q.rect.size[0], 600-40-q.rect.size[1]);
+
+	float x = 20+math::unitRandom()*size[0];
+	float y = 20+math::unitRandom()*size[1];
+
+	q.rect.position = math::Vec2f(x, y);
+
+	return q;
 }

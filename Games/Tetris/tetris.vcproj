@@ -66,10 +66,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../bin/D_Engine.lib"
 				OutputFile="$(OutDir)/D_$(ProjectName).exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)lib/$(ConfigurationName);$(SolutionDir)external\directx\lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)lib/$(ConfigurationName)&quot;;&quot;$(SolutionDir)external\directx\lib\&quot;"
 				IgnoreDefaultLibraryNames="libcmt.lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)/$D_(ProjectName).pdb"
@@ -155,10 +154,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../bin/Engine.lib"
 				OutputFile="$(OutDir)/$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)lib/$(ConfigurationName);$(SolutionDir)external\directx\lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)lib/$(ConfigurationName)&quot;;&quot;$(SolutionDir)external\directx\lib\&quot;"
 				GenerateDebugInformation="false"
 				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"

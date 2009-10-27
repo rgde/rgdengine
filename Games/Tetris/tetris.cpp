@@ -18,11 +18,11 @@ public:
 	};
 
 
-	My() :  m_spApp(core::application::create(L"Tetris",600,600,32,85,false))
+	My() :  m_spApp(core::application::create(L"Tetris",600,600,false))
 	{
-		m_spApp->addTask(core::task_ptr(new core::input_task(0, false)));
-		m_spApp->addTask(core::task_ptr(new core::game_task(1)));
-		m_spApp->addTask(core::task_ptr(new core::render_task(2)));
+		m_spApp->addTask(core::task_ptr(new core::input_task(*m_spApp, 0, false)));
+		m_spApp->addTask(core::task_ptr(new core::game_task(*m_spApp, 1)));
+		m_spApp->addTask(core::task_ptr(new core::render_task(*m_spApp, 2)));
 
 		math::Vec3f vEyePt( 0.0f, 0.f, -8.f );
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
@@ -30,44 +30,63 @@ public:
 
 		m_camera = render::render_camera::create();
 		m_camera->setProjection(math::Math::PI/2, 1.0f, 1.0f, 100.0f);
-		render::TheCameraManager::Get().addCamera(m_camera);
+		render::TheCameraManager::get().addCamera(m_camera);
 
-		m_cTargetCamera.setCamera( m_camera );
-		m_cTargetCamera.setPosition(vEyePt,vLookatPt,vUpVec);
+		m_cTargetCamera = math::CTargetCamera::create( m_camera );
+		m_cTargetCamera->setPosition(vUpVec,vEyePt,vLookatPt);
 
 		m_spFont = render::IFont::create(18, L"Courier New", render::IFont::Heavy);
 		m_spFontBig = render::IFont::create(40,L"Arial", render::IFont::Medium);
+
 		//инициализация ввода
-		m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
-		m_cEsc.addHandler(this,&My::onEsc);
-		m_cLeft.attachToControl(input::Keyboard, input::KeyLeft);
-		m_cLeft.addHandler(this,&My::onLeft);
-		m_cRight.attachToControl(input::Keyboard, input::KeyRight);
-		m_cRight.addHandler(this,&My::onRight);
-		m_cSpace.attachToControl(input::Keyboard, input::KeySpace);
-		m_cSpace.addHandler(this,&My::onSpace);
-		m_cDown.attachToControl(input::Keyboard, input::KeyDown);
-		m_cDown.addHandler(this,&My::onDown);
+		{
+			using namespace input;
 
-		m_cTargetCamera.activate();
+			Input::addCommand(L"Quit");
+			Input::addCommand(L"Left");
+			Input::addCommand(L"Right");
+			Input::addCommand(L"Down");
+			Input::addCommand(L"Drop");
 
-		render::TheRenderManager::Get().enableLighting(true);
-		render::TheLightManager::Get().setAmbientColor(math::Color(20, 20, 20, 255));
-				
-		render::CPointLight *pLight = new render::CPointLight("point1");
-		scene::TheScene::Get().getRootFrame()->addChild(pLight);		
+			Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
+			Input::getDevice(types::Keyboard)->get_control(types::KeyLeft)->bind(L"Left");
+			Input::getDevice(types::Keyboard)->get_control(types::KeyRight)->bind(L"Right");
+			Input::getDevice(types::Keyboard)->get_control(types::KeyDown)->bind(L"Down");
+			Input::getDevice(types::Keyboard)->get_control(types::KeySpace)->bind(L"Drop");
+			
+			m_cEsc  .attach(L"Quit");
+			m_cLeft.attach(L"Left");
+			m_cRight.attach(L"Right");
+			m_cDown.attach(L"Down");
+			m_cSpace.attach(L"Drop");
+
+			m_cEsc   += boost::bind(&My::onEsc,   this);
+			m_cLeft   += boost::bind(&My::onLeft,   this);
+			m_cRight   += boost::bind(&My::onRight,   this);
+			m_cDown   += boost::bind(&My::onDown,   this);
+			m_cSpace   += boost::bind(&My::onSpace,   this);
+		}
+
+		m_cTargetCamera->activate();
+
+		render::TheRenderManager::get().enableLighting(true);
+
+		//render::TheLightManager::get().setAmbientColor(math::Color(20, 20, 20, 255));
+		
+		render::PointLight *pLight = new render::PointLight("point1");
+		scene::TheScene::get().getRootFrame()->addChild(pLight);		
 
 		pLight->setPosition(math::Vec3f(-10,-10,-10));				
 		pLight->setDiffuse(math::Color(235, 0, 0, 255));
 		pLight->setRange(50.f);
 		pLight->setEnabled(true);
 
-		render::TheRenderManager::Get().enableVolumes(false);
+		render::TheRenderManager::get().enableVolumes(false);
 		math::Vec3f scale(0.012f,0.012f,0.012f);
 		for(int i=0;i < numboxes;i++) 
 		{
-			boxes[i] = render::CModel::Create("gems1");
-			scene::TheScene::Get().getRootFrame()->addChild(boxes[i]);
+			boxes[i] = render::Model::create("gems1");
+			scene::TheScene::get().getRootFrame()->addChild(boxes[i]);
 			boxes[i]->setPosition(math::Vec3f((i%15)-7.f,(i/15)-7.f,0));
 			boxes[i]->setScale(scale);
 			boxes[i]->setVisible(false);
@@ -77,14 +96,14 @@ public:
 
 		for(int i=0;i < numboxesinablock;i++) 
 		{
-			blocks[i] = render::CModel::Create("gems1");
-			scene::TheScene::Get().getRootFrame()->addChild(blocks[i]);
+			blocks[i] = render::Model::create("gems1");
+			scene::TheScene::get().getRootFrame()->addChild(blocks[i]);
 			blocks[i]->setScale(scale);
 			blocks[i]->setPosition(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 			blocks[i]->setVisible(false);
 		}
 
-		m_effect = render::TheRenderManager::Get().getDefaultEffect();
+		m_effect = render::TheRenderManager::get().getDefaultEffect();
 		
 		interval = 500;
 		m_spApp->Run();
@@ -125,6 +144,9 @@ protected:
 
 	void update(float dt)
 	{
+		//interval = m_cDown ? 100 : 500;
+		interval = 250;
+
 		//for(int i=0; i<=numboxes; i++) boxes[i]->update(dt);
 		//for(i=0; i<=numboxesinablock; i++) blocks[i]->update(dt);
 		static float elapsed=0;
@@ -143,50 +165,47 @@ protected:
 		switch(bl->m_ilastnum)
 		{
 			case 2 : 
-				m_spFontBig->renderText(L"Double!",math::Rect(320,320,200,200),math::Color(10, 10, 255, 255).color,true);
+				m_spFontBig->render(L"Double!",math::Rect(320,320,200,200),math::Color(10, 10, 255, 255).color,true);
 				break;
 			case 3 : 
-				m_spFontBig->renderText(L"Triple!",math::Rect(320,320,200,200),math::Color(10, 255, 10, 255).color,true);
+				m_spFontBig->render(L"Triple!",math::Rect(320,320,200,200),math::Color(10, 255, 10, 255).color,true);
 				break;
 			case 4 : 
-				m_spFontBig->renderText(L"Quadriple!",math::Rect(320,320,250,200),math::Color(255, 10, 10, 255).color,true);
+				m_spFontBig->render(L"Quadriple!",math::Rect(320,320,250,200),math::Color(255, 10, 10, 255).color,true);
 				break;
 		}
 		WCHAR str[80];
 		swprintf(str,L"Ваш счёт:   %d",bl->m_ipoints);
-		m_spFont->renderText(str,math::Rect(400,1,200,200),0xEEEEEEEE,true);
+		m_spFont->render(str,math::Rect(400,1,200,200),0xEEEEEEEE,true);
 	}
 
 	//выход из программы
-	void onEsc(const input::Button&)
+	void onEsc()
 	{
 		core::application::get()->close();
 	}
 
-	void onLeft(const input::Button& e)
+	void onLeft()
 	{
-		if(e)
-			bl->move(0);
+		bl->move(0);
 	}
 
-	void onRight(const input::Button& e)
+	void onRight()
 	{
-		if(e)
-			bl->move(1);
+		bl->move(1);
 	}
 
-	void onDown(const input::Button& e)
+	void onDown()
 	{
-		if(e) 
-			interval=100;
-		else
-			interval=500;
+		//if(e) 
+			//interval=100;
+		//else
+		//	interval=500;
 	}
 
-	void onSpace(const input::Button& e)
+	void onSpace()
 	{
-		if(e) 
-			bl->rotate();
+		bl->rotate();
 	}
 
 	void renderStone(const Stone& stone)
@@ -207,10 +226,10 @@ protected:
 	::render::font_ptr m_spFont,m_spFontBig;
 
 	//данные для ввода
-	input::Command       m_cEsc,m_cLeft,m_cRight,m_cDown,m_cSpace;
+	input::KeyDown      m_cEsc,m_cLeft,m_cRight,m_cDown,m_cSpace;
 	
 	//данные для камеры
-	math::CTargetCamera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::PTargetCamera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"
 
 	std::auto_ptr<core::application> m_spApp;
 
