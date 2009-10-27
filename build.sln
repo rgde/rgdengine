@@ -1,8 +1,12 @@
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{BDECD86F-967F-43A9-963B-224E5CC22E60}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{15246B8B-B5F4-4B7F-ACE3-3449758D32F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{581F502A-0950-454E-B89C-8191241E551D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "games", "games", "{63009721-9F05-4AB6-A400-D8F9C126FBA6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Enginelib", "rgdengine\rgdengine-vs80.vcproj", "{3A68081D-E8F9-4523-9436-530DE9E5530A}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -13,8 +17,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Enginelib", "rgdengine\rgde
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyxmlSTL", "external\TinyXML\tinyxmlSTL.vcproj", "{E8B256DE-0D44-4DC5-A43F-58E7F61331CA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{581F502A-0950-454E-B89C-8191241E551D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_event", "examples\test_event\event_test.vcproj", "{94B7C17B-B23A-4D5C-A1F6-E7EF49763488}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -32,8 +34,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_lines", "examples\test
 		{E8B256DE-0D44-4DC5-A43F-58E7F61331CA} = {E8B256DE-0D44-4DC5-A43F-58E7F61331CA}
 		{3A68081D-E8F9-4523-9436-530DE9E5530A} = {3A68081D-E8F9-4523-9436-530DE9E5530A}
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "games", "games", "{63009721-9F05-4AB6-A400-D8F9C126FBA6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zColumns", "Games\zColumns\zColumns.vcproj", "{0D5549FB-4EAB-46E4-9896-874E59594899}"
 	ProjectSection(ProjectDependencies) = postProject

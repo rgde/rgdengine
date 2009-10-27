@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="tinyxmlSTL"
 	ProjectGUID="{E8B256DE-0D44-4DC5-A43F-58E7F61331CA}"
 	RootNamespace="tinyxmlSTL"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -276,6 +277,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -294,9 +297,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
