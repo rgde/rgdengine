@@ -8,21 +8,21 @@
 class AnimationTest : public game::dynamic_object
 {
 public:
-	AnimationTest() :  m_spApp(core::IApplication::Create(L"Animation Test", 640, 480, 32, 85, false)),
-					   m_camera(render::CRenderCamera::Create())
+	AnimationTest() :  m_spApp(core::application::create(L"Animation Test", 640, 480, false)),
+					   m_camera(render::render_camera::create())
 	{
-		m_spApp->addTask(core::PTask(new core::CRenderTask(1)));
-		m_spApp->addTask(core::PTask(new core::CInputTask(0)));
-		m_spApp->addTask(core::PTask(new core::CGameTask(2)));
+		m_spApp->addTask(core::task_ptr(new core::render_task(*m_spApp, 1)));
+		m_spApp->addTask(core::task_ptr(new core::input_task(*m_spApp, 0)));
+		m_spApp->addTask(core::task_ptr(new core::game_task(*m_spApp, 2)));
 
-		m_spFont = render::IFont::Create(20, L"Arial", render::IFont::Heavy);
+		m_spFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
 
-		m_pMesh = render::PMesh(new render::CMesh);
+		m_pMesh = render::PMesh(new render::Mesh);
 		m_pMesh->load( "media\\meshes\\Box01.xml" );
 
-		m_pTexture = ::render::ITexture::Create("tiger.bmp");
+		m_pTexture = render::texture::create("tiger.bmp");
 
-		m_spFrame = new math::CFrame();
+		m_spFrame = new math::Frame();
 		m_spFrame->addChild( m_pMesh );
 
 		TiXmlDocument xml( "media\\1111.XML" ) ;
@@ -41,16 +41,27 @@ public:
 		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
 
 		m_camera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
-		m_cTargetCamera.setCamera( m_camera );
-		m_cTargetCamera.setPosition(vEyePt,vLookatPt,vUpVec);
 
-		//инициализация ввода
-		m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
-		m_cXAxis.attachToControl(input::Mouse, input::AxisX);
-		m_cYAxis.attachToControl(input::Mouse, input::AxisY);
-		m_cEsc.addHandler(this,&AnimationTest::onEsc);
-		m_cYAxis.addHandler(this,&AnimationTest::onYAxis);
-		m_cXAxis.addHandler(this,&AnimationTest::onXAxis);
+		m_spTargetCamera = math::CTargetCamera::create(m_camera);
+		m_spTargetCamera->setPosition(vUpVec,vEyePt,vLookatPt);
+
+		{//инициализация ввода
+			using namespace input;
+
+			Input::getDevice(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
+			Input::getDevice(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
+			Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
+
+			m_cEsc  .attach(L"Quit");
+			m_cXAxis.attach(L"Horz");
+			m_cYAxis.attach(L"Vert");
+
+
+			m_cEsc += boost::bind(&AnimationTest::onEsc, this);
+			m_cYAxis += boost::bind(&AnimationTest::onYAxis, this, _1);
+			m_cXAxis += boost::bind(&AnimationTest::onXAxis, this, _1);
+		}
+
 
 		m_spApp->Run();
 
@@ -65,42 +76,42 @@ protected:
 	}
 
 	//выход из программы
-	void onEsc(const input::CButtonEvent&)
+	void onEsc()
 	{
-		core::IApplication::Get()->close();
+		core::application::get()->close();
 	}
 
 	//ось X
-	void onXAxis(const input::CRelativeAxisEvent &event)
+	void onXAxis(int dx)
 	{
 		const int accel = 5;
 		const float slow = .01f;
 		const float fast = 2*slow;
-		float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+		float angle = dx>accel ? dx*fast : dx*slow;
 
-		m_cTargetCamera.rotateLeft(-angle);
+		m_spTargetCamera->rotateLeft(-angle);
 	}
 
 	//ось Y
-	void onYAxis(const input::CRelativeAxisEvent &event)
+	void onYAxis(int dy)
 	{
 		const int accel = 5;
 		const float slow = .01f;
 		const float fast = 2*slow;
-		float angle = event.m_nDelta>accel ? event.m_nDelta*fast : event.m_nDelta*slow;
+		float angle = dy>accel ? dy*fast : dy*slow;
 
-		m_cTargetCamera.rotateUp(angle);
+		m_spTargetCamera->rotateUp(angle);
 	}
 protected:
-	std::auto_ptr<core::IApplication> m_spApp;
+	std::auto_ptr<core::application> m_spApp;
 
-	::render::PFont				m_spFont;
-	math::PCamera				m_camera;            //указатель на камеру
-	::render::PTexture			m_pTexture;
+	render::font_ptr			m_spFont;
+	math::camera_ptr			m_camera;            //указатель на камеру
+	render::texture_ptr			m_pTexture;
 
-	math::CFrameAnimationController	m_controller;
-	math::PFrame				m_spFrame;
-	::render::PMesh				m_pMesh;
+	math::FrameAnimationController	m_controller;
+	math::frame_ptr				m_spFrame;
+	render::PMesh				m_pMesh;
 
 	//данные для ввода
 	input::Button       m_cEsc;
@@ -108,7 +119,7 @@ protected:
 	input::RelativeAxis m_cYAxis;
 
 	//данные для камеры
-	math::CTargetCamera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::PTargetCamera      m_spTargetCamera;      //контроллер камеры "нацеленная камера"
 };
 
 

@@ -72,7 +72,7 @@ void TestInput::update (float dt)
         {
             //...
         }
-        m_cursor.pos = Vec2f(m_mouse.getX(), m_mouse.getY());
+		m_cursor.pos = math::Vec2f(m_mouse.getX(), m_mouse.getY());
         m_sprite_renderer.addSprite(m_cursor);
         //-<
     }
