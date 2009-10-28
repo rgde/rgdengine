@@ -6,7 +6,7 @@ namespace rgde
 {
 	namespace render
 	{
-		renderer_2d::renderer_2d() : m_device(get_handle())
+		renderer_2d::renderer_2d(const device& dev, const uint buff_size) : m_device(dev), m_buffer_size(buff_size) 
 		{
 			init_device();
 			init_primitives_data();
@@ -19,6 +19,7 @@ namespace rgde
 				line_desc* l = *it;
 				delete l;
 			}
+
 			for(sprites_iter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 			{
 				sprite_desc* s = *it;
@@ -35,22 +36,20 @@ namespace rgde
 
 		void renderer_2d::init_primitives_data()
 		{
-			vertex_decl = vertex_declaration::create(m_device, lines_vertex_desc, 3);
+			vertex_decl = vertex_declaration::create(m_device, lines_vertex_desc, 4);
 			//default_texture = base_texture::create(m_device, "");
-			
-			int size = (m_sprites.size() + m_lines.size())*2;
 
 			m_vb = vertex_buffer::create
 			(
 				m_device, vertex_decl, 
-				size * sizeof(prim_vertex)*3, 
+				m_buffer_size * sizeof(prim_vertex)*4, 
 				resource::default, 
 				buffer::write_only
 			);
 
 			m_ib = index_buffer::create(
 				m_device, 
-				size * sizeof(ushort)*6, 
+				m_buffer_size * sizeof(ushort)*6, 
 				false, 
 				resource::default, 
 				buffer::write_only
@@ -76,7 +75,7 @@ namespace rgde
 
 		void renderer_2d::add_sprite(const math::vec2f& pos_, const math::vec2f& size_,
 									 const math::rect tex_coord_, const float spin_, 
-									 const texture_ptr texture_)
+									 const math::color& color_, const texture_ptr texture_)
 		{
 			primitives_2d::sprite_desc sprite;
 			
@@ -84,6 +83,7 @@ namespace rgde
 			sprite.size      = size_;
 			sprite.tex_coord = tex_coord_;
 			sprite.spin      = spin_;
+			sprite.color     = color_;
 			sprite.texture   = texture_;
 
 			m_sprites.push_back(sprite);
@@ -97,6 +97,12 @@ namespace rgde
 		void renderer_2d::clear_lines()
 		{
 			m_lines.clear();
+		}
+
+		void renderer_2d::clear_all()
+		{
+			clear_sprites();
+			clear_lines();
 		}
 
 		void renderer_2d::render_all()

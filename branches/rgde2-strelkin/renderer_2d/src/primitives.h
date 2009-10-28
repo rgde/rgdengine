@@ -21,13 +21,16 @@ namespace rgde
 
    				float spin;           // угол поворота спрайта
  
+				math::color color;
+
 				texture_ptr texture;  // текстура спрайта	
 			};
 
 			// описание вершины 2d-примитива
 			struct prim_vertex		
 			{
-				math::vec4f	position;		
+				math::vec4f	position;	
+				ulong color;
 				math::vec2f	tex;			
 			};
 
@@ -35,7 +38,8 @@ namespace rgde
 			vertex_element prim_vertex_desc[] = 
 			{
 				{0, 0,  vertex_element::float4, vertex_element::default_method, vertex_element::positiont, 0},
-				{0, 16, vertex_element::float2,	vertex_element::default_method, vertex_element::texcoord,0},
+				{0, 16, vertex_element::color4ub, vertex_element::default_method, vertex_element::color, 0},
+				{0, 20, vertex_element::float2,	vertex_element::default_method, vertex_element::texcoord, 0},
 				vertex_element::end_element
 			};
 		}

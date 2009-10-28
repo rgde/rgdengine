@@ -12,7 +12,7 @@ namespace rgde
 			typedef lines_vector::iterator lines_iter;
 			typedef sprites_vector::iterator sprites_iter;
 
-			renderer_2d();
+			renderer_2d(const device& dev, const uint buff_size = 2097000);
 			~renderer_2d();
 
 			void init_device();
@@ -25,17 +25,21 @@ namespace rgde
 			void add_sprite(const primitives_2d::sprite_desc& sprite);
 			void add_sprite(const math::vec2f& pos_, const math::vec2f& size_,
 						    const math::rect tex_coord_, const float spin_, 
+							const math::color& color_=0xffffffff,
 						    const texture_ptr texture_=default_texture);
 
 			void load_buffers();
 
 			void clear_sprites();
 			void clear_lines();
+			void clear_all();
 
 			void render_all();
 		private:
 			lines_vector m_lines;
 			sprites_vector m_sprites;
+
+			device& m_device;
 
 			vertex_declaration_ptr vertex_decl;
 
@@ -44,7 +48,7 @@ namespace rgde
 
 			base_texture_ptr default_texture;
 
-			device& m_device;
+			uint m_buffer_size;			
 		};
 	}
 }
