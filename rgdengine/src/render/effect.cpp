@@ -533,7 +533,7 @@ namespace render
 			m_effect = 0;
 		}
 
-		void load(const std::string& effect_name)
+		bool load(const std::string& effect_name)
 		{
 			base::lmsg << "Loading Shader effect: " << effect_name;// std::string((char*)pErrors->GetBufferPointer());
 
@@ -545,7 +545,8 @@ namespace render
 				if(NULL == m_spPool)
 				{
 					base::lerr<<"CEffect::load(std::wstring effect_name): Can't create effect pool";
-					core::application::get()->close();
+					//core::application::get()->close();
+					return false;
 				}	
 			}
 
@@ -561,7 +562,7 @@ namespace render
 				if (!in)
 				{
 					base::lerr << "fx file not found: " << effect_name;
-					return;
+					return false;
 				}
 				
 				std::vector<byte> data;
@@ -576,7 +577,7 @@ namespace render
 			{
 				std::string strError = std::string((char*)pErrors->GetBufferPointer());
 				base::lerr << std::string((char*)pErrors->GetBufferPointer());
-				return;
+				return false;
 			}
 
 			D3DXEFFECT_DESC desc;
@@ -602,6 +603,7 @@ namespace render
 
 			m_sNumEffects++;
 
+			return true;
 			//unguard
 		}
 
@@ -697,8 +699,15 @@ namespace render
 
 		EffectEntry ee;
 		ee.effect = PEffect(new CEffect());
-		ee.effect->load(fileName);
+		bool res = ee.effect->load(fileName);
 		ee.name = fileName;
+
+		ee.effect = res ? ee.effect : PEffect();
+
+		if (!res)
+		{
+			base::lerr << "effect::create(std::string effect_name): Can't load effect:" << fileName;
+		}
 
 		effects.push_back(ee);
 

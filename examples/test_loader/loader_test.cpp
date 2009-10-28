@@ -18,7 +18,7 @@ public:
 		m_geometry->setLooped( true );
 		m_geometry->play();
 		
-		scene::TheScene::Get().getRootFrame()->addChild( m_geometry);
+		scene::TheScene::get().getRootFrame()->addChild( m_geometry);
 		//m_pTexture = ::render::CTexture::Create(L"tiger.bmp");
 
 		math::Vec3f vEyePt( 0.0f, 40, -400 );
@@ -26,7 +26,7 @@ public:
 		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
 
 		m_camera = render::CRenderCamera::Create();
-		render::TheCameraManager::Get().addCamera(m_camera);
+		render::TheCameraManager::get().addCamera(m_camera);
 		m_camera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 		m_camera->activate();
 
@@ -59,7 +59,7 @@ protected:
 	//выход из программы
 	void onEsc(const input::CButtonEvent&)
 	{
-		core::application::Get()->close();
+		core::application::get()->close();
 	}
 
 	//ось X
@@ -97,7 +97,7 @@ protected:
 	input::RelativeAxis m_cYAxis;
 
 	//данные для камеры
-	math::CTargetCamera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::target_camera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"
 
 	std::auto_ptr<core::application> m_spApp;
 };

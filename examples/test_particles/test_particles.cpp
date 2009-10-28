@@ -19,9 +19,9 @@ public:
 		, m_bSaveParticles (false)
 		, m_bLoadParticles (false)
 	{
-		spApp->addTask<core::RenderTask>(2)
-			  .addTask<core::CGameTask>(1)
-			  .addTask<core::InputTask>(0, false);
+		spApp->addTask<core::render_task>(2)
+			  .addTask<core::game_task>(1)
+			  .addTask<core::input_task>(0, false);
 
 		m_spFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
 
@@ -30,7 +30,7 @@ public:
 		math::Vec3f vUpVec( 00.0f, 1.0f, 0.0f );
 
 		// Создаём эффект
-		m_pEffect = new particles::IEffect();
+		m_pEffect = new particles::effect();
 		//m_pEffect->setDebugDraw(m_bDebugDraw);
 
 		if (m_bLoadParticles)
@@ -45,10 +45,10 @@ public:
 		initInput();
 
 		// Инициализация камеры
-		m_pCamera  = render::CRenderCamera::Create();
+		m_pCamera  = render::render_camera::create();
 		m_pCamera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
-		m_cTargetCamera = math::CTargetCamera::Create(m_pCamera);
-		render::TheCameraManager::Get().addCamera(m_pCamera);
+		m_cTargetCamera = math::target_camera::create(m_pCamera);
+		render::TheCameraManager::get().addCamera(m_pCamera);
 		m_cTargetCamera->setPosition(vEyePt,vLookatPt,vUpVec);
 		m_cTargetCamera->activate();
 
@@ -69,13 +69,13 @@ public:
 		//m_cZAxis.addHandler(this,&CParticleTest::onWheelAxis);
 
 		//связываем команды с контролами
-		Input::getDevice(types::Keyboard)->getControl(types::KeyEscape)->bind(L"Quit");
-		//Input::getDevice(types::Keyboard)->getControl(types::KeyW     )->bind(L"Froward");
-		//Input::getDevice(types::Keyboard)->getControl(types::KeyS     )->bind(L"Backward");
-		//Input::getDevice(types::Keyboard)->getControl(types::KeyE     )->bind(L"CW");
-		//Input::getDevice(types::Keyboard)->getControl(types::KeyQ     )->bind(L"CCW");
-		Input::getDevice(types::Mouse   )->getControl(types::AxisX    )->bind(L"Horz");
-		Input::getDevice(types::Mouse   )->getControl(types::AxisY    )->bind(L"Vert");
+		Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
+		//Input::getDevice(types::Keyboard)->get_control(types::KeyW     )->bind(L"Froward");
+		//Input::getDevice(types::Keyboard)->get_control(types::KeyS     )->bind(L"Backward");
+		//Input::getDevice(types::Keyboard)->get_control(types::KeyE     )->bind(L"CW");
+		//Input::getDevice(types::Keyboard)->get_control(types::KeyQ     )->bind(L"CCW");
+		Input::getDevice(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
+		Input::getDevice(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
 
 		//биндим хелперы с командами		
 		//m_cR    .attach(L"Reset");
@@ -104,7 +104,7 @@ public:
 	//выход из программы
 	void onQuit()
 	{
-		core::application::Get()->close();
+		core::application::get()->close();
 	}
 
 	//ось X
@@ -141,8 +141,8 @@ public:
 	//-----------------------------------------------------------------------------------
 	virtual void update(float dt)
 	{
-		render::TheDevice::Get().showWiredFloorGrid(100.0f, 20, math::Color(150, 150, 150, 255));
-		render::TheDevice::Get().showWiredFloorGrid(100.0f, 2, math::Color(60, 60, 60, 255));
+		render::TheDevice::get().showWiredFloorGrid(100.0f, 20, math::Color(150, 150, 150, 255));
+		render::TheDevice::get().showWiredFloorGrid(100.0f, 2, math::Color(60, 60, 60, 255));
 	}
 protected:
 	//-----------------------------------------------------------------------------------
@@ -153,40 +153,39 @@ protected:
 		{
 			float fDist = (float)i*10;
 			// Создаём сферический эмитер
-			particles::ISphericalEmitter* pSphericalEmitter = new particles::ISphericalEmitter();
-			m_pEffect->addEmitter(pSphericalEmitter);
+			particles::spherical_emitter* sph_emitter = new particles::spherical_emitter();
+			m_pEffect->add(sph_emitter);
 
-			particles::IParticlesProcessor* proc = new particles::IParticlesProcessor();
+			particles::processor* proc = new particles::processor();
 			proc->setTextureName( "particles/Shot_Smoke.png" );
 			proc->setMaxParticles( 100 );
 			proc->setGlobal( false );
-			pSphericalEmitter->addProcessor(proc);
+			sph_emitter->addProcessor(proc);
 			proc->load();
 
-
-			pSphericalEmitter->getTransform().setPosition(math::Point3f( fDist, 0, -fDist/1.732f));
+			sph_emitter->getTransform().setPosition(math::Point3f( fDist, 0, -fDist/1.732f));
 
 			// Создаём кубический эмитер
-			particles::IBoxEmitter* pBoxEmitter = new particles::IBoxEmitter();
-			m_pEffect->addEmitter(pBoxEmitter);
+			particles::box_emitter* box_emitter = new particles::box_emitter();
+			m_pEffect->add(box_emitter);
 
-			proc = new particles::IParticlesProcessor();
-			pBoxEmitter->addProcessor(proc);
+			proc = new particles::processor();
+			box_emitter->addProcessor(proc);
 			proc->setTextureName( "particles/Shot_Smoke.png" );
 			proc->setMaxParticles( 100 );
 			proc->setGlobal( false );
 			proc->load();
 
-			pBoxEmitter->getTransform().setPosition( math::Point3f( -fDist, 0, -fDist/1.732f) );
+			box_emitter->getTransform().setPosition( math::Point3f( -fDist, 0, -fDist/1.732f) );
 
 			// Создаём майя эмитер
-			particles::static_emitter* pMayaEmitter = new particles::static_emitter("particles/cannonShot_smoke.prt", "particles/shot_smoke.png");
-			m_pEffect->addEmitter( pMayaEmitter );
+			particles::static_emitter* static_emitter = new particles::static_emitter("particles/cannonShot_smoke.prt", "particles/shot_smoke.png");
+			m_pEffect->add( static_emitter );
 
-			pMayaEmitter->setCycling(true);
-			pMayaEmitter->setVisible(true);
+			static_emitter->setCycling(true);
+			static_emitter->setVisible(true);
 
-			pMayaEmitter->getTransform().setPosition( math::Point3f(0, 0, fDist ) );
+			static_emitter->getTransform().setPosition( math::Point3f(0, 0, fDist ) );
 		}
 	}
 
@@ -195,7 +194,7 @@ protected:
 	{
 		//delete m_pEffect;
 		particles::static_emitter::ClearCachedData();
-		render::IEffect::ClearAll();
+		render::effect::ClearAll();
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -245,7 +244,7 @@ protected:
 	bool m_bDebugDraw;				// Стоит ли проводить в тесте дебажную отрисовку
 	bool m_bSaveParticles;			// Стоит ли сохранить эффект частиц в файл
 	bool m_bLoadParticles;			// Стоит ли создавать эффект частиц программно или грузить из файла
-	particles::IEffect*	m_pEffect;	// Эффект частиц
+	particles::effect*	m_pEffect;	// Эффект частиц
 };
 
 int main()

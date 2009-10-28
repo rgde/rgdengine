@@ -5,12 +5,12 @@
 namespace math
 {
 
-    typedef boost::shared_ptr<class CTargetCamera> target_camera_ptr;
+    typedef boost::shared_ptr<class target_camera> target_camera_ptr;
 
     //контроллер камеры аля "нацеленная камера"
-    class CTargetCamera: public BaseCameraController
+    class target_camera: public BaseCameraController
     {
-        CTargetCamera(camera_ptr pCamera);
+        target_camera(camera_ptr pCamera);
 
     public:
         static target_camera_ptr create(camera_ptr pCamera);

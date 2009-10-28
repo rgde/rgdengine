@@ -5,23 +5,23 @@
 namespace math
 {
 
-    CTargetCamera::CTargetCamera(camera_ptr pCamera)
+    target_camera::target_camera(camera_ptr pCamera)
     {
         setCamera(pCamera);
 
-        base::lmsg << "CTargetCamera::CTargetCamera()";
+        base::lmsg << "target_camera::target_camera()";
         m_vUp       = Vec3f(0.0f, 1.0f, 0.0f);
         m_vEyePt    = Vec3f(0.0f, 0.0f, 0.0f);
         m_vLookatPt = Vec3f(0.0f, 0.0f, 1.0f);
         doOrthoNormal();
     }
 
-    target_camera_ptr CTargetCamera::create(camera_ptr pCamera)
+    target_camera_ptr target_camera::create(camera_ptr pCamera)
     {
-        return target_camera_ptr(new CTargetCamera(pCamera));
+        return target_camera_ptr(new target_camera(pCamera));
     }
 
-    void CTargetCamera::setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)
+    void target_camera::setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)
     {
         m_vUp       = vUp;
         m_vEyePt    = vEyePt;
@@ -29,14 +29,14 @@ namespace math
         apply();
     }
 
-    void CTargetCamera::getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt)
+    void target_camera::getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt)
     {
         vUp       = m_vUp;
         vEyePt    = m_vEyePt;
         vLookatPt = m_vLookatPt;
     }
 
-    void CTargetCamera::goForward(float delta)
+    void target_camera::goForward(float delta)
     {
 		Vec3f vDir = m_vLookatPt-m_vEyePt;
 		Vec3f vDelta = vDir;
@@ -51,7 +51,7 @@ namespace math
         apply();
     }
 
-    void CTargetCamera::rotateRight(float angle)
+    void target_camera::rotateRight(float angle)
     {
 		Quatf rot;
         Vec3f vAxis = m_vUp;
@@ -63,7 +63,7 @@ namespace math
 		apply();
     }
 
-    void CTargetCamera::rotateUp(float angle)
+    void target_camera::rotateUp(float angle)
     {
 		Quatf rot;
         Vec3f vAxis;
@@ -78,7 +78,7 @@ namespace math
 		apply();
     }
 
-    void CTargetCamera::rotateCW(float angle)
+    void target_camera::rotateCW(float angle)
     {
 		Quatf rot;
         Vec3f vAxis = m_vLookatPt-m_vEyePt;
@@ -90,12 +90,12 @@ namespace math
 		apply();
     }
 
-    void CTargetCamera::activate()
+    void target_camera::activate()
     {
         apply();
     }
 
-    void CTargetCamera::apply()
+    void target_camera::apply()
     {
         doOrthoNormal();
         if (m_pCamera)
@@ -108,7 +108,7 @@ namespace math
         }
     }
 
-    void CTargetCamera::doOrthoNormal()
+    void target_camera::doOrthoNormal()
     {
         normalize(m_vUp);
 

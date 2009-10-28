@@ -11,12 +11,14 @@
 #include <rgde/render/particles/box_emitter.h>
 #include <rgde/render/particles/spherical_emitter.h>
 
-
 namespace particles
 {
 	//-----------------------------------------------------------------------------------
-	effect::effect() : render::rendererable(9), old_time(0), m_bIsFading(false), 
-						 core::meta_class("ParticleEffect")
+	effect::effect()
+	: render::rendererable(9)
+	, old_time(0)
+	, m_bIsFading(false)
+	, core::meta_class("ParticleEffect")
 	{	
 		m_renderInfo.pRenderFunc		= boost::bind( &effect::render, this );
 		m_renderInfo.pDebugRenderFunc	= boost::bind(&effect::debugDraw, this);
@@ -69,7 +71,7 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void effect::addEmitter(emitter* em)
+	void effect::add(emitter* em)
 	{
 		assert(0 != em);
 		m_Emitters.push_back(em);
@@ -77,7 +79,7 @@ namespace particles
 	}
 	
 	//-----------------------------------------------------------------------------------
-	void effect::deleteEmitter(emitter* em)
+	void effect::remove(emitter* em)
 	{
 		assert(0 != em);
 		m_Transform.removeChild(&em->getTransform());		
@@ -103,7 +105,7 @@ namespace particles
 			wf << *(*it);
 	}
 	//----------------------------------------------------------------------------------
-	render::SRenderableInfo&	effect::getRenderableInfo()
+	render::SRenderableInfo& effect::getRenderableInfo()
 	{
 		return m_renderInfo;		
 	}
@@ -128,12 +130,12 @@ namespace particles
 			emitter* em;
 			switch(type)
 			{
-				case emitter::Maya:		em = new static_emitter;		break;
+				case emitter::Static:		em = new static_emitter;	break;
 				case emitter::Spherical:	em = new spherical_emitter;	break;
 				case emitter::Box:			em = new box_emitter;		break;
 			}
 			rf >> (*em);
-			addEmitter(em);
+			add(em);
 		}
 	}
 }

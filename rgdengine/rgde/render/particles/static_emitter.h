@@ -35,7 +35,7 @@ namespace particles{
 
 		static void ClearCachedData(); 
 
-		static_emitter() : emitter(emitter::Maya) {};
+		static_emitter() : emitter(emitter::Static) {};
 		static_emitter( const std::string& sequence_name, const std::string texture_name);
 		virtual ~static_emitter();
 

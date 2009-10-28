@@ -32,7 +32,7 @@ public:
 		m_camera->setProjection(math::Math::PI/2, 1.0f, 1.0f, 100.0f);
 		render::TheCameraManager::get().addCamera(m_camera);
 
-		m_cTargetCamera = math::CTargetCamera::create( m_camera );
+		m_cTargetCamera = math::target_camera::create( m_camera );
 		m_cTargetCamera->setPosition(vUpVec,vEyePt,vLookatPt);
 
 		m_spFont = render::IFont::create(18, L"Courier New", render::IFont::Heavy);

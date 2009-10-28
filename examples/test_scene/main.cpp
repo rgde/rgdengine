@@ -54,7 +54,7 @@ protected:
 protected:
 	void onEsc (const input::CButtonEvent&)
 	{
-		core::application::Get()->close();
+		core::application::get()->close();
 	}
 
 protected:

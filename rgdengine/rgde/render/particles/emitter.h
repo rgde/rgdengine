@@ -21,7 +21,7 @@ namespace particles
 	class emitter : public io::serialized_object, public core::meta_class
 	{
 	public:
-		enum Type {	Maya, Spherical, Box };
+		enum Type {	Static, Spherical, Box };
 
 		emitter(Type _type) : m_type(_type), core::meta_class("ParticleEmitter") 
 		{
