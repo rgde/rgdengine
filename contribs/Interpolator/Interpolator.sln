@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Interpolator", "Interpolator.vcproj", "{E62E571A-B5A9-41BE-8222-81D3AE8E15FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Product|Win32 = Product|Win32
+		Profile|Win32 = Profile|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E62E571A-B5A9-41BE-8222-81D3AE8E15FD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E62E571A-B5A9-41BE-8222-81D3AE8E15FD}.Debug|Win32.Build.0 = Debug|Win32
+		{E62E571A-B5A9-41BE-8222-81D3AE8E15FD}.Product|Win32.ActiveCfg = Product|Win32
+		{E62E571A-B5A9-41BE-8222-81D3AE8E15FD}.Product|Win32.Build.0 = Product|Win32
+		{E62E571A-B5A9-41BE-8222-81D3AE8E15FD}.Profile|Win32.ActiveCfg = Profile|Win32
+		{E62E571A-B5A9-41BE-8222-81D3AE8E15FD}.Profile|Win32.Build.0 = Profile|Win32
+		{E62E571A-B5A9-41BE-8222-81D3AE8E15FD}.Release|Win32.ActiveCfg = Release|Win32
+		{E62E571A-B5A9-41BE-8222-81D3AE8E15FD}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
