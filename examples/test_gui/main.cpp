@@ -1,42 +1,27 @@
 //RGDE
 #include <rgde/engine.h>
-#include <rgde/math/mathCamera.h>
+#include <rgde/math/camera.h>
 
 // ui
 #include "uiButton.h"
 #include "uiManager.h"
 #include "uiControl.h"
 
-class VeryVerySimpleGame  : public game::IDynamicObject // :)
+class SampleGUIApp  : public game::dynamic_object
 {
 public:
-	VeryVerySimpleGame() 
-		//: m_spApp(core::IApplication::Create(L"GUI Example"))
-		//: m_spApp(core::IApplication::Create(L"GUI Example", 640, 480, false))						   
+	SampleGUIApp()				   
 	{
-		m_app = AplicationPtr(core::IApplication::Create(L"GUI Example"));
-		m_pCamera = new math::CBaseCamera;
-		m_cTargetCamera = math::CTargetCamera::Create(m_pCamera);
+		m_app.reset(core::application::create(L"GUI Example", 640, 480, false));
 
-		m_app->addTask(core::PTask(new core::InputTask(*m_app, 0)));
-		m_app->addTask(core::PTask(new core::RenderTask(*m_app, 1)));
-		m_app->addTask(core::PTask(new core::CGameTask(*m_app, 2)));
-
-		ui::TheUIManager::Get().addControl(	new ui::uiButton );
+		m_app->addTask(core::task_ptr(new core::input_task(*m_app, 0)));
+		m_app->addTask(core::task_ptr(new core::render_task(*m_app, 1)));
+		m_app->addTask(core::task_ptr(new core::game_task(*m_app, 2)));
 
 		////input 
 		//m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
-		//m_cEsc.addHandler(this, &VeryVerySimpleGame::onEsc);
+		//m_cEsc.addHandler(this, &SampleGUIApp::onEsc);
 
-		math::Vec3f vEyePt( 0.0f, 10, -30 );
-		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
-		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
-
-		m_pCamera->lookAt(vEyePt, vLookatPt, vUpVec);
-		m_pCamera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
-		m_pCamera->activate();
-
-		// Инициализация ввода
 		//m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
 		//m_cW.attachToControl(input::Keyboard, input::KeyW);
 		//m_cS.attachToControl(input::Keyboard, input::KeyS);
@@ -49,15 +34,28 @@ public:
 		//m_cXAxis.attachToControl(input::Mouse, input::AxisX);
 		//m_cYAxis.attachToControl(input::Mouse, input::AxisY);
 		//m_cRightButton.attachToControl(input::Mouse, input::ButtonRight);
-		//m_cEsc.addHandler(this,&VeryVerySimpleGame::onEsc);
-		//m_cYAxis.addHandler(this,&VeryVerySimpleGame::onYAxis);
-		//m_cXAxis.addHandler(this,&VeryVerySimpleGame::onXAxis);
+		//m_cEsc.addHandler(this,&SampleGUIApp::onEsc);
+		//m_cYAxis.addHandler(this,&SampleGUIApp::onYAxis);
+		//m_cXAxis.addHandler(this,&SampleGUIApp::onXAxis);
 
 
-		// Инициализация камеры
-		//m_cTargetCamera.setCamera(m_pCamera);
-		m_cTargetCamera->setPosition(vEyePt,vLookatPt,vUpVec);
+		// Camera init
+		m_pCamera = new math::BaseCamera;		
+
+		math::Vec3f vEyePt( 0.0f, 10, -30 );
+		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
+		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
+
+		m_pCamera->lookAt(vEyePt, vLookatPt, vUpVec);
+		m_pCamera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+		m_pCamera->activate();
+
+		m_cTargetCamera = math::target_camera::create(m_pCamera);
+		m_cTargetCamera->setPosition(vEyePt,vLookatPt,vUpVec);		
 		m_cTargetCamera->activate();
+
+		//UI init
+		ui::TheUIManager::get().addControl(	new ui::uiButton );
 
 		m_app->Run();
 	}
@@ -79,10 +77,10 @@ protected:
 		//if (m_cE) m_cTargetCamera.rotateCW(rotate);
 	}
 
-	//void onEsc (const input::CButtonEvent&)
-	//{
-	//	core::IApplication::Get()->close();
-	//}
+	void onEsc ()
+	{
+		core::application::get()->close();
+	}
 
 	////ось X
 	//void onXAxis(const input::CRelativeAxisEvent &event)
@@ -110,8 +108,9 @@ protected:
 	//}
 
 protected:
-	math::PCamera				m_pCamera;
-	math::PTargetCamera			m_cTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::camera_ptr				m_pCamera;
+	//camera controller: "targeted camera"
+	math::target_camera_ptr			m_cTargetCamera;      
 
 	//input::Button       m_cEsc;
 	//input::Button       m_cQ;
@@ -126,12 +125,12 @@ protected:
 	//input::RelativeAxis m_cXAxis;
 	//input::RelativeAxis m_cYAxis;
 
-	typedef boost::shared_ptr<core::IApplication> AplicationPtr;
+	typedef boost::shared_ptr<core::application> AplicationPtr;
 	AplicationPtr m_app;
 };
 
 
 void  main()
 {
-	VeryVerySimpleGame r;
+	SampleGUIApp r;
 }

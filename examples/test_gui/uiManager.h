@@ -2,7 +2,7 @@
 
 namespace ui
 {
-	class UIManager : public render::IRendererable
+	class UIManager : public render::rendererable
 	{
 		input::Trigger      m_cLeftMouse;
 		input::RelativeAxis m_cXMoveMouse;
@@ -69,7 +69,7 @@ namespace ui
 			math::Vec2f dx(10,0);
 			math::Vec2f dy(0,10);
 
-			render::CLine2dManager& lr = render::TheLine2dManager::Get();
+			render::Line2dManager& lr = render::TheLine2dManager::get();
 			lr.addLine(pos - dx, pos + dx, math::Green);
 			lr.addLine(pos - dy, pos + dy, math::Green);
 		}
@@ -108,6 +108,6 @@ namespace ui
 		}
 	};
 
-	typedef base::TSingelton<UIManager> TheUIManager;
+	typedef base::singelton<UIManager> TheUIManager;
 
 }
