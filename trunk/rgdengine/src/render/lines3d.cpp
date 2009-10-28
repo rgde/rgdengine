@@ -12,7 +12,7 @@ namespace render
 	//-----------------------------------------------------------------------------------
 	Line3dManager::Line3dManager(unsigned long uPriority)
 		: render::rendererable(1000),
-		  m_spEffect(effect::create("Line3dManager.fx")),
+		  m_effect(effect::create("Line3dManager.fx")),
 		  m_uPriority(uPriority),
 		  m_Geometry(true)
 	{
@@ -36,14 +36,14 @@ namespace render
 		const math::Matrix44f &mProj = pCamera->getProjMatrix();
 		math::Matrix44f mLVP		 = mProj *mView;
 
-		m_spEffect->getParams()["g_mLVP"]->set(mLVP);
+		m_effect->getParams()["g_mLVP"]->set(mLVP);
 
-		render::effect::ITechnique *pTechnique	= m_spEffect->findTechnique("Lines3d");
+		render::effect::ITechnique *pTechnique	= m_effect->findTechnique("Lines3d");
 		if (0 == pTechnique)
 			return;
 
 		pTechnique->begin();
-		m_spEffect->commitChanges();
+		m_effect->commitChanges();
 
 		m_Geometry.unlock();
 

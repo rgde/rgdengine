@@ -1,4 +1,4 @@
-#include "base\shared.fx"
+//#include "base\shared.fx"
 
 float4x4 m_mLVP;
 float4   m_vRight;
@@ -33,21 +33,15 @@ technique PartilesRenderModulate
 {
     pass p0
     {
-	Lighting	 = false;
-	ZWriteEnable	 = false;
-	CullMode = CCW;
+		Lighting	 = false;
+		ZWriteEnable	 = false;
+		CullMode = CCW;
 
-//	ADDITIVE_BLENDING2
-	ALPHA_BLENDING
-	SETUP_FOG
-//	DISABLE_FOG
-
-/*        
         // enable alpha blending
         AlphaBlendEnable = TRUE;
         SrcBlend         = SrcAlpha;
         DestBlend        = InvSrcAlpha;
-*/        
+
         // Set up texture stage 0
         Texture[0]	= <ParticlesTexture>; // Use the texture parameter defined above
         ColorOp[0]	= Modulate;
