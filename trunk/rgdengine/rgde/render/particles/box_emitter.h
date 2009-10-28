@@ -6,13 +6,13 @@
 
 namespace particles
 {
-	class  BoxEmitter : public AbstractEmitter
+	class  box_emitter : public base_emitter
 	{
 	public:
-		BoxEmitter();
-		virtual ~BoxEmitter();
+		box_emitter();
+		virtual ~box_emitter();
 
-		virtual void getParticle(Particle& p);
+		virtual void getParticle(particle& p);
 		void		 debugDraw();
 
 	protected:

@@ -54,7 +54,7 @@ protected:
 protected:
 	void onEsc (const input::CButtonEvent&)
 	{
-		core::IApplication::Get()->close();
+		core::application::Get()->close();
 	}
 
 protected:
@@ -70,7 +70,7 @@ protected:
 // The application's entry point
 int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 {
-	//std::auto_ptr<core::IApplication> spApp(core::IApplication::Create(L"Test Window", 640, 480, 32, 85, false));
+	//std::auto_ptr<core::application> spApp(core::application::Create(L"Test Window", 640, 480, 32, 85, false));
 	//new core::CRenderTask(0);
 	//new core::CInputTask(1);
 	//ExampleObject* p = new ExampleObject;

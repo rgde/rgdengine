@@ -15,24 +15,24 @@
 namespace particles
 {
 	//-----------------------------------------------------------------------------------
-	Effect::Effect() : render::rendererable(9), m_fOldTime(0), m_bIsFading(false), 
-						 core::XmlClass("ParticleEffect")
+	effect::effect() : render::rendererable(9), old_time(0), m_bIsFading(false), 
+						 core::meta_class("ParticleEffect")
 	{	
-		m_renderInfo.pRenderFunc		= boost::bind( &Effect::render, this );
-		m_renderInfo.pDebugRenderFunc	= boost::bind(&Effect::debugDraw, this);
+		m_renderInfo.pRenderFunc		= boost::bind( &effect::render, this );
+		m_renderInfo.pDebugRenderFunc	= boost::bind(&effect::debugDraw, this);
 		
 		// public properties:
 		//REGISTER_PROPERTY(Transform, math::Frame)
 	}
 	//-----------------------------------------------------------------------------------
-	Effect::~Effect()
+	effect::~effect()
 	{
 		for (tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
 			delete( *it );
 		m_Emitters.clear();
 	}
 	//-----------------------------------------------------------------------------------
-	void Effect::reset()
+	void effect::reset()
 	{
 		m_bIsFading = false;
 		setEmittersToFade(m_bIsFading);
@@ -41,19 +41,19 @@ namespace particles
 			(*it)->reset();
 	}
 	//-----------------------------------------------------------------------------------
-	void Effect::render()
+	void effect::render()
 	{
 		for (tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
 			(*it)->render();
 	}
 	//-----------------------------------------------------------------------------------
-	void Effect::setEmittersToFade(bool b)
+	void effect::setEmittersToFade(bool b)
 	{
 		for(tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
 			(*it)->setFade(b);
 	}
 	//-----------------------------------------------------------------------------------
-	void Effect::update(float fDeltaTime)
+	void effect::update(float fDeltaTime)
 	{
 		static float dt = 0.02f;
 
@@ -69,7 +69,7 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void Effect::addEmitter(Emitter* em)
+	void effect::addEmitter(emitter* em)
 	{
 		assert(0 != em);
 		m_Emitters.push_back(em);
@@ -77,7 +77,7 @@ namespace particles
 	}
 	
 	//-----------------------------------------------------------------------------------
-	void Effect::deleteEmitter(Emitter* em)
+	void effect::deleteEmitter(emitter* em)
 	{
 		assert(0 != em);
 		m_Transform.removeChild(&em->getTransform());		
@@ -85,16 +85,16 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void Effect::debugDraw()
+	void effect::debugDraw()
 	{
 		m_Transform.debugDraw();
 		for( tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it )
 			(*it)->debugDraw();
 	}
 	//-----------------------------------------------------------------------------------
-	void Effect::toStream(io::IWriteStream& wf)
+	void effect::toStream(io::IWriteStream& wf)
 	{
-		wf << ms_nVersion;
+		wf << file_version;
 		wf << m_Transform;
 
 		// Сохраняем абстрактные эмитеры
@@ -103,17 +103,17 @@ namespace particles
 			wf << *(*it);
 	}
 	//----------------------------------------------------------------------------------
-	render::SRenderableInfo&	Effect::getRenderableInfo()
+	render::SRenderableInfo&	effect::getRenderableInfo()
 	{
 		return m_renderInfo;		
 	}
 	//-----------------------------------------------------------------------------------
-	void Effect::fromStream(io::IReadStream& rf)
+	void effect::fromStream(io::IReadStream& rf)
 	{
 		unsigned version;
 		rf >> version;
-		if (version != ms_nVersion)
-			throw std::exception("pfx::Effect::fromStream(...): Unknown version !");
+		if (version != file_version)
+			throw std::exception("pfx::effect::fromStream(...): Unknown version !");
 		
 		rf >> m_Transform;
 
@@ -123,14 +123,14 @@ namespace particles
 		{
 			unsigned em_type = 0;
 			rf >> em_type;
-			Emitter::Type type = static_cast<Emitter::Type> (em_type);
+			emitter::Type type = static_cast<emitter::Type> (em_type);
 		
-			Emitter* em;
+			emitter* em;
 			switch(type)
 			{
-				case Emitter::Maya:		em = new IMayaEmitter;		break;
-				case Emitter::Spherical:	em = new SphericalEmitter;	break;
-				case Emitter::Box:			em = new BoxEmitter;		break;
+				case emitter::Maya:		em = new static_emitter;		break;
+				case emitter::Spherical:	em = new spherical_emitter;	break;
+				case emitter::Box:			em = new box_emitter;		break;
 			}
 			rf >> (*em);
 			addEmitter(em);

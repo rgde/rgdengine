@@ -2,32 +2,33 @@
 
 #include <rgde/math/types3d.h>
 
-namespace particles{
+namespace particles
+{
 
-	// самая обычная частица с типичными параметрами, для использования по 
-	// умолчанию любые "навороченные" частицы должны быть иметь базовым 
-	// классом этот класс частицы	
-	struct BaseParticle
+	// basic typical particle.
+	// serve as a base class for more advanced particles
+	struct base_particle
 	{
+		base_particle();
+
 		math::Vec3f pos;
-		float size;						// size randomness
-		math::Color color;			// color randomness
-		float rotation;					// rotation randomness
-		
-		BaseParticle() 
-			: size(0), rotation(0), color(math::Color(255, 255, 255, 255))
-		{
-		}
+		float size;					// size variation
+		math::Color color;			// color variation
+		float rotation;				// rotation variation
 	};
 
-	// класс "продвинутой" частицы
-	struct Particle : public BaseParticle
+	//////////////////////////////////////////////////////////////////////////
+
+	/// advanced particle struct
+	struct particle : public base_particle
 	{
+		particle();
+
 		float mass;
-		float ttl;				// ttl randomness
+		float ttl;				// ttl(time to live) variation
 		float time;
-		float m_fOldTime;
-		bool  dead;
+		float old_time;
+		bool  dead;				// used for marking "dead" particles
 		float rot_speed;
 		float initial_spin;
 		float cur_tex_frame;
@@ -37,15 +38,31 @@ namespace particles{
 		math::Vec3f initial_vel;
 		math::Vec3f initial_pos;
 		math::Vec3f sum_vel;
-		math::Vec3f old_pos;		
-
-		Particle() : dead(true), initial_spin(0), rot_speed(0), 
-					 mass(0), time(0), ttl(0), cur_tex_frame(0)
-		{
-		}
+		math::Vec3f old_pos;
 	};
 
-	typedef std::vector<Particle> TParticles;
-	typedef TParticles::iterator  TParticlesIter;
+	//////////////////////////////////////////////////////////////////////////
 
-} //~ namespace pfx
+	typedef std::vector<particle> particles_vector;
+	typedef particles_vector::iterator  particles_iter;
+
+	//////////////////////////////////////////////////////////////////////////
+
+	inline base_particle::base_particle() 
+	: size(0)
+	, rotation(0)
+	, color(255, 255, 255, 255)
+	{
+	}
+
+	inline particle::particle() 
+	: dead(true)
+	, initial_spin(0)
+	, rot_speed(0)
+	, mass(0)
+	, time(0)
+	, ttl(0)
+	, cur_tex_frame(0)
+	{
+	}
+}

@@ -104,11 +104,11 @@ namespace render
 
 		void  setEffect(const PEffect& pEffect);
 		const PDynamicBinder& getDynamicBinder();
-		Effect::ITechnique* getTechnique() const;
+		effect::ITechnique* getTechnique() const;
 
 	protected:		
 		PDynamicBinder	m_pDynamicBinder;
-		Effect::ITechnique* m_technique;
+		effect::ITechnique* m_technique;
 		MaterialMaps	m_maps;
 		math::Color     m_diffuse;        // Diffuse color RGBA 
 		math::Color     m_ambient;        // Ambient color RGB 

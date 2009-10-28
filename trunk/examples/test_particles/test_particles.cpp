@@ -1,28 +1,29 @@
 //RGDE
 #include <rgde/engine.h>
 
-#include <rgde/render/particles/particlesMain.h>
-#include <rgde/render/particles/particlesBoxEmitter.h>
-#include <rgde/render/particles/particlesMayaEmitter.h>
-#include <rgde/render/particles/particlesSphericalEmitter.h>
-#include <rgde/render/particles/particlesParticlesProcessor.h>
-#include <rgde/render/particles/particlesEffect.h>
+#include <rgde/render/particles/main.h>
+#include <rgde/render/particles/box_emitter.h>
+#include <rgde/render/particles/static_emitter.h>
+#include <rgde/render/particles/spherical_emitter.h>
+#include <rgde/render/particles/processor.h>
+#include <rgde/render/particles/effect.h>
 
 
-class CParticleTest : public game::IDynamicObject
+
+class CParticleTest : public game::dynamic_object
 {
 public:
-	CParticleTest() : 
-		spApp(core::IApplication::Create(L"Test Particles Example", 640, 480, false)),
-		m_bDebugDraw (false),
-		m_bSaveParticles (false),
-		m_bLoadParticles (false)
+	CParticleTest() 
+		: spApp(core::application::create(L"Test Particles Example", 640, 480, false))
+		, m_bDebugDraw (false)
+		, m_bSaveParticles (false)
+		, m_bLoadParticles (false)
 	{
 		spApp->addTask<core::RenderTask>(2)
 			  .addTask<core::CGameTask>(1)
 			  .addTask<core::InputTask>(0, false);
 
-		m_spFont = render::IFont::Create(20, L"Arial", render::IFont::Heavy);
+		m_spFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
 
 		math::Vec3f vEyePt(40, 40, -40);
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
@@ -103,7 +104,7 @@ public:
 	//выход из программы
 	void onQuit()
 	{
-		core::IApplication::Get()->close();
+		core::application::Get()->close();
 	}
 
 	//ось X
@@ -155,12 +156,12 @@ protected:
 			particles::ISphericalEmitter* pSphericalEmitter = new particles::ISphericalEmitter();
 			m_pEffect->addEmitter(pSphericalEmitter);
 
-			particles::IParticlesProcessor* pProcessor = new particles::IParticlesProcessor();
-			pProcessor->setTextureName( "particles/Shot_Smoke.png" );
-			pProcessor->setMaxParticles( 100 );
-			pProcessor->setGlobal( false );
-			pSphericalEmitter->addProcessor(pProcessor);
-			pProcessor->load();
+			particles::IParticlesProcessor* proc = new particles::IParticlesProcessor();
+			proc->setTextureName( "particles/Shot_Smoke.png" );
+			proc->setMaxParticles( 100 );
+			proc->setGlobal( false );
+			pSphericalEmitter->addProcessor(proc);
+			proc->load();
 
 
 			pSphericalEmitter->getTransform().setPosition(math::Point3f( fDist, 0, -fDist/1.732f));
@@ -169,17 +170,17 @@ protected:
 			particles::IBoxEmitter* pBoxEmitter = new particles::IBoxEmitter();
 			m_pEffect->addEmitter(pBoxEmitter);
 
-			pProcessor = new particles::IParticlesProcessor();
-			pBoxEmitter->addProcessor(pProcessor);
-			pProcessor->setTextureName( "particles/Shot_Smoke.png" );
-			pProcessor->setMaxParticles( 100 );
-			pProcessor->setGlobal( false );
-			pProcessor->load();
+			proc = new particles::IParticlesProcessor();
+			pBoxEmitter->addProcessor(proc);
+			proc->setTextureName( "particles/Shot_Smoke.png" );
+			proc->setMaxParticles( 100 );
+			proc->setGlobal( false );
+			proc->load();
 
 			pBoxEmitter->getTransform().setPosition( math::Point3f( -fDist, 0, -fDist/1.732f) );
 
 			// Создаём майя эмитер
-			particles::IMayaEmitter* pMayaEmitter = new particles::IMayaEmitter("particles/cannonShot_smoke.prt", "particles/shot_smoke.png");
+			particles::static_emitter* pMayaEmitter = new particles::static_emitter("particles/cannonShot_smoke.prt", "particles/shot_smoke.png");
 			m_pEffect->addEmitter( pMayaEmitter );
 
 			pMayaEmitter->setCycling(true);
@@ -193,7 +194,7 @@ protected:
 	void deleteParticles()
 	{
 		//delete m_pEffect;
-		particles::IMayaEmitter::ClearCachedData();
+		particles::static_emitter::ClearCachedData();
 		render::IEffect::ClearAll();
 	}
 
@@ -226,7 +227,7 @@ protected:
 
 
 protected:
-	std::auto_ptr<core::IApplication> spApp;
+	std::auto_ptr<core::application> spApp;
 
 	//данные для ввода
 	input::KeyUp        m_keyupQuit;
@@ -236,11 +237,10 @@ protected:
 	//input::Button		m_cRightButton;
 	//input::RelativeAxis m_cZAxis;
 
-	math::PCamera				m_pCamera;
-	math::PTargetCamera			m_cTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::camera_ptr			m_pCamera;
+	math::target_camera_ptr		m_cTargetCamera;      //контроллер камеры "нацеленная камера"
 
-
-	::render::PFont		m_spFont;
+	render::font_ptr		m_spFont;
 
 	bool m_bDebugDraw;				// Стоит ли проводить в тесте дебажную отрисовку
 	bool m_bSaveParticles;			// Стоит ли сохранить эффект частиц в файл

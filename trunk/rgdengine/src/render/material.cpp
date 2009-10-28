@@ -268,7 +268,7 @@ namespace render
 		return m_pDynamicBinder;
 	}
 
-	Effect::ITechnique* Material::getTechnique() const
+	effect::ITechnique* Material::getTechnique() const
 	{
 		return m_technique;
 	}

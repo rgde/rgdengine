@@ -67,7 +67,7 @@
 namespace render
 {
 	/** Binder template class.
-	  * Binder is used to bind some parameters to Effect. See example of use
+	  * Binder is used to bind some parameters to effect. See example of use
 	  * in the beginning of the file. FType is parameter type for GetFunction
 	  * and ParamTypeGetFunction. Binder calls GetFunction (or 
 	  * ParamTypeGetFunction) with Types<FType>::ParamType parameter...
@@ -82,17 +82,17 @@ namespace render
 		{
 			typedef typename boost::call_traits<PType>::param_type ParamType;
 			typedef typename Types<FType>::ParamType FTypeParamType;
-			//GetFunction is used to get value to be setup to Effect. Returns
+			//GetFunction is used to get value to be setup to effect. Returns
 			//PType
 			typedef boost::function<PType(FTypeParamType)>GetFunction;
-			//ParamTypeGetFunction is used to get value to be setup to Effect
+			//ParamTypeGetFunction is used to get value to be setup to effect
 			//too. Defference is that ParamTypeGetFunction returns ParamType
 			//instead of PType. It allows to setup parameter by more effective
 			//way when it's possible.
 			typedef boost::function<ParamType(FTypeParamType)>
 													ParamTypeGetFunction;
-			//Effect set function.
-			typedef bool (Effect::IParameter::*EffectSetFunction)(ParamType);
+			//effect set function.
+			typedef bool (effect::IParameter::*EffectSetFunction)(ParamType);
 		};
 
 		typedef boost::function<void(typename Types<FType>::ParamType)> Functor;
@@ -122,7 +122,7 @@ namespace render
 		bool addParameter(typename Types<PType>::ParamType val,
 						  const std::string& name)
 		{
-			Effect::IParameter* param = getParameter(name);
+			effect::IParameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
@@ -136,7 +136,7 @@ namespace render
 		bool addParameter(const typename Types<PType>::GetFunction& f,
 						  const std::string& name)
 		{
-			Effect::IParameter* param = getParameter(name);
+			effect::IParameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
@@ -150,7 +150,7 @@ namespace render
 		bool addParameter(const typename Types<PType>::ParamTypeGetFunction& f,
 						  const std::string& name)
 		{
-			Effect::IParameter* param = getParameter(name);
+			effect::IParameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
@@ -168,14 +168,14 @@ namespace render
 
 		template <class PType>
 		static Functor createFunctor(typename Types<PType>::ParamType val,
-									 Effect::IParameter* param)
+									 effect::IParameter* param)
 		{
 			return boost::bind(getEffectSetFunction<PType>(), param, val);
 		}
 
 		template <class PType>
 		static Functor createFunctor(const typename Types<PType>::GetFunction& f,
-									 Effect::IParameter* param)
+									 effect::IParameter* param)
 		{
 			return boost::bind(getEffectSetFunction<PType>(), param,
 							   boost::bind(f, _1));
@@ -183,7 +183,7 @@ namespace render
 
 		template <class PType>
 		static Functor createFunctor(const typename Types<PType>::ParamTypeGetFunction& f,
-									 Effect::IParameter* param)
+									 effect::IParameter* param)
 		{
 			return boost::bind(getEffectSetFunction<PType>(), param,
 							   boost::bind(f, _1));
@@ -192,15 +192,15 @@ namespace render
 		template <class PType>
 		static inline typename Types<PType>::EffectSetFunction getEffectSetFunction()
 		{
-			return (typename Types<PType>::EffectSetFunction) &Effect::IParameter::set;
+			return (typename Types<PType>::EffectSetFunction) &effect::IParameter::set;
 		}
 
-		Effect::IParameter* getParameter(const std::string& name) const
+		effect::IParameter* getParameter(const std::string& name) const
 		{
-			const Effect::Parameters& params = m_effect->getParams();
-			Effect::Parameters::const_iterator it = params.find(name);
+			const effect::Parameters& params = m_effect->getParams();
+			effect::Parameters::const_iterator it = params.find(name);
 
-			Effect::IParameter* result = NULL;
+			effect::IParameter* result = NULL;
 
 			if(it != params.end())
 				result = it->second;

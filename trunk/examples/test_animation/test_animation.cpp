@@ -119,7 +119,7 @@ protected:
 	input::RelativeAxis m_cYAxis;
 
 	//данные для камеры
-	math::PTargetCamera      m_spTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::target_camera_ptr      m_spTargetCamera;      //контроллер камеры "нацеленная камера"
 };
 
 

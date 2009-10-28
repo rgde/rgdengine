@@ -7,14 +7,14 @@ namespace particles
 {
 
 	//-----------------------------------------------------------------------------------
-	void Emitter::toStream (io::IWriteStream& wf) const
+	void emitter::toStream (io::IWriteStream& wf) const
 	{
 		wf	<< (unsigned)m_type
 			<< m_Transform;
 	}
 
 	//-----------------------------------------------------------------------------------
-	void Emitter::fromStream (io::IReadStream& rf)
+	void emitter::fromStream (io::IReadStream& rf)
 	{
 		rf	>> m_Transform;
 	}

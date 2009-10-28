@@ -5,8 +5,8 @@
 
 namespace particles
 {
-	class PTank;
-	typedef boost::shared_ptr<class PTank> PPTank;
+	class renderer;
+	typedef boost::shared_ptr<class renderer> PPTank;
 }
 
 namespace render

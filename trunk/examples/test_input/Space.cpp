@@ -92,7 +92,7 @@ Space::Space (int nStars)
     m_spriteShip.spin = 0;
 
     //пыль
-	m_textureParticle = render::texture::create("TestInput/Particle.png");
+	m_textureParticle = render::texture::create("TestInput/particle.png");
     m_particles.resize(nStars/4);
 
     std::for_each(m_particles.begin(), m_particles.end(), 

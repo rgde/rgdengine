@@ -11,7 +11,7 @@ namespace particles
 {
 
 	//-----------------------------------------------------------------------------------
-	SphericalEmitter::SphericalEmitter() : AbstractEmitter(Emitter::Spherical)
+	spherical_emitter::spherical_emitter() : base_emitter(emitter::Spherical)
 	{
 		m_Angle.addKey(1, 45.0f);
 		m_Radius.addKey(0, 0);
@@ -28,14 +28,14 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	SphericalEmitter::~SphericalEmitter()
+	spherical_emitter::~spherical_emitter()
 	{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void SphericalEmitter::getParticle(Particle& p)
+	void spherical_emitter::getParticle(particle& p)
 	{
-		AbstractEmitter::getParticle(p);
+		base_emitter::getParticle(p);
 
 		float radius = m_Radius.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_RadiusSpread.getValue(m_fTimeNormalaized);
@@ -62,9 +62,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void SphericalEmitter::debugDraw()
+	void spherical_emitter::debugDraw()
 	{
-		AbstractEmitter::debugDraw();
+		base_emitter::debugDraw();
 
 		render::Line3dManager& line_manager = render::TheLine3dManager::get();
 
@@ -83,9 +83,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void SphericalEmitter::toStream(io::IWriteStream& wf) const
+	void spherical_emitter::toStream(io::IWriteStream& wf) const
 	{
-		AbstractEmitter::toStream(wf);
+		base_emitter::toStream(wf);
 
 		wf	<< m_Radius
 			<< m_RadiusSpread
@@ -93,9 +93,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void SphericalEmitter::fromStream(io::IReadStream& rf)
+	void spherical_emitter::fromStream(io::IReadStream& rf)
 	{
-		AbstractEmitter::fromStream(rf);
+		base_emitter::fromStream(rf);
 
 		rf  >> m_Radius
 			>> m_RadiusSpread

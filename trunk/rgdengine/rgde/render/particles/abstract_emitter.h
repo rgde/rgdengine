@@ -8,28 +8,28 @@
 namespace particles
 {
 
-class ParticlesProcessor;
-struct Particle;
+class processor;
+struct particle;
 
 
-class  AbstractEmitter : public Emitter
+class  base_emitter : public emitter
 {
 public:
-	typedef std::list<ParticlesProcessor*> tPProcessors;
-	typedef tPProcessors::iterator tPProcessorsIter;
+	typedef std::list<processor*> processors_list;
+	typedef processors_list::iterator processors_iter;
 
-	AbstractEmitter(Emitter::Type);
-	virtual ~AbstractEmitter();
+	base_emitter(emitter::Type);
+	virtual ~base_emitter();
 
-	virtual void		getParticle(Particle& p);
+	virtual void		getParticle(particle& p);
 
 	void				reset();
 	void				update(float dt);
 	void				render();
 	virtual void		debugDraw() = 0;
 
-	void				addProcessor(ParticlesProcessor*	 pProcessor);	
-	void				deleteProcessor(ParticlesProcessor* pProcessor);	
+	void				addProcessor(processor*	 proc);	
+	void				deleteProcessor(processor* proc);	
 	
 protected:
 	virtual void toStream(io::IWriteStream& wf) const;
@@ -37,7 +37,7 @@ protected:
 
 // Акксессоры
 public:
-	inline tPProcessors& getProcessors() { return m_lProcessors; }
+	inline processors_list& getProcessors() { return m_lProcessors; }
 
 	inline float getTime() { return m_fTimeNormalaized; }
 	inline math::Vec3f&	getSpeed() {return m_vCurSpeed;}
@@ -72,7 +72,7 @@ public:
 protected:
 	math::UnitRandom2k	m_Rand;
 
-	tPProcessors	m_lProcessors;				// присоединенные процессоры частиц
+	processors_list	m_lProcessors;				// присоединенные процессоры частиц
 
 	float			m_fCycleTime;				// время повтора для всех интерполяторов
 	bool			m_bIsCycling;

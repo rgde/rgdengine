@@ -21,11 +21,11 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 
 namespace particles{
 
-	class  IMayaEmitter : public Emitter
+	class  static_emitter : public emitter
 	{
-		friend class Effect;
+		friend class effect;
 
-		static const unsigned ms_nVersion = 1002;
+		static const unsigned file_version = 1002;
 	public:
 		typedef std::vector<PPTank> PTanks;
 		typedef PTanks::iterator PTanksIter;
@@ -35,9 +35,9 @@ namespace particles{
 
 		static void ClearCachedData(); 
 
-		IMayaEmitter() : Emitter(Emitter::Maya) {};
-		IMayaEmitter( const std::string& sequence_name, const std::string texture_name);
-		virtual ~IMayaEmitter();
+		static_emitter() : emitter(emitter::Maya) {};
+		static_emitter( const std::string& sequence_name, const std::string texture_name);
+		virtual ~static_emitter();
 
 		void render();
 		void update(float dt);
@@ -82,7 +82,7 @@ namespace particles{
 		PTanks*				m_Frames;
 		
 		static PFrames ms_PFrames;
-		static std::map<std::string, MayaStructs::SFrameSequence> m_FrSeq;
+		static std::map<std::string, maya_structs::animation> m_FrSeq;
 
 		// state flags
 		bool		m_bIsSeqLoaded;

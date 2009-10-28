@@ -9,8 +9,8 @@
 namespace particles{
 
 	//-----------------------------------------------------------------------------------
-	ParticlesProcessor::ParticlesProcessor(AbstractEmitter* em )   // конструктор
-	: m_bIsVisible(true), m_pParentEmitter(em), m_bIsGeometric(false), core::XmlClass("ParticlesProcessor")
+	processor::processor(base_emitter* em )   // конструктор
+	: m_bIsVisible(true), m_pParentEmitter(em), m_bIsGeometric(false), core::meta_class("processor")
 	{
 		//addProperty(new TProperty<bool>(m_bIsAnimTextureUsed, "AnimTextureUse", "bool"));
 		m_bIsAnimTextureUsed = false; 
@@ -85,18 +85,18 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	ParticlesProcessor::~ParticlesProcessor()
+	processor::~processor()
 	{
 		delete m_spTank;
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::updateParticle(Particle& p)
+	void processor::updateParticle(particle& p)
 	{
 		// отображение времени частица на интервал от 0 до 1 
 		float t = p.time / p.ttl; 
 		// time passed from last update
-		float dt = p.time - p.m_fOldTime;
+		float dt = p.time - p.old_time;
 
 		if (t >= 1){
 			p.dead = true;
@@ -135,18 +135,18 @@ namespace particles{
 		p.rotation += p.rot_speed + p.initial_spin;
 
 		// save current update time
-		p.m_fOldTime = p.time;
+		p.old_time = p.time;
 
 		//m_cTexFps
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::reset()								// ReStart процессор - сбросить его время на 0
+	void processor::reset()								// ReStart процессор - сбросить его время на 0
 	{
 		m_bIsFading = false;
 
 		unsigned size = static_cast<unsigned>(m_Particles.size());
-		Particle* pp = &(m_Particles[0]);//[i]
+		particle* pp = &(m_Particles[0]);//[i]
 
 		for (unsigned i = 0; i < size; ++i)
 		{
@@ -156,7 +156,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::fistTimeInit()
+	void processor::fistTimeInit()
 	{
 		m_bIsAnimTextureUsed		= false;
 		m_bIsGlobal				= true;
@@ -172,7 +172,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::render()
+	void processor::render()
 	{
 		if( !m_bIsVisible )
 			return;
@@ -188,11 +188,11 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::geomRender()
+	void processor::geomRender()
 	{
 	}
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::update(float dt) 
+	void processor::update(float dt) 
 	{
 		/*
 		if (m_iRndSeed){
@@ -210,7 +210,7 @@ namespace particles{
 
 		int m_acting_particles = 0;
 		// здесь происходит апдейт партиклов
-		//for (TParticlesIter it = m_Particles.begin(); it != m_Particles.end(); ++it)
+		//for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
 		//	if (!(it->dead) && m_bIsGlobal)
 		//	{
 		//		it->pos += m_ngkx * m_pParentEmitter->m_vCurDisplacement * (1.0f - (it->time / it->ttl));
@@ -219,7 +219,7 @@ namespace particles{
 		if (m_dt > 0.01f)
 		{
 			// здесь происходит апдейт партиклов
-			for (TParticlesIter it = m_Particles.begin(); it != m_Particles.end(); ++it)
+			for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
 				if (!(it->dead))// && m_bIsGlobal)
 				{
 					++m_acting_particles;
@@ -236,7 +236,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::addNewParticles(int num2add)
+	void processor::addNewParticles(int num2add)
 	{
 		// нет места для новых партиклов
 		if(!num2add) 
@@ -265,7 +265,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::createParticle(Particle& p)
+	void processor::createParticle(particle& p)
 	{
 		m_pParentEmitter->getParticle(p);
 		p.dead = false;
@@ -292,7 +292,7 @@ namespace particles{
 
 		p.pos = p.initial_pos;
 		
-		p.m_fOldTime = 0.0f;
+		p.old_time = 0.0f;
 
 		static math::UnitRandom2k lrnd;
 
@@ -313,7 +313,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::debugDraw()
+	void processor::debugDraw()
 	{
 		if( !m_bIsVisible )
 			return;
@@ -325,7 +325,7 @@ namespace particles{
 
 		math::Vec3f center, vel;
 		render::Line3dManager& line_manager = render::TheLine3dManager::get();
-		for (TParticlesIter it = m_Particles.begin(); it != m_Particles.end(); ++it)
+		for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
 		{
 			if ((*it).dead)
 				continue;
@@ -346,20 +346,20 @@ namespace particles{
 		}
 	}
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::formTank()
+	void processor::formTank()
 	{
 		if (m_bIsGeometric)
 			return;
 
 		const math::Matrix44f& ltm = getLTM();
 
-		PTank::ParticleArray& array = m_spTank->getParticles();
+		renderer::ParticleArray& array = m_spTank->getParticles();
 		array.resize( m_Particles.size() );
 		int i = 0;
 
-		for (TParticlesIter it = m_Particles.begin(); it != m_Particles.end(); ++it)
+		for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
 		{
-			Particle &p = *it;
+			particle &p = *it;
 
 			//if (m_bIsGlobal)
 			//	//*poss = p.pos;
@@ -430,7 +430,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::loadTexture()
+	void processor::loadTexture()
 	{
 		//try{
 		//	agl::LocalImgPathSync p(pfx::tex_path.c_str());//"Effects\\tx\\");
@@ -467,7 +467,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::setTextureName( const std::string& texName )
+	void processor::setTextureName( const std::string& texName )
 	{
 		m_bIsTexLoaded = false;
 
@@ -483,13 +483,13 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	const math::Matrix44f& ParticlesProcessor::getLTM()
+	const math::Matrix44f& processor::getLTM()
 	{
 		return m_pParentEmitter->getTransform().getFullTransform();
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::load()
+	void processor::load()
 	{
 		reset();
 		initPTank();
@@ -497,13 +497,13 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::initPTank()
+	void processor::initPTank()
 	{
 		if (!m_nMaxParticles) return;
 
 		if( m_spTank ) 	delete m_spTank;
 
-		m_spTank = new PTank();
+		m_spTank = new renderer();
 
 
 		if( m_TexName.length() )
@@ -519,15 +519,15 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::assignChilds()
+	void processor::assignChilds()
 	{
 		m_bModifiersLoaded = true;
 	}
 
 	//-----------------------------------------------------------------------------------
-	void ParticlesProcessor::toStream(io::IWriteStream& wf) const
+	void processor::toStream(io::IWriteStream& wf) const
 	{
-		wf  << ms_nVersion
+		wf  << file_version
 			<< m_bIntense
 			<< m_fScaling
 			<< m_bIsGlobal
@@ -555,11 +555,11 @@ namespace particles{
 			<< m_bIsPlayTexAnimation;
 	}
 
-	void ParticlesProcessor::fromStream(io::IReadStream& rf)
+	void processor::fromStream(io::IReadStream& rf)
 	{
 		unsigned version;
 		rf  >> version;
-		if( version != ms_nVersion )
+		if( version != file_version )
 			assert(false);
 
 		rf	>> m_bIntense

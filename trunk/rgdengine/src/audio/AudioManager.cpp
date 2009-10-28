@@ -187,7 +187,7 @@ namespace audio
 
 				const std::string& strTagName = pDOMElement->ValueStr();
 
-				if ( _stricmp("Effect", strTagName.c_str()) == 0)
+				if ( _stricmp("effect", strTagName.c_str()) == 0)
 				{
 					pTag = new AudioEffectTag();
 				}

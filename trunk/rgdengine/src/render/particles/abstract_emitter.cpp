@@ -7,9 +7,9 @@
 
 namespace particles{
 	//-----------------------------------------------------------------------------------
-	void AbstractEmitter::getParticle(Particle& p) 
+	void base_emitter::getParticle(particle& p) 
 	{
-		p = Particle();
+		p = particle();
 
 		p.mass = m_PMass.getValue(m_fTimeNormalaized)
 			+ (m_Rand() * 2.0f - 1.0f) * m_PMassSpread.getValue(m_fTimeNormalaized);
@@ -17,16 +17,16 @@ namespace particles{
 		p.rotation = m_Rand() * m_PRotationSpread.getValue(m_fTimeNormalaized);
 	}
 	//-----------------------------------------------------------------------------------
-	void AbstractEmitter::addProcessor(ParticlesProcessor* pp)
+	void base_emitter::addProcessor(processor* pp)
 	{
 		if (0 == pp)
-			throw std::exception("AbstractEmitter::addProcessor(): zero pointer!");
+			throw std::exception("base_emitter::addProcessor(): zero pointer!");
 
 		m_lProcessors.push_back(pp);
 		pp->setEmitter(this);
 	}
 	//-----------------------------------------------------------------------------------
-	void AbstractEmitter::reset()
+	void base_emitter::reset()
 	{
 		//m_vCurDisplacement = math::Vec3f();
 		//m_vCurSpeed = math::Vec3f();
@@ -37,17 +37,17 @@ namespace particles{
 		m_fTimeNormalaized = 0;
 		m_bIsVisible = true;
 
-		for(tPProcessorsIter pi = m_lProcessors.begin(); pi != m_lProcessors.end(); ++pi)
+		for(processors_iter pi = m_lProcessors.begin(); pi != m_lProcessors.end(); ++pi)
 			(*pi)->reset();
 	}
 	//////////////////////////////////////////////////////////////////////////
-	void AbstractEmitter::setFade(bool b)
+	void base_emitter::setFade(bool b)
 	{
-		for (tPProcessorsIter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
+		for (processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
 			(*it)->setFade(b);
 	}
 	//////////////////////////////////////////////////////////////////////////
-	void AbstractEmitter::update(float dt)
+	void base_emitter::update(float dt)
 	{
 		//if (m_bIsJustCreated && dt > 0.02f)
 		//	dt = 0.02f;
@@ -97,28 +97,28 @@ namespace particles{
 		//m_vCurSpeedTransformed = m.transformVector(m_vCurSpeed);
 		math::xform( m_vCurSpeedTransformed, m, m_vCurSpeed );
 
-		for (tPProcessorsIter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
+		for (processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
 			(*it)->update(dt);
 
 		//m_bIsJustCreated = false;
 	}
 
-	void AbstractEmitter::render()
+	void base_emitter::render()
 	{
 		if (m_bIsVisible)
 		{
 			// 1-ми рендерятся не аддитивные партиклы
-			for (tPProcessorsIter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
+			for (processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
 				if (!((*it)->getIntenseMode()))(*it)->render();
 
 			// 2-ми рендерятся аддитивные партиклы
-			for (tPProcessorsIter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
+			for (processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
 				if ((*it)->getIntenseMode())(*it)->render();
 		}
 	}
 
 
-	AbstractEmitter::AbstractEmitter(Emitter::Type eType) : Emitter(eType)
+	base_emitter::base_emitter(emitter::Type eType) : emitter(eType)
 	{
 		//m_bIsJustCreated = true;
 		m_fCycleTime = 5.0f;
@@ -164,15 +164,15 @@ namespace particles{
 		//REGISTER_PROPERTY(GlobalVelocity,	math::Vec3Interp)
 	}
 
-	AbstractEmitter::~AbstractEmitter()
+	base_emitter::~base_emitter()
 	{
-		for( tPProcessorsIter it = m_lProcessors.begin(); it != m_lProcessors.end(); it++ )
+		for( processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); it++ )
 			delete(*it);
 		m_lProcessors.clear();
 	}
 
 	//
-	//math::Vec3f AbstractEmitter::getGlobalVelocity(bool global)
+	//math::Vec3f base_emitter::getGlobalVelocity(bool global)
 	//{
 	//	if (!global)
 	//		return m_vGlobalVelPrecomputed;
@@ -180,7 +180,7 @@ namespace particles{
 	//		return m_vGlobalVel;
 	//}
 	//
-	//math::Vec3f AbstractEmitter::getAcceleration(bool global)
+	//math::Vec3f base_emitter::getAcceleration(bool global)
 	//{
 	//	if (!global)
 	//		return m_vAccelerationPrecomputed;
@@ -188,14 +188,14 @@ namespace particles{
 	//		return m_vPAcceleration;
 	//}
 	
-	void AbstractEmitter::deleteProcessor(ParticlesProcessor* p)
+	void base_emitter::deleteProcessor(processor* p)
 	{
 		m_lProcessors.remove(p);
 	}
 
-	void AbstractEmitter::toStream(io::IWriteStream& wf) const
+	void base_emitter::toStream(io::IWriteStream& wf) const
 	{
-		Emitter::toStream (wf);
+		emitter::toStream (wf);
 
 		wf	<< m_fCycleTime
 			<< m_bIsCycling
@@ -212,13 +212,13 @@ namespace particles{
 
 		// Сохраняем процессоры частиц
 		wf << (unsigned)m_lProcessors.size();
-		for( tPProcessors::const_iterator it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
+		for( processors_list::const_iterator it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
 			wf << *(*it);
 	}
 
-	void AbstractEmitter::fromStream(io::IReadStream& rf)
+	void base_emitter::fromStream(io::IReadStream& rf)
 	{
-		Emitter::fromStream (rf);
+		emitter::fromStream (rf);
 
 		rf	>> m_fCycleTime
 			>> m_bIsCycling
@@ -233,23 +233,23 @@ namespace particles{
 			>> (m_PVelSpread)
 			>> (m_PRotationSpread);
 
-		// Сохраняем процессоры частиц
-		unsigned int nProcessors;
-		rf >> nProcessors;
-		for( unsigned i = 0; i < nProcessors; i++ )
+		// loading processors
+		unsigned int num_of_processors;
+		rf >> num_of_processors;
+		for( unsigned i = 0; i < num_of_processors; ++i )
 		{
-			ParticlesProcessor* processor = new ParticlesProcessor();
-			rf >> (*processor);
-			addProcessor(processor);
-			processor->load();
+			processor* proc = new processor();
+			rf >> (*proc);
+			addProcessor(proc);
+			proc->load();
 		}
 	}
 
-	void AbstractEmitter::debugDraw()
+	void base_emitter::debugDraw()
 	{
 		m_Transform.debugDraw();
 
-		for( tPProcessorsIter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it )
+		for( processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it )
 			(*it)->debugDraw();
 	}
 }

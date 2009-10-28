@@ -4,7 +4,7 @@
 
 namespace io
 {
-	class ISerializedObject;
+	class serialized_object;
 
 	//////////////////////////////////////////////////////////////////////////
 	namespace helpers
@@ -95,7 +95,7 @@ namespace io
 	}
 
 	IWriteStream& operator << (IWriteStream& wf, const std::string& str);
-	IWriteStream& operator << (IWriteStream& wf, const ISerializedObject& so);
+	IWriteStream& operator << (IWriteStream& wf, const serialized_object& so);
 	IWriteStream& operator << (IWriteStream& wf, const math::Vec3f& vec);
 	IWriteStream& operator << (IWriteStream& wf, const math::Vec4f& vec);
 	IWriteStream& operator << (IWriteStream& wf, const math::Point3f& point);
@@ -155,7 +155,7 @@ namespace io
 	}
 
 	IReadStream& operator >> (IReadStream& rf, std::string& str);
-	IReadStream& operator >> (IReadStream& rf, ISerializedObject& so);
+	IReadStream& operator >> (IReadStream& rf, serialized_object& so);
 	IReadStream& operator >> (IReadStream& rf, math::Vec3f& vec);
 	IReadStream& operator >> (IReadStream& rf, math::Vec4f& vec);
 	IReadStream& operator >> (IReadStream& rf, math::Point3f& point);

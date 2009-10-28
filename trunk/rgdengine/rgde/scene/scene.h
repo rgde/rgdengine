@@ -17,7 +17,7 @@ namespace scene
 	typedef boost::shared_ptr<ISceneManager> scene_manager_ptr;
 
 	class Scene
-		: public io::ISerializedObject
+		: public io::serialized_object
 		//Neonic: octree
 		, public live_tree::CDynamicTreeRoot
 	{

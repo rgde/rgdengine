@@ -8,11 +8,11 @@ namespace particles
 {
 
 	//-----------------------------------------------------------------------------------
-	PTank::PTank() : m_nReservedSize(0)
+	renderer::renderer() : m_nReservedSize(0)
 	{
-		m_spEffect = render::Effect::create( "particles.fxo" );
+		m_spEffect = render::effect::create( "particles.fxo" );
 
-		render::Effect::Parameters& params = m_spEffect->getParams();
+		render::effect::Parameters& params = m_spEffect->getParams();
 
 		m_paramUpVec			= params["m_vUp"];
 		m_paramRightVec			= params["m_vRight"];
@@ -25,11 +25,11 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	PTank::~PTank()
+	renderer::~renderer()
 	{
 	}
 	//-----------------------------------------------------------------------------------
-	void PTank::render(render::texture_ptr texture, math::Frame& frame)
+	void renderer::render(render::texture_ptr texture, math::Frame& frame)
 	{
 		if( (m_nReservedSize == 0) )
 			return;
@@ -64,7 +64,7 @@ namespace particles
 		m_paramUpVec->set(up);
 
 		
-		std::vector<render::Effect::ITechnique::IPass*>& passes = m_pRenderTechnique->getPasses();
+		std::vector<render::effect::ITechnique::IPass*>& passes = m_pRenderTechnique->getPasses();
 
 		m_spEffect->commitChanges();
 		m_pRenderTechnique->begin();
@@ -79,7 +79,7 @@ namespace particles
 		m_pRenderTechnique->end();
 	}
 	//-----------------------------------------------------------------------------------
-	void PTank::update()
+	void renderer::update()
 	{
 		unsigned int nParticles = (unsigned int)m_vParticleArray.size();
 
@@ -152,7 +152,7 @@ namespace particles
 		m_Geometry.unlockVB();
 	}
 
-	void PTank::setTextureTiling(int nRows, int nColumnsTotal, int nRowsTotal)
+	void renderer::setTextureTiling(int nRows, int nColumnsTotal, int nRowsTotal)
 	{
 		m_nRows = nRows;
 		m_fInvRows = 1.0f/(float)nRows;
@@ -160,4 +160,4 @@ namespace particles
 		m_fInvTotalRows = 1.0f/(float)nRowsTotal;
 	}
 
-} //~ namespace pfx
+}

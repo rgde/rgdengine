@@ -64,7 +64,7 @@ namespace io
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	IReadStream & operator >>(IReadStream &rf, ISerializedObject &so)
+	IReadStream & operator >>(IReadStream &rf, serialized_object &so)
 	{
 		so.read(rf);
 		return rf;
@@ -113,7 +113,7 @@ namespace io
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	IWriteStream & operator <<(IWriteStream &wf, const ISerializedObject &so)
+	IWriteStream & operator <<(IWriteStream &wf, const serialized_object &so)
 	{
 		so.write(wf);
 		return wf;

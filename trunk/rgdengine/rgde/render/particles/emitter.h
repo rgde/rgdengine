@@ -18,12 +18,12 @@ Created: 7.06.2005
 namespace particles
 {
 
-	class Emitter : public io::ISerializedObject, public core::XmlClass
+	class emitter : public io::serialized_object, public core::meta_class
 	{
 	public:
 		enum Type {	Maya, Spherical, Box };
 
-		Emitter(Type _type) : m_type(_type), core::XmlClass("ParticleEmitter") 
+		emitter(Type _type) : m_type(_type), core::meta_class("ParticleEmitter") 
 		{
 			// public properties:
 			//REGISTER_PROPERTY(Transform, math::Frame)

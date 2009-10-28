@@ -10,9 +10,9 @@ namespace particles
 {
 
 	//-----------------------------------------------------------------------------------
-	BoxEmitter::BoxEmitter() : AbstractEmitter(Emitter::Box)
+	box_emitter::box_emitter() : base_emitter(emitter::Box)
 	{
-		m_name = "BoxEmitter";
+		m_name = "box_emitter";
 
 		m_BoxSize.addKey(1, math::Vec3f(3, 3, 3) );
 
@@ -29,14 +29,14 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	BoxEmitter::~BoxEmitter()
+	box_emitter::~box_emitter()
 	{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void BoxEmitter::debugDraw()
+	void box_emitter::debugDraw()
 	{
-		AbstractEmitter::debugDraw();
+		base_emitter::debugDraw();
 
 		math::Vec3f size = m_BoxSize(m_fTimeNormalaized);
 		math::Vec3f size_rand = m_BoxSizeSpread(m_fTimeNormalaized);
@@ -55,9 +55,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void BoxEmitter::getParticle(Particle& p)
+	void box_emitter::getParticle(particle& p)
 	{
-		AbstractEmitter::getParticle(p);
+		base_emitter::getParticle(p);
 
 		math::Vec3f dir = m_Direction.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_DirectionSpread.getValue(m_fTimeNormalaized);
@@ -83,9 +83,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void BoxEmitter::toStream(io::IWriteStream& wf) const
+	void box_emitter::toStream(io::IWriteStream& wf) const
 	{
-		AbstractEmitter::toStream(wf);
+		base_emitter::toStream(wf);
 
 		wf	<< (m_BoxSize)
 			<< (m_BoxSizeSpread)
@@ -94,9 +94,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void BoxEmitter::fromStream(io::IReadStream& rf)
+	void box_emitter::fromStream(io::IReadStream& rf)
 	{
-		AbstractEmitter::fromStream(rf);
+		base_emitter::fromStream(rf);
 
 		rf  >> (m_BoxSize)
 			>> (m_BoxSizeSpread)

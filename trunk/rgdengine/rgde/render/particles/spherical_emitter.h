@@ -19,14 +19,14 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 
 namespace particles{
 
-	class  SphericalEmitter : public AbstractEmitter
+	class  spherical_emitter : public base_emitter
 	{
 	public: 
-		SphericalEmitter();
-		virtual ~SphericalEmitter();
+		spherical_emitter();
+		virtual ~spherical_emitter();
 
 		void		 debugDraw();
-		virtual void getParticle(Particle& p);
+		virtual void getParticle(particle& p);
 	
 	protected:
 		virtual void toStream(io::IWriteStream& wf) const;

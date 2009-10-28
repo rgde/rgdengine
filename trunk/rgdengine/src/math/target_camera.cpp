@@ -16,9 +16,9 @@ namespace math
         doOrthoNormal();
     }
 
-    PTargetCamera CTargetCamera::create(camera_ptr pCamera)
+    target_camera_ptr CTargetCamera::create(camera_ptr pCamera)
     {
-        return PTargetCamera(new CTargetCamera(pCamera));
+        return target_camera_ptr(new CTargetCamera(pCamera));
     }
 
     void CTargetCamera::setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)

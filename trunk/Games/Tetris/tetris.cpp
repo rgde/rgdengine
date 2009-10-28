@@ -229,7 +229,7 @@ protected:
 	input::KeyDown      m_cEsc,m_cLeft,m_cRight,m_cDown,m_cSpace;
 	
 	//данные для камеры
-	math::PTargetCamera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::target_camera_ptr      m_cTargetCamera;      //контроллер камеры "нацеленная камера"
 
 	std::auto_ptr<core::application> m_spApp;
 

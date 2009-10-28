@@ -2,10 +2,10 @@
 #include <rgde/engine.h>
 
 
-class HelloMessage : public game::IDynamicObject
+class HelloMessage : public game::dynamic_object
 {
 public:
-	HelloMessage() :  m_spApp(core::IApplication::Create(L"Test Loader", 800, 600, 32, 85, false))
+	HelloMessage() :  m_spApp(core::application::Create(L"Test Loader", 800, 600, 32, 85, false))
 	{
 		m_spApp->addTask(core::PTask(new core::CRenderTask(1)));
 		m_spApp->addTask(core::PTask(new core::CInputTask(0)));
@@ -59,7 +59,7 @@ protected:
 	//выход из программы
 	void onEsc(const input::CButtonEvent&)
 	{
-		core::IApplication::Get()->close();
+		core::application::Get()->close();
 	}
 
 	//ось X
@@ -99,7 +99,7 @@ protected:
 	//данные для камеры
 	math::CTargetCamera      m_cTargetCamera;      //контроллер камеры "нацеленная камера"
 
-	std::auto_ptr<core::IApplication> m_spApp;
+	std::auto_ptr<core::application> m_spApp;
 };
 
 // The application's entry point
