@@ -42,7 +42,7 @@ public:
 
 		m_camera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 
-		m_spTargetCamera = math::CTargetCamera::create(m_camera);
+		m_spTargetCamera = math::target_camera::create(m_camera);
 		m_spTargetCamera->setPosition(vUpVec,vEyePt,vLookatPt);
 
 		{//инициализация ввода

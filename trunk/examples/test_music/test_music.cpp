@@ -52,7 +52,7 @@ protected:
 //		m_pSound3d->setLoop (true);
 //		m_pSound3d->play();
 //
-//		sound::Sound3dManager::Get().setPos (math::Vec3f (0, 0, 0));
+//		sound::Sound3dManager::get().setPos (math::Vec3f (0, 0, 0));
 //	}
 //
 //	~CSound3dTest()
@@ -67,7 +67,7 @@ protected:
 //
 //		m_pSound3d->setPos (math::Vec3f ( 100.0f + 100.0f*cosf(fAngle), 0, 100.0f*sinf(fAngle) ));
 //
-//		sound::Sound3dManager::Get().update (dt);
+//		sound::Sound3dManager::get().update (dt);
 //	}
 //
 //protected:

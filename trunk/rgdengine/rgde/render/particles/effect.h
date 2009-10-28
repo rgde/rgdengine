@@ -5,10 +5,6 @@
 #include <rgde/core/xml_class.h>
 #include <rgde/render/manager.h>
 
-namespace script
-{
-	class CEffectAdaptor;
-}
 
 namespace particles
 {
@@ -24,11 +20,10 @@ namespace particles
 		effect();
 		virtual ~effect();
 		
-		friend class script::CEffectAdaptor;
 		inline const math::Frame& getTransform() { return m_Transform; }
 		
-		void addEmitter(emitter* em);
-		void deleteEmitter(emitter* em);
+		void add(emitter* em);
+		void remove(emitter* em);
 
 		tEmitters& getEmitters() {return m_Emitters;}
 
@@ -52,7 +47,7 @@ namespace particles
 
 	protected:
 		math::Frame	m_Transform;
-		tEmitters		m_Emitters;						// Ёмиттеры
+		tEmitters		m_Emitters;						// emitters
 		bool			m_bIsFading;
 		float			old_time;
 

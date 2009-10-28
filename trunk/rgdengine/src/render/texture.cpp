@@ -93,7 +93,7 @@ namespace render
 
 		if (!in)
 		{
-			base::lerr << "Не могу загрузить текстуру!" << "\"" << file_name << "\"";
+			base::lerr << "Can't load texture!" << "\"" << file_name << "\"";
 			return; //false
 		}
 

@@ -25,7 +25,8 @@ namespace particles{
 	}
 	//-----------------------------------------------------------------------------------
 	static_emitter::static_emitter(const std::string& sequence_name, const std::string texture_name) 
-		: m_fScale(1.0f), emitter(emitter::Maya)
+		: m_fScale(1.0f)
+		, emitter(emitter::Static)
 	{
 		m_bIntense				= false;
 
@@ -65,51 +66,7 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void static_emitter::loadTexture()
 	{
-		//try{
-		//	std::map<std::string, agl::AGLTexture>::iterator it = ms_Textures.find(m_TexName);
-		//	if (ms_Textures.end() == it)
-		//	{
-		//		agl::LocalImgPathSync p(pfx::tex_path.c_str());
-
-		//		try
-		//		{
-		//			m_texture.load(m_TexName);
-		//			m_texture.setFilterMode(agl::filter_Linear);
-		//			ms_Textures[m_TexName]  = m_texture;
-		//		}
-		//		catch (...)
-		//		{
-		//		}                      
-		//	}
-		//	else
-		//	{
-		//		m_texture = it->second;
-		//	}
-
-		//	std::string ext_path = std::string::Concat(
-		//		pfx::tex_path.c_str(), pfx::tex_path.length(),
-		//		m_TexName.c_str(), m_TexName.length() - 3);
-		//	ext_path += "tnf";
-
-		//	if (base::ResourceMaster::get()->isResourceExist(ext_path))
-		//	{
-		//		clx::rstream in(base::ResourceMaster::get()->getResource(ext_path));//ResourseMaster
-
-		//		m_bIsAnimTextureUsed = true;
-
-		//		in  >> m_ucRow			// = 4;
-		//			>> m_ucCol			// = 4;
-		//			>> m_ucTexFrames		// = 16;
-		//			>> m_ucTrow
-		//			>> m_ucTcol;
-
-		//		if (m_bIsSeqLoaded) m_bIsSeqLoaded = false;
-		//	}
-		//	else 
-		//		m_bIsAnimTextureUsed = false;
-		//}
-
-		m_texture = render::texture::create(m_TexName);// std::wstring(m_TexName.begin(), m_TexName.end()) );
+		m_texture = render::texture::create(m_TexName);
 		m_bIsTexLoaded = true;
 	}
 	//-----------------------------------------------------------------------------------
@@ -225,38 +182,6 @@ namespace particles{
 					math::Color c;
 					c.set(p.r, p.g, p.b, p.a);
 					array[pn].color = c.color;
-
-					//if (!m_bIsAnimTextureUsed)
-					//{
-					//	agl::AglTexCoords uv1, uv2;
-					//	uv1.tu = 0; uv1.tv = 0;
-					//	uv2.tu = 1; uv2.tv = 1;
-					//	(*uvs).v[0] = uv1;
-					//	(*uvs).v[1] = uv2;
-					//}
-					//else
-					//{
-					//	agl::AglTexCoords uv1, uv2;
-
-					//	unsigned char m_spFrame = p.tex_num;
-
-					//	if (m_spFrame > m_ucTexFrames)
-					//		m_spFrame = m_ucTexFrames;
-
-					//	int x = (m_spFrame - 1) / m_ucCol;
-					//	int y = m_spFrame - m_ucCol * x;
-					//	x += 1;
-					//	if (y == 0) y = 1;
-
-					//	uv1.tu = (x - 1) * 1.0f / m_ucTrow;
-					//	uv1.tv = (y - 1) * 1.0f / m_ucTcol;
-					//						
-					//	uv2.tu = x * 1.0f / m_ucTrow;
-					//	uv2.tv = y * 1.0f / m_ucTcol;
-
-					//	(*uvs).v[0] = uv1;
-					//	(*uvs).v[1] = uv2;
-					//}
 				}
 				spTank->update();
 			}
@@ -357,5 +282,4 @@ namespace particles{
 			<< m_bCycling
 			<< m_cTexFps;
 	}
-
 }

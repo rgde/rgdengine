@@ -1,31 +1,35 @@
 #include <rgde/engine.h>
 
 
-class MySuperPuperClass : public render::rendererable, public math::Frame
+class SceneHelper : public render::rendererable, public math::Frame
 {
 public:
+	typedef render::Generator<vertex::PositionNormalColored>::PGeometry geometry_type;
 
-	MySuperPuperClass(render::Generator<vertex::PositionNormalColored>::PGeometry pGeometry)
-	{
-		m_pGeometry = pGeometry;
-		m_renderInfo.pFrame = this;
-		m_renderInfo.pRenderFunc = boost::bind( &MySuperPuperClass::render, this );
-	}
-
-	void render()
-	{
-		m_pGeometry->render(render::PrimTypeTriangleList, (int) (m_pGeometry->getIndexNum()/3));
-	}
+	SceneHelper(geometry_type pGeometry);
+	void render();
 
 private:
-	render::Generator<vertex::PositionNormalColored>::PGeometry m_pGeometry;
+	geometry_type m_pGeometry;
 };
 
+SceneHelper::SceneHelper(geometry_type pGeometry)
+{
+	m_pGeometry = pGeometry;
+	m_renderInfo.pFrame = this;
+	m_renderInfo.pRenderFunc = boost::bind( &SceneHelper::render, this );
+}
 
-class HelloMessage
+void SceneHelper::render()
+{
+	m_pGeometry->render(render::PrimTypeTriangleList, (int) (m_pGeometry->getIndexNum()/3));
+}
+
+
+class SampleApp
 {
 public:
-	HelloMessage() :  m_spApp(core::application::create())
+	SampleApp() :  m_spApp(core::application::create())
 	{
 		m_spApp->addTask(core::task_ptr(new core::input_task(*m_spApp,0,false)));
 		m_spApp->addTask(core::task_ptr(new core::render_task(*m_spApp,1)));
@@ -40,7 +44,7 @@ public:
 		render::TheCameraManager::get().addCamera(m_camera);
 
 
-		m_spTargetCamera = math::CTargetCamera::create(m_camera);
+		m_spTargetCamera = math::target_camera::create(m_camera);
 		m_spTargetCamera->setPosition(vUpVec,vEyePt,vLookatPt);
 
         {
@@ -55,17 +59,17 @@ public:
             m_cEsc  .attach(L"Quit");
             m_cXAxis.attach(L"Horz");
             m_cYAxis.attach(L"Vert");
-            m_cEsc   += boost::bind(&HelloMessage::onEsc,   this);
-            m_cXAxis += boost::bind(&HelloMessage::onXAxis, this, _1);
-            m_cYAxis += boost::bind(&HelloMessage::onYAxis, this, _1);
+            m_cEsc   += boost::bind(&SampleApp::onEsc,   this);
+            m_cXAxis += boost::bind(&SampleApp::onXAxis, this, _1);
+            m_cYAxis += boost::bind(&SampleApp::onYAxis, this, _1);
         }
 
 		m_spTargetCamera->activate();
 
-		//render::TheLightManager::Get().setAmbientColor(math::Color(50, 50, 50, 0));
+		//render::TheLightManager::get().setAmbientColor(math::Color(50, 50, 50, 0));
 	
 		//render::CPointLight *pLight = new render::CPointLight("point1");
-		//scene::TheScene::Get().getRootFrame()->addChild(pLight);
+		//scene::TheScene::get().getRootFrame()->addChild(pLight);
 		//pLight->setPosition(math::Vec3f(0,0,5));
 
 		//pLight->setDiffuse(math::Color(230, 170, 170, 0));
@@ -73,7 +77,7 @@ public:
 
 		m_pGeometry = render::Generator<vertex::PositionNormalColored>::CreateBox();
 
-		m_pMySuper = boost::intrusive_ptr<MySuperPuperClass>(new MySuperPuperClass(m_pGeometry));
+		m_pMySuper = boost::intrusive_ptr<SceneHelper>(new SceneHelper(m_pGeometry));
 		scene::TheScene::get().getRootFrame()->addChild(m_pMySuper);
 		m_pMySuper->setPosition(math::Vec3f(0,0,-5));
 
@@ -112,7 +116,7 @@ protected:
 
 	::render::Generator<vertex::PositionNormalColored>::PGeometry m_pGeometry;
 
-	boost::intrusive_ptr<MySuperPuperClass> m_pMySuper;
+	boost::intrusive_ptr<SceneHelper> m_pMySuper;
 
 	//данные для ввода
 	input::KeyDown      m_cEsc;
@@ -129,5 +133,5 @@ protected:
 // The application's entry point
 int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 {
-	HelloMessage r;
+	SampleApp r;
 }

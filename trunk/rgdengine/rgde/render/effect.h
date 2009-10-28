@@ -117,7 +117,7 @@ namespace render
 
 		friend PEffect;
 	protected:
-		virtual void load(const std::string& fileName) = 0;
+		virtual bool load(const std::string& fileName) = 0;
 	public:
 		virtual ~effect(){}
 
