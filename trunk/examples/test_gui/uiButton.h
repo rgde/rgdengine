@@ -1,15 +1,15 @@
 
 namespace ui
 {
-	class uiButton: public IButton, public game::IDynamicObject
+	class uiButton: public IButton, public game::dynamic_object
 	{
 	protected:
 		std::wstring m_text;
 		math::Rect m_rect;
 
-		render::PFont m_spFont;
+		render::font_ptr m_spFont;
 
-		render::SSprite sprite;
+		render::Sprite sprite;
 		
 		bool m_pressed;
 		bool m_wait;
@@ -123,7 +123,7 @@ namespace ui
 			math::Color darkGrey(170,170,170,m_over?255:128);
 			math::Color black(0,0,0,m_over?255:128);
 
-			render::CLine2dManager& lr = render::TheLine2dManager::Get();
+			render::Line2dManager& lr = render::TheLine2dManager::get();
 
 			math::Vec2f& position = rect.position;
 			math::Vec2f& size = rect.size;
@@ -169,14 +169,14 @@ namespace ui
 				sprite.color = lightGrey;
 			sprite.uPriority = 1;
 
-			render::TheSpriteManager::Get().addSprite(sprite);
+			render::TheSpriteManager::get().addSprite(sprite);
 		}
 
-		void drawText(render::PFont font, std::wstring text, math::Rect rect, bool bShowShadow = true)
+		void drawText(render::font_ptr font, std::wstring text, math::Rect rect, bool bShowShadow = true)
 		{
 			int flag = render::IFont::Center | render::IFont::VCenter;
 
-			math::Vec2f vFrontBufferSize = render::TheDevice::Get().getBackBufferSize();
+			math::Vec2f vFrontBufferSize = render::TheDevice::get().getBackBufferSize();
 			math::Vec2f screenSize(800, 600);
 
 			rect.position	= (rect.position * vFrontBufferSize) / screenSize;
