@@ -4,8 +4,32 @@
  ********************************************************/
 
 
+ technique Default
+{
+	pass p0
+	{
+		ZEnable	        = true;
+		Lighting        = false;
+		ZWriteEnable    = false;
+		FillMode        = WIREFRAME;
+		CullMode        = NONE;
+			
+		// enable alpha blending
+		AlphaBlendEnable = FALSE;
 
+        ColorOp[0]	= SelectArg1;
+        ColorArg1[0]	= Diffuse;
 
+        AlphaOp[0]	= SelectArg1;
+        AlphaArg1[0]	= Diffuse;
+
+        ColorOp[1]	= Disable;
+        AlphaOp[1]	= Disable;
+	}
+}
+ 
+
+/*
 #include "DefaultTecniques/Bump.fx"
 #include "DefaultTecniques/BumpDiffuse.fx"
 #include "DefaultTecniques/BumpDiffuseIllumination.fx"
@@ -40,6 +64,9 @@
 #include "DefaultTecniques/BumpIlluminationLightmapTransparent.fx"
 #include "DefaultTecniques/BumpIlluminationReflection.fx"
 #include "DefaultTecniques/BumpIlluminationReflectionCube.fx"
+*/
+
+
 //#include "DefaultTecniques/BumpIlluminationReflectionCubeTransparent.fx"
 //#include "DefaultTecniques/BumpIlluminationReflectionTransparent.fx"
 //#include "DefaultTecniques/BumpIlluminationTransparent.fx"
