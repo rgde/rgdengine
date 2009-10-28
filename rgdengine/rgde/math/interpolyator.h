@@ -29,10 +29,10 @@ namespace math
 	at given parameter (time) t
 	*/
 	template<class T = float>
-	class TInterpolator : public io::ISerializedObject
+	class TInterpolator : public io::serialized_object
 	{
 	public:
-		struct Key : public io::ISerializedObject
+		struct Key : public io::serialized_object
 		{
 		public:
 			Key(){}
@@ -194,7 +194,7 @@ namespace math
 
 
 	template<class T = float, int Size = 3>
-	class TVectorInterpolator : public io::ISerializedObject
+	class TVectorInterpolator : public io::serialized_object
 	{
 	public:
 		typedef math::Vec<T, Size> Vec;
@@ -264,7 +264,7 @@ namespace math
 
 	//--------------------------------------------------------------------------------------
 	// Интерполятор цвета
-	class ColorInterp : public io::ISerializedObject
+	class ColorInterp : public io::serialized_object
 	{
 	public:
 		Color operator()(float t)

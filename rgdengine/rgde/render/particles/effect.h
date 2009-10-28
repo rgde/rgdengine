@@ -12,23 +12,23 @@ namespace script
 
 namespace particles
 {
-	class Emitter;
+	class emitter;
 
-	class  Effect : /*public io::ISerializedObject,*/ public render::rendererable, 
-					 public game::dynamic_object, public core::XmlClass
+	class  effect : /*public io::serialized_object,*/ public render::rendererable, 
+					 public game::dynamic_object, public core::meta_class
 	{
 	public:
-		typedef std::list<Emitter*> tEmitters;
+		typedef std::list<emitter*> tEmitters;
 		typedef tEmitters::iterator	 tEmittersIter;
 
-		Effect();
-		virtual ~Effect();
+		effect();
+		virtual ~effect();
 		
 		friend class script::CEffectAdaptor;
 		inline const math::Frame& getTransform() { return m_Transform; }
 		
-		void addEmitter(Emitter* em);
-		void deleteEmitter(Emitter* em);
+		void addEmitter(emitter* em);
+		void deleteEmitter(emitter* em);
 
 		tEmitters& getEmitters() {return m_Emitters;}
 
@@ -54,9 +54,9 @@ namespace particles
 		math::Frame	m_Transform;
 		tEmitters		m_Emitters;						// Ёмиттеры
 		bool			m_bIsFading;
-		float			m_fOldTime;
+		float			old_time;
 
 	private:
-		static const unsigned ms_nVersion = 1001;
+		static const unsigned file_version = 1001;
 	};
 }

@@ -121,7 +121,7 @@ protected:
 
 	//данные для камеры
 	//контроллер камеры "нацеленная камера"
-	math::PTargetCamera  m_spTargetCamera; 
+	math::target_camera_ptr  m_spTargetCamera; 
 
 	std::auto_ptr<core::application> m_spApp;
 };

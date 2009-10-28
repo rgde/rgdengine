@@ -5,7 +5,7 @@
 namespace math
 {
 
-    typedef boost::shared_ptr<class CTargetCamera> PTargetCamera;
+    typedef boost::shared_ptr<class CTargetCamera> target_camera_ptr;
 
     //контроллер камеры аля "нацеленная камера"
     class CTargetCamera: public BaseCameraController
@@ -13,7 +13,7 @@ namespace math
         CTargetCamera(camera_ptr pCamera);
 
     public:
-        static PTargetCamera create(camera_ptr pCamera);
+        static target_camera_ptr create(camera_ptr pCamera);
 
         //положение
         void setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);

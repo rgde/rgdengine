@@ -68,7 +68,7 @@ namespace core
 	};
 
 	template <class T>
-	class XmlNode : public XmlClass, public TreeNode<T>
+	class XmlNode : public meta_class, public TreeNode<T>
 	{
 	public: 
 		typedef boost::intrusive_ptr<T> _PT;
@@ -80,7 +80,7 @@ namespace core
 			bool operator()(const _PT& obj) const {return obj->get_name() == m_name;}
 		};
 
-		XmlNode(const std::string& name) : XmlClass(name)
+		XmlNode(const std::string& name) : meta_class(name)
 		{
 		}
 

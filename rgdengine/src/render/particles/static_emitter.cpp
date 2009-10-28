@@ -4,19 +4,19 @@
 #include <rgde/render/particles/static_emitter.h>
 #include <rgde/render/particles/tank.h>
 
-using namespace particles::MayaStructs;
+using namespace particles::maya_structs;
 
 namespace particles{
 
-	std::map< std::string, MayaStructs::SFrameSequence> IMayaEmitter::m_FrSeq;
-	IMayaEmitter::PFrames IMayaEmitter::ms_PFrames;
+	std::map< std::string, maya_structs::animation> static_emitter::m_FrSeq;
+	static_emitter::PFrames static_emitter::ms_PFrames;
 
 	static std::wstring ms_strBaseFolder;
 
 	int em_num = 0;
 
 	//-----------------------------------------------------------------------------------
-	void IMayaEmitter::ClearCachedData()
+	void static_emitter::ClearCachedData()
 	{
 		ms_PFrames.clear();
 		m_FrSeq.clear();
@@ -24,8 +24,8 @@ namespace particles{
 		em_num = 0;			// zero emitters counter
 	}
 	//-----------------------------------------------------------------------------------
-	IMayaEmitter::IMayaEmitter(const std::string& sequence_name, const std::string texture_name) 
-		: m_fScale(1.0f), Emitter(Emitter::Maya)
+	static_emitter::static_emitter(const std::string& sequence_name, const std::string texture_name) 
+		: m_fScale(1.0f), emitter(emitter::Maya)
 	{
 		m_bIntense				= false;
 
@@ -59,11 +59,11 @@ namespace particles{
 		//REGISTER_PROPERTY(TexName, std::string)
 	}
 	//-----------------------------------------------------------------------------------
-	IMayaEmitter::~IMayaEmitter()
+	static_emitter::~static_emitter()
 	{
 	}
 	//-----------------------------------------------------------------------------------
-	void IMayaEmitter::loadTexture()
+	void static_emitter::loadTexture()
 	{
 		//try{
 		//	std::map<std::string, agl::AGLTexture>::iterator it = ms_Textures.find(m_TexName);
@@ -113,7 +113,7 @@ namespace particles{
 		m_bIsTexLoaded = true;
 	}
 	//-----------------------------------------------------------------------------------
-	void IMayaEmitter::update(float dt)
+	void static_emitter::update(float dt)
 	{
 		if (!m_bIsSeqLoaded) return;
 
@@ -134,7 +134,7 @@ namespace particles{
 		}
 	}
 	//-----------------------------------------------------------------------------------
-	void IMayaEmitter::render()
+	void static_emitter::render()
 	{
 		if (!(m_is_visible && m_bIsSeqLoaded))
 			return;
@@ -146,7 +146,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void IMayaEmitter::loadFrames(std::string file_name)
+	void static_emitter::loadFrames(std::string file_name)
 	{
 		m_fLastFrame = 0;
 		m_fLastTime = -1.0f;	
@@ -182,7 +182,7 @@ namespace particles{
 		}
 
 		{
-			SFrameSequence& fseq = m_FrSeq[m_Name];
+			animation& fseq = m_FrSeq[m_Name];
 		
 			{
 				std::string str = "Media/" + m_Name;
@@ -208,16 +208,16 @@ namespace particles{
 
 			for (unsigned int i = 0; i < fseq.frames.size(); ++i)
 			{
-				SFrame& m_spFrame = fseq.frames[i];
-				PPTank spTank(new PTank);
+				anim_frame& m_spFrame = fseq.frames[i];
+				PPTank spTank(new renderer);
 				psyst[i] = spTank;
 
-				PTank::ParticleArray& array = spTank->getParticles();
+				renderer::ParticleArray& array = spTank->getParticles();
 
 				array.resize( m_spFrame.number_of_particles );
 				for ( unsigned int pn = 0; pn < m_spFrame.number_of_particles; ++pn )
 				{
-					SMayaParticle& p = m_spFrame.particles[pn];
+					static_particle& p = m_spFrame.particles[pn];
 					array[pn].pos = math::Vec3f(p.x, p.y, p.z);
 					array[pn].size = math::Vec2f(p.scale, p.scale);
 					array[pn].spin = p.spin * 3.1415926f/180.0f;
@@ -266,12 +266,12 @@ namespace particles{
 		m_bIsSeqLoaded  = true;
 	}
 	//-----------------------------------------------------------------------------------
-	void IMayaEmitter::setIntense(bool intense)
+	void static_emitter::setIntense(bool intense)
 	{
 		m_bIntense = intense;
 	}
 	//-----------------------------------------------------------------------------------
-	void IMayaEmitter::setTexture(std::string tex)
+	void static_emitter::setTexture(std::string tex)
 	{
 		if ( tex.length() != 0 )
 		{
@@ -281,14 +281,14 @@ namespace particles{
 		}
 	}
 	//-----------------------------------------------------------------------------------
-	void IMayaEmitter::render(unsigned int frame_num)
+	void static_emitter::render(unsigned int frame_num)
 	{
 		PTanks& Frames = *m_Frames;
 		PPTank spTank = Frames[(unsigned int)frame_num];
 		spTank->render(m_texture, m_Transform);
 	}
 	//----------------------------------------------------------------------------------------
-	void IMayaEmitter::debugDraw()
+	void static_emitter::debugDraw()
 	{
 		m_Transform.debugDraw();
 
@@ -305,9 +305,9 @@ namespace particles{
 		render::Line3dManager& line_manager = render::TheLine3dManager::get();
 
 		PPTank spTank = psyst[frame_num];
-		PTank::ParticleArray& array = spTank->getParticles();
+		renderer::ParticleArray& array = spTank->getParticles();
 
-		for ( PTank::ParticleArrayIter it = array.begin(); it != array.end(); ++it )
+		for ( renderer::ParticleArrayIter it = array.begin(); it != array.end(); ++it )
 		{
 			//if (!m_bIsGlobal)
 			math::Vec3f center = m * (math::Point3f)it->pos;
@@ -318,13 +318,13 @@ namespace particles{
 		}
 	}
 	//-----------------------------------------------------------------------------------
-	void IMayaEmitter::fromStream(io::IReadStream& rf)
+	void static_emitter::fromStream(io::IReadStream& rf)
 	{
-		Emitter::fromStream (rf);
+		emitter::fromStream (rf);
 
 		unsigned version;
 		rf  >> version;
-		if( version != ms_nVersion )
+		if( version != file_version )
 			assert(false);
 
 		std::string seqName;
@@ -344,11 +344,11 @@ namespace particles{
 		setVisible( m_is_visible );
 	}
 	//-----------------------------------------------------------------------------------
-	void IMayaEmitter::toStream(io::IWriteStream& wf) const
+	void static_emitter::toStream(io::IWriteStream& wf) const
 	{
-		Emitter::toStream (wf);
+		emitter::toStream (wf);
 
-		wf  << ms_nVersion
+		wf  << file_version
 			<< m_Name
 			<< m_TexName
 			<< m_time_shift

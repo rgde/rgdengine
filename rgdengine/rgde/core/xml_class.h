@@ -7,16 +7,16 @@
 
 namespace core
 {
-	class XmlClass :  public PropertyOwner, 
+	class meta_class :  public PropertyOwner, 
 					  public FunctionsOwner, 
 					  public virtual named_object, 
 					  public virtual base::refcounted
 	{
 	public:
-		XmlClass(const std::string& name) : named_object(name)
+		meta_class(const std::string& name) : named_object(name)
 		{
 			//REGISTER_PROPERTY(Name, std::string)
 		}
-		virtual ~XmlClass(){}
+		virtual ~meta_class(){}
 	};
 }

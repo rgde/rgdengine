@@ -22,19 +22,19 @@ namespace render
 			readTNF(strTNFName);
 		}
 
-		m_pTank = particles::PPTank(new particles::PTank());
+		m_pTank = particles::PPTank(new particles::renderer());
 		m_pTank->setTextureTiling(m_nRows, m_nTotalColumns, m_nTotalRows);
 
 		int nFramesNum								= (int)vVector.size();
 		float fFramesNum							= (float)nFramesNum;
 
-		particles::PTank::ParticleArray &vArray	= m_pTank->getParticles();
+		particles::renderer::ParticleArray &vArray	= m_pTank->getParticles();
 
 		std::vector<math::frame_ptr>::const_iterator it= vVector.begin();
 
 		for (; it != vVector.end(); it++)
 		{
-			particles::PTank::SParticle particle;
+			particles::renderer::SParticle particle;
 			particle.pos = (*it)->getGlobalPosition() + pos;
 			particle.size = size;
 			particle.spin = 0.0f;
@@ -60,7 +60,7 @@ namespace render
 
 		if (nFramesToAdd != 0)
 		{
-			particles::PTank::ParticleArray &vParticles= m_pTank->getParticles();
+			particles::renderer::ParticleArray &vParticles= m_pTank->getParticles();
 
 			size_t nNumParticles						= vParticles.size();
 

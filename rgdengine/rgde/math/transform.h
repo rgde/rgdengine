@@ -9,7 +9,7 @@ namespace math
 	class Frame;
 	typedef boost::intrusive_ptr<Frame>  frame_ptr;
 
-	class Frame :	public io::ISerializedObject,
+	class Frame :	public io::serialized_object,
 					boost::noncopyable, 
 					public core::XmlNode<Frame>
 	{

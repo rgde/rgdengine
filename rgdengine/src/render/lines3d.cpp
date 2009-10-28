@@ -12,7 +12,7 @@ namespace render
 	//-----------------------------------------------------------------------------------
 	Line3dManager::Line3dManager(unsigned long uPriority)
 		: render::rendererable(1000),
-		  m_spEffect(Effect::create("Line3dManager.fx")),
+		  m_spEffect(effect::create("Line3dManager.fx")),
 		  m_uPriority(uPriority),
 		  m_Geometry(true)
 	{
@@ -38,7 +38,7 @@ namespace render
 
 		m_spEffect->getParams()["g_mLVP"]->set(mLVP);
 
-		render::Effect::ITechnique *pTechnique	= m_spEffect->findTechnique("Lines3d");
+		render::effect::ITechnique *pTechnique	= m_spEffect->findTechnique("Lines3d");
 		if (0 == pTechnique)
 			return;
 

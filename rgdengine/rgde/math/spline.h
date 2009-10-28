@@ -6,7 +6,7 @@ namespace math
 {
 
     template <typename VALUE>
-    class TSpline : public io::ISerializedObject
+    class TSpline : public io::serialized_object
     {
     public:
         typedef std::list<VALUE> List;

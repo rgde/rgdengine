@@ -6,7 +6,7 @@ namespace math
 
     //добавляя значение (VALUE), сразу указываем ее положение (POSITION) относительно других значений
     template <typename VALUE, typename POSITION>
-    class TInterpolatorEx: public io::ISerializedObject
+    class TInterpolatorEx: public io::serialized_object
     {
     public:
         typedef std::map<POSITION, VALUE> Map;

@@ -46,7 +46,7 @@ namespace scene
 		}
 	};
 
-	class SceneTree : public io::ISerializedObject 
+	class SceneTree : public io::serialized_object 
 	{
 	public:
 		SceneTree() :  m_root_node("Root") {}

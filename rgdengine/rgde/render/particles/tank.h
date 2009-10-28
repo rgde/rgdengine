@@ -5,7 +5,7 @@
 
 namespace particles
 {
-	class PTank
+	class renderer
 	{
 	public:
 		/// Структура с информацией по частице 
@@ -22,8 +22,8 @@ namespace particles
 		typedef std::vector< SParticle > ParticleArray;
 		typedef ParticleArray::iterator ParticleArrayIter;
 
-		PTank();
-		virtual ~PTank();
+		renderer();
+		virtual ~renderer();
 
 		void update();
 		void render(render::texture_ptr texture, math::Frame& transform);
@@ -39,13 +39,13 @@ namespace particles
 	private:
 		render::PEffect		m_spEffect;
 
-		typedef render::Effect::IParameter* EffectParam;
+		typedef render::effect::IParameter* EffectParam;
 		EffectParam m_paramUpVec;
 		EffectParam m_paramRightVec;
 		EffectParam m_paramParticleTexture;
 		EffectParam m_paramTransformMatrix;
 
-		render::Effect::ITechnique* m_pRenderTechnique;
+		render::effect::ITechnique* m_pRenderTechnique;
 
 		typedef render::TIndexedGeometry<vertex::PositionColoredTextured2, false> Geometry;
 		Geometry			m_Geometry;
@@ -56,5 +56,5 @@ namespace particles
 		float m_fInvTotalRows;
 	};
 
-	typedef boost::shared_ptr<PTank> PPTank;
+	typedef boost::shared_ptr<renderer> PPTank;
 }

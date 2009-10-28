@@ -42,7 +42,7 @@ namespace render
 
 		m_bAditive = false;
 
-		m_effect = Effect::create("SpriteManager.fx");
+		m_effect = effect::create("SpriteManager.fx");
 		m_renderInfo.pRenderFunc = boost::bind(&SpriteManager::render, this);
 	}
 
@@ -155,7 +155,7 @@ namespace render
 
 		update();
 
-		render::Effect::ITechnique *pTech	= NULL;
+		render::effect::ITechnique *pTech	= NULL;
 
 		if (m_bAditive)
 			pTech = m_effect->findTechnique("aditive");
@@ -167,11 +167,11 @@ namespace render
 
 		for (unsigned iPass = 0; iPass < pTech->getPasses().size(); iPass++)
 		{
-			Effect::ITechnique::IPass& pass = *pTech->getPasses()[iPass];
+			effect::ITechnique::IPass& pass = *pTech->getPasses()[iPass];
 			pass.begin();
 
 			unsigned nSpritesRendered = 0;
-			Effect::IParameter *textureShaderParam	= m_effect->getParams()["spriteTexture"];
+			effect::IParameter *textureShaderParam	= m_effect->getParams()["spriteTexture"];
 
 			assert(0 != textureShaderParam && "m_effect->getParams()[\"spriteTexture\"] == NULL !");
 

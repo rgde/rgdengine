@@ -102,7 +102,7 @@ namespace core
 			::render::TheLine3dManager::destroy();
 			::render::TheRenderManager::destroy();
 
-			::render::Effect::ClearAll();
+			::render::effect::ClearAll();
 
 			SAFE_RELEASE(g_pDefaultColorTarget);
 			SAFE_RELEASE(g_pDefaultDepthStencilTarget);
@@ -395,7 +395,7 @@ namespace core
 				1,				// Back Buffer Count (Double Buffer)
 				D3DMULTISAMPLE_4_SAMPLES/*D3DMULTISAMPLE_NONE*/,	// No Multi Sample Type
 				0,				// No Multi Sample Quality
-				D3DSWAPEFFECT_DISCARD,	// Swap Effect (Fast)
+				D3DSWAPEFFECT_DISCARD,	// Swap effect (Fast)
 				(HWND)m_hWnd,	// The Window Handle
 				TRUE,		// Windowed or Fullscreen
 				TRUE,			// Enable Auto Depth Stencil  

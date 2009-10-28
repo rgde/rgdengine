@@ -4,9 +4,9 @@
 
 //////////////////////////////////////////////////////////////////////////
 namespace particles{
-namespace MayaStructs{
+namespace maya_structs{
 //////////////////////////////////////////////////////////////////////////
-struct SMayaParticle
+struct static_particle
 {
 	float x,y,z;
 	float r,g,b,a;
@@ -44,11 +44,11 @@ struct SMayaParticle
 
 };
 //////////////////////////////////////////////////////////////////////////
-struct SFrame
+struct anim_frame
 {	
 	unsigned int frame_number;
 	unsigned int number_of_particles;
-	std::vector<SMayaParticle> particles;
+	std::vector<static_particle> particles;
 
 	void ReScale(float scale)
 	{
@@ -72,16 +72,16 @@ struct SFrame
 
 		for(unsigned int i = 0; i < number_of_particles; ++i)
 		{
-			SMayaParticle p; 
+			static_particle p; 
 			p.Load(in);
 			particles.push_back(p);
 		}
 	}
 };
 
-struct SFrameSequence
+struct animation
 {
-	virtual ~SFrameSequence(){}
+	virtual ~animation(){}
 	// определяется если есть разные номера текстур
 	bool isAnimatedTex;
 	// вообще-то что пока не факт что надо :)
@@ -92,7 +92,7 @@ struct SFrameSequence
 	// размера эфекта в памяти
 	unsigned int average_particles_number;
 	// список всех фреймов	
-	std::vector<SFrame> frames;
+	std::vector<anim_frame> frames;
 
 	void ReScale(float scale)
 	{
@@ -136,7 +136,7 @@ struct SFrameSequence
 
 			for (unsigned int i = 0; i < frame_num; ++i)
 			{
-				SFrame f; 
+				anim_frame f; 
 				f.Load(in);
 				frames.push_back(f);
 			}
@@ -148,5 +148,5 @@ struct SFrameSequence
 	}
 };
 //////////////////////////////////////////////////////////////////////////
-}	// namespace MayaStructs;
-}	// namespace pfx;
+}
+}

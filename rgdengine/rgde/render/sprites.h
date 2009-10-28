@@ -11,7 +11,7 @@
 namespace render
 {
 	typedef boost::shared_ptr<class texture> texture_ptr;
-	typedef boost::shared_ptr<class Effect> PEffect;
+	typedef boost::shared_ptr<class effect> PEffect;
 
 	struct Sprite
 	{

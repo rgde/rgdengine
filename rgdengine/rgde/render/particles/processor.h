@@ -20,53 +20,33 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 
 namespace particles{
 
-	class AbstractEmitter;
-	class PTank;
+	class base_emitter;
+	class renderer;
 
 
-	class  ParticlesProcessor : public io::ISerializedObject, public core::XmlClass
+	class  processor : public io::serialized_object, public core::meta_class
 	{
-		// версию надо увеличивать на 1 после каждой мождификации формата входных данных
-		static const unsigned ms_nVersion = 1004;//1003; // old - 1002
-
+		// need to manualy increment after each file format change (for code simplisity)
+		static const unsigned file_version = 1004;
 	public:
-		inline void setEmitter(AbstractEmitter* em) { m_pParentEmitter = em; }
+		inline void setEmitter(base_emitter* em) { m_pParentEmitter = em; }
 		
-		ParticlesProcessor(AbstractEmitter* em = 0);   // конструктор
-		virtual ~ParticlesProcessor();
+		processor(base_emitter* em = 0);
+		virtual ~processor();
 
 		void load();
 
-		void render();								// отрисовка
-		void update(float dt);						// апдейт
-		virtual void debugDraw();					// отрисовать схематичное отображение процессора
-		void reset();								// ReStart процессор - сбросить его время на 0
+		void render();
+		void update(float dt);
+		virtual void debugDraw();
+		void reset();
 
-	protected:
-		void loadTexture();
-		void initPTank();
-		inline void assignChilds();					// проинициализировать смарт поинтеры обьектами из дерева (фрейм, интерп..)
-		inline void createParticle(Particle& p);	// получает новую частицу от эмиттера
 
-		virtual void geomRender();
-		void fistTimeInit();
-		void updateParticle(Particle& p);			// пересчитывает новый кадр партиклов
-		void formTank();							// записывает в agl::Particles новый кадр партиклов
-		void addNewParticles(int num2add);
-
-	protected:
-		virtual void toStream(io::IWriteStream& wf) const;
-		virtual void fromStream(io::IReadStream& rf);
-
-	// Акксессоры
-	public:
-		// Акксессоры получения
 		const math::Matrix44f& getLTM();
 
-		// Акксессоры задания свойств
 		void setTextureName(const std::string& texName);
 
-		// Акксессоры интерполяторов
+		// interpolators
 		inline math::FloatInterp& particleRate()				{ return m_PRate; }
 		inline math::FloatInterp& particleResistance()			{ return m_PResistance; }
 		inline math::FloatInterp& particleSpin()				{ return m_PSpin; }
@@ -80,7 +60,7 @@ namespace particles{
 		inline math::Vec3Interp& particleInitialVelSpread()		{ return m_PInitialVelSpread; }
 		inline math::FloatInterp& particleVelSpreadAmplifier()	{ return m_PVelSpreadAmplifier; }
 
-		// Акксессоры получения / задания свойств
+		// getters/setters
 		inline bool isGlobal() const { return m_bIsGlobal; }
 		inline void setGlobal(bool b) { m_bIsGlobal = b; }
 
@@ -105,9 +85,23 @@ namespace particles{
 		inline bool getSparkMode() { return m_bIsSparks; }
 		inline void setSparkMode(bool sm) { m_bIsSparks = sm; }
 
+	protected:
+		void loadTexture();
+		void initPTank();
+		inline void assignChilds();
+		inline void createParticle(particle& p);
+
+		virtual void geomRender();
+		void fistTimeInit();
+		void updateParticle(particle& p);
+		void formTank();
+		void addNewParticles(int num2add);
+
+		virtual void toStream(io::IWriteStream& wf) const;
+		virtual void fromStream(io::IReadStream& rf);
 
 	protected:
-		PTank* m_spTank;
+		renderer* m_spTank;
 		render::texture_ptr m_texture;
 
 		//////////////////////////////////////////////////////////////////////////
@@ -138,7 +132,7 @@ namespace particles{
 		bool m_bIsPlayTexAnimation;
 		//////////////////////////////////////////////////////////////////////////
 
-		AbstractEmitter* m_pParentEmitter;
+		base_emitter* m_pParentEmitter;
 
 		math::UnitRandom2k  rnd;
 
@@ -174,7 +168,7 @@ namespace particles{
 		//std::string m_DffName;
 		//agl::PAtomic m_spGeom;
 
-		TParticles m_Particles;
+		particles_vector m_Particles;
 
 		bool m_bModifiersLoaded;
 		bool m_bIsVisible;

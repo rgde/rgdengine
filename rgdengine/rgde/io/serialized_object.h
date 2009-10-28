@@ -2,7 +2,7 @@
 
 namespace io
 {
-	class ISerializedObject
+	class serialized_object
 	{
 		friend class IWriteStream;
 		friend class IReadStream;
