@@ -12,6 +12,49 @@
 
 extern LPDIRECT3DDEVICE9 g_pd3dDevice;
 
+namespace
+{
+	struct dx_include_impl : public ID3DXInclude
+	{
+		STDMETHOD(Open)(D3DXINCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID *ppData, UINT *pBytes)		
+		{
+			__asm nop;
+
+			io::CFileSystem& fs = io::TheFileSystem::get();
+			// already set in effect::load
+			//io::ScopePathAdd p("Common/shaders/");
+			io::readstream_ptr in = fs.findFile(pFileName);
+
+			if (!in)
+			{
+				base::lerr << "include fx file not found: " << pFileName;
+
+				*pBytes = 0;
+				*ppData = 0;
+
+				return S_FALSE;
+			}
+
+			uint size = in->getSize();
+			byte* data = new byte[size];
+			in->readbuff(data, size);
+
+			*pBytes = size;
+			*ppData = data;
+
+			return S_OK;
+		}
+
+		STDMETHOD(Close)(LPCVOID pData)
+		{
+			byte* data = (byte*)pData;
+			delete []data;
+			return S_OK;
+		}
+	} __include_impl;
+}
+
+
 namespace render
 {
 	void getAnnotation(ID3DXEffect* pEffect, D3DXHANDLE hParentHandle, int id, effect::Annotation& annotation)
@@ -568,7 +611,7 @@ namespace render
 				std::vector<byte> data;
 				io::stream_to_vector(data, in);
 
-				V(D3DXCreateEffect(g_pd3dDevice, (void*)&(data[0]), (uint)data.size() , NULL, NULL, TheDevice::get().getShaderFlags(), 
+				V(D3DXCreateEffect(g_pd3dDevice, (void*)&(data[0]), (uint)data.size() , NULL, &__include_impl, TheDevice::get().getShaderFlags(), 
 					m_spPool, &m_effect, &pErrors));
 				//V(D3DXCreateEffectFromFile( g_pd3dDevice, m_name.c_str() , NULL, NULL, Device::get().getShaderFlags(), 
 				//	m_spPool, &m_effect, &pErrors));

@@ -6,7 +6,6 @@
 
 namespace particles
 {
-
 	//-----------------------------------------------------------------------------------
 	renderer::renderer() : m_nReservedSize(0)
 	{

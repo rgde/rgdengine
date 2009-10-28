@@ -59,6 +59,10 @@ public:
 	{
 		using namespace input;
 
+		Input::addCommand(L"Quit");
+		Input::addCommand(L"Horz");
+		Input::addCommand(L"Vert");
+
 		//m_cXAxis.attachToControl(input::Mouse, input::AxisX);
 		//m_cYAxis.attachToControl(input::Mouse, input::AxisY);
 		//m_cRightButton.attachToControl(input::Mouse, input::ButtonRight);
