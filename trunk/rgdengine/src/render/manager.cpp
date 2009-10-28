@@ -343,8 +343,10 @@ namespace render
 
 			functors::SDefaultRender r;
 
-			for (Renderables::iterator it = m_lRenderables.begin();
-				it != m_lRenderables.end(); ++it)
+			Renderables temp_copy = m_lRenderables;
+
+			for (Renderables::iterator it = temp_copy.begin();
+				it != temp_copy.end(); ++it)
 			{
 				if ((*it)->isVisible())
 					r(&(*it)->getRenderableInfo());
