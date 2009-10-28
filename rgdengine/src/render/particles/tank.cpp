@@ -10,16 +10,16 @@ namespace particles
 	//-----------------------------------------------------------------------------------
 	renderer::renderer() : m_nReservedSize(0)
 	{
-		m_spEffect = render::effect::create( "particles.fxo" );
+		m_effect = render::effect::create( "particles.fx" );
 
-		render::effect::Parameters& params = m_spEffect->getParams();
+		render::effect::Parameters& params = m_effect->getParams();
 
 		m_paramUpVec			= params["m_vUp"];
 		m_paramRightVec			= params["m_vRight"];
 		m_paramParticleTexture	= params["ParticlesTexture"];
 		m_paramTransformMatrix	= params["m_mLVP"];
 
-		m_pRenderTechnique = m_spEffect->findTechnique("PartilesRenderModulate");
+		m_pRenderTechnique = m_effect->findTechnique("PartilesRenderModulate");
 
 		setTextureTiling(1, 1, 1);
 	}
@@ -66,7 +66,7 @@ namespace particles
 		
 		std::vector<render::effect::ITechnique::IPass*>& passes = m_pRenderTechnique->getPasses();
 
-		m_spEffect->commitChanges();
+		m_effect->commitChanges();
 		m_pRenderTechnique->begin();
 
 		for(size_t pass = 0; pass < passes.size(); ++pass)

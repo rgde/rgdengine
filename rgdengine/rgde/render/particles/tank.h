@@ -37,7 +37,7 @@ namespace particles
 		unsigned long		m_nReservedSize; ///> Число частиц, для которого зарезервированы буферы
 
 	private:
-		render::PEffect		m_spEffect;
+		render::PEffect		m_effect;
 
 		typedef render::effect::IParameter* EffectParam;
 		EffectParam m_paramUpVec;
