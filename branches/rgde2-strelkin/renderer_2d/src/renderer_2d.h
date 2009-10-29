@@ -12,7 +12,7 @@ namespace rgde
 			typedef lines_vector::iterator lines_iter;
 			typedef sprites_vector::iterator sprites_iter;
 
-			renderer_2d(const device& dev, const uint buff_size = 2097000);
+			renderer_2d(const device& dev, const uint buff_size = 2097152, const uint butch_size = 524288);
 			~renderer_2d();
 
 			void init_device();
@@ -48,7 +48,12 @@ namespace rgde
 
 			base_texture_ptr default_texture;
 
-			uint m_buffer_size;			
+			// смещение вершин в буфере
+			uint m_buffer_offset;
+			// размер буфера
+			uint m_buffer_size;
+			// размер батча буфера
+			uint m_butch_size;
 		};
 	}
 }
