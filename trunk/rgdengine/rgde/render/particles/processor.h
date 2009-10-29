@@ -97,8 +97,8 @@ namespace particles{
 		void formTank();
 		void addNewParticles(int num2add);
 
-		virtual void toStream(io::IWriteStream& wf) const;
-		virtual void fromStream(io::IReadStream& rf);
+		virtual void toStream(io::write_stream& wf) const;
+		virtual void fromStream(io::read_stream& rf);
 
 	protected:
 		renderer* m_spTank;

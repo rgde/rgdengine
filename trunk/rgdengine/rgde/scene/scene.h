@@ -35,8 +35,8 @@ namespace scene
 
 	protected:
 		void auxDraw( math::frame_ptr frame );
-		virtual void toStream(io::IWriteStream& wf) const;
-		virtual void fromStream(io::IReadStream& rf);
+		virtual void toStream(io::write_stream& wf) const;
+		virtual void fromStream(io::read_stream& rf);
 
 	private:
 		std::list<scene_manager_ptr> m_Managers;

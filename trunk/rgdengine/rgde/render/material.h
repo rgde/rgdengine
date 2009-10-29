@@ -15,7 +15,7 @@ namespace render
 		Material(math::Color amb, math::Color diff, math::Color spec,
 				  math::Color em, float power);
 
-		void load(const std::string& fileName);
+		void load(const std::string& file_name);
 
 	public:
 		class MaterialMap
@@ -73,7 +73,7 @@ namespace render
 				  math::Color em = math::Black,
 				  float power = 1.0f);
 
-		static PMaterial create(const std::string& fileName);
+		static PMaterial create(const std::string& file_name);
 
 		virtual ~Material();
 

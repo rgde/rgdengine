@@ -166,8 +166,8 @@ namespace input
 		int  getMax () const {return m_max;}
 		void setMax (int value);
 
-		int  getPos () const {return m_pos;}		
-		void setPos (int value);
+		int  get_pos () const {return m_pos;}		
+		void set_pos (int value);
 
 	protected:
 		friend class Command;
@@ -193,7 +193,7 @@ namespace input
 
         float getX () const {return m_x;}
 		float getY () const {return m_y;}
-        void  setPos (float x, float y);
+        void  set_pos (float x, float y);
 
 	protected:
         void onCursorMove (mouse_move e);

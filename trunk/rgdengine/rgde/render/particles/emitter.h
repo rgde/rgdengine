@@ -43,8 +43,8 @@ namespace particles
 		inline Type getEmitterType() const { return m_type; }
 
 	protected:
-		virtual void toStream(io::IWriteStream& wf) const;
-		virtual void fromStream(io::IReadStream& rf);
+		virtual void toStream(io::write_stream& wf) const;
+		virtual void fromStream(io::read_stream& rf);
 
 	protected:
 		const Type		m_type;					// Тип эммитера

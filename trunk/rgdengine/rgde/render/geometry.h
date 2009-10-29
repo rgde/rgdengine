@@ -69,7 +69,7 @@ namespace render
 			////first try to find binary file
 			//std::wstring bin_filename = filename + L".mesh";
 			//io::readstream_ptr bin_in = fs.find(bin_filename);
-			////io::IReadStream& rs = *bin_in
+			////io::read_stream& rs = *bin_in
 
 			//uint vertex_size = 0;//Vertex size
 			//uint vdata_size = 0;//Vertex Data Size
@@ -78,7 +78,7 @@ namespace render
 
 
 			//io::readstream_ptr in = fs.find(filename);
-			//unsigned int size = in->getSize();
+			//unsigned int size = in->get_size();
 			//io::stream_to_vector(data, in);
 
 			//TiXmlDocument xml;//( xml_filename );
@@ -323,9 +323,9 @@ namespace render
 		std::vector<byte> data;
 		io::CFileSystem& fs = io::TheFileSystem::get();
 		io::readstream_ptr in = fs.find(xml_filename);
-		if (in && in->getSize() > 0)
+		if (in && in->get_size() > 0)
 		{
-			unsigned int size = in->getSize();
+			unsigned int size = in->get_size();
 			io::stream_to_vector(data, in);
 
 			TiXmlDocument xml;//( xml_filename );
@@ -495,14 +495,14 @@ namespace render
 			io::readstream_ptr bin_in = fs.find(bin_filename);
 			if (!bin_in)
 			{
-				bin_filename = io::helpers::getFileNameWithoutExtension(filename);
+				bin_filename = io::helpers::get_shot_filename(filename);
 				bin_filename += ".mesh";
 				bin_in = fs.find(bin_filename);
 			}
 
 			bool loaded = false;
 
-			if (bin_in && bin_in->getSize() > 0)
+			if (bin_in && bin_in->get_size() > 0)
 			{
 				uint vertex_size = 0;//Vertex size
 				uint vdata_size = 0;//Vertex Data Size
@@ -511,13 +511,13 @@ namespace render
 				{					
 					//Vertex Data
 					m_vVertexes.resize(vdata_size/vertex_size);
-					bin_in->readbuff((byte*)&(m_vVertexes[0]), vdata_size);
+					bin_in->read((byte*)&(m_vVertexes[0]), vdata_size);
 
 					(*bin_in) >> vertex_size >> vdata_size;
 					if (vertex_size == sizeof(unsigned short))
 					{
 						m_vIndexes.resize(vdata_size/vertex_size);
-						bin_in->readbuff((byte*)&(m_vIndexes[0]), vdata_size);
+						bin_in->read((byte*)&(m_vIndexes[0]), vdata_size);
 						loaded = true;
 					}
 				}

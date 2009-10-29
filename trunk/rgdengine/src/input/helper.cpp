@@ -298,7 +298,7 @@ namespace input
 			std::swap(m_min, m_max);
 		}
 
-		setPos(m_pos);
+		set_pos(m_pos);
 	}
 
 	void AbsoluteAxis::setMax (int nMax)
@@ -307,9 +307,9 @@ namespace input
 		setMin(m_min);
 	}
 
-	void AbsoluteAxis::setPos (int nPos)
+	void AbsoluteAxis::set_pos (int pos)
 	{
-		m_pos = min(max(m_min, nPos), m_max);
+		m_pos = min(max(m_min, pos), m_max);
 	}
 
 	void AbsoluteAxis::notify (const Control &rControl)
@@ -319,7 +319,7 @@ namespace input
 		if (rControl.getType() != Control::Axis)
 			return;
 
-		setPos(m_pos + rControl.m_delta);
+		set_pos(m_pos + rControl.m_delta);
 
 		std::list<AbsoluteAxis::AbsoluteAxisHandler>::iterator i = m_aaxisHandlers.begin();
 		while (i != m_aaxisHandlers.end())
@@ -341,7 +341,7 @@ namespace input
 		m_cursorHandlers.push_back(handler);
     }
 
-    void Cursor::setPos (float x, float y)
+    void Cursor::set_pos (float x, float y)
     {
         m_x = x;
         m_y = y;

@@ -6,7 +6,7 @@ namespace event
     class base_listener;
     class base_manager;
 
-    // базовый класс менеджера событий
+    // events manager base class
     class base_manager
     {
 	protected:
@@ -14,19 +14,19 @@ namespace event
 		virtual ~base_manager();
 
     public:
-        //отписать получателя от менеджера (потомка класса base_manager)
+        //unsubscribe events receiver from events manager (derived from base_manager)
 		virtual void unsubscribe (base_listener*) = 0;
         virtual void unsubscribe (base_listener*, base_sender*) = 0;
     };
 
-    // шаблонный класс менеджера событий
+    // events manager
     template <typename Event>
-    class manager: public base_manager
+    class manager : public base_manager
     {
-        //подписка на получение событий
+        //subscription info for receiving events notifications
         struct subscription
         {
-            base_listener                *m_pListener; //кто хочет получать события
+            base_listener                *m_pListener; // event notification receiver
             base_sender                  *m_pSender;   //от кого хочет получать события (0 - от всех)
             boost::function<void(Event)>  m_func;      //какой метод вызывать
 
@@ -36,7 +36,7 @@ namespace event
             }
         };
 
-		 typedef std::list<subscription> SubscriptionsList;
+		typedef std::list<subscription> SubscriptionsList;
 
     public:
         //singelton

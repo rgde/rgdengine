@@ -59,7 +59,7 @@ namespace render
 			return in;
 
 		{
-			std::string file = io::helpers::getFileNameWithoutExtension(file_name);
+			std::string file = io::helpers::get_shot_filename(file_name);
 			if (io::readstream_ptr in	= fs.find(file + ".jpg"))
 				return in;
 		}
@@ -97,7 +97,7 @@ namespace render
 			return; //false
 		}
 
-		unsigned int size	= in->getSize();
+		unsigned int size	= in->get_size();
 		io::stream_to_vector(data, in);
 
 		m_eUsage = DefaultUsage;

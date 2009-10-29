@@ -83,7 +83,7 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void box_emitter::toStream(io::IWriteStream& wf) const
+	void box_emitter::toStream(io::write_stream& wf) const
 	{
 		base_emitter::toStream(wf);
 
@@ -94,7 +94,7 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void box_emitter::fromStream(io::IReadStream& rf)
+	void box_emitter::fromStream(io::read_stream& rf)
 	{
 		base_emitter::fromStream(rf);
 

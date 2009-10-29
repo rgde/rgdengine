@@ -73,10 +73,10 @@ namespace render
 		return PMaterial(new Material(amb, diff, spec, em, power));
 	}
 
-	PMaterial Material::create(const std::string& fileName)
+	PMaterial Material::create(const std::string& file_name)
 	{
 		PMaterial mat = Material::create();
-		mat->load(fileName);
+		mat->load(file_name);
 		return mat;
 	}
 
@@ -176,17 +176,17 @@ namespace render
 		}
 	}
 
-	void Material::load(const std::string& fileName)
+	void Material::load(const std::string& file_name)
 	{
-		m_file_name = fileName;
-		base::lmsg << "loading material: " << "\"" << fileName << "\"";
+		m_file_name = file_name;
+		base::lmsg << "loading material: " << "\"" << file_name << "\"";
 
 		TiXmlDocument mat;
 		{
 			io::ScopePathAdd p	("Materials/");
-			if (!base::load_xml(fileName, mat))
+			if (!base::load_xml(file_name, mat))
 			{
-				base::lerr << "Не могу загрузить файл материала!" << "\"" << fileName << "\"";
+				base::lerr << "Не могу загрузить файл материала!" << "\"" << file_name << "\"";
 				return;
 			}
 		}

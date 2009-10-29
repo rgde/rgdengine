@@ -24,7 +24,7 @@ struct static_particle
 		scale *= _scale;
 	}
 
-	void Save(io::IWriteStream& out, float _scale = 1.0f)
+	void Save(io::write_stream& out, float _scale = 1.0f)
 	{
 		out << x * _scale << y * _scale << z * _scale
 			<< r << g << b << a 
@@ -33,7 +33,7 @@ struct static_particle
 			<< tex_num;
 	}
 
-	void Load(io::IReadStream& in)
+	void Load(io::read_stream& in)
 	{
 		in	>> x >> y >> z
 			>> r >> g >> b >> a 
@@ -56,7 +56,7 @@ struct anim_frame
 			particles[i].ReScale(scale);
 	}
 
-	void Save(io::IWriteStream& out, float scale = 1.0f)
+	void Save(io::write_stream& out, float scale = 1.0f)
 	{
 		out << frame_number
 			<< number_of_particles;
@@ -65,7 +65,7 @@ struct anim_frame
 			particles[i].Save(out, scale);
 	}
 
-	void Load(io::IReadStream& in)
+	void Load(io::read_stream& in)
 	{
 		in  >> frame_number
 			>> number_of_particles;
@@ -100,7 +100,7 @@ struct animation
 			frames[i].ReScale(scale);
 	}
 
-	void Save(io::IWriteStream& out, float scale = 1.0f)
+	void Save(io::write_stream& out, float scale = 1.0f)
 	{
 		char ver = 1; // версия
 
@@ -119,7 +119,7 @@ struct animation
 			frames[i].Save(out, scale);
 	}
 
-	bool Load(io::IReadStream& in)
+	bool Load(io::read_stream& in)
 	{
 		try{
 			char ver;

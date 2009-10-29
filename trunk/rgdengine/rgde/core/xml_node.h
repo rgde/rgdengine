@@ -37,7 +37,7 @@ namespace core
 		}
 
 		const node_ptr& get_parent() const  {return m_parent;}
-		node_ptr		get_parent()			{return m_parent;}
+		node_ptr		get_parent()		{return m_parent;}
 
 		//children_list& get_children() {return m_children;}
 		const children_list& get_children() const {return m_children;}

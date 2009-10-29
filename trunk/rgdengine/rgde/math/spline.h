@@ -27,8 +27,8 @@ namespace math
         //virtual void undo() {}
 
     protected:
-        void toStream(io::IWriteStream& ws) const;
-        void fromStream(io::IReadStream& rs);
+        void toStream(io::write_stream& ws) const;
+        void fromStream(io::read_stream& rs);
 
     private:
         TSpline(const TSpline&);
@@ -36,7 +36,7 @@ namespace math
     };
 
     template <typename VALUE>
-    void TSpline<VALUE>::toStream(io::IWriteStream& ws) const
+    void TSpline<VALUE>::toStream(io::write_stream& ws) const
     {
         ws << uint(m_values.size());
 
@@ -45,7 +45,7 @@ namespace math
     }
 
     template <typename VALUE>
-    void TSpline<VALUE>::fromStream(io::IReadStream& rs)
+    void TSpline<VALUE>::fromStream(io::read_stream& rs)
     {
         m_values.swap(List());
 

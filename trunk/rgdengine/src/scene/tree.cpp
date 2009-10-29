@@ -24,7 +24,7 @@ namespace scene
 		//}
 	}
 
-	void node::toStream(io::IWriteStream& wf)
+	void node::toStream(io::write_stream& wf)
 	{
 		//unsigned num_children = (unsigned)m_children.size();
 		//wf << num_children;
@@ -34,7 +34,7 @@ namespace scene
 		//	wf << *(*it);
 		//}
 	}
-	void node::fromStream(io::IReadStream& rf)
+	void node::fromStream(io::read_stream& rf)
 	{
 		//unsigned num_children;
 		//rf >> num_children;
@@ -49,11 +49,11 @@ namespace scene
 	}
 
 
-	void SceneTree::toStream(io::IWriteStream& wf)
+	void SceneTree::toStream(io::write_stream& wf)
 	{
 		//wf << m_root_node;
 	}
-	void SceneTree::fromStream(io::IReadStream& rf)
+	void SceneTree::fromStream(io::read_stream& rf)
 	{
 		//rf >> m_root_node;
 	}

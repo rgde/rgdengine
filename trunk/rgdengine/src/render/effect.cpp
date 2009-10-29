@@ -35,9 +35,9 @@ namespace
 				return S_FALSE;
 			}
 
-			uint size = in->getSize();
+			uint size = in->get_size();
 			byte* data = new byte[size];
-			in->readbuff(data, size);
+			in->read(data, size);
 
 			*pBytes = size;
 			*ppData = data;
@@ -156,7 +156,7 @@ namespace render
 			return m_semantic;
 		}
 
-		unsigned int getSize() const
+		unsigned int get_size() const
 		{
 			return m_size;
 		}
@@ -731,25 +731,25 @@ namespace render
 	//------------------------------------------------------------------------------
 	// Static methods.
 	//------------------------------------------------------------------------------
-	PEffect effect::create(const std::string& fileName)
+	PEffect effect::create(const std::string& file_name)
 	{
-		//guard(PEffect effect::create(std::wstring fileName))
+		//guard(PEffect effect::create(std::wstring file_name))
 
-		EffectsList::iterator it = std::find_if(effects.begin(), effects.end(), _seacher(fileName));
+		EffectsList::iterator it = std::find_if(effects.begin(), effects.end(), _seacher(file_name));
 
 		if (it != effects.end())
 			return it->effect;
 
 		EffectEntry ee;
 		ee.effect = PEffect(new CEffect());
-		bool res = ee.effect->load(fileName);
-		ee.name = fileName;
+		bool res = ee.effect->load(file_name);
+		ee.name = file_name;
 
 		ee.effect = res ? ee.effect : PEffect();
 
 		if (!res)
 		{
-			base::lerr << "effect::create(std::string effect_name): Can't load effect:" << fileName;
+			base::lerr << "effect::create(std::string effect_name): Can't load effect:" << file_name;
 		}
 
 		effects.push_back(ee);

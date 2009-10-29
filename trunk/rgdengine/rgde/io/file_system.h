@@ -5,17 +5,17 @@
 
 namespace io
 {
-	typedef boost::shared_ptr<class IFileSource> PFileSource;
-	typedef boost::shared_ptr<class IReadStream> readstream_ptr;
+	typedef boost::shared_ptr<class base_file_souce> PFileSource;
+	typedef boost::shared_ptr<class read_stream> readstream_ptr;
 
-	class IFileSource
+	class base_file_souce
 	{
 	public:
-		virtual ~IFileSource(){}
+		virtual ~base_file_souce(){}
 
 		virtual int			get_priority() const = 0;
-		virtual readstream_ptr find(const std::string& strFilePath) const = 0;
-		virtual bool		isExist	(const std::string& strFilePath) const = 0;
+		virtual readstream_ptr find(const std::string& file_path) const = 0;
+		virtual bool		isExist	(const std::string& file_path) const = 0;
 
 		static PFileSource  CreateDirectorySource(const Path& path);
 		//static PFileSource CreateZipSource(const Path& path);
@@ -32,8 +32,8 @@ namespace io
 		void		setRootDir(const Path& path);
 
 		void		addFileSource(const PFileSource& spFileSource);
-		readstream_ptr find(const std::string& strFilePath) const;
-		bool		isExist	(const std::string& strFilePath) const;
+		readstream_ptr find(const std::string& file_path) const;
+		bool		isExist	(const std::string& file_path) const;
 
 	public:
 		typedef std::list<PFileSource> Sources;
@@ -72,20 +72,20 @@ namespace io
 			return;
 		}
 
-		uint size = s->getSize();
+		uint size = s->get_size();
 
 		if (!from_current_pos)
 		{
-			s->setPos(0);
+			s->set_pos(0);
 		}
 		else
 		{
-			size -= s->getPos();
+			size -= s->get_pos();
 		}
 		
 		uint vsize  = size/sizeof(DataType);
 
 		v.resize(vsize);
-		s->readbuff((byte*)&(v[0]), size);
+		s->read((byte*)&(v[0]), size);
 	}
 }

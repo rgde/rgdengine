@@ -9,8 +9,8 @@ namespace io
 	//////////////////////////////////////////////////////////////////////////
 	namespace helpers
 	{
-		std::string getFileExtension(const std::string& fileName);
-		std::string getFileNameWithoutExtension(const std::string& fileName);
+		std::string get_file_ext(const std::string& file_name);
+		std::string get_shot_filename(const std::string& file_name);
 		//std::string createFullFilePath(const std::string& path);
 		//std::string createFullFilePathA (const std::string& path);
 		std::string wstr_to_str (const std::wstring& wstr);
@@ -18,39 +18,37 @@ namespace io
 	}
 	//////////////////////////////////////////////////////////////////////////
 
-	class IStream
+	struct base_stream
 	{
-	public:
-		virtual ~IStream(){}
-
-		virtual bool isValid() const = 0;
+		virtual ~base_stream(){}
+		virtual bool is_valid() const = 0;
 	};
 
-	typedef boost::shared_ptr<IStream> PStream;
+	typedef boost::shared_ptr<base_stream> stream_ptr;
 
-	class IReadStream : public virtual IStream
+	class read_stream : public base_stream
 	{
 	public:
-		virtual void readbuff(byte* buff, unsigned size) = 0;
+		virtual void read(byte* buff, unsigned size) = 0;
 
-		virtual unsigned long getSize() const = 0;
-		virtual unsigned long getPos() = 0;
-		virtual void setPos(unsigned long nPos) = 0;
+		virtual unsigned long get_size() const = 0;
+		virtual unsigned long get_pos() = 0;
+		virtual void set_pos(unsigned long pos) = 0;
 
-		virtual ~IReadStream(){}
+		virtual ~read_stream(){}
 	};
 
-	typedef boost::shared_ptr<IReadStream> readstream_ptr;
+	typedef boost::shared_ptr<read_stream> readstream_ptr;
 
-	class IWriteStream : public virtual IStream
+	class write_stream : public virtual base_stream
 	{
 	public:
 		virtual void writebuff(const byte* buff, unsigned size) = 0;
-		virtual ~IWriteStream(){}
+		virtual ~write_stream(){}
     };
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
-#define SUPPORT_SAVING_SIMPLE_TYPE(type) inline IWriteStream& operator << (IWriteStream& wf, type var) \
+#define SUPPORT_SAVING_SIMPLE_TYPE(type) inline write_stream& operator << (write_stream& wf, type var) \
 										 {\
 										 	 wf.writebuff((const byte*)&var, sizeof(type));\
 											 return wf;\
@@ -67,7 +65,7 @@ namespace io
 //	SUPPORT_SAVING_SIMPLE_TYPE(size_t)
 
 	template<typename T>
-	inline IWriteStream& operator << (IWriteStream& wf, const std::vector<T>& container)
+	inline write_stream& operator << (write_stream& wf, const std::vector<T>& container)
 	{
 		typedef std::vector<T>::const_iterator Iter;
 
@@ -81,7 +79,7 @@ namespace io
 	}
 
 	template<typename T>
-	inline IWriteStream& operator << (IWriteStream& wf, const std::list<T>& container)
+	inline write_stream& operator << (write_stream& wf, const std::list<T>& container)
 	{
 		typedef std::list<T>::const_iterator contIter;
 
@@ -94,21 +92,21 @@ namespace io
 		return wf;
 	}
 
-	IWriteStream& operator << (IWriteStream& wf, const std::string& str);
-	IWriteStream& operator << (IWriteStream& wf, const serialized_object& so);
-	IWriteStream& operator << (IWriteStream& wf, const math::Vec3f& vec);
-	IWriteStream& operator << (IWriteStream& wf, const math::Vec4f& vec);
-	IWriteStream& operator << (IWriteStream& wf, const math::Point3f& point);
-	IWriteStream& operator << (IWriteStream& wf, const math::Quatf& quat);
-	IWriteStream& operator << (IWriteStream& wf, const std::wstring& str);
+	write_stream& operator << (write_stream& wf, const std::string& str);
+	write_stream& operator << (write_stream& wf, const serialized_object& so);
+	write_stream& operator << (write_stream& wf, const math::Vec3f& vec);
+	write_stream& operator << (write_stream& wf, const math::Vec4f& vec);
+	write_stream& operator << (write_stream& wf, const math::Point3f& point);
+	write_stream& operator << (write_stream& wf, const math::Quatf& quat);
+	write_stream& operator << (write_stream& wf, const std::wstring& str);
 
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
-#define SUPPORT_READING_SIMPLE_TYPE(type) inline IReadStream& operator >> (IReadStream& rf, type& var) \
+#define SUPPORT_READING_SIMPLE_TYPE(type) inline read_stream& operator >> (read_stream& rf, type& var) \
 											{\
-												rf.readbuff((byte*)&var, sizeof(type));\
+												rf.read((byte*)&var, sizeof(type));\
 												return rf;\
 											}
 
@@ -123,7 +121,7 @@ namespace io
 	//	SUPPORT_SAVING_SIMPLE_TYPE(size_t)
 
 	template<typename T>
-	inline IReadStream& operator >> (IReadStream& rf, std::vector<T>& container)
+	inline read_stream& operator >> (read_stream& rf, std::vector<T>& container)
 	{
 		typedef std::vector<T>::iterator contIter;
 
@@ -139,7 +137,7 @@ namespace io
 	}
 
 	template<typename T>
-	inline IReadStream& operator >> (IReadStream& rf, std::list<T>& container)
+	inline read_stream& operator >> (read_stream& rf, std::list<T>& container)
 	{
 		typedef std::list<T>::iterator contIter;
 
@@ -154,13 +152,13 @@ namespace io
 		return rf;
 	}
 
-	IReadStream& operator >> (IReadStream& rf, std::string& str);
-	IReadStream& operator >> (IReadStream& rf, serialized_object& so);
-	IReadStream& operator >> (IReadStream& rf, math::Vec3f& vec);
-	IReadStream& operator >> (IReadStream& rf, math::Vec4f& vec);
-	IReadStream& operator >> (IReadStream& rf, math::Point3f& point);
-	IReadStream& operator >> (IReadStream& rf, math::Quatf& quat);
-	IReadStream& operator >> (IReadStream& rf, std::wstring& str);
+	read_stream& operator >> (read_stream& rf, std::string& str);
+	read_stream& operator >> (read_stream& rf, serialized_object& so);
+	read_stream& operator >> (read_stream& rf, math::Vec3f& vec);
+	read_stream& operator >> (read_stream& rf, math::Vec4f& vec);
+	read_stream& operator >> (read_stream& rf, math::Point3f& point);
+	read_stream& operator >> (read_stream& rf, math::Quatf& quat);
+	read_stream& operator >> (read_stream& rf, std::wstring& str);
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 
@@ -170,7 +168,7 @@ namespace io
 	{
 	public:
 		bool isOpened()					const {return m_isOpened;}
-		bool isValid()					const {return m_isValid;}
+		bool is_valid()					const {return m_isValid;}
 		bool isHasError()				const {return m_isError;}
 		const Path& GetPath()			const {return m_path;}
 		const std::string& get_name()	const {return m_name;}
@@ -191,14 +189,14 @@ namespace io
 		Path		m_path;		
 	};
 
-	class CWriteFileStream : public IFile, public IWriteStream, boost::noncopyable
+	class CWriteFileStream : public IFile, public write_stream, boost::noncopyable
 	{
 	public:
 		CWriteFileStream();
 		CWriteFileStream(const std::string& file_name);
 		virtual ~CWriteFileStream();
 
-		virtual bool isValid() const {return IFile::isValid();}
+		virtual bool is_valid() const {return IFile::is_valid();}
 
 		virtual void writebuff(const byte* buff, unsigned size);
 
@@ -212,20 +210,20 @@ namespace io
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 
-	class CReadFileStream 
-		: public IFile, public IReadStream, boost::noncopyable
+	class read_file_stream 
+		: public IFile, public read_stream, boost::noncopyable
 	{
 	public:
-		CReadFileStream();
-		CReadFileStream(const std::string& file_name);
-		virtual ~CReadFileStream();
+		read_file_stream();
+		read_file_stream(const std::string& file_name);
+		virtual ~read_file_stream();
 
-		virtual bool isValid() const {return IFile::isValid();}
-		virtual void readbuff(byte* buff, unsigned size);
+		virtual bool is_valid() const {return IFile::is_valid();}
+		virtual void read(byte* buff, unsigned size);
 
-		virtual unsigned long getSize() const;
-		virtual unsigned long getPos();
-		virtual void setPos(unsigned long nPos);
+		virtual unsigned long get_size() const;
+		virtual unsigned long get_pos();
+		virtual void set_pos(unsigned long pos);
 
 	protected:		
 		virtual bool do_open_file(const std::string& file_name, const Path& path);

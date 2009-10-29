@@ -77,9 +77,9 @@ namespace live_tree
 		// set object dimensions as aabb
 		void					setAABB( const AABoxf& aabb );
 		// get object position
-		const Point3f&			getPos( void ) const;
+		const Point3f&			get_pos( void ) const;
 		// set object position
-		void					setPos( const Point3f& pos );
+		void					set_pos( const Point3f& pos );
 		// get object extents
 		const Point3f&			getExt( void ) const;
 		// set object extents
@@ -214,7 +214,7 @@ namespace live_tree
 		// eject object now in any case
 		virtual void			ejectNow( PObject pObj );
 		// set object new position
-		virtual void			setPos( PObject pObj, const Point3f pos );
+		virtual void			set_pos( PObject pObj, const Point3f pos );
 		// set object new extents
 		virtual void			setExt( PObject pObj, const Point3f ext );
 		// move object to new position
@@ -305,7 +305,7 @@ namespace live_tree
 		// eject object now in any case. correctly eject dynamic object
 		void					ejectNow( PObject pObj );
 		// set object new position
-		void					setPos( PObject pObj, const Point3f pos );
+		void					set_pos( PObject pObj, const Point3f pos );
 		// set object new extents
 		void					setExt( PObject pObj, const Point3f ext );
 		// move object to new position

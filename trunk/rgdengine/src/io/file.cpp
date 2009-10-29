@@ -8,17 +8,17 @@ namespace io
 	namespace helpers
 	{
 		//-----------------------------------------------------------------------------------
-		std::string getFileExtension(const std::string &fileName)
+		std::string get_file_ext(const std::string &file_name)
 		{
-			size_t pos	= fileName.rfind(".") + 1;
-			return fileName.substr(pos, fileName.size() - pos);
+			size_t pos	= file_name.rfind(".") + 1;
+			return file_name.substr(pos, file_name.size() - pos);
 		}
 
 		//-----------------------------------------------------------------------------------
-		std::string getFileNameWithoutExtension(const std::string &fileName)
+		std::string get_shot_filename(const std::string &file_name)
 		{
-			size_t pos	= fileName.rfind(".");
-			return fileName.substr(0, pos);
+			size_t pos	= file_name.rfind(".");
+			return file_name.substr(0, pos);
 		}
 
 		////-----------------------------------------------------------------------------------
@@ -54,57 +54,57 @@ namespace io
 		}
 	}
 	//////////////////////////////////////////////////////////////////////////
-	IReadStream & operator >>(IReadStream &rf, std::string &str)
+	read_stream & operator >>(read_stream &rf, std::string &str)
 	{
 		unsigned size	= 0;
-		rf.readbuff((byte *)&size, sizeof(unsigned));
+		rf.read((byte *)&size, sizeof(unsigned));
 		char *c_str	= new char[size];
-		rf.readbuff((byte *)c_str, size * sizeof(char));
+		rf.read((byte *)c_str, size * sizeof(char));
 		str = std::string(c_str);
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	IReadStream & operator >>(IReadStream &rf, serialized_object &so)
+	read_stream & operator >>(read_stream &rf, serialized_object &so)
 	{
 		so.read(rf);
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	IReadStream & operator >>(IReadStream &rf, math::Vec3f &vec)
+	read_stream & operator >>(read_stream &rf, math::Vec3f &vec)
 	{
 		rf >> vec[0] >> vec[1] >> vec[2];
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	IReadStream & operator >>(IReadStream &rf, math::Vec4f &vec)
+	read_stream & operator >>(read_stream &rf, math::Vec4f &vec)
 	{
 		rf >> vec[0] >> vec[1] >> vec[2] >> vec[3];
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	IReadStream & operator >>(IReadStream &rf, math::Point3f &point)
+	read_stream & operator >>(read_stream &rf, math::Point3f &point)
 	{
 		rf >> point[0] >> point[1] >> point[2];
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	IReadStream & operator >>(IReadStream &rf, math::Quatf &quat)
+	read_stream & operator >>(read_stream &rf, math::Quatf &quat)
 	{
 		rf >> quat[0] >> quat[1] >> quat[2] >> quat[3];
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	IReadStream & operator >>(IReadStream &rf, std::wstring &str)
+	read_stream & operator >>(read_stream &rf, std::wstring &str)
 	{
 		unsigned size	= 0;
-		rf.readbuff((byte *)&size, sizeof(unsigned));
+		rf.read((byte *)&size, sizeof(unsigned));
 		wchar_t *c_str	= new wchar_t[size];
-		rf.readbuff((byte *)c_str, size * sizeof(wchar_t));
+		rf.read((byte *)c_str, size * sizeof(wchar_t));
 		str = std::wstring(c_str);
 		return rf;
 	}
 	//////////////////////////////////////////////////////////////////////////
-	IWriteStream & operator <<(IWriteStream &wf, const std::string &str)
+	write_stream & operator <<(write_stream &wf, const std::string &str)
 	{
 		unsigned size	= (unsigned)str.size();
 		size++;
@@ -113,37 +113,37 @@ namespace io
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	IWriteStream & operator <<(IWriteStream &wf, const serialized_object &so)
+	write_stream & operator <<(write_stream &wf, const serialized_object &so)
 	{
 		so.write(wf);
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	IWriteStream & operator <<(IWriteStream &wf, const math::Vec3f &vec)
+	write_stream & operator <<(write_stream &wf, const math::Vec3f &vec)
 	{
 		wf << vec[0] << vec[1] << vec[2];
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	IWriteStream & operator <<(IWriteStream &wf, const math::Vec4f &vec)
+	write_stream & operator <<(write_stream &wf, const math::Vec4f &vec)
 	{
 		wf << vec[0] << vec[1] << vec[2] << vec[3];
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	IWriteStream & operator <<(IWriteStream &wf, const math::Point3f &point)
+	write_stream & operator <<(write_stream &wf, const math::Point3f &point)
 	{
 		wf << point[0] << point[1] << point[2];
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	IWriteStream & operator <<(IWriteStream &wf, const math::Quatf &quat)
+	write_stream & operator <<(write_stream &wf, const math::Quatf &quat)
 	{
 		wf << quat[0] << quat[1] << quat[2] << quat[3];
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	IWriteStream & operator <<(IWriteStream &wf, const std::wstring &str)
+	write_stream & operator <<(write_stream &wf, const std::wstring &str)
 	{
 		unsigned size	= (unsigned)str.size();
 		size++;
@@ -193,7 +193,7 @@ namespace io
 		m_fileStream.write((const char*)buff, size);
 	}
 	//////////////////////////////////////////////////////////////////////////
-	CReadFileStream::CReadFileStream()
+	read_file_stream::read_file_stream()
 		: m_size(0)
 	{
 		m_isOpened = false;
@@ -201,7 +201,7 @@ namespace io
 		m_isError = false;
 	}
 	//-----------------------------------------------------------------------------------
-	CReadFileStream::CReadFileStream(const std::string& file_name)
+	read_file_stream::read_file_stream(const std::string& file_name)
 		: m_size(0)
 	{
 		m_isOpened = false;
@@ -211,17 +211,17 @@ namespace io
 		m_isValid = m_isOpened;
 	}
 	//-----------------------------------------------------------------------------------
-	CReadFileStream::~CReadFileStream()
+	read_file_stream::~read_file_stream()
 	{
 		m_fileStream.close();
 	}
 	//-----------------------------------------------------------------------------------
-	void CReadFileStream::readbuff(byte *buff, unsigned size)
+	void read_file_stream::read(byte *buff, unsigned size)
 	{
 		m_fileStream.read((char*)buff, size);
 	}
 	//-----------------------------------------------------------------------------------
-	bool CReadFileStream::do_open_file(const std::string& fullname, const Path& path)
+	bool read_file_stream::do_open_file(const std::string& fullname, const Path& path)
 	{
 		//std::string fullname= file_name;// + (std::string)path;
 		if (m_isOpened)
@@ -244,19 +244,19 @@ namespace io
 		return m_isOpened;
 	}
 	//-----------------------------------------------------------------------------------
-	unsigned long CReadFileStream::getSize() const
+	unsigned long read_file_stream::get_size() const
 	{
 		return m_size;
 	}
 	//-----------------------------------------------------------------------------------
-	unsigned long CReadFileStream::getPos()
+	unsigned long read_file_stream::get_pos()
 	{
 		return m_fileStream.tellg();;
 	}
 	//-----------------------------------------------------------------------------------
-	void CReadFileStream::setPos(unsigned long nPos)
+	void read_file_stream::set_pos(unsigned long pos)
 	{
-		m_fileStream.seekg(nPos, std::ios_base::beg);
+		m_fileStream.seekg(pos, std::ios_base::beg);
 	}
 	//-----------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------

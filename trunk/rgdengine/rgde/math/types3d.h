@@ -52,7 +52,7 @@ namespace math
 		Rect(const Vec2f& pos, const Vec2f& s);
 
 		const Vec2f& getTopLeft()		const	{ return position; }
-		const Vec2f& getSize()			const	{ return size;}
+		const Vec2f& get_size()			const	{ return size;}
 		const Vec2f& getPosition()		const	{ return position;}
 		Vec2f getTopRight()		const	{ return Vec2f (x+w, y); }
 		Vec2f getBottomLeft()	const	{ return Vec2f (x, y+h); }

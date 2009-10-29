@@ -48,11 +48,11 @@ namespace math
 	{
 		const std::string &strFrameName = get_name();
 
-		size_t nPos = strFrameName.find_first_of("_");
-		if(nPos != -1)
+		size_t pos = strFrameName.find_first_of("_");
+		if(pos != -1)
 		{
 			size_t nBegin = strFrameName.find_first_not_of(" ");
-			std::string name = strFrameName.substr(nBegin, nPos - nBegin);
+			std::string name = strFrameName.substr(nBegin, pos - nBegin);
 
 			if(name == strTemplate)
 				container.push_back(this);
@@ -228,7 +228,7 @@ namespace math
 	};
 
 	//-----------------------------------------------------------------------------------
-	void Frame::toStream(io::IWriteStream& wf) const
+	void Frame::toStream(io::write_stream& wf) const
 	{
 		wf	<< m_scale
 			<< m_position
@@ -241,7 +241,7 @@ namespace math
 	}
 
 	//-----------------------------------------------------------------------------------
-	void Frame::fromStream(io::IReadStream& rf)
+	void Frame::fromStream(io::read_stream& rf)
 	{
 		rf	>> m_scale
 			>> m_position

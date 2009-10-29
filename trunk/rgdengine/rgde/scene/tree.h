@@ -29,8 +29,8 @@ namespace scene
 		inline node::type	getNodeType() const {return m_node_type;}
 
 	protected:
-		virtual void toStream(io::IWriteStream& wf);
-		virtual void fromStream(io::IReadStream& rf);
+		virtual void toStream(io::write_stream& wf);
+		virtual void fromStream(io::read_stream& rf);
 
 	protected:
 		node::type	 m_node_type;
@@ -55,8 +55,8 @@ namespace scene
 		inline node&		 getRootNode(){return m_root_node;}
 
 	protected:
-		virtual void		 toStream(io::IWriteStream& wf);
-		virtual void		 fromStream(io::IReadStream& rf);
+		virtual void		 toStream(io::write_stream& wf);
+		virtual void		 fromStream(io::read_stream& rf);
 
 	protected:
 		node	m_root_node;

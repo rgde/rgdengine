@@ -48,7 +48,7 @@ namespace render
 
 			virtual const std::string& get_name() const = 0;
 			virtual const std::string& getSemantic() const = 0;
-			virtual unsigned int getSize() const = 0;
+			virtual unsigned int get_size() const = 0;
 			virtual EType getType() const = 0;
 
 			virtual AnnotationsVector& getAnnotations() = 0;
@@ -117,11 +117,11 @@ namespace render
 
 		friend PEffect;
 	protected:
-		virtual bool load(const std::string& fileName) = 0;
+		virtual bool load(const std::string& file_name) = 0;
 	public:
 		virtual ~effect(){}
 
-		static PEffect create(const std::string& fileName);
+		static PEffect create(const std::string& file_name);
 		static void ClearAll();
 
 		///////////////////////////////////////////////////

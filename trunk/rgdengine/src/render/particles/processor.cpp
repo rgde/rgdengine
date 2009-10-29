@@ -525,7 +525,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void processor::toStream(io::IWriteStream& wf) const
+	void processor::toStream(io::write_stream& wf) const
 	{
 		wf  << file_version
 			<< m_bIntense
@@ -555,7 +555,7 @@ namespace particles{
 			<< m_bIsPlayTexAnimation;
 	}
 
-	void processor::fromStream(io::IReadStream& rf)
+	void processor::fromStream(io::read_stream& rf)
 	{
 		unsigned version;
 		rf  >> version;
