@@ -48,11 +48,11 @@ protected:
 //		CoInitialize(0);
 //
 //		m_pSound3d = sound::CSound3d::Create (L"helicopter.wav");
-//		m_pSound3d->setPos (math::Vec3f (0, 10, 0));
+//		m_pSound3d->set_pos (math::Vec3f (0, 10, 0));
 //		m_pSound3d->setLoop (true);
 //		m_pSound3d->play();
 //
-//		sound::Sound3dManager::get().setPos (math::Vec3f (0, 0, 0));
+//		sound::Sound3dManager::get().set_pos (math::Vec3f (0, 0, 0));
 //	}
 //
 //	~CSound3dTest()
@@ -65,7 +65,7 @@ protected:
 //		static float fAngle = 0.0f;
 //		fAngle += math::Math::PI / 100;
 //
-//		m_pSound3d->setPos (math::Vec3f ( 100.0f + 100.0f*cosf(fAngle), 0, 100.0f*sinf(fAngle) ));
+//		m_pSound3d->set_pos (math::Vec3f ( 100.0f + 100.0f*cosf(fAngle), 0, 100.0f*sinf(fAngle) ));
 //
 //		sound::Sound3dManager::get().update (dt);
 //	}

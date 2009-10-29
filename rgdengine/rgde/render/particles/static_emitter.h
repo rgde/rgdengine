@@ -74,8 +74,8 @@ namespace particles{
 		void loadFrames(std::string file_name);
 		void render(unsigned int frame_num);
 
-		virtual void toStream(io::IWriteStream& wf) const;
-		virtual void fromStream(io::IReadStream& rf);
+		virtual void toStream(io::write_stream& wf) const;
+		virtual void fromStream(io::read_stream& rf);
 
 	protected:
 		render::texture_ptr	m_texture;

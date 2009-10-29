@@ -76,7 +76,7 @@ namespace math
         }
 
     protected:
-        void toStream(io::IWriteStream& ws) const
+        void toStream(io::write_stream& ws) const
         {
             ws << uint(m_spline.m_values.size());
 
@@ -84,7 +84,7 @@ namespace math
                 ws << (*it);
         }
 
-        void fromStream(io::IReadStream& rs)
+        void fromStream(io::read_stream& rs)
         {
             m_values.swap(List());
 

@@ -56,8 +56,8 @@ namespace math
 	protected:
 		virtual void on_parent_change();
 		
-		void toStream(io::IWriteStream& wf) const;
-		void fromStream(io::IReadStream& rf);
+		void toStream(io::write_stream& wf) const;
+		void fromStream(io::read_stream& rf);
 
 		bool isNeedRecompute()			const {return m_bIsNeedRecompute;}
 		void computeLocalTransform()	const;

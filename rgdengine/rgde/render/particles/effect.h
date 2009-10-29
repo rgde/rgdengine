@@ -35,8 +35,8 @@ namespace particles
 		virtual render::SRenderableInfo&	getRenderableInfo();
 
 	protected:
-		virtual void toStream(io::IWriteStream& wf);
-		virtual void fromStream(io::IReadStream& rf);
+		virtual void toStream(io::write_stream& wf);
+		virtual void fromStream(io::read_stream& rf);
 
 		virtual void update(float);
 

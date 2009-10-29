@@ -5,14 +5,14 @@
 
 namespace io
 {
-	class DirectorySourceImpl : public IFileSource
+	class directory_source : public base_file_souce
 	{
 	public:
-		DirectorySourceImpl(const Path &path)
+		directory_source(const Path &path)
 			: m_path(path)
 		{
 		}
-		~DirectorySourceImpl()
+		~directory_source()
 		{
 		}
 
@@ -21,34 +21,34 @@ namespace io
 			return 100;
 		}
 
-		readstream_ptr find(const std::string& strFilePath) const
+		readstream_ptr find(const std::string& file_path) const
 		{
-			readstream_ptr	s(new CReadFileStream(strFilePath));
+			readstream_ptr	s(new read_file_stream(file_path));
 
-			if (s->isValid()) return s;
+			if (s->is_valid()) return s;
 
 			return readstream_ptr();
 		}
 
-		bool isExist(const std::string& strFilePath) const
+		bool isExist(const std::string& file_path) const
 		{
-			return CReadFileStream(strFilePath).isOpened();
+			return read_file_stream(file_path).isOpened();
 		}
 
 	private:
 		Path	m_path;
 	};
 
-	PFileSource IFileSource::CreateDirectorySource(const Path &path)
+	PFileSource base_file_souce::CreateDirectorySource(const Path &path)
 	{
-		return PFileSource(new DirectorySourceImpl(path));
+		return PFileSource(new directory_source(path));
 	}
 
 
 	CFileSystem::CFileSystem()
 		: m_rootPath("./Media/")
 	{
-		addFileSource(PFileSource(new DirectorySourceImpl(Path(""))));
+		addFileSource(PFileSource(new directory_source(Path(""))));
 	}
 
 	const Path& CFileSystem::getRootDir() const
@@ -78,7 +78,7 @@ namespace io
 		//std::sort(m_sources.begin(), m_sources.end(), functors::PrioritySorter());
 	}
 
-	readstream_ptr CFileSystem::find(const std::string& strFilePath) const
+	readstream_ptr CFileSystem::find(const std::string& file_path) const
 	{
 		readstream_ptr s;
 		std::string total_path	= m_rootPath.string();
@@ -89,7 +89,7 @@ namespace io
 			   (last != '\\'))
 			total_path += "/";
 		}
-		total_path += strFilePath;
+		total_path += file_path;
 
 		for (Sources::const_iterator it = m_sources.begin(); it != m_sources.end(); ++it)
 		{
@@ -101,10 +101,10 @@ namespace io
 		return s;
 	}
 
-	bool CFileSystem::isExist(const std::string& strFilePath) const
+	bool CFileSystem::isExist(const std::string& file_path) const
 	{
 		bool result	= false;
-		std::string total_path	= m_rootPath.string() + "/" + strFilePath;
+		std::string total_path	= m_rootPath.string() + "/" + file_path;
 
 		for (Sources::const_iterator it = m_sources.begin(); it != m_sources.end(); ++it)
 		{

@@ -94,7 +94,7 @@ namespace particles
 			(*it)->debugDraw();
 	}
 	//-----------------------------------------------------------------------------------
-	void effect::toStream(io::IWriteStream& wf)
+	void effect::toStream(io::write_stream& wf)
 	{
 		wf << file_version;
 		wf << m_Transform;
@@ -110,7 +110,7 @@ namespace particles
 		return m_renderInfo;		
 	}
 	//-----------------------------------------------------------------------------------
-	void effect::fromStream(io::IReadStream& rf)
+	void effect::fromStream(io::read_stream& rf)
 	{
 		unsigned version;
 		rf >> version;

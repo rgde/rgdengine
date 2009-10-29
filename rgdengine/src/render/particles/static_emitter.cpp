@@ -11,7 +11,7 @@ namespace particles{
 	std::map< std::string, maya_structs::animation> static_emitter::m_FrSeq;
 	static_emitter::PFrames static_emitter::ms_PFrames;
 
-	static std::wstring ms_strBaseFolder;
+	static std::wstring ms_base_folder;
 
 	int em_num = 0;
 
@@ -143,7 +143,7 @@ namespace particles{
 		
 			{
 				std::string str = "Media/" + m_Name;
-				io::CReadFileStream pfxFile(str);
+				io::read_file_stream pfxFile(str);
 				if(pfxFile.isOpened())
 				{
 					if (!fseq.Load(pfxFile))
@@ -243,7 +243,7 @@ namespace particles{
 		}
 	}
 	//-----------------------------------------------------------------------------------
-	void static_emitter::fromStream(io::IReadStream& rf)
+	void static_emitter::fromStream(io::read_stream& rf)
 	{
 		emitter::fromStream (rf);
 
@@ -269,7 +269,7 @@ namespace particles{
 		setVisible( m_is_visible );
 	}
 	//-----------------------------------------------------------------------------------
-	void static_emitter::toStream(io::IWriteStream& wf) const
+	void static_emitter::toStream(io::write_stream& wf) const
 	{
 		emitter::toStream (wf);
 

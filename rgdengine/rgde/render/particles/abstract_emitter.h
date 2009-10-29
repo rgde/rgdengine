@@ -32,8 +32,8 @@ public:
 	void				deleteProcessor(processor* proc);	
 	
 protected:
-	virtual void toStream(io::IWriteStream& wf) const;
-	virtual void fromStream(io::IReadStream& rf);
+	virtual void toStream(io::write_stream& wf) const;
+	virtual void fromStream(io::read_stream& rf);
 
 // Акксессоры
 public:

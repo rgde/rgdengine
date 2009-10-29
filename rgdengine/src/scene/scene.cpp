@@ -41,13 +41,13 @@ namespace scene
 		//}
 	}
 
-	void Scene::toStream(io::IWriteStream& wf) const
+	void Scene::toStream(io::write_stream& wf) const
 	{
 		wf << *m_pRoot;
 		// manager saving
 	}
 
-	void Scene::fromStream(io::IReadStream& rf)
+	void Scene::fromStream(io::read_stream& rf)
 	{
 		rf >> *m_pRoot;
 		// manager loading

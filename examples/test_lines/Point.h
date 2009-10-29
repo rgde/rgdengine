@@ -11,7 +11,7 @@ namespace lines_test
 		void reset();
 		void update();
 
-		inline math::Vec3f& getPos() { return m_vPos; }
+		inline math::Vec3f& get_pos() { return m_vPos; }
 
 	protected:
 		math::Vec3f m_vPos;							///> Позиция

@@ -193,7 +193,7 @@ namespace particles{
 		m_lProcessors.remove(p);
 	}
 
-	void base_emitter::toStream(io::IWriteStream& wf) const
+	void base_emitter::toStream(io::write_stream& wf) const
 	{
 		emitter::toStream (wf);
 
@@ -216,7 +216,7 @@ namespace particles{
 			wf << *(*it);
 	}
 
-	void base_emitter::fromStream(io::IReadStream& rf)
+	void base_emitter::fromStream(io::read_stream& rf)
 	{
 		emitter::fromStream (rf);
 

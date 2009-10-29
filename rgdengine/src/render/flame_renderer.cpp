@@ -18,7 +18,7 @@ namespace render
 		{
 			io::ScopePathAdd p	("common/");
 			m_pParticleTexture = texture::create(tex);
-			std::string strTNFName	= io::helpers::getFileNameWithoutExtension(tex) + ".tnf";;
+			std::string strTNFName	= io::helpers::get_shot_filename(tex) + ".tnf";;
 			readTNF(strTNFName);
 		}
 
@@ -134,7 +134,7 @@ namespace render
 	void readValue(int &value, io::readstream_ptr in)
 	{
 		byte temp	= 0;
-		in->readbuff(&temp, sizeof(byte));
+		in->read(&temp, sizeof(byte));
 		value = temp;
 	}
 

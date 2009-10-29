@@ -142,7 +142,7 @@ namespace live_tree
 
 	AABoxf TreeObject::getAABB( void )
 	{
-		return AABoxf(getPos()-getExt(), getPos()+getExt());
+		return AABoxf(get_pos()-getExt(), get_pos()+getExt());
 	};
 
 	AABoxf TreeObject::getDynamicAABB( void )
@@ -157,19 +157,19 @@ namespace live_tree
 	
 	void TreeObject::setAABB( const AABoxf& aabb )
 	{
-		setPos((aabb.getMin()+aabb.getMax())*0.5f);
+		set_pos((aabb.getMin()+aabb.getMax())*0.5f);
 		setExt((aabb.getMax()-aabb.getMin())*0.5f);
 	};
 
-	const Point3f& TreeObject::getPos( void ) const
+	const Point3f& TreeObject::get_pos( void ) const
 	{
 		return m_Position;
 	};
 
-	void TreeObject::setPos( const Point3f& pos )
+	void TreeObject::set_pos( const Point3f& pos )
 	{
 		if(getRoot())
-			getRoot()->setPos(this,pos);
+			getRoot()->set_pos(this,pos);
 		else
 			m_Position = pos;
 	};
@@ -261,14 +261,14 @@ namespace live_tree
 	Point3f TreeObject::getOldPos( void )
 	{
 		if(!m_pPosOld)
-			return getPos();
+			return get_pos();
 		return *m_pPosOld;
 	};
 
 	void TreeObject::updatePos( void )
 	{
 		assert(m_pPosOld);
-		*m_pPosOld = getPos();
+		*m_pPosOld = get_pos();
 	};
 
 
@@ -508,12 +508,12 @@ namespace live_tree
 		eject(pObj);
 	};
 
-	void CTRoot::setPos( PObject pObj, const Point3f pos )
+	void CTRoot::set_pos( PObject pObj, const Point3f pos )
 	{
 		if(pObj->getRoot())
 			CTRoot::move(pObj,pos);
 		else
-			pObj->setPos(pos);
+			pObj->set_pos(pos);
 	};
 
 	void CTRoot::setExt( PObject pObj, const Point3f ext )
@@ -532,7 +532,7 @@ namespace live_tree
 	{
 		if(pObj->getRoot())
 			CTRoot::eject(pObj);
-		pObj->setPos(pos);
+		pObj->set_pos(pos);
 		CTRoot::inject(pObj);
 	};
 
@@ -825,7 +825,7 @@ namespace live_tree
 		ejectDynamic(pObj);
 	};
 
-	void CDynamicTreeRoot::setPos( PObject pObj, const Point3f pos )
+	void CDynamicTreeRoot::set_pos( PObject pObj, const Point3f pos )
 	{
 		if(pObj->getRoot())
 			move(pObj, pos);
@@ -892,8 +892,8 @@ namespace live_tree
 			for(Sorted::iterator vp=m_sortMove.begin(); vp!=m_sortMove.end(); vp++)
 			{
 				m_arrayDynamic.push_back((*vp).first);
-				// call in this position ITTRee::setPos(pos)
-				(*vp).first->setPos((*vp).second); 
+				// call in this position ITTRee::set_pos(pos)
+				(*vp).first->set_pos((*vp).second); 
 			}
 			m_sortMove.clear();
 		}
@@ -963,8 +963,8 @@ namespace live_tree
 			for(Sorted::iterator vp=m_sortMove.begin(); vp!=m_sortMove.end(); vp++)
 			{
 //				m_arrayDynamic.push_back((*vp).first);
-				// call in this position ITTRee::setPos(pos)
-				(*vp).first->setPos((*vp).second); 
+				// call in this position ITTRee::set_pos(pos)
+				(*vp).first->set_pos((*vp).second); 
 			}
 			m_sortMove.clear();
 		}
