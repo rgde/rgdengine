@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="8,00"
 	Name="renderer_2d"
 	ProjectGUID="{F5246D11-C7F2-4DC0-BA55-4EF0681A53D4}"
 	RootNamespace="renderer_2d"
