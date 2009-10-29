@@ -35,18 +35,18 @@ namespace ui
 		virtual const math::Rect& getRect() { return m_rect; }
 		virtual void setRect(const math::Rect& rect) { m_rect = rect; }
 
-		virtual const Children& getChildren()
+		virtual const Children& get_children()
 		{
 			return m_lChildren;
 		}
 
 	protected:
-		virtual void addChild(IControl* pControl)
+		virtual void add(IControl* pControl)
 		{
 			m_lChildren.push_back(pControl);
 		}
 
-		virtual void removeChild(IControl* pControl)
+		virtual void remove(IControl* pControl)
 		{
 			m_lChildren.remove(pControl);
 		}

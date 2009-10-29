@@ -136,18 +136,18 @@ namespace particles{
 		//	ms_Rand.init(0.0f, 1.0f);
 		//}
 
-		//addProperty(new TProperty<float>(m_fCycleTime,			"CycleTime",	"float"));
-		//addProperty(new TProperty<bool>(m_bIsCycling,			"IsCycling",	"bool"));
-		//addProperty(new TProperty<bool>(m_bIsVisible,			"IsVisible",	"bool"));
-		//addProperty(new TProperty<float>(m_time_shift,			"fTimeShift",	"float"));
+		//addProperty(new property<float>(m_fCycleTime,			"CycleTime",	"float"));
+		//addProperty(new property<bool>(m_bIsCycling,			"IsCycling",	"bool"));
+		//addProperty(new property<bool>(m_bIsVisible,			"IsVisible",	"bool"));
+		//addProperty(new property<float>(m_time_shift,			"fTimeShift",	"float"));
 		//
-		//addProperty(new TProperty<math::FloatInterp>(m_PMass,		"PMass",	"FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PMassSpread,	"PMassSpread",	"FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PRotationSpread,	"PRotationSpread",	"FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PVelocity,	"PVelocity",	"FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PVelSpread,	"PVelSpread",	"FloatInterp"));
-		//addProperty(new TProperty<math::Vec3Interp>(m_PAcceleration,	"PAcceleration",	"Vec3Interp"));
-		//addProperty(new TProperty<math::Vec3Interp>(m_GlobalVelocity,	"GlobalVelocity",	"Vec3Interp"));
+		//addProperty(new property<math::FloatInterp>(m_PMass,		"PMass",	"FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PMassSpread,	"PMassSpread",	"FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PRotationSpread,	"PRotationSpread",	"FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PVelocity,	"PVelocity",	"FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PVelSpread,	"PVelSpread",	"FloatInterp"));
+		//addProperty(new property<math::Vec3Interp>(m_PAcceleration,	"PAcceleration",	"Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_GlobalVelocity,	"GlobalVelocity",	"Vec3Interp"));
 		
 		// public properties:
 		//REGISTER_PROPERTY(fCycleTime,		float)

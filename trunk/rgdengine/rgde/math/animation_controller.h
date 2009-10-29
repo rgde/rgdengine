@@ -33,7 +33,7 @@ namespace math
 		void updateMatrix();
 		
 		void  setCurrentTime(float fCurrentTime) { m_fCurrentTime = fCurrentTime; }
-		float getCurrentTime() const { return m_fCurrentTime; }
+		float get_current_time() const { return m_fCurrentTime; }
 		float getAnimationTime() const { return m_fAnimationTime; }
 
 		void stop();

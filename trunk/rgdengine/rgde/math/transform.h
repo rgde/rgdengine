@@ -11,7 +11,7 @@ namespace math
 
 	class Frame :	public io::serialized_object,
 					boost::noncopyable, 
-					public core::XmlNode<Frame>
+					public core::meta_node<Frame>
 	{
 	public:
 		static Matrix44f makeTransformMatrix(const Point3f& pos, const Quatf& rot, const Vec3f& s);
@@ -54,7 +54,7 @@ namespace math
 		void findFrames(const std::string& strTemplate, std::vector<frame_ptr>& container);
 		
 	protected:
-		virtual void onParentChange();
+		virtual void on_parent_change();
 		
 		void toStream(io::IWriteStream& wf) const;
 		void fromStream(io::IReadStream& rf);

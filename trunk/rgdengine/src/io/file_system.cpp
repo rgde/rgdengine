@@ -21,7 +21,7 @@ namespace io
 			return 100;
 		}
 
-		readstream_ptr findFile(const std::string& strFilePath) const
+		readstream_ptr find(const std::string& strFilePath) const
 		{
 			readstream_ptr	s(new CReadFileStream(strFilePath));
 
@@ -78,7 +78,7 @@ namespace io
 		//std::sort(m_sources.begin(), m_sources.end(), functors::PrioritySorter());
 	}
 
-	readstream_ptr CFileSystem::findFile(const std::string& strFilePath) const
+	readstream_ptr CFileSystem::find(const std::string& strFilePath) const
 	{
 		readstream_ptr s;
 		std::string total_path	= m_rootPath.string();
@@ -93,7 +93,7 @@ namespace io
 
 		for (Sources::const_iterator it = m_sources.begin(); it != m_sources.end(); ++it)
 		{
-			s = (*it)->findFile(total_path);
+			s = (*it)->find(total_path);
 			if (s)
 				break;
 		}

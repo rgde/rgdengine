@@ -24,7 +24,7 @@ namespace render
 
 		render::Line3dManager& line_manager = render::TheLine3dManager::get();		
 
-		for (ChildIterator i = getChildren().begin(); i != getChildren().end(); ++i)
+		for (child_iter i = get_children().begin(); i != get_children().end(); ++i)
 		{
 			math::Matrix44f mn	= (*i)->getFullTransform();
 			math::Point3f org0(mn.mData[12], mn.mData[13], mn.mData[14]);

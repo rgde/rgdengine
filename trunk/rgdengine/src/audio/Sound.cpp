@@ -19,7 +19,7 @@ Sound::Sound(const char* szWaveFile)
 :	internal::base_audio(internal::base_audio::SOUND),
 	m_pos(0)
 {
-	m_pWaveFile = WaveFileFactory::Instance()->Get(szWaveFile);
+	m_pWaveFile = WaveFileFactory::get()->Get(szWaveFile);
 }
 
 

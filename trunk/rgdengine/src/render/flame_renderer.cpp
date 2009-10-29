@@ -110,23 +110,23 @@ namespace render
 
 		root = root.FirstChildElement("flame");
 
-		std::string strTextureName	= base::safeReadValue<std::string>(root, "texture_name", "");
+		std::string strTextureName	= base::safe_read<std::string>(root, "texture_name", "");
 
-		float x						= base::safeReadAttributeValue(root, "size", "x", 0.0f);
-		float y						= base::safeReadAttributeValue(root, "size", "y", 0.0f);
+		float x						= base::safe_read_attr(root, "size", "x", 0.0f);
+		float y						= base::safe_read_attr(root, "size", "y", 0.0f);
 
-		math::Vec3f pos				(base::safeReadAttributeValue(root, "pos", "x", 0.0f), base::safeReadAttributeValue(root, "pos", "y", 0.0f), base::safeReadAttributeValue(root, "pos", "z", 0.0f));
+		math::Vec3f pos				(base::safe_read_attr(root, "pos", "x", 0.0f), base::safe_read_attr(root, "pos", "y", 0.0f), base::safe_read_attr(root, "pos", "z", 0.0f));
 
 		math::Vec2f size(x, y);
 
-		char r	= base::safeReadAttributeValue(root, "color", "r", 0);
-		char g	= base::safeReadAttributeValue(root, "color", "g", 0);
-		char b	= base::safeReadAttributeValue(root, "color", "b", 0);
-		char a	= base::safeReadAttributeValue(root, "color", "a", 0);
+		char r	= base::safe_read_attr(root, "color", "r", 0);
+		char g	= base::safe_read_attr(root, "color", "g", 0);
+		char b	= base::safe_read_attr(root, "color", "b", 0);
+		char a	= base::safe_read_attr(root, "color", "a", 0);
 
 		math::Color color(r, g, b, a);
 
-		float fps = base::safeReadValue(root, "fps", 0.0f);
+		float fps = base::safe_read(root, "fps", 0.0f);
 
 		return create(strTextureName, color, pos, size, (int)fps, vVector);
 	}
@@ -153,7 +153,7 @@ namespace render
 
 		io::CFileSystem &fs		= io::TheFileSystem::get();
 		io::ScopePathChange p	("./Media/Common/Textures/");
-		io::readstream_ptr in		= fs.findFile(file_name);
+		io::readstream_ptr in		= fs.find(file_name);
 
 		if (!in)
 		{

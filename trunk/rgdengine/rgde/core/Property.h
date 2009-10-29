@@ -33,32 +33,32 @@ namespace core
 		std::string m_type_name;
 	};
 
-	typedef boost::shared_ptr<base_property> PProperty;
+	typedef boost::shared_ptr<base_property> property_ptr;
 
 	template <class T>
-	class TProperty : public base_property
+	class property : public base_property
 	{
 	public:
 		typedef typename boost::call_traits<T>::param_type param_type;
-		typedef boost::function<param_type ()>		GetFunction;
-		typedef boost::function<void (param_type)>	SetFunction;
+		typedef boost::function<param_type ()>		getter;
+		typedef boost::function<void (param_type)>	setter;
 
-		TProperty(const std::string& name, GetFunction gf, SetFunction sf = SetFunction()) 
+		property(const std::string& name, getter gf, setter sf = setter()) 
 			: base_property(name, std::string(typeid(T).name())), 
 			m_get_function(gf), 
 			m_set_function(sf)
 		{
 		}
 
-		TProperty(const std::string& name, const std::string& type_name, GetFunction gf, SetFunction sf = SetFunction()) 
+		property(const std::string& name, const std::string& type_name, getter gf, setter sf = setter()) 
 			: base_property(name, type_name), 
 			m_get_function(gf), 
 			m_set_function(sf)
 		{
 		}
 
-		GetFunction getFunction() const {return m_get_function;}
-		SetFunction setFunction() const {return m_set_function;}
+		getter get_getter() const {return m_get_function;}
+		setter get_setter() const {return m_set_function;}
 
 		virtual bool is_read_only() {return m_set_function ? false : true;}
 
@@ -97,55 +97,55 @@ namespace core
 		}
 		
 	protected:
-		GetFunction m_get_function;
-		SetFunction	m_set_function;
+		getter m_get_function;
+		setter	m_set_function;
 	};
 
 	// хранит свойства дл€ конкретного типа объекта дл€ того, что бы не сздавать
 	// экземпл€ры пропертей в каждом контретном экземпл€ре объета
 	template<class OwnerType>
-	class PropertyStorage
+	class property_storage
 	{
 		struct _seacher
 		{
 			const std::string& str;
 			_seacher(const std::string& str_to_cmp) : str(str_to_cmp)	{}
-			bool operator()(PProperty p) { return p->get_name() == str; }
+			bool operator()(property_ptr p) { return p->get_name() == str; }
 		};
 	public:
-		typedef std::vector<PProperty> PropList;
+		typedef std::vector<property_ptr> PropList;
 
-		PropList&		getProperties()			{return m_properties;}
-		const PropList& getProperties() const	{return m_properties;}
+		PropList&		get_properties()			{return m_properties;}
+		const PropList& get_properties() const	{return m_properties;}
 
-		PProperty getProperty(const std::string& property_name) const
+		property_ptr get_property(const std::string& property_name) const
 		{
 			PropList::const_iterator i = std::find_if(m_properties.begin(), m_properties.end(), _seacher(property_name));
 
 			if(i != m_properties.end())
 				return (*i);
 			else
-				return PProperty();
+				return property_ptr();
 		}
 
 		/// если вернет True - кто-то уже скорей всего создал все проперт€.
 		static bool is_created();
-		static PropertyStorage& GetInstance();
+		static property_storage& GetInstance();
 
 	private:
 		PropList m_properties;
-		static PropertyStorage* m_spInstance;
+		static property_storage* m_spInstance;
 	};
 
 	/// вспомогательный класс дл€ регистрации пропертей в хранилище.
-	class PropertyOwner
+	class property_owner
 	{
 
 	public:
-		virtual ~PropertyOwner() {}
+		virtual ~property_owner() {}
 
 		template<class Derived, typename Value>
-		void registerProperty(){}
+		void register_property(){}
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -158,18 +158,18 @@ namespace core
 		inline const TYPE& get##NAME() const {return m_##NAME;}
 	//
 	//#define REGISTER_PROPERTY(NAME, TYPE)\
-	//	addProperty(new TProperty<TYPE>(m_##NAME, #NAME, #TYPE));
+	//	addProperty(new property<TYPE>(m_##NAME, #NAME, #TYPE));
 
 	//////////////////////////////////////////////////////////////////////////
 
 
 
-	class Function
+	class function
 	{
 	public:
 		typedef boost::function<void(const std::string&)> Func;
 
-		Function(const std::string& name, Func f)
+		function(const std::string& name, Func f)
 			: m_name(name), m_func(f)
 		{}
 
@@ -183,21 +183,21 @@ namespace core
 		std::string m_name;
 	};
 
-	class FunctionsOwner
+	class functions_owner
 	{
 		struct _seacher
 		{
 			const std::string& str;
 			_seacher(const std::string& str_to_cmp) : str(str_to_cmp){}
-			bool operator()(const Function& p){return p.get_name() == str;}
+			bool operator()(const function& p){return p.get_name() == str;}
 		};
 	public:
-		typedef std::vector<Function> FuncList;
-		FuncList& getFunctions() {return m_functions;}
+		typedef std::vector<function> FuncList;
+		FuncList& get_functions() {return m_functions;}
 		
-		virtual ~FunctionsOwner(){}
+		virtual ~functions_owner(){}
 
-		Function* getFunction(const std::string& function_name)
+		function* getter(const std::string& function_name)
 		{
 			FuncList::iterator i = std::find_if(m_functions.begin(), m_functions.end(), _seacher(function_name));
 			if (m_functions.end() == i)
@@ -205,15 +205,15 @@ namespace core
 			return &(*i);
 		}
 
-		void callFunction(const std::string& function_name, const std::string& strParams = std::string())
+		void call_function(const std::string& function_name, const std::string& strParams = std::string())
 		{
-			Function* f = getFunction(function_name);
+			function* f = getter(function_name);
 			if (0 != f)
 				(*f)(strParams);
 		}
 
 	protected:
-		void addFunction(Function p){m_functions.push_back(p);}
+		void add_function(function p){m_functions.push_back(p);}
 
 	protected:
 		FuncList m_functions;

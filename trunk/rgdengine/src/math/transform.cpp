@@ -31,13 +31,13 @@ namespace math
 
 	Frame::Frame()
 		: m_bIsNeedRecompute(false),
-		  core::XmlNode<Frame>("Frame"),
+		  core::meta_node<Frame>("Frame"),
 		  m_bNeedRecomputeGlobalMatrix(true),
 		  m_scale(1.0f,1.0f,1.0f)
 	{
-		//PropertyOwner::addProperty(new TProperty<math::Vec3f>(m_scale, "Scale"));
-		//PropertyOwner::addProperty(new TProperty<Point3f>(m_position, "Position", "Point"));
-		//PropertyOwner::addProperty(new TProperty<Quatf>(m_rotation, "Rotation", "Quaternion"));
+		//property_owner::addProperty(new property<math::Vec3f>(m_scale, "Scale"));
+		//property_owner::addProperty(new property<Point3f>(m_position, "Position", "Point"));
+		//property_owner::addProperty(new property<Quatf>(m_rotation, "Rotation", "Quaternion"));
 	}
 
 	Frame::~Frame()
@@ -58,7 +58,7 @@ namespace math
 				container.push_back(this);
 		}
 
-		for (math::Frame::ChildrenList::const_iterator it = getChildren().begin(); it != getChildren().end(); it++)
+		for (math::Frame::children_list::const_iterator it = get_children().begin(); it != get_children().end(); it++)
 			(*it)->findFrames(strTemplate, container);
 	}
 
@@ -156,15 +156,15 @@ namespace math
 
 		computeLocalTransform();
 
-		if (getParent())
-			m_fullTransform = getParent()->getFullTransform() * m_localTransform;
+		if (get_parent())
+			m_fullTransform = get_parent()->getFullTransform() * m_localTransform;
 		else
 			m_fullTransform = m_localTransform;
 
 		m_bNeedRecomputeGlobalMatrix = false;
 	}
 
-	void Frame::onParentChange()
+	void Frame::on_parent_change()
 	{
 		m_bIsNeedRecompute = true;
 	}
@@ -223,7 +223,7 @@ namespace math
 	//Neonic: octree
 	void Frame::updateTree( bool NeedFullUpdate )
 	{
-		for (math::Frame::ChildrenList::const_iterator it = getChildren().begin(); it != getChildren().end(); it++)
+		for (math::Frame::children_list::const_iterator it = get_children().begin(); it != get_children().end(); it++)
 			(*it)->updateTree(NeedFullUpdate);
 	};
 
@@ -236,7 +236,7 @@ namespace math
 
 		//// Сохраняем дочерние трансформации
 		wf << (unsigned int)m_children.size();
-		for( ChildrenList::const_iterator it = m_children.begin(); it != m_children.end(); it++ )
+		for( children_list::const_iterator it = m_children.begin(); it != m_children.end(); it++ )
 			(*it)->toStream( wf );
 	}
 
@@ -257,7 +257,7 @@ namespace math
 		{
 			frame_ptr child = new Frame;
 			child->fromStream( rf );
-			addChild( child );
+			add( child );
 		}
 	}
 

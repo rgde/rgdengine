@@ -80,7 +80,7 @@ namespace core
 		bool VSync;
 	};
 
-	class CDXRenderDevice : public IRenderSystem, public event::sender
+	class CDXRenderDevice : public render_system, public event::sender
 	{
 		mutable bool m_is_first_frame;
 	public:
@@ -90,7 +90,7 @@ namespace core
 				m_hWnd(hwnd),
 				m_is_first_frame(true)
 		{
-			subscribe<CWindowResize>(&CDXRenderDevice::onWindowResizeEvent);
+			subscribe<window_resize>(&CDXRenderDevice::onWindowResizeEvent);
 			init(hwnd);
 		}
 
@@ -113,7 +113,7 @@ namespace core
 			//base::lmsg << "~CDXRenderDevice()";
 		}
 
-		void onWindowResizeEvent(CWindowResize e) 
+		void onWindowResizeEvent(window_resize e) 
 		{
 			return;
 			::render::TheDevice::get().onLost();
@@ -142,7 +142,7 @@ namespace core
 			::render::TheDevice::get().onReset();
 		}
 
-		virtual void saveScreenShot(const std::wstring& file_name)
+		virtual void save_screen(const std::wstring& file_name)
 		{
 			D3DDISPLAYMODE display;
 			m_pd3dDevice->GetDisplayMode(0, &display);
@@ -274,12 +274,12 @@ namespace core
 			TiXmlHandle WindowNode = hConfigHandle.FirstChildElement("Engine").FirstChildElement("Window");
 			TiXmlHandle RenderDeviceNode = hConfigHandle.FirstChildElement("Engine").FirstChildElement("RenderDevice");
 
-			//deviceInfo.width = base::safeReadValue<int>(WindowNode, "width", 640);
-			//deviceInfo.height = base::safeReadValue<int>(WindowNode, "height", 480);
+			//deviceInfo.width = base::safe_read<int>(WindowNode, "width", 640);
+			//deviceInfo.height = base::safe_read<int>(WindowNode, "height", 480);
 
-			deviceInfo.m_nRefreshRate = base::safeReadValue<int>(WindowNode, "RefreshRate", 85);
-			deviceInfo.m_bWindowed = !base::safeReadValue<int>(WindowNode, "Fullscreen", 0);
-			deviceInfo.VSync = 1 == base::safeReadValue<int>(RenderDeviceNode, "VSync", 0);
+			deviceInfo.m_nRefreshRate = base::safe_read<int>(WindowNode, "RefreshRate", 85);
+			deviceInfo.m_bWindowed = !base::safe_read<int>(WindowNode, "Fullscreen", 0);
+			deviceInfo.VSync = 1 == base::safe_read<int>(RenderDeviceNode, "VSync", 0);
 
 			if(deviceInfo.m_bWindowed && deviceInfo.m_nRefreshRate != 0)
 			{
@@ -287,25 +287,25 @@ namespace core
 				deviceInfo.m_nRefreshRate = 0;
 			}
 
-			deviceInfo.m_clear_color.r = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "r", 100);
-			deviceInfo.m_clear_color.g = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "g", 100);
-			deviceInfo.m_clear_color.b = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "b", 100);
-			deviceInfo.m_clear_color.a = base::safeReadAttributeValue<int>(RenderDeviceNode, "BackColor", "a", 255);
+			deviceInfo.m_clear_color.r = base::safe_read_attr<int>(RenderDeviceNode, "BackColor", "r", 100);
+			deviceInfo.m_clear_color.g = base::safe_read_attr<int>(RenderDeviceNode, "BackColor", "g", 100);
+			deviceInfo.m_clear_color.b = base::safe_read_attr<int>(RenderDeviceNode, "BackColor", "b", 100);
+			deviceInfo.m_clear_color.a = base::safe_read_attr<int>(RenderDeviceNode, "BackColor", "a", 255);
             //->
             math::Color color = deviceInfo.m_clear_color;
             render::TheDevice::get().setClearColor(color);
             //-<
 
-			std::string strColorBufferFormat = base::safeReadValue<std::string>(RenderDeviceNode, "ColorFormat", "A8R8G8B8");
+			std::string strColorBufferFormat = base::safe_read<std::string>(RenderDeviceNode, "ColorFormat", "A8R8G8B8");
 
 			deviceInfo.m_BackBufferFormat = getBackBufferFormat(strColorBufferFormat);
 
-			int nDepthBits = base::safeReadAttributeValue<int>(RenderDeviceNode, "DepthStencilFormat", "DepthBpp", 24);
-			int nStencilBits = base::safeReadAttributeValue<int>(RenderDeviceNode, "DepthStencilFormat", "StencilBpp", 8);
+			int nDepthBits = base::safe_read_attr<int>(RenderDeviceNode, "DepthStencilFormat", "DepthBpp", 24);
+			int nStencilBits = base::safe_read_attr<int>(RenderDeviceNode, "DepthStencilFormat", "StencilBpp", 8);
 
 			deviceInfo.m_DepthStencilFormat = getDepthStencilFormat(nDepthBits, nStencilBits);
 
-			std::string strVertexProcessingMode = base::safeReadValue<std::string>(RenderDeviceNode, "VertexProcessingMethod", "SOFTWARE");
+			std::string strVertexProcessingMode = base::safe_read<std::string>(RenderDeviceNode, "VertexProcessingMethod", "SOFTWARE");
 
 			deviceInfo.m_VertexProcessingMode = getVertexProcessingMode(strVertexProcessingMode);
 
@@ -480,8 +480,8 @@ namespace core
 		SRenderDeviceInfo		m_info;
 	};
 
-	PRenderSystem IRenderSystem::create(const application& app)
+	render_system_ptr render_system::create(const application& app)
 	{
-		return PRenderSystem(new CDXRenderDevice((HWND)app.getWindowHandle()));
+		return render_system_ptr(new CDXRenderDevice((HWND)app.get_handle()));
 	}
 }

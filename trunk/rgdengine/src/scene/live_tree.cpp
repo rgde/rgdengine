@@ -310,12 +310,12 @@ namespace live_tree
 		return m_Array;
 	};
 
-	CTBranch* CTBranch::getParent( void )
+	CTBranch* CTBranch::get_parent( void )
 	{
 		return m_pParent;
 	};
 
-	void CTBranch::setParent( CTBranch* p )
+	void CTBranch::set_parrent( CTBranch* p )
 	{
 		m_pParent = p;
 	};
@@ -332,7 +332,7 @@ namespace live_tree
 		if(!m_Branches[iIndex])
 		{
 			m_Branches[iIndex] = new CTBranch();
-			m_Branches[iIndex]->setParent(this);
+			m_Branches[iIndex]->set_parrent(this);
 			m_iUsed++;
 		}
 		return m_Branches[iIndex];
@@ -344,7 +344,7 @@ namespace live_tree
 		{
 			if( m_Branches[i]==pBranch )
 			{
-				m_Branches[i]->setParent(0);			// deselect their parent
+				m_Branches[i]->set_parrent(0);			// deselect their parent
 				delete m_Branches[i];					// destroy branch here after parenthesis removal
 				m_Branches[i] = 0;						// cleanup branch ptr
 				m_iUsed--;								// calc removal
@@ -352,8 +352,8 @@ namespace live_tree
 			}
 		}
 
-		if(isEmpty()&&getParent())
-			getParent()->eject(this);
+		if(isEmpty()&&get_parent())
+			get_parent()->eject(this);
 	};
 
 	void CTBranch::clear( void )
@@ -377,7 +377,7 @@ namespace live_tree
 			{
 				if(m_Branches[i])
 				{
-					m_Branches[i]->setParent(0);
+					m_Branches[i]->set_parrent(0);
 					delete m_Branches[i];
 					m_Branches[i] = 0;
 					m_iUsed--;
@@ -385,8 +385,8 @@ namespace live_tree
 			}
 		}
 
-		if(getParent())
-			getParent()->eject(this);
+		if(get_parent())
+			get_parent()->eject(this);
 	};
 
 	void CTBranch::draw( void )
@@ -778,9 +778,9 @@ namespace live_tree
 			// remove object from branch
 			pBranch->getArray().erase(std::remove(pBranch->getArray().begin(),pBranch->getArray().end(),m_pObject), pBranch->getArray().end());
 			// cleanup branch if needed
-//			if(pBranch->isEmpty()&&pBranch->getParent())
+//			if(pBranch->isEmpty()&&pBranch->get_parent())
 //			{
-//				pBranch->getParent()->eject(pBranch);
+//				pBranch->get_parent()->eject(pBranch);
 //				return 1;
 //			}
 //			if(size>pBranch->getArray().size())
@@ -789,8 +789,8 @@ namespace live_tree
 			// cleanup branch if needed
 			if(size>pBranch->getArray().size())
 			{
-				if(pBranch->isEmpty()&&pBranch->getParent())
-					pBranch->getParent()->eject(pBranch);
+				if(pBranch->isEmpty()&&pBranch->get_parent())
+					pBranch->get_parent()->eject(pBranch);
 				return 1;
 			}
 		}

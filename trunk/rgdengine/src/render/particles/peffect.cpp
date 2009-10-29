@@ -75,14 +75,14 @@ namespace particles
 	{
 		assert(0 != em);
 		m_Emitters.push_back(em);
-		m_Transform.addChild(&em->getTransform());
+		m_Transform.add(&em->getTransform());
 	}
 	
 	//-----------------------------------------------------------------------------------
 	void effect::remove(emitter* em)
 	{
 		assert(0 != em);
-		m_Transform.removeChild(&em->getTransform());		
+		m_Transform.remove(&em->getTransform());		
 		m_Emitters.remove(em);
 	}
 

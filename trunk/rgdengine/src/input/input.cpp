@@ -60,7 +60,7 @@ namespace input
         std::vector<char> data;
 
         io::CFileSystem &fs    = io::TheFileSystem::get();
-        io::readstream_ptr stream = fs.findFile(sFileName);
+        io::readstream_ptr stream = fs.find(sFileName);
         io::stream_to_vector<char>(data, stream);
 
         get().m_pImpl->Load(std::string(data.begin(), data.end()));
@@ -76,19 +76,19 @@ namespace input
         get().m_pImpl->Save(sXml);
     }
 
-    Device* Input::getDevice (types::device eDeviceName, int indx)
+    Device* Input::get_device (types::device eDeviceName, int indx)
     {
-        return get().m_pImpl->getDevice(eDeviceName, indx);
+        return get().m_pImpl->get_device(eDeviceName, indx);
     }
 
-    Device* Input::getDevice (const std::wstring &sDeviceName, int indx)
+    Device* Input::get_device (const std::wstring &sDeviceName, int indx)
     {
-        return get().m_pImpl->getDevice(sDeviceName, indx);
+        return get().m_pImpl->get_device(sDeviceName, indx);
     }
 
 	Control* Input::GetControl(types::device device, int dev_index, types::control control)
 	{
-		if (Device* dev = getDevice(device, dev_index))
+		if (Device* dev = get_device(device, dev_index))
 			return dev->get_control(control);
 
 		return NULL;

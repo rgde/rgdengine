@@ -11,9 +11,9 @@ public:
 	  spApp(core::application::create(L"Test_Lines Example", 800, 600, false, false)),
 	  m_TrianglesManager(9)
 	{
-		spApp->addTask(core::task_ptr(new core::render_task(*spApp, 1)));
-		spApp->addTask(core::task_ptr(new core::input_task(*spApp,0)));
-		spApp->addTask(core::task_ptr(new core::game_task(*spApp,2)));
+		spApp->add(core::task_ptr(new core::render_task(*spApp, 1)));
+		spApp->add(core::task_ptr(new core::input_task(*spApp,0)));
+		spApp->add(core::task_ptr(new core::game_task(*spApp,2)));
 
 		m_pFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
 
@@ -30,14 +30,14 @@ public:
             using namespace input;
 
             m_cEsc.attach(L"Quit");
-			Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
+			Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
             
             m_cEsc += boost::bind(&HelloMessage::onEsc, this);
         }
 
 		render::TheCameraManager::get().addCamera(m_camera);
 		
-		spApp->Run();
+		spApp->run();
 	}
 
 protected:

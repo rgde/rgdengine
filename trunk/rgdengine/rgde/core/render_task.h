@@ -14,6 +14,6 @@ namespace core
 		virtual void run();
 
 	private:
-		PRenderSystem m_spRenderDevice;
+		render_system_ptr m_spRenderDevice;
 	};
 }

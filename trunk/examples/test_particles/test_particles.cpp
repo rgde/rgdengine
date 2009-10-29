@@ -19,9 +19,9 @@ public:
 		, m_bSaveParticles (false)
 		, m_bLoadParticles (false)
 	{
-		spApp->addTask<core::render_task>(2)
-			  .addTask<core::game_task>(1)
-			  .addTask<core::input_task>(0, false);
+		spApp->add<core::render_task>(2)
+			  .add<core::game_task>(1)
+			  .add<core::input_task>(0, false);
 
 		m_spFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
 
@@ -52,7 +52,7 @@ public:
 		m_cTargetCamera->setPosition(vEyePt,vLookatPt,vUpVec);
 		m_cTargetCamera->activate();
 
-		spApp->Run();
+		spApp->run();
 	}
 
 	void initInput()
@@ -62,6 +62,10 @@ public:
 		Input::addCommand(L"Quit");
 		Input::addCommand(L"Horz");
 		Input::addCommand(L"Vert");
+		Input::addCommand(L"Froward");
+		Input::addCommand(L"Backward");
+		Input::addCommand(L"CW");
+		Input::addCommand(L"CCW");
 
 		//m_cXAxis.attachToControl(input::Mouse, input::AxisX);
 		//m_cYAxis.attachToControl(input::Mouse, input::AxisY);
@@ -73,13 +77,13 @@ public:
 		//m_cZAxis.addHandler(this,&CParticleTest::onWheelAxis);
 
 		//связываем команды с контролами
-		Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
-		//Input::getDevice(types::Keyboard)->get_control(types::KeyW     )->bind(L"Froward");
-		//Input::getDevice(types::Keyboard)->get_control(types::KeyS     )->bind(L"Backward");
-		//Input::getDevice(types::Keyboard)->get_control(types::KeyE     )->bind(L"CW");
-		//Input::getDevice(types::Keyboard)->get_control(types::KeyQ     )->bind(L"CCW");
-		Input::getDevice(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
-		Input::getDevice(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
+		Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
+		Input::get_device(types::Keyboard)->get_control(types::KeyW     )->bind(L"Froward");
+		Input::get_device(types::Keyboard)->get_control(types::KeyS     )->bind(L"Backward");
+		Input::get_device(types::Keyboard)->get_control(types::KeyE     )->bind(L"CW");
+		Input::get_device(types::Keyboard)->get_control(types::KeyQ     )->bind(L"CCW");
+		Input::get_device(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
+		Input::get_device(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
 
 		//биндим хелперы с командами		
 		//m_cR    .attach(L"Reset");
@@ -136,11 +140,11 @@ public:
 	}
 
 	///*onWheelAxis*/
-	//void onWheelAxis(const input::CRelativeAxisEvent &event)
-	//{
-	//	const float slow = .1f;
-	//	m_cTargetCamera.goBackward(-event.m_nDelta*slow);
-	//}
+	void onWheelAxis(int dw)
+	{
+		const float slow = .1f;
+		m_cTargetCamera->goBackward(-dw*slow);
+	}
 
 	//-----------------------------------------------------------------------------------
 	virtual void update(float dt)
@@ -236,9 +240,9 @@ protected:
 	input::KeyUp        m_keyupQuit;
 	input::RelativeAxis m_cXAxis;
 	input::RelativeAxis m_cYAxis;
-	//input::Button       m_cEsc;
-	//input::Button		m_cRightButton;
-	//input::RelativeAxis m_cZAxis;
+	input::KeyUp       m_cEsc;
+	input::KeyUp		m_cRightButton;
+	input::RelativeAxis m_cZAxis;
 
 	math::camera_ptr			m_pCamera;
 	math::target_camera_ptr		m_cTargetCamera;      //контроллер камеры "нацеленная камера"

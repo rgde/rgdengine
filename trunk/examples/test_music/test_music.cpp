@@ -82,22 +82,22 @@ int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 		core::application::create(L"Test Music", 640, 480, false));
 	using namespace core;
 
-	spApp->addTask(task_ptr(new render_task(*spApp, 0)));
-	spApp->addTask(task_ptr(new input_task(*spApp, 1, false)));
-	spApp->addTask(task_ptr(new game_task(*spApp, 2)));
+	spApp->add(task_ptr(new render_task(*spApp, 0)));
+	spApp->add(task_ptr(new input_task(*spApp, 1, false)));
+	spApp->add(task_ptr(new game_task(*spApp, 2)));
 //
 	TestMusic r;
 //	SimpleInput i;
 //	CSound3dTest test;
 ////	CMusicTest test;
 //
-	spApp->Run();
+	spApp->run();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 TestMusic::TestMusic() 
-: m_sound_system(core::application::get()->getWindowHandle())
+: m_sound_system(core::application::get()->get_handle())
 , cur_music_index(0)
 {
 	m_sound_system.load("./media/audiodb.xml");
@@ -128,11 +128,11 @@ void TestMusic::init_input()
 	using namespace input;
 
 	m_cSpace.attach(L"NextMusic");
-	Input::getDevice(types::Keyboard)->get_control(types::KeySpace)->bind(L"NextMusic");
+	Input::get_device(types::Keyboard)->get_control(types::KeySpace)->bind(L"NextMusic");
 	m_cSpace += boost::bind(&TestMusic::NextMusic, this);
 
 	m_cEsc.attach(L"Quit");
-	Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(m_cEsc.getCommand());
+	Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(m_cEsc.getCommand());
 	m_cEsc += boost::bind(&TestMusic::onEsc, this);
 }
 

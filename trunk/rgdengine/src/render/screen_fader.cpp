@@ -78,13 +78,13 @@ namespace render
 
 		root = root.FirstChildElement("fader");
 
-		m_fFadingTime = base::safeReadValue(root, "fading_time", 0.0f);
-		m_fUnfadingTime = base::safeReadValue(root, "unfading_time", 0.0f);
+		m_fFadingTime = base::safe_read(root, "fading_time", 0.0f);
+		m_fUnfadingTime = base::safe_read(root, "unfading_time", 0.0f);
 
-		char r	= base::safeReadAttributeValue(root, "color", "r", 0);
-		char g	= base::safeReadAttributeValue(root, "color", "g", 0);
-		char b	= base::safeReadAttributeValue(root, "color", "b", 0);
-		char a	= base::safeReadAttributeValue(root, "color", "a", 0);
+		char r	= base::safe_read_attr(root, "color", "r", 0);
+		char g	= base::safe_read_attr(root, "color", "g", 0);
+		char b	= base::safe_read_attr(root, "color", "b", 0);
+		char a	= base::safe_read_attr(root, "color", "a", 0);
 
 		m_color = math::Color(r, g, b, a);
 	}

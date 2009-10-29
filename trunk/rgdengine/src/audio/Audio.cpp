@@ -1,6 +1,6 @@
 #include "precompiled.h"
 #include <rgde/audio/audio.h>
-#include "AudioManager.h"
+#include "audiomanager.h"
 
 //#include <map>
 
@@ -11,12 +11,12 @@ namespace audio
 {
 	namespace
 	{
-		std::map<HWND, AudioManager*> managers;
+		std::map<HWND, audio_manager*> managers;
 
 	}
 
 	system::system(void* hwnd)
-		: manager(new AudioManager((HWND)hwnd))
+		: manager(new audio_manager((HWND)hwnd))
 	{
 			
 	}

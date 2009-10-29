@@ -68,7 +68,7 @@ namespace render
 
 			////first try to find binary file
 			//std::wstring bin_filename = filename + L".mesh";
-			//io::readstream_ptr bin_in = fs.findFile(bin_filename);
+			//io::readstream_ptr bin_in = fs.find(bin_filename);
 			////io::IReadStream& rs = *bin_in
 
 			//uint vertex_size = 0;//Vertex size
@@ -77,7 +77,7 @@ namespace render
 			////Vertex Data
 
 
-			//io::readstream_ptr in = fs.findFile(filename);
+			//io::readstream_ptr in = fs.find(filename);
 			//unsigned int size = in->getSize();
 			//io::stream_to_vector(data, in);
 
@@ -322,7 +322,7 @@ namespace render
 	{
 		std::vector<byte> data;
 		io::CFileSystem& fs = io::TheFileSystem::get();
-		io::readstream_ptr in = fs.findFile(xml_filename);
+		io::readstream_ptr in = fs.find(xml_filename);
 		if (in && in->getSize() > 0)
 		{
 			unsigned int size = in->getSize();
@@ -492,12 +492,12 @@ namespace render
 
 			//first try to find binary file
 			std::string bin_filename = filename + ".mesh";
-			io::readstream_ptr bin_in = fs.findFile(bin_filename);
+			io::readstream_ptr bin_in = fs.find(bin_filename);
 			if (!bin_in)
 			{
 				bin_filename = io::helpers::getFileNameWithoutExtension(filename);
 				bin_filename += ".mesh";
-				bin_in = fs.findFile(bin_filename);
+				bin_in = fs.find(bin_filename);
 			}
 
 			bool loaded = false;

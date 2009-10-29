@@ -7,8 +7,8 @@
 
 namespace core
 {
-	class meta_class :  public PropertyOwner, 
-					  public FunctionsOwner, 
+	class meta_class :  public property_owner, 
+					  public functions_owner, 
 					  public virtual named_object, 
 					  public virtual base::refcounted
 	{

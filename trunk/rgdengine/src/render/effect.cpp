@@ -23,7 +23,7 @@ namespace
 			io::CFileSystem& fs = io::TheFileSystem::get();
 			// already set in effect::load
 			//io::ScopePathAdd p("Common/shaders/");
-			io::readstream_ptr in = fs.findFile(pFileName);
+			io::readstream_ptr in = fs.find(pFileName);
 
 			if (!in)
 			{
@@ -600,7 +600,7 @@ namespace render
 			try{
 				io::CFileSystem& fs = io::TheFileSystem::get();
 				io::ScopePathAdd p("Common/shaders/");
-				io::readstream_ptr in = fs.findFile(m_name);
+				io::readstream_ptr in = fs.find(m_name);
 
 				if (!in)
 				{

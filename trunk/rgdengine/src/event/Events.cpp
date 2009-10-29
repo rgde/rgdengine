@@ -14,52 +14,52 @@ namespace event
 			~ListManagers() {}
 
 			//отписать данного получателя ото всех менеджеров
-			void unsubscribeAll (BaseListener *pListener);
+			void unsubscribeAll (base_listener *pListener);
 
 			//менеджер добавляет себя в общий список менеджеров
-			void addManager     (BaseEventsManager *pManager);
+			void addManager     (base_manager *pManager);
 
 			//менеджер удаляет себя из общего списка менеджеров
-			void delManager     (BaseEventsManager *pManager);
+			void delManager     (base_manager *pManager);
 
 		private:
-			std::list<BaseEventsManager*> m_managers;
+			std::list<base_manager*> m_managers;
 		} list_manager;
 	}
 
 
-	BaseEventsManager::BaseEventsManager()
+	base_manager::base_manager()
 	{
 		list_manager.addManager(this);
 	}
 
-	BaseEventsManager::~BaseEventsManager()
+	base_manager::~base_manager()
 	{
 		list_manager.delManager(this);
 	}
 
-	BaseListener::BaseListener() 
+	base_listener::base_listener() 
 	{
 	}
 
 	//отписать получателя от всех менеджеров
-	BaseListener::~BaseListener()
+	base_listener::~base_listener()
 	{		
 		list_manager.unsubscribeAll(this);
 	}
 
-	BaseSender::BaseSender() 
+	base_sender::base_sender() 
 	{
 	}
 
-	BaseSender::~BaseSender()
+	base_sender::~base_sender()
 	{
 	}
 
     //отписать данного получателя ото всех менеджеров
-    void ListManagers::unsubscribeAll(BaseListener *pListener)
+    void ListManagers::unsubscribeAll(base_listener *pListener)
     {
-        std::list<BaseEventsManager*>::iterator i = m_managers.begin();
+        std::list<base_manager*>::iterator i = m_managers.begin();
         while (i != m_managers.end())
         {
             (*i)->unsubscribe(pListener);
@@ -68,15 +68,15 @@ namespace event
     }
 
     //менеджер добавляет себя в общий список менеджеров
-    void ListManagers::addManager (BaseEventsManager *pManager)
+    void ListManagers::addManager (base_manager *pManager)
     {
         m_managers.push_back(pManager);
     }
 
     //менеджер удаляет себя из общего списка менеджеров
-    void ListManagers::delManager (BaseEventsManager *pManager)
+    void ListManagers::delManager (base_manager *pManager)
     {
-        std::list<BaseEventsManager*>::iterator i = m_managers.begin();
+        std::list<base_manager*>::iterator i = m_managers.begin();
         while (i != m_managers.end())
         {
             if ((*i) == pManager)

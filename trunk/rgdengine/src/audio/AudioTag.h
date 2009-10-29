@@ -9,18 +9,18 @@ namespace audio
 {
 
 	// The base class for any audio tag to be read from the XML database
-	class AudioTag : public audio::listener
+	class audio_tag : public audio::listener
 	{
 	public:
-		AudioTag();
-		virtual ~AudioTag();
+		audio_tag();
+		virtual ~audio_tag();
 
-		int GetPriority() { return m_priority; }
+		int get_priority() { return m_priority; }
 		int GetVolumeAdjust(); // returns hundredths of decibels to adjust by
 		int GetLoopDelay();  // returns milliseconds to delay next play of tag
 
 		// called to audio create internal::base_audio object based on this tag's data
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* pObj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify) = 0;
@@ -39,12 +39,12 @@ namespace audio
 	};
 
 
-	typedef std::vector<AudioTag*> AudioTagVector;
+	typedef std::vector<audio_tag*> AudioTagVector;
 	typedef AudioTagVector::iterator AudioTagIterator;
 
 
 	// The EFFECT tag class - handles any basic 3D sound effect
-	class AudioEffectTag : public AudioTag
+	class AudioEffectTag : public audio_tag
 	{
 	public:
 		AudioEffectTag();
@@ -57,7 +57,7 @@ namespace audio
 		int GetCascadeNumber() { return m_cascadeNum; }
 		const char* GetCascadeTag() { return m_cascadeTag.c_str(); }
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* pObj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);
@@ -80,7 +80,7 @@ namespace audio
 		AudioAmbientTag();
 		virtual ~AudioAmbientTag();
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* pObj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);
@@ -101,13 +101,13 @@ namespace audio
 
 	// The RANDOM tag controls selection of several tags with a certain
 	// probability for each tag
-	class AudioRandomTag : public AudioTag
+	class AudioRandomTag : public audio_tag
 	{
 	public:
 		AudioRandomTag();
 		virtual ~AudioRandomTag();
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* pObj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);
@@ -120,13 +120,13 @@ namespace audio
 
 
 	// The MUSIC tag plays an .ogg file
-	class AudioMusicTag : public AudioTag
+	class AudioMusicTag : public audio_tag
 	{
 	public:
 		AudioMusicTag();
 		virtual ~AudioMusicTag();
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* pObj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);
@@ -140,13 +140,13 @@ namespace audio
 
 	// The COMPOSITION tag plays a bunch of music tags in
 	// a certain order
-	class AudioCompositionTag : public AudioTag
+	class AudioCompositionTag : public audio_tag
 	{
 	public:
 		AudioCompositionTag();
 		virtual ~AudioCompositionTag();
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* pObj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);
@@ -175,13 +175,13 @@ namespace audio
 	// The GROUP tag plays a bunch of audio tags, and
 	// any individual tag in the group can be run at a delay 
 	// from the time the group is requested to play
-	class AudioGroupTag : public AudioTag
+	class AudioGroupTag : public audio_tag
 	{
 	public:
 		AudioGroupTag();
 		virtual ~AudioGroupTag();
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* pObj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);

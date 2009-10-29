@@ -93,12 +93,12 @@ namespace math
     {
 		//base::lmsg << "loading track: " << "\"" << strTrackFileName << "\"";
 		io::CFileSystem& fs = io::TheFileSystem::get();
-		io::readstream_ptr in = fs.findFile(strTrackFileName);
+		io::readstream_ptr in = fs.find(strTrackFileName);
 
 		if (!in)
 		{
 			io::ScopePathAdd p("Tracks/");
-			in = fs.findFile(strTrackFileName);
+			in = fs.find(strTrackFileName);
 		}
 
 		if (!in)

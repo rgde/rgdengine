@@ -62,7 +62,7 @@ namespace game
 		void unregister_object(dynamic_object*); //РАЗрегестрировать динамический объект
 
 	private:
-		Level* get_level(const std::string& level_name);
+		level* get_level(const std::string& level_name);
 	
 	protected:
 		game_system();
@@ -71,7 +71,7 @@ namespace game
 	private:
 		std::string                m_strCurrentLevel;    //имя текущего уровня
 		std::string                m_next_level;       //имя следующего уровня
-		std::list<Level*>         m_listLevels;         //список уровней
+		std::list<level*>         m_listLevels;         //список уровней
 		std::list<dynamic_object*> m_objects; //список динамических обьектов
 		bool                       m_change_level;
 	};

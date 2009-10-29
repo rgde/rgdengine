@@ -57,5 +57,5 @@ namespace render
 		PrimitiveType	m_ePrimType;
 	};
 
-	typedef boost::intrusive_ptr<Mesh> PMesh;
+	typedef boost::intrusive_ptr<Mesh> mesh_ptr;
 }

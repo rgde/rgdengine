@@ -142,9 +142,9 @@ namespace live_tree
 		// get object container
 		Array&					getArray( void );
 		// get parent branch
-		CTBranch*				getParent( void );
+		CTBranch*				get_parent( void );
 		// set parent branch
-		void					setParent( CTBranch* p );
+		void					set_parrent( CTBranch* p );
 		// get branch pointer. test them for existance before use
 		CTBranch*				getBranch( unsigned iIndex );
 		// call branch. create branch if it not exist

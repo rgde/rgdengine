@@ -53,7 +53,7 @@ namespace render
 	{
 		using namespace math;
 		using namespace boost;
-		typedef DynamicBinder::Types<Matrix44f>::GetFunction
+		typedef DynamicBinder::Types<Matrix44f>::getter
 											GetMatrix44fFunction;
 
 		GetMatrix44fFunction getMatrixFunction;
@@ -79,7 +79,7 @@ namespace render
 		using namespace boost;
 		typedef DynamicBinder::Types<math::Color>::ParamTypeGetFunction
 													ParamTypeGetColorFunction;
-		typedef DynamicBinder::Types<float>::GetFunction GetFloatFunction;
+		typedef DynamicBinder::Types<float>::getter GetFloatFunction;
 
 		ParamTypeGetColorFunction getColorFunction;
 		GetFloatFunction          getFloatFunction;
@@ -173,7 +173,7 @@ namespace render
 	{
 		using namespace math;
 		using namespace boost;
-		typedef StaticBinder::Types<int>::GetFunction GetIntFunction;
+		typedef StaticBinder::Types<int>::getter GetIntFunction;
 		typedef StaticBinder::Types<Fog>::ParamTypeGetFunction
 												ParamTypeGetFogFunction;
 
@@ -196,10 +196,10 @@ namespace render
 		//using namespace boost;
 		//typedef StaticBinder::Types<Color>::ParamTypeGetFunction
 		//									ParamTypeGetColorFunction;
-		//typedef StaticBinder::Types<int>::GetFunction  GetIntFunction;
-		//typedef StaticBinder::Types<bool>::GetFunction GetBoolFunction;
+		//typedef StaticBinder::Types<int>::getter  GetIntFunction;
+		//typedef StaticBinder::Types<bool>::getter GetBoolFunction;
 		//typedef LightManager::LightDatas LightDatas;
-		//typedef StaticBinder::Types<LightDatas>::GetFunction
+		//typedef StaticBinder::Types<LightDatas>::getter
 		//											GetLightsFunction;
 
 		//ParamTypeGetColorFunction getColorFunction;
@@ -276,7 +276,7 @@ namespace render
 	{
 		using namespace math;
 		using namespace boost;
-		typedef StaticBinder::Types<Matrix44f>::GetFunction GetMatrix44fFunction;
+		typedef StaticBinder::Types<Matrix44f>::getter GetMatrix44fFunction;
 
 		GetMatrix44fFunction getMatrixFunction;
 		

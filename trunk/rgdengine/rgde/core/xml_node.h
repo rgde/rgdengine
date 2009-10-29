@@ -6,69 +6,69 @@ namespace core
 {
 	namespace exceptions
 	{
-		struct NodeNotFound : public std::exception
+		struct node_not_found : public std::exception
 		{
-			NodeNotFound(const std::string& node_name) : 
-			  std::exception(std::string("Node <" + node_name + "> not found!").c_str())
+			node_not_found(const std::string& node_name) : 
+			  std::exception(std::string("node <" + node_name + "> not found!").c_str())
 			  {
 			  }
 		};
 	}
 
 	template <class T>
-	class TreeNode
+	class tree_node
 	{
 	public:
-		typedef T Node;
-		typedef boost::intrusive_ptr<Node> PNode;
-		typedef std::list<PNode> ChildrenList;
-		typedef typename ChildrenList::const_iterator ChildIterator;
+		typedef T node;
+		typedef boost::intrusive_ptr<node> node_ptr;
+		typedef std::list<node_ptr> children_list;
+		typedef typename children_list::const_iterator child_iter;
 
-		void addChild(const PNode& node)
+		void add(const node_ptr& node)
 		{
 			m_children.push_back(node); 
-			node->setParent((T*)this);
+			node->set_parrent((T*)this);
 		}
 
-		void removeChild(const PNode& node)
+		void remove(const node_ptr& node)
 		{
 			m_children.remove(node); 
-			node->setParent(0);
+			node->set_parrent(0);
 		}
 
-		const PNode& getParent() const  {return m_parent;}
-		PNode		 getParent()		{return m_parent;}
+		const node_ptr& get_parent() const  {return m_parent;}
+		node_ptr		get_parent()			{return m_parent;}
 
-		//ChildrenList& getChildren() {return m_children;}
-		const ChildrenList& getChildren() const {return m_children;}
+		//children_list& get_children() {return m_children;}
+		const children_list& get_children() const {return m_children;}
 
-		TreeNode() : m_parent(0)
+		tree_node() : m_parent(0)
 		{}
 
-		virtual ~TreeNode()
+		virtual ~tree_node()
 		{
-			for (ChildrenList::iterator it = m_children.begin(); it != m_children.end(); ++it)
-				(*it)->setParent(0);
+			for (children_list::iterator it = m_children.begin(); it != m_children.end(); ++it)
+				(*it)->set_parrent(0);
 
 			m_children.clear();
 
 			if (0 != m_parent)
 			{
-				m_parent->removeChild((T*)this);
+				m_parent->remove((T*)this);
 			}
 		}
 
 	protected:
-				void setParent(Node* node){m_parent = node; onParentChange();}
-		virtual void onParentChange(){}
+				void set_parrent(node* node){m_parent = node; on_parent_change();}
+		virtual void on_parent_change(){}
 
 	protected:
-		ChildrenList m_children;
-		PNode		 m_parent;
+		children_list m_children;
+		node_ptr		 m_parent;
 	};
 
 	template <class T>
-	class XmlNode : public meta_class, public TreeNode<T>
+	class meta_node : public meta_class, public tree_node<T>
 	{
 	public: 
 		typedef boost::intrusive_ptr<T> _PT;
@@ -80,28 +80,28 @@ namespace core
 			bool operator()(const _PT& obj) const {return obj->get_name() == m_name;}
 		};
 
-		XmlNode(const std::string& name) : meta_class(name)
+		meta_node(const std::string& name) : meta_class(name)
 		{
 		}
 
-		virtual ~XmlNode()
+		virtual ~meta_node()
 		{
 		}
 
-		_PT findNode(const std::string& node_name)
+		_PT find_node(const std::string& node_name)
 		{
 			try{
-				return findNode(base::tokenize<char>(".", node_name));		
+				return find_node(base::tokenize<char>(".", node_name));		
 			}
-			catch(exceptions::NodeNotFound&)
+			catch(exceptions::node_not_found&)
 			{
-				throw exceptions::NodeNotFound(node_name);
+				throw exceptions::node_not_found(node_name);
 			}		
 		}
 
-		_PT findNode(const std::list<std::string>& nodes_names)
+		_PT find_node(const std::list<std::string>& nodes_names)
 		{
-			_PT node = findChild(*nodes_names.begin());
+			_PT node = find_child(*nodes_names.begin());
 			if (nodes_names.size() == 1)
 				return node;
 			else 
@@ -109,16 +109,16 @@ namespace core
 				std::list<std::string> name;
 				name.resize(nodes_names.size()-1);
 				std::copy((++nodes_names.begin()), nodes_names.end(), name.begin());
-				return node->findNode(name);
+				return node->find_node(name);
 			}
 		}
 
-		_PT findChild(const std::string& name)
+		_PT find_child(const std::string& name)
 		{
-			ChildrenList::iterator it = std::find_if(m_children.begin(), m_children.end(), _searcher(name));
+			children_list::iterator it = std::find_if(m_children.begin(), m_children.end(), _searcher(name));
 
 			if (it == m_children.end())
-				throw exceptions::NodeNotFound(name);
+				throw exceptions::node_not_found(name);
 			else 
 				return *it;
 		}

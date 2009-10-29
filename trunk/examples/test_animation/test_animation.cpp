@@ -11,19 +11,19 @@ public:
 	AnimationTest() :  m_spApp(core::application::create(L"Animation Test", 640, 480, false)),
 					   m_camera(render::render_camera::create())
 	{
-		m_spApp->addTask(core::task_ptr(new core::render_task(*m_spApp, 1)));
-		m_spApp->addTask(core::task_ptr(new core::input_task(*m_spApp, 0)));
-		m_spApp->addTask(core::task_ptr(new core::game_task(*m_spApp, 2)));
+		m_spApp->add(core::task_ptr(new core::render_task(*m_spApp, 1)));
+		m_spApp->add(core::task_ptr(new core::input_task(*m_spApp, 0)));
+		m_spApp->add(core::task_ptr(new core::game_task(*m_spApp, 2)));
 
 		m_spFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
 
-		m_pMesh = render::PMesh(new render::Mesh);
+		m_pMesh = render::mesh_ptr(new render::Mesh);
 		m_pMesh->load( "media\\meshes\\Box01.xml" );
 
 		m_pTexture = render::texture::create("tiger.bmp");
 
 		m_spFrame = new math::Frame();
-		m_spFrame->addChild( m_pMesh );
+		m_spFrame->add( m_pMesh );
 
 		TiXmlDocument xml( "media\\1111.XML" ) ;
 
@@ -48,9 +48,9 @@ public:
 		{//инициализация ввода
 			using namespace input;
 
-			Input::getDevice(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
-			Input::getDevice(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
-			Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
+			Input::get_device(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
+			Input::get_device(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
+			Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
 
 			m_cEsc  .attach(L"Quit");
 			m_cXAxis.attach(L"Horz");
@@ -63,7 +63,7 @@ public:
 		}
 
 
-		m_spApp->Run();
+		m_spApp->run();
 
 		m_controller.atachToFrame(0);
 	}
@@ -111,7 +111,7 @@ protected:
 
 	math::FrameAnimationController	m_controller;
 	math::frame_ptr				m_spFrame;
-	render::PMesh				m_pMesh;
+	render::mesh_ptr				m_pMesh;
 
 	//данные для ввода
 	input::Button       m_cEsc;

@@ -145,7 +145,7 @@ namespace render
 	void Device::showFPS(const font_ptr& font)
 	{
 		WCHAR szFPSString[64];
-		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(core::TheTimer::get().getAbsoluteTime()));
+		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(core::TheTimer::get().get_absolute_time()));
 		font->render(szFPSString, math::Rect(1, 1, 400, 400), 0xFFFFFFFF, true);
 	}
 

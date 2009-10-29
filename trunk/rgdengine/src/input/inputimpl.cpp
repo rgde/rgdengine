@@ -246,7 +246,7 @@ namespace input
 						{
 							std::string sDevice(ctrl->Attribute("device"));
 							std::string sControl(ctrl->Attribute("name"));
-							Device *d = getDevice(String2Device(std::wstring(sDevice.begin(), sDevice.end())));
+							Device *d = get_device(String2Device(std::wstring(sDevice.begin(), sDevice.end())));
 							if (d)
 							{
 								Control *c = d->get_control(String2Control(std::wstring(sControl.begin(), sControl.end())));
@@ -402,7 +402,7 @@ namespace input
     ////////////////////////////////
 
     //получить устройство
-    Device* input_impl::getDevice (types::device eDeviceName, int indx/*=0*/)
+    Device* input_impl::get_device (types::device eDeviceName, int indx/*=0*/)
     {
         if (!m_bInit)
             return 0;
@@ -418,9 +418,9 @@ namespace input
         return 0;
     }
 
-    Device* input_impl::getDevice (const std::wstring &sDeviceName, int indx/*=0*/)
+    Device* input_impl::get_device (const std::wstring &sDeviceName, int indx/*=0*/)
     {
-        return getDevice(String2Device(sDeviceName), indx);
+        return get_device(String2Device(sDeviceName), indx);
     }
 
     //есть ли такое устройство

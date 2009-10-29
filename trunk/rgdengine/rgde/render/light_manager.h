@@ -99,7 +99,7 @@ namespace render
 
 	//	bool m_bRenderDebug;
 
-	//	//typedef std::list<PModel> Models;
+	//	//typedef std::list<model_ptr> Models;
 	//	//Models m_models;
 
 	//	bool m_bModelNamesReaded;

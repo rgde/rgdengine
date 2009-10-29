@@ -14,7 +14,7 @@ namespace io
 		virtual ~IFileSource(){}
 
 		virtual int			get_priority() const = 0;
-		virtual readstream_ptr findFile(const std::string& strFilePath) const = 0;
+		virtual readstream_ptr find(const std::string& strFilePath) const = 0;
 		virtual bool		isExist	(const std::string& strFilePath) const = 0;
 
 		static PFileSource  CreateDirectorySource(const Path& path);
@@ -32,7 +32,7 @@ namespace io
 		void		setRootDir(const Path& path);
 
 		void		addFileSource(const PFileSource& spFileSource);
-		readstream_ptr findFile(const std::string& strFilePath) const;
+		readstream_ptr find(const std::string& strFilePath) const;
 		bool		isExist	(const std::string& strFilePath) const;
 
 	public:
