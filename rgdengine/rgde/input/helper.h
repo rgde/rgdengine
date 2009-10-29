@@ -196,7 +196,7 @@ namespace input
         void  setPos (float x, float y);
 
 	protected:
-        void onCursorMove (CCursorMove e);
+        void onCursorMove (mouse_move e);
         virtual void notify (const Control &control);
 
         void adjustPosToWindow (float &x, float &y);
@@ -213,7 +213,7 @@ namespace input
     class Mouse: public Cursor
     {
     public:
-        enum ClickType
+        enum action_type
         {
             Down,
             Up,
@@ -221,7 +221,7 @@ namespace input
         };
 
 		typedef boost::function<void(int)>       WhellHandler;
-		typedef boost::function<void(ClickType)> ButtonHandler;
+		typedef boost::function<void(action_type)> ButtonHandler;
 
         Mouse ();
 
@@ -236,8 +236,8 @@ namespace input
         bool isRightPressed  () const {return m_right;}
 
     protected:
-        void onWhell (CMouseWhell e);
-        void onButton (CMouseButton e);
+        void onWhell (mouse_whell e);
+        void onButton (mouse_button e);
 
     private:
         bool m_left;

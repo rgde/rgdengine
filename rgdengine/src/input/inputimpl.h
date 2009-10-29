@@ -30,8 +30,8 @@ namespace input
         void Done();
 
         //получить устройство
-        Device* getDevice(types::device      eDeviceName, int indx=0);
-        Device* getDevice(const std::wstring &sDeviceName, int indx=0);
+        Device* get_device(types::device      eDeviceName, int indx=0);
+        Device* get_device(const std::wstring &sDeviceName, int indx=0);
 
         //есть ли такое устройство
         bool isDevicePresent(types::device      eDeviceName, int indx=0) const;

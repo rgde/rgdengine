@@ -11,17 +11,17 @@
 namespace render 
 {
 
-	typedef boost::intrusive_ptr<class Model> PModel;
+	typedef boost::intrusive_ptr<class Model> model_ptr;
 
 	class Model : public math::Frame, public game::dynamic_object
 	{
 	public:
 		typedef std::map<int, PMaterial>				MaterialMap;
 		typedef std::vector<math::frame_ptr>				Frames;
-		typedef std::vector<PMesh>						Meshes;
+		typedef std::vector<mesh_ptr>						Meshes;
 		typedef std::vector<math::FrameAnimationController>	Controllers;
 
-		static PModel create(const std::string& file_name);
+		static model_ptr create(const std::string& file_name);
 		~Model();
 		
 		inline MaterialMap&  getMaterials()		{return m_vMaterials;}

@@ -22,10 +22,10 @@ namespace particles
 		//REGISTER_PROPERTY(Direction, math::Vec3Interp)
 		//REGISTER_PROPERTY(DirectionSpread, math::Vec3Interp)
 
-		//addProperty(new TProperty<math::Vec3Interp>(m_BoxSize,			"BoxSize",			"Vec3Interp"));
-		//addProperty(new TProperty<math::Vec3Interp>(m_BoxSizeSpread,	"BoxSizeSpread",	"Vec3Interp"));
-		//addProperty(new TProperty<math::Vec3Interp>(m_Direction,		"Direction",		"Vec3Interp"));
-		//addProperty(new TProperty<math::Vec3Interp>(m_DirectionSpread,	"DirectionSpread",	"Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_BoxSize,			"BoxSize",			"Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_BoxSizeSpread,	"BoxSizeSpread",	"Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_Direction,		"Direction",		"Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_DirectionSpread,	"DirectionSpread",	"Vec3Interp"));
 	}
 
 	//-----------------------------------------------------------------------------------

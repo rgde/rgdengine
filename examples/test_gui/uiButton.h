@@ -68,7 +68,7 @@ namespace ui
 			};
 		}
 
-		const IControl* getParent()
+		const IControl* get_parent()
 		{
 			return 0;
 		}

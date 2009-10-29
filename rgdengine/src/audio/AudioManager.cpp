@@ -18,15 +18,15 @@ namespace audio
 {
 
 
-	AudioManager* AudioManager::s_pInstance = NULL;  // singleton instance
+	audio_manager* audio_manager::s_pInstance = NULL;  // singleton instance
 
 
 	//-----------------------------------------------------------------------------
-	// Name: AudioManager::Initialize()
+	// Name: audio_manager::Initialize()
 	// Desc: Initializes the IDirectSound object and also sets the primary buffer
 	//       format.  This function must be called before any others.
 	//-----------------------------------------------------------------------------
-	AudioManager::AudioManager(HWND  hWnd, 
+	audio_manager::audio_manager(HWND  hWnd, 
 		DWORD dwPrimaryChannels, 
 		DWORD dwPrimaryFreq, 
 		DWORD dwPrimaryBitRate,
@@ -60,14 +60,14 @@ namespace audio
 		// Create IDirectSound using the primary sound device
 		if (FAILED(hr = DirectSoundCreate8(NULL, &m_pDS, NULL)))
 		{
-			DXTRACE_ERR(TEXT("AudioManager::Init, DirectSoundCreate8"), hr);
+			DXTRACE_ERR(TEXT("audio_manager::Init, DirectSoundCreate8"), hr);
 			return;
 		}
 
 		// Set DirectSound coop level 
 		if (FAILED(hr = m_pDS->SetCooperativeLevel(hWnd, DSSCL_PRIORITY)))
 		{
-			DXTRACE_ERR(TEXT("AudioManager::Init, SetCooperativeLevel"), hr);
+			DXTRACE_ERR(TEXT("audio_manager::Init, SetCooperativeLevel"), hr);
 			return;
 		}
 
@@ -80,15 +80,15 @@ namespace audio
 
 		if (FAILED(hr = m_pDS->CreateSoundBuffer(&dsbdesc, &m_pDSBPrimary, NULL)))
 		{
-			DXTRACE_ERR(TEXT("AudioManager::Init, CreateSoundBuffer"), hr);
-			throw std::exception("AudioManager::Init, CreateSoundBuffer");
+			DXTRACE_ERR(TEXT("audio_manager::Init, CreateSoundBuffer"), hr);
+			throw std::exception("audio_manager::Init, CreateSoundBuffer");
 		}
 
 		if (FAILED(hr = m_pDSBPrimary->QueryInterface(IID_IDirectSound3DListener, 
 			(VOID**)&m_pDSListener)))
 		{
-			DXTRACE_ERR(TEXT("AudioManager::Init, QueryInterface"), hr );
-			throw std::exception("AudioManager::Init, QueryInterface");
+			DXTRACE_ERR(TEXT("audio_manager::Init, QueryInterface"), hr );
+			throw std::exception("audio_manager::Init, QueryInterface");
 		}
 
 		SetPrimaryBufferFormat(dwPrimaryChannels, dwPrimaryFreq, dwPrimaryBitRate);
@@ -107,7 +107,7 @@ namespace audio
 	}
 
 
-	AudioManager::~AudioManager()
+	audio_manager::~audio_manager()
 	{
 		int i;
 
@@ -128,7 +128,7 @@ namespace audio
 
 		m_pListenerCam = NULL;
 
-		delete WaveFileFactory::Instance();
+		delete WaveFileFactory::get();
 
 		SAFE_RELEASE(m_pDSListener);
 		SAFE_RELEASE(m_pDSBPrimary);
@@ -138,14 +138,14 @@ namespace audio
 
 
 	//-----------------------------------------------------------------------------
-	// Name: AudioManager::SetPrimaryBufferFormat()
+	// Name: audio_manager::SetPrimaryBufferFormat()
 	// Desc: Set primary buffer to a specified format 
 	//       For example, to set the primary buffer format to 22kHz stereo, 16-bit
 	//       then:   dwPrimaryChannels = 2
 	//               dwPrimaryFreq     = 22050, 
 	//               dwPrimaryBitRate  = 16
 	//-----------------------------------------------------------------------------
-	HRESULT AudioManager::SetPrimaryBufferFormat(DWORD dwPrimaryChannels, 
+	HRESULT audio_manager::SetPrimaryBufferFormat(DWORD dwPrimaryChannels, 
 		DWORD dwPrimaryFreq, 
 		DWORD dwPrimaryBitRate )
 	{
@@ -170,7 +170,7 @@ namespace audio
 	}
 
 
-	bool AudioManager::LoadAudioTags(const char* szFileName)
+	bool audio_manager::LoadAudioTags(const char* szFileName)
 	{
 		TiXmlDocument pDOMDoc(szFileName);
 
@@ -178,7 +178,7 @@ namespace audio
 
 		if (varbSuccess)
 		{
-			AudioTag* pTag = NULL;
+			audio_tag* pTag = NULL;
 
 			for (TiXmlElement* child_el = pDOMDoc.RootElement()->FirstChildElement(); child_el !=0; child_el = child_el->NextSiblingElement())
 			{
@@ -245,7 +245,7 @@ namespace audio
 	}
 
 
-	void AudioManager::ClearAudioTags()
+	void audio_manager::ClearAudioTags()
 	{
 		AudioTagIterator iTag = m_tags.begin();
 		AudioTagIterator endTag = m_tags.end();
@@ -258,7 +258,7 @@ namespace audio
 		m_tags.clear();
 	}
 
-	AudioTag* AudioManager::GetAudioTag(const char* szTagName)
+	audio_tag* audio_manager::GetAudioTag(const char* szTagName)
 	{
 		AudioTagIterator foundTag = m_tags.find(szTagName);
 
@@ -273,7 +273,7 @@ namespace audio
 	}
 
 
-	bool AudioManager::CreateBuffer(Buffer* pBuf, DWORD size, bool b3D)
+	bool audio_manager::CreateBuffer(Buffer* pBuf, DWORD size, bool b3D)
 	{
 		ASSERT(size >= DSBSIZE_MIN && size <= DSBSIZE_MAX);
 		ASSERT(b3D ? (size >= (DSBSIZE_FX_MIN * m_frequency * (m_bitRate / 8)) / 1000) : true);
@@ -337,7 +337,7 @@ namespace audio
 		return true;
 	}
 
-	bool AudioManager::RestoreBuffer(Buffer* pBuf)
+	bool audio_manager::RestoreBuffer(Buffer* pBuf)
 	{
 		if( !pBuf || !pBuf->pDSBuf)
 			return true;
@@ -375,13 +375,13 @@ namespace audio
 	}
 
 
-	void AudioManager::Play(const char* szTagName,
+	void audio_manager::Play(const char* szTagName,
 		world_object* pObj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
 	{
-		AudioTag* pTag = GetAudioTag(szTagName);
+		audio_tag* pTag = GetAudioTag(szTagName);
 		//ASSERT(pTag);
 
 		if (pTag)
@@ -403,7 +403,7 @@ namespace audio
 		}
 	}
 
-	void AudioManager::Play(AudioTag* pTag,
+	void audio_manager::Play(audio_tag* pTag,
 		world_object* pObj,
 		int msDuration,
 		int msDelay,
@@ -423,7 +423,7 @@ namespace audio
 		}
 		else
 		{
-			internal::base_audio* pAudio = pTag->CreateAudio(pObj, msDuration, msDelay, pNotify);
+			internal::base_audio* pAudio = pTag->create_audio(pObj, msDuration, msDelay, pNotify);
 
 			if (pAudio)			// some tags don't create any actual audio
 			{
@@ -462,11 +462,11 @@ namespace audio
 		}
 	}
 
-	void AudioManager::PlayEffect(AudioTag* pTag, Sound3D* pSound3D,
+	void audio_manager::PlayEffect(audio_tag* pTag, Sound3D* pSound3D,
 		int msDuration)
 	{
 		int availableIndex = -1;
-		int lowPriority = pTag->GetPriority();
+		int lowPriority = pTag->get_priority();
 		int lowestPriorityIndex = -1;
 		int i, numTimesPlaying = 0;
 		WaveFile* pWaveFile = pSound3D->GetWaveFile();
@@ -491,9 +491,9 @@ namespace audio
 
 				// todo add another test, in case of multiple lower priority choices
 				// like the buffer that's closest to completion, or check for similar sounds first
-				if (m_effectBufs[i].pTag->GetPriority() <= lowPriority)
+				if (m_effectBufs[i].pTag->get_priority() <= lowPriority)
 				{
-					lowPriority = m_effectBufs[i].pTag->GetPriority();
+					lowPriority = m_effectBufs[i].pTag->get_priority();
 					lowestPriorityIndex = i;
 				}
 			}
@@ -569,10 +569,10 @@ namespace audio
 		}
 	}
 
-	void AudioManager::PlayMusic(AudioTag* pTag, Music* pMusic, int msDuration)
+	void audio_manager::PlayMusic(audio_tag* pTag, Music* pMusic, int msDuration)
 	{
 		int availableIndex = -1;
-		int lowPriority = pTag->GetPriority();
+		int lowPriority = pTag->get_priority();
 		int lowestPriorityIndex = -1;
 		int fadeOutMusicIndex = -1;
 
@@ -593,9 +593,9 @@ namespace audio
 
 				// todo add another test, in case of multiple lower priority choices
 				// like the buffer that's closest to completion, or check for similar sounds first
-				if (m_musicBufs[i].pTag->GetPriority() < lowPriority)
+				if (m_musicBufs[i].pTag->get_priority() < lowPriority)
 				{
-					lowPriority = m_musicBufs[i].pTag->GetPriority();
+					lowPriority = m_musicBufs[i].pTag->get_priority();
 					lowestPriorityIndex = i;
 				}
 
@@ -661,7 +661,7 @@ namespace audio
 	}
 
 
-	void AudioManager::UpdateBuffer(int msElapsed, 
+	void audio_manager::UpdateBuffer(int msElapsed, 
 		Buffer* pBuf,
 		DWORD dwBufSize,
 		DWORD dwWriteAmt)
@@ -767,7 +767,7 @@ namespace audio
 	}
 
 
-	void AudioManager::UpdateListener()
+	void audio_manager::UpdateListener()
 	{
 		// update listener position
 		if (m_pListenerCam)
@@ -789,7 +789,7 @@ namespace audio
 	}
 
 
-	void AudioManager::Update(int msElapsed)
+	void audio_manager::Update(int msElapsed)
 	{
 		int i;
 		AudioWaitingIter iToBePlayed = m_toBePlayed.begin();
@@ -827,7 +827,7 @@ namespace audio
 		m_pDSListener->CommitDeferredSettings();
 	}
 
-	void AudioManager::SetListenerCamera(camera* pCam)
+	void audio_manager::SetListenerCamera(camera* pCam)
 	{
 		m_pListenerCam = pCam;
 	}
@@ -836,12 +836,12 @@ namespace audio
 	// Normally wouldn't need the following functions,
 	// but they're exposed so the sample can list all
 	// the audio tags for the simple testing interface.
-	int AudioManager::GetNumAudioTags()
+	int audio_manager::GetNumAudioTags()
 	{
 		return m_tags.size();
 	}
 
-	const char* AudioManager::GetAudioTagName(unsigned int index)
+	const char* audio_manager::GetAudioTagName(unsigned int index)
 	{
 		unsigned int i = 0;
 		AudioTagIterator tagIter = m_tags.begin();
@@ -856,7 +856,7 @@ namespace audio
 	}
 
 
-	void AudioManager::StopAll()
+	void audio_manager::StopAll()
 	{
 		int i;
 
@@ -875,7 +875,7 @@ namespace audio
 		}
 	}
 
-	void AudioManager::StopBuffer(Buffer* pBuf)
+	void audio_manager::StopBuffer(Buffer* pBuf)
 	{
 		pBuf->pDSBuf->Stop();
 
@@ -888,7 +888,7 @@ namespace audio
 	}
 
 
-	unsigned int AudioManager::GetRemainingMusicPlayback()
+	unsigned int audio_manager::GetRemainingMusicPlayback()
 	{
 		unsigned int ms = 0;
 		unsigned int totalTime;
@@ -912,7 +912,7 @@ namespace audio
 	}
 
 
-	void AudioManager::SetOverallVolume(int volume)
+	void audio_manager::SetOverallVolume(int volume)
 	{
 		int i;
 

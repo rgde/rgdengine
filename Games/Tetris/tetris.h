@@ -139,7 +139,7 @@ public:
 	int m_mat[4][4];
 protected:
 	int m_blocks[5][4][4];
-	//render::PModel m_spGeom[5];
+	//render::model_ptr m_spGeom[5];
 	int m_icur;
 	float x,y;
 	bool m_bstopped,m_bfin;

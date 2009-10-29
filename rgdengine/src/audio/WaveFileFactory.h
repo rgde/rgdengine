@@ -17,7 +17,7 @@ class WaveFileFactory
 		WaveFileFactory();
 		virtual ~WaveFileFactory();
 
-		static WaveFileFactory* Instance();
+		static WaveFileFactory* get();
 
 		WaveFile* Get(const char*);
 
@@ -30,7 +30,7 @@ class WaveFileFactory
 		WavMap m_wavs;
 };
 
-inline WaveFileFactory* WaveFileFactory::Instance()
+inline WaveFileFactory* WaveFileFactory::get()
 {
 	if (!s_pInstance)
 		s_pInstance = new WaveFileFactory();

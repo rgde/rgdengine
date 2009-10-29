@@ -12,24 +12,24 @@ namespace particles{
 	processor::processor(base_emitter* em )   // конструктор
 	: m_bIsVisible(true), m_pParentEmitter(em), m_bIsGeometric(false), core::meta_class("processor")
 	{
-		//addProperty(new TProperty<bool>(m_bIsAnimTextureUsed, "AnimTextureUse", "bool"));
+		//addProperty(new property<bool>(m_bIsAnimTextureUsed, "AnimTextureUse", "bool"));
 		m_bIsAnimTextureUsed = false; 
-		//addProperty(new TProperty<bool>(m_bIsTexAnimCycled, "TexAnimCycled", "bool"));
+		//addProperty(new property<bool>(m_bIsTexAnimCycled, "TexAnimCycled", "bool"));
 		m_bIsTexAnimCycled	= false;
-		//addProperty(new TProperty<unsigned>(m_cTexFps, "TexFps", "int"));
+		//addProperty(new property<unsigned>(m_cTexFps, "TexFps", "int"));
 		m_cTexFps			= 25;
-		//addProperty(new TProperty<int>(m_iRndSeed, "RndSeed", "int"));
+		//addProperty(new property<int>(m_iRndSeed, "RndSeed", "int"));
 		m_iRndSeed			= 0;
-		//addProperty(new TProperty<bool>(m_bIsSparks, "IsSparks", "bool"));
+		//addProperty(new property<bool>(m_bIsSparks, "IsSparks", "bool"));
 		m_bIsSparks			= false;
-		//addProperty(new TProperty<bool>(m_bIsGeometric, "IsGeometric", "bool"));
+		//addProperty(new property<bool>(m_bIsGeometric, "IsGeometric", "bool"));
 		m_bIsGeometric		= false;
 		m_dt				= 0;
 		m_fRateAccum		= 0;
 		m_bIsFading			= false;
 		fistTimeInit();
 		m_pParentEmitter	= 0;
-		//addProperty(new TProperty<bool>(m_bIsGlobal, "IsGlobal", "bool"));
+		//addProperty(new property<bool>(m_bIsGlobal, "IsGlobal", "bool"));
 		m_bIsGlobal			= true;
 
 		m_ngkx = 1.8f;
@@ -46,18 +46,18 @@ namespace particles{
 		m_PRate.addKey(1, 10.0f);
 		m_PVelSpreadAmplifier.addKey(1, 1.0f);
 
-		//addProperty(new TProperty<math::FloatInterp>(m_PRate, "PRate", "FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PResistance, "PResistance", "FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PSpin, "PSpin", "FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PSpinSpread, "PSpinSpread", "FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PLife, "PLife", "FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PLifeSpread, "PLifeSpread", "FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PSize, "PSize", "FloatInterp"));
-		//addProperty(new TProperty<math::ColorInterp>(m_PColorAlpha, "PColorAlpha", "ColorInterp"));
-		//addProperty(new TProperty<math::Vec3Interp>(m_PActingForce, "PActingForce", "Vec3Interp"));
-		//addProperty(new TProperty<math::Vec3Interp>(m_PVelocity, "PVelocity", "Vec3Interp"));
-		//addProperty(new TProperty<math::Vec3Interp>(m_PInitialVelSpread, "PInitialVelSpread", "Vec3Interp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_PVelSpreadAmplifier, "PVelSpreadAmplifier", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PRate, "PRate", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PResistance, "PResistance", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PSpin, "PSpin", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PSpinSpread, "PSpinSpread", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PLife, "PLife", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PLifeSpread, "PLifeSpread", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_PSize, "PSize", "FloatInterp"));
+		//addProperty(new property<math::ColorInterp>(m_PColorAlpha, "PColorAlpha", "ColorInterp"));
+		//addProperty(new property<math::Vec3Interp>(m_PActingForce, "PActingForce", "Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_PVelocity, "PVelocity", "Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_PInitialVelSpread, "PInitialVelSpread", "Vec3Interp"));
+		//addProperty(new property<math::FloatInterp>(m_PVelSpreadAmplifier, "PVelSpreadAmplifier", "FloatInterp"));
 	
 		// public properties:
 		//REGISTER_PROPERTY(bIsAnimTextureUsed,	bool)

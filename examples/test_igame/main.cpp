@@ -13,11 +13,11 @@ int main()
 	{
 		PApplication pApp(application::create(L"RGDE: Game Test", 640, 480, false));
 
-		pApp->addTask(task_ptr(new render_task(*pApp, 0)));
-		pApp->addTask(task_ptr(new input_task(*pApp, 1, false)));
+		pApp->add(task_ptr(new render_task(*pApp, 0)));
+		pApp->add(task_ptr(new input_task(*pApp, 1, false)));
         //->
-		//pApp->addTask(task_ptr(new game_task(*pApp, 2, "gameconfig.xml")));
-        pApp->addTask(task_ptr(new game_task(*pApp, 2)));
+		//pApp->add(task_ptr(new game_task(*pApp, 2, "gameconfig.xml")));
+        pApp->add(task_ptr(new game_task(*pApp, 2)));
 
         game::TheGame::get().addLevel("intro", "menu");
         game::TheGame::get().addLevelTypeToCreate("intro", "AviLevelObject");
@@ -34,7 +34,7 @@ int main()
 
 		game::effects::SnowEffect background_effect;
 
-		pApp->Run();
+		pApp->run();
 	}
 
 	//_getch();

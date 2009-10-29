@@ -31,9 +31,9 @@ class SampleApp
 public:
 	SampleApp() :  m_spApp(core::application::create())
 	{
-		m_spApp->addTask(core::task_ptr(new core::input_task(*m_spApp,0,false)));
-		m_spApp->addTask(core::task_ptr(new core::render_task(*m_spApp,1)));
-		m_spApp->addTask(core::task_ptr(new core::game_task(*m_spApp,2)));
+		m_spApp->add(core::task_ptr(new core::input_task(*m_spApp,0,false)));
+		m_spApp->add(core::task_ptr(new core::render_task(*m_spApp,1)));
+		m_spApp->add(core::task_ptr(new core::game_task(*m_spApp,2)));
 
 		math::Vec3f vEyePt( 0.0f, 0, -30 );
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
@@ -53,9 +53,9 @@ public:
             Input::addCommand(L"Quit");
             Input::addCommand(L"Horz");
             Input::addCommand(L"Vert");
-            Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
-            Input::getDevice(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
-			Input::getDevice(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
+            Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
+            Input::get_device(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
+			Input::get_device(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
             m_cEsc  .attach(L"Quit");
             m_cXAxis.attach(L"Horz");
             m_cYAxis.attach(L"Vert");
@@ -69,7 +69,7 @@ public:
 		//render::TheLightManager::get().setAmbientColor(math::Color(50, 50, 50, 0));
 	
 		//render::CPointLight *pLight = new render::CPointLight("point1");
-		//scene::TheScene::get().getRootFrame()->addChild(pLight);
+		//scene::TheScene::get().getRootFrame()->add(pLight);
 		//pLight->setPosition(math::Vec3f(0,0,5));
 
 		//pLight->setDiffuse(math::Color(230, 170, 170, 0));
@@ -78,10 +78,10 @@ public:
 		m_pGeometry = render::Generator<vertex::PositionNormalColored>::CreateBox();
 
 		m_pMySuper = boost::intrusive_ptr<SceneHelper>(new SceneHelper(m_pGeometry));
-		scene::TheScene::get().getRootFrame()->addChild(m_pMySuper);
+		scene::TheScene::get().getRootFrame()->add(m_pMySuper);
 		m_pMySuper->setPosition(math::Vec3f(0,0,-5));
 
-		m_spApp->Run();
+		m_spApp->run();
 	}
 protected:
 	//выход из программы

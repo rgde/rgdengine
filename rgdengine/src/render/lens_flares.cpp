@@ -65,10 +65,10 @@ namespace render
 			return;
 
 		LensFlares::Flare flare;
-		std::string strTextureName	= base::safeReadValue<std::string>(pElement, "texture", "");
-		flare.fDistance = base::safeReadValue(pElement, "distance", 0.0f);
-		flare.fImageScale = base::safeReadValue(pElement, "image_scale", 0.0f);
-		flare.fAngleScale = base::safeReadValue(pElement, "angle_scale", 0.0f);
+		std::string strTextureName	= base::safe_read<std::string>(pElement, "texture", "");
+		flare.fDistance = base::safe_read(pElement, "distance", 0.0f);
+		flare.fImageScale = base::safe_read(pElement, "image_scale", 0.0f);
+		flare.fAngleScale = base::safe_read(pElement, "angle_scale", 0.0f);
 		base::read(flare.color, pElement, "color");
 
 		if (pLensFlares)

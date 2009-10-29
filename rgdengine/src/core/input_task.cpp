@@ -13,7 +13,7 @@ namespace core
     input_task::input_task(const application& app, unsigned int priority, bool exclusive) 
         : base_task(app, priority)
     {
-        HWND hWnd = (HWND)application::get()->getWindowHandle();
+        HWND hWnd = (HWND)application::get()->get_handle();
 
         input::input_impl *pImpl = new input::input_impl();
         pImpl->Init(hWnd,exclusive);

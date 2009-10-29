@@ -38,28 +38,28 @@ namespace game
 			std::string strCurrentLevel = game->Attribute("startlevel");
 
 			//прочитать все уровни, которые относятся к игре
-			TiXmlElement *level = game->FirstChildElement("level");
+			TiXmlElement *level_el = game->FirstChildElement("level");
 
-			while (level)
+			while (level_el)
 			{
-				std::string name = level->Attribute("name");
-				std::string nextlevel = level->Attribute("nextlevel");
+				std::string name = level_el->Attribute("name");
+				std::string nextlevel = level_el->Attribute("nextlevel");
 
 				//добавить уровень
-				Level* pLevel = new Level(name,nextlevel);
+				level* pLevel = new level(name,nextlevel);
 				addLevel(name,nextlevel);
 
 				//прочитать список объектов, которые должен создать уровень	
-				TiXmlElement *levelobject = level->FirstChildElement("levelobject");
+				TiXmlElement *levelobject = level_el->FirstChildElement("levelobject");
 
 				while (levelobject)
 				{
 					std::string type = levelobject->Attribute("type");
-					pLevel->callFunction("AddTypeToCreate", type);
+					pLevel->call_function("AddTypeToCreate", type);
 					levelobject = levelobject->NextSiblingElement("levelobject");
 				}
 
-				level = level->NextSiblingElement("level");
+				level_el = level_el->NextSiblingElement("level");
 			}
 
 			setCurrentLevel(strCurrentLevel);
@@ -76,15 +76,15 @@ namespace game
         }
 
         //добавляем уровень
-		Level* pLevel = new Level(name,nextlevel);
+		level* pLevel = new level(name,nextlevel);
 		m_listLevels.push_back(pLevel);
     }
 
     //написана отдельная функция, лишь бы не давать доступа к
-    //укзателю на Level: у программиста есть доступ только по имени уровня
+    //укзателю на level: у программиста есть доступ только по имени уровня
     void game_system::addLevelTypeToCreate(const std::string &name, const std::string& type_name)
     {
-        Level *pLevel = get_level(name);
+        level *pLevel = get_level(name);
 
         //если такого уровня нет
         if (!pLevel)
@@ -93,7 +93,7 @@ namespace game
             return;
         }
 
-        pLevel->callFunction("AddTypeToCreate", type_name);
+        pLevel->call_function("AddTypeToCreate", type_name);
     }
 
 	game_system::game_system(): m_change_level(false)
@@ -118,7 +118,7 @@ namespace game
 
 		m_objects.clear();
 
-		Level* current_level = get_level(m_strCurrentLevel);
+		level* current_level = get_level(m_strCurrentLevel);
 		if (0 != current_level)
 			current_level->leave();
 
@@ -138,7 +138,7 @@ namespace game
 	void game_system::onCompliteLevel(events::on_complite_level)
 	{
 		std::string next_level;
-		Level *pLevel = get_level(m_strCurrentLevel);
+		level *pLevel = get_level(m_strCurrentLevel);
 
 		if (0 != pLevel)
 			next_level = pLevel->get_next_level();
@@ -159,7 +159,7 @@ namespace game
 
 	void game_system::update()
 	{
-		float dt = core::TheTimer::get().getElapsedTime();
+		float dt = core::TheTimer::get().get_elapsed();
 
 		//static_cast<float>(m_timer.elapsed());
 		typedef std::list<dynamic_object*> DinamicObjects;
@@ -175,7 +175,7 @@ namespace game
 		//сменим уровень (если надо)
 		if (m_change_level)
 		{
-			Level* current_level = get_level(m_strCurrentLevel);
+			level* current_level = get_level(m_strCurrentLevel);
 
 			if (0 != current_level)
 				current_level->leave();
@@ -227,9 +227,9 @@ namespace game
 		m_objects.remove(obj);
 	}
 
-	Level* game_system::get_level(const std::string& name)
+	level* game_system::get_level(const std::string& name)
 	{
-		for(std::list<Level*>::iterator i = m_listLevels.begin(); i != m_listLevels.end(); ++i)
+		for(std::list<level*>::iterator i = m_listLevels.begin(); i != m_listLevels.end(); ++i)
 		{
 			if ((*i)->get_name() == name)
 				return (*i);

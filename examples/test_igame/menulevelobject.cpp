@@ -15,10 +15,10 @@ MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
 		m_cSpace.attach(L"Space");
 		m_cEsc  .attach(L"Escape");
 
-		Input::getDevice(types::Keyboard)->get_control(types::KeyUp    )->bind(L"Up");
-        Input::getDevice(types::Keyboard)->get_control(types::KeyDown  )->bind(L"Down");
-        Input::getDevice(types::Keyboard)->get_control(types::KeySpace )->bind(L"Space");
-        Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Escape");
+		Input::get_device(types::Keyboard)->get_control(types::KeyUp    )->bind(L"Up");
+        Input::get_device(types::Keyboard)->get_control(types::KeyDown  )->bind(L"Down");
+        Input::get_device(types::Keyboard)->get_control(types::KeySpace )->bind(L"Space");
+        Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Escape");
 
         m_up     += boost::bind(&MenuLevelObject::onUpKey,   this);
         m_down   += boost::bind(&MenuLevelObject::onDownKey, this);

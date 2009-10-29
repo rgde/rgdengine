@@ -6,41 +6,41 @@
 
 namespace scene
 {
-	enum NodeType
-	{
-		Folder = 1,
-		Entity,
-		VisualEntity, 
-		System, 
-		TrasformFrame,
-		Light,
-		PartileEmitter
-	};
-
-	class Node : public core::XmlNode<Node>
+	class node : public core::meta_node<node>
 	{
 	public:
-		Node(std::string name) : core::XmlNode<Node>(name) {}
-		virtual	~Node(){m_children.clear();}
+		enum type
+		{
+			Folder = 1,
+			Entity,
+			VisualEntity, 
+			System, 
+			TrasformFrame,
+			Light,
+			PartileEmitter
+		};
+
+		node(std::string name) : core::meta_node<node>(name) {}
+		virtual	~node(){m_children.clear();}
 
 		virtual void update(double dTime, double dElapsedTime);
 		virtual void clear();
 
-		inline NodeType	getNodeType() const {return m_node_type;}
+		inline node::type	getNodeType() const {return m_node_type;}
 
 	protected:
 		virtual void toStream(io::IWriteStream& wf);
 		virtual void fromStream(io::IReadStream& rf);
 
 	protected:
-		NodeType	 m_node_type;
+		node::type	 m_node_type;
 	};
 
-	class NodeFolder : public Node
+	class NodeFolder : public node
 	{
 	public:
 		NodeFolder(const std::string& name) 
-			:	Node(name)				
+			:	node(name)				
 		{
 			m_node_type = Folder;
 		}
@@ -52,18 +52,18 @@ namespace scene
 		SceneTree() :  m_root_node("Root") {}
 		virtual				~SceneTree(){}
 
-		inline Node&		 getRootNode(){return m_root_node;}
+		inline node&		 getRootNode(){return m_root_node;}
 
 	protected:
 		virtual void		 toStream(io::IWriteStream& wf);
 		virtual void		 fromStream(io::IReadStream& rf);
 
 	protected:
-		Node	m_root_node;
+		node	m_root_node;
 	};
 
 
-	typedef  core::factory<Node> SceneFactory;
+	typedef  core::factory<node> SceneFactory;
 
 	template <class T>
 	class _registrator

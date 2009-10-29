@@ -24,7 +24,7 @@ namespace audio
 
 	// A class representing the player's view camera, 
 	// with the position orientation information exposed
-	// for the AudioManager
+	// for the audio_manager
 	class camera
 	{
 	public:
@@ -115,6 +115,6 @@ namespace audio
 		void play(size_t tag_index);
 
 	private:
-		class AudioManager* manager;
+		class audio_manager* manager;
 	};
 }

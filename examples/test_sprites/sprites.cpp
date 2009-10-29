@@ -31,7 +31,7 @@ namespace rgde
 					using namespace input;
 
 					m_cEsc.attach(L"Quit");
-					Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");            
+					Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");            
 					m_cEsc += boost::bind(&sprite_example::onEsc, this);
 				}
 

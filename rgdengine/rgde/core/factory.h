@@ -54,12 +54,12 @@ namespace core
 
 		}
 
-		static factory<T> &Instance();
+		static factory<T> &get();
 	};
 
 
 	template <class T>
-	factory<T> & factory<T>::Instance()
+	factory<T> & factory<T>::get()
 	{
 		static factory<T> m_factory;
 		return m_factory;

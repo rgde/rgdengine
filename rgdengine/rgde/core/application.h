@@ -2,48 +2,50 @@
 
 #include <rgde/event/events.h>
 
-struct CWindowResize
+struct window_resize
 {
-    CWindowResize(int x, int y): width(x),height(y) {}
+    window_resize(int x, int y): width(x),height(y) {}
     int	width;
     int height;
 };
 
-struct CCursorMove
+struct mouse_move
 {
-    CCursorMove(float _x, float _y): x(_x),y(_y) {}
+    mouse_move(float _x, float _y): x(_x),y(_y) {}
     float x;
     float y;
 };
 
-struct CMouseWhell
+struct mouse_whell
 {
-    CMouseWhell(int _delta): delta(_delta) {}
+    mouse_whell(int _delta): delta(_delta) {}
     int delta;
 };
 
-struct CMouseButton
+struct mouse_button
 {
-    enum ButtonType
+    enum button_type
     {
         Left,
         Middle,
         Right
     };
 
-    enum ClickType
+    enum action_type
     {
         Down,
         Up,
         DoubleClick
     };
 
-    CMouseButton(ButtonType _button, ClickType _click): button(_button), click(_click) {}
-    ButtonType button;
-    ClickType click;
+    mouse_button(button_type _button, action_type _click)
+		: button(_button), click(_click) {}
+
+    button_type button;
+    action_type click;
 };
 
-typedef void *WindowHandle;
+typedef void *window_handle;
 
 namespace core
 {
@@ -57,39 +59,39 @@ namespace core
 
     public:
 		virtual ~application() {}
-        virtual void			addTask(task_ptr pTask) = 0;
-        virtual void			Run() = 0;
+        virtual void			add(task_ptr pTask) = 0;
+        virtual void			run() = 0;
         virtual bool			update() = 0;
         virtual void			close() = 0;
-        virtual WindowHandle	getWindowHandle() const = 0;
+        virtual window_handle	get_handle() const = 0;
 
 		template<typename TaskType, typename P1, typename P2, typename P3>
-		application& addTask(const P1& p1, const P2& p2, const P3& p3)
+		application& add(const P1& p1, const P2& p2, const P3& p3)
 		{
 			task_ptr task(new TaskType(*this, p1, p2, p3));
-			addTask(task);
+			add(task);
 			return *this;
 		}
 
 		template<typename TaskType, typename P1, typename P2>
-		application& addTask(const P1& p1, const P2& p2)
+		application& add(const P1& p1, const P2& p2)
 		{
 			task_ptr task(new TaskType(*this, p1, p2));
-			addTask(task);
+			add(task);
 			return *this;
 		}
 
 		template<typename TaskType, typename P1>
-		application& addTask(const P1& p1)
+		application& add(const P1& p1)
 		{
 			task_ptr task(new TaskType(*this, p1));
-			addTask(task);
+			add(task);
 			return *this;
 		}
 
 		static application		*create(const std::wstring& window_name = L"");
         static application		*create(const std::wstring& window_name, int width, int height, bool fullscreen, bool resize_enable = true);
-        static application		*create(WindowHandle parent_window);
+        static application		*create(window_handle parent_window);
 
         static application		*get();
     };

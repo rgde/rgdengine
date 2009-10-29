@@ -25,16 +25,16 @@ namespace core
 		void advance();
 
 		/// Returns the absolute system time
-		float getAbsoluteTime();
+		float get_absolute_time();
 
 		/// Returns the current time
-		float getCurrentTime();
+		float get_current_time();
 
-		/// Returns a time that elapsed between getElapsedTime() calls
-		float getElapsedTime();
+		/// Returns a time that elapsed between get_elapsed() calls
+		float get_elapsed();
 
 		/// Indicates that a timer is stopped or paused
-		bool isStoped();
+		bool is_stoped();
 
 	protected:
 		bool Stopped;

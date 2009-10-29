@@ -10,7 +10,7 @@ namespace base
 	{
 		std::vector<byte> data;
 		{
-			io::readstream_ptr in = io::TheFileSystem::get().findFile(file_name);
+			io::readstream_ptr in = io::TheFileSystem::get().find(file_name);
 
 			if(!in)
 				return false;
@@ -24,7 +24,7 @@ namespace base
 	}
 
 	template<typename T> 
-	inline T safeReadValue(TiXmlHandle hBaseNode,
+	inline T safe_read(TiXmlHandle hBaseNode,
 						   const std::string& strParameterName,
 						   const T& defaultValue) 
 	{ 
@@ -45,7 +45,7 @@ namespace base
 	}
 
 	template<typename T> 
-	inline T safeReadValue(TiXmlHandle hBaseNode,
+	inline T safe_read(TiXmlHandle hBaseNode,
 						   const T& defaultValue) 
 	{ 
 		try {
@@ -59,7 +59,7 @@ namespace base
 	}
 
 	template<typename T> 
-	inline T safeReadValue(TiXmlElement* pElement,
+	inline T safe_read(TiXmlElement* pElement,
 						   const std::string& strParameterName,
 						   const T& defaultValue) 
 	{ 
@@ -74,7 +74,7 @@ namespace base
 	}
 
 	template<typename T> 
-	inline T safeReadValue(TiXmlElement* pElement,
+	inline T safe_read(TiXmlElement* pElement,
 						   const T& defaultValue) 
 	{ 
 		try {
@@ -88,7 +88,7 @@ namespace base
 	}
 
 	template<typename T> 
-	inline T safeReadAttributeValue(TiXmlHandle hBaseNode,
+	inline T safe_read_attr(TiXmlHandle hBaseNode,
 									const std::string& strParameterName,
 									const std::string& strAttributeName,
 									const T& defaultValue)
@@ -110,7 +110,7 @@ namespace base
 	}
 
 	template<typename T> 
-	inline T safeReadAttributeValue(TiXmlElement* pElement,
+	inline T safe_read_attr(TiXmlElement* pElement,
 									const std::string& strParameterName,
 									const std::string& strAttributeName,
 									const T& defaultValue)
@@ -127,10 +127,10 @@ namespace base
 
 	inline void read(math::Color& color, TiXmlElement* pElement, const std::string& strParameterName)
 	{
-		char r = (char)safeReadAttributeValue<int>(pElement, strParameterName, "r", 0);
-		char g = (char)safeReadAttributeValue<int>(pElement, strParameterName, "g", 0);
-		char b = (char)safeReadAttributeValue<int>(pElement, strParameterName, "b", 0);
-		char a = (char)safeReadAttributeValue<int>(pElement, strParameterName, "a", 0);
+		char r = (char)safe_read_attr<int>(pElement, strParameterName, "r", 0);
+		char g = (char)safe_read_attr<int>(pElement, strParameterName, "g", 0);
+		char b = (char)safe_read_attr<int>(pElement, strParameterName, "b", 0);
+		char a = (char)safe_read_attr<int>(pElement, strParameterName, "a", 0);
 
 		color = math::Color(r, g, b, a);
 	}
@@ -184,7 +184,7 @@ namespace base
 	}
 
 	template<typename T> 
-	inline T safeReadNodeName(TiXmlNode* pNode,	const T& defaultValue) 
+	inline T safe_read_node_name(TiXmlNode* pNode,	const T& defaultValue) 
 	{ 
 		try {
 			std::string strValue = pNode->Value();
@@ -197,7 +197,7 @@ namespace base
 	}
 
 	template<typename T> 
-	inline T safeReadAttributeValue(TiXmlElement* pElement,	const char* strAttributeName,const T& defaultValue)
+	inline T safe_read_attr(TiXmlElement* pElement,	const char* strAttributeName,const T& defaultValue)
 	{ 
 		try {
 			std::string strValue = pElement->Attribute(strAttributeName);
@@ -209,7 +209,7 @@ namespace base
 		}
 	}
 
-	inline void readColorFromXml(math::Color &color, TiXmlElement *elem, float alpha = 1.0f)
+	inline void read_color(math::Color &color, TiXmlElement *elem, float alpha = 1.0f)
 	{
 		if (NULL == elem)
 			return;
@@ -226,12 +226,12 @@ namespace base
 		color.set(r, g, b, (double)alpha);
 	}
 
-	inline void readLightColor(math::Color& color, TiXmlElement* pElement, const std::string& strParameterName)
+	inline void read_light_color(math::Color& color, TiXmlElement* pElement, const std::string& strParameterName)
 	{
-		char r = (char)(safeReadAttributeValue<float>(pElement, strParameterName, "red", 0)*255.0f);
-		char g = (char)(safeReadAttributeValue<float>(pElement, strParameterName, "green", 0)*255.0f);
-		char b = (char)(safeReadAttributeValue<float>(pElement, strParameterName, "blue", 0)*255.0f);
-		char a = (char)(safeReadAttributeValue<float>(pElement, strParameterName, "alpha", 0)*255.0f);
+		char r = (char)(safe_read_attr<float>(pElement, strParameterName, "red", 0)*255.0f);
+		char g = (char)(safe_read_attr<float>(pElement, strParameterName, "green", 0)*255.0f);
+		char b = (char)(safe_read_attr<float>(pElement, strParameterName, "blue", 0)*255.0f);
+		char a = (char)(safe_read_attr<float>(pElement, strParameterName, "alpha", 0)*255.0f);
 
 		color = math::Color(r, g, b, a);
 	}

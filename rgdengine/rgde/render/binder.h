@@ -26,9 +26,9 @@
 //    CBinder* binder = new CBinder(pEffect);//pEffect is some non-null
 //                                           //PEffect pointer
 //
-//    //Functor parameter. Binder calls taken GetFunction with taken int
+//    //Functor parameter. Binder calls taken getter with taken int
 //    //parameter and setups result to effect.
-//    binder->addParameter<texture_ptr>(CBinder::Types<texture_ptr>::GetFunction(
+//    binder->addParameter<texture_ptr>(CBinder::Types<texture_ptr>::getter(
 //                                           boost::bind(&getTexture, _1)),
 //                                           "TEXTURE_PARAMETER");
 //
@@ -38,7 +38,7 @@
 //    //without parameters (in this example only, becose SSome::getColor
 //    //doesn't need any parameters) and setups result to effect. Difference
 //    //is that ParamTypeGetFunction sometimes generates warning "Returning
-//    //address of local variable" so in this case use GetFunction returns
+//    //address of local variable" so in this case use getter returns
 //    //copy for all types.
 //    CBinder::Types<math::Color>::ParamTypeGetFunction getFunc = 
 //                             boost::bind(&SSome::getColor, &some);
@@ -68,8 +68,8 @@ namespace render
 {
 	/** Binder template class.
 	  * Binder is used to bind some parameters to effect. See example of use
-	  * in the beginning of the file. FType is parameter type for GetFunction
-	  * and ParamTypeGetFunction. Binder calls GetFunction (or 
+	  * in the beginning of the file. FType is parameter type for getter
+	  * and ParamTypeGetFunction. Binder calls getter (or 
 	  * ParamTypeGetFunction) with Types<FType>::ParamType parameter...
 	  */
 	template <class FType>
@@ -82,9 +82,9 @@ namespace render
 		{
 			typedef typename boost::call_traits<PType>::param_type ParamType;
 			typedef typename Types<FType>::ParamType FTypeParamType;
-			//GetFunction is used to get value to be setup to effect. Returns
+			//getter is used to get value to be setup to effect. Returns
 			//PType
-			typedef boost::function<PType(FTypeParamType)>GetFunction;
+			typedef boost::function<PType(FTypeParamType)>getter;
 			//ParamTypeGetFunction is used to get value to be setup to effect
 			//too. Defference is that ParamTypeGetFunction returns ParamType
 			//instead of PType. It allows to setup parameter by more effective
@@ -133,7 +133,7 @@ namespace render
 		}
 
 		template <class PType>
-		bool addParameter(const typename Types<PType>::GetFunction& f,
+		bool addParameter(const typename Types<PType>::getter& f,
 						  const std::string& name)
 		{
 			effect::IParameter* param = getParameter(name);
@@ -174,7 +174,7 @@ namespace render
 		}
 
 		template <class PType>
-		static Functor createFunctor(const typename Types<PType>::GetFunction& f,
+		static Functor createFunctor(const typename Types<PType>::getter& f,
 									 effect::IParameter* param)
 		{
 			return boost::bind(getEffectSetFunction<PType>(), param,

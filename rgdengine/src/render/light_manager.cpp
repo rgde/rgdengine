@@ -129,10 +129,10 @@ namespace render
 	//	};
 
 	//	//std::string strLightModelName = lightTypeToStr(eType);
-	//	//PModel pModel = Model::create(std::wstring(strLightModelName.begin(), strLightModelName.end()));
+	//	//model_ptr pModel = Model::create(std::wstring(strLightModelName.begin(), strLightModelName.end()));
 	//	//m_models.push_back(pModel);
 
-	//	//pLight->getParentFrame()->addChild(pModel->getRoot());
+	//	//pLight->getParentFrame()->add(pModel->getRoot());
 	//	//pModel->setVisible(m_bRenderDebug);
 	//	m_lights.push_back(pLight);
 	//}
@@ -279,15 +279,15 @@ namespace render
 	//	TiXmlHandle hModelsNamesHandle =
 	//				hConfigHandle.FirstChildElement("ModelsNames");
 
-	//	m_strPointLightModelName = base::safeReadValue<std::string>(
+	//	m_strPointLightModelName = base::safe_read<std::string>(
 	//								hModelsNamesHandle,
 	//								"PointLight",
 	//								"teapot.xml");
-	//	m_strSpotLightModelName = base::safeReadValue<std::string>(
+	//	m_strSpotLightModelName = base::safe_read<std::string>(
 	//								hModelsNamesHandle,
 	//								"SpotLight",
 	//								"teapot.xml");
-	//	m_strDirectionalLightModelName = base::safeReadValue<std::string>(
+	//	m_strDirectionalLightModelName = base::safe_read<std::string>(
 	//								hModelsNamesHandle,
 	//								"DirectionalLight",
 	//								"teapot.xml");

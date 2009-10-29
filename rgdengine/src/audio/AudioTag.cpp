@@ -1,6 +1,6 @@
 #include "precompiled.h"
-#include "AudioTag.h"
-#include "AudioManager.h"
+#include "audiotag.h"
+#include "audiomanager.h"
 #include "sound3D.h"
 #include "musicoggvorbis.h"
 
@@ -10,10 +10,10 @@ namespace audio
 {
 
 	////////////////////////////
-	// AudioTag class members
+	// audio_tag class members
 	////////////////////////////
 
-	AudioTag::AudioTag()
+	audio_tag::audio_tag()
 		:	m_priority(0),
 		m_volAdjust(0),
 		m_volAdjustRange(0),
@@ -24,7 +24,7 @@ namespace audio
 	{
 	}
 
-	AudioTag::~AudioTag()
+	audio_tag::~audio_tag()
 	{
 	}
 
@@ -64,7 +64,7 @@ namespace audio
 		return false;
 	}
 
-	bool AudioTag::LoadTag(TiXmlElement* pDOMElement)
+	bool audio_tag::LoadTag(TiXmlElement* pDOMElement)
 	{
 		TiXmlElement* el = pDOMElement;
 
@@ -94,7 +94,7 @@ namespace audio
 		return true;
 	}
 
-	void AudioTag::audio_finished(internal::base_audio* pAudio)
+	void audio_tag::audio_finished(internal::base_audio* pAudio)
 	{
 		// check if the tag is set to loop
 		int delay = GetLoopDelay();
@@ -103,13 +103,13 @@ namespace audio
 		{
 			if (0 == m_loopTimes)		// play infinitely
 			{
-				AudioManager::Instance()->Play(this, NULL, 0, delay, this);
+				audio_manager::get()->Play(this, NULL, 0, delay, this);
 			}
 			else
 			{
 				if (m_curLoop < m_loopTimes - 1)
 				{
-					AudioManager::Instance()->Play(this, NULL, 0, delay, this);
+					audio_manager::get()->Play(this, NULL, 0, delay, this);
 					++m_curLoop;
 				}
 				else
@@ -120,7 +120,7 @@ namespace audio
 		}
 	}
 
-	int AudioTag::GetVolumeAdjust()
+	int audio_tag::GetVolumeAdjust()
 	{
 		// use range to calculate random volume adjustment (volAdjust +/- range)
 		if (m_volAdjustRange > 0)
@@ -129,7 +129,7 @@ namespace audio
 			return m_volAdjust;
 	}
 
-	int AudioTag::GetLoopDelay()
+	int audio_tag::GetLoopDelay()
 	{
 		// calculate number of millseconds to delay looping of audio
 		// if audio is not meant to be looped, return -1.
@@ -161,7 +161,7 @@ namespace audio
 	/////////////////////////////////
 
 	AudioEffectTag::AudioEffectTag()
-		:	AudioTag(),
+		:	audio_tag(),
 		m_minDist(0.0f),
 		m_maxDist(1000.0f),
 		m_cascadeNum(0x7FFFFFFF),
@@ -175,7 +175,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioEffectTag::CreateAudio(world_object* pObj,
+	internal::base_audio* AudioEffectTag::create_audio(world_object* pObj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -196,7 +196,7 @@ namespace audio
 
 	bool AudioEffectTag::LoadTag(TiXmlElement* pDOMElement)
 	{
-		AudioTag::LoadTag(pDOMElement);
+		audio_tag::LoadTag(pDOMElement);
 
 		TiXmlElement* el = pDOMElement;
 
@@ -228,7 +228,7 @@ namespace audio
 	/////////////////////////////////
 
 	AudioMusicTag::AudioMusicTag()
-		:	AudioTag(),
+		:	audio_tag(),
 		m_file("")
 	{
 	}
@@ -239,7 +239,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioMusicTag::CreateAudio(world_object* pObj,
+	internal::base_audio* AudioMusicTag::create_audio(world_object* pObj,
 		int msDuration,
 		int msDelay, 
 		audio::listener* pNotify)
@@ -254,7 +254,7 @@ namespace audio
 
 	bool AudioMusicTag::LoadTag(TiXmlElement* pDOMElement)
 	{
-		AudioTag::LoadTag(pDOMElement);
+		audio_tag::LoadTag(pDOMElement);
 
 		// the .ogg file for this music tag
 		const char* file_name = pDOMElement->Attribute("FILE");
@@ -272,7 +272,7 @@ namespace audio
 	/////////////////////////////////////
 
 	AudioCompositionTag::AudioCompositionTag()
-		:	AudioTag(),
+		:	audio_tag(),
 		m_inTag(""),
 		m_loopTag(""),
 		m_outTag(""),
@@ -287,7 +287,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioCompositionTag::CreateAudio(world_object* pObj,
+	internal::base_audio* AudioCompositionTag::create_audio(world_object* pObj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -298,13 +298,13 @@ namespace audio
 		case SECTION_NONE:
 		case SECTION_OUT:
 			m_lastSection = SECTION_IN;
-			AudioManager::Instance()->Play(m_inTag.c_str(), pObj, msDuration, msDelay, this);
+			audio_manager::get()->Play(m_inTag.c_str(), pObj, msDuration, msDelay, this);
 			break;
 
 		case SECTION_IN:
 			{
 				int delay;
-				AudioManager::Instance()->Play(m_loopTag.c_str(), pObj, msDuration, msDelay, this);
+				audio_manager::get()->Play(m_loopTag.c_str(), pObj, msDuration, msDelay, this);
 
 				// set out music to fade in if we need it to
 				if (msDuration > 0)
@@ -313,11 +313,11 @@ namespace audio
 				}
 				else
 				{
-					delay = AudioManager::Instance()->GetRemainingMusicPlayback() - m_crossFadeToOutTime;
+					delay = audio_manager::get()->GetRemainingMusicPlayback() - m_crossFadeToOutTime;
 				}
 
 				m_lastSection = SECTION_LOOP;
-				AudioManager::Instance()->Play(m_outTag.c_str(), pObj, 0, delay, this);
+				audio_manager::get()->Play(m_outTag.c_str(), pObj, 0, delay, this);
 				break;
 			}
 
@@ -337,7 +337,7 @@ namespace audio
 
 	bool AudioCompositionTag::LoadTag(TiXmlElement* pDOMElement)
 	{
-		AudioTag::LoadTag(pDOMElement);
+		audio_tag::LoadTag(pDOMElement);
 
 		TiXmlElement* el = pDOMElement;
 
@@ -366,13 +366,13 @@ namespace audio
 		if (SECTION_OUT == m_lastSection)
 		{
 			// repeat the composition tag if necessary 
-			AudioTag::audio_finished(pAudio);
+			audio_tag::audio_finished(pAudio);
 		}
 		else
 		{
 			// otherwise we're not done with the composition, 
 			// play the next section
-			AudioManager::Instance()->Play(this, NULL, 0, 0, this);
+			audio_manager::get()->Play(this, NULL, 0, 0, this);
 		}
 	}
 
@@ -382,7 +382,7 @@ namespace audio
 	/////////////////////////////////
 
 	AudioRandomTag::AudioRandomTag()
-		:	AudioTag()
+		:	audio_tag()
 	{
 	}
 
@@ -392,7 +392,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioRandomTag::CreateAudio(world_object* pObj,
+	internal::base_audio* AudioRandomTag::create_audio(world_object* pObj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -416,7 +416,7 @@ namespace audio
 		// play the tag, if we've selected one
 		if (i < size)
 		{
-			AudioManager::Instance()->Play(m_tags[i].c_str(), pObj, msDuration, msDelay, this);
+			audio_manager::get()->Play(m_tags[i].c_str(), pObj, msDuration, msDelay, this);
 		}
 
 		return NULL;
@@ -424,7 +424,7 @@ namespace audio
 
 	bool AudioRandomTag::LoadTag(TiXmlElement* pDOMElement)
 	{
-		AudioTag::LoadTag(pDOMElement);
+		audio_tag::LoadTag(pDOMElement);
 
 		for (TiXmlElement* el = pDOMElement->FirstChildElement(); 0!=el; el = el->NextSiblingElement())
 		{
@@ -470,7 +470,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioAmbientTag::CreateAudio(world_object* pObj,
+	internal::base_audio* AudioAmbientTag::create_audio(world_object* pObj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -513,7 +513,7 @@ namespace audio
 	void AudioAmbientTag::audio_finished(internal::base_audio* pAudio)
 	{
 		RandomizeWorldPosition();
-		AudioTag::audio_finished(pAudio);
+		audio_tag::audio_finished(pAudio);
 	}	
 
 	void AudioAmbientTag::RandomizeWorldPosition()
@@ -545,7 +545,7 @@ namespace audio
 	/////////////////////////////////
 
 	AudioGroupTag::AudioGroupTag()
-		:	AudioTag()
+		:	audio_tag()
 	{
 	}
 
@@ -555,7 +555,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioGroupTag::CreateAudio(world_object* pObj,
+	internal::base_audio* AudioGroupTag::create_audio(world_object* pObj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -579,7 +579,7 @@ namespace audio
 			if (delay < 0)
 				delay = 0;
 
-			AudioManager::Instance()->Play(m_tags[i].c_str(), pObj, msDuration, msDelay+delay, this);
+			audio_manager::get()->Play(m_tags[i].c_str(), pObj, msDuration, msDelay+delay, this);
 		}
 
 		return NULL;
@@ -587,7 +587,7 @@ namespace audio
 
 	bool AudioGroupTag::LoadTag(TiXmlElement* pDOMElement)
 	{
-		AudioTag::LoadTag(pDOMElement);
+		audio_tag::LoadTag(pDOMElement);
 
 		for (TiXmlElement* el = pDOMElement->FirstChildElement(); 0!=el; el = el->NextSiblingElement())
 		{

@@ -14,9 +14,9 @@ public:
 	{
 		m_app.reset(core::application::create(L"GUI Example", 640, 480, false));
 
-		m_app->addTask(core::task_ptr(new core::input_task(*m_app, 0)));
-		m_app->addTask(core::task_ptr(new core::render_task(*m_app, 1)));
-		m_app->addTask(core::task_ptr(new core::game_task(*m_app, 2)));
+		m_app->add(core::task_ptr(new core::input_task(*m_app, 0)));
+		m_app->add(core::task_ptr(new core::render_task(*m_app, 1)));
+		m_app->add(core::task_ptr(new core::game_task(*m_app, 2)));
 
 		////input 
 		//m_cEsc.attachToControl(input::Keyboard, input::KeyEscape);
@@ -55,9 +55,9 @@ public:
 		m_cTargetCamera->activate();
 
 		//UI init
-		ui::TheUIManager::get().addControl(	new ui::uiButton );
+		//ui::TheUIManager::get().addControl(	new ui::uiButton );
 
-		m_app->Run();
+		m_app->run();
 	}
 
 

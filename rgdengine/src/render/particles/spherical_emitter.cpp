@@ -17,9 +17,9 @@ namespace particles
 		m_Radius.addKey(0, 0);
 		m_Radius.addKey(1.0f, 9.0f);	
 
-		//addProperty(new TProperty<math::FloatInterp>(m_Radius,			"Radius",	"FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_RadiusSpread,	"RadiusSpread",	"FloatInterp"));
-		//addProperty(new TProperty<math::FloatInterp>(m_Angle,			"Angle",	"FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_Radius,			"Radius",	"FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_RadiusSpread,	"RadiusSpread",	"FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_Angle,			"Angle",	"FloatInterp"));
 
 		// public properties:
 		//REGISTER_PROPERTY(Radius,		math::FloatInterp)

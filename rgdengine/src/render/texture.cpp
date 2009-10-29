@@ -55,24 +55,24 @@ namespace render
 	io::readstream_ptr findTexture(const std::string& file_name)
 	{
 		io::CFileSystem &fs	= io::TheFileSystem::get();
-		if (io::readstream_ptr in	= fs.findFile(file_name))
+		if (io::readstream_ptr in	= fs.find(file_name))
 			return in;
 
 		{
 			std::string file = io::helpers::getFileNameWithoutExtension(file_name);
-			if (io::readstream_ptr in	= fs.findFile(file + ".jpg"))
+			if (io::readstream_ptr in	= fs.find(file + ".jpg"))
 				return in;
 		}
 
 		{
 			io::ScopePathAdd p	("Textures/");
-			if (io::readstream_ptr in	= fs.findFile(file_name))
+			if (io::readstream_ptr in	= fs.find(file_name))
 				return in;
 		}
 
 		{
 			io::ScopePathChange p	("Media/Common/Textures/");
-			if (io::readstream_ptr in = fs.findFile(file_name))
+			if (io::readstream_ptr in = fs.find(file_name))
 				return in;
 		}
 

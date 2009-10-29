@@ -28,11 +28,11 @@ namespace render
 	{
 		base::read(m_color, node, "color");
 
-		std::string strMode	= base::safeReadValue<std::string>(node, "mode", "None");
+		std::string strMode	= base::safe_read<std::string>(node, "mode", "None");
 		setMode(convertMode(strMode));
 
-		m_fStart = base::safeReadValue<float>(node, "start", 0.0f);
-		m_fEnd = base::safeReadValue<float>(node, "end", 0.0f);
+		m_fStart = base::safe_read<float>(node, "start", 0.0f);
+		m_fEnd = base::safe_read<float>(node, "end", 0.0f);
 	}
 
 	void Fog::loadFromXML(const std::string &file_name)

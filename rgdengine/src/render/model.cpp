@@ -22,11 +22,11 @@ namespace render
 	void ReadNode(TiXmlElement *elem, math::Frame &rootFrame, Model &model);
 	Mesh::PGeometry ReadGeometry(const std::string& fNm);
 
-	PModel Model::create(const std::string& file_name)
+	model_ptr Model::create(const std::string& file_name)
 	{
 		//try
 		{
-			PModel pModel = new Model();
+			model_ptr pModel = new Model();
 			pModel->load(file_name);
             pModel->setLooped(true);
 			pModel->play();
@@ -38,7 +38,7 @@ namespace render
 		//	base::lwrn << "Fail to load model: " << file_name;
 		//}
 
-		return 	PModel();
+		return 	model_ptr();
 	}
 
 	void Model::load(const std::string& strModelName)
@@ -48,7 +48,7 @@ namespace render
 		io::CFileSystem &fs	= io::TheFileSystem::get();
 
 		io::ScopePathAdd p	("Models/" + strModelName + "/");
-		io::readstream_ptr in	= fs.findFile(strModelName + ".xml");
+		io::readstream_ptr in	= fs.find(strModelName + ".xml");
 
 		if (!in)
 		{
@@ -163,7 +163,7 @@ namespace render
 
 		if (gm)
 		{
-			PMesh pMesh(new Mesh);
+			mesh_ptr pMesh(new Mesh);
 			std::string strMeshFile	= std::string(gm->Attribute("name")) + ".xml";
 
 			pMesh->load(strMeshFile);
@@ -173,7 +173,7 @@ namespace render
 
 			model.getMeshes().push_back(pMesh);
 
-			rootFrame.addChild(pMesh.get());
+			rootFrame.add(pMesh.get());
 			// читаем всех детей
 
 			//Neonic: octree
@@ -196,17 +196,17 @@ namespace render
 			if(strType == "point")
 			{
 				PointLight *pPointLight = new PointLight(rootFrame.get_name());
-				rootFrame.addChild(pPointLight);
+				rootFrame.add(pPointLight);
 
 				math::Color color;
 
-				base::readLightColor(color, lt, "ambient");
+				base::read_light_color(color, lt, "ambient");
 				pPointLight->setAmbient(color);
 
-				base::readLightColor(color, lt, "diffuse");
+				base::read_light_color(color, lt, "diffuse");
 				pPointLight->setDiffuse(color);
 
-				base::readLightColor(color, lt, "spec");
+				base::read_light_color(color, lt, "spec");
 				pPointLight->setSpecular(color);
 
 				float range = 1.0f;
@@ -240,7 +240,7 @@ namespace render
 		{
 			math::frame_ptr child	= new math::Frame;
 			ReadNode(cd->ToElement(), *(child.get()), model);
-			rootFrame.addChild(child);
+			rootFrame.add(child);
 			model.getFrames().push_back(child); // а это нафига??
 		};
 	}

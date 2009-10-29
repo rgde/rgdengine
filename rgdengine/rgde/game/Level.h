@@ -6,11 +6,11 @@
 namespace game
 {
 	//базовый класс уровня
-	class Level : public core::FunctionsOwner
+	class level : public core::functions_owner
 	{
 	public:
-		Level(const std::string& name, const std::string& next_level);
-		~Level();
+		level(const std::string& name, const std::string& next_level);
+		~level();
 
 		void addTypeToCreate(const std::string& type_name);	//добавление типа для создания
 		void enter();											//инициализация уровня

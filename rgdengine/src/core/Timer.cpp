@@ -81,7 +81,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float timer::getAbsoluteTime()
+	float timer::get_absolute_time()
 	{
 		LARGE_INTEGER time;
 
@@ -95,7 +95,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float timer::getCurrentTime()
+	float timer::get_current_time()
 	{
 		LARGE_INTEGER time;
 
@@ -109,7 +109,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float timer::getElapsedTime()
+	float timer::get_elapsed()
 	{
 		LARGE_INTEGER time;
 
@@ -127,7 +127,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	bool timer::isStoped()
+	bool timer::is_stoped()
 	{
 		return Stopped;
 	}

@@ -22,7 +22,7 @@ namespace game
 		class _registrator
 		{
 		public:
-			_registrator(){LevelObjFactory::Instance().register_type<T>();}
+			_registrator(){LevelObjFactory::get().register_type<T>();}
 		protected:
 			static _registrator<T> instance;
 		};

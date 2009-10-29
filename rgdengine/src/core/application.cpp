@@ -62,13 +62,13 @@ namespace core
 
 		virtual ~application_impl();
 
-		void init(WindowHandle hParent);
+		void init(window_handle hParent);
 		void init(std::wstring Name, int Width, int Height, bool Fullscreen, bool resize_enable);
 
-		virtual void Run();
+		virtual void run();
 		virtual bool update();
-		virtual WindowHandle getWindowHandle() const;
-		virtual void addTask(task_ptr pTask);
+		virtual window_handle get_handle() const;
+		virtual void add(task_ptr pTask);
 	private:
 		
 		typedef std::list<task_ptr> TaskList;
@@ -80,7 +80,7 @@ namespace core
 
     //////////////////////////////////////////////////////////////////////////
 
-	void application_impl::addTask(task_ptr pTask)
+	void application_impl::add(task_ptr pTask)
 	{
 		m_tasks.push_back(pTask);
 		m_tasks.sort();
@@ -127,37 +127,37 @@ namespace core
         switch (msg.uMsg)
         {
             case WM_MOUSEMOVE:
-                this->send_event<CCursorMove>(CCursorMove(LOWORD(msg.lParam), HIWORD(msg.lParam)));
+                this->send_event<mouse_move>(mouse_move(LOWORD(msg.lParam), HIWORD(msg.lParam)));
                 break;
             case WM_LBUTTONDOWN:
-                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::Down));
+                this->send_event<mouse_button>(mouse_button(mouse_button::Left, mouse_button::Down));
                 break;
             case WM_LBUTTONUP:
-                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::Up));
+                this->send_event<mouse_button>(mouse_button(mouse_button::Left, mouse_button::Up));
                 break;
             case WM_LBUTTONDBLCLK:
-                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Left, CMouseButton::DoubleClick));
+                this->send_event<mouse_button>(mouse_button(mouse_button::Left, mouse_button::DoubleClick));
                 break;
             case WM_MBUTTONDOWN:
-                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::Down));
+                this->send_event<mouse_button>(mouse_button(mouse_button::Middle, mouse_button::Down));
                 break;
             case WM_MBUTTONUP:
-                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::Up));
+                this->send_event<mouse_button>(mouse_button(mouse_button::Middle, mouse_button::Up));
                 break;
             case WM_MBUTTONDBLCLK:
-                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Middle, CMouseButton::DoubleClick));
+                this->send_event<mouse_button>(mouse_button(mouse_button::Middle, mouse_button::DoubleClick));
                 break;
             case WM_RBUTTONDOWN:
-                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::Down));
+                this->send_event<mouse_button>(mouse_button(mouse_button::Right, mouse_button::Down));
                 break;
             case WM_RBUTTONUP:
-                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::Up));
+                this->send_event<mouse_button>(mouse_button(mouse_button::Right, mouse_button::Up));
                 break;
             case WM_RBUTTONDBLCLK:
-                this->send_event<CMouseButton>(CMouseButton(CMouseButton::Right, CMouseButton::DoubleClick));
+                this->send_event<mouse_button>(mouse_button(mouse_button::Right, mouse_button::DoubleClick));
                 break;
             case WM_MOUSEWHEEL:
-                this->send_event<CMouseWhell>(CMouseWhell(HIWORD(msg.wParam)));
+                this->send_event<mouse_whell>(mouse_whell(HIWORD(msg.wParam)));
                 break;
         };
 	}
@@ -226,7 +226,7 @@ namespace core
 			// TODO: Send event with new sizes
 			int width = rcWindowClient.right - rcWindowClient.left;
 			int height = rcWindowClient.bottom - rcWindowClient.top;
-			this->send_event<CWindowResize>(CWindowResize(width, height));
+			this->send_event<window_resize>(window_resize(width, height));
 
 			m_bIsPaused = false;
 		}
@@ -260,11 +260,11 @@ namespace core
 			TiXmlHandle hConfigHandle(&XmlConfig);
 			TiXmlHandle pWindowNode = hConfigHandle.FirstChildElement("Engine").FirstChildElement("Window");//.FirstChildElement().Element();
 
-			std::string ansi_name = base::safeReadValue<std::string>(pWindowNode, "name", "");
+			std::string ansi_name = base::safe_read<std::string>(pWindowNode, "name", "");
 			name = ansi_name.empty() ? name : std::wstring(ansi_name.begin(), ansi_name.end());
-			nWidth = base::safeReadValue<int>(pWindowNode, "width", 640);
-			nHeight = base::safeReadValue<int>(pWindowNode, "height", 480);
-			bFullscreen = base::safeReadValue<bool>(pWindowNode, "Fullscreen", 0);
+			nWidth = base::safe_read<int>(pWindowNode, "width", 640);
+			nHeight = base::safe_read<int>(pWindowNode, "height", 480);
+			bFullscreen = base::safe_read<bool>(pWindowNode, "Fullscreen", 0);
 		}
 
 		return create(std::wstring(name.begin(), name.end()), nWidth, nHeight, bFullscreen);
@@ -302,7 +302,7 @@ namespace core
 		return pApp;
 	}
 
-	application* application::create(WindowHandle hParentWindow)
+	application* application::create(window_handle hParentWindow)
 	{
 		if ( 0 != gs_pApplication)
 			return gs_pApplication;
@@ -329,7 +329,7 @@ namespace core
 		gs_pApplication = 0;
 	}
 
-	WindowHandle application_impl::getWindowHandle() const 
+	window_handle application_impl::get_handle() const 
 	{
 		return Handle();
 	}
@@ -345,7 +345,7 @@ namespace core
 			//GetClientRect( Handle(), &rcWindowClient );
 			//int width = rcWindowClient.right - rcWindowClient.left;
 			//int height = rcWindowClient.bottom - rcWindowClient.top;
-			//this->send_event(CWindowResize(width, height));
+			//this->send_event(window_resize(width, height));
 		}
 		else
 		{
@@ -396,7 +396,7 @@ namespace core
 		SetMessageEvent(WM_EXITSIZEMOVE,	boost::bind(&application_impl::OnExitSizeMove, this, _1));
 	}
 
-	void application_impl::init(WindowHandle hParent)
+	void application_impl::init(window_handle hParent)
 	{
 		// Styles and position
 		dword Style;
@@ -547,7 +547,7 @@ namespace core
 		}
 	}
 
-	void application_impl::Run()
+	void application_impl::run()
 	{
 		while (update() && !m_bIsClosing)
 		{

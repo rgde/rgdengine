@@ -203,13 +203,13 @@ namespace render
 		m_emissive.a = static_cast<uchar>(a*255);
 
 		TiXmlElement *pAmbientEl= assignMap(elem, "ambient", textures, getMaterialMaps());
-		base::readColorFromXml(m_ambient, pAmbientEl, a);
+		base::read_color(m_ambient, pAmbientEl, a);
 
 		TiXmlElement *pDiffEl	= assignMap(elem, "diffuse", textures, getMaterialMaps());
-		base::readColorFromXml(m_diffuse, pDiffEl, a);
+		base::read_color(m_diffuse, pDiffEl, a);
 
 		TiXmlElement *pSpecEl	= assignMap(elem, "specular", textures, getMaterialMaps());
-		base::readColorFromXml(m_specular, pSpecEl, a);
+		base::read_color(m_specular, pSpecEl, a);
 
 		//I didn't know how it works so I made as knew :)
 		assignMap(elem, "illumination", textures, getMaterialMaps());

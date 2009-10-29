@@ -20,9 +20,9 @@ public:
 
 	My() :  m_spApp(core::application::create(L"Tetris",600,600,false))
 	{
-		m_spApp->addTask(core::task_ptr(new core::input_task(*m_spApp, 0, false)));
-		m_spApp->addTask(core::task_ptr(new core::game_task(*m_spApp, 1)));
-		m_spApp->addTask(core::task_ptr(new core::render_task(*m_spApp, 2)));
+		m_spApp->add(core::task_ptr(new core::input_task(*m_spApp, 0, false)));
+		m_spApp->add(core::task_ptr(new core::game_task(*m_spApp, 1)));
+		m_spApp->add(core::task_ptr(new core::render_task(*m_spApp, 2)));
 
 		math::Vec3f vEyePt( 0.0f, 0.f, -8.f );
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
@@ -48,11 +48,11 @@ public:
 			Input::addCommand(L"Down");
 			Input::addCommand(L"Drop");
 
-			Input::getDevice(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
-			Input::getDevice(types::Keyboard)->get_control(types::KeyLeft)->bind(L"Left");
-			Input::getDevice(types::Keyboard)->get_control(types::KeyRight)->bind(L"Right");
-			Input::getDevice(types::Keyboard)->get_control(types::KeyDown)->bind(L"Down");
-			Input::getDevice(types::Keyboard)->get_control(types::KeySpace)->bind(L"Drop");
+			Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
+			Input::get_device(types::Keyboard)->get_control(types::KeyLeft)->bind(L"Left");
+			Input::get_device(types::Keyboard)->get_control(types::KeyRight)->bind(L"Right");
+			Input::get_device(types::Keyboard)->get_control(types::KeyDown)->bind(L"Down");
+			Input::get_device(types::Keyboard)->get_control(types::KeySpace)->bind(L"Drop");
 			
 			m_cEsc  .attach(L"Quit");
 			m_cLeft.attach(L"Left");
@@ -74,7 +74,7 @@ public:
 		//render::TheLightManager::get().setAmbientColor(math::Color(20, 20, 20, 255));
 		
 		render::PointLight *pLight = new render::PointLight("point1");
-		scene::TheScene::get().getRootFrame()->addChild(pLight);		
+		scene::TheScene::get().getRootFrame()->add(pLight);		
 
 		pLight->setPosition(math::Vec3f(-10,-10,-10));				
 		pLight->setDiffuse(math::Color(235, 0, 0, 255));
@@ -86,7 +86,7 @@ public:
 		for(int i=0;i < numboxes;i++) 
 		{
 			boxes[i] = render::Model::create("gems1");
-			scene::TheScene::get().getRootFrame()->addChild(boxes[i]);
+			scene::TheScene::get().getRootFrame()->add(boxes[i]);
 			boxes[i]->setPosition(math::Vec3f((i%15)-7.f,(i/15)-7.f,0));
 			boxes[i]->setScale(scale);
 			boxes[i]->setVisible(false);
@@ -97,7 +97,7 @@ public:
 		for(int i=0;i < numboxesinablock;i++) 
 		{
 			blocks[i] = render::Model::create("gems1");
-			scene::TheScene::get().getRootFrame()->addChild(blocks[i]);
+			scene::TheScene::get().getRootFrame()->add(blocks[i]);
 			blocks[i]->setScale(scale);
 			blocks[i]->setPosition(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 			blocks[i]->setVisible(false);
@@ -106,7 +106,7 @@ public:
 		m_effect = render::TheRenderManager::get().getDefaultEffect();
 		
 		interval = 500;
-		m_spApp->Run();
+		m_spApp->run();
 	}
 
 protected:
@@ -210,8 +210,8 @@ protected:
 
 	void renderStone(const Stone& stone)
 	{
-		render::PModel& model = m_models[stone.model_index]; // следить что бы не было выхода за пределы вектора
-		render::PMesh& mesh = model->getMeshes()[0]; // мы знаем что у нас только 1 меш в модели. но нет проблем так сделать и для других вариантов
+		render::model_ptr& model = m_models[stone.model_index]; // следить что бы не было выхода за пределы вектора
+		render::mesh_ptr& mesh = model->getMeshes()[0]; // мы знаем что у нас только 1 меш в модели. но нет проблем так сделать и для других вариантов
 		render::Mesh::PGeometry geom = mesh->getGeometry();
 		render::PMaterial& material = mesh->getMaterials()[0];		
 
@@ -219,7 +219,7 @@ protected:
 	}
 
 protected:
-	std::vector<render::PModel> m_models; // тут храним исходные модели камушков
+	std::vector<render::model_ptr> m_models; // тут храним исходные модели камушков
 	render::PEffect				m_effect;
 
 	math::camera_ptr       m_camera;            //указатель на камеру
@@ -233,8 +233,8 @@ protected:
 
 	std::auto_ptr<core::application> m_spApp;
 
-	render::PModel boxes[numboxes];
-	render::PModel blocks[numboxesinablock];
+	render::model_ptr boxes[numboxes];
+	render::model_ptr blocks[numboxesinablock];
 
 	// Надо сделать так:
 	//Stone boxes[numboxes];

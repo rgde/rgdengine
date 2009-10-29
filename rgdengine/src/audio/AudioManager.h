@@ -15,7 +15,7 @@ namespace audio
 	}
 
 	class listener;
-	class AudioTag;
+	class audio_tag;
 	class Sound3D;
 	class Music;
 	class world_object;
@@ -23,7 +23,7 @@ namespace audio
 
 	// The internal::base_audio Manager class creates audio based on the XML
 	// tags it loads and handles all the sound buffer updates,
-	class AudioManager
+	class audio_manager
 	{
 	public:
 		enum HRTF
@@ -47,22 +47,22 @@ namespace audio
 		};
 
 		// Gets the instance of the singleton class
-		static AudioManager* Instance();
+		static audio_manager* get();
 
-		AudioManager(HWND hWnd,
+		audio_manager(HWND hWnd,
 			DWORD dwPrimaryChannels = 2,
 			DWORD dwPrimaryFreq = 44100,
 			DWORD dwPrimaryBitRate = 16,
 			HRTF hrtf = HRTF_FULL);
 
-		~AudioManager();
+		~audio_manager();
 
 		// loads tags from an XML file
 		bool LoadAudioTags(const char* szFileName);
 
 		void ClearAudioTags();
 
-		AudioTag* GetAudioTag(const char* szTagName);
+		audio_tag* GetAudioTag(const char* szTagName);
 
 		// Update needs to be called periodically to stream
 		// new audio into the sound buffers
@@ -74,7 +74,7 @@ namespace audio
 			int msDelay = 0,				// time to wait before playing
 			audio::listener* pNotify = NULL); // listener to receive notification when sound is done
 
-		void Play(AudioTag* pTag,
+		void Play(audio_tag* pTag,
 			world_object* pObj = NULL,		// used for positional sound effects
 			int msDuration = 0,			// length of time to play sound
 			int msDelay = 0,				// time to wait before playing
@@ -104,9 +104,9 @@ namespace audio
 
 	protected:
 		// static singleton instance
-		static AudioManager* s_pInstance;
+		static audio_manager* s_pInstance;
 
-		typedef std::map<std::string, AudioTag*> AudioTagMap;
+		typedef std::map<std::string, audio_tag*> AudioTagMap;
 		typedef AudioTagMap::iterator AudioTagIterator;
 
 		struct Buffer
@@ -114,7 +114,7 @@ namespace audio
 			LPDIRECTSOUNDBUFFER		pDSBuf;			// DirectSound buffer for playback
 			LPDIRECTSOUND3DBUFFER	pDSBuf3D;		// DirectSound 3D buffer for effects (positional audio)
 			internal::base_audio*					pAudio;			// internal::base_audio created by the tag
-			AudioTag*				pTag;			// Tag that decided to play this sound
+			audio_tag*				pTag;			// Tag that decided to play this sound
 			bool					bMoreInBuffer;	// if more needs to be streamed into buffer
 			bool					bPlaying;		// if this is an active buffer or can it be reused
 			DWORD					dwLastWritePos; // last place we updated the buffer
@@ -128,7 +128,7 @@ namespace audio
 
 		struct AudioWaitingToBePlayed
 		{
-			AudioTag*				pTag;		// the tag waiting to be played
+			audio_tag*				pTag;		// the tag waiting to be played
 			world_object*			pObj;		// the obj we want to attach it to (for 3D sound effects)
 			int		                msDuration; // time to play
 			int                     msDelay;	// wait before playing
@@ -148,8 +148,8 @@ namespace audio
 		void UpdateBuffer(int msElapsed, Buffer* pBuf, DWORD dwBufSize, DWORD dwWriteAmt);
 		void UpdateListener();
 
-		void PlayEffect(AudioTag* pTag, Sound3D* pSound3D, int msDuration);
-		void PlayMusic(AudioTag* pTag, Music* pMusic, int msDuration);
+		void PlayEffect(audio_tag* pTag, Sound3D* pSound3D, int msDuration);
+		void PlayMusic(audio_tag* pTag, Music* pMusic, int msDuration);
 
 	protected:
 		LPDIRECTSOUND8 m_pDS;
@@ -177,23 +177,23 @@ namespace audio
 	};
 
 
-	inline AudioManager* AudioManager::Instance()
+	inline audio_manager* audio_manager::get()
 	{ 
 		ASSERT(NULL != s_pInstance);
 		return s_pInstance;
 	}
 
-	inline void AudioManager::SetDistanceFactor(float dF)
+	inline void audio_manager::SetDistanceFactor(float dF)
 	{
 		m_distanceFactor = dF;
 	}
 
-	inline void AudioManager::SetRolloffFactor(float rF)
+	inline void audio_manager::SetRolloffFactor(float rF)
 	{
 		m_rolloffFactor = rF;
 	}
 
-	inline void AudioManager::SetDopplerFactor(float dF)
+	inline void audio_manager::SetDopplerFactor(float dF)
 	{
 		m_dopplerFactor = dF;
 	}
