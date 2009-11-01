@@ -59,7 +59,7 @@ namespace rgde
 
 			// adds entry to the console's history list of previously displayed lines
 			void AddHistoryLine(std::string& line, math::color color = math::color(0,220,0,255));	
-			void AddHistoryLine(ConsoleMessageType type,int team,std::string& line, math::color color = math::color(0,220,0,255));	
+			void AddHistoryLine(message_type type,int team,std::string& line, math::color color = math::color(0,220,0,255));	
 
 			/// Windows Messages 
 			void MsgKeyDown(unsigned int wParam);
@@ -80,7 +80,7 @@ namespace rgde
 			void printf(const char *fmt, ...);
 			// prints a colored line of text to the console
 			void printf(math::color color,const char *fmt, ...);
-			void printf(ConsoleMessageType type,int team,math::color color,const char *fmt, ...);
+			void printf(message_type type,int team,math::color color,const char *fmt, ...);
 
 			// Registers a variable or function for access within the console
 			void declare(shell_type type, std::string name, void* pSymbol) { shell.DeclareSymbol(type,name,pSymbol); }
