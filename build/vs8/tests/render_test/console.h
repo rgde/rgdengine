@@ -6,23 +6,24 @@ namespace rgde
 	{
 		enum shell_type 
 		{
-			ST_ILLEGAL  ,
-			ST_POINTER  ,
-			ST_FUNCTION ,
-			ST_ARRAY    ,
-			ST_VOID     ,
-			ST_INT	    ,
-			ST_VECTOR   ,
-			ST_FLOAT    ,
-			ST_STDSTRING,
-			ST_BOOL,
+			st_illegal  ,
+			st_pointer  ,
+			st_function ,
+			st_array    ,
+			st_void     ,
+			st_int	    ,
+			st_vector   ,
+			st_float    ,
+			st_stdstring,
+			st_bool,
 		};
 
-		enum ConsoleMessageType
+		enum message_type
 		{
-			CMT_CONSOLE,
-			CMT_GAME,
-			CMT_CHAT
+			mt_console,
+			mt_game,
+			mt_chat
+
 		};
 
 		class console
