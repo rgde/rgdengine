@@ -38,7 +38,7 @@ namespace particles{
 
 		void render();
 		void update(float dt);
-		virtual void debugDraw();
+		virtual void debug_draw();
 		void reset();
 
 
@@ -76,8 +76,8 @@ namespace particles{
 		inline int getSeed() const { return m_nMaxParticles; }
 		inline void setSeed(int seed) { m_iRndSeed = seed; }
 
-		inline bool isVisible() const { return m_bIsVisible; }
-		inline void setVisible(bool visible) { m_bIsVisible = visible; }
+		inline bool isVisible() const { return m_is_visible; }
+		inline void setVisible(bool visible) { m_is_visible = visible; }
 
 		inline bool getIntenseMode() const { return m_bIntense; }
 		inline void setIntenseMode(bool intense) { m_bIntense = intense; }
@@ -152,7 +152,7 @@ namespace particles{
 		math::FloatInterp m_PVelSpreadAmplifier;		// Усилитель начального рандома скорости
 
 		//std::string name; // для будущего использования
-		std::string m_TexName;
+		std::string m_texture_name;
 
 		bool m_bIsFading;								// Затухает ли процессор (затухающий процессор не излучает новых частиц)
 		bool m_bIsGlobal;								// Является ли процессор глобальным (т.е. не имеющим родительских трансформаций)
@@ -171,7 +171,7 @@ namespace particles{
 		particles_vector m_Particles;
 
 		bool m_bModifiersLoaded;
-		bool m_bIsVisible;
+		bool m_is_visible;
 		bool m_bIsTexLoaded;
 		bool m_bIsPtankInited;
 

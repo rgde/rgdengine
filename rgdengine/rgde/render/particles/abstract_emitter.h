@@ -21,12 +21,12 @@ public:
 	base_emitter(emitter::Type);
 	virtual ~base_emitter();
 
-	virtual void		getParticle(particle& p);
+	virtual void		get_particle(particle& p);
 
 	void				reset();
 	void				update(float dt);
 	void				render();
-	virtual void		debugDraw() = 0;
+	virtual void		debug_draw() = 0;
 
 	void				addProcessor(processor*	 proc);	
 	void				deleteProcessor(processor* proc);	
@@ -61,9 +61,9 @@ public:
 	inline bool isCycling() const { return m_bIsCycling; }
 	inline void setCycling(bool b) { m_bIsCycling = b; }
 
-	inline bool	isVisible() const {return m_bIsVisible;}
-	inline void	hide() { m_bIsVisible = false; }
-	inline void	show() { m_bIsVisible = true; }
+	inline bool	isVisible() const {return m_is_visible;}
+	inline void	hide() { m_is_visible = false; }
+	inline void	show() { m_is_visible = true; }
 
 	inline float getTimeShift() const { return m_time_shift; }
 	inline void setTimeShift(float t) { m_time_shift = t; }
@@ -76,7 +76,7 @@ protected:
 
 	float			m_fCycleTime;				// время повтора для всех интерполяторов
 	bool			m_bIsCycling;
-	bool			m_bIsVisible;
+	bool			m_is_visible;
 	float			m_time_shift;				// смещение в секундах от начала проигрывания эффекта
 	std::string		m_name;					// для будущего использования
 

@@ -5,10 +5,10 @@
 
 namespace input
 {
-	device_dx9::device_dx9(types::device eName, int nIndx, input_impl &rInput):
-		m_nIndx  (nIndx),
-		m_eName  (eName),
-		m_rInput (rInput)
+	device_dx9::device_dx9(types::device name, int index, input_impl &input):
+		m_index  (index),
+		m_name  (name),
+		m_input (input)
 	{
 	}
 
@@ -22,9 +22,9 @@ namespace input
     }
 
     //получить контрол
-    Control* device_dx9::get_control(types::control eControlName)
+    Control* device_dx9::get_control(types::control contol_name)
     {
-        std::map<types::control,Control*>::iterator pos = m_controls.find(eControlName);
+        std::map<types::control,Control*>::iterator pos = m_controls.find(contol_name);
 
         if (pos == m_controls.end())
           return 0;
@@ -32,38 +32,38 @@ namespace input
         return pos->second;
     }
 
-    Control* device_dx9::get_control(const std::wstring &sControlName)
+    Control* device_dx9::get_control(const std::wstring &contol_name)
     {
-        return get_control(String2Control(sControlName));
+        return get_control(String2Control(contol_name));
     }
 
     //есть ли такой контрол
-    bool device_dx9::isControlPresent(types::control eControlName) const
+    bool device_dx9::is_control_present(types::control contol_name) const
     {
-        return m_controls.find(eControlName) != m_controls.end();
+        return m_controls.find(contol_name) != m_controls.end();
     }
 
-    bool device_dx9::isControlPresent (const std::wstring &sControlName) const
+    bool device_dx9::is_control_present (const std::wstring &contol_name) const
     {
-        return isControlPresent(String2Control(sControlName));
+        return is_control_present(String2Control(contol_name));
     }
 
     //добавить кнопку
-    void device_dx9::addButton (types::control eControlName)
+    void device_dx9::add_button (types::control contol_name)
     {
-        Control *pControl = new Control(eControlName, Control::Button, *this);
+        Control *pControl = new Control(contol_name, Control::Button, *this);
         m_controls[pControl->get_name()] = pControl;
     }
 
     //добавить ось
-    void device_dx9::addAxis (types::control eControlName)
+    void device_dx9::add_axis (types::control contol_name)
     {
-        Control *pControl = new Control(eControlName, Control::Axis, *this);
+        Control *pControl = new Control(contol_name, Control::Axis, *this);
         m_controls[pControl->get_name()] = pControl;
     }
 
     //отвязать команду ото всех контролов
-    void device_dx9::detachCommand (CommandPtr pCommand)
+    void device_dx9::detach_command (command_ptr pCommand)
     {
         std::map<types::control, Control*>::iterator i = m_controls.begin();
 

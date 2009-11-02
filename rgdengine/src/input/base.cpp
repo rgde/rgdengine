@@ -140,7 +140,7 @@ namespace input
 			m_mapString2Control[L"KeyLeft"]         = types::KeyLeft;
 			m_mapString2Control[L"KeyRight"]        = types::KeyRight;
 			m_mapString2Control[L"KeyEnd"]          = types::KeyEnd;
-			m_mapString2Control[L"KeyDown"]         = types::KeyDown;
+			m_mapString2Control[L"key_down"]         = types::key_down;
 			m_mapString2Control[L"KeyNext"]         = types::KeyNext;
 			m_mapString2Control[L"KeyInsert"]       = types::KeyInsert;
 			m_mapString2Control[L"KeyDelete"]       = types::KeyDelete;
@@ -158,12 +158,12 @@ namespace input
 	static InputMap s_map;
 
     //получение строки, соответствующей enum-значению
-	std::wstring Device2String (types::device eName)
+	std::wstring Device2String (types::device name)
     {
 		std::map<std::wstring, types::device>::iterator i = s_map.m_mapString2Device.begin();
 		while (i != s_map.m_mapString2Device.end())
 		{
-			if (i->second == eName)
+			if (i->second == name)
 				return i->first;
 			++i;
 		}
@@ -182,12 +182,12 @@ namespace input
     }
 
     //получение строки, соответствующей enum-значению
-    std::wstring Control2String (types::control eName)
+    std::wstring Control2String (types::control name)
     {
 		std::map<std::wstring, types::control>::iterator i = s_map.m_mapString2Control.begin();
 		while (i != s_map.m_mapString2Control.end())
 		{
-			if (i->second == eName)
+			if (i->second == name)
 				return i->first;
 			++i;
 		}

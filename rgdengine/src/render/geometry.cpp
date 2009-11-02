@@ -12,7 +12,7 @@
 
 #include <d3dx9.h>
 
-extern LPDIRECT3DDEVICE9       g_pd3dDevice;
+extern LPDIRECT3DDEVICE9       g_d3d;
 
 
 namespace render
@@ -26,7 +26,7 @@ namespace render
 		GeometryImpl(const vertex::VertexDecl decl, bool isDynamic)
 			:m_spVB(0), m_spVertexDeclaration(0), m_bDynamic(isDynamic), m_size(0)
 		{
-			g_pd3dDevice->CreateVertexDeclaration((const D3DVERTEXELEMENT9*)decl, &m_spVertexDeclaration);
+			g_d3d->CreateVertexDeclaration((const D3DVERTEXELEMENT9*)decl, &m_spVertexDeclaration);
 		}
 
 		virtual ~GeometryImpl()
@@ -51,9 +51,9 @@ namespace render
 					m_spVB.get()->Release();
 
 				if (!m_bDynamic)
-					g_pd3dDevice->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_spVB, NULL);
+					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_spVB, NULL);
 				else
-					g_pd3dDevice->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC, 0, D3DPOOL_SYSTEMMEM, &m_spVB, NULL);
+					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC, 0, D3DPOOL_SYSTEMMEM, &m_spVB, NULL);
 
 				m_size = bytes;
 				m_used_size = m_size;
@@ -87,12 +87,12 @@ namespace render
 		{
 			if (0 == nPrimNum) return;
 
-			g_pd3dDevice->SetStreamSource( 0, m_spVB.get(), 0, (UINT)m_nSizeOfVertex );
-			g_pd3dDevice->SetVertexDeclaration(m_spVertexDeclaration.get());
+			g_d3d->SetStreamSource( 0, m_spVB.get(), 0, (UINT)m_nSizeOfVertex );
+			g_d3d->SetVertexDeclaration(m_spVertexDeclaration.get());
 			D3DPRIMITIVETYPE dxPrimTypeEnum = (D3DPRIMITIVETYPE)ePrimType;
-			g_pd3dDevice->DrawPrimitive(dxPrimTypeEnum, 0, nPrimNum);
+			g_d3d->DrawPrimitive(dxPrimTypeEnum, 0, nPrimNum);
 
-			TheDevice::get().addStatistic(nPrimNum * 3, nPrimNum);
+			TheDevice::get().add_statistics(nPrimNum * 3, nPrimNum);
 		}
 	private:
 		size_t							m_used_size;
@@ -121,7 +121,7 @@ namespace render
 			m_bUse32bitIndixes = bUse32bitIndixes;
 			m_pVB	= 0;
 			m_pIB	= 0;
-			g_pd3dDevice->CreateVertexDeclaration((const D3DVERTEXELEMENT9*)decl, &m_pVertexDeclaration);
+			g_d3d->CreateVertexDeclaration((const D3DVERTEXELEMENT9*)decl, &m_pVertexDeclaration);
 		}
 		virtual ~IndexedGeometryImpl()
 		{
@@ -152,7 +152,7 @@ namespace render
 			if( m_pVB != 0 )
 				m_pVB->Release();
 
-				g_pd3dDevice->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pVB, NULL);
+				g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pVB, NULL);
 
 				m_vb_size = bytes;
 				m_vb_used_size = m_vb_size;
@@ -169,7 +169,7 @@ namespace render
 
 			if (0 == nBytes) return;
 
-			//g_pd3dDevice->CreateVertexBuffer( (UINT)bytes, D3DUSAGE_WRITEONLY, 0,
+			//g_d3d->CreateVertexBuffer( (UINT)bytes, D3DUSAGE_WRITEONLY, 0,
 			//	D3DPOOL_MANAGED, &m_spVB, NULL );
 
 			recreateVB(nBytes);
@@ -199,7 +199,7 @@ namespace render
 			else 
 				format = D3DFMT_INDEX16;
 
-				g_pd3dDevice->CreateIndexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, format, D3DPOOL_MANAGED, &m_pIB, NULL);
+				g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, format, D3DPOOL_MANAGED, &m_pIB, NULL);
 
 				m_ib_size = bytes;
 				m_ib_used_size = m_ib_size;
@@ -230,14 +230,14 @@ namespace render
 			if (0 == nPrimitiveCount)
 				return;
 
-			g_pd3dDevice->SetStreamSource( 0, m_pVB, 0, (UINT)m_nSizeOfVertex );
-			g_pd3dDevice->SetIndices(m_pIB);
+			g_d3d->SetStreamSource( 0, m_pVB, 0, (UINT)m_nSizeOfVertex );
+			g_d3d->SetIndices(m_pIB);
 
-			g_pd3dDevice->SetVertexDeclaration(m_pVertexDeclaration);
+			g_d3d->SetVertexDeclaration(m_pVertexDeclaration);
 			D3DPRIMITIVETYPE dxPrimTypeEnum = (D3DPRIMITIVETYPE)ePrimType;
-			g_pd3dDevice->DrawIndexedPrimitive(dxPrimTypeEnum, nBaseVertexIndex, nMinIndex, nNumVertices, nStartIndex, nPrimitiveCount);
+			g_d3d->DrawIndexedPrimitive(dxPrimTypeEnum, nBaseVertexIndex, nMinIndex, nNumVertices, nStartIndex, nPrimitiveCount);
 
-			TheDevice::get().addStatistic(nNumVertices, nPrimitiveCount);
+			TheDevice::get().add_statistics(nNumVertices, nPrimitiveCount);
 		}
 
 	private:

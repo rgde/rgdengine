@@ -17,9 +17,9 @@ namespace input
 	{
 	}
 
-	Helper::Helper(const std::wstring &sCommandName)
+	Helper::Helper(const std::wstring &command_name)
 	{
-		attach(sCommandName);
+		attach(command_name);
 	}
 
 	Helper::~Helper()
@@ -27,26 +27,26 @@ namespace input
 		detach();
 	}
 
-	void Helper::attach (const std::wstring &sCommandName)
+	void Helper::attach (const std::wstring &command_name)
 	{
 		detach();
-		m_command = Input::getCommand(sCommandName);
+		m_command = Input::getCommand(command_name);
 		//->
 		if (!m_command)
 		{
-			Input::addCommand(sCommandName);
-			m_command = Input::getCommand(sCommandName);
+			Input::add_command(command_name);
+			m_command = Input::getCommand(command_name);
 		}
 		//-<
 		if (m_command)
-			m_command->attachObserver(this);
+			m_command->attach(this);
 	}
 
 	void Helper::detach ()
 	{
 		if (m_command)
 		{
-			m_command->detachObserver(this);
+			m_command->detach(this);
 			m_command.reset();
 		}        
 	}
@@ -57,11 +57,11 @@ namespace input
 	}
 
 
-	void Helper::notify (const Control &rControl)
+	void Helper::notify (const Control &c)
 	{
 		HelperEvent ev;
 
-		switch (rControl.getType())
+		switch (c.get_type())
 		{
 			case Control::Axis:
 				ev.m_type = HelperEvent::Axis; 
@@ -73,9 +73,9 @@ namespace input
 				ev.m_type = HelperEvent::Button;
 		}
 
-		ev.m_press = rControl.m_press;
-		ev.m_delta = rControl.m_delta;
-		ev.m_time  = rControl.m_time;
+		ev.m_press = c.m_press;
+		ev.m_delta = c.m_delta;
+		ev.m_time  = c.m_time;
 
 		std::list<Helper::Handler>::iterator i = m_handlers.begin();
 		while (i != m_handlers.end())
@@ -102,14 +102,14 @@ namespace input
 		m_buttonHandlers.push_back(handler);
 	}
 
-	void Button::notify (const Control &rControl)
+	void Button::notify (const Control &c)
 	{
-        Helper::notify(rControl);
+        Helper::notify(c);
 
-		if (rControl.getType() != Control::Button)
+		if (c.get_type() != Control::Button)
 			return;
 
-		if (rControl.m_press)
+		if (c.m_press)
 			++m_press;
 		else
 			--m_press;
@@ -120,7 +120,7 @@ namespace input
 		std::list<Button::ButtonHandler>::iterator i = m_buttonHandlers.begin();
 		while (i != m_buttonHandlers.end())
 		{
-			(*i)(rControl.m_press);
+			(*i)(c.m_press);
 			++i;
 		}
 	}
@@ -149,14 +149,14 @@ namespace input
 		m_is_active = bOn;
 	}
 
-	void Trigger::notify (const Control &rControl)
+	void Trigger::notify (const Control &c)
 	{
-        Helper::notify(rControl);
+        Helper::notify(c);
 
-        if (rControl.getType() != Control::Button)
+        if (c.get_type() != Control::Button)
 			return;
 
-		if (!rControl.m_press)
+		if (!c.m_press)
 			return;
 
 		m_is_active = !m_is_active;
@@ -184,14 +184,14 @@ namespace input
 		m_keyupHandlers.push_back(handler);
 	}
 
-	void KeyUp::notify (const Control &rControl)
+	void KeyUp::notify (const Control &c)
 	{
-        Helper::notify(rControl);
+        Helper::notify(c);
 
-		if (rControl.getType() != Control::Button)
+		if (c.get_type() != Control::Button)
 			return;
 
-		if (rControl.m_press)
+		if (c.m_press)
 			return;
 
 		std::list<KeyUp::KeyUpHandler>::iterator i = m_keyupHandlers.begin();
@@ -204,31 +204,31 @@ namespace input
 
 	//////////////////////////////////////////////////////////////////////////
 
-	KeyDown::KeyDown () 
+	key_down::key_down () 
 	{
 	}
 
-	KeyDown::KeyDown (const std::wstring &commandName): 
+	key_down::key_down (const std::wstring &commandName): 
 		Helper(commandName) 
 	{
 	}
 
-	void KeyDown::operator += (KeyDown::KeyDownHandler handler)
+	void key_down::operator += (key_down::KeyDownHandler handler)
 	{
 		m_keydownHandlers.push_back(handler);
 	}
 
-	void KeyDown::notify (const Control &rControl)
+	void key_down::notify (const Control &c)
 	{
-        Helper::notify(rControl);
+        Helper::notify(c);
 
-		if (rControl.getType() != Control::Button)
+		if (c.get_type() != Control::Button)
 			return;
 
-		if (!rControl.m_press)
+		if (!c.m_press)
 			return;
 
-		std::list<KeyDown::KeyDownHandler>::iterator i = m_keydownHandlers.begin();
+		std::list<key_down::KeyDownHandler>::iterator i = m_keydownHandlers.begin();
 		while (i != m_keydownHandlers.end())
 		{
 			(*i)();
@@ -252,17 +252,17 @@ namespace input
 		m_raxisHandlers.push_back(handler);
 	}
 
-	void RelativeAxis::notify (const Control &rControl)
+	void RelativeAxis::notify (const Control &c)
 	{
-        Helper::notify(rControl);
+        Helper::notify(c);
 
-		if (rControl.getType() != Control::Axis)
+		if (c.get_type() != Control::Axis)
 			return;
 
 		std::list<RelativeAxis::RelativeAxisHandler>::iterator i = m_raxisHandlers.begin();
 		while (i != m_raxisHandlers.end())
 		{
-			(*i)(rControl.m_delta);
+			(*i)(c.m_delta);
 			++i;
 		}
 	}
@@ -312,14 +312,14 @@ namespace input
 		m_pos = min(max(m_min, pos), m_max);
 	}
 
-	void AbsoluteAxis::notify (const Control &rControl)
+	void AbsoluteAxis::notify (const Control &c)
 	{
-        Helper::notify(rControl);
+        Helper::notify(c);
 
-		if (rControl.getType() != Control::Axis)
+		if (c.get_type() != Control::Axis)
 			return;
 
-		set_pos(m_pos + rControl.m_delta);
+		set_pos(m_pos + c.m_delta);
 
 		std::list<AbsoluteAxis::AbsoluteAxisHandler>::iterator i = m_aaxisHandlers.begin();
 		while (i != m_aaxisHandlers.end())
@@ -372,7 +372,7 @@ namespace input
 		}
     }
 
-	void Cursor::notify (const Control &rControl)
+	void Cursor::notify (const Control &c)
     {
         //должно быть пусто
     }

@@ -16,7 +16,7 @@ MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
 		m_cEsc  .attach(L"Escape");
 
 		Input::get_device(types::Keyboard)->get_control(types::KeyUp    )->bind(L"Up");
-        Input::get_device(types::Keyboard)->get_control(types::KeyDown  )->bind(L"Down");
+        Input::get_device(types::Keyboard)->get_control(types::key_down  )->bind(L"Down");
         Input::get_device(types::Keyboard)->get_control(types::KeySpace )->bind(L"Space");
         Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Escape");
 
@@ -26,8 +26,8 @@ MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
         m_cEsc   += boost::bind(&MenuLevelObject::onEsc,     this);
     }
 
-	using render::IFont;
-	m_menu_font = IFont::create(40, L"Arial", IFont::ExtraBold);
+	using render::base_font;
+	m_menu_font = base_font::create(40, L"Arial", base_font::ExtraBold);
 
 	using namespace game;
 	PMenuItem item(new TMenuItem<events::on_complite_level>(L"PLAY GAME", events::on_complite_level()));
@@ -43,8 +43,8 @@ MenuLevelObject::~MenuLevelObject()
 
 void MenuLevelObject::update(float dt)
 {
-	using render::IFont;
-	unsigned int flags = IFont::Center | IFont::SingleLine | IFont::VCenter | IFont::Center;
+	using render::base_font;
+	unsigned int flags = base_font::Center | base_font::SingleLine | base_font::VCenter | base_font::Center;
 	math::Vec2f size(800, 600);
 
 	for (unsigned int i = 0; i < m_items.size(); ++i)

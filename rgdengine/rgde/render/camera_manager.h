@@ -9,22 +9,22 @@ namespace math
 
 namespace render
 {
-	class CameraManager
+	class camera_manager
 	{
 	protected:
-		CameraManager();
-		virtual ~CameraManager();		
+		camera_manager();
+		virtual ~camera_manager();		
 
 	public:
 		typedef std::list<math::camera_ptr>	CameraList;
 		typedef CameraList::iterator		CameraListIterator;
 
 		void			clear		();
-		void			addCamera	(const math::camera_ptr& camera);
+		void			add_camera	(const math::camera_ptr& camera);
 		void			removeCamera(const math::camera_ptr& camera);
 
-		void			sortCameras	();
-		void			setCamera	(CameraListIterator it);
+		void			sort	();
+		void			set_camera	(CameraListIterator it);
 		
 		CameraListIterator	begin();
 		CameraListIterator	end();
@@ -36,5 +36,5 @@ namespace render
 		CameraList					m_lCameras;
 	};
 
-	typedef base::singelton<CameraManager> TheCameraManager;
+	typedef base::singelton<camera_manager> TheCameraManager;
 }

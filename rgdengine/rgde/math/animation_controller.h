@@ -8,26 +8,26 @@ namespace math
 
 	class frame_anim_controller
 	{
-		typedef math::interpolator<math::Vec3f> PositionInterpolyator;
-		typedef math::interpolator<math::Vec3f> RotationInterpolyator;
-		typedef math::interpolator<math::Vec3f> ScaleInterpolyator;
+		typedef math::interpolator<math::Vec3f> position_interpolator;
+		typedef math::interpolator<math::Vec3f> rotation_interpolator;
+		typedef math::interpolator<math::Vec3f> scale_interpolator;
 
 	public:
-		frame_anim_controller( TiXmlNode* pXmlNode = 0, math::frame_ptr spFrame = frame_ptr());
+		frame_anim_controller( TiXmlNode* pXmlNode = 0, math::frame_ptr frame = frame_ptr());
 		virtual ~frame_anim_controller(){}
 
 		bool load( TiXmlNode* pXmlNode );
 
-		float getWeight() const;
-		void  setWeight(float fWeight);
+		float get_weight() const;
+		void  set_weight(float fWeight);
 
-		void atachToFrame( frame_ptr spFrame ) { m_spFrame = spFrame; }
-		frame_ptr& getFrame() {return m_spFrame;} 
+		void atach( frame_ptr frame ) { m_spFrame = frame; }
+		frame_ptr& get_frame() {return m_spFrame;} 
 
-		inline void setRate( float rate ) { m_fAnimationRate = rate; }
-		inline float getRate() const { return m_fAnimationRate; }
+		inline void set_rate( float rate ) { m_fAnimationRate = rate; }
+		inline float get_rate() const { return m_fAnimationRate; }
 
-		inline void SetAnimationTime( float time ) { m_fAnimationTime = time; }
+		inline void set_anim_time( float time ) { m_fAnimationTime = time; }
 
 		void update( float dt );
 		void updateMatrix();
@@ -42,14 +42,14 @@ namespace math
 
 		inline void setLooped( bool loop ) { m_bLooped = loop; }
 
-		inline bool isPlaing() const { return m_bPlaying && !m_bPaused; }
+		inline bool isPlaing() const { return m_bPlaying && !m_paused; }
 
-		inline bool isPaused() const { return m_bPaused; }
+		inline bool isPaused() const { return m_paused; }
 		inline bool isLooped() const { return m_bLooped; }
 
-		inline PositionInterpolyator&	getPosInterpolyator() { return m_PosInterpolyator; }
-		inline RotationInterpolyator&	getRotationInterpolyator() { return m_RotationInterpolyator; }
-		inline ScaleInterpolyator&		getScaleInterpolyator() { return m_ScaleInterpolyator; }
+		inline position_interpolator&	getPosInterpolyator() { return m_PosInterpolyator; }
+		inline rotation_interpolator&	getRotationInterpolyator() { return m_RotationInterpolyator; }
+		inline scale_interpolator&		getScaleInterpolyator() { return m_ScaleInterpolyator; }
 
 	private:
 		float m_fAnimationTime;
@@ -59,12 +59,12 @@ namespace math
 
 		math::frame_ptr m_spFrame;
 
-		bool m_bPaused;
+		bool m_paused;
 		bool m_bPlaying;
 		bool m_bLooped;
 
-		PositionInterpolyator	m_PosInterpolyator;
-		RotationInterpolyator	m_RotationInterpolyator;
-		ScaleInterpolyator		m_ScaleInterpolyator;
+		position_interpolator	m_PosInterpolyator;
+		rotation_interpolator	m_RotationInterpolyator;
+		scale_interpolator		m_ScaleInterpolyator;
 	};
 }

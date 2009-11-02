@@ -17,7 +17,7 @@ namespace core
 		virtual void		set(const std::string&)	= 0;
 
 		const std::wstring& get_name() const {return m_name;}
-		const std::string& getType() const {return m_type_name;}
+		const std::string& get_type() const {return m_type_name;}
 
 		virtual bool is_read_only() = 0;
 

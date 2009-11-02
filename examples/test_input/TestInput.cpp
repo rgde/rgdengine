@@ -105,14 +105,14 @@ void TestInput::onPause (bool pause)
 {
     if (pause)
     {
-        input::Input::get().SetMode(false);
+        input::Input::get().set_mode(false);
         m_mouse.set_pos(400,300);
         ShowCursor(FALSE);
     }
     else
     {
         ShowCursor(TRUE);
-        input::Input::get().SetMode(true);
+        input::Input::get().set_mode(true);
     }
 }
 

@@ -16,7 +16,7 @@ namespace render
 	fader::fader(const std::string &file_name)
 	{
 		init();
-		loadFromXML(file_name);
+		load_from_xml(file_name);
 	}
 
 	void fader::init()
@@ -62,7 +62,7 @@ namespace render
 	}
 
 
-	void fader::loadFromXML(const std::string &file_name)
+	void fader::load_from_xml(const std::string &file_name)
 	{
 		TiXmlDocument fader;
 		{

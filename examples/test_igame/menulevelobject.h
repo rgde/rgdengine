@@ -49,8 +49,8 @@ private:
 	enum {NumMenuItems = 2};
 
 	render::font_ptr m_menu_font;
-	input::KeyDown m_up;
-	input::KeyDown m_down;
-	input::KeyDown m_cSpace;
-	input::KeyDown m_cEsc;
+	input::key_down m_up;
+	input::key_down m_down;
+	input::key_down m_cSpace;
+	input::key_down m_cEsc;
 };

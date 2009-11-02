@@ -14,7 +14,7 @@ namespace math
 
 namespace scene
 {
-	class camera_trigger : public IBaseTrigger<bool>
+	class camera_trigger : public base_trigger<bool>
 	{
 	public:
 		camera_trigger();

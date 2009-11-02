@@ -55,7 +55,7 @@ namespace core
 
 		void setupHandlers();
 
-		RECT getRect() const {return m_rcClientOld;}
+		RECT get_rect() const {return m_rcClientOld;}
 
 	public:
 		application_impl();

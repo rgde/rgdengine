@@ -11,10 +11,10 @@ namespace math
     //контроллер камеры аля "камера летающая по некоторой траектории"
     class path_camera: public base_camera_controller
     {
-        path_camera(camera_ptr pCamera);
+        path_camera(camera_ptr camera);
 
     public:
-        static path_camera_ptr create(camera_ptr pCamera);
+        static path_camera_ptr create(camera_ptr camera);
 
         CTrack m_path;
 

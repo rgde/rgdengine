@@ -7,19 +7,19 @@
 
 namespace input
 {
-    Control::Control(types::control eName, EType eType, device_dx9 &rDevice):
-        m_device (rDevice),
+    Control::Control(types::control name, type eType, device_dx9 &device):
+        m_device (device),
         m_type   (eType),
         m_time   (0),
         m_press  (false),
         m_delta  (0),
-        m_name   (eName)
+        m_name   (name)
     {
     }
 
-    void Control::bind (CommandPtr pCommand)
+    void Control::bind (command_ptr pCommand)
     {
-        CommandsIter pos = std::find
+        commands_iter pos = std::find
         (
           m_commands.begin(),
           m_commands.end(),
@@ -32,15 +32,15 @@ namespace input
         m_commands.push_back(pCommand);
     }
 
-    void Control::bind (const std::wstring &sCommandName)
+    void Control::bind (const std::wstring &command_name)
     {
-        bind (m_device.getInput().getCommand(sCommandName));
+        bind (m_device.get_impl().getCommand(command_name));
     }
 
     //удалить наблюдателя
-    void Control::unbind (CommandPtr pCommand)
+    void Control::unbind (command_ptr pCommand)
     {
-        CommandsIter pos = std::find
+        commands_iter pos = std::find
         (
           m_commands.begin(),
           m_commands.end(),
@@ -53,15 +53,15 @@ namespace input
         m_commands.erase(pos);
     }
 
-    void Control::unbind (const std::wstring &sCommandName)
+    void Control::unbind (const std::wstring &command_name)
     {
-        unbind(m_device.getInput().getCommand(sCommandName));
+        unbind(m_device.get_impl().getCommand(command_name));
     }
 
     //добавлен ли такой наблюдатель
-    bool Control::isbind (CommandPtr pCommand)
+    bool Control::is_bind (command_ptr pCommand)
     {
-        CommandsIter pos = std::find
+        commands_iter pos = std::find
         (
           m_commands.begin(),
           m_commands.end(),
@@ -74,19 +74,19 @@ namespace input
         return true;
     }
 
-    bool Control::isbind (const std::wstring &sCommandName)
+    bool Control::is_bind (const std::wstring &command_name)
     {
-        return isbind(m_device.getInput().getCommand(sCommandName));
+        return is_bind(m_device.get_impl().getCommand(command_name));
     }
 
     //уведомить наблюдателей о своем изменении
-    void Control::notifyAllObservers ()
+    void Control::notify_all ()
     {
-        CommandsIter i = m_commands.begin();
+        commands_iter i = m_commands.begin();
 
         while (i != m_commands.end())
         {
-            (*i)->notifyAllObservers(*this);
+            (*i)->notify_all(*this);
             ++i;
         }
     }

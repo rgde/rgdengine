@@ -5,15 +5,15 @@
 namespace math
 {
 
-    path_camera::path_camera(camera_ptr pCamera): m_fPosition(0)
+    path_camera::path_camera(camera_ptr camera): m_fPosition(0)
     {
-        setCamera(pCamera);
+        set_camera(camera);
         base::lmsg << "path_camera::path_camera()";
     }
 
-    path_camera_ptr path_camera::create(camera_ptr pCamera)
+    path_camera_ptr path_camera::create(camera_ptr camera)
     {
-        return path_camera_ptr(new path_camera(pCamera));
+        return path_camera_ptr(new path_camera(camera));
     }
 
     void path_camera::goTo(float position)

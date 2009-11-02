@@ -12,8 +12,8 @@ namespace render
 
 	Bone::Bone():render::rendererable(1)
 	{
-		m_renderInfo.pFrame = this;
-		m_renderInfo.pRenderFunc = boost::bind( &Bone::render, this );
+		m_renderInfo.frame = this;
+		m_renderInfo.render_func = boost::bind( &Bone::render, this );
 		m_renderInfo.bHaveVolumes = false;
 	};	
 
@@ -28,7 +28,7 @@ namespace render
 		{
 			math::Matrix44f mn	= (*i)->getFullTransform();
 			math::Point3f org0(mn.mData[12], mn.mData[13], mn.mData[14]);
-			line_manager.addLine(org, org0, math::Red);
+			line_manager.add_line(org, org0, math::Red);
 		};
 	}
 }

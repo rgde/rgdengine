@@ -18,8 +18,8 @@ namespace render
 		Fog();
 
 		void setMode(Type type);
-		void loadFromXML(const std::string& file_name);
-		void loadFromXML(TiXmlElement* node);
+		void load_from_xml(const std::string& file_name);
+		void load_from_xml(TiXmlElement* node);
 
 	private:
 		bool        m_bEnabled;

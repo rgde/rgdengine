@@ -7,7 +7,7 @@
 #include <rgde/core/timer.h>
 
 #include <d3dx9.h>
-extern LPDIRECT3DDEVICE9 g_pd3dDevice;
+extern LPDIRECT3DDEVICE9 g_d3d;
 
 
 namespace render
@@ -29,7 +29,7 @@ namespace render
 	device_dx9::~device_dx9()
 	{
 		//base::lmsg << "device_dx9::~device_dx9()";
-		onLost();
+		on_lost();
 		//std::for_each(m_objects.begin(), m_objects.end(), _deleter());
 	}
 
@@ -49,33 +49,33 @@ namespace render
 	};
 
 
-	void device_dx9::onLost()
+	void device_dx9::on_lost()
 	{
 		std::for_each(m_objects.begin(), m_objects.end(), _loster());
 	}
 
-	void device_dx9::onReset()
+	void device_dx9::on_reset()
 	{
 		std::for_each(m_objects.begin(), m_objects.end(), _reseter());
 	}
 
-	void device_dx9::addDeviceObject(device_object *o)
+	void device_dx9::add_object(device_object *o)
 	{
 		m_objects.push_back(o);
 	}
 
-	void device_dx9::removeDeviceObject(device_object *o)
+	void device_dx9::remove_object(device_object *o)
 	{
 		m_objects.remove(o);
 	}
 
-	void device_dx9::addStatistic(unsigned verts, unsigned tris)
+	void device_dx9::add_statistics(unsigned verts, unsigned tris)
 	{
 		m_verts += verts;
 		m_triangles += tris;
 	}
 
-	void device_dx9::resetStats()
+	void device_dx9::reset_statistics()
 	{
 		m_verts = 0;
 		m_triangles = 0;
@@ -84,11 +84,11 @@ namespace render
 	//--------------------------------------------------------------------------------------
 	math::Vec2f device_dx9::getBackBufferSize()
 	{
-		if (NULL == g_pd3dDevice)
+		if (NULL == g_d3d)
 			return math::Vec2f(800, 600);
 
 		IDirect3DSurface9 *pBackBufferSurface;
-		g_pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBufferSurface);
+		g_d3d->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBufferSurface);
 
 		D3DSURFACE_DESC sd;
 		pBackBufferSurface->GetDesc(&sd);
@@ -129,14 +129,14 @@ namespace render
 				float z			= i *step - hsize;
 				math::Vec3f v1	(-hsize, z, 0);
 				math::Vec3f v2(hsize, z, 0);
-				TheLine3dManager::get().addLine(v1, v2, color);
+				TheLine3dManager::get().add_line(v1, v2, color);
 			}
 			{
 				// Y
 				float x	= i *step - hsize;
 				math::Vec3f v1(x, -hsize, 0);
 				math::Vec3f v2(x, hsize, 0);
-				TheLine3dManager::get().addLine(v1, v2, color);
+				TheLine3dManager::get().add_line(v1, v2, color);
 			}
 		}
 	}
@@ -159,7 +159,7 @@ namespace render
 	device_object::device_object()
 	{
 		//base::lmsg << "device_object::device_object()";
-		TheDevice::get().addDeviceObject(this);
+		TheDevice::get().add_object(this);
 		//m_bIsAtachedToDevice = true;
 	}
 
@@ -167,6 +167,6 @@ namespace render
 	{
 		//base::lmsg << "device_object::~device_object()";
 		//if (m_bIsAtachedToDevice)
-		TheDevice::get().removeDeviceObject(this);
+		TheDevice::get().remove_object(this);
 	}
 }

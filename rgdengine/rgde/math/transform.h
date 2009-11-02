@@ -22,7 +22,7 @@ namespace math
 
 		const Point3f&		getPosition()		const {return m_position;}
 		Point3f				getGlobalPosition() const;
-		void				setPosition(const Point3f& pos);
+		void				set_position(const Point3f& pos);
     
 		const Quatf&		getRotation()		const {return m_rotation;}
 		void				setRotation(const Quatf& quat);
@@ -33,7 +33,7 @@ namespace math
 		const Matrix44f&			getLocalTransform() const;
 		const Matrix44f&			getFullTransform()  const;
 
-		virtual void				debugDraw() const;
+		virtual void				debug_draw() const;
 
 		inline const Vec3f&			getScale()	const { return m_scale;}
 		void						setScale(const Vec3f& s);

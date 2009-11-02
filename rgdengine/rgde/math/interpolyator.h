@@ -3,8 +3,8 @@
 // example of use:														//
 //		code:															//
 //			LerpFloat lf;												//
-//			lf.addKey(0, 0.0f);											//	
-//			lf.addKey(1, 5.0f);											//
+//			lf.add_key(0, 0.0f);											//	
+//			lf.add_key(1, 5.0f);											//
 //			float result = lf.getValue(0.5f);							//
 //																		//
 //		result:															//
@@ -105,7 +105,7 @@ namespace math
 			}
 		}
 
-		void addKey(float pos, const T& value)
+		void add_key(float pos, const T& value)
 		{
 			m_bSorted = false;
 			m_vKeys.push_back(Key(value, pos));
@@ -216,10 +216,10 @@ namespace math
 			return out;
 		}
 
-		void addKey(float pos, const Vec& v)
+		void add_key(float pos, const Vec& v)
 		{
 			for (int i = 0; i < Size; ++i)
-				m_vComponents[i].addKey(pos, v[i]);
+				m_vComponents[i].add_key(pos, v[i]);
 		}
 
 		interpolator<T>&  getComponent(int component)
@@ -280,10 +280,10 @@ namespace math
 			return out;
 		}
 
-		void addKey(float pos, const Color& v)
+		void add_key(float pos, const Color& v)
 		{
-			m_vColor.addKey (pos, Vec3f(v.r, v.g, v.b));
-			m_Alpha.addKey (pos, v.a);
+			m_vColor.add_key (pos, Vec3f(v.r, v.g, v.b));
+			m_Alpha.add_key (pos, v.a);
 		}
 
 		Vec3Interp&  getColor() { return m_vColor; }
@@ -342,7 +342,7 @@ namespace math
 			CharTokenList::iterator it = elem.begin(); // assume that stored position and value only
 			float position = base::lexical_cast<float, std::string>(*it);
 			float value = base::lexical_cast<float, std::string>(*(++it));
-			interp.addKey(position, value);
+			interp.add_key(position, value);
 		}
 
 		return in;

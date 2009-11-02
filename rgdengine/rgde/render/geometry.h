@@ -360,7 +360,7 @@ namespace render
 		void render(PrimitiveType ePrimType, unsigned nPrimitiveCount)
 		{
 			unsigned int nNumVertices = (unsigned int)m_vVertexes.size();
-			device_dx9::get().addStatistic(nNumVertices, nPrimitiveCount);
+			device_dx9::get().add_statistics(nNumVertices, nPrimitiveCount);
 			m_spImpl->render(ePrimType, 0, 0, nNumVertices, 0, nPrimitiveCount);
 		}
 
@@ -368,7 +368,7 @@ namespace render
 		{
 			//TODO for other primitive types
 			unsigned int nNumVertices = (unsigned int)m_vVertexes.size();
-			device_dx9::get().addStatistic(nNumVertices, nPrimitiveCount-nStartPrimitive);
+			device_dx9::get().add_statistics(nNumVertices, nPrimitiveCount-nStartPrimitive);
 			m_spImpl->render(ePrimType, 0, 0, nPrimitiveCount*4, 6*nStartPrimitive, nPrimitiveCount );
 		}
 
@@ -473,7 +473,7 @@ namespace render
 			m_spImpl->render(ePrimType, 0, 0, nPrimitiveCount*4, 6*nStartPrimitive, nPrimitiveCount );
 		}
 
-		void loadFromXML(const std::string& filename)
+		void load_from_xml(const std::string& filename)
 		{
 
 		}

@@ -16,8 +16,8 @@ private:
 SceneHelper::SceneHelper(geometry_type pGeometry)
 {
 	m_pGeometry = pGeometry;
-	m_renderInfo.pFrame = this;
-	m_renderInfo.pRenderFunc = boost::bind( &SceneHelper::render, this );
+	m_renderInfo.frame = this;
+	m_renderInfo.render_func = boost::bind( &SceneHelper::render, this );
 }
 
 void SceneHelper::render()
@@ -40,19 +40,19 @@ public:
 		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
 
 		m_camera = render::render_camera::create();
-		m_camera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
-		render::TheCameraManager::get().addCamera(m_camera);
+		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+		render::TheCameraManager::get().add_camera(m_camera);
 
 
 		m_spTargetCamera = math::target_camera::create(m_camera);
-		m_spTargetCamera->setPosition(vUpVec,vEyePt,vLookatPt);
+		m_spTargetCamera->set_position(vUpVec,vEyePt,vLookatPt);
 
         {
             using namespace input;
 
-            Input::addCommand(L"Quit");
-            Input::addCommand(L"Horz");
-            Input::addCommand(L"Vert");
+            Input::add_command(L"Quit");
+            Input::add_command(L"Horz");
+            Input::add_command(L"Vert");
             Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
             Input::get_device(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
 			Input::get_device(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
@@ -69,8 +69,8 @@ public:
 		//render::TheLightManager::get().setAmbientColor(math::Color(50, 50, 50, 0));
 	
 		//render::CPointLight *pLight = new render::CPointLight("point1");
-		//scene::TheScene::get().getRootFrame()->add(pLight);
-		//pLight->setPosition(math::Vec3f(0,0,5));
+		//scene::TheScene::get().get_root()->add(pLight);
+		//pLight->set_position(math::Vec3f(0,0,5));
 
 		//pLight->setDiffuse(math::Color(230, 170, 170, 0));
 		//pLight->setRange(100);
@@ -78,8 +78,8 @@ public:
 		m_pGeometry = render::Generator<vertex::PositionNormalColored>::CreateBox();
 
 		m_pMySuper = boost::intrusive_ptr<SceneHelper>(new SceneHelper(m_pGeometry));
-		scene::TheScene::get().getRootFrame()->add(m_pMySuper);
-		m_pMySuper->setPosition(math::Vec3f(0,0,-5));
+		scene::TheScene::get().get_root()->add(m_pMySuper);
+		m_pMySuper->set_position(math::Vec3f(0,0,-5));
 
 		m_spApp->run();
 	}
@@ -119,7 +119,7 @@ protected:
 	boost::intrusive_ptr<SceneHelper> m_pMySuper;
 
 	//данные для ввода
-	input::KeyDown      m_cEsc;
+	input::key_down      m_cEsc;
 	input::RelativeAxis m_cXAxis;
 	input::RelativeAxis m_cYAxis;
 

@@ -14,7 +14,7 @@ namespace render
 	{
 		hide();
 
-		m_renderInfo.pRenderFunc = boost::bind(&flame_fx::render, this);
+		m_renderInfo.render_func = boost::bind(&flame_fx::render, this);
 		{
 			io::path_add_scoped p	("common/");
 			m_pParticleTexture = texture::create(tex);
@@ -82,7 +82,7 @@ namespace render
 
 	void flame_fx::render()
 	{
-		m_pTank->render(m_pParticleTexture, *scene::TheScene::get().getRootFrame().get());
+		m_pTank->render(m_pParticleTexture, *scene::TheScene::get().get_root().get());
 	}
 
 
@@ -95,7 +95,7 @@ namespace render
 	PFlameRenderer flame_fx::create(const std::string &file_name, const std::vector<math::frame_ptr> &vVector)
 	{
 		//Load from XML
-		//TODO: Make function loadFromXML
+		//TODO: Make function load_from_xml
 		TiXmlDocument flame;
 		{
 			io::path_add_scoped p	("Flames/");

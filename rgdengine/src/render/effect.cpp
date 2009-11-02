@@ -10,7 +10,7 @@
 
 #include "../base/exception.h"
 
-extern LPDIRECT3DDEVICE9 g_pd3dDevice;
+extern LPDIRECT3DDEVICE9 g_d3d;
 
 namespace
 {
@@ -119,7 +119,7 @@ namespace render
 			D3DXPARAMETER_DESC paramDesc;
 			m_effect->GetParameterDesc(paramHandle, &paramDesc);
 
-			m_type = (EType)paramDesc.Type;
+			m_type = (type)paramDesc.Type;
 			m_name = paramDesc.Name;
 			m_size = paramDesc.Bytes;
 
@@ -161,7 +161,7 @@ namespace render
 			return m_size;
 		}
 
-		EType getType() const
+		type get_type() const
 		{
 			return m_type;
 		}
@@ -293,7 +293,7 @@ namespace render
 			{
 				texture_d3d9 *pTexImpl = static_cast<texture_d3d9*>(texture.get());
 				//base::lmsg << "bind texture: " << pTexImpl->getFileName();
-				IDirect3DTexture9* pDxTex = pTexImpl->getDxTexture();
+				IDirect3DTexture9* pDxTex = pTexImpl->get_dx_texture();
 				if (FAILED(m_effect->SetTexture(m_Handle, pDxTex)))
 				{
 					base::lwrn << "EffectParam::set(texture_ptr texture) failed.";
@@ -394,7 +394,7 @@ namespace render
 		std::string m_name;
 		std::string m_semantic;
 		unsigned int m_size;
-		EType m_type;
+		type m_type;
 		D3DXHANDLE m_Handle;
 		effect::AnnotationsVector m_vecAnnotations;
 	};
@@ -611,9 +611,9 @@ namespace render
 				std::vector<byte> data;
 				io::stream_to_vector(data, in);
 
-				V(D3DXCreateEffect(g_pd3dDevice, (void*)&(data[0]), (uint)data.size() , NULL, &__include_impl, TheDevice::get().getShaderFlags(), 
+				V(D3DXCreateEffect(g_d3d, (void*)&(data[0]), (uint)data.size() , NULL, &__include_impl, TheDevice::get().get_shader_flags(), 
 					m_spPool, &m_effect, &pErrors));
-				//V(D3DXCreateEffectFromFile( g_pd3dDevice, m_name.c_str() , NULL, NULL, device_dx9::get().getShaderFlags(), 
+				//V(D3DXCreateEffectFromFile( g_d3d, m_name.c_str() , NULL, NULL, device_dx9::get().get_shader_flags(), 
 				//	m_spPool, &m_effect, &pErrors));
 			}
 			catch(...)

@@ -5,9 +5,9 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class IFont> font_ptr;
+	typedef boost::shared_ptr<class base_font> font_ptr;
 
-	class IFont
+	class base_font
 	{
 	public:
 		enum FontWeight
@@ -43,7 +43,7 @@ namespace render
 	
 			ExpandTabs =   0x00000040, // Expands tab characters. The default number of characters per tab is eight
 
-			NoClip     =   0x00000100, // Draws without clipping. IFont::renderText is somewhat faster when NoClip is 
+			NoClip     =   0x00000100, // Draws without clipping. base_font::renderText is somewhat faster when NoClip is 
 									   // used.
 		};
 	public:
@@ -54,8 +54,8 @@ namespace render
 		void render(const std::wstring& text, const math::Rect& rect, unsigned int color, bool isDrawShadow);
 		virtual void render(const std::wstring& text, const math::Rect& rect, unsigned int color, bool isDrawShadow, int flags) = 0;
 
-		virtual math::Rect getRect( const std::wstring& text, int flags = 0) = 0;
+		virtual math::Rect get_rect( const std::wstring& text, int flags = 0) = 0;
 
-		virtual ~IFont(){}
+		virtual ~base_font(){}
 	};
 }

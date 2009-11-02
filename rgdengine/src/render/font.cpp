@@ -5,16 +5,16 @@
 #include <rgde/render/device.h>
 
 #include <d3dx9.h>
-extern LPDIRECT3DDEVICE9 g_pd3dDevice;
+extern LPDIRECT3DDEVICE9 g_d3d;
 
 namespace render
 {
-	class CFontRenderManager : public rendererable
+	class font_manager : public rendererable
 	{
 	protected:
-		CFontRenderManager() : rendererable(10002)
+		font_manager() : rendererable(10002)
 		{
-			m_renderInfo.pRenderFunc = boost::bind(&CFontRenderManager::renderAll, this);
+			m_renderInfo.render_func = boost::bind(&font_manager::renderAll, this);
 		}
 
 	public:
@@ -37,27 +37,27 @@ namespace render
 			texts.clear();
 		}		
 
-		SRenderableInfo & getRenderableInfo()
+		renderable_info & getRenderableInfo()
 		{
 			return m_renderInfo;
 		}
 	};	
 
-	typedef base::singelton<CFontRenderManager> TheFontRenderManager;
+	typedef base::singelton<font_manager> TheFontRenderManager;
 
 	static int fontsCreated	= 0;
 
-	void IFont::render(const std::wstring &text, const math::Rect &rect, unsigned int color)
+	void base_font::render(const std::wstring &text, const math::Rect &rect, unsigned int color)
 	{
 		render(text, rect, color, false, Top | Left | WordBreak);
 	}	
 
-	void IFont::render(const std::wstring &text, const math::Rect &rect, unsigned int color, bool isDrawShadow)
+	void base_font::render(const std::wstring &text, const math::Rect &rect, unsigned int color, bool isDrawShadow)
 	{
 		render(text, rect, color, isDrawShadow, Top | Left | WordBreak);
 	}	
 
-	class FontImpl : public IFont, public device_object
+	class FontImpl : public base_font, public device_object
 	{
 		int				m_nHeight;
 		std::wstring	m_name;
@@ -69,7 +69,7 @@ namespace render
 			m_useDelayedRender = !b;
 		}
 
-		void Destroy()
+		void destroy()
 		{
 			if (m_pFont != NULL)
 			{
@@ -81,10 +81,10 @@ namespace render
 
 		void create()
 		{
-			if (g_pd3dDevice == NULL || m_pFont != NULL)
+			if (g_d3d == NULL || m_pFont != NULL)
 				return;
 
-			if (FAILED(D3DXCreateFont(g_pd3dDevice, -m_nHeight, 0, m_eFontWeght, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 5, DEFAULT_PITCH | FF_DONTCARE, m_name.c_str(), &m_pFont)))
+			if (FAILED(D3DXCreateFont(g_d3d, -m_nHeight, 0, m_eFontWeght, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 5, DEFAULT_PITCH | FF_DONTCARE, m_name.c_str(), &m_pFont)))
 			{
 				throw std::bad_exception("FontImpl():Can't create device font object!");
 			}			fontsCreated++;
@@ -108,7 +108,7 @@ namespace render
 				m_pFont->DrawText(NULL, text.c_str(), -1, &textLocation, flags, color);
 		}		
 
-		math::Rect getRect(const std::wstring &text, int flags)
+		math::Rect get_rect(const std::wstring &text, int flags)
 		{
 			RECT rc	= {0, 0, 0, 200};
 
@@ -128,7 +128,7 @@ namespace render
 			math::Vec2f	screen_size		= render::TheDevice::get().getBackBufferSize();
 			math::Vec2f	ratio = screen_size / virtSize;
 
-			CFontRenderManager& rm = TheFontRenderManager::get();
+			font_manager& rm = TheFontRenderManager::get();
 
 			if (isDrawShadow)
 			{
@@ -158,7 +158,7 @@ namespace render
 			if (m_pFont != NULL)
 			{
 				m_pFont->OnLostDevice();
-				Destroy();
+				destroy();
 			}
 		}		
 
@@ -171,11 +171,11 @@ namespace render
 
 		virtual ~FontImpl()
 		{
-			Destroy();
+			destroy();
 
 			if (0 == fontsCreated)
 			{
-				//TheFontRenderManager::Destroy();
+				//TheFontRenderManager::destroy();
 			}
 		}	
 
@@ -183,7 +183,7 @@ namespace render
 		ID3DXFont	*m_pFont;
 	};
 
-	font_ptr IFont::create(int height, const std::wstring &name, FontWeight font_weigh)
+	font_ptr base_font::create(int height, const std::wstring &name, FontWeight font_weigh)
 	{
 		try
 		{

@@ -6,37 +6,37 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class LensFlares> PLensFlares;
+	typedef boost::shared_ptr<class lens_flares> lens_flares_ptr;
 	
-	class LensFlares : public rendererable
+	class lens_flares : public rendererable
 	{
 	public:
-		static PLensFlares create(const std::string& file_name, const math::frame_ptr& pFrame);
+		static lens_flares_ptr create(const std::string& file_name, const math::frame_ptr& frame);
 
-		struct Flare
+		struct flare
 		{
 			texture_ptr texture;
-			float fDistance;
-			float fImageScale;
-			float fAngleScale;
+			float distance;
+			float image_scale;
+			float angle_scale;
 			math::Color color;
 		};
 
-		//You can not to fill texture member of Flare. Then use strTextureName
-		void addFlare(const Flare& flare, const std::string& strTextureName = "");
+		//You can not to fill texture member of flare. Then use strTextureName
+		void add_flare(const flare& flare, const std::string& strTextureName = "");
 
 	protected:
-		LensFlares(math::frame_ptr pFrame);//pFrame is light pos
+		lens_flares(math::frame_ptr frame);//frame is light pos
 
 	private:
-		void loadFromXML(const std::string& file_name);
+		void load_from_xml(const std::string& file_name);
 		void render();
-		inline void progressFlare(Flare& flare, const math::Vec2f& toLightVector, float fToLightLength, float fAngle, float fAlphaScale);
+		inline void update_flare(flare& flare, const math::Vec2f& toLightVector, float fToLightLength, float angle, float alpha_scale);
 
 	private:
 		math::frame_ptr m_frame;
-		std::vector<Flare> m_flares;
+		std::vector<flare> m_flares;
 	};
 
-	typedef boost::shared_ptr<class LensFlares> PLensFlares;
+	typedef boost::shared_ptr<class lens_flares> lens_flares_ptr;
 }

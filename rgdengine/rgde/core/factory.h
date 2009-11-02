@@ -11,19 +11,19 @@ namespace core
 	private:
 		factory() {}
 
-		typedef std::map <std::string, creator_func>	TypeMap;
-		TypeMap m_typeMap;
+		typedef std::map <std::string, creator_func>	types_map;
+		types_map m_types_map;
 
 		template<class Derived>
 		T* default_creator() {return new Derived();}
 
 	public:
-		typedef std::list<std::string>	TypeList;
+		typedef std::list<std::string>	types_list;
 
-		TypeList get_type_list() const
+		types_list get_type_list() const
 		{
-			TypeList	tlist;
-			for (TypeMap::const_iterator it = m_typeMap.begin(); it != m_typeMap.end(); ++it)
+			types_list	tlist;
+			for (types_map::const_iterator it = m_types_map.begin(); it != m_types_map.end(); ++it)
 			{
 				tlist.push_back(it->first);
 			}
@@ -33,24 +33,24 @@ namespace core
 
 		T* create(const std::string& name)
 		{
-			creator_func creator = m_typeMap[name];
+			creator_func creator = m_types_map[name];
 			if (creator)
 				return creator();
 			else 
 				return 0;
 		}
 
-		template<class Derived>
+		template<class derived_type>
 		void register_type(const std::string& type_name = std::string(), creator_func creator = creator_func())
 		{
-			creator_func cf = creator ? cf : boost::bind(&factory::default_creator<Derived>, this);
+			creator_func cf = creator ? cf : boost::bind(&factory::default_creator<derived_type>, this);
 			if (type_name.empty() || type_name == "")
 			{
-				std::string	temp(typeid(Derived).name());
-				m_typeMap[std::string(temp, 6, temp.size())] = cf;
+				std::string	temp(typeid(derived_type).name());
+				m_types_map[std::string(temp, 6, temp.size())] = cf;
 			}
 			else
-				m_typeMap[type_name] = cf;
+				m_types_map[type_name] = cf;
 
 		}
 

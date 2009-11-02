@@ -12,8 +12,8 @@ namespace particles
 		box_emitter();
 		virtual ~box_emitter();
 
-		virtual void getParticle(particle& p);
-		void		 debugDraw();
+		virtual void get_particle(particle& p);
+		void		 debug_draw();
 
 	protected:
 		virtual void toStream(io::write_stream& wf) const;

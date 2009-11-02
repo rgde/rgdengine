@@ -20,9 +20,9 @@ namespace scene
 		m_distance = distance;
 	}
 
-	camera_trigger::camera_trigger(float fDistance, const math::frame_ptr &pFrame)
-		: m_frame(pFrame),
-		  m_distance(fDistance)
+	camera_trigger::camera_trigger(float distance, const math::frame_ptr &frame)
+		: m_frame(frame),
+		  m_distance(distance)
 	{
 	}
 
@@ -31,19 +31,19 @@ namespace scene
 		if (!m_frame)
 			return;
 
-		math::camera_ptr pCam = render::TheDevice::get().get_curent_camera();
+		math::camera_ptr pCam = render::TheDevice::get().get_camera();
 
 		if (!pCam)
 			return;
 
-		float fDistance	= math::length<float, 3>(pCam->getPosition() - m_frame->getGlobalPosition());
+		float distance	= math::length<float, 3>(pCam->getPosition() - m_frame->getGlobalPosition());
 
-		bool isCameraInside	= fDistance <= m_distance;
+		bool isCameraInside	= distance <= m_distance;
 
-		if (isCameraInside != m_bIsTriggered)
+		if (isCameraInside != m_is_triggered)
 		{
-			m_bIsTriggered = isCameraInside;
-			trigger(m_bIsTriggered);
+			m_is_triggered = isCameraInside;
+			trigger(m_is_triggered);
 		}
 	}
 }

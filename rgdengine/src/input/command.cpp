@@ -1,43 +1,42 @@
 #include "precompiled.h"
 
-//#include <rgde/input/base.h>
 #include <rgde/input/command.h>
 #include <rgde/input/control.h>
 #include <rgde/input/helper.h>
 
 namespace input
 {
-	Command::Command(const std::wstring &sName, input_impl &rInput):
-		m_rInput  (rInput),
-		m_sName   (sName),
-		m_bLocked (false)
+	Command::Command(const std::wstring &name, input_impl &input):
+		m_input  (input),
+		m_name   (name),
+		m_is_locked (false)
 	{
 	}
 
-    void Command::notifyAllObservers (const Control &rControl)
+    void Command::notify_all (const Control &c)
     {
-        if (m_bLocked)
+        if (m_is_locked)
             return;
 
-        HelpersIt i = m_helpers.begin();
+        helpers_iter i = m_helpers.begin();
         while (i != m_helpers.end())
         {
-            (*i)->notify(rControl);
+            (*i)->notify(c);
             ++i;
         }
     }
 
-    void Command::attachObserver (Helper *pHelper)
+    void Command::attach (Helper *h)
     {
-        m_helpers.push_back(pHelper);
+        m_helpers.push_back(h);
     }
 
-    void Command::detachObserver (Helper *pHelper)
+    void Command::detach (Helper *h)
     {
-        HelpersIt i = m_helpers.begin();
+        helpers_iter i = m_helpers.begin();
         while (i != m_helpers.end())
         {
-            if (*i == pHelper)
+            if (*i == h)
                 i = m_helpers.erase(i);
             else
                 ++i;

@@ -6,23 +6,23 @@
 
 #include "../base/exception.h"
 
-extern IDirect3DDevice9* g_pd3dDevice;
+extern IDirect3DDevice9* g_d3d;
 
 namespace render
 {
 	class render_texture_d3d9 : public render_texture, public texture_d3d9
 	{
 	public:
-		TextureFormat getFormat() const {return texture_d3d9::getFormat();}
-		TextureUsage  getUsage()  const {return texture_d3d9::getUsage();}
-		int			  getHeight() const {return texture_d3d9::getHeight();}
-		int			  getWidth()  const {return texture_d3d9::getWidth();}
-		ETextureType  getType()	  const {return texture_d3d9::getType();}
-		bool		  hasAlpha()  const {return texture_d3d9::hasAlpha();}
+		texture_format get_format() const {return texture_d3d9::get_format();}
+		texture_usage  get_usage()  const {return texture_d3d9::get_usage();}
+		int			  get_height() const {return texture_d3d9::get_height();}
+		int			  get_width()  const {return texture_d3d9::get_width();}
+		texture_type  get_type()	  const {return texture_d3d9::get_type();}
+		bool		  has_alpha()  const {return texture_d3d9::has_alpha();}
 
-		render_texture_d3d9(const RenderTargetInfo& params)
+		render_texture_d3d9(const render_target_info& params)
 		{
-			createRenderTexture(params.size, params.format);
+			create_render_texture(params.size, params.format);
 		}
 
 		~render_texture_d3d9()
@@ -35,16 +35,16 @@ namespace render
 
 			V(m_texture->GetSurfaceLevel(0, &pSurfaceLevel));
 
-			if (DepthStencil == texture_d3d9::getUsage()){
-				V(g_pd3dDevice->SetDepthStencilSurface(pSurfaceLevel));
+			if (DepthStencil == texture_d3d9::get_usage()){
+				V(g_d3d->SetDepthStencilSurface(pSurfaceLevel));
 			} else {
-				V(g_pd3dDevice->SetRenderTarget(0, pSurfaceLevel));
+				V(g_d3d->SetRenderTarget(0, pSurfaceLevel));
 			}
 		}
 	};
 
-	PRenderTexture render_texture::create(const RenderTargetInfo& params)
+	render_texture_ptr render_texture::create(const render_target_info& params)
 	{
-		return PRenderTexture(new render_texture_d3d9(params));
+		return render_texture_ptr(new render_texture_d3d9(params));
 	}
 }

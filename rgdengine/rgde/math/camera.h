@@ -11,20 +11,20 @@ namespace math
 		base_camera() {}
 		virtual ~base_camera(){}
 
-		virtual void	setProjection(float fFovy, float fAspect, float fZNear, float fZFar);
+		virtual void	set_projection(float fovy, float aspect, float z_near, float z_far);
 		virtual void	activate();
 
-		const Matrix44f  getViewMatrix()	const;
-		const Matrix44f& getProjMatrix()	const {return m_ProjMatrix;}
+		const Matrix44f  get_view_matrix()	const;
+		const Matrix44f& get_proj_matrix()	const {return m_projection;}
 
-		math::frustum& getFrustum() { return m_frustum; }
-		const math::frustum& getFrustum() const { return m_frustum; }
+		math::frustum& get_frustum() { return m_frustum; }
+		const math::frustum& get_frustum() const { return m_frustum; }
 
-		virtual void	 setPriority(unsigned priority) {}
+		virtual void	 set_priority(unsigned priority) {}
 		virtual unsigned get_priority() const {return 0;}
 
 	protected:
-		math::Matrix44f m_ProjMatrix;
+		math::Matrix44f m_projection;
 		math::frustum m_frustum;
 	};
 

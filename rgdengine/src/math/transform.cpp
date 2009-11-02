@@ -62,7 +62,7 @@ namespace math
 			(*it)->findFrames(strTemplate, container);
 	}
 
-	void frame::setPosition(const Point3f& pos)
+	void frame::set_position(const Point3f& pos)
 	{
 		m_position = pos;
 		m_bIsNeedRecompute = true;
@@ -111,7 +111,7 @@ namespace math
 		return m_fullTransform;
 	}
 
-	void frame::debugDraw() const
+	void frame::debug_draw() const
 	{
 		const float l = 10.5f;
 		math::Point3f p = getGlobalPosition();
@@ -121,9 +121,9 @@ namespace math
 		math::Point3f Z = p + l * getAtGlobal();
 
 		render::Line3dManager& line_manager = render::TheLine3dManager::get();
-		line_manager.addLine( p, X, math::Red );
-		line_manager.addLine( p, Y, math::Green );
-		line_manager.addLine( p, Z, math::Blue );
+		line_manager.add_line( p, X, math::Red );
+		line_manager.add_line( p, Y, math::Green );
+		line_manager.add_line( p, Z, math::Blue );
 	}
 
 	void frame::computeLocalTransform() const

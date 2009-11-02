@@ -5,22 +5,22 @@
 namespace math
 {
 
-    CFirstPersonCamera::CFirstPersonCamera(camera_ptr pCamera)
+    fps_camera::fps_camera(camera_ptr camera)
     {
-        setCamera(pCamera);
+        set_camera(camera);
 
-        base::lmsg << "CFirstPersonCamera::CFirstPersonCamera()";
+        base::lmsg << "fps_camera::fps_camera()";
         m_vUp       = Vec3f(0.0f, 1.0f, 0.0f);
         m_vEyePt    = Vec3f(0.0f, 0.0f, 0.0f);
         m_vLookatPt = Vec3f(0.0f, 0.0f, 1.0f);
     }
 
-    PFirstPersonCamera CFirstPersonCamera::create(camera_ptr pCamera)
+    fps_camera_ptr fps_camera::create(camera_ptr camera)
     {
-        return PFirstPersonCamera(new CFirstPersonCamera(pCamera));
+        return fps_camera_ptr(new fps_camera(camera));
     }
 
-    void CFirstPersonCamera::setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)
+    void fps_camera::set_position(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)
     {
         m_vUp       = vUp;
         m_vEyePt    = vEyePt;
@@ -28,14 +28,14 @@ namespace math
         apply();
     }
 
-    void CFirstPersonCamera::getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt)
+    void fps_camera::getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt)
     {
         vUp       = m_vUp;
         vEyePt    = m_vEyePt;
         vLookatPt = m_vLookatPt;
     }
 
-    void CFirstPersonCamera::goForward(float delta)
+    void fps_camera::goForward(float delta)
     {
 		Vec3f vDir = m_vLookatPt-m_vEyePt;
 		normalize(vDir);
@@ -45,7 +45,7 @@ namespace math
 		apply();
     }
 
-    void CFirstPersonCamera::goLeft(float delta)
+    void fps_camera::goLeft(float delta)
     {
 		Vec3f vDir = m_vLookatPt-m_vEyePt;
 		Vec3f vRight;
@@ -57,7 +57,7 @@ namespace math
 		apply();
     }
 
-    void CFirstPersonCamera::goUp(float delta)
+    void fps_camera::goUp(float delta)
     {
 		Vec3f vDir = m_vUp;
 		normalize(vDir);
@@ -67,7 +67,7 @@ namespace math
 		apply();
     }
 
-    void CFirstPersonCamera::rotateRight(float angle)
+    void fps_camera::rotateRight(float angle)
     {
  		Quatf rot;
         Vec3f vAxis = m_vUp;
@@ -82,7 +82,7 @@ namespace math
 		apply();
     }
 
-    void CFirstPersonCamera::rotateUp(float angle)
+    void fps_camera::rotateUp(float angle)
     {
 		Quatf rot;
         Vec3f vAxis;
@@ -112,12 +112,12 @@ namespace math
 		apply();
     }
 
-    void CFirstPersonCamera::activate()
+    void fps_camera::activate()
     {
         apply();
     }
 
-    void CFirstPersonCamera::apply()
+    void fps_camera::apply()
     {
         if (m_pCamera)
         {

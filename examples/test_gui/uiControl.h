@@ -3,14 +3,14 @@
 
 namespace ui
 {
-	class CControl :	public virtual IControl						
+	class control : public base_control						
 	{
-		Children	m_lChildren;
+		children_list	m_children;
 		math::Rect		m_rect;
 	public:
-		typedef std::list<IControl*> Children;
+		typedef std::list<base_control*> children_list;
 
-		virtual void onEvent(const Event& e)
+		virtual void on_event(const Event& e)
 		{
 			switch(e.eventType) 
 			{
@@ -32,23 +32,23 @@ namespace ui
 		virtual void idle(){}
 		virtual void draw(){}
 
-		virtual const math::Rect& getRect() { return m_rect; }
-		virtual void setRect(const math::Rect& rect) { m_rect = rect; }
+		virtual const math::Rect& get_rect() { return m_rect; }
+		virtual void set_rect(const math::Rect& rect) { m_rect = rect; }
 
-		virtual const Children& get_children()
+		virtual const children_list& get_children()
 		{
-			return m_lChildren;
+			return m_children;
 		}
 
 	protected:
-		virtual void add(IControl* pControl)
+		virtual void add(base_control* pControl)
 		{
-			m_lChildren.push_back(pControl);
+			m_children.push_back(pControl);
 		}
 
-		virtual void remove(IControl* pControl)
+		virtual void remove(base_control* pControl)
 		{
-			m_lChildren.remove(pControl);
+			m_children.remove(pControl);
 		}
 	};
 }

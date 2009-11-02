@@ -25,8 +25,8 @@ namespace particles{
 		spherical_emitter();
 		virtual ~spherical_emitter();
 
-		void		 debugDraw();
-		virtual void getParticle(particle& p);
+		void		 debug_draw();
+		virtual void get_particle(particle& p);
 	
 	protected:
 		virtual void toStream(io::write_stream& wf) const;

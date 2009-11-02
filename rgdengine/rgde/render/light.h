@@ -8,7 +8,7 @@ namespace render
 	class base_light : public math::frame
 	{
 	public:
-		enum EType 
+		enum type 
 		{
 			None            = 0,
 			Point			= 1,
@@ -16,10 +16,10 @@ namespace render
 			Directional		= 3
 		};
 
-		base_light(const std::string& name, EType eType);
+		base_light(const std::string& name, type eType);
 		virtual ~base_light();
 
-		EType getType() const;
+		type get_type() const;
 
 		const math::Color& getDiffuse() const;
 		void               setDiffuse(const math::Color& diffuse);
@@ -43,7 +43,7 @@ namespace render
 
 		bool m_bEnabled;       //Is light enabled
 
-		EType m_type;         //Light type
+		type m_type;         //Light type
 	};
 
 	typedef boost::intrusive_ptr<base_light> PLight;

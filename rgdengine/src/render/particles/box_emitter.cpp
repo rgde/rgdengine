@@ -14,7 +14,7 @@ namespace particles
 	{
 		m_name = "box_emitter";
 
-		m_BoxSize.addKey(1, math::Vec3f(3, 3, 3) );
+		m_BoxSize.add_key(1, math::Vec3f(3, 3, 3) );
 
 		// public properties:
 		//REGISTER_PROPERTY(BoxSize, math::Vec3Interp)
@@ -34,9 +34,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void box_emitter::debugDraw()
+	void box_emitter::debug_draw()
 	{
-		base_emitter::debugDraw();
+		base_emitter::debug_draw();
 
 		math::Vec3f size = m_BoxSize(m_fTimeNormalaized);
 		math::Vec3f size_rand = m_BoxSizeSpread(m_fTimeNormalaized);
@@ -55,9 +55,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void box_emitter::getParticle(particle& p)
+	void box_emitter::get_particle(particle& p)
 	{
-		base_emitter::getParticle(p);
+		base_emitter::get_particle(p);
 
 		math::Vec3f dir = m_Direction.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_DirectionSpread.getValue(m_fTimeNormalaized);

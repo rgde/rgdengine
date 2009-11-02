@@ -9,7 +9,7 @@
 
 #include <rgde/base/manager.h>
 
-extern IDirect3DDevice9 *g_pd3dDevice;
+extern IDirect3DDevice9 *g_d3d;
 
 
 namespace render
@@ -28,14 +28,14 @@ namespace render
 	//IDirect3DDevice9::CreateCubeTexture, 
 	//IDirect3DDevice9::CreateVolumeTexture
 	//For more information about usage constants, see D3DUSAGE.
-	void texture_d3d9::createRenderTexture(const math::Vec2i &size, TextureFormat format)
+	void texture_d3d9::create_render_texture(const math::Vec2i &size, texture_format format)
 	{
 		m_eUsage = RenderTarget;
 
 		if (format >= D16_LOCKABLE && format <= D24FS8)
 			m_eUsage = DepthStencil;
 
-		V(g_pd3dDevice->CreateTexture(size[0],			// Width
+		V(g_d3d->CreateTexture(size[0],			// Width
 			size[1],			// Height
 			1,					// Levels
 			(DWORD)m_eUsage,	// Usage
@@ -52,7 +52,7 @@ namespace render
 		m_eFormat = format;
 	}
 
-	io::readstream_ptr findTexture(const std::string& file_name)
+	io::readstream_ptr open_texture_file(const std::string& file_name)
 	{
 		io::CFileSystem &fs	= io::TheFileSystem::get();
 		if (io::readstream_ptr in	= fs.find(file_name))
@@ -86,10 +86,10 @@ namespace render
 
 	void texture_d3d9::createTextureFromFile(const std::string& file_name)
 	{	
-		if (NULL == g_pd3dDevice) return;
+		if (NULL == g_d3d) return;
 
 		std::vector<byte> data;
-		io::readstream_ptr in = findTexture(file_name);
+		io::readstream_ptr in = open_texture_file(file_name);
 
 		if (!in)
 		{
@@ -105,7 +105,7 @@ namespace render
 		SAFE_RELEASE(m_texture);
 
 		{
-			V(D3DXCreateTextureFromFileInMemoryEx(g_pd3dDevice, (const void*)&(data[0]), (uint)data.size(), D3DX_DEFAULT,	// from file
+			V(D3DXCreateTextureFromFileInMemoryEx(g_d3d, (const void*)&(data[0]), (uint)data.size(), D3DX_DEFAULT,	// from file
 				D3DX_DEFAULT,	// from file
 				D3DX_DEFAULT,	// compete mipmap chain
 				0,				//DWORD Usage,
@@ -124,8 +124,8 @@ namespace render
 
 		m_nHeight = m_desc.Height;
 		m_nWidth = m_desc.Width;
-		m_eFormat = (TextureFormat)m_desc.Format;
-		m_type = convertType(m_texture->GetType());
+		m_eFormat = (texture_format)m_desc.Format;
+		m_type = convet_type(m_texture->GetType());
 		if (m_type == Unknown)
 			base::lwrn << "Warning: texture \"" << file_name << "\" has unknown type";
 	}
@@ -138,7 +138,7 @@ namespace render
 		createTextureFromFile(m_strFileName);
 	}
 
-	IDirect3DTexture9 * texture_d3d9::getDxTexture()
+	IDirect3DTexture9 * texture_d3d9::get_dx_texture()
 	{
 		return m_texture;
 	}
@@ -150,7 +150,7 @@ namespace render
 		SAFE_RELEASE(m_texture);
 	}
 
-	ETextureType texture_d3d9::convertType(D3DRESOURCETYPE d3dType)
+	texture_type texture_d3d9::convet_type(D3DRESOURCETYPE d3dType)
 	{
 		switch (d3dType)
 		{

@@ -12,12 +12,12 @@ namespace scene
 
 	Scene::~Scene(){}
 
-	math::frame_ptr& Scene::getRootFrame()
+	math::frame_ptr& Scene::get_root()
 	{
 		return m_pRoot;
 	}
 
-	void Scene::addManager(const scene_manager_ptr& manager)
+	void Scene::add_manager(const scene_manager_ptr& manager)
 	{
 		m_Managers.push_back(manager);
 	}
@@ -27,14 +27,14 @@ namespace scene
 		m_Managers.remove( manager );
 	}
 
-	void Scene::debugDraw( )
+	void Scene::debug_draw( )
 	{
 		auxDraw( m_pRoot );
 	}
 
 	void Scene::auxDraw( math::frame_ptr frame )
 	{
-		//frame->debugDraw();
+		//frame->debug_draw();
 		//for( math::frame::children_list::iterator it = frame->get_children().begin(); it != frame->get_children().end(); ++it)
 		//{
 		//	auxDraw( (*it) );

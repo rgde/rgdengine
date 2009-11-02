@@ -21,7 +21,7 @@ namespace render
 	public:
 		typedef vertex::PositionTransformedColored Point;
 
-		void addLine( const math::Vec2f& vPoint1, const math::Vec2f vPoint2, 
+		void add_line( const math::Vec2f& vPoint1, const math::Vec2f vPoint2, 
 			math::Color color = 0xffffffff );
 
 	protected:

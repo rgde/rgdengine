@@ -26,7 +26,7 @@ namespace render
 	{
 	}
 
-	SpriteManager::SpriteManager(int priority)
+	sprite_manager::sprite_manager(int priority)
 		: m_cvScreenSize(800, 600),
 		  m_nReservedSize(0),
 		  m_nSpritesRendered(0),
@@ -35,22 +35,22 @@ namespace render
 		  rendererable(priority),
 		  m_vOrigin(0, 0)
 	{
-		//base::lmsg << "SpriteManager::SpriteManager()";
+		//base::lmsg << "sprite_manager::sprite_manager()";
 		math::Vec2f vFrontBufferSize= render::TheDevice::get().getBackBufferSize();
 		m_vScale = vFrontBufferSize / m_cvScreenSize;
 
 
 		m_bAditive = false;
 
-		m_effect = effect::create("SpriteManager.fx");
-		m_renderInfo.pRenderFunc = boost::bind(&SpriteManager::render, this);
+		m_effect = effect::create("sprite_manager.fx");
+		m_renderInfo.render_func = boost::bind(&sprite_manager::render, this);
 	}
 
-	SpriteManager::~SpriteManager()
+	sprite_manager::~sprite_manager()
 	{
 	}
 
-	void SpriteManager::addSprite(const sprite &pSprite)
+	void sprite_manager::addSprite(const sprite &pSprite)
 	{
 		m_bUpdated = false;
 		m_sprites.push_back(pSprite);
@@ -66,7 +66,7 @@ namespace render
 		return math::Vec2f(x * cosa - y * sina, x * sina + y * cosa);
 	}
 
-	void SpriteManager::update()
+	void sprite_manager::update()
 	{
 		using namespace math;
 
@@ -149,7 +149,7 @@ namespace render
 		m_bUpdated = true;
 	}
 
-	void SpriteManager::render()
+	void sprite_manager::render()
 	{
 		if (m_sprites.empty()) return;
 
@@ -162,7 +162,7 @@ namespace render
 		else
 			pTech = m_effect->findTechnique("alpha");
 
-		assert(0 != pTech && "SpriteManager::render(): Can't find effect technique!");
+		assert(0 != pTech && "sprite_manager::render(): Can't find effect technique!");
 		pTech->begin();
 
 		for (unsigned iPass = 0; iPass < pTech->getPasses().size(); iPass++)
@@ -220,11 +220,11 @@ namespace render
 		m_sprites.resize(0);
 	}
 
-	void SpriteManager::onLostDevice()
+	void sprite_manager::onLostDevice()
 	{
 	}
 
-	void SpriteManager::onResetDevice()
+	void sprite_manager::onResetDevice()
 	{
 		// Вычисляем коэффициенты масштабирования
 		math::Vec2f vFrontBufferSize= render::TheDevice::get().getBackBufferSize();

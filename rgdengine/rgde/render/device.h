@@ -16,23 +16,23 @@ namespace render
 		~device_dx9();
 
 	public:
-		void					onLost();
-		void					onReset();
+		void					on_lost();
+		void					on_reset();
 
-		void					addDeviceObject(device_object* pObj);
-		void					removeDeviceObject(device_object* pObj);
+		void					add_object(device_object* pObj);
+		void					remove_object(device_object* pObj);
 
-		void					setCurentCamera(const math::camera_ptr& cam){m_curCam = cam; }
-		const math::camera_ptr&	get_curent_camera() const {return m_curCam;}
+		void					set_camera(const math::camera_ptr& cam){m_cam = cam; }
+		const math::camera_ptr&	get_camera() const {return m_cam;}
 
-		void					setShaderFlags(unsigned long flag)	{m_shaderFlags = flag;}
-		unsigned long			getShaderFlags() const				{return m_shaderFlags;}
+		void					set_shader_flags(unsigned long flag)	{m_shaderFlags = flag;}
+		unsigned long			get_shader_flags() const				{return m_shaderFlags;}
 
-		void					addStatistic( unsigned verts, unsigned tris);
-		void					resetStats();
+		void					add_statistics( unsigned verts, unsigned tris);
+		void					reset_statistics();
 
-		inline unsigned			getTris()	const {return m_triangles;}
-		inline unsigned			getVerts()	const {return m_verts;}
+		inline unsigned			get_tris()	const {return m_triangles;}
+		inline unsigned			get_verts()	const {return m_verts;}
 
 		/// Возвращает размер BackBuffer
 		math::Vec2f				getBackBufferSize();		
@@ -54,7 +54,7 @@ namespace render
         //-<
 
 		unsigned long			m_shaderFlags;
-		math::camera_ptr			m_curCam;
+		math::camera_ptr			m_cam;
 
 		unsigned				m_verts;
 		unsigned				m_triangles;

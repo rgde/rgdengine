@@ -51,11 +51,11 @@ public:
 		m_pCamera->activate();
 
 		m_cTargetCamera = math::target_camera::create(m_pCamera);
-		m_cTargetCamera->setPosition(vEyePt,vLookatPt,vUpVec);		
+		m_cTargetCamera->set_position(vEyePt,vLookatPt,vUpVec);		
 		m_cTargetCamera->activate();
 
 		//UI init
-		//ui::TheUIManager::get().addControl(	new ui::uiButton );
+		//ui::TheUIManager::get().addControl(	new ui::button );
 
 		m_app->run();
 	}

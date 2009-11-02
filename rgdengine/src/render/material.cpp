@@ -105,7 +105,7 @@ namespace render
 		bool texHasAlpha	= false;
 		MaterialMaps::const_iterator it = m_maps.find("diffuse");
 		if(it->second.isTextureValid())
-			texHasAlpha = it->second.getTexture()->hasAlpha();
+			texHasAlpha = it->second.getTexture()->has_alpha();
 
 		if (m_diffuse.a == 255 && !texHasAlpha)
 			return false;

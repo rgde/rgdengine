@@ -46,7 +46,7 @@ namespace particles{
 		m_bIsAnimTextureUsed	= false;
 		m_cTexFps				= 25;
 
-		m_TexName				= texture_name;
+		m_texture_name				= texture_name;
 
 		loadTexture();
 		loadFrames(sequence_name);
@@ -66,7 +66,7 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void static_emitter::loadTexture()
 	{
-		m_texture = render::texture::create(m_TexName);
+		m_texture = render::texture::create(m_texture_name);
 		m_bIsTexLoaded = true;
 	}
 	//-----------------------------------------------------------------------------------
@@ -200,9 +200,9 @@ namespace particles{
 	{
 		if ( tex.length() != 0 )
 		{
-			m_TexName = tex;	
+			m_texture_name = tex;	
 			loadTexture();
-			//m_TexName.clear();
+			//m_texture_name.clear();
 		}
 	}
 	//-----------------------------------------------------------------------------------
@@ -213,9 +213,9 @@ namespace particles{
 		spTank->render(m_texture, m_Transform);
 	}
 	//----------------------------------------------------------------------------------------
-	void static_emitter::debugDraw()
+	void static_emitter::debug_draw()
 	{
-		m_Transform.debugDraw();
+		m_Transform.debug_draw();
 
 		unsigned frame_num = (int)(m_fLastFrame - m_time_shift);
 		if (frame_num < 0) return;
@@ -254,7 +254,7 @@ namespace particles{
 
 		std::string seqName;
 		rf	>> seqName
-			>> m_TexName
+			>> m_texture_name
 			>> m_time_shift
 			>> m_bIntense
 			>> m_is_visible
@@ -275,7 +275,7 @@ namespace particles{
 
 		wf  << file_version
 			<< m_Name
-			<< m_TexName
+			<< m_texture_name
 			<< m_time_shift
 			<< m_bIntense
 			<< m_is_visible

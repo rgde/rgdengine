@@ -8,14 +8,14 @@ ISimpleTrigger is base class for all triggers.
 namespace scene
 {
 	template<class T>
-	class IBaseTrigger
+	class base_trigger
 	{
 	public:
-		IBaseTrigger() : m_bIsTriggered(false)
+		base_trigger() : m_is_triggered(false)
 		{
 		}
 
-		virtual ~IBaseTrigger(){}
+		virtual ~base_trigger(){}
 
 		typedef boost::function<void(const T&)> ListenerCallBack;
 
@@ -24,7 +24,7 @@ namespace scene
 			m_vCallBacks.push_back(callBack);
 		}
 
-		bool isTriggered() const {return m_bIsTriggered;}
+		bool isTriggered() const {return m_is_triggered;}
 
 	protected:
 		//triggers the trigger
@@ -39,6 +39,6 @@ namespace scene
 		typedef std::vector<ListenerCallBack> ListenerCallBacks;
 		ListenerCallBacks m_vCallBacks;
 
-		bool m_bIsTriggered;
+		bool m_is_triggered;
 	};
 }

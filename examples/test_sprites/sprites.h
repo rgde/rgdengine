@@ -17,9 +17,9 @@ namespace rgde
 				void update (float dt);
 
 			protected:
-				render::SpriteManager			m_sprite_renderer;
-				render::SpriteManager::SpritesVector m_sprites;
-				input::KeyDown                  m_cEsc;
+				render::sprite_manager			m_sprite_renderer;
+				render::sprite_manager::SpritesVector m_sprites;
+				input::key_down                  m_cEsc;
 				// Число приоритетов спрайтов
 				unsigned						m_priorities;
 				// Число спрайтов с одинаковым приоритетом

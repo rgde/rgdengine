@@ -26,12 +26,12 @@ namespace scene
 		virtual ~Scene();
 
 	public:
-		virtual math::frame_ptr& getRootFrame();
+		virtual math::frame_ptr& get_root();
 
-		virtual void addManager(const scene_manager_ptr& manager);
+		virtual void add_manager(const scene_manager_ptr& manager);
 		virtual void removeManager( const scene_manager_ptr& manager );
 
-		void debugDraw( );
+		void debug_draw( );
 
 	protected:
 		void auxDraw( math::frame_ptr frame );

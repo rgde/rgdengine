@@ -16,14 +16,14 @@ namespace core
         HWND hWnd = (HWND)application::get()->get_handle();
 
         input::input_impl *pImpl = new input::input_impl();
-        pImpl->Init(hWnd,exclusive);
+        pImpl->init(hWnd,exclusive);
 
         input::Input::get().init( pImpl );
     }
 
     input_task::~input_task ()
     {
-        input::Input::Destroy();
+        input::Input::destroy();
     }
 
     void input_task::run()

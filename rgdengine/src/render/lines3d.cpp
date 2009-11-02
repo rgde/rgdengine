@@ -18,7 +18,7 @@ namespace render
 	{
 		//base::lmsg << "Line3dManager::Line3dManager()";
 		m_pVertices = &(m_Geometry.lock());
-		m_renderInfo.pRenderFunc = boost::bind(&Line3dManager::render, this);
+		m_renderInfo.render_func = boost::bind(&Line3dManager::render, this);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -27,13 +27,13 @@ namespace render
 		if (m_pVertices->size() == 0)
 			return;
 
-		math::camera_ptr pCamera	= render::TheDevice::get().get_curent_camera();
+		math::camera_ptr camera	= render::TheDevice::get().get_camera();
 
-		if (!pCamera)
+		if (!camera)
 			return;
 
-		const math::Matrix44f &mView = pCamera->getViewMatrix();
-		const math::Matrix44f &mProj = pCamera->getProjMatrix();
+		const math::Matrix44f &mView = camera->get_view_matrix();
+		const math::Matrix44f &mProj = camera->get_proj_matrix();
 		math::Matrix44f mLVP		 = mProj *mView;
 
 		m_effect->getParams()["g_mLVP"]->set(mLVP);
@@ -64,7 +64,7 @@ namespace render
 	}
 
 	//-----------------------------------------------------------------------------------
-	void Line3dManager::addLine(const math::Vec3f &vPoint1, const math::Vec3f &vPoint2, const math::Color &color)
+	void Line3dManager::add_line(const math::Vec3f &vPoint1, const math::Vec3f &vPoint2, const math::Color &color)
 	{
 		m_pVertices->push_back(Point(vPoint1, color));
 		m_pVertices->push_back(Point(vPoint2, color));
@@ -101,22 +101,22 @@ namespace render
 
 		// Добавляем линии
 		// up size
-		addLine(size_box[0], size_box[1], color);
-		addLine(size_box[1], size_box[2], color);
-		addLine(size_box[2], size_box[3], color);
-		addLine(size_box[3], size_box[0], color);
+		add_line(size_box[0], size_box[1], color);
+		add_line(size_box[1], size_box[2], color);
+		add_line(size_box[2], size_box[3], color);
+		add_line(size_box[3], size_box[0], color);
 
 		//bottom size
-		addLine(size_box[0 + 4], size_box[1 + 4], color);
-		addLine(size_box[1 + 4], size_box[2 + 4], color);
-		addLine(size_box[2 + 4], size_box[3 + 4], color);
-		addLine(size_box[3 + 4], size_box[0 + 4], color);
+		add_line(size_box[0 + 4], size_box[1 + 4], color);
+		add_line(size_box[1 + 4], size_box[2 + 4], color);
+		add_line(size_box[2 + 4], size_box[3 + 4], color);
+		add_line(size_box[3 + 4], size_box[0 + 4], color);
 
 		// connections between up and bottom
-		addLine(size_box[0], size_box[0 + 4], color);
-		addLine(size_box[1], size_box[1 + 4], color);
-		addLine(size_box[2], size_box[2 + 4], color);
-		addLine(size_box[3], size_box[3 + 4], color);
+		add_line(size_box[0], size_box[0 + 4], color);
+		add_line(size_box[1], size_box[1 + 4], color);
+		add_line(size_box[2], size_box[2 + 4], color);
+		add_line(size_box[3], size_box[3 + 4], color);
 	}
 	//-----------------------------------------------------------------------------------
 	void Line3dManager::addBox(const math::AABoxf& box, const math::Color& color)
@@ -136,23 +136,23 @@ namespace render
 		math::Point3f& zm		= z;
 		math::Point3f& centerm	= center;
 
-		addLine(centerm + xm + ym + zm, centerm - xm + ym + zm, color);
-		addLine(centerm + xm + ym - zm, centerm - xm + ym - zm, color);
+		add_line(centerm + xm + ym + zm, centerm - xm + ym + zm, color);
+		add_line(centerm + xm + ym - zm, centerm - xm + ym - zm, color);
 
-		addLine(centerm + xm - ym + zm, centerm - xm - ym + zm, color);
-		addLine(centerm + xm - ym - zm, centerm - xm - ym - zm, color);
+		add_line(centerm + xm - ym + zm, centerm - xm - ym + zm, color);
+		add_line(centerm + xm - ym - zm, centerm - xm - ym - zm, color);
 
-		addLine(centerm + xm + ym + zm, centerm + xm - ym + zm, color);
-		addLine(centerm + xm + ym - zm, centerm + xm - ym - zm, color);
+		add_line(centerm + xm + ym + zm, centerm + xm - ym + zm, color);
+		add_line(centerm + xm + ym - zm, centerm + xm - ym - zm, color);
 
-		addLine(centerm - xm + ym + zm, centerm - xm - ym + zm, color);
-		addLine(centerm - xm + ym - zm, centerm - xm - ym - zm, color);
+		add_line(centerm - xm + ym + zm, centerm - xm - ym + zm, color);
+		add_line(centerm - xm + ym - zm, centerm - xm - ym - zm, color);
 
-		addLine(centerm + xm + ym + zm, centerm + xm + ym - zm, color);
-		addLine(centerm + xm - ym + zm, centerm + xm - ym - zm, color);
+		add_line(centerm + xm + ym + zm, centerm + xm + ym - zm, color);
+		add_line(centerm + xm - ym + zm, centerm + xm - ym - zm, color);
 
-		addLine(centerm - xm + ym + zm, centerm - xm + ym - zm, color);
-		addLine(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
+		add_line(centerm - xm + ym + zm, centerm - xm + ym - zm, color);
+		add_line(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
 	}
 	//-----------------------------------------------------------------------------------
 	void Line3dManager::addBox(const math::Matrix44f &m, const math::AABoxf &box, const math::Color &color)
@@ -177,23 +177,23 @@ namespace render
 		math::Point3f zm		= noTransTM *z;
 		math::Point3f centerm	= m *center;
 
-		addLine(centerm + xm + ym + zm, centerm - xm + ym + zm, color);
-		addLine(centerm + xm + ym - zm, centerm - xm + ym - zm, color);
+		add_line(centerm + xm + ym + zm, centerm - xm + ym + zm, color);
+		add_line(centerm + xm + ym - zm, centerm - xm + ym - zm, color);
 
-		addLine(centerm + xm - ym + zm, centerm - xm - ym + zm, color);
-		addLine(centerm + xm - ym - zm, centerm - xm - ym - zm, color);
+		add_line(centerm + xm - ym + zm, centerm - xm - ym + zm, color);
+		add_line(centerm + xm - ym - zm, centerm - xm - ym - zm, color);
 
-		addLine(centerm + xm + ym + zm, centerm + xm - ym + zm, color);
-		addLine(centerm + xm + ym - zm, centerm + xm - ym - zm, color);
+		add_line(centerm + xm + ym + zm, centerm + xm - ym + zm, color);
+		add_line(centerm + xm + ym - zm, centerm + xm - ym - zm, color);
 
-		addLine(centerm - xm + ym + zm, centerm - xm - ym + zm, color);
-		addLine(centerm - xm + ym - zm, centerm - xm - ym - zm, color);
+		add_line(centerm - xm + ym + zm, centerm - xm - ym + zm, color);
+		add_line(centerm - xm + ym - zm, centerm - xm - ym - zm, color);
 
-		addLine(centerm + xm + ym + zm, centerm + xm + ym - zm, color);
-		addLine(centerm + xm - ym + zm, centerm + xm - ym - zm, color);
+		add_line(centerm + xm + ym + zm, centerm + xm + ym - zm, color);
+		add_line(centerm + xm - ym + zm, centerm + xm - ym - zm, color);
 
-		addLine(centerm - xm + ym + zm, centerm - xm + ym - zm, color);
-		addLine(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
+		add_line(centerm - xm + ym + zm, centerm - xm + ym - zm, color);
+		add_line(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
 	}
 	//-----------------------------------------------------------------------------------
 	void Line3dManager::addBox(const math::Matrix44f &m, const math::Vec3f &size, const math::Color &color)
@@ -228,22 +228,22 @@ namespace render
 
 		// Добавляем линии
 		// up size
-		addLine(SizeBox[0], SizeBox[1], color);
-		addLine(SizeBox[1], SizeBox[2], color);
-		addLine(SizeBox[2], SizeBox[3], color);
-		addLine(SizeBox[3], SizeBox[0], color);
+		add_line(SizeBox[0], SizeBox[1], color);
+		add_line(SizeBox[1], SizeBox[2], color);
+		add_line(SizeBox[2], SizeBox[3], color);
+		add_line(SizeBox[3], SizeBox[0], color);
 
 		//bottom size
-		addLine(SizeBox[0 + 4], SizeBox[1 + 4], color);
-		addLine(SizeBox[1 + 4], SizeBox[2 + 4], color);
-		addLine(SizeBox[2 + 4], SizeBox[3 + 4], color);
-		addLine(SizeBox[3 + 4], SizeBox[0 + 4], color);
+		add_line(SizeBox[0 + 4], SizeBox[1 + 4], color);
+		add_line(SizeBox[1 + 4], SizeBox[2 + 4], color);
+		add_line(SizeBox[2 + 4], SizeBox[3 + 4], color);
+		add_line(SizeBox[3 + 4], SizeBox[0 + 4], color);
 
 		// connections between up and bottom
-		addLine(SizeBox[0], SizeBox[0 + 4], color);
-		addLine(SizeBox[1], SizeBox[1 + 4], color);
-		addLine(SizeBox[2], SizeBox[2 + 4], color);
-		addLine(SizeBox[3], SizeBox[3 + 4], color);
+		add_line(SizeBox[0], SizeBox[0 + 4], color);
+		add_line(SizeBox[1], SizeBox[1 + 4], color);
+		add_line(SizeBox[2], SizeBox[2 + 4], color);
+		add_line(SizeBox[3], SizeBox[3 + 4], color);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -251,7 +251,7 @@ namespace render
 	{
 		math::Vec3f trans;
 		math::setTrans(trans, m);
-		addLine(trans, m * dir, color);
+		add_line(trans, m * dir, color);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -292,24 +292,24 @@ namespace render
 			if (i > angle && i < 359 - angle)
 				continue;
 
-			addLine(circle2[0][i], circle2[0][i + 1], math::Green);
-			addLine(circle2[1][i], circle2[1][i + 1], math::Green);
+			add_line(circle2[0][i], circle2[0][i + 1], math::Green);
+			add_line(circle2[1][i], circle2[1][i + 1], math::Green);
 		}
 
 		math::Vec3f zTrans;
 		math::setTrans(zTrans, m90z);
-		addLine(circle2[1][angle], zTrans, math::Green);
-		addLine(zTrans, circle2[1][359 - angle], math::Green);
+		add_line(circle2[1][angle], zTrans, math::Green);
+		add_line(zTrans, circle2[1][359 - angle], math::Green);
 
 		math::Vec3f yTrans;
 		math::setTrans(yTrans, m90y);
-		addLine(circle2[0][angle], yTrans, math::Green);
-		addLine(yTrans, circle2[0][359 - angle], math::Green);
+		add_line(circle2[0][angle], yTrans, math::Green);
+		add_line(yTrans, circle2[0][359 - angle], math::Green);
 	}
 	//-----------------------------------------------------------------------------------
 	void Line3dManager::addQuad(const math::Vec3f &center, const math::Vec2f &size, float fSpin)
 	{
-		const math::Matrix44f & mView = TheDevice::get().get_curent_camera()->getViewMatrix();
+		const math::Matrix44f & mView = TheDevice::get().get_camera()->get_view_matrix();
 
 		math::Vec3f up	(mView.mData[0], mView.mData[4], mView.mData[8]);
 		math::normalize(up);
@@ -326,9 +326,9 @@ namespace render
 		math::Vec3f p3	= center + (-cosa + sina) * right + (sina + cosa) * up;
 		math::Vec3f p4	= center + (-cosa - sina) * right + (sina - cosa) * up;
 
-		addLine(p1, p2, math::Blue);
-		addLine(p2, p3, math::Blue);
-		addLine(p3, p4, math::Blue);
-		addLine(p4, p1, math::Blue);
+		add_line(p1, p2, math::Blue);
+		add_line(p2, p3, math::Blue);
+		add_line(p3, p4, math::Blue);
+		add_line(p4, p1, math::Blue);
 	}
 } //~ namespace utility
