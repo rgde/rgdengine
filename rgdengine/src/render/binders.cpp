@@ -32,17 +32,17 @@ namespace render
 		const math::camera_ptr& camera = get_camera();
 		const math::Matrix44f& mView = camera->get_view_matrix();
 		const math::Matrix44f& mProj = camera->get_proj_matrix();
-		return mProj*(mView*frame->getFullTransform());
+		return mProj*(mView*frame->get_full_tm());
 	}
 
 	math::Matrix44f makeWorldViewMatrix(const math::frame_ptr& frame)
 	{
-		return frame->getFullTransform()*get_camera()->get_view_matrix();
+		return frame->get_full_tm()*get_camera()->get_view_matrix();
 	}
 
 	math::Matrix44f makeWorldViewInvTranspMatrix(const math::frame_ptr& frame)
 	{
-		math::Matrix44f result = frame->getFullTransform();
+		math::Matrix44f result = frame->get_full_tm();
 		result *= get_camera()->get_view_matrix();
 		math::invert(result);
 		math::transpose(result);
@@ -67,7 +67,7 @@ namespace render
 		getMatrixFunction = bind(&makeWorldViewInvTranspMatrix, _1);
 		binder->addParameter<Matrix44f>(getMatrixFunction,
 										WorldViewITMatrixParamName);
-		getMatrixFunction = bind(&frame::getFullTransform, _1);
+		getMatrixFunction = bind(&frame::get_full_tm, _1);
 		binder->addParameter<Matrix44f>(getMatrixFunction,
 										WorldMatrixParamName);
 	}
@@ -116,7 +116,7 @@ namespace render
 											base::upper_case(it->first) +
 											TextureNamePostfix;
 
-				if(binder->addParameter<texture_ptr>(it->second.getTexture(),
+				if(binder->addParameter<texture_ptr>(it->second.get_texture(),
 												  parameterName))
 				{
 					std::string lower = base::lower_case(it->first);
@@ -124,7 +124,7 @@ namespace render
 					std::string temp = upper.substr(0, 1) +
 									   lower.substr(1, lower.length() - 1);
 
-					if(CubeTexture == it->second.getTexture()->get_type())
+					if(CubeTexture == it->second.get_texture()->get_type())
 						temp += "Cube";
 
 					strTechName += temp;

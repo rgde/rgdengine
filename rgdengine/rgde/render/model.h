@@ -16,7 +16,7 @@ namespace render
 	class model : public math::frame, public game::dynamic_object
 	{
 	public:
-		typedef std::map<int, PMaterial>				material_map;
+		typedef std::map<int, material_ptr>					material_map;
 		typedef std::vector<math::frame_ptr>				frames_vector;
 		typedef std::vector<mesh_ptr>						meshes_vector;
 		typedef std::vector<math::frame_anim_controller>	contollers_vector;
@@ -46,7 +46,7 @@ namespace render
 		void clear( void );
 		void update( float dt );
 		//Neonic: octree
-		void updateTree( void );
+		void update( void );
 
 		void load(const std::string& file_name);
 

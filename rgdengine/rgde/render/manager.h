@@ -87,7 +87,7 @@ namespace render
 		renderable_info();
 
 		math::frame*				 frame;
-		PMaterial					 spMaterial;
+		material_ptr					 spMaterial;
 		boost::function<void (void)> render_func;
 		boost::function<void (void)> pDebugRenderFunc;
 		render::effect_ptr				 spShader;

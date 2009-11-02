@@ -89,7 +89,7 @@ namespace render
 		}
 
 		//Neonic: octree. Здесь обновляем дерево для всей модели.
-		updateTree();
+		update();
 	}
 
 	void ReadNode(TiXmlElement *elem, math::frame &rootFrame, model &model)
@@ -122,7 +122,7 @@ namespace render
 				math::Quatf q;
 				math::set(q, ang);
 
-				rootFrame.setRotation(q);
+				rootFrame.set_rot(q);
 			}
 
 			//scale
@@ -130,7 +130,7 @@ namespace render
 			{
 				math::Vec3f v;
 				base::read(v, pNode);
-				rootFrame.setScale(v);
+				rootFrame.set_scale(v);
 			}
 		}
 		//////////////////////////////////////////////////////////////////////////
@@ -287,11 +287,11 @@ namespace render
 	}
 
 	//Neonic: octree
-	void model::updateTree( void )
+	void model::update( void )
 	{
 		meshes_vector::const_iterator i;
 		for ( i = m_meshes.begin(); i != m_meshes.end(); ++i )
-			( *i )->updateTree();
+			( *i )->update();
 	};
 
 	void model::play()

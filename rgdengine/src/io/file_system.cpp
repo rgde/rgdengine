@@ -23,16 +23,16 @@ namespace io
 
 		readstream_ptr find(const std::string& file_path) const
 		{
-			readstream_ptr	s(new read_file_stream(file_path));
+			readstream_ptr	s(new read_file(file_path));
 
 			if (s->is_valid()) return s;
 
 			return readstream_ptr();
 		}
 
-		bool isExist(const std::string& file_path) const
+		bool is_exist(const std::string& file_path) const
 		{
-			return read_file_stream(file_path).isOpened();
+			return read_file(file_path).is_open();
 		}
 
 	private:
@@ -101,14 +101,14 @@ namespace io
 		return s;
 	}
 
-	bool CFileSystem::isExist(const std::string& file_path) const
+	bool CFileSystem::is_exist(const std::string& file_path) const
 	{
 		bool result	= false;
 		std::string total_path	= m_rootPath.string() + "/" + file_path;
 
 		for (Sources::const_iterator it = m_sources.begin(); it != m_sources.end(); ++it)
 		{
-			result = (*it)->isExist(total_path);
+			result = (*it)->is_exist(total_path);
 			if (result)
 				break;
 		}

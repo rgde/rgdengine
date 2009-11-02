@@ -115,7 +115,7 @@ namespace math
 		//if (m_spFrame)
 		//{
 		//
-		//	m_spFrame->setRotation( q );
+		//	m_spFrame->set_rot( q );
 		//	m_spFrame->set_position( m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime ) );
 		//}
 
@@ -129,20 +129,20 @@ namespace math
 		{
 			if(m_fWeight == 1.0f)
 			{
-				m_spFrame->setScale( vec );
-				m_spFrame->setRotation( q );
+				m_spFrame->set_scale( vec );
+				m_spFrame->set_rot( q );
 				m_spFrame->set_position( m_PosInterpolyator.getValue( m_fCurrentTime ) );
 			}
 			else
 			{
 				float fInverseWeight = 1.0f - m_fWeight;
-				m_spFrame->setScale(m_spFrame->getScale()*fInverseWeight + vec*m_fWeight );
-				m_spFrame->setRotation(m_spFrame->getRotation()*fInverseWeight + q*m_fWeight  );
-				m_spFrame->set_position(m_spFrame->getPosition()*fInverseWeight +  m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime )*m_fWeight );
+				m_spFrame->set_scale(m_spFrame->get_scale()*fInverseWeight + vec*m_fWeight );
+				m_spFrame->set_rot(m_spFrame->get_rot()*fInverseWeight + q*m_fWeight  );
+				m_spFrame->set_position(m_spFrame->get_pos()*fInverseWeight +  m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime )*m_fWeight );
 			}
 
 			//Neonic: octree. 1 ставится, если было использовано вращение или увеличение/уменьшение. Иначе ставим 0.
-			m_spFrame->updateTree(1);
+			m_spFrame->update(1);
 		}
 	}
 

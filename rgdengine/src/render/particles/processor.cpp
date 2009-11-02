@@ -196,7 +196,7 @@ namespace particles{
 	{
 		/*
 		if (m_iRndSeed){
-			rnd.setSeed(m_iRndSeed);
+			rnd.set_seed(m_iRndSeed);
 		}
 		*/
 
@@ -206,7 +206,7 @@ namespace particles{
 
 		math::frame& rParentTransform = m_pParentEmitter->getTransform();
 		//m_fScaling = (m_ParentTransform->getScaling()).x;
-		m_fScaling = rParentTransform.getScale();
+		m_fScaling = rParentTransform.get_scale();
 
 		int m_acting_particles = 0;
 		// здесь происходит апдейт партиклов
@@ -294,7 +294,7 @@ namespace particles{
 		
 		p.old_time = 0.0f;
 
-		static math::UnitRandom2k lrnd;
+		static math::unit_rand_2k lrnd;
 
 		if (m_bIsPlayTexAnimation)
 		{
@@ -485,7 +485,7 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	const math::Matrix44f& processor::getLTM()
 	{
-		return m_pParentEmitter->getTransform().getFullTransform();
+		return m_pParentEmitter->getTransform().get_full_tm();
 	}
 
 	//-----------------------------------------------------------------------------------

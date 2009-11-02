@@ -28,7 +28,7 @@ namespace math
         apply();
     }
 
-    void fps_camera::getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt)
+    void fps_camera::get_pos(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt)
     {
         vUp       = m_vUp;
         vEyePt    = m_vEyePt;
@@ -122,7 +122,7 @@ namespace math
         if (m_pCamera)
         {
             try{
-                m_pCamera->lookAt(m_vEyePt,m_vLookatPt,m_vUp);
+                m_pCamera->look_at(m_vEyePt,m_vLookatPt,m_vUp);
                 m_pCamera->activate();
             }
             catch(...){}

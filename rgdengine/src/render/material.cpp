@@ -8,7 +8,7 @@
 
 namespace render
 {
-	void material::material_map::setTexture(const texture_ptr& texture)
+	void material::material_map::set_texture(const texture_ptr& texture)
 	{
 		if (texture != NULL)
 		{
@@ -42,7 +42,7 @@ namespace render
 		m_matrix *= tempMatrix;
 	}
 
-	texture_ptr& getDefaultTextureByType(material::material_map::EDefaultTexture defaultTexture)
+	texture_ptr& getDefaultTextureByType(material::material_map::default_texture_type defaultTexture)
 	{
 		switch (defaultTexture)
 		{
@@ -58,24 +58,24 @@ namespace render
 		return empti_texture_ptr;
 	}
 
-	material::material_map::material_map(EDefaultTexture defaultTexture)
+	material::material_map::material_map(default_texture_type defaultTexture)
 	{
 		m_pDefaultTexture = getDefaultTextureByType(defaultTexture);
 		texture_ptr pNullTexture;
-		setTexture(pNullTexture);
+		set_texture(pNullTexture);
 
 		m_fRotationSpeed = 0.0f;
 		m_time = 0.0;
 	}
 
-	PMaterial material::create(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
+	material_ptr material::create(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
 	{
-		return PMaterial(new material(amb, diff, spec, em, power));
+		return material_ptr(new material(amb, diff, spec, em, power));
 	}
 
-	PMaterial material::create(const std::string& file_name)
+	material_ptr material::create(const std::string& file_name)
 	{
-		PMaterial mat = material::create();
+		material_ptr mat = material::create();
 		mat->load(file_name);
 		return mat;
 	}
@@ -105,7 +105,7 @@ namespace render
 		bool texHasAlpha	= false;
 		MaterialMaps::const_iterator it = m_maps.find("diffuse");
 		if(it->second.isTextureValid())
-			texHasAlpha = it->second.getTexture()->has_alpha();
+			texHasAlpha = it->second.get_texture()->has_alpha();
 
 		if (m_diffuse.a == 255 && !texHasAlpha)
 			return false;
@@ -132,7 +132,7 @@ namespace render
 		int id	= getMapId(pMapEl);
 
 		if (id >= 0)
-			maps[name].setTexture(textures[id]);
+			maps[name].set_texture(textures[id]);
 
 		return pMapEl;
 	}
@@ -234,7 +234,7 @@ namespace render
 
 	const texture_ptr & material::getTextureMap(const std::string &type) const
 	{
-		return getMaterialMap(type).getTexture();
+		return getMaterialMap(type).get_texture();
 	}
 
 	void material::update(float dt)

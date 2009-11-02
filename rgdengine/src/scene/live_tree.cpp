@@ -640,8 +640,8 @@ namespace live_tree
 			float fQuart = ext*0.5f;
 			for(unsigned iStep = 0; iStep<3; iStep++)
 			{
-				bool isExist = iIndex&(1<<iStep);
-				center[iStep] = cnt[iStep]+(isExist?fQuart:-fQuart);
+				bool is_exist = iIndex&(1<<iStep);
+				center[iStep] = cnt[iStep]+(is_exist?fQuart:-fQuart);
 			}
 			parse(pBranch->getBranch(iIndex),center,fQuart);
 		}
@@ -684,8 +684,8 @@ namespace live_tree
 			float fQuart = ext*0.5f;
 			for(unsigned iStep = 0; iStep<3; iStep++)
 			{
-				bool isExist = iIndexMin&(1<<iStep);
-				center[iStep] = cnt[iStep]+(isExist?fQuart:-fQuart);
+				bool is_exist = iIndexMin&(1<<iStep);
+				center[iStep] = cnt[iStep]+(is_exist?fQuart:-fQuart);
 			}
 			return parse(pBranch->call(iIndexMin),center,fQuart,division+1);
 		}
@@ -749,8 +749,8 @@ namespace live_tree
 				float fQuart = ext*0.5f;
 				for(unsigned iStep = 0; iStep<3; iStep++)
 				{
-					bool isExist = iIndexMin&(1<<iStep);
-					center[iStep] = cnt[iStep]+(isExist?fQuart:-fQuart);
+					bool is_exist = iIndexMin&(1<<iStep);
+					center[iStep] = cnt[iStep]+(is_exist?fQuart:-fQuart);
 				}
 				return parse(pBranch->getBranch(iIndexMin),center,fQuart,division+1);
 //			}

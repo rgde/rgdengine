@@ -15,7 +15,7 @@ namespace io
 
 		virtual int			get_priority() const = 0;
 		virtual readstream_ptr find(const std::string& file_path) const = 0;
-		virtual bool		isExist	(const std::string& file_path) const = 0;
+		virtual bool		is_exist	(const std::string& file_path) const = 0;
 
 		static PFileSource  CreateDirectorySource(const Path& path);
 		//static PFileSource CreateZipSource(const Path& path);
@@ -33,7 +33,7 @@ namespace io
 
 		void		addFileSource(const PFileSource& spFileSource);
 		readstream_ptr find(const std::string& file_path) const;
-		bool		isExist	(const std::string& file_path) const;
+		bool		is_exist	(const std::string& file_path) const;
 
 	public:
 		typedef std::list<PFileSource> Sources;

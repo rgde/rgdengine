@@ -113,7 +113,7 @@ namespace render
 
 	namespace functors
 	{
-		//void setupParameters(effect_ptr pEffect, const renderable_info &info, PMaterial& mat)
+		//void setupParameters(effect_ptr pEffect, const renderable_info &info, material_ptr& mat)
 		//{
 		//	//assert(info.frame);
 		//	if (info.frame)
@@ -143,12 +143,12 @@ namespace render
 			{
 				if(info.frame)
 				{
-					static PMaterial pDefaultMaterial = material::create();
+					static material_ptr pDefaultMaterial = material::create();
 
-					//const PMaterial& pMaterial = info.spMaterial ? info.spMaterial : pDefaultMaterial;
+					//const material_ptr& pMaterial = info.spMaterial ? info.spMaterial : pDefaultMaterial;
 					//const effect_ptr&	 pEffect	= info.spShader ? info.spShader : defaultEffect;
 
-					const PMaterial& pMaterial = pDefaultMaterial;
+					const material_ptr& pMaterial = pDefaultMaterial;
 					const effect_ptr&	 pEffect	= defaultEffect;
 
 
@@ -178,9 +178,9 @@ namespace render
 					}
 					else
 					{
-						//info.frame->getFullTransform()
-						//return mProj*(mView*frame->getFullTransform());
-						g_d3d->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&info.frame->getFullTransform()[0]);
+						//info.frame->get_full_tm()
+						//return mProj*(mView*frame->get_full_tm());
+						g_d3d->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&info.frame->get_full_tm()[0]);
 						//g_d3d->Set
 						info.render_func();
 						//base::lmsg << "Invalid binder or technique";
@@ -222,9 +222,9 @@ namespace render
 
 				math::Vec3f		pos1, pos2;
 				if (pFrame1)
-					pos1 = pFrame1->getGlobalPosition();
+					pos1 = pFrame1->get_world_pos();
 				if (pFrame2)
-					pos2 = pFrame2->getGlobalPosition();
+					pos2 = pFrame2->get_world_pos();
 				float	fLengthSqr1			= math::lengthSquared<float, 3>(vCamPos - pos1),
 						fLengthSqr2			= math::lengthSquared<float, 3>(vCamPos - pos2);
 
@@ -263,7 +263,7 @@ namespace render
 
 				float fHalfLenght = math::length<float, 3>(max - min) / 2.0f;
 
-				math::Point3f centerGlobal = ri.frame->getFullTransform() * center;
+				math::Point3f centerGlobal = ri.frame->get_full_tm() * center;
 
 				if (!m_frustum.CubeInFrustum(centerGlobal[0], centerGlobal[1], centerGlobal[2], fHalfLenght))
 					return;
@@ -315,14 +315,14 @@ namespace render
 				//std::wstring wstr(str.begin(), str.end());
 				//getDefaultFont()->renderText(wstr, math::Rect(1, 29, 400, 400), 0xFFFFFFFF, true);
 
-				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(TheDevice::get().get_camera()->getPosition()));
+				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(TheDevice::get().get_camera()->get_pos()));
 
 				{
 					{
 						const math::camera_ptr& cam = *camera;
 						const math::Matrix44f& mView = cam->get_view_matrix();
 						const math::Matrix44f& mProj = cam->get_proj_matrix();
-						//return mProj*(mView*frame->getFullTransform());
+						//return mProj*(mView*frame->get_full_tm());
 						g_d3d->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&mView[0]);
 						g_d3d->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&mProj[0]);
 					}

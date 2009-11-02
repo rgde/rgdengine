@@ -36,7 +36,7 @@ namespace scene
 		if (!pCam)
 			return;
 
-		float distance	= math::length<float, 3>(pCam->getPosition() - m_frame->getGlobalPosition());
+		float distance	= math::length<float, 3>(pCam->get_pos() - m_frame->get_world_pos());
 
 		bool isCameraInside	= distance <= m_distance;
 

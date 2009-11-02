@@ -43,14 +43,14 @@ namespace io
 	class write_stream : public virtual base_stream
 	{
 	public:
-		virtual void writebuff(const byte* buff, unsigned size) = 0;
+		virtual void write(const byte* buff, unsigned size) = 0;
 		virtual ~write_stream(){}
     };
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 #define SUPPORT_SAVING_SIMPLE_TYPE(type) inline write_stream& operator << (write_stream& wf, type var) \
 										 {\
-										 	 wf.writebuff((const byte*)&var, sizeof(type));\
+										 	 wf.write((const byte*)&var, sizeof(type));\
 											 return wf;\
 										 }
 
@@ -81,11 +81,11 @@ namespace io
 	template<typename T>
 	inline write_stream& operator << (write_stream& wf, const std::list<T>& container)
 	{
-		typedef std::list<T>::const_iterator contIter;
+		typedef std::list<T>::const_iterator iter;
 
 		wf << (unsigned)container.size();
 
-		for (contIter it = container.begin(); it != container.end(); ++it)
+		for (iter it = container.begin(); it != container.end(); ++it)
 		{
 			wf << *it;
 		}
@@ -123,13 +123,13 @@ namespace io
 	template<typename T>
 	inline read_stream& operator >> (read_stream& rf, std::vector<T>& container)
 	{
-		typedef std::vector<T>::iterator contIter;
+		typedef std::vector<T>::iterator iter;
 
 		unsigned size = 0;
 		rf >> size;
 		container.resize(size);
 
-		for (contIter it = container.begin(); it != container.end(); ++it)
+		for (iter it = container.begin(); it != container.end(); ++it)
 		{
 			rf >> *it;
 		}
@@ -139,13 +139,13 @@ namespace io
 	template<typename T>
 	inline read_stream& operator >> (read_stream& rf, std::list<T>& container)
 	{
-		typedef std::list<T>::iterator contIter;
+		typedef std::list<T>::iterator iter;
 
 		unsigned size = 0;
 		rf >> size;
 		container.resize(size);
 
-		for (contIter it = container.begin(); it != container.end(); ++it)
+		for (iter it = container.begin(); it != container.end(); ++it)
 		{
 			rf >> *it;
 		}
@@ -164,18 +164,18 @@ namespace io
 
 	#pragma warning( disable : 4512 )
 
-	class IFile
+	class base_file
 	{
 	public:
-		bool isOpened()					const {return m_isOpened;}
+		bool is_open()					const {return m_isOpened;}
 		bool is_valid()					const {return m_isValid;}
-		bool isHasError()				const {return m_isError;}
-		const Path& GetPath()			const {return m_path;}
+		bool has_errors()				const {return m_isError;}
+		const Path& get_path()			const {return m_path;}
 		const std::string& get_name()	const {return m_name;}
 
 		bool open(const std::string& name, Path path = Path());
 
-		virtual ~IFile(){}
+		virtual ~base_file(){}
 
 	protected:
 		virtual bool do_open_file(const std::string& name, const Path& path) = 0;
@@ -189,16 +189,16 @@ namespace io
 		Path		m_path;		
 	};
 
-	class CWriteFileStream : public IFile, public write_stream, boost::noncopyable
+	class write_file : public base_file, public write_stream, boost::noncopyable
 	{
 	public:
-		CWriteFileStream();
-		CWriteFileStream(const std::string& file_name);
-		virtual ~CWriteFileStream();
+		write_file();
+		write_file(const std::string& file_name);
+		virtual ~write_file();
 
-		virtual bool is_valid() const {return IFile::is_valid();}
+		virtual bool is_valid() const {return base_file::is_valid();}
 
-		virtual void writebuff(const byte* buff, unsigned size);
+		virtual void write(const byte* buff, unsigned size);
 
 	protected:
 		virtual bool do_open_file(const std::string& file_name, const Path& path);
@@ -210,15 +210,15 @@ namespace io
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 
-	class read_file_stream 
-		: public IFile, public read_stream, boost::noncopyable
+	class read_file 
+		: public base_file, public read_stream, boost::noncopyable
 	{
 	public:
-		read_file_stream();
-		read_file_stream(const std::string& file_name);
-		virtual ~read_file_stream();
+		read_file();
+		read_file(const std::string& file_name);
+		virtual ~read_file();
 
-		virtual bool is_valid() const {return IFile::is_valid();}
+		virtual bool is_valid() const {return base_file::is_valid();}
 		virtual void read(byte* buff, unsigned size);
 
 		virtual unsigned long get_size() const;

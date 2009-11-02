@@ -210,7 +210,7 @@ protected:
 	{
 		//io::ReadFile in( 
 		//	io::helpers::createFullFilePathA(L"Media/particles/particles_serialization.dat").c_str() );
-		//if (!in.isOpened())
+		//if (!in.is_open())
 		//{
 			initParticles();
 			//saveParticles();
@@ -227,7 +227,7 @@ protected:
 	//-----------------------------------------------------------------------------------
 	void saveParticles()
 	{
-		//io::CWriteFileStream out( 
+		//io::write_file out( 
 		//	io::helpers::createFullFilePathA(L"Media/particles/particles_serialization.dat").c_str() );
 		//out << *m_pEffect;
 	}

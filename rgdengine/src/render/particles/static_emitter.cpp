@@ -143,8 +143,8 @@ namespace particles{
 		
 			{
 				std::string str = "Media/" + m_Name;
-				io::read_file_stream pfxFile(str);
-				if(pfxFile.isOpened())
+				io::read_file pfxFile(str);
+				if(pfxFile.is_open())
 				{
 					if (!fseq.Load(pfxFile))
 					{
@@ -196,7 +196,7 @@ namespace particles{
 		m_bIntense = intense;
 	}
 	//-----------------------------------------------------------------------------------
-	void static_emitter::setTexture(std::string tex)
+	void static_emitter::set_texture(std::string tex)
 	{
 		if ( tex.length() != 0 )
 		{
@@ -225,7 +225,7 @@ namespace particles{
 		PTanks& psyst = it->second;
 		assert( frame_num < psyst.size() );
 
-		math::Matrix44f m = m_Transform.getFullTransform();
+		math::Matrix44f m = m_Transform.get_full_tm();
 
 		render::Line3dManager& line_manager = render::TheLine3dManager::get();
 

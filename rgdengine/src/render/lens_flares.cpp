@@ -109,7 +109,7 @@ namespace render
 
 		math::Matrix44f projView= camera->get_proj_matrix() * camera->get_view_matrix();
 
-		math::Vec3f framePos3	= m_frame->getGlobalPosition();
+		math::Vec3f framePos3	= m_frame->get_world_pos();
 		math::Vec4f framePos4	= math::Vec4f(framePos3[0], framePos3[1], framePos3[2], 1.0f);
 		math::Vec4f lightPos4	= projView *framePos4;
 
@@ -125,7 +125,7 @@ namespace render
 		float angle				= math::Math::aCos(math::dot(toLightVector, math::Vec2f(1.0f, 0.0f)));
 
 		/*
-					math::Vec3f toLightVector3 = framePos3 - camera->getPosition();
+					math::Vec3f toLightVector3 = framePos3 - camera->get_pos();
 					math::normalize(toLightVector3);
 					math::Matrix44f mat = camera->get_view_matrix();
 					math::Vec3f at = math::Vec3f(mat.mData[0], mat.mData[4], mat.mData[8]);

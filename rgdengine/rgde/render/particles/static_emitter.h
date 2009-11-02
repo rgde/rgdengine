@@ -67,7 +67,7 @@ namespace particles{
 		inline bool	getIntense()	const	{return m_bIntense;}
 
 		inline std::string getTextureName() const {return m_texture_name;}
-		void setTexture(std::string tex);
+		void set_texture(std::string tex);
 
 	protected:
 		void loadTexture();

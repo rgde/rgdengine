@@ -16,7 +16,7 @@ namespace math
 
         //posotion
         void set_position(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);
-        void getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt);
+        void get_pos(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt);
 
         //moving
         void goForward(float delta);

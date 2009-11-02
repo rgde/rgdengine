@@ -6,7 +6,7 @@
 // description: binder class. See class description.
 // example of use:
 //
-// texture_ptr getTexture(int n)
+// texture_ptr get_texture(int n)
 // {
 //    texture_ptr textures[3];
 //    return textures[n];
@@ -29,7 +29,7 @@
 //    //Functor parameter. binder calls taken getter with taken int
 //    //parameter and setups result to effect.
 //    binder->addParameter<texture_ptr>(CBinder::Types<texture_ptr>::getter(
-//                                           boost::bind(&getTexture, _1)),
+//                                           boost::bind(&get_texture, _1)),
 //                                           "TEXTURE_PARAMETER");
 //
 //    SSome some;
@@ -48,7 +48,7 @@
 //    binder->addParameter<int>(1, "NUM_LIGHTS");
 //
 //    binder->setupParameter(2);//i.e.:
-//    //pEffect->getParams()["TEXTURE_PARAMETER"]->set(getTexture(2));
+//    //pEffect->getParams()["TEXTURE_PARAMETER"]->set(get_texture(2));
 //    //pEffect->getParams()["COLOR_PARAMETER"]->set(some.getColor());
 //    //pEffect->getParams()["NUM_LIGHTS"]->set(1);
 //    //Biner has a number of advantages. It's more stable.

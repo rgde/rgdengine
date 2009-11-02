@@ -22,7 +22,7 @@ namespace math
         void  goTo(float position);
         void  goForward(float delta);
         void  goBackward(float delta) {goForward(-delta);}
-        float getPosition() {return m_fPosition;}
+        float get_pos() {return m_fPosition;}
 
         void activate();
 
