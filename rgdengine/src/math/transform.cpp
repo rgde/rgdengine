@@ -102,7 +102,7 @@ namespace math
 	const Matrix44f & frame::get_local_tm() const
 	{
 		computeLocalTransform();
-		return m_localTransform;
+		return m_local_tm;
 	}
 
 	const Matrix44f & frame::get_full_tm() const
@@ -140,7 +140,7 @@ namespace math
 		math::Matrix44f scale;
 		math::setScale(scale, m_scale);
 
-		m_localTransform = translate * rotation * scale;
+		m_local_tm = translate * rotation * scale;
 
 		m_bIsNeedRecompute = false;
 		m_bNeedRecomputeGlobalMatrix = true;
@@ -157,9 +157,9 @@ namespace math
 		computeLocalTransform();
 
 		if (get_parent())
-			m_fullTransform = get_parent()->get_full_tm() * m_localTransform;
+			m_fullTransform = get_parent()->get_full_tm() * m_local_tm;
 		else
-			m_fullTransform = m_localTransform;
+			m_fullTransform = m_local_tm;
 
 		m_bNeedRecomputeGlobalMatrix = false;
 	}
@@ -183,19 +183,19 @@ namespace math
 	Vec3f frame::getUp() const 
 	{
 		computeLocalTransform();
-		const Matrix44f &m= m_localTransform;
+		const Matrix44f &m= m_local_tm;
 		return Vec3f(m[1][0], m[1][1], m[1][2]);
 	}
 	Vec3f frame::getAt() const 
 	{
 		computeLocalTransform();
-		const Matrix44f &m= m_localTransform;
+		const Matrix44f &m= m_local_tm;
 		return Vec3f(m[2][0], m[2][1], m[2][2]);
 	}
 	Vec3f frame::getLeft() const 
 	{
 		computeLocalTransform();
-		const Matrix44f &m= m_localTransform;
+		const Matrix44f &m= m_local_tm;
 		return Vec3f(m[0][0], m[0][1], m[0][2]);
 	}
 

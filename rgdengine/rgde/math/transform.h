@@ -71,7 +71,7 @@ namespace math
 		mutable bool			m_bIsNeedRecompute;
 		mutable bool			m_bNeedRecomputeGlobalMatrix;
 
-		mutable Matrix44f		m_localTransform;
+		mutable Matrix44f		m_local_tm;
 		mutable Matrix44f		m_fullTransform;
 	};
 	

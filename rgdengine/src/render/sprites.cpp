@@ -42,7 +42,7 @@ namespace render
 
 		m_bAditive = false;
 
-		m_effect = effect::create("sprite_manager.fx");
+		m_effect = effect::create("SpriteManager.fx");
 		m_renderInfo.render_func = boost::bind(&sprite_manager::render, this);
 	}
 
@@ -50,15 +50,15 @@ namespace render
 	{
 	}
 
-	void sprite_manager::addSprite(const sprite &pSprite)
+	void sprite_manager::addSprite(const sprite &s)
 	{
 		m_bUpdated = false;
-		m_sprites.push_back(pSprite);
+		m_sprites.push_back(s);
 	}
 
-	bool sortPred (const sprite& pSprite1, sprite& pSprite2)
+	bool sortPred (const sprite& s1, sprite& s2)
 	{
-		return (pSprite1.uPriority < pSprite2.uPriority);
+		return (s1.uPriority < s2.uPriority);
 	}
 
 	inline math::Vec2f rotatePos(float x, float y, float sina, float cosa)
