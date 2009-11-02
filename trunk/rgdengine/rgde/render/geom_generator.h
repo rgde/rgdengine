@@ -8,7 +8,7 @@ namespace render
 	class Generator
 	{
 	public:
-		typedef TIndexedGeometry<Vertex, Use32Indexes> TGeometry;
+		typedef indexed_geometry<Vertex, Use32Indexes> TGeometry;
 		typedef boost::shared_ptr<TGeometry> PGeometry;
 		
 		static void GenerateGrid(PGeometry pGeometry, int nXResolution, int nZResolution,

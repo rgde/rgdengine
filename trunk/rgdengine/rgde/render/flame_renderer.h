@@ -6,14 +6,14 @@
 namespace particles
 {
 	class renderer;
-	typedef boost::shared_ptr<class renderer> PPTank;
+	typedef boost::shared_ptr<class renderer> renderer_ptr;
 }
 
 namespace render
 {
-	typedef boost::shared_ptr<class FlameRenderer> PFlameRenderer;
+	typedef boost::shared_ptr<class flame_fx> PFlameRenderer;
 
-	class FlameRenderer : public rendererable, game::dynamic_object
+	class flame_fx : public rendererable, game::dynamic_object
 	{
 	public:
 		static PFlameRenderer create(const std::string& tex, const math::Color& color, 
@@ -25,7 +25,7 @@ namespace render
 		void  setFPS(float fFPS) {m_fFPS = fFPS;}
 
 	private:
-		FlameRenderer(const std::string& tex, const math::Color& color, const math::Vec3f& pos, 
+		flame_fx(const std::string& tex, const math::Color& color, const math::Vec3f& pos, 
 			const math::Vec2f& size, uint fps, const std::vector<math::frame_ptr>& vVector);
 
 		void readTNF(const std::string& file_name);
@@ -39,10 +39,10 @@ namespace render
 		int   m_nFrames;
 		int   m_nTotalColumns;
 		int   m_nTotalRows;
-		float m_fFPS;//Animation speed (in Frames Per Second)
+		float m_fFPS;//Animation speed (in frames_vector Per Second)
 		float m_fFramesToAdd;
 
-		particles::PPTank m_pTank;
+		particles::renderer_ptr m_pTank;
 		texture_ptr          m_pParticleTexture;
 	};
 }

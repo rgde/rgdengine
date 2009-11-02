@@ -53,11 +53,11 @@ namespace io
 		Path m_oldPath;
 	};
 
-	class ScopePathAdd
+	class path_add_scoped
 	{
 	public:
-		ScopePathAdd(const std::string& strNewPath);
-		~ScopePathAdd();
+		path_add_scoped(const std::string& strNewPath);
+		~path_add_scoped();
 
 	private:
 		Path m_oldPath;

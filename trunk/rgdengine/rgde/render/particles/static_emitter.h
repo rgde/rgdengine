@@ -27,11 +27,11 @@ namespace particles{
 
 		static const unsigned file_version = 1002;
 	public:
-		typedef std::vector<PPTank> PTanks;
+		typedef std::vector<renderer_ptr> PTanks;
 		typedef PTanks::iterator PTanksIter;
 
-		typedef std::map<std::string, PTanks> PFrames;
-		typedef PFrames::iterator PFramesIter;
+		typedef std::map<std::string, PTanks> frames_map;
+		typedef frames_map::iterator PFramesIter;
 
 		static void ClearCachedData(); 
 
@@ -81,7 +81,7 @@ namespace particles{
 		render::texture_ptr	m_texture;
 		PTanks*				m_Frames;
 		
-		static PFrames ms_PFrames;
+		static frames_map ms_PFrames;
 		static std::map<std::string, maya_structs::animation> m_FrSeq;
 
 		// state flags

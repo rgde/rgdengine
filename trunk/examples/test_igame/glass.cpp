@@ -144,7 +144,7 @@ namespace game
 
 	void Glass::renderSprites()
 	{
-		render::Sprite sprite;
+		render::sprite sprite;
 		sprite.color = 0xFFFFFFFF;
 		sprite.rect = math::Rect(0,0,1,1);
 		sprite.spin = 0;

@@ -19,15 +19,15 @@ namespace render
 		FillMode_OutOfRange = 0x7fffffff, /* force 32-bit size enum */
 	};
 
-	class Mesh;
+	class mesh;
 
-	class RenderManager
+	class render_manager
 	{
 		friend class rendererable;
 
 	protected:
-		RenderManager();
-		virtual ~RenderManager();
+		render_manager();
+		virtual ~render_manager();
 
 	public:
 		void clear();
@@ -42,7 +42,7 @@ namespace render
 		void setFillMode(FillMode mode)		{ m_nFillMode = mode; }
 		FillMode  getFillMode() const			{ return m_nFillMode; }
 
-		PEffect& getDefaultEffect();
+		effect_ptr& getDefaultEffect();
 		font_ptr&   getDefaultFont();
 		const Fog&    getDefaultFog()	const {return m_pDefaultFog;}
 
@@ -67,7 +67,7 @@ namespace render
 		bool                                   m_bLightingEnabled;
 		FillMode                               m_nFillMode;
 
-		PEffect                                m_pDefaultEffect;
+		effect_ptr                                m_pDefaultEffect;
 		font_ptr                                  m_pDefaultFont;
 		Fog                                   m_pDefaultFog;
 
@@ -80,17 +80,17 @@ namespace render
 		PStaticBinder                          m_pStaticBinder;
 	};
 
-	typedef base::singelton<RenderManager> TheRenderManager;
+	typedef base::singelton<render_manager> TheRenderManager;
 
 	struct SRenderableInfo
 	{
 		SRenderableInfo();
 
-		math::Frame*				 pFrame;
+		math::frame*				 pFrame;
 		PMaterial					 spMaterial;
 		boost::function<void (void)> pRenderFunc;
 		boost::function<void (void)> pDebugRenderFunc;
-		render::PEffect				 spShader;
+		render::effect_ptr				 spShader;
 		bool						 bHaveVolumes;
 		math::AABoxf				 bbox;
 		math::Spheref				 bsphere;

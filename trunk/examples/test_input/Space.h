@@ -4,7 +4,7 @@
 
 class Space
 {
-	struct ParticleSprite: public render::Sprite
+	struct ParticleSprite: public render::sprite
 	{
         void initParticle(render::texture_ptr &texture);
 		void initStar(render::texture_ptr &texture);
@@ -55,8 +55,8 @@ private:
 	render::texture_ptr       m_textureLazer;
 	render::texture_ptr       m_textureStars;
     render::texture_ptr       m_textureAlien;
-	render::Sprite        m_spriteShip;
-	render::Sprite        m_spriteLazer;
-	render::Sprite        m_spriteStars;
+	render::sprite        m_spriteShip;
+	render::sprite        m_spriteLazer;
+	render::sprite        m_spriteStars;
 	render::SpriteManager m_sprite_renderer;
 };

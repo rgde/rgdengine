@@ -5,44 +5,44 @@
 namespace math
 {
 
-    CTrackCamera::CTrackCamera(camera_ptr pCamera): m_fPosition(0)
+    path_camera::path_camera(camera_ptr pCamera): m_fPosition(0)
     {
         setCamera(pCamera);
-        base::lmsg << "CTrackCamera::CTrackCamera()";
+        base::lmsg << "path_camera::path_camera()";
     }
 
-    PTrackCamera CTrackCamera::create(camera_ptr pCamera)
+    path_camera_ptr path_camera::create(camera_ptr pCamera)
     {
-        return PTrackCamera(new CTrackCamera(pCamera));
+        return path_camera_ptr(new path_camera(pCamera));
     }
 
-    void CTrackCamera::goTo(float position)
+    void path_camera::goTo(float position)
     {
         m_fPosition = position;
         apply();
     }
 
-    void CTrackCamera::goForward(float delta)
+    void path_camera::goForward(float delta)
     {
         goTo(m_fPosition+delta);
     }
 
-    void CTrackCamera::activate()
+    void path_camera::activate()
     {
         apply();
     }
 
-    void CTrackCamera::apply()
+    void path_camera::apply()
     {
         if (m_fPosition < 0)
             m_fPosition = 0;
-        if (m_fPosition > m_cTrack.getTotalTime())
-            m_fPosition = m_cTrack.getTotalTime();
+        if (m_fPosition > m_path.getTotalTime())
+            m_fPosition = m_path.getTotalTime();
 
         if (m_pCamera)
         {
             try{
-                CTrack::Key key = m_cTrack.getKey(m_fPosition);
+                CTrack::Key key = m_path.getKey(m_fPosition);
                 //todo: возможно потребуется ортонормализация векторов [Dub]
                 m_pCamera->lookAt(key.m_vEyePt, key.m_vLookatPt, key.m_vUp);
                 m_pCamera->activate();

@@ -41,7 +41,7 @@ private:
 
     //->
     input::Mouse           m_mouse;
-    render::Sprite        m_cursor;
+    render::sprite        m_cursor;
 	render::SpriteManager m_sprite_renderer;
     //-<
 };

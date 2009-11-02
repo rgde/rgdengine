@@ -66,7 +66,7 @@ namespace render
 	{
 		TiXmlDocument fader;
 		{
-			io::ScopePathAdd p	("Faders/");
+			io::path_add_scoped p	("Faders/");
 			if (!base::load_xml(file_name, fader))
 			{
 				base::lerr << "Can't load fader \"" << file_name << "\".";
@@ -97,7 +97,7 @@ namespace render
 
 	void fader::render()
 	{
-		Sprite sprite;
+		sprite sprite;
 		sprite.color = m_color;
 		float fAlphaFactor	= 1.0f;
 

@@ -8,19 +8,19 @@ namespace scene
 	//public:
 	//	virtual ~ISceneManager(){}
 
-	//	virtual std::list<render::Mesh*> getObjectInsideVolume( ICollisionVolume* volume ) = 0;
+	//	virtual std::list<render::mesh*> getObjectInsideVolume( ICollisionVolume* volume ) = 0;
 
-	//	virtual ISceneVisitor* get_visitor()const = 0;
+	//	virtual base_visitor* get_visitor()const = 0;
 	//};
 
 	//typedef boost::shared_ptr<ISceneManager> scene_manager_ptr;
 
-	//class MeshVisitor: public ISceneVisitor
+	//class MeshVisitor: public base_visitor
 	//{
 	//private:
-	//	std::list<render::Mesh*>& m_Meshes;
+	//	std::list<render::mesh*>& m_Meshes;
 	//public:
-	//	MeshVisitor( std::list<render::Mesh*>& meshes ): m_Meshes( meshes )
+	//	MeshVisitor( std::list<render::mesh*>& meshes ): m_Meshes( meshes )
 	//	{
 	//	}
 
@@ -28,12 +28,12 @@ namespace scene
 	//	{
 	//	}
 
-	//	bool visit( math::Frame* )
+	//	bool visit( math::frame* )
 	//	{
 	//		return false;
 	//	}
 
-	//	bool visit( render::Mesh* mesh )
+	//	bool visit( render::mesh* mesh )
 	//	{
 	//		m_Meshes.push_back( mesh );
 	//		return true;
@@ -43,7 +43,7 @@ namespace scene
 	//class ListSceneManager: public ISceneManager
 	//{
 	//private:
-	//	std::list<render::Mesh*> m_Meshes;
+	//	std::list<render::mesh*> m_Meshes;
 	//	MeshVisitor* m_Visitor;
 	//public:
 	//	ListSceneManager()
@@ -55,12 +55,12 @@ namespace scene
 	//	{
 	//	}
 
-	//	ISceneVisitor* get_visitor()const
+	//	base_visitor* get_visitor()const
 	//	{
 	//		return m_Visitor;
 	//	}
 
-	//	std::list<render::Mesh*> getObjectInsideVolume( ICollisionVolume* volume )
+	//	std::list<render::mesh*> getObjectInsideVolume( ICollisionVolume* volume )
 	//	{
 	//		return m_Meshes;
 	//	}

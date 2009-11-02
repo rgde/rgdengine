@@ -64,7 +64,7 @@ namespace rgde
 
 							float spin = rangeRandom (0, math::TWO_PI);
 
-							render::Sprite sprite(pos, size, color, vTextures[i], spin, rect, priority);
+							render::sprite sprite(pos, size, color, vTextures[i], spin, rect, priority);
 							m_sprites.push_back(sprite);
 						}
 					}

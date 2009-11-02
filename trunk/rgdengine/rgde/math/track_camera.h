@@ -6,17 +6,17 @@
 
 namespace math
 {
-    typedef boost::shared_ptr<class CTrackCamera> PTrackCamera;
+    typedef boost::shared_ptr<class path_camera> path_camera_ptr;
 
     //контроллер камеры аля "камера летающая по некоторой траектории"
-    class CTrackCamera: public BaseCameraController
+    class path_camera: public base_camera_controller
     {
-        CTrackCamera(camera_ptr pCamera);
+        path_camera(camera_ptr pCamera);
 
     public:
-        static PTrackCamera create(camera_ptr pCamera);
+        static path_camera_ptr create(camera_ptr pCamera);
 
-        CTrack m_cTrack;
+        CTrack m_path;
 
         //управление
         void  goTo(float position);

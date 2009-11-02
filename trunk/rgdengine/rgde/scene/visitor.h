@@ -2,22 +2,21 @@
 
 namespace math
 {
-	class Frame;
+	class frame;
 }
 
 namespace render
 {
-	class Mesh;
+	class mesh;
 }
 
 namespace scene
 {
-
-	class ISceneVisitor //: public base::TVisitor<math::Frame>, 
-						//  public base::TVisitor<render::Mesh>
+	class base_visitor //: public base::TVisitor<math::frame>, 
+						//  public base::TVisitor<render::mesh>
 	{
 	public:
-		virtual bool visit(math::Frame* t) = 0;
-		virtual bool visit(render::Mesh* t) = 0;
+		virtual bool visit(math::frame* t) = 0;
+		virtual bool visit(render::mesh* t) = 0;
 	};
 }

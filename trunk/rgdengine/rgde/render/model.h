@@ -11,25 +11,25 @@
 namespace render 
 {
 
-	typedef boost::intrusive_ptr<class Model> model_ptr;
+	typedef boost::intrusive_ptr<class model> model_ptr;
 
-	class Model : public math::Frame, public game::dynamic_object
+	class model : public math::frame, public game::dynamic_object
 	{
 	public:
-		typedef std::map<int, PMaterial>				MaterialMap;
-		typedef std::vector<math::frame_ptr>				Frames;
-		typedef std::vector<mesh_ptr>						Meshes;
-		typedef std::vector<math::FrameAnimationController>	Controllers;
+		typedef std::map<int, PMaterial>				material_map;
+		typedef std::vector<math::frame_ptr>				frames_vector;
+		typedef std::vector<mesh_ptr>						meshes_vector;
+		typedef std::vector<math::frame_anim_controller>	contollers_vector;
 
 		static model_ptr create(const std::string& file_name);
-		~Model();
+		~model();
 		
-		inline MaterialMap&  getMaterials()		{return m_vMaterials;}
-		inline Frames&		 getFrames()		{return m_vFrames;}
-		inline Meshes&		 getMeshes()		{return m_vMeshes;}
-		inline Controllers&  getControllers()	{return m_vControllers;}
+		inline material_map&  getMaterials()		{return m_materials;}
+		inline frames_vector&		 getFrames()		{return m_frames;}
+		inline meshes_vector&		 getMeshes()		{return m_meshes;}
+		inline contollers_vector&  getControllers()	{return m_controllers;}
 
-		unsigned int getVertexNum()	const;
+		unsigned int get_num_verts()	const;
 		unsigned int getFaceNum()	const;
 
 		bool isVisible() const;
@@ -41,7 +41,7 @@ namespace render
 		void setLooped( bool );
 
 	protected:
-		Model();
+		model();
 
 		void clear( void );
 		void update( float dt );
@@ -51,10 +51,10 @@ namespace render
 		void load(const std::string& file_name);
 
 	protected:
-		MaterialMap		m_vMaterials;
-		Frames			m_vFrames;
-		Meshes			m_vMeshes;
-		Controllers		m_vControllers;
+		material_map		m_materials;
+		frames_vector		m_frames;
+		meshes_vector		m_meshes;
+		contollers_vector	m_controllers;
 
 		bool			m_is_visible;
         

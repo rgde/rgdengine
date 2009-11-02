@@ -24,7 +24,7 @@ namespace particles
 		m_renderInfo.pDebugRenderFunc	= boost::bind(&effect::debugDraw, this);
 		
 		// public properties:
-		//REGISTER_PROPERTY(Transform, math::Frame)
+		//REGISTER_PROPERTY(Transform, math::frame)
 	}
 	//-----------------------------------------------------------------------------------
 	effect::~effect()

@@ -39,7 +39,7 @@ namespace render
 	{
 		TiXmlDocument fog;
 		{
-			io::ScopePathAdd p	("Fogs/");
+			io::path_add_scoped p	("Fogs/");
 			if (!base::load_xml(file_name, fog))
 			{
 				base::lerr << "Can't load fog \"" << file_name << "\".";

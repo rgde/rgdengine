@@ -6,7 +6,7 @@ namespace render
 {
 	typedef boost::shared_ptr<class texture> texture_ptr;
 
-	typedef boost::shared_ptr<class effect> PEffect;
+	typedef boost::shared_ptr<class effect> effect_ptr;
 
 	class effect
 	{
@@ -115,13 +115,13 @@ namespace render
 		typedef std::map <std::string, IParameter*> Parameters;
 		typedef std::list <ITechnique*> Techniques;
 
-		friend PEffect;
+		friend effect_ptr;
 	protected:
 		virtual bool load(const std::string& file_name) = 0;
 	public:
 		virtual ~effect(){}
 
-		static PEffect create(const std::string& file_name);
+		static effect_ptr create(const std::string& file_name);
 		static void ClearAll();
 
 		///////////////////////////////////////////////////

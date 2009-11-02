@@ -10,23 +10,23 @@ using math::Color;
 
 namespace render
 {
-	Model::Model() : m_is_visible(true)
+	model::model() : m_is_visible(true)
 	{
 	}
 
-	Model::~Model()
+	model::~model()
 	{
 		clear();
 	}
 
-	void ReadNode(TiXmlElement *elem, math::Frame &rootFrame, Model &model);
-	Mesh::PGeometry ReadGeometry(const std::string& fNm);
+	void ReadNode(TiXmlElement *elem, math::frame &rootFrame, model &model);
+	mesh::PGeometry ReadGeometry(const std::string& fNm);
 
-	model_ptr Model::create(const std::string& file_name)
+	model_ptr model::create(const std::string& file_name)
 	{
 		//try
 		{
-			model_ptr pModel = new Model();
+			model_ptr pModel = new model();
 			pModel->load(file_name);
             pModel->setLooped(true);
 			pModel->play();
@@ -41,19 +41,19 @@ namespace render
 		return 	model_ptr();
 	}
 
-	void Model::load(const std::string& strModelName)
+	void model::load(const std::string& strModelName)
 	{
 		base::lmsg << "loading model: " << "\"" << strModelName << "\"";
 
 		io::CFileSystem &fs	= io::TheFileSystem::get();
 
-		io::ScopePathAdd p	("Models/" + strModelName + "/");
+		io::path_add_scoped p	("Models/" + strModelName + "/");
 		io::readstream_ptr in	= fs.find(strModelName + ".xml");
 
 		if (!in)
 		{
-			std::string error	= "Model::load: can't load file ";// + file_name;
-			base::lerr << "Model::load: can't load file: " << strModelName << ".xml";
+			std::string error	= "model::load: can't load file ";// + file_name;
+			base::lerr << "model::load: can't load file: " << strModelName << ".xml";
 			throw exception(error.c_str());
 		}
 
@@ -78,7 +78,7 @@ namespace render
 				tx->Attribute("id", &m_id);
 
 				std::string str	= tx->Attribute("file");
-				m_vMaterials[m_id] = Material::create(str);
+				m_materials[m_id] = material::create(str);
 			}
 		}
 		{
@@ -92,7 +92,7 @@ namespace render
 		updateTree();
 	}
 
-	void ReadNode(TiXmlElement *elem, math::Frame &rootFrame, Model &model)
+	void ReadNode(TiXmlElement *elem, math::frame &rootFrame, model &model)
 	{
 		if (elem->Attribute("name"))
 		{
@@ -142,7 +142,7 @@ namespace render
 
 		if (gm)
 		{
-			math::FrameAnimationController control;
+			math::frame_anim_controller control;
 			control.load(elem);
 
 			control.atachToFrame(&rootFrame);
@@ -163,7 +163,7 @@ namespace render
 
 		if (gm)
 		{
-			mesh_ptr pMesh(new Mesh);
+			mesh_ptr pMesh(new mesh);
 			std::string strMeshFile	= std::string(gm->Attribute("name")) + ".xml";
 
 			pMesh->load(strMeshFile);
@@ -238,108 +238,108 @@ namespace render
 		TiXmlNode *cd	= 0;
 		while (cd = elem->IterateChildren("node", cd))
 		{
-			math::frame_ptr child	= new math::Frame;
+			math::frame_ptr child	= new math::frame;
 			ReadNode(cd->ToElement(), *(child.get()), model);
 			rootFrame.add(child);
 			model.getFrames().push_back(child); // а это нафига??
 		};
 	}
 
-	Mesh::PGeometry ReadGeometry(std::string fNm)
+	mesh::PGeometry ReadGeometry(std::string fNm)
 	{
-		return Mesh::PGeometry();
+		return mesh::PGeometry();
 	}
 
-	unsigned int Model::getFaceNum() const
+	unsigned int model::getFaceNum() const
 	{
 		unsigned int ret= 0;
-		Meshes::const_iterator i;
-		for (i = m_vMeshes.begin(); i != m_vMeshes.end(); ++i)
+		meshes_vector::const_iterator i;
+		for (i = m_meshes.begin(); i != m_meshes.end(); ++i)
 			ret += (*i)->getNumPrimitives();
 		return ret;
 	}
 
-	unsigned int Model::getVertexNum() const
+	unsigned int model::get_num_verts() const
 	{
 		unsigned int ret= 0;
-		Meshes::const_iterator i;
-		for (i = m_vMeshes.begin(); i != m_vMeshes.end(); ++i)
-			ret += (*i)->getVertexNum();
+		meshes_vector::const_iterator i;
+		for (i = m_meshes.begin(); i != m_meshes.end(); ++i)
+			ret += (*i)->get_num_verts();
 		return ret;
 	}
 
-	void Model::clear( void )
+	void model::clear( void )
 	{
-		m_vMaterials.clear();
-		m_vFrames.clear();
-		Meshes::const_iterator i;
-		//for (Meshes::const_iterator i = m_vMeshes.begin(); i != m_vMeshes.end(); ++i)
+		m_materials.clear();
+		m_frames.clear();
+		meshes_vector::const_iterator i;
+		//for (meshes_vector::const_iterator i = m_meshes.begin(); i != m_meshes.end(); ++i)
 		//	(*i)->eject();
-		m_vMeshes.clear();
-		m_vControllers.clear();
+		m_meshes.clear();
+		m_controllers.clear();
 	};
 
-	void Model::update(float dt)
+	void model::update(float dt)
 	{
-		Controllers::iterator i;
-		for (i = m_vControllers.begin(); i != m_vControllers.end(); ++i)
+		contollers_vector::iterator i;
+		for (i = m_controllers.begin(); i != m_controllers.end(); ++i)
 			(*i).update(dt);
 	}
 
 	//Neonic: octree
-	void Model::updateTree( void )
+	void model::updateTree( void )
 	{
-		Meshes::const_iterator i;
-		for ( i = m_vMeshes.begin(); i != m_vMeshes.end(); ++i )
+		meshes_vector::const_iterator i;
+		for ( i = m_meshes.begin(); i != m_meshes.end(); ++i )
 			( *i )->updateTree();
 	};
 
-	void Model::play()
+	void model::play()
 	{
-		Controllers::iterator i;
-		for (i = m_vControllers.begin(); i != m_vControllers.end(); ++i)
+		contollers_vector::iterator i;
+		for (i = m_controllers.begin(); i != m_controllers.end(); ++i)
 			(*i).start();
 	}
 
-	void Model::stop()
+	void model::stop()
 	{
-		Controllers::iterator i;
-		for (i = m_vControllers.begin(); i != m_vControllers.end(); ++i)
+		contollers_vector::iterator i;
+		for (i = m_controllers.begin(); i != m_controllers.end(); ++i)
 			(*i).stop();
 	}
 
-	void Model::pause()
+	void model::pause()
 	{
-		Controllers::iterator i;
-		for (i = m_vControllers.begin(); i != m_vControllers.end(); ++i)
+		contollers_vector::iterator i;
+		for (i = m_controllers.begin(); i != m_controllers.end(); ++i)
 			(*i).pause();
 	}
 
-	void Model::setLooped(bool flag)
+	void model::setLooped(bool flag)
 	{
-		Controllers::iterator i;
-		for (i = m_vControllers.begin(); i != m_vControllers.end(); ++i)
+		contollers_vector::iterator i;
+		for (i = m_controllers.begin(); i != m_controllers.end(); ++i)
 			(*i).setLooped(flag);
 	}
 
-	bool Model::isVisible() const
+	bool model::isVisible() const
 	{
 		return m_is_visible;
 	}
 
-	void Model::setVisible(bool bVisible)
+	void model::setVisible(bool bVisible)
 	{
 		if (bVisible == m_is_visible)
 			return;
 
 		m_is_visible = bVisible;
 
-		size_t nNumMeshes	= m_vMeshes.size();
+		size_t nNumMeshes	= m_meshes.size();
 
 		for (size_t i = 0; i < nNumMeshes; i++)
 			if (m_is_visible)
-				m_vMeshes[i]->show();
+				m_meshes[i]->show();
 			else
-				m_vMeshes[i]->hide();
+				m_meshes[i]->hide();
 	}
 }

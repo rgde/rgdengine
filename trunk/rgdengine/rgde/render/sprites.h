@@ -11,9 +11,9 @@
 namespace render
 {
 	typedef boost::shared_ptr<class texture> texture_ptr;
-	typedef boost::shared_ptr<class effect> PEffect;
+	typedef boost::shared_ptr<class effect> effect_ptr;
 
-	struct Sprite
+	struct sprite
 	{
 		math::Rect rect;					///> Прямоугольник текстурных координат спрайта
 		math::Vec2f pos;					///> Позиция спрайта (в экранных координатах)
@@ -23,17 +23,17 @@ namespace render
 		render::texture_ptr texture;			///> Адрес текстуры
 		math::Color color;					///> Цвет
 
-		Sprite();
-		Sprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
+		sprite();
+		sprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
 			const math::Color& color_ = 0xffffffff,render::texture_ptr pTexture_ = render::texture_ptr(), 
 			float spin_ = 0, const math::Rect& rect_ = math::Rect(0, 0, 1, 1),			
 			unsigned long uPriority_ = 0 );
 	};
 
-	class SpriteManager : public IDeviceObject, public rendererable
+	class SpriteManager : public device_object, public rendererable
 	{
 	public:
-		typedef std::vector<Sprite> SpritesVector;
+		typedef std::vector<sprite> SpritesVector;
 		typedef SpritesVector::iterator SpritesIter;
 
 		SpriteManager(int priority = 0);
@@ -47,7 +47,7 @@ namespace render
 		inline math::Vec2f& getOrigin() { return m_vOrigin; }
 		inline void			setOrigin(math::Vec2f& vNewOrigin) { m_vOrigin = vNewOrigin; }
 
-		virtual void addSprite(const Sprite& pSprite);
+		virtual void addSprite(const sprite& pSprite);
 
 	protected:
 		void render();
@@ -62,9 +62,9 @@ namespace render
 		SpritesVector m_sprites;						// Спрайты
 		unsigned m_nSpritesRendered;				/// Число отрисованных в последний раз спрайтов
 
-		PEffect  m_effect;
+		effect_ptr  m_effect;
 
-		typedef TIndexedGeometry<vertex::PositionTransformedColoredTextured, false> Geometry;
+		typedef indexed_geometry<vertex::PositionTransformedColoredTextured, false> Geometry;
 		Geometry m_Geometry;						/// Геометрия
 
 		unsigned m_nReservedSize;					/// Число спрайтов, под которое зарезервированы буферы

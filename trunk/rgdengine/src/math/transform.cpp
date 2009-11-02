@@ -9,7 +9,7 @@
 
 namespace math
 {
-	Matrix44f Frame::makeTransformMatrix(const Point3f& pos, const Quatf& rot, const Vec3f& s)
+	Matrix44f frame::makeTransformMatrix(const Point3f& pos, const Quatf& rot, const Vec3f& s)
 	{
 		math::Matrix44f rotation;
 		math::setRot(rotation, rot);		
@@ -23,15 +23,15 @@ namespace math
 		return translate*rotation*scale;
 	}
 
-	Matrix44f Frame::makeTransformMatrix(const Point3f& pos, const EulerAngleXYZf& rot, const Vec3f& s)
+	Matrix44f frame::makeTransformMatrix(const Point3f& pos, const EulerAngleXYZf& rot, const Vec3f& s)
 	{
 		math::Quatf quat = math::make<Quatf, EulerAngleXYZf>(rot);
 		return makeTransformMatrix(pos, quat, s);
 	}
 
-	Frame::Frame()
+	frame::frame()
 		: m_bIsNeedRecompute(false),
-		  core::meta_node<Frame>("Frame"),
+		  core::meta_node<frame>("frame"),
 		  m_bNeedRecomputeGlobalMatrix(true),
 		  m_scale(1.0f,1.0f,1.0f)
 	{
@@ -40,11 +40,11 @@ namespace math
 		//property_owner::addProperty(new property<Quatf>(m_rotation, "Rotation", "Quaternion"));
 	}
 
-	Frame::~Frame()
+	frame::~frame()
 	{
 	}
 
-	void Frame::findFrames(const std::string& strTemplate, std::vector<frame_ptr>& container)
+	void frame::findFrames(const std::string& strTemplate, std::vector<frame_ptr>& container)
 	{
 		const std::string &strFrameName = get_name();
 
@@ -58,23 +58,23 @@ namespace math
 				container.push_back(this);
 		}
 
-		for (math::Frame::children_list::const_iterator it = get_children().begin(); it != get_children().end(); it++)
+		for (math::frame::children_list::const_iterator it = get_children().begin(); it != get_children().end(); it++)
 			(*it)->findFrames(strTemplate, container);
 	}
 
-	void Frame::setPosition(const Point3f& pos)
+	void frame::setPosition(const Point3f& pos)
 	{
 		m_position = pos;
 		m_bIsNeedRecompute = true;
 	}
 
-	void Frame::setRotation(const Quatf& quat)
+	void frame::setRotation(const Quatf& quat)
 	{
 		m_rotation = quat;
 		m_bIsNeedRecompute = true;
 	}
 
-	void Frame::lookAt(const Vec3f& vEyePt, const Vec3f& vLookatPt, const Vec3f& vUpVec)
+	void frame::lookAt(const Vec3f& vEyePt, const Vec3f& vLookatPt, const Vec3f& vUpVec)
 	{	
 		m_position = vEyePt;
 		const math::Vec3f& up = vUpVec;
@@ -93,25 +93,25 @@ namespace math
 		m_bIsNeedRecompute = true;
 	}
 
-	void Frame::setScale(const Vec3f& s)
+	void frame::setScale(const Vec3f& s)
 	{
 		m_scale = s;
 		m_bIsNeedRecompute = true;
 	}
 
-	const Matrix44f & Frame::getLocalTransform() const
+	const Matrix44f & frame::getLocalTransform() const
 	{
 		computeLocalTransform();
 		return m_localTransform;
 	}
 
-	const Matrix44f & Frame::getFullTransform() const
+	const Matrix44f & frame::getFullTransform() const
 	{
         computeFullTransform();
 		return m_fullTransform;
 	}
 
-	void Frame::debugDraw() const
+	void frame::debugDraw() const
 	{
 		const float l = 10.5f;
 		math::Point3f p = getGlobalPosition();
@@ -126,7 +126,7 @@ namespace math
 		line_manager.addLine( p, Z, math::Blue );
 	}
 
-	void Frame::computeLocalTransform() const
+	void frame::computeLocalTransform() const
 	{
 		if (!m_bIsNeedRecompute)
 			return;
@@ -146,7 +146,7 @@ namespace math
 		m_bNeedRecomputeGlobalMatrix = true;
 	}
 
-	void Frame::computeFullTransform() const 
+	void frame::computeFullTransform() const 
 	{
 		if (m_bIsNeedRecompute)
 			computeLocalTransform();
@@ -164,12 +164,12 @@ namespace math
 		m_bNeedRecomputeGlobalMatrix = false;
 	}
 
-	void Frame::on_parent_change()
+	void frame::on_parent_change()
 	{
 		m_bIsNeedRecompute = true;
 	}
 
-	Point3f Frame::getGlobalPosition() const 
+	Point3f frame::getGlobalPosition() const 
 	{
 		computeFullTransform();
 		const  Matrix44f &m	= m_fullTransform;
@@ -180,40 +180,40 @@ namespace math
 	//xaxis.x     yaxis.x     zaxis.x
 	//xaxis.y     yaxis.y     zaxis.y
 	//xaxis.z     yaxis.z     zaxis.z
-	Vec3f Frame::getUp() const 
+	Vec3f frame::getUp() const 
 	{
 		computeLocalTransform();
 		const Matrix44f &m= m_localTransform;
 		return Vec3f(m[1][0], m[1][1], m[1][2]);
 	}
-	Vec3f Frame::getAt() const 
+	Vec3f frame::getAt() const 
 	{
 		computeLocalTransform();
 		const Matrix44f &m= m_localTransform;
 		return Vec3f(m[2][0], m[2][1], m[2][2]);
 	}
-	Vec3f Frame::getLeft() const 
+	Vec3f frame::getLeft() const 
 	{
 		computeLocalTransform();
 		const Matrix44f &m= m_localTransform;
 		return Vec3f(m[0][0], m[0][1], m[0][2]);
 	}
 
-	Vec3f Frame::getUpGlobal() const
+	Vec3f frame::getUpGlobal() const
 	{
 		computeFullTransform();
 		Matrix44f &m = m_fullTransform;
 		return Vec3f(m[1][0], m[1][1], m[1][2]);
 	}
 
-	Vec3f Frame::getAtGlobal() const
+	Vec3f frame::getAtGlobal() const
 	{
 		computeFullTransform();
 		Matrix44f &m = m_fullTransform;
 		return Vec3f(m[2][0], m[2][1], m[2][2]);
 	}
 
-	Vec3f Frame::getLeftGlobal() const
+	Vec3f frame::getLeftGlobal() const
 	{
 		computeFullTransform();
 		Matrix44f &m = m_fullTransform;
@@ -221,14 +221,14 @@ namespace math
 	}
 
 	//Neonic: octree
-	void Frame::updateTree( bool NeedFullUpdate )
+	void frame::updateTree( bool NeedFullUpdate )
 	{
-		for (math::Frame::children_list::const_iterator it = get_children().begin(); it != get_children().end(); it++)
+		for (math::frame::children_list::const_iterator it = get_children().begin(); it != get_children().end(); it++)
 			(*it)->updateTree(NeedFullUpdate);
 	};
 
 	//-----------------------------------------------------------------------------------
-	void Frame::toStream(io::write_stream& wf) const
+	void frame::toStream(io::write_stream& wf) const
 	{
 		wf	<< m_scale
 			<< m_position
@@ -241,7 +241,7 @@ namespace math
 	}
 
 	//-----------------------------------------------------------------------------------
-	void Frame::fromStream(io::read_stream& rf)
+	void frame::fromStream(io::read_stream& rf)
 	{
 		rf	>> m_scale
 			>> m_position
@@ -255,18 +255,18 @@ namespace math
 
 		for(unsigned i = 0; i < nChildren; i++)
 		{
-			frame_ptr child = new Frame;
+			frame_ptr child = new frame;
 			child->fromStream( rf );
 			add( child );
 		}
 	}
 
-	std::ostream& operator<<(std::ostream& out, const math::Frame& f)
+	std::ostream& operator<<(std::ostream& out, const math::frame& f)
 	{
 		return out;
 	}
 
-	std::istream& operator>>(std::istream& in, math::Frame& f)
+	std::istream& operator>>(std::istream& in, math::frame& f)
 	{
 		return in;
 	}

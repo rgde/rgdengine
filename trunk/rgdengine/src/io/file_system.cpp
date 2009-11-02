@@ -128,14 +128,14 @@ namespace io
 	}
 
 
-	ScopePathAdd::ScopePathAdd(const std::string& strNewPath)
+	path_add_scoped::path_add_scoped(const std::string& strNewPath)
 		: m_oldPath(TheFileSystem::get().getRootDir())
 	{
 		std::string total_path	= m_oldPath.string() + "/" + strNewPath;
 		TheFileSystem::get().setRootDir(Path(total_path));
 	}
 
-	ScopePathAdd::~ScopePathAdd()
+	path_add_scoped::~path_add_scoped()
 	{
 		TheFileSystem::get().setRootDir(m_oldPath);
 	}

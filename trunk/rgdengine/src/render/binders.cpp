@@ -20,7 +20,7 @@
 namespace render
 {
 ///---------------------------------------------------------------------------\
-//|                              Dynamic Binder                               |
+//|                              Dynamic binder                               |
 //\---------------------------------------------------------------------------/
 	inline const math::camera_ptr& get_camera()
 	{
@@ -49,11 +49,11 @@ namespace render
 		return result;
 	}
 
-	void addMatrixParameters(const PDynamicBinder& binder)
+	void addMatrixParameters(const dynamic_binder_ptr& binder)
 	{
 		using namespace math;
 		using namespace boost;
-		typedef DynamicBinder::Types<Matrix44f>::getter
+		typedef dymamic_binder_ptr::Types<Matrix44f>::getter
 											GetMatrix44fFunction;
 
 		GetMatrix44fFunction getMatrixFunction;
@@ -67,47 +67,47 @@ namespace render
 		getMatrixFunction = bind(&makeWorldViewInvTranspMatrix, _1);
 		binder->addParameter<Matrix44f>(getMatrixFunction,
 										WorldViewITMatrixParamName);
-		getMatrixFunction = bind(&Frame::getFullTransform, _1);
+		getMatrixFunction = bind(&frame::getFullTransform, _1);
 		binder->addParameter<Matrix44f>(getMatrixFunction,
 										WorldMatrixParamName);
 	}
 
-	void addMaterialParameters(const PDynamicBinder& binder,
-							   const Material& mat)
+	void addMaterialParameters(const dynamic_binder_ptr& binder,
+							   const material& mat)
 	{
 		using namespace math;
 		using namespace boost;
-		typedef DynamicBinder::Types<math::Color>::ParamTypeGetFunction
+		typedef dymamic_binder_ptr::Types<math::Color>::ParamTypeGetFunction
 													ParamTypeGetColorFunction;
-		typedef DynamicBinder::Types<float>::getter GetFloatFunction;
+		typedef dymamic_binder_ptr::Types<float>::getter GetFloatFunction;
 
 		ParamTypeGetColorFunction getColorFunction;
 		GetFloatFunction          getFloatFunction;
 
-		getColorFunction = bind(&Material::getDiffuseColor, mat);
+		getColorFunction = bind(&material::getDiffuseColor, mat);
 		binder->addParameter<Color>(getColorFunction,
 									MaterialDiffuseColorParamName);
-		getColorFunction = bind(&Material::getAmbientColor, mat);
+		getColorFunction = bind(&material::getAmbientColor, mat);
 		binder->addParameter<Color>(getColorFunction,
 									MaterialAmbientColorParamName);
-		getColorFunction = bind(&Material::getSpecularColor, mat);
+		getColorFunction = bind(&material::getSpecularColor, mat);
 		binder->addParameter<Color>(getColorFunction,
 									MaterialSpecularColorParamName);
-		getColorFunction = bind(&Material::getEmissiveColor, mat);
+		getColorFunction = bind(&material::getEmissiveColor, mat);
 		binder->addParameter<Color>(getColorFunction,
 									MaterialEmissiveColorParamName);
-		getFloatFunction = bind(&Material::getSpecularPower, mat);
+		getFloatFunction = bind(&material::getSpecularPower, mat);
 		binder->addParameter<float>(getFloatFunction,
 									MaterialPowerValueParamName);
 	}
 
-	std::string addTextureMaps(const PDynamicBinder& binder,
-							   const Material& mat)
+	std::string addTextureMaps(const dynamic_binder_ptr& binder,
+							   const material& mat)
 	{
-		const Material::MaterialMaps& maps = mat.getMaterialMaps();
+		const material::MaterialMaps& maps = mat.getMaterialMaps();
 		std::string strTechName;
 
-		Material::MaterialMaps::const_iterator it;
+		material::MaterialMaps::const_iterator it;
 
 		for(it = maps.begin(); it != maps.end(); it++)
 			if(it->second.isTextureValid())
@@ -149,11 +149,11 @@ namespace render
 		return strTechName;
 	}
 
-	PDynamicBinder createDynamicBinder(const PEffect& pEffect,
-									   const Material& mat,
+	dynamic_binder_ptr createDynamicBinder(const effect_ptr& pEffect,
+									   const material& mat,
 									   std::string& techniqueName)
 	{
-		PDynamicBinder result = DynamicBinder::create(pEffect);
+		dynamic_binder_ptr result = dymamic_binder_ptr::create(pEffect);
 
 		if(result)
 		{
@@ -167,7 +167,7 @@ namespace render
 
 
 ///---------------------------------------------------------------------------\
-//|                              Static Binder                                |
+//|                              Static binder                                |
 //\---------------------------------------------------------------------------/
 	void addPixelVertexPipeParameters(const PStaticBinder& binder)
 	{
@@ -180,11 +180,11 @@ namespace render
 		GetIntFunction          getIntFunction;
 		ParamTypeGetFogFunction getFogFunction;
 
-		getIntFunction = bind(&RenderManager::getFillMode,
+		getIntFunction = bind(&render_manager::getFillMode,
 							  &TheRenderManager::get());
 		binder->addParameter<int>(getIntFunction,
 								  FillModeParamName);
-		getFogFunction = bind(&RenderManager::getCurrentFog,
+		getFogFunction = bind(&render_manager::getCurrentFog,
 							  &TheRenderManager::get());
 		binder->addParameter<Fog>(getFogFunction,
 								   FogParamName);
@@ -236,7 +236,7 @@ namespace render
 		//					  &TheLightManager::get());
 		//binder->addParameter<int>(getIntFunction, "LIGHTDIRNUM");
 
-		//getBoolFunction = bind(&RenderManager::isLightingEnabled,
+		//getBoolFunction = bind(&render_manager::isLightingEnabled,
 		//					   &TheRenderManager::get());
 		//binder->addParameter<bool>(getBoolFunction, "LIGHTING_ENABLED");
 
@@ -290,7 +290,7 @@ namespace render
 		binder->addParameter<Matrix44f>(getMatrixFunction, ViewITMatrixParamName);
 	}
 
-	PStaticBinder createStaticBinder(const PEffect& pEffect)
+	PStaticBinder createStaticBinder(const effect_ptr& pEffect)
 	{
 		PStaticBinder binder = StaticBinder::create(pEffect);
 

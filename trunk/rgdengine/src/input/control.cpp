@@ -7,7 +7,7 @@
 
 namespace input
 {
-    Control::Control(types::control eName, EType eType, Device &rDevice):
+    Control::Control(types::control eName, EType eType, device_dx9 &rDevice):
         m_device (rDevice),
         m_type   (eType),
         m_time   (0),

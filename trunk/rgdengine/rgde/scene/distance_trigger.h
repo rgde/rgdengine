@@ -9,7 +9,7 @@ position.
 
 namespace math
 {
-	typedef boost::intrusive_ptr<class Frame> frame_ptr;
+	typedef boost::intrusive_ptr<class frame> frame_ptr;
 }
 
 namespace scene

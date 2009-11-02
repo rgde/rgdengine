@@ -7,7 +7,7 @@ namespace math
     typedef boost::shared_ptr<class CFirstPersonCamera> PFirstPersonCamera;
 
     //контроллер камеры аля "камера в FPS"
-    class CFirstPersonCamera: public BaseCameraController
+    class CFirstPersonCamera: public base_camera_controller
     {
         CFirstPersonCamera(camera_ptr pCamera);
 
