@@ -8,7 +8,7 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class material> PMaterial;
+	typedef boost::shared_ptr<class material> material_ptr;
 
 	class material : public core::named_object//, game::dynamic_object
 	{
@@ -21,19 +21,19 @@ namespace render
 		class material_map
 		{
 		public:
-			enum EDefaultTexture
+			enum default_texture_type
 			{
 				Black            = 1,
 				White            = 2,
 				DefaultNormalMap = 3
 			};
 
-			material_map(EDefaultTexture defaultTexture = White);
+			material_map(default_texture_type defaultTexture = White);
 
-			const texture_ptr& getTexture() const { return m_texture; }
-			void setTexture(const texture_ptr& texure);
+			const texture_ptr& get_texture() const { return m_texture; }
+			void set_texture(const texture_ptr& texure);
 
-			//Returns true if texture was valid for the last call of setTexture
+			//Returns true if texture was valid for the last call of set_texture
 			bool isTextureValid() const { return m_bTextureIsValid; }
 
 			const math::Matrix44f& getMatrix() const { return m_matrix; }
@@ -67,13 +67,13 @@ namespace render
 
 		typedef std::map<std::string, material_map> MaterialMaps;
 
-		static PMaterial create(math::Color amb = math::Black,
+		static material_ptr create(math::Color amb = math::Black,
 				  math::Color diff = math::White,
 				  math::Color spec = math::Black,
 				  math::Color em = math::Black,
 				  float power = 1.0f);
 
-		static PMaterial create(const std::string& file_name);
+		static material_ptr create(const std::string& file_name);
 
 		virtual ~material();
 

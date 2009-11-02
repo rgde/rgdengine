@@ -56,8 +56,8 @@ namespace render
 
 	void base_light::setDirection(const math::Vec3f& direction)
 	{
-		math::Vec3f position= getPosition();
-		lookAt(position, position + direction, getUp());
+		math::Vec3f position= get_pos();
+		look_at(position, position + direction, getUp());
 	}
 
 	bool base_light::isEnabled() const

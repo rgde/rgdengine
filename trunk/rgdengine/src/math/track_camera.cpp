@@ -44,7 +44,7 @@ namespace math
             try{
                 CTrack::Key key = m_path.getKey(m_fPosition);
                 //todo: возможно потребуется ортонормализация векторов [Dub]
-                m_pCamera->lookAt(key.m_vEyePt, key.m_vLookatPt, key.m_vUp);
+                m_pCamera->look_at(key.m_vEyePt, key.m_vLookatPt, key.m_vUp);
                 m_pCamera->activate();
             }
             catch(...){}

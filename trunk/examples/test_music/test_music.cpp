@@ -110,7 +110,7 @@ TestMusic::TestMusic()
 	math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
 	math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
 
-	m_camera->lookAt(vEyePt, vLookatPt, vUpVec);
+	m_camera->look_at(vEyePt, vLookatPt, vUpVec);
 	m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 
 	init_input();

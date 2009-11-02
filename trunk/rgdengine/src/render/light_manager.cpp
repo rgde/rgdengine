@@ -181,7 +181,7 @@ namespace render
 
 	//	#define FILL_BASE_LIGHT_MEMBERS(light_data, pLight)   \
 	//	light_data.m_nType     = pLight->get_type();           \
-	//	light_data.m_position  = pLight->getGlobalPosition(); \
+	//	light_data.m_position  = pLight->get_world_pos(); \
 	//	light_data.m_direction = pLight->getAt(); 	          \
 	//	light_data.m_ambient   = pLight->getAmbient();        \
 	//	light_data.m_diffuse   = pLight->getDiffuse();        \

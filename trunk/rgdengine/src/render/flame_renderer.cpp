@@ -35,7 +35,7 @@ namespace render
 		for (; it != vVector.end(); it++)
 		{
 			particles::renderer::SParticle particle;
-			particle.pos = (*it)->getGlobalPosition() + pos;
+			particle.pos = (*it)->get_world_pos() + pos;
 			particle.size = size;
 			particle.spin = 0.0f;
 			particle.color = color.color;

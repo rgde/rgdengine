@@ -74,7 +74,7 @@ namespace particles{
 		}
 
 		inline int getSeed() const { return m_nMaxParticles; }
-		inline void setSeed(int seed) { m_iRndSeed = seed; }
+		inline void set_seed(int seed) { m_iRndSeed = seed; }
 
 		inline bool isVisible() const { return m_is_visible; }
 		inline void setVisible(bool visible) { m_is_visible = visible; }
@@ -134,7 +134,7 @@ namespace particles{
 
 		base_emitter* m_pParentEmitter;
 
-		math::UnitRandom2k  rnd;
+		math::unit_rand_2k  rnd;
 
 		int m_iRndSeed;
 

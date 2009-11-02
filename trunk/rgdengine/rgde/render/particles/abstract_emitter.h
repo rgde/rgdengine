@@ -70,7 +70,7 @@ public:
 
 
 protected:
-	math::UnitRandom2k	m_Rand;
+	math::unit_rand_2k	m_Rand;
 
 	processors_list	m_lProcessors;				// присоединенные процессоры частиц
 

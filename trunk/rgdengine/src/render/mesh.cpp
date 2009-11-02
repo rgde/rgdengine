@@ -43,7 +43,7 @@ namespace render
 			for (sub_meshes::iterator it = m_sub_meshes.begin(); it != m_sub_meshes.end(); ++it)
 			{
 				IndexedSubMeshInfo &minfo	= *it;
-				PMaterial m					= mlist[minfo.nMaterialIndex];
+				material_ptr m					= mlist[minfo.nMaterialIndex];
 
 				m_geometry->render(m_ePrimType, minfo.nBaseVertexIndex, minfo.nMinIndex, minfo.nNumVertices, minfo.nStartIndex, minfo.nPrimitiveCount);
 			}
@@ -90,13 +90,13 @@ namespace render
 	}
 
 	//Neonic: octree
-	void mesh::updateTree( bool NeedFullUpdate )
+	void mesh::update( bool NeedFullUpdate )
 	{
 		//if( !getRoot() )
 		//{
 		////	// calc global AABB from OOB
 		////	AABoxf global_aabb;
-		////	Matrix44f m = m_frame.get()->getFullTransform();
+		////	Matrix44f m = m_frame.get()->get_full_tm();
 		////	float	Xmax = m_renderInfo.bbox.getMax()[0],
 		////			Ymax = m_renderInfo.bbox.getMax()[1],
 		////			Zmax = m_renderInfo.bbox.getMax()[2],
@@ -114,7 +114,7 @@ namespace render
 		////	extendVolume(global_aabb,m*Point3f(Xmin,Ymin,Zmin));	// xyz
 
 		//	math::AABoxf global_aabb = m_renderInfo.bbox;
-		//	collision::calcAABB(getFullTransform(),global_aabb);
+		//	collision::calcAABB(get_full_tm(),global_aabb);
 		//	setAABB(global_aabb);
 		//	//Neonic: корректируем динамические меши в пространстве 
 		//	if(isDynamic())
@@ -125,13 +125,13 @@ namespace render
 		//if( NeedFullUpdate )
 		//{
 		//	math::AABoxf global_aabb = m_renderInfo.bbox;
-		//	collision::calcAABB(getFullTransform(),global_aabb);
+		//	collision::calcAABB(get_full_tm(),global_aabb);
 		//	setAABB(global_aabb);
 		//	scene::TheScene::get().inject(this);
 		//}
 		//else
 		//{
-		//	move(getGlobalPosition()+m_renderInfo.bsphere.getCenter());
+		//	move(get_world_pos()+m_renderInfo.bsphere.getCenter());
 		//}
 	};
 
@@ -150,7 +150,7 @@ namespace render
 		if (m_materials.size() > 0)
 			m_renderInfo.spMaterial = *m_materials.begin();
 		else
-			m_renderInfo.spMaterial = PMaterial();
+			m_renderInfo.spMaterial = material_ptr();
 
 		return m_renderInfo;
 	}

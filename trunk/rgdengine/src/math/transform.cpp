@@ -9,7 +9,7 @@
 
 namespace math
 {
-	Matrix44f frame::makeTransformMatrix(const Point3f& pos, const Quatf& rot, const Vec3f& s)
+	Matrix44f frame::make_transform(const Point3f& pos, const Quatf& rot, const Vec3f& s)
 	{
 		math::Matrix44f rotation;
 		math::setRot(rotation, rot);		
@@ -23,10 +23,10 @@ namespace math
 		return translate*rotation*scale;
 	}
 
-	Matrix44f frame::makeTransformMatrix(const Point3f& pos, const EulerAngleXYZf& rot, const Vec3f& s)
+	Matrix44f frame::make_transform(const Point3f& pos, const EulerAngleXYZf& rot, const Vec3f& s)
 	{
 		math::Quatf quat = math::make<Quatf, EulerAngleXYZf>(rot);
-		return makeTransformMatrix(pos, quat, s);
+		return make_transform(pos, quat, s);
 	}
 
 	frame::frame()
@@ -68,13 +68,13 @@ namespace math
 		m_bIsNeedRecompute = true;
 	}
 
-	void frame::setRotation(const Quatf& quat)
+	void frame::set_rot(const Quatf& quat)
 	{
 		m_rotation = quat;
 		m_bIsNeedRecompute = true;
 	}
 
-	void frame::lookAt(const Vec3f& vEyePt, const Vec3f& vLookatPt, const Vec3f& vUpVec)
+	void frame::look_at(const Vec3f& vEyePt, const Vec3f& vLookatPt, const Vec3f& vUpVec)
 	{	
 		m_position = vEyePt;
 		const math::Vec3f& up = vUpVec;
@@ -93,19 +93,19 @@ namespace math
 		m_bIsNeedRecompute = true;
 	}
 
-	void frame::setScale(const Vec3f& s)
+	void frame::set_scale(const Vec3f& s)
 	{
 		m_scale = s;
 		m_bIsNeedRecompute = true;
 	}
 
-	const Matrix44f & frame::getLocalTransform() const
+	const Matrix44f & frame::get_local_tm() const
 	{
 		computeLocalTransform();
 		return m_localTransform;
 	}
 
-	const Matrix44f & frame::getFullTransform() const
+	const Matrix44f & frame::get_full_tm() const
 	{
         computeFullTransform();
 		return m_fullTransform;
@@ -114,7 +114,7 @@ namespace math
 	void frame::debug_draw() const
 	{
 		const float l = 10.5f;
-		math::Point3f p = getGlobalPosition();
+		math::Point3f p = get_world_pos();
 
 		math::Point3f X = p + l * getLeftGlobal();
 		math::Point3f Y = p + l * getUpGlobal();
@@ -157,7 +157,7 @@ namespace math
 		computeLocalTransform();
 
 		if (get_parent())
-			m_fullTransform = get_parent()->getFullTransform() * m_localTransform;
+			m_fullTransform = get_parent()->get_full_tm() * m_localTransform;
 		else
 			m_fullTransform = m_localTransform;
 
@@ -169,7 +169,7 @@ namespace math
 		m_bIsNeedRecompute = true;
 	}
 
-	Point3f frame::getGlobalPosition() const 
+	Point3f frame::get_world_pos() const 
 	{
 		computeFullTransform();
 		const  Matrix44f &m	= m_fullTransform;
@@ -221,10 +221,10 @@ namespace math
 	}
 
 	//Neonic: octree
-	void frame::updateTree( bool NeedFullUpdate )
+	void frame::update( bool NeedFullUpdate )
 	{
 		for (math::frame::children_list::const_iterator it = get_children().begin(); it != get_children().end(); it++)
-			(*it)->updateTree(NeedFullUpdate);
+			(*it)->update(NeedFullUpdate);
 	};
 
 	//-----------------------------------------------------------------------------------

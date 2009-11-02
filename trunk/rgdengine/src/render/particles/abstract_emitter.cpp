@@ -85,7 +85,7 @@ namespace particles{
 			//}
 		}
 		
-		math::Matrix44f m = m_Transform.getFullTransform();
+		math::Matrix44f m = m_Transform.get_full_tm();
 
 		math::invert( m );
 		m_vPAcceleration = m_PAcceleration.getValue(m_fTimeNormalaized);

@@ -88,7 +88,7 @@ public:
 			boxes[i] = render::model::create("gems1");
 			scene::TheScene::get().get_root()->add(boxes[i]);
 			boxes[i]->set_position(math::Vec3f((i%15)-7.f,(i/15)-7.f,0));
-			boxes[i]->setScale(scale);
+			boxes[i]->set_scale(scale);
 			boxes[i]->setVisible(false);
 		}
 
@@ -98,7 +98,7 @@ public:
 		{
 			blocks[i] = render::model::create("gems1");
 			scene::TheScene::get().get_root()->add(blocks[i]);
-			blocks[i]->setScale(scale);
+			blocks[i]->set_scale(scale);
 			blocks[i]->set_position(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 			blocks[i]->setVisible(false);
 		}
@@ -213,7 +213,7 @@ protected:
 		render::model_ptr& model = m_models[stone.model_index]; // следить что бы не было выхода за пределы вектора
 		render::mesh_ptr& mesh = model->getMeshes()[0]; // мы знаем что у нас только 1 меш в модели. но нет проблем так сделать и для других вариантов
 		render::mesh::PGeometry geom = mesh->getGeometry();
-		render::PMaterial& material = mesh->getMaterials()[0];		
+		render::material_ptr& material = mesh->getMaterials()[0];		
 
 		//material->bind();
 	}

@@ -22,7 +22,7 @@ namespace render
 
 		typedef indexed_geometry<vertex::MeshVertex, false> Geometry;
 		typedef boost::shared_ptr<Geometry>					PGeometry;
-		typedef std::vector<PMaterial>						MaterialList;
+		typedef std::vector<material_ptr>						MaterialList;
 		typedef std::vector<IndexedSubMeshInfo>			sub_meshes;
 
 		mesh();
@@ -31,7 +31,7 @@ namespace render
 		void		  load(const std::string& file_name); // load from xml file
 
 		//Neonic: octree
-		void			updateTree( bool NeedFullUpdate =0 );
+		void			update( bool NeedFullUpdate =0 );
 
 		PGeometry	  getGeometry()				{return m_geometry;}
 		MaterialList& getMaterials()			{return m_materials;}
