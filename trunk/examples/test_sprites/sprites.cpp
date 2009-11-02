@@ -35,7 +35,7 @@ namespace rgde
 					m_cEsc += boost::bind(&sprite_example::onEsc, this);
 				}
 
-				m_font = render::IFont::create(12, L"Arial", render::IFont::Heavy);
+				m_font = render::base_font::create(12, L"Arial", render::base_font::Heavy);
 
 				std::vector<render::texture_ptr> vTextures;
 				vTextures.push_back(render::texture::create( "Sprites/test01.jpg" ));
@@ -79,7 +79,7 @@ namespace rgde
 			{
 				render::TheDevice::get().showFPS(m_font);
 
-				for (render::SpriteManager::SpritesIter it = m_sprites.begin(); it != m_sprites.end(); ++it)
+				for (render::sprite_manager::SpritesIter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 				{
 					it->spin += dt;
 					m_sprite_renderer.addSprite(*it);

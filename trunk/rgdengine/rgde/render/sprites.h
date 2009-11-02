@@ -30,14 +30,14 @@ namespace render
 			unsigned long uPriority_ = 0 );
 	};
 
-	class SpriteManager : public device_object, public rendererable
+	class sprite_manager : public device_object, public rendererable
 	{
 	public:
 		typedef std::vector<sprite> SpritesVector;
 		typedef SpritesVector::iterator SpritesIter;
 
-		SpriteManager(int priority = 0);
-		~SpriteManager();
+		sprite_manager(int priority = 0);
+		~sprite_manager();
 	
 		void setAditiveBlending(bool bAditive) { m_bAditive = bAditive; }
 
@@ -80,5 +80,5 @@ namespace render
 		std::vector<unsigned> m_vEqualPrioritiesN;	/// Число спрайтов в группах с одинаковыми приоритетами
 	};
 
-	typedef base::singelton<SpriteManager> TheSpriteManager;
+	typedef base::singelton<sprite_manager> TheSpriteManager;
 }

@@ -107,7 +107,7 @@ namespace render
 			{
 				math::Vec3f v;
 				base::read(v, pNode);
-				rootFrame.setPosition(v);
+				rootFrame.set_position(v);
 			}
 
 			//rotation
@@ -145,7 +145,7 @@ namespace render
 			math::frame_anim_controller control;
 			control.load(elem);
 
-			control.atachToFrame(&rootFrame);
+			control.atach(&rootFrame);
 			model.getControllers().push_back(control);
 
 			//Neonic: octree

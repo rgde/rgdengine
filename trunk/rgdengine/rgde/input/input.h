@@ -11,12 +11,12 @@ namespace input
 	{
 	public:
 		static Input& get  ();
-		static void Destroy ();
+		static void destroy ();
 
 		void init (input_impl*);
 
         // функции самой системы ввода
-        static bool SetMode (bool exclusive=false, bool foreground=true); //изменить режим работы устройств ввода
+        static bool set_mode (bool exclusive=false, bool foreground=true); //изменить режим работы устройств ввода
         static void LoadFromString (const std::string &sXml);      //загрузить раскладку
         static void LoadFromFile   (const std::string &sFileName); //загрузить раскладку
         static void update  ();                        //считать из буфера все события от устройств ввода
@@ -27,8 +27,8 @@ namespace input
         static device_dx9* get_device (types::device eDeviceName, int indx=0);
         static device_dx9* get_device (const std::wstring &sDeviceName, int indx=0);
         //есть ли такое устройство
-        static bool isDevicePresent (types::device eDeviceName, int indx=0);
-        static bool isDevicePresent (const std::wstring &sDeviceName, int indx=0);
+        static bool is_present (types::device eDeviceName, int indx=0);
+        static bool is_present (const std::wstring &sDeviceName, int indx=0);
 
 		static Control* GetControl(types::device device, int dev_index, types::control control);
 		static Control* GetControl(types::device device, types::control control)
@@ -37,10 +37,10 @@ namespace input
 		}
 
         // доступ к командам системы ввода
-        static void      addCommand       (const std::wstring &sCommandName); //добавить команду
-        static CommandPtr  getCommand       (const std::wstring &sCommandName); //получить команду
-        static bool      isCommandPresent (const std::wstring &sCommandName); //есть ли такая команда
-        static void      detachCommand    (CommandPtr pCommand);                //отвязать команду ото всех контролов
+        static void      add_command       (const std::wstring &command_name); //добавить команду
+        static command_ptr  getCommand       (const std::wstring &command_name); //получить команду
+        static bool      isCommandPresent (const std::wstring &command_name); //есть ли такая команда
+        static void      detach_command    (command_ptr pCommand);                //отвязать команду ото всех контролов
 
 	private:
 		Input();

@@ -24,7 +24,7 @@ namespace render
 			return Fog::None;
 	}
 
-	void Fog::loadFromXML(TiXmlElement *node)
+	void Fog::load_from_xml(TiXmlElement *node)
 	{
 		base::read(m_color, node, "color");
 
@@ -35,7 +35,7 @@ namespace render
 		m_fEnd = base::safe_read<float>(node, "end", 0.0f);
 	}
 
-	void Fog::loadFromXML(const std::string &file_name)
+	void Fog::load_from_xml(const std::string &file_name)
 	{
 		TiXmlDocument fog;
 		{
@@ -50,7 +50,7 @@ namespace render
 		TiXmlElement *root	= fog.FirstChildElement("fog");
 
 		if (0 != root)
-			loadFromXML(root);
+			load_from_xml(root);
 	}
 
 	void Fog::setMode(Type type)

@@ -15,8 +15,8 @@ namespace math
 		virtual ~base_camera_controller() {}
 
 		//управление камерой
-		void setCamera(camera_ptr cam)			{m_pCamera = cam;}
-		void resetCamera()					{m_pCamera = camera_ptr();}
+		void set_camera(camera_ptr cam)			{m_pCamera = cam;}
+		void resetCamera()						{m_pCamera = camera_ptr();}
 		const camera_ptr& get_camera()	const	{return m_pCamera;}
 		virtual void activate() = 0;
 

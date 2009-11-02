@@ -79,13 +79,13 @@ Space::Space (int nStars)
     m_speed = 0;
     m_bFirePrimaryWeapon = false;
 
-    m_font = render::IFont::create(12, L"Arial", render::IFont::Heavy);
+    m_font = render::base_font::create(12, L"Arial", render::base_font::Heavy);
 
     //кораблик
     m_textureShip = render::texture::create("TestInput/SpaceShip.png"); 
 
     m_spriteShip.texture = m_textureShip;
-    m_spriteShip.size = math::Vec2f(m_textureShip->getWidth(),m_textureShip->getHeight());
+    m_spriteShip.size = math::Vec2f(m_textureShip->get_width(),m_textureShip->get_height());
     m_spriteShip.pos = math::Vec2f(m_x,m_y);
     m_spriteShip.rect = math::Rect(0, 0, 1, 1);
     m_spriteShip.color = math::Color(255, 255, 255, 255);
@@ -116,7 +116,7 @@ Space::Space (int nStars)
     m_textureLazer = render::texture::create("TestInput/Lazer.png"); 
 
     m_spriteLazer.texture = m_textureLazer;
-    m_spriteLazer.size = math::Vec2f(m_textureLazer->getWidth()*2,m_textureLazer->getHeight());
+    m_spriteLazer.size = math::Vec2f(m_textureLazer->get_width()*2,m_textureLazer->get_height());
     m_spriteLazer.pos = math::Vec2f(m_x,m_y);
     m_spriteLazer.rect = math::Rect(0, 0, 1, 1);
     m_spriteLazer.color = math::Color(255, 255, 255, 255);
@@ -137,21 +137,21 @@ void Space::update (float dt)
         boost::bind(&Space::updateSprite, this, _1, dt));
 
     std::for_each(m_particles.begin(), m_particles.end(), 
-        boost::bind(&render::SpriteManager::addSprite, &m_sprite_renderer, _1));
+        boost::bind(&render::sprite_manager::addSprite, &m_sprite_renderer, _1));
 
     //stars
     std::for_each(m_stars.begin(), m_stars.end(), 
         boost::bind(&Space::updateStar, this, _1, dt));
 
     std::for_each(m_stars.begin(), m_stars.end(), 
-        boost::bind(&render::SpriteManager::addSprite, &m_sprite_renderer, _1));
+        boost::bind(&render::sprite_manager::addSprite, &m_sprite_renderer, _1));
 
     //aliens
     std::for_each(m_aliens.begin(), m_aliens.end(), 
         boost::bind(&Space::updateAlien, this, _1, dt));
 
     std::for_each(m_aliens.begin(), m_aliens.end(), 
-        boost::bind(&render::SpriteManager::addSprite, &m_sprite_renderer, _1));
+        boost::bind(&render::sprite_manager::addSprite, &m_sprite_renderer, _1));
 
     //primary weapon
     if (m_bFirePrimaryWeapon)
@@ -159,7 +159,7 @@ void Space::update (float dt)
         float x = int(m_x) - .5f;
         float y = int(m_y) - 34.5f;
 
-        float h = m_textureLazer->getHeight();
+        float h = m_textureLazer->get_height();
         for (; y>-h/2; y -= h)
         {
             m_spriteLazer.rect = math::Rect(0, math::rangeRandom(0,.2f), 1, 1-math::rangeRandom(0,.2f));

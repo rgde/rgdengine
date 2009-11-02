@@ -43,7 +43,7 @@ namespace render
 		void setEffect(effect_ptr spShader);
 
 	protected:
-		virtual const SRenderableInfo&	getRenderableInfo() const;
+		virtual const renderable_info&	getRenderableInfo() const;
 		void			render();
 
 	protected:

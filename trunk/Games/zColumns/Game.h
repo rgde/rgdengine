@@ -7,12 +7,12 @@ namespace zcollumns
 	public:
 		Game(){}
 
-		render::SpriteManager& getSpriteRenderer() {return m_sprite_renderer;}
+		render::sprite_manager& getSpriteRenderer() {return m_sprite_renderer;}
 
 	private:
 		void update(float dt){}
 
 	private:
-		render::SpriteManager m_sprite_renderer;
+		render::sprite_manager m_sprite_renderer;
 	};
 }

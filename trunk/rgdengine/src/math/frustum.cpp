@@ -63,11 +63,11 @@ namespace math
 	/////////////////////////////////// CALCULATE FRUSTUM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
 	void frustum::CalculateFrustum(const base_camera& pCam)
 	{    
-		//ModelViewerCamera* g_Camera	 = reinterpret_cast<ModelViewerCamera*>(dx::device_dx9::get()->get_curent_camera());
+		//ModelViewerCamera* g_Camera	 = reinterpret_cast<ModelViewerCamera*>(dx::device_dx9::get()->get_camera());
 		//D3DXMATRIX &mProj	= *g_Camera->GetProjMatrix();
 		//D3DXMATRIX &mView	= *g_Camera->GetViewMatrix();
-		math::Matrix44f mProj = pCam.getProjMatrix();
-		math::Matrix44f mView = pCam.getViewMatrix();
+		math::Matrix44f mProj = pCam.get_proj_matrix();
+		math::Matrix44f mView = pCam.get_view_matrix();
 
 		math::Matrix44f mclip = mProj*mView;
 		// Now we actually want to get the sides of the frustum.  To do this we take

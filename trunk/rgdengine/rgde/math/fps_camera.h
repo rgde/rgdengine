@@ -4,18 +4,18 @@
 
 namespace math
 {
-    typedef boost::shared_ptr<class CFirstPersonCamera> PFirstPersonCamera;
+    typedef boost::shared_ptr<class fps_camera> fps_camera_ptr;
 
     //контроллер камеры аля "камера в FPS"
-    class CFirstPersonCamera: public base_camera_controller
+    class fps_camera: public base_camera_controller
     {
-        CFirstPersonCamera(camera_ptr pCamera);
+        fps_camera(camera_ptr camera);
 
     public:
-        static PFirstPersonCamera create(camera_ptr pCamera);
+        static fps_camera_ptr create(camera_ptr camera);
 
         //положение
-        void setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);
+        void set_position(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);
         void getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt);
 
         //движение

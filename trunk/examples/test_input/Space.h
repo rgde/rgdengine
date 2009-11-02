@@ -58,5 +58,5 @@ private:
 	render::sprite        m_spriteShip;
 	render::sprite        m_spriteLazer;
 	render::sprite        m_spriteStars;
-	render::SpriteManager m_sprite_renderer;
+	render::sprite_manager m_sprite_renderer;
 };

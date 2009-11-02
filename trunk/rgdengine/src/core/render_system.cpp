@@ -34,7 +34,7 @@
 	#pragma comment (lib, "dxerr9.lib" )
 #endif
 
-LPDIRECT3DDEVICE9       g_pd3dDevice					= NULL;
+LPDIRECT3DDEVICE9       g_d3d					= NULL;
 LPDIRECT3DSURFACE9		g_pDefaultColorTarget			= NULL;
 LPDIRECT3DSURFACE9		g_pDefaultDepthStencilTarget	= NULL;
 D3DVIEWPORT9			g_DefaultViewport;
@@ -97,7 +97,7 @@ namespace core
 		// Releases all previously initialized objects
 		virtual ~CDXRenderDevice()
 		{
-			::render::TheDevice::destroy(); // here onLost calling
+			::render::TheDevice::destroy(); // here on_lost calling
 			::render::TheLine2dManager::destroy();
 			::render::TheLine3dManager::destroy();
 			::render::TheRenderManager::destroy();
@@ -116,7 +116,7 @@ namespace core
 		void onWindowResizeEvent(window_resize e) 
 		{
 			return;
-			::render::TheDevice::get().onLost();
+			::render::TheDevice::get().on_lost();
 
 			// do some device updates if needed
 			m_d3dpp.BackBufferWidth = e.width;
@@ -139,7 +139,7 @@ namespace core
 			g_DefaultViewport.MinZ	= 0.0f;
 			g_DefaultViewport.MaxZ	= 1.0f;
 
-			::render::TheDevice::get().onReset();
+			::render::TheDevice::get().on_reset();
 		}
 
 		virtual void save_screen(const std::wstring& file_name)
@@ -173,12 +173,12 @@ namespace core
 			m_is_first_frame = false;
 
 			//if (g_pDefaultColorTarget)
-			//	V(g_pd3dDevice->SetRenderTarget(0, g_pDefaultColorTarget));	// restore backbuffer as target
+			//	V(g_d3d->SetRenderTarget(0, g_pDefaultColorTarget));	// restore backbuffer as target
 			//if (g_pDefaultDepthStencilTarget)
-			//	V(g_pd3dDevice->SetDepthStencilSurface(g_pDefaultDepthStencilTarget));	// else restore default depth-stencil as target
+			//	V(g_d3d->SetDepthStencilSurface(g_pDefaultDepthStencilTarget));	// else restore default depth-stencil as target
 			//
 			//// set default viewport
-			//V(g_pd3dDevice->SetViewport(&g_DefaultViewport));
+			//V(g_d3d->SetViewport(&g_DefaultViewport));
 
 			// Clear the backbuffer
             math::Color color = render::TheDevice::get().getClearColor();
@@ -340,14 +340,14 @@ namespace core
 
 			for (unsigned i = 0; i < 4; ++i)
 			{
-				V(g_pd3dDevice->SetSamplerState(i, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR ));
-				V(g_pd3dDevice->SetSamplerState(i, D3DSAMP_MINFILTER, D3DTEXF_LINEAR ));
-				V(g_pd3dDevice->SetSamplerState(i, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR ));
+				V(g_d3d->SetSamplerState(i, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR ));
+				V(g_d3d->SetSamplerState(i, D3DSAMP_MINFILTER, D3DTEXF_LINEAR ));
+				V(g_d3d->SetSamplerState(i, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR ));
 			}
 
-			V(g_pd3dDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE ));
-			V(g_pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE ));
-			V(g_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE ));
+			V(g_d3d->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE ));
+			V(g_d3d->SetRenderState( D3DRS_LIGHTING, FALSE ));
+			V(g_d3d->SetRenderState( D3DRS_ZENABLE, TRUE ));
 		
 			// device_dx9 state would normally be set here
 			return;// S_OK;
@@ -466,7 +466,7 @@ namespace core
 			V(m_pd3dDevice->GetRenderTarget(0, &g_pDefaultColorTarget));
 			V(m_pd3dDevice->GetDepthStencilSurface(&g_pDefaultDepthStencilTarget));
 			
-			g_pd3dDevice = m_pd3dDevice;
+			g_d3d = m_pd3dDevice;
 
 			return true;
 		}

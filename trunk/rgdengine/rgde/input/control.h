@@ -9,31 +9,31 @@ namespace input
     {
     public:        
         //виды контролов
-        enum EType
+        enum type
         {
             Button,
             Axis
         };
 
-        Control(types::control name, EType type, device_dx9 &device);
+        Control(types::control name, type type, device_dx9 &device);
 
         types::control get_name () const {return m_name;}
-		EType    getType () const {return m_type;}
+		type    get_type () const {return m_type;}
 
         //добавить наблюдателя
-        void bind (CommandPtr command);
+        void bind (command_ptr command);
         void bind (const std::wstring &command_name);
 
         //удалить наблюдателя
-        void unbind (CommandPtr command);
+        void unbind (command_ptr command);
         void unbind (const std::wstring &command_name);
 
         //добавлен ли такой наблюдатель
-        bool isbind (CommandPtr command);
-        bool isbind (const std::wstring &command_name);
+        bool is_bind (command_ptr command);
+        bool is_bind (const std::wstring &command_name);
 
         //уведомить наблюдателей о своем изменении
-        void notifyAllObservers (); 
+        void notify_all (); 
 
 		bool getPress() const {return m_press;}
 
@@ -43,11 +43,11 @@ namespace input
 
     private:
         device_dx9          &m_device; //устройство, которому принадлежит контрол
-        EType            m_type;   //тип контрола
+        type            m_type;   //тип контрола
         types::control  m_name;   //'имя' контрола
 
-		typedef std::list<CommandPtr> CommandsList;
-		typedef CommandsList::iterator CommandsIter;
+		typedef std::list<command_ptr> CommandsList;
+		typedef CommandsList::iterator commands_iter;
 
 		//команды, к которой привязан контрол
         CommandsList m_commands;

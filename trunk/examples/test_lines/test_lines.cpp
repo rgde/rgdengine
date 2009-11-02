@@ -15,7 +15,7 @@ public:
 		spApp->add(core::task_ptr(new core::input_task(*spApp,0)));
 		spApp->add(core::task_ptr(new core::game_task(*spApp,2)));
 
-		m_pFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
+		m_pFont = render::base_font::create(20, L"Arial", render::base_font::Heavy);
 
 		m_camera = render::render_camera::create();
 
@@ -24,7 +24,7 @@ public:
 		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
 
 		m_camera->lookAt(vEyePt, vLookatPt, vUpVec);
-		m_camera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 
         {
             using namespace input;
@@ -35,7 +35,7 @@ public:
             m_cEsc += boost::bind(&HelloMessage::onEsc, this);
         }
 
-		render::TheCameraManager::get().addCamera(m_camera);
+		render::TheCameraManager::get().add_camera(m_camera);
 		
 		spApp->run();
 	}
@@ -58,7 +58,7 @@ protected:
 	render::camera_ptr                       m_camera;
 	lines_test::CTriangleManager          m_TrianglesManager;
 	boost::scoped_ptr<core::application> spApp;
-	input::KeyDown                       m_cEsc;
+	input::key_down                       m_cEsc;
 };
 
 // The application's entry point

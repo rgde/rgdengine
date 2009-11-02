@@ -5,7 +5,7 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class render_texture> PRenderTexture;
+	typedef boost::shared_ptr<class render_texture> render_texture_ptr;
 
 	struct viewport : math::Rect
  	{
@@ -24,13 +24,13 @@ namespace render
 
 		void activate();
 
-		void setDepthStencilTarget(const PRenderTexture& pTarget, float clearDepth);
-		void setColorTarget(const PRenderTexture& pTarget, const math::Color& clearColor);
+		void setDepthStencilTarget(const render_texture_ptr& pTarget, float clearDepth);
+		void setColorTarget(const render_texture_ptr& pTarget, const math::Color& clearColor);
 		
 		static camera_ptr render_camera::create();
 		static camera_ptr render_camera::create(uint priority, const viewport& viewport);
 
-		void	 setPriority(uint priority);
+		void	 set_priority(uint priority);
 		uint get_priority() const;
 
 	private:
@@ -40,8 +40,8 @@ namespace render
 		viewport		m_viewport;
 		math::Color		m_clear_color;
 		float			m_clear_depth;
-		PRenderTexture	m_pColorTarget;
-		PRenderTexture	m_pDepthStencilTarget;
+		render_texture_ptr	m_color_target;
+		render_texture_ptr	m_pDepthStencilTarget;
 		unsigned		m_priority;
 	};	
 }

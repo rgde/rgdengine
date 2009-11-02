@@ -14,7 +14,7 @@ namespace render
 	public:
 		typedef vertex::PositionColored Point;
 
-		void addLine( const math::Vec3f& vPoint1, const math::Vec3f& vPoint2, 
+		void add_line( const math::Vec3f& vPoint1, const math::Vec3f& vPoint2, 
 			const math::Color& color = 0xffffffff );
 		void addBox( const math::Matrix44f& m, const math::Vec3f& size,
 			const math::Color& color = 0xffffffff );

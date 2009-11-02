@@ -15,10 +15,10 @@ namespace input
        ~input_impl();
 
 	    //изменить режим работы устройств ввода
-        bool SetMode (bool exclusive=false, bool foreground=true);
+        bool set_mode (bool exclusive=false, bool foreground=true);
 
 		//проинициализировать систему ввода
-        bool Init    (HWND hWnd, bool exclusive=false, bool foreground=true);
+        bool init    (HWND hWnd, bool exclusive=false, bool foreground=true);
 
 		//загрузить/сохранить раскладку
         void Load(const std::string &sXml);                               
@@ -34,25 +34,25 @@ namespace input
         device_dx9* get_device(const std::wstring &sDeviceName, int indx=0);
 
         //есть ли такое устройство
-        bool isDevicePresent(types::device      eDeviceName, int indx=0) const;
-        bool isDevicePresent(const std::wstring &sDeviceName, int indx=0) const;
+        bool is_present(types::device      eDeviceName, int indx=0) const;
+        bool is_present(const std::wstring &sDeviceName, int indx=0) const;
 
 
         // доступ к командам системы ввода
 		//добавить команду
-        CommandPtr addCommand(const std::wstring &sCommandName);
+        command_ptr add_command(const std::wstring &command_name);
 		//получить команду
-        CommandPtr getCommand(const std::wstring &sCommandName);
+        command_ptr getCommand(const std::wstring &command_name);
 		//есть ли такая команда
-        bool isCommandPresent(const std::wstring &sCommandName) const;
+        bool isCommandPresent(const std::wstring &command_name) const;
 		//отвязать команду ото всех контролов
-        void detachCommand(CommandPtr pCommand);
+        void detach_command(command_ptr pCommand);
 
 	private:
 		input_impl (const input_impl&);
 		input_impl& operator= (const input_impl&);
 
-		bool initDXInput(HWND hWnd, bool exclusive, bool foreground);
+		bool init_dx_input(HWND hWnd, bool exclusive, bool foreground);
 		void doneDXInput();
 
 		//обработка клавиатурных событий
@@ -62,7 +62,7 @@ namespace input
 
     private:
         std::list<device_dx9*> m_devices;
-        std::list<CommandPtr> m_commands;
+        std::list<command_ptr> m_commands;
 		
 		//вспомогательные переменные для более быстрого доступа
         device_dx9*            keyboard; 

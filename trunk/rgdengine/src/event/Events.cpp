@@ -14,13 +14,13 @@ namespace event
 			~ListManagers() {}
 
 			//отписать данного получателя ото всех менеджеров
-			void unsubscribeAll (base_listener *pListener);
+			void unsubscribeAll (base_listener *listener);
 
 			//менеджер добавляет себя в общий список менеджеров
-			void addManager     (base_manager *pManager);
+			void add_manager     (base_manager *manager);
 
 			//менеджер удаляет себя из общего списка менеджеров
-			void delManager     (base_manager *pManager);
+			void remove_manager     (base_manager *manager);
 
 		private:
 			std::list<base_manager*> m_managers;
@@ -30,12 +30,12 @@ namespace event
 
 	base_manager::base_manager()
 	{
-		list_manager.addManager(this);
+		list_manager.add_manager(this);
 	}
 
 	base_manager::~base_manager()
 	{
-		list_manager.delManager(this);
+		list_manager.remove_manager(this);
 	}
 
 	base_listener::base_listener() 
@@ -57,29 +57,29 @@ namespace event
 	}
 
     //отписать данного получателя ото всех менеджеров
-    void ListManagers::unsubscribeAll(base_listener *pListener)
+    void ListManagers::unsubscribeAll(base_listener *listener)
     {
         std::list<base_manager*>::iterator i = m_managers.begin();
         while (i != m_managers.end())
         {
-            (*i)->unsubscribe(pListener);
+            (*i)->unsubscribe(listener);
             ++i;
         }
     }
 
     //менеджер добавляет себя в общий список менеджеров
-    void ListManagers::addManager (base_manager *pManager)
+    void ListManagers::add_manager (base_manager *manager)
     {
-        m_managers.push_back(pManager);
+        m_managers.push_back(manager);
     }
 
     //менеджер удаляет себя из общего списка менеджеров
-    void ListManagers::delManager (base_manager *pManager)
+    void ListManagers::remove_manager (base_manager *manager)
     {
         std::list<base_manager*>::iterator i = m_managers.begin();
         while (i != m_managers.end())
         {
-            if ((*i) == pManager)
+            if ((*i) == manager)
                 i = m_managers.erase(i);
             else
                 ++i;

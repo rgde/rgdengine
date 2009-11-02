@@ -2,49 +2,49 @@
 
 namespace ui
 {
-	class IControl : public core::named_object/*, 
+	class base_control : public core::named_object/*, 
 					 virtual public CPropertyOwner*/
 	{
 	public:
-		typedef std::list<IControl*> Children;
+		typedef std::list<base_control*> children_list;
 
-		virtual ~IControl(){}
+		virtual ~base_control(){}
 
 		virtual void onEvent(const Event& e) = 0;
 
 		virtual const math::Rect& getRect() = 0;
 		virtual void setRect(const math::Rect&) = 0;
 
-		/*virtual const Children& getChildren() = 0;
+		/*virtual const children_list& getChildren() = 0;
 
-		virtual void addChild(IControl*)  = 0;
-		virtual void removeChild(IControl*)  = 0;		*/
+		virtual void addChild(base_control*)  = 0;
+		virtual void removeChild(base_control*)  = 0;		*/
 	};
 
-	class IChildControl : public virtual IControl
+	class child_control : public virtual base_control
 	{
 	public:
-		virtual const IControl* getParent()  = 0;
+		virtual const base_control* getParent()  = 0;
 	};
 
-	class IButton : public virtual IChildControl
+	class base_button : public virtual child_control
 	{
 	public:
-		virtual const std::wstring& getText() = 0;
-		virtual void setText(const std::wstring&) = 0;
+		virtual const std::wstring& get_text() = 0;
+		virtual void set_text(const std::wstring&) = 0;
 	};
 
-	class ILabel : public IChildControl
+	class base_label : public child_control
 	{
 	public:
-		virtual const std::wstring& getText() = 0;
-		virtual void setText(const std::wstring&) = 0;
+		virtual const std::wstring& get_text() = 0;
+		virtual void set_text(const std::wstring&) = 0;
 	};
 
-	class IWindow : public virtual IControl
+	class base_window : public virtual base_control
 	{
 	public:
-		virtual const std::wstring& getCaption() = 0;
-		virtual void setCaption(const std::wstring&) = 0;
+		virtual const std::wstring& get_caption() = 0;
+		virtual void set_caption(const std::wstring&) = 0;
 	};
 }

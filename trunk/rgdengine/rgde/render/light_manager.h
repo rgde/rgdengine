@@ -91,7 +91,7 @@ namespace render
 
 	//	void readModelNames(const std::string& strConfigName =
 	//										"LightsModelsNames.xml");
-	//	const std::string& lightTypeToStr(base_light::EType eType);
+	//	const std::string& lightTypeToStr(base_light::type eType);
 
 	//private:
 	//	math::Color m_ambientColor;

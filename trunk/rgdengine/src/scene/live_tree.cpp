@@ -56,7 +56,7 @@ namespace live_tree
 			if(pObj->isEmpty())
 			{
 //				max = math::Point3f(min[0]+1,min[1]+1,min[2]+1);
-//				render::Line3dManager::get().addLine( min, max, color );
+//				render::Line3dManager::get().add_line( min, max, color );
 				// or
 				render::ThePoint3dManager::get().addPoint( min, color );
 				return;
@@ -97,22 +97,22 @@ namespace live_tree
 		render::Line3dManager& line_manager = render::TheLine3dManager::get();
 		// Добавляем линии
 		// up size
-		line_manager.addLine( SizeBox[0], SizeBox[1], color );
-		line_manager.addLine( SizeBox[1], SizeBox[2], color );
-		line_manager.addLine( SizeBox[2], SizeBox[3], color );
-		line_manager.addLine( SizeBox[3], SizeBox[0], color );
+		line_manager.add_line( SizeBox[0], SizeBox[1], color );
+		line_manager.add_line( SizeBox[1], SizeBox[2], color );
+		line_manager.add_line( SizeBox[2], SizeBox[3], color );
+		line_manager.add_line( SizeBox[3], SizeBox[0], color );
 
 		//bottom size
-		line_manager.addLine( SizeBox[0 + 4], SizeBox[1 + 4], color );
-		line_manager.addLine( SizeBox[1 + 4], SizeBox[2 + 4], color );
-		line_manager.addLine( SizeBox[2 + 4], SizeBox[3 + 4], color );
-		line_manager.addLine( SizeBox[3 + 4], SizeBox[0 + 4], color );
+		line_manager.add_line( SizeBox[0 + 4], SizeBox[1 + 4], color );
+		line_manager.add_line( SizeBox[1 + 4], SizeBox[2 + 4], color );
+		line_manager.add_line( SizeBox[2 + 4], SizeBox[3 + 4], color );
+		line_manager.add_line( SizeBox[3 + 4], SizeBox[0 + 4], color );
 
 		// connections between up and bottom
-		line_manager.addLine( SizeBox[0], SizeBox[0 + 4], color );
-		line_manager.addLine( SizeBox[1], SizeBox[1 + 4], color );
-		line_manager.addLine( SizeBox[2], SizeBox[2 + 4], color );
-		line_manager.addLine( SizeBox[3], SizeBox[3 + 4], color );
+		line_manager.add_line( SizeBox[0], SizeBox[0 + 4], color );
+		line_manager.add_line( SizeBox[1], SizeBox[1 + 4], color );
+		line_manager.add_line( SizeBox[2], SizeBox[2 + 4], color );
+		line_manager.add_line( SizeBox[3], SizeBox[3 + 4], color );
 	};
 
 

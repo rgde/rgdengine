@@ -46,17 +46,17 @@ namespace event
             return instance;
         }
 
-        //подписать pListener на получение событий в функтор func от отправителя pSender (если равен 0 - то от всех)
-        void subscribe (base_listener *pListener, boost::function<void(Event)> func, base_sender *pSender)
+        //подписать listener на получение событий в функтор func от отправителя pSender (если равен 0 - то от всех)
+        void subscribe (base_listener *listener, boost::function<void(Event)> func, base_sender *pSender)
         {
             subscription subs;
-            subs.m_pListener = pListener;
+            subs.m_pListener = listener;
             subs.m_func      = func;
             subs.m_pSender   = pSender;
             m_subscriptions.push_back(subs);
         }
 
-		//отписать pListener от получения всех событий типа Event
+		//отписать listener от получения всех событий типа Event
 		void unsubscribe (base_listener *listener)
 		{
 			SubscriptionsList::iterator i = m_subscriptions.begin();
@@ -69,7 +69,7 @@ namespace event
 			}
 		}
 
-        //отписать pListener от получения всех событий типа Event
+        //отписать listener от получения всех событий типа Event
         void unsubscribe (base_listener *listener, base_sender *sender)
         {
             SubscriptionsList::iterator i = m_subscriptions.begin();

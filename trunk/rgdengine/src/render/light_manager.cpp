@@ -111,7 +111,7 @@ namespace render
 
 	//void LightManager::addLight(const PLight& pLight)
 	//{
-	//	base_light::EType eType = pLight->getType();
+	//	base_light::type eType = pLight->get_type();
 
 	//	switch(eType)
 	//	{
@@ -148,7 +148,7 @@ namespace render
 	//		{
 	//			m_lights.erase(it1);
 	//			//m_models.erase(it2);
-	//			switch(pLight->getType())
+	//			switch(pLight->get_type())
 	//			{
 	//				case base_light::Point:
 	//					m_nPointLightsNum--;
@@ -180,7 +180,7 @@ namespace render
 	//	int i = 0;
 
 	//	#define FILL_BASE_LIGHT_MEMBERS(light_data, pLight)   \
-	//	light_data.m_nType     = pLight->getType();           \
+	//	light_data.m_nType     = pLight->get_type();           \
 	//	light_data.m_position  = pLight->getGlobalPosition(); \
 	//	light_data.m_direction = pLight->getAt(); 	          \
 	//	light_data.m_ambient   = pLight->getAmbient();        \
@@ -191,7 +191,7 @@ namespace render
 	//	for(it = m_lights.begin(); it != m_lights.end(); it++)
 	//		if(*it)
 	//			if((*it)->isEnabled())
-	//				if((*it)->getType() == base_light::Point)
+	//				if((*it)->get_type() == base_light::Point)
 	//				{
 	//					if(i >= MAX_NUM_ACTIVE_LIGHTS)
 	//						return;
@@ -216,7 +216,7 @@ namespace render
 	//	for(it = m_lights.begin(); it != m_lights.end(); it++)
 	//		if(*it)
 	//			if((*it)->isEnabled())
-	//				if((*it)->getType() == base_light::Spot)
+	//				if((*it)->get_type() == base_light::Spot)
 	//				{
 	//					if(i >= MAX_NUM_ACTIVE_LIGHTS)
 	//						return;
@@ -244,7 +244,7 @@ namespace render
 	//	for(it = m_lights.begin(); it != m_lights.end(); it++)
 	//		if(*it)
 	//			if((*it)->isEnabled())
-	//				if((*it)->getType() == base_light::Directional)
+	//				if((*it)->get_type() == base_light::Directional)
 	//				{
 	//					if(i >= MAX_NUM_ACTIVE_LIGHTS)
 	//						return;
@@ -295,7 +295,7 @@ namespace render
 	//	m_bModelNamesReaded = true;
 	//}
 
-	//const std::string& LightManager::lightTypeToStr(base_light::EType eType)
+	//const std::string& LightManager::lightTypeToStr(base_light::type eType)
 	//{
 	//	if(!m_bModelNamesReaded)
 	//		readModelNames();

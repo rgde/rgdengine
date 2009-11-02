@@ -63,8 +63,8 @@ namespace lines_test
 		render::Line3dManager& pLineManager = render::TheLine3dManager::get();
 
 		for( tPointsIter it = m_vPoints.begin(); it != (m_vPoints.end()-1); ++it )
-			pLineManager.addLine( it->get_pos(), (it+1)->get_pos(), m_Color.color );
+			pLineManager.add_line( it->get_pos(), (it+1)->get_pos(), m_Color.color );
 
-		pLineManager.addLine( (m_vPoints.end()-1)->get_pos(), m_vPoints.begin()->get_pos(), m_Color.color );
+		pLineManager.add_line( (m_vPoints.end()-1)->get_pos(), m_vPoints.begin()->get_pos(), m_Color.color );
 	}
 }

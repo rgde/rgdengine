@@ -82,13 +82,13 @@ namespace render
 
 	typedef base::singelton<render_manager> TheRenderManager;
 
-	struct SRenderableInfo
+	struct renderable_info
 	{
-		SRenderableInfo();
+		renderable_info();
 
-		math::frame*				 pFrame;
+		math::frame*				 frame;
 		PMaterial					 spMaterial;
-		boost::function<void (void)> pRenderFunc;
+		boost::function<void (void)> render_func;
 		boost::function<void (void)> pDebugRenderFunc;
 		render::effect_ptr				 spShader;
 		bool						 bHaveVolumes;
@@ -102,20 +102,20 @@ namespace render
 		rendererable(unsigned priority = 1);
 		virtual ~rendererable();
 
-		void			setPriority(unsigned priority) {m_nRenderPriority = priority;}
+		void			set_priority(unsigned priority) {m_nRenderPriority = priority;}
 		unsigned		get_priority() const {return m_nRenderPriority;}
 
-		void			hide() {m_bIsVisible = false;}
-		void			show() {m_bIsVisible = true;}
+		void			hide() {m_is_visible = false;}
+		void			show() {m_is_visible = true;}
 
-		virtual const SRenderableInfo& getRenderableInfo() const {return m_renderInfo;}
-		bool		isVisible()	const {return m_bIsVisible;}
+		virtual const renderable_info& getRenderableInfo() const {return m_renderInfo;}
+		bool		isVisible()	const {return m_is_visible;}
 
 	protected:
-		mutable SRenderableInfo	m_renderInfo;
+		mutable renderable_info	m_renderInfo;
 		
 	private:
-		bool	 m_bIsVisible;
+		bool	 m_is_visible;
 		unsigned m_nRenderPriority;
 	};
 }

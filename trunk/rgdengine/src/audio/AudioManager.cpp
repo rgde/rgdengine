@@ -60,14 +60,14 @@ namespace audio
 		// Create IDirectSound using the primary sound device
 		if (FAILED(hr = DirectSoundCreate8(NULL, &m_pDS, NULL)))
 		{
-			DXTRACE_ERR(TEXT("audio_manager::Init, DirectSoundCreate8"), hr);
+			DXTRACE_ERR(TEXT("audio_manager::init, DirectSoundCreate8"), hr);
 			return;
 		}
 
 		// Set DirectSound coop level 
 		if (FAILED(hr = m_pDS->SetCooperativeLevel(hWnd, DSSCL_PRIORITY)))
 		{
-			DXTRACE_ERR(TEXT("audio_manager::Init, SetCooperativeLevel"), hr);
+			DXTRACE_ERR(TEXT("audio_manager::init, SetCooperativeLevel"), hr);
 			return;
 		}
 
@@ -80,15 +80,15 @@ namespace audio
 
 		if (FAILED(hr = m_pDS->CreateSoundBuffer(&dsbdesc, &m_pDSBPrimary, NULL)))
 		{
-			DXTRACE_ERR(TEXT("audio_manager::Init, CreateSoundBuffer"), hr);
-			throw std::exception("audio_manager::Init, CreateSoundBuffer");
+			DXTRACE_ERR(TEXT("audio_manager::init, CreateSoundBuffer"), hr);
+			throw std::exception("audio_manager::init, CreateSoundBuffer");
 		}
 
 		if (FAILED(hr = m_pDSBPrimary->QueryInterface(IID_IDirectSound3DListener, 
 			(VOID**)&m_pDSListener)))
 		{
-			DXTRACE_ERR(TEXT("audio_manager::Init, QueryInterface"), hr );
-			throw std::exception("audio_manager::Init, QueryInterface");
+			DXTRACE_ERR(TEXT("audio_manager::init, QueryInterface"), hr );
+			throw std::exception("audio_manager::init, QueryInterface");
 		}
 
 		SetPrimaryBufferFormat(dwPrimaryChannels, dwPrimaryFreq, dwPrimaryBitRate);

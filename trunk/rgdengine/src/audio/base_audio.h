@@ -34,7 +34,7 @@ namespace audio
 
 			Type GetType() const;
 
-			void AddListener(audio::listener* pListener);
+			void AddListener(audio::listener* listener);
 			void Finish();
 
 		protected:
@@ -57,10 +57,10 @@ namespace audio
 			return m_type;
 		}
 
-		inline void base_audio::AddListener(audio::listener* pListener)
+		inline void base_audio::AddListener(audio::listener* listener)
 		{
-			if (pListener)
-				m_listeners.push_back(pListener);
+			if (listener)
+				m_listeners.push_back(listener);
 		}
 
 		inline void base_audio::Finish()

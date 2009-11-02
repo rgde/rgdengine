@@ -20,8 +20,8 @@ namespace particles
 	, m_bIsFading(false)
 	, core::meta_class("ParticleEffect")
 	{	
-		m_renderInfo.pRenderFunc		= boost::bind( &effect::render, this );
-		m_renderInfo.pDebugRenderFunc	= boost::bind(&effect::debugDraw, this);
+		m_renderInfo.render_func		= boost::bind( &effect::render, this );
+		m_renderInfo.pDebugRenderFunc	= boost::bind(&effect::debug_draw, this);
 		
 		// public properties:
 		//REGISTER_PROPERTY(Transform, math::frame)
@@ -87,11 +87,11 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void effect::debugDraw()
+	void effect::debug_draw()
 	{
-		m_Transform.debugDraw();
+		m_Transform.debug_draw();
 		for( tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it )
-			(*it)->debugDraw();
+			(*it)->debug_draw();
 	}
 	//-----------------------------------------------------------------------------------
 	void effect::toStream(io::write_stream& wf)
@@ -105,7 +105,7 @@ namespace particles
 			wf << *(*it);
 	}
 	//----------------------------------------------------------------------------------
-	render::SRenderableInfo& effect::getRenderableInfo()
+	render::renderable_info& effect::getRenderableInfo()
 	{
 		return m_renderInfo;		
 	}

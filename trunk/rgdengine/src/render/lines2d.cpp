@@ -15,7 +15,7 @@ namespace render
 		m_pVertices = &(m_Geometry.lock());
 		m_uPriority = uPriority;
 		m_effect = effect::create("Line3dManager.fx");
-		m_renderInfo.pRenderFunc = boost::bind(&Line2dManager::render, this);
+		m_renderInfo.render_func = boost::bind(&Line2dManager::render, this);
 	}
 	//-----------------------------------------------------------------------------------
 	void Line2dManager::render()
@@ -38,7 +38,7 @@ namespace render
 		m_pVertices->resize(0);
 	}
 	//-----------------------------------------------------------------------------------
-	void Line2dManager::addLine(const math::Vec2f &vPoint1, const math::Vec2f vPoint2, math::Color color)
+	void Line2dManager::add_line(const math::Vec2f &vPoint1, const math::Vec2f vPoint2, math::Color color)
 	{
 		math::Vec2f screenSize(800, 600); //virtual screen size
 		math::Vec2f vFrontBufferSize= render::TheDevice::get().getBackBufferSize();

@@ -5,7 +5,7 @@
 
 #include <d3dx9.h>
 
-extern LPDIRECT3DDEVICE9   g_pd3dDevice;
+extern LPDIRECT3DDEVICE9   g_d3d;
 extern 	LPDIRECT3DSURFACE9 g_pDefaultColorTarget;
 extern 	LPDIRECT3DSURFACE9 g_pDefaultDepthStencilTarget;
 extern  D3DVIEWPORT9	   g_DefaultViewport;
@@ -20,7 +20,7 @@ namespace render
 		  m_clear_color(0),
 		  m_clear_depth(1.0f)
 	{
-		//TheCameraManager::get().addCamera(this);
+		//TheCameraManager::get().add_camera(this);
 	}
 
 	render_camera::~render_camera()
@@ -42,34 +42,34 @@ namespace render
 		viewport.MaxZ	= 1.0f;
 
 		// !!! here we need to check viewport for non zero dimentions !!!
-		g_pd3dDevice->SetViewport(&viewport);
+		g_d3d->SetViewport(&viewport);
 
 		// If we already save backbuffer surface pointer
 		if (g_pDefaultColorTarget)
 		{
 			// If we have color target
-			if (m_pColorTarget)
+			if (m_color_target)
 			{
-				m_pColorTarget->activate();	// set it
+				m_color_target->activate();	// set it
 
 				// Set color clear flag
 				clearFlags |= D3DCLEAR_TARGET;
 			}
 			else
 			{
-				V(g_pd3dDevice->SetRenderTarget(0, g_pDefaultColorTarget));	// else restore backbuffer as target
+				V(g_d3d->SetRenderTarget(0, g_pDefaultColorTarget));	// else restore backbuffer as target
 			}
 		}
 		else
 		{
 			// if we will change color target
-			if (m_pColorTarget)
+			if (m_color_target)
 			{
 				// save backbuffer surface pointer
-				V(g_pd3dDevice->GetRenderTarget(0, &g_pDefaultColorTarget));
+				V(g_d3d->GetRenderTarget(0, &g_pDefaultColorTarget));
 
 				// set new color target
-				m_pColorTarget->activate();
+				m_color_target->activate();
 
 				// Set color clear flag
 				clearFlags |= D3DCLEAR_TARGET;
@@ -89,7 +89,7 @@ namespace render
 			}
 			else
 			{
-				V(g_pd3dDevice->SetDepthStencilSurface(g_pDefaultDepthStencilTarget));	// else restore default depth-stencil as target
+				V(g_d3d->SetDepthStencilSurface(g_pDefaultDepthStencilTarget));	// else restore default depth-stencil as target
 			}
 		}
 		else
@@ -98,7 +98,7 @@ namespace render
 			if (m_pDepthStencilTarget)
 			{
 				// save default depth-stencil surface pointer
-				V(g_pd3dDevice->GetDepthStencilSurface(&g_pDefaultDepthStencilTarget));
+				V(g_d3d->GetDepthStencilSurface(&g_pDefaultDepthStencilTarget));
 
 				// set new depth-stencil target
 				m_pDepthStencilTarget->activate();
@@ -109,24 +109,24 @@ namespace render
 		}
 
 		if (clearFlags)
-			V(g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_clear_color.color, m_clear_depth, 0));
+			V(g_d3d->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_clear_color.color, m_clear_depth, 0));
 	
 		base_camera::activate();
 	}
 
-	void render_camera::setDepthStencilTarget(const PRenderTexture& pTarget, float clearDepth)
+	void render_camera::setDepthStencilTarget(const render_texture_ptr& pTarget, float clearDepth)
 	{
 		m_pDepthStencilTarget	= pTarget;
 		m_clear_depth			= clearDepth;
 	}
 
-	void render_camera::setColorTarget(const PRenderTexture& pTarget, const math::Color&  clearColor)
+	void render_camera::setColorTarget(const render_texture_ptr& pTarget, const math::Color&  clearColor)
 	{
-		m_pColorTarget	= pTarget;
+		m_color_target	= pTarget;
 		m_clear_color	= clearColor;
 	}
 		
-	void render_camera::setPriority(unsigned priority)
+	void render_camera::set_priority(unsigned priority)
 	{
 		m_priority = priority;
 	}

@@ -6,25 +6,25 @@
 
 namespace math
 {
-	const Matrix44f  base_camera::getViewMatrix()	const 
+	const Matrix44f  base_camera::get_view_matrix()	const 
 	{
 		Matrix44f m = frame::getFullTransform();
 		math::invert(m);
 		return m;		
 	}
 
-	void base_camera::setProjection(float fFovy, float fAspect, float zn, float zf)
+	void base_camera::set_projection(float fovy, float aspect, float zn, float zf)
 	{
-		float hfov = fFovy/2;
+		float hfov = fovy/2;
 		float yScale = ::cos(hfov)/::sin(hfov);
-		float xScale = yScale / fAspect;
+		float xScale = yScale / aspect;
 
-		m_ProjMatrix.set(xScale,	0,			0,			0,
+		m_projection.set(xScale,	0,			0,			0,
 							0,		yScale,		0,			0, 
 							0,		0,		zf/(zf-zn),		1,
 							0,		0,		-zn*zf/(zf-zn), 0);
 
-		gmtl::transpose(m_ProjMatrix);
+		gmtl::transpose(m_projection);
 
 		//Neonic: octree
 		//setRadius(zn);

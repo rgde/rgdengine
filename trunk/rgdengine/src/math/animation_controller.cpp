@@ -5,9 +5,9 @@
 
 namespace math
 {
-	frame_anim_controller::frame_anim_controller( TiXmlNode* pXmlNode, frame_ptr spFrame)
+	frame_anim_controller::frame_anim_controller( TiXmlNode* pXmlNode, frame_ptr frame)
 	{
-		m_bPaused = false;
+		m_paused = false;
 		m_bPlaying = false;
 		m_bLooped = false;
 
@@ -16,11 +16,11 @@ namespace math
 			load( pXmlNode );
 		}
 
-		m_spFrame = spFrame;
+		m_spFrame = frame;
 		m_fAnimationRate = 1.0f;
 		m_fAnimationTime = 1;
 		m_fCurrentTime = 0.0f;
-		setWeight(1.0f);
+		set_weight(1.0f);
 	}
 
 	bool frame_anim_controller::load( TiXmlNode* pXmlNode )
@@ -46,7 +46,7 @@ namespace math
 				child->Attribute("y", &y);
 				child->Attribute("z", &z);
 
-				m_PosInterpolyator.addKey( (float)time, math::Vec3f((float)x,(float)y,(float)z) );
+				m_PosInterpolyator.add_key( (float)time, math::Vec3f((float)x,(float)y,(float)z) );
 			}
 
 			if ( child = ev->FirstChildElement("rotation" ) )
@@ -59,7 +59,7 @@ namespace math
 				using gmtl::Math::deg2Rad;
 
 				math::Vec3f v((float)deg2Rad(x), (float)deg2Rad(y), (float)deg2Rad(z));
-				m_RotationInterpolyator.addKey( (float)time, v );
+				m_RotationInterpolyator.add_key( (float)time, v );
 			}
 
 			if ( child = ev->FirstChildElement("scale" ) )
@@ -69,19 +69,19 @@ namespace math
 				child->Attribute("y", &y);
 				child->Attribute("z", &z);
 
-				m_ScaleInterpolyator.addKey( (float)time, math::Vec3f((float)x,(float)y,(float)z) );
+				m_ScaleInterpolyator.add_key( (float)time, math::Vec3f((float)x,(float)y,(float)z) );
 			}
 
 		}
 		return true;
 	}
 
-	float frame_anim_controller::getWeight() const
+	float frame_anim_controller::get_weight() const
 	{
 		return m_fWeight;
 	}
 
-	void frame_anim_controller::setWeight(float fWeight)
+	void frame_anim_controller::set_weight(float fWeight)
 	{ 
 		m_fWeight = fWeight;
 		if((m_fWeight < 0.0f) || (m_fWeight > 1.0f)) 
@@ -90,7 +90,7 @@ namespace math
 
 	void frame_anim_controller::update( float dt )
 	{
-		if ( !m_bPlaying || !(m_fAnimationTime > 0) || m_bPaused)
+		if ( !m_bPlaying || !(m_fAnimationTime > 0) || m_paused)
 			return;
 
 		m_fCurrentTime += dt*m_fAnimationRate;
@@ -116,7 +116,7 @@ namespace math
 		//{
 		//
 		//	m_spFrame->setRotation( q );
-		//	m_spFrame->setPosition( m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime ) );
+		//	m_spFrame->set_position( m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime ) );
 		//}
 
 		vec = m_ScaleInterpolyator.getValue( m_fCurrentTime );
@@ -131,14 +131,14 @@ namespace math
 			{
 				m_spFrame->setScale( vec );
 				m_spFrame->setRotation( q );
-				m_spFrame->setPosition( m_PosInterpolyator.getValue( m_fCurrentTime ) );
+				m_spFrame->set_position( m_PosInterpolyator.getValue( m_fCurrentTime ) );
 			}
 			else
 			{
 				float fInverseWeight = 1.0f - m_fWeight;
 				m_spFrame->setScale(m_spFrame->getScale()*fInverseWeight + vec*m_fWeight );
 				m_spFrame->setRotation(m_spFrame->getRotation()*fInverseWeight + q*m_fWeight  );
-				m_spFrame->setPosition(m_spFrame->getPosition()*fInverseWeight +  m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime )*m_fWeight );
+				m_spFrame->set_position(m_spFrame->getPosition()*fInverseWeight +  m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime )*m_fWeight );
 			}
 
 			//Neonic: octree. 1 ставится, если было использовано вращение или увеличение/уменьшение. Иначе ставим 0.
@@ -149,18 +149,18 @@ namespace math
 	void frame_anim_controller::stop()
 	{
 		m_bPlaying = false;
-		m_bPaused = false;
+		m_paused = false;
 		m_bLooped = false;
 	}
 
 	void frame_anim_controller::pause()
 	{
-		m_bPaused = true;//!m_bPaused;
+		m_paused = true;//!m_paused;
 	}
 
 	void frame_anim_controller::start()
 	{
 		m_bPlaying = true;
-		m_bPaused = false;
+		m_paused = false;
 	}
 }

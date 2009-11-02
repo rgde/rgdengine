@@ -14,7 +14,7 @@
 #include "texture_impl.h"
 
 
-extern LPDIRECT3DDEVICE9 g_pd3dDevice;
+extern LPDIRECT3DDEVICE9 g_d3d;
 
 namespace render
 {
@@ -40,10 +40,10 @@ namespace render
 			m_pDefaultNormalMap(safeLoadDefaultTexture("DefaultNormalMap.jpg")),
 			m_pBlackTexture(safeLoadDefaultTexture("Black.jpg")),
 			m_pDefaultEffect(effect::create("Default.fx")),
-			m_pDefaultFont(IFont::create(11,  L"Arial", render::IFont::Heavy))			
+			m_pDefaultFont(base_font::create(11,  L"Arial", render::base_font::Heavy))			
 	{
 
-		m_pDefaultFog.loadFromXML("Default.xml");
+		m_pDefaultFog.load_from_xml("Default.xml");
 		m_pCurrentFog = m_pDefaultFog;
 
 
@@ -113,12 +113,12 @@ namespace render
 
 	namespace functors
 	{
-		//void setupParameters(effect_ptr pEffect, const SRenderableInfo &info, PMaterial& mat)
+		//void setupParameters(effect_ptr pEffect, const renderable_info &info, PMaterial& mat)
 		//{
-		//	//assert(info.pFrame);
-		//	if (info.pFrame)
+		//	//assert(info.frame);
+		//	if (info.frame)
 		//	{
-		//		m_woldMatrixBinder.setFrame(*(info.pFrame));
+		//		m_woldMatrixBinder.setFrame(*(info.frame));
 		//		m_woldMatrixBinder.setupParameters();		
 		//		mat->bind();
 		//	}
@@ -133,15 +133,15 @@ namespace render
 			{
 			}
 
-			void operator()(SRenderableInfo const * r)
+			void operator()(renderable_info const * r)
 			{
 				if (NULL == r) return;
 				render(*r);
 			}
 
-			inline void render(const SRenderableInfo &info)
+			inline void render(const renderable_info &info)
 			{
-				if(info.pFrame)
+				if(info.frame)
 				{
 					static PMaterial pDefaultMaterial = material::create();
 
@@ -154,7 +154,7 @@ namespace render
 
 					//m_pDefaultEffect
 					
-					pMaterial->getDynamicBinder()->setupParameters(info.pFrame);
+					pMaterial->getDynamicBinder()->setupParameters(info.frame);
 									
 					effect::ITechnique *pTechnique = pMaterial->getTechnique();
 
@@ -169,7 +169,7 @@ namespace render
 						{
 							effect::ITechnique::IPass	*pass = vecPasses[i];
 							pass->begin();
-								info.pRenderFunc();
+								info.render_func();
 							pass->end();
 						}
 
@@ -178,28 +178,28 @@ namespace render
 					}
 					else
 					{
-						//info.pFrame->getFullTransform()
+						//info.frame->getFullTransform()
 						//return mProj*(mView*frame->getFullTransform());
-						g_pd3dDevice->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&info.pFrame->getFullTransform()[0]);
-						//g_pd3dDevice->Set
-						info.pRenderFunc();
+						g_d3d->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&info.frame->getFullTransform()[0]);
+						//g_d3d->Set
+						info.render_func();
 						//base::lmsg << "Invalid binder or technique";
 					}
 				}
 				else
 				{
-					info.pRenderFunc();
+					info.render_func();
 				}
 			}
 
-			inline void renderDebug(SRenderableInfo &info)
+			inline void renderDebug(renderable_info &info)
 			{
 				if (info.pDebugRenderFunc != NULL)
 					info.pDebugRenderFunc();
 			}
 		};
 
-		struct SPrioritySorter_Less
+		struct priority_sorter_less
 		{
 			bool operator()(rendererable *r1, rendererable *r2)
 			{
@@ -215,10 +215,10 @@ namespace render
 			{
 			}
 
-			bool operator()(SRenderableInfo const * r1, SRenderableInfo const * r2)
+			bool operator()(renderable_info const * r1, renderable_info const * r2)
 			{
-				const math::frame_ptr& pFrame1 = r1->pFrame;
-				const math::frame_ptr& pFrame2 = r2->pFrame;
+				const math::frame_ptr& pFrame1 = r1->frame;
+				const math::frame_ptr& pFrame2 = r2->frame;
 
 				math::Vec3f		pos1, pos2;
 				if (pFrame1)
@@ -235,12 +235,12 @@ namespace render
 
 	struct SRenderblesSorter
 	{
-		std::vector<SRenderableInfo const *>   &vsolids;
-		std::vector<SRenderableInfo const *>   &vtrans;
-		std::vector<SRenderableInfo const *>   &vposttrans;
+		std::vector<renderable_info const *>   &vsolids;
+		std::vector<renderable_info const *>   &vtrans;
+		std::vector<renderable_info const *>   &vposttrans;
 		const math::frustum				   &m_frustum;
 
-		SRenderblesSorter(std::vector<SRenderableInfo const *> &solids, std::vector<SRenderableInfo const *> &trans, std::vector<SRenderableInfo const *> &posttrans, const math::frustum &frustum)
+		SRenderblesSorter(std::vector<renderable_info const *> &solids, std::vector<renderable_info const *> &trans, std::vector<renderable_info const *> &posttrans, const math::frustum &frustum)
 			: vsolids(solids),
 			  vtrans(trans),
 			  vposttrans(posttrans),
@@ -253,9 +253,9 @@ namespace render
 			if ((NULL == r) || (r->isVisible() == false))
 				return;
 
-			const SRenderableInfo  &ri = r->getRenderableInfo();
+			const renderable_info  &ri = r->getRenderableInfo();
 
-			if (ri.pFrame)
+			if (ri.frame)
 			{
 				const math::Point3f& max	= ri.bbox.getMax();
 				const math::Point3f& min	= ri.bbox.getMin();
@@ -263,7 +263,7 @@ namespace render
 
 				float fHalfLenght = math::length<float, 3>(max - min) / 2.0f;
 
-				math::Point3f centerGlobal = ri.pFrame->getFullTransform() * center;
+				math::Point3f centerGlobal = ri.frame->getFullTransform() * center;
 
 				if (!m_frustum.CubeInFrustum(centerGlobal[0], centerGlobal[1], centerGlobal[2], fHalfLenght))
 					return;
@@ -280,34 +280,34 @@ namespace render
 
 	void render_manager::renderScene()
 	{
-		render::TheDevice::get().resetStats();
+		render::TheDevice::get().reset_statistics();
 
-		//m_lRenderables.sort(functors::SPrioritySorter_Less());
-		std::sort(m_lRenderables.begin(), m_lRenderables.end(), functors::SPrioritySorter_Less());
+		//m_lRenderables.sort(functors::priority_sorter_less());
+		std::sort(m_lRenderables.begin(), m_lRenderables.end(), functors::priority_sorter_less());
 
-		TheCameraManager::get().sortCameras();
+		TheCameraManager::get().sort();
 
-		static std::vector<SRenderableInfo const *> vPostTransparet(1000);
-		static std::vector<SRenderableInfo const *> vTransparet(1000);
-		static std::vector<SRenderableInfo const *> vSolid(1000);
+		static std::vector<renderable_info const *> vPostTransparet(1000);
+		static std::vector<renderable_info const *> vTransparet(1000);
+		static std::vector<renderable_info const *> vSolid(1000);
 
 		// draw scene through every active camera
-		CameraManager &cm	= TheCameraManager::get();
+		camera_manager &cm	= TheCameraManager::get();
 		if (cm.begin() != cm.end())
 		{
-			for (CameraManager::CameraListIterator camera = cm.begin(); camera != cm.end(); ++camera)
+			for (camera_manager::CameraListIterator camera = cm.begin(); camera != cm.end(); ++camera)
 			{
 				vSolid.resize(0);
 				vTransparet.resize(0);
 				vPostTransparet.resize(0);
 
-				TheCameraManager::get().setCamera(camera);
+				TheCameraManager::get().set_camera(camera);
 
 				if(!m_pStaticBinder)
 					createBinder();
 				m_pStaticBinder->setupParameters(0);
 
-				const math::frustum& frustum = TheDevice::get().get_curent_camera()->getFrustum();
+				const math::frustum& frustum = TheDevice::get().get_camera()->get_frustum();
 				std::for_each(m_lRenderables.begin(), m_lRenderables.end(), SRenderblesSorter(vSolid, vTransparet, vPostTransparet, frustum));
 
 				int nVisibleObjects = static_cast<int>(vTransparet.size() + vSolid.size());
@@ -315,16 +315,16 @@ namespace render
 				//std::wstring wstr(str.begin(), str.end());
 				//getDefaultFont()->renderText(wstr, math::Rect(1, 29, 400, 400), 0xFFFFFFFF, true);
 
-				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(TheDevice::get().get_curent_camera()->getPosition()));
+				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(TheDevice::get().get_camera()->getPosition()));
 
 				{
 					{
-						const math::camera_ptr& pCamera = *camera;
-						const math::Matrix44f& mView = pCamera->getViewMatrix();
-						const math::Matrix44f& mProj = pCamera->getProjMatrix();
+						const math::camera_ptr& cam = *camera;
+						const math::Matrix44f& mView = cam->get_view_matrix();
+						const math::Matrix44f& mProj = cam->get_proj_matrix();
 						//return mProj*(mView*frame->getFullTransform());
-						g_pd3dDevice->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&mView[0]);
-						g_pd3dDevice->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&mProj[0]);
+						g_d3d->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&mView[0]);
+						g_d3d->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&mProj[0]);
 					}
 
 
@@ -354,7 +354,7 @@ namespace render
 		}
 
 		// draw debug information
-		//scene::TheScene::get().debugDraw();
+		//scene::TheScene::get().debug_draw();
 		//render::TheDevice::get().showStatistics(getDefaultFont());
 	}
 
@@ -365,7 +365,7 @@ namespace render
 
 	rendererable::rendererable(unsigned priority)
 		: m_nRenderPriority(priority),
-		  m_bIsVisible(true)
+		  m_is_visible(true)
 	{
 		TheRenderManager::get().add(this);
 	}
@@ -377,8 +377,8 @@ namespace render
 	}
 
 
-	SRenderableInfo::SRenderableInfo()
-		: pFrame(0),
+	renderable_info::renderable_info()
+		: frame(0),
 		  bHaveVolumes(false),
 		  spMaterial()
 	{

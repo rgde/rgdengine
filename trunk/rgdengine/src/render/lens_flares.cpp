@@ -8,28 +8,28 @@
 
 namespace render
 {
-	typedef base::singelton<SpriteManager, 1> TheSpriteManager2;
+	typedef base::singelton<sprite_manager, 1> TheSpriteManager2;
 
-	PLensFlares LensFlares::create(const std::string &file_name, const math::frame_ptr &pFrame)
+	lens_flares_ptr lens_flares::create(const std::string &file_name, const math::frame_ptr &frame)
 	{
-		PLensFlares p	= PLensFlares(new LensFlares(pFrame));
+		lens_flares_ptr p	= lens_flares_ptr(new lens_flares(frame));
 
-		p->loadFromXML(file_name);
+		p->load_from_xml(file_name);
 
 		return p;
 	}
 
-	LensFlares::LensFlares(math::frame_ptr pFrame)
-		: m_frame(pFrame)
+	lens_flares::lens_flares(math::frame_ptr frame)
+		: m_frame(frame)
 	{
-		m_renderInfo.pFrame = m_frame.get();
-		m_renderInfo.pRenderFunc = boost::bind(&LensFlares::render, this);
+		m_renderInfo.frame = m_frame.get();
+		m_renderInfo.render_func = boost::bind(&lens_flares::render, this);
 		TheSpriteManager2::get().setAditiveBlending(true);
 	}
 
-	void LensFlares::addFlare(const Flare &flare, const std::string &strTextureName)
+	void lens_flares::add_flare(const flare &f, const std::string &strTextureName)
 	{
-		Flare temp_flare	= flare;
+		flare temp_flare	= f;
 		if ((temp_flare.texture == NULL) && (!strTextureName.empty()))
 		{
 			io::path_add_scoped p	("common/");
@@ -38,23 +38,23 @@ namespace render
 		m_flares.push_back(temp_flare);
 	}
 
-	inline void LensFlares::progressFlare(Flare &flare, const math::Vec2f &toLightVector, float fToLightLength, float fAngle, float fAlphaScale)
+	inline void lens_flares::update_flare(flare &flare, const math::Vec2f &toLightVector, float fToLightLength, float angle, float alpha_scale)
 	{
 		sprite sprite;
 		sprite.color = flare.color;
-		sprite.color.a = (char)((float)sprite.color.a * fAlphaScale);
+		sprite.color.a = (char)((float)sprite.color.a * alpha_scale);
 		math::Vec2f screenCenter= math::Vec2f(400.0f, 300.0f);
-		sprite.pos = toLightVector * flare.fDistance * fToLightLength + screenCenter;
+		sprite.pos = toLightVector * flare.distance * fToLightLength + screenCenter;
 		sprite.texture = flare.texture;
 		sprite.rect = math::Rect(0.0f, 0.0f, 1.0f, 1.0f);
-		sprite.size = math::Vec2f(flare.fImageScale, flare.fImageScale);
-		sprite.spin = fAngle * flare.fAngleScale;
+		sprite.size = math::Vec2f(flare.image_scale, flare.image_scale);
+		sprite.spin = angle * flare.angle_scale;
 		sprite.uPriority = 1;
 
 		TheSpriteManager2::get().addSprite(sprite);
 	}
 
-	void progressNode(TiXmlNode *pNode, LensFlares *pLensFlares)
+	void progressNode(TiXmlNode *pNode, lens_flares *pLensFlares)
 	{
 		if (NULL == pNode)
 			return;
@@ -64,24 +64,24 @@ namespace render
 		if (NULL == pElement)
 			return;
 
-		LensFlares::Flare flare;
+		lens_flares::flare flare;
 		std::string strTextureName	= base::safe_read<std::string>(pElement, "texture", "");
-		flare.fDistance = base::safe_read(pElement, "distance", 0.0f);
-		flare.fImageScale = base::safe_read(pElement, "image_scale", 0.0f);
-		flare.fAngleScale = base::safe_read(pElement, "angle_scale", 0.0f);
+		flare.distance = base::safe_read(pElement, "distance", 0.0f);
+		flare.image_scale = base::safe_read(pElement, "image_scale", 0.0f);
+		flare.angle_scale = base::safe_read(pElement, "angle_scale", 0.0f);
 		base::read(flare.color, pElement, "color");
 
 		if (pLensFlares)
-			pLensFlares->addFlare(flare, strTextureName);
+			pLensFlares->add_flare(flare, strTextureName);
 	}
 
-	void LensFlares::loadFromXML(const std::string &file_name)
+	void lens_flares::load_from_xml(const std::string &file_name)
 	{
 		TiXmlDocument lens;
 
 		if (!base::load_xml(file_name, lens))
 		{
-			io::path_add_scoped p	("LensFlares/");
+			io::path_add_scoped p	("lens_flares/");
 			if (!base::load_xml(file_name, lens))
 			{
 				base::lerr << "Can't load Lens Flares effect \"" << file_name << "\".";
@@ -103,11 +103,11 @@ namespace render
 			progressNode(pCurrent, this);
 	}
 
-	void LensFlares::render()
+	void lens_flares::render()
 	{
-		math::camera_ptr pCamera	= TheDevice::get().get_curent_camera();
+		math::camera_ptr camera	= TheDevice::get().get_camera();
 
-		math::Matrix44f projView= pCamera->getProjMatrix() * pCamera->getViewMatrix();
+		math::Matrix44f projView= camera->get_proj_matrix() * camera->get_view_matrix();
 
 		math::Vec3f framePos3	= m_frame->getGlobalPosition();
 		math::Vec4f framePos4	= math::Vec4f(framePos3[0], framePos3[1], framePos3[2], 1.0f);
@@ -120,23 +120,23 @@ namespace render
 		math::Vec2f lightPos		= math::Vec2f(lightPos3[0] * 800.0f, (1.0f - lightPos3[1]) * 600.0f);
 		math::Vec2f screenCenter	= math::Vec2f(400.0f, 300.0f);
 		math::Vec2f toLightVector	= lightPos - screenCenter;
-		float fLength				= math::normalize(toLightVector);
+		float length				= math::normalize(toLightVector);
 
-		float fAngle				= math::Math::aCos(math::dot(toLightVector, math::Vec2f(1.0f, 0.0f)));
+		float angle				= math::Math::aCos(math::dot(toLightVector, math::Vec2f(1.0f, 0.0f)));
 
 		/*
-					math::Vec3f toLightVector3 = framePos3 - pCamera->getPosition();
+					math::Vec3f toLightVector3 = framePos3 - camera->getPosition();
 					math::normalize(toLightVector3);
-					math::Matrix44f mat = pCamera->getViewMatrix();
+					math::Matrix44f mat = camera->get_view_matrix();
 					math::Vec3f at = math::Vec3f(mat.mData[0], mat.mData[4], mat.mData[8]);
 					math::normalize(at);
-					float fAlphaScale = math::dot(at, toLightVector3);
+					float alpha_scale = math::dot(at, toLightVector3);
 			*/
-		float fAlphaScale			= 1.0f;
+		float alpha_scale			= 1.0f;
 
-		size_t nNumFlares			= m_flares.size();
+		size_t num_flares			= m_flares.size();
 
-		for (size_t i = 0; i < nNumFlares; i++)
-			progressFlare(m_flares[i], toLightVector, fLength, fAngle, fAlphaScale);
+		for (size_t i = 0; i < num_flares; i++)
+			update_flare(m_flares[i], toLightVector, length, angle, alpha_scale);
 	}
 }

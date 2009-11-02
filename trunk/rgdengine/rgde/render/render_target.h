@@ -4,10 +4,10 @@
 
 namespace render
 {
-	struct RenderTargetInfo
+	struct render_target_info
 	{
 		math::Vec2i		size;
-		TextureFormat	format;
+		texture_format	format;
 	};
 
 	class render_target
@@ -18,12 +18,12 @@ namespace render
 	};
 
 	class render_texture;
-	typedef boost::shared_ptr<render_texture> PRenderTexture;
+	typedef boost::shared_ptr<render_texture> render_texture_ptr;
 
 
 	class render_texture : public render_target, public texture
 	{
 	public:
-		static PRenderTexture create(const RenderTargetInfo& params);
+		static render_texture_ptr create(const render_target_info& params);
 	};
 }

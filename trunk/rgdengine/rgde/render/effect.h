@@ -21,7 +21,7 @@ namespace render
 		class IParameter
 		{
 		public:
-			enum EType
+			enum type
 			{
 				Void,
 				Bool,
@@ -49,7 +49,7 @@ namespace render
 			virtual const std::string& get_name() const = 0;
 			virtual const std::string& getSemantic() const = 0;
 			virtual unsigned int get_size() const = 0;
-			virtual EType getType() const = 0;
+			virtual type get_type() const = 0;
 
 			virtual AnnotationsVector& getAnnotations() = 0;
 

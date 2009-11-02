@@ -6,7 +6,7 @@
 namespace render
 {
 	//base_light
-	base_light::base_light(const std::string &name, EType eType)
+	base_light::base_light(const std::string &name, type eType)
 	{
 		m_name     = name;
 		m_bEnabled = true;
@@ -19,7 +19,7 @@ namespace render
 		//TheLightManager::get().removeLight(this);
 	}
 
-	base_light::EType base_light::getType() const
+	base_light::type base_light::get_type() const
 	{
 		return m_type;
 	}

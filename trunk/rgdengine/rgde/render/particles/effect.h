@@ -32,7 +32,7 @@ namespace particles
 		inline void fade(){setEmittersToFade(true); m_bIsFading = true;}
 		inline bool isFading(){return m_bIsFading;}
 
-		virtual render::SRenderableInfo&	getRenderableInfo();
+		virtual render::renderable_info&	getRenderableInfo();
 
 	protected:
 		virtual void toStream(io::write_stream& wf);
@@ -41,7 +41,7 @@ namespace particles
 		virtual void update(float);
 
 		void render();
-		void debugDraw();
+		void debug_draw();
 
 		void setEmittersToFade(bool b);
 

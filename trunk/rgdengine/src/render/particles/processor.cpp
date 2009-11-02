@@ -10,7 +10,7 @@ namespace particles{
 
 	//-----------------------------------------------------------------------------------
 	processor::processor(base_emitter* em )   // конструктор
-	: m_bIsVisible(true), m_pParentEmitter(em), m_bIsGeometric(false), core::meta_class("processor")
+	: m_is_visible(true), m_pParentEmitter(em), m_bIsGeometric(false), core::meta_class("processor")
 	{
 		//addProperty(new property<bool>(m_bIsAnimTextureUsed, "AnimTextureUse", "bool"));
 		m_bIsAnimTextureUsed = false; 
@@ -39,12 +39,12 @@ namespace particles{
 
 		m_spTank = NULL;
 
-		m_PColorAlpha.addKey (0, math::Color (255, 255, 255, 255));
-		m_PColorAlpha.addKey (1, math::Color (0, 0, 0, 0));
-		m_PLife.addKey(1, 1.0f);
-		m_PSize.addKey(1, 1.0f);
-		m_PRate.addKey(1, 10.0f);
-		m_PVelSpreadAmplifier.addKey(1, 1.0f);
+		m_PColorAlpha.add_key (0, math::Color (255, 255, 255, 255));
+		m_PColorAlpha.add_key (1, math::Color (0, 0, 0, 0));
+		m_PLife.add_key(1, 1.0f);
+		m_PSize.add_key(1, 1.0f);
+		m_PRate.add_key(1, 10.0f);
+		m_PVelSpreadAmplifier.add_key(1, 1.0f);
 
 		//addProperty(new property<math::FloatInterp>(m_PRate, "PRate", "FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_PResistance, "PResistance", "FloatInterp"));
@@ -162,19 +162,19 @@ namespace particles{
 		m_bIsGlobal				= true;
 		m_bModifiersLoaded		= false;
 		m_bIsPtankInited		= false;
-		m_bIsVisible			= true;
+		m_is_visible			= true;
 		m_bIntense				= false;
 		
 		m_nMaxParticles			= 0;
 		m_fNormalizedTime		= 0;
 		
-		//m_TexName = clx::cstr("p_default.bmp");
+		//m_texture_name = clx::cstr("p_default.bmp");
 	}
 
 	//-----------------------------------------------------------------------------------
 	void processor::render()
 	{
-		if( !m_bIsVisible )
+		if( !m_is_visible )
 			return;
 
 		formTank();
@@ -267,7 +267,7 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void processor::createParticle(particle& p)
 	{
-		m_pParentEmitter->getParticle(p);
+		m_pParentEmitter->get_particle(p);
 		p.dead = false;
 		
 		p.ttl = (m_PLife.getValue(m_fNormalizedTime)
@@ -313,9 +313,9 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void processor::debugDraw()
+	void processor::debug_draw()
 	{
-		if( !m_bIsVisible )
+		if( !m_is_visible )
 			return;
 
 		math::Matrix44f m = getLTM();
@@ -342,7 +342,7 @@ namespace particles{
 			}
 
 			line_manager.addQuad( center, math::Vec2f (it->size, it->size), 0 );	
-			line_manager.addLine( center, vel, math::Green );
+			line_manager.add_line( center, vel, math::Green );
 		}
 	}
 	//-----------------------------------------------------------------------------------
@@ -435,11 +435,11 @@ namespace particles{
 		//try{
 		//	agl::LocalImgPathSync p(pfx::tex_path.c_str());//"Effects\\tx\\");
 		//	
-		//	m_texture.load(m_TexName);
+		//	m_texture.load(m_texture_name);
 
 		//	std::string ext_path = std::string::Concat(
 		//		pfx::tex_path.c_str(), pfx::tex_path.length(),
-		//		 m_TexName.c_str(), m_TexName.length() - 3);
+		//		 m_texture_name.c_str(), m_texture_name.length() - 3);
 		//	ext_path += "tnf";
 
 		//	if (base::ResourceMaster::get()->isResourceExist(ext_path))
@@ -459,10 +459,10 @@ namespace particles{
 		//	m_texture.setFilterMode(agl::filter_Linear);
 		//}
 		//catch (...){
-		//	m_TexName.clear();
+		//	m_texture_name.clear();
 		//	return;
 		//}
-		m_texture = render::texture::create(m_TexName);//std::wstring(m_TexName.begin(), m_TexName.end()) );
+		m_texture = render::texture::create(m_texture_name);//std::wstring(m_texture_name.begin(), m_texture_name.end()) );
 		return;
 	}
 
@@ -473,7 +473,7 @@ namespace particles{
 
 		if ( texName.length() != 0 )
 		{
-			m_TexName = texName;	
+			m_texture_name = texName;	
 			loadTexture();
 			if( !m_spTank )
 				return;
@@ -506,7 +506,7 @@ namespace particles{
 		m_spTank = new renderer();
 
 
-		if( m_TexName.length() )
+		if( m_texture_name.length() )
 			// TODO: ѕровер€ть, загружена ли текстура
 			if( !(m_texture /*&& m_texture->isLoaded()*/ ) )
 				loadTexture();
@@ -532,7 +532,7 @@ namespace particles{
 			<< m_fScaling
 			<< m_bIsGlobal
 			<< m_nMaxParticles
-			<< m_TexName
+			<< m_texture_name
 			<< m_bIsSparks
 			//<< m_DffName
 			<< m_iRndSeed
@@ -566,7 +566,7 @@ namespace particles{
 			>> m_fScaling
 			>> m_bIsGlobal
 			>> m_nMaxParticles
-			>> m_TexName
+			>> m_texture_name
 			>> m_bIsSparks
 			//>> m_DffName
 			>> m_iRndSeed

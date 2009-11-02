@@ -44,7 +44,7 @@ namespace game
 		void fixPos(Brick& b);
 
 	private:
-		render::SpriteManager m_spriteRenderer;
+		render::sprite_manager m_spriteRenderer;
 		std::vector<render::texture_ptr> m_textures;
 		GameField m_field;
 		float m_brickSize;

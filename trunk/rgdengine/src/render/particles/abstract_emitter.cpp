@@ -7,7 +7,7 @@
 
 namespace particles{
 	//-----------------------------------------------------------------------------------
-	void base_emitter::getParticle(particle& p) 
+	void base_emitter::get_particle(particle& p) 
 	{
 		p = particle();
 
@@ -35,7 +35,7 @@ namespace particles{
 		m_fCurrentTime = 0;
 		m_bIsEnded = false;
 		m_fTimeNormalaized = 0;
-		m_bIsVisible = true;
+		m_is_visible = true;
 
 		for(processors_iter pi = m_lProcessors.begin(); pi != m_lProcessors.end(); ++pi)
 			(*pi)->reset();
@@ -59,7 +59,7 @@ namespace particles{
 		{
 			if (!m_bIsCycling){
 				m_bIsEnded = true;
-				m_bIsVisible = false;
+				m_is_visible = false;
 				return;
 			}
 			else 
@@ -105,7 +105,7 @@ namespace particles{
 
 	void base_emitter::render()
 	{
-		if (m_bIsVisible)
+		if (m_is_visible)
 		{
 			// 1-ми рендерятся не аддитивные партиклы
 			for (processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
@@ -126,9 +126,9 @@ namespace particles{
 		m_time_shift = 0.0f;
 
 		m_fCurrentTime = 0.0f;
-		m_bIsVisible = true; 
+		m_is_visible = true; 
 
-		m_PMass.addKey(1, 1.0f);
+		m_PMass.add_key(1, 1.0f);
 
 		m_fTimeNormalaized = 0;
 		//if (!ms_Rand.isInited())
@@ -138,7 +138,7 @@ namespace particles{
 
 		//addProperty(new property<float>(m_fCycleTime,			"CycleTime",	"float"));
 		//addProperty(new property<bool>(m_bIsCycling,			"IsCycling",	"bool"));
-		//addProperty(new property<bool>(m_bIsVisible,			"IsVisible",	"bool"));
+		//addProperty(new property<bool>(m_is_visible,			"IsVisible",	"bool"));
 		//addProperty(new property<float>(m_time_shift,			"fTimeShift",	"float"));
 		//
 		//addProperty(new property<math::FloatInterp>(m_PMass,		"PMass",	"FloatInterp"));
@@ -199,7 +199,7 @@ namespace particles{
 
 		wf	<< m_fCycleTime
 			<< m_bIsCycling
-			<< m_bIsVisible
+			<< m_is_visible
 			<< m_time_shift
 			<< m_name
 			<< (m_PMass)
@@ -222,7 +222,7 @@ namespace particles{
 
 		rf	>> m_fCycleTime
 			>> m_bIsCycling
-			>> m_bIsVisible
+			>> m_is_visible
 			>> m_time_shift
 			>> m_name
 			>> (m_PMass)
@@ -245,11 +245,11 @@ namespace particles{
 		}
 	}
 
-	void base_emitter::debugDraw()
+	void base_emitter::debug_draw()
 	{
-		m_Transform.debugDraw();
+		m_Transform.debug_draw();
 
 		for( processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it )
-			(*it)->debugDraw();
+			(*it)->debug_draw();
 	}
 }

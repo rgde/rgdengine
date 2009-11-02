@@ -32,7 +32,7 @@ namespace input
     }
 
     //удалить синглтон системы ввода
-    void Input::Destroy ()
+    void Input::destroy ()
     {
         if (ms_instance)
             delete ms_instance;
@@ -45,9 +45,9 @@ namespace input
         m_pImpl.reset(pImpl);
     }
 
-    bool Input::SetMode (bool exclusive, bool foreground)
+    bool Input::set_mode (bool exclusive, bool foreground)
     {
-        return get().m_pImpl->SetMode(exclusive,foreground);
+        return get().m_pImpl->set_mode(exclusive,foreground);
     }
 
     void Input::LoadFromString (const std::string &sXml)
@@ -95,38 +95,38 @@ namespace input
 	}
 
     //есть ли такое устройство
-    bool Input::isDevicePresent (types::device eDeviceName, int indx)
+    bool Input::is_present (types::device eDeviceName, int indx)
     {
-        return get().m_pImpl->isDevicePresent(eDeviceName,indx);
+        return get().m_pImpl->is_present(eDeviceName,indx);
     }
 
     //есть ли такое устройство
-    bool Input::isDevicePresent (const std::wstring &sDeviceName, int indx)
+    bool Input::is_present (const std::wstring &sDeviceName, int indx)
     {
-        return get().m_pImpl->isDevicePresent(sDeviceName, indx);
+        return get().m_pImpl->is_present(sDeviceName, indx);
     }
 
     //добавить команду
-    void Input::addCommand (const std::wstring &sCommandName)
+    void Input::add_command (const std::wstring &command_name)
     {
-        get().m_pImpl->addCommand(sCommandName);
+        get().m_pImpl->add_command(command_name);
     }
 
     //получить команду
-    CommandPtr Input::getCommand (const std::wstring &sCommandName)
+    command_ptr Input::getCommand (const std::wstring &command_name)
     {
-        return get().m_pImpl->getCommand(sCommandName);
+        return get().m_pImpl->getCommand(command_name);
     }
 
     //есть ли такая команда
-    bool Input::isCommandPresent (const std::wstring &sCommandName)
+    bool Input::isCommandPresent (const std::wstring &command_name)
     {
-        return get().m_pImpl->isCommandPresent(sCommandName);
+        return get().m_pImpl->isCommandPresent(command_name);
     }
 
     //отвязать команду ото всех контролов
-    void Input::detachCommand (CommandPtr pCommand)
+    void Input::detach_command (command_ptr pCommand)
     {
-        get().m_pImpl->detachCommand(pCommand);
+        get().m_pImpl->detach_command(pCommand);
     }
 }

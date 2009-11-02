@@ -1,7 +1,7 @@
 
 namespace ui
 {
-	class uiButton: public IButton, public game::dynamic_object
+	class button: public base_button, public game::dynamic_object
 	{
 	protected:
 		std::wstring m_text;
@@ -17,30 +17,30 @@ namespace ui
 		float m_wait_time;
 	public:
 
-		uiButton()
+		button()
 		{
 			m_rect = math::Rect( 200, 0, 200, 30 );
 
 			m_text = L"button";
 
-			//m_spFont = render::IFont::Create(16, L"Tahoma");
+			//m_spFont = render::base_font::Create(16, L"Tahoma");
 
 			m_pressed = false;
 			m_wait = false;
 			m_over = false;
 		}
 
-		virtual const std::wstring& getText()
+		virtual const std::wstring& get_text()
 		{
 			return m_text;
 		}
 
-		virtual void setText(const std::wstring& txt)
+		virtual void set_text(const std::wstring& txt)
 		{
 			m_text = txt;
 		}
 
-		virtual void onEvent(const Event& e)
+		virtual void on_event(const Event& e)
 		{
 			switch(e.eventType) 
 			{
@@ -68,7 +68,7 @@ namespace ui
 			};
 		}
 
-		const IControl* get_parent()
+		const base_control* get_parent()
 		{
 			return 0;
 		}
@@ -94,12 +94,12 @@ namespace ui
 			}
 		}
 
-		virtual const math::Rect& getRect()
+		virtual const math::Rect& get_rect()
 		{
 			return m_rect;
 		}
 
-		virtual void setRect(const math::Rect& r)
+		virtual void set_rect(const math::Rect& r)
 		{
 			m_rect = r;
 		}
@@ -132,18 +132,18 @@ namespace ui
 			{
 			case BorderFlat:
 				{
-					lr.addLine(position, math::Vec2f(position[0], position[1]+size[1]), black);
-					lr.addLine(position, math::Vec2f(position[0]+size[0], position[1]), black);
-					lr.addLine(math::Vec2f(position[0], position[1]+size[1]), size + position, black);
-					lr.addLine(math::Vec2f(position[0]+size[0], position[1]), size + position, black);
+					lr.add_line(position, math::Vec2f(position[0], position[1]+size[1]), black);
+					lr.add_line(position, math::Vec2f(position[0]+size[0], position[1]), black);
+					lr.add_line(math::Vec2f(position[0], position[1]+size[1]), size + position, black);
+					lr.add_line(math::Vec2f(position[0]+size[0], position[1]), size + position, black);
 				}
 				break;
 			case Border3D:
 				{
-					lr.addLine(position, math::Vec2f(position[0], position[1]+size[1]), lightLightGrey);
-					lr.addLine(position, math::Vec2f(position[0]+size[0], position[1]), lightLightGrey);
-					lr.addLine(math::Vec2f(position[0], position[1]+size[1]), size + position, darkGrey);
-					lr.addLine(math::Vec2f(position[0]+size[0], position[1]), size + position, darkGrey);
+					lr.add_line(position, math::Vec2f(position[0], position[1]+size[1]), lightLightGrey);
+					lr.add_line(position, math::Vec2f(position[0]+size[0], position[1]), lightLightGrey);
+					lr.add_line(math::Vec2f(position[0], position[1]+size[1]), size + position, darkGrey);
+					lr.add_line(math::Vec2f(position[0]+size[0], position[1]), size + position, darkGrey);
 				}
 				break;
 			}
@@ -174,7 +174,7 @@ namespace ui
 
 		void drawText(render::font_ptr font, std::wstring text, math::Rect rect, bool bShowShadow = true)
 		{
-			int flag = render::IFont::Center | render::IFont::VCenter;
+			int flag = render::base_font::Center | render::base_font::VCenter;
 
 			math::Vec2f vFrontBufferSize = render::TheDevice::get().getBackBufferSize();
 			math::Vec2f screenSize(800, 600);

@@ -23,7 +23,7 @@ public:
 			  .add<core::game_task>(1)
 			  .add<core::input_task>(0, false);
 
-		m_spFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
+		m_spFont = render::base_font::create(20, L"Arial", render::base_font::Heavy);
 
 		math::Vec3f vEyePt(40, 40, -40);
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
@@ -46,10 +46,10 @@ public:
 
 		// Инициализация камеры
 		m_pCamera  = render::render_camera::create();
-		m_pCamera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+		m_pCamera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 		m_cTargetCamera = math::target_camera::create(m_pCamera);
-		render::TheCameraManager::get().addCamera(m_pCamera);
-		m_cTargetCamera->setPosition(vEyePt,vLookatPt,vUpVec);
+		render::TheCameraManager::get().add_camera(m_pCamera);
+		m_cTargetCamera->set_position(vEyePt,vLookatPt,vUpVec);
 		m_cTargetCamera->activate();
 
 		spApp->run();
@@ -59,13 +59,13 @@ public:
 	{
 		using namespace input;
 
-		Input::addCommand(L"Quit");
-		Input::addCommand(L"Horz");
-		Input::addCommand(L"Vert");
-		Input::addCommand(L"Froward");
-		Input::addCommand(L"Backward");
-		Input::addCommand(L"CW");
-		Input::addCommand(L"CCW");
+		Input::add_command(L"Quit");
+		Input::add_command(L"Horz");
+		Input::add_command(L"Vert");
+		Input::add_command(L"Froward");
+		Input::add_command(L"Backward");
+		Input::add_command(L"CW");
+		Input::add_command(L"CCW");
 
 		//m_cXAxis.attachToControl(input::Mouse, input::AxisX);
 		//m_cYAxis.attachToControl(input::Mouse, input::AxisY);
@@ -97,7 +97,7 @@ public:
 
 		//задаем для команд функции-обработчики		
 		//m_cEsc   += boost::bind(&TestInterpolator::onEsc,   this);
-		//m_cR     += boost::bind(&TestInterpolator::onReset, this);
+		//m_cR     += boost::bind(&TestInterpolator::on_reset, this);
 		m_keyupQuit += boost::bind(&CParticleTest::onQuit, this);
 		m_cYAxis += boost::bind(&CParticleTest::onYAxis, this, _1);
 		m_cXAxis += boost::bind(&CParticleTest::onXAxis, this, _1);
@@ -171,7 +171,7 @@ protected:
 			sph_emitter->addProcessor(proc);
 			proc->load();
 
-			sph_emitter->getTransform().setPosition(math::Point3f( fDist, 0, -fDist/1.732f));
+			sph_emitter->getTransform().set_position(math::Point3f( fDist, 0, -fDist/1.732f));
 
 			// Создаём кубический эмитер
 			particles::box_emitter* box_emitter = new particles::box_emitter();
@@ -184,7 +184,7 @@ protected:
 			proc->setGlobal( false );
 			proc->load();
 
-			box_emitter->getTransform().setPosition( math::Point3f( -fDist, 0, -fDist/1.732f) );
+			box_emitter->getTransform().set_position( math::Point3f( -fDist, 0, -fDist/1.732f) );
 
 			// Создаём майя эмитер
 			particles::static_emitter* static_emitter = new particles::static_emitter("particles/cannonShot_smoke.prt", "particles/shot_smoke.png");
@@ -193,7 +193,7 @@ protected:
 			static_emitter->setCycling(true);
 			static_emitter->setVisible(true);
 
-			static_emitter->getTransform().setPosition( math::Point3f(0, 0, fDist ) );
+			static_emitter->getTransform().set_position( math::Point3f(0, 0, fDist ) );
 		}
 	}
 

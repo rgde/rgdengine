@@ -10,13 +10,13 @@ namespace math
     //контроллер камеры аля "нацеленная камера"
     class target_camera: public base_camera_controller
     {
-        target_camera(camera_ptr pCamera);
+        target_camera(camera_ptr camera);
 
     public:
-        static target_camera_ptr create(camera_ptr pCamera);
+        static target_camera_ptr create(camera_ptr camera);
 
         //положение
-        void setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);
+        void set_position(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);
         void getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt);
 
         //движение

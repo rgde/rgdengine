@@ -5,23 +5,23 @@
 namespace math
 {
 
-    CFlyCamera::CFlyCamera(camera_ptr pCamera)
+    free_camera::free_camera(camera_ptr camera)
     {
-        setCamera(pCamera);
+        set_camera(camera);
 
-        base::lmsg << "CFlyCamera::CFlyCamera()";
+        base::lmsg << "free_camera::free_camera()";
         m_vUp       = Vec3f(0.0f, 1.0f, 0.0f);
         m_vEyePt    = Vec3f(0.0f, 0.0f, 0.0f);
         m_vLookatPt = Vec3f(0.0f, 0.0f, 1.0f);
         doOrthoNormal();
     }
 
-    PFlyCamera CFlyCamera::create(camera_ptr pCamera)
+    free_camera_ptr free_camera::create(camera_ptr camera)
     {
-        return PFlyCamera(new CFlyCamera(pCamera));
+        return free_camera_ptr(new free_camera(camera));
     }
 
-    void CFlyCamera::setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)
+    void free_camera::set_position(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)
     {
         m_vUp       = vUp;
         m_vEyePt    = vEyePt;
@@ -29,14 +29,14 @@ namespace math
         apply();
     }
 
-    void CFlyCamera::getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt)
+    void free_camera::getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt)
     {
         vUp       = m_vUp;
         vEyePt    = m_vEyePt;
         vLookatPt = m_vLookatPt;
     }
 
-    void CFlyCamera::goForward(float delta)
+    void free_camera::goForward(float delta)
     {
         Vec3f vDelta = m_vLookatPt-m_vEyePt;
         normalize(vDelta);
@@ -48,7 +48,7 @@ namespace math
         apply();
     }
 
-    void CFlyCamera::goLeft(float delta)
+    void free_camera::goLeft(float delta)
     {
         Vec3f vDelta;
         cross(vDelta, m_vUp, Vec3f(m_vLookatPt-m_vEyePt));
@@ -61,7 +61,7 @@ namespace math
         apply();
     }
 
-    void CFlyCamera::goUp(float delta)
+    void free_camera::goUp(float delta)
     {
         Vec3f vDelta = m_vUp;
         normalize(vDelta);
@@ -73,7 +73,7 @@ namespace math
         apply();
     }
 
-    void CFlyCamera::rotateRight(float angle)
+    void free_camera::rotateRight(float angle)
     {
         Quatf rot;
         Vec3f vAxis = m_vUp;
@@ -85,7 +85,7 @@ namespace math
         apply();
     }
 
-    void CFlyCamera::rotateUp(float angle)
+    void free_camera::rotateUp(float angle)
     {
         Quatf rot;
         Vec3f vAxis;
@@ -99,7 +99,7 @@ namespace math
         apply();
     }
 
-    void CFlyCamera::rotateCW(float angle)
+    void free_camera::rotateCW(float angle)
     {
         Quatf rot;
         Vec3f vAxis = m_vLookatPt-m_vEyePt;
@@ -111,12 +111,12 @@ namespace math
         apply();
     }
 
-    void CFlyCamera::activate()
+    void free_camera::activate()
     {
         apply();
     }
 
-    void CFlyCamera::apply()
+    void free_camera::apply()
     {
         doOrthoNormal();
         if (m_pCamera)
@@ -130,7 +130,7 @@ namespace math
     }
 
     //гарантировать, что вектора "вперед" и "вверх" взаимно пенпедикул€рны и нормированы
-    void CFlyCamera::doOrthoNormal()
+    void free_camera::doOrthoNormal()
     {
         normalize(m_vUp);
 

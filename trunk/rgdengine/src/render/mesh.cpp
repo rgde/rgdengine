@@ -12,8 +12,8 @@ namespace render
 	mesh::mesh()
 		: rendererable(10)
 	{
-		m_renderInfo.pFrame = this;//m_frame;
-		m_renderInfo.pRenderFunc = boost::bind(&mesh::render, this);
+		m_renderInfo.frame = this;//m_frame;
+		m_renderInfo.render_func = boost::bind(&mesh::render, this);
 		m_renderInfo.bHaveVolumes = true;
 	}
 
@@ -145,7 +145,7 @@ namespace render
 		}
 	}
 
-	const SRenderableInfo & mesh::getRenderableInfo() const
+	const renderable_info & mesh::getRenderableInfo() const
 	{
 		if (m_materials.size() > 0)
 			m_renderInfo.spMaterial = *m_materials.begin();

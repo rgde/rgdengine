@@ -6,7 +6,7 @@
 
 namespace render
 {
-	enum	TextureUsage
+	enum	texture_usage
 	{
 		DefaultUsage   =	0x00000000L,
 		RenderTarget   =    0x00000001L,
@@ -14,7 +14,7 @@ namespace render
 		Dynamic        =    0x00000200L
 	};
 
-	enum	TextureFormat
+	enum	texture_format
 	{
 		R8G8B8               = 20,
 		A8R8G8B8             = 21,
@@ -96,7 +96,7 @@ namespace render
 		CxV8U8               = 117
 	};
 
-	enum ETextureType
+	enum texture_type
 	{
 		Unknown       = 1,
 		Texture       = 2,
@@ -113,11 +113,11 @@ namespace render
 
 		static texture_ptr		  create(const std::string& file_name);
 
-		virtual TextureFormat getFormat() const = 0; 
-		virtual TextureUsage  getUsage()  const = 0;
-		virtual int			  getHeight() const = 0;
-		virtual int			  getWidth()  const = 0;
-		virtual ETextureType  getType()	  const = 0;
-		virtual	bool		  hasAlpha()  const = 0;
+		virtual texture_format get_format() const = 0; 
+		virtual texture_usage  get_usage()  const = 0;
+		virtual int			  get_height() const = 0;
+		virtual int			  get_width()  const = 0;
+		virtual texture_type  get_type()	  const = 0;
+		virtual	bool		  has_alpha()  const = 0;
 	};
 }

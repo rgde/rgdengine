@@ -4,21 +4,21 @@
 
 namespace math
 {
-    typedef boost::shared_ptr<class CFlyCamera> PFlyCamera;
+    typedef boost::shared_ptr<class free_camera> free_camera_ptr;
 
-    //контроллер свободной(летающей) камеры
-    class CFlyCamera: public base_camera_controller
+    //free camera controller
+    class free_camera: public base_camera_controller
     {
-        CFlyCamera(camera_ptr pCamera);
+        free_camera(camera_ptr camera);
 
     public:
-        static PFlyCamera create(camera_ptr pCamera);
+        static free_camera_ptr create(camera_ptr camera);
 
-        //положение
-        void setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);
+        //posotion
+        void set_position(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);
         void getPosition(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt);
 
-        //движение
+        //moving
         void goForward(float delta);
         void goBackward(float delta) {goForward(-delta);}
         void goLeft(float delta);
@@ -26,7 +26,7 @@ namespace math
         void goUp(float delta);
         void goDown(float delta) {goUp(-delta);}
 
-        //вращение
+        //rotation
         void rotateRight(float angle);
         void rotateLeft(float angle) {rotateRight(-angle);}
         void rotateUp(float angle);

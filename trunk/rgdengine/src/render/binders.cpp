@@ -24,26 +24,26 @@ namespace render
 //\---------------------------------------------------------------------------/
 	inline const math::camera_ptr& get_camera()
 	{
-		return TheDevice::get().get_curent_camera();
+		return TheDevice::get().get_camera();
 	}
 
 	math::Matrix44f makeWorldViewProjMatrix(const math::frame_ptr& frame)
 	{
-		const math::camera_ptr& pCamera = get_camera();
-		const math::Matrix44f& mView = pCamera->getViewMatrix();
-		const math::Matrix44f& mProj = pCamera->getProjMatrix();
+		const math::camera_ptr& camera = get_camera();
+		const math::Matrix44f& mView = camera->get_view_matrix();
+		const math::Matrix44f& mProj = camera->get_proj_matrix();
 		return mProj*(mView*frame->getFullTransform());
 	}
 
 	math::Matrix44f makeWorldViewMatrix(const math::frame_ptr& frame)
 	{
-		return frame->getFullTransform()*get_camera()->getViewMatrix();
+		return frame->getFullTransform()*get_camera()->get_view_matrix();
 	}
 
 	math::Matrix44f makeWorldViewInvTranspMatrix(const math::frame_ptr& frame)
 	{
 		math::Matrix44f result = frame->getFullTransform();
-		result *= get_camera()->getViewMatrix();
+		result *= get_camera()->get_view_matrix();
 		math::invert(result);
 		math::transpose(result);
 		return result;
@@ -124,7 +124,7 @@ namespace render
 					std::string temp = upper.substr(0, 1) +
 									   lower.substr(1, lower.length() - 1);
 
-					if(CubeTexture == it->second.getTexture()->getType())
+					if(CubeTexture == it->second.getTexture()->get_type())
 						temp += "Cube";
 
 					strTechName += temp;
@@ -245,20 +245,20 @@ namespace render
 		//binder->addParameter<LightDatas>(getLightsFunction, "LIGHTS");
 	}
 
-	math::Matrix44f getViewMatrix()
+	math::Matrix44f get_view_matrix()
 	{
 		if(!get_camera())
 			return math::Matrix44f();
 
-		return get_camera()->getViewMatrix();
+		return get_camera()->get_view_matrix();
 	}
 
-	math::Matrix44f getProjMatrix()
+	math::Matrix44f get_proj_matrix()
 	{
 		if(!get_camera())
 			return math::Matrix44f();
 
-		return get_camera()->getProjMatrix();
+		return get_camera()->get_proj_matrix();
 	}
 
 	math::Matrix44f makeViewInvTranspMatrix()
@@ -266,7 +266,7 @@ namespace render
 		if(!get_camera())
 			return math::Matrix44f();
 
-		math::Matrix44f result = get_camera()->getViewMatrix();
+		math::Matrix44f result = get_camera()->get_view_matrix();
 		math::invert(result);
 		math::transpose(result);
 		return result;
@@ -280,10 +280,10 @@ namespace render
 
 		GetMatrix44fFunction getMatrixFunction;
 		
-		getMatrixFunction = bind(&getProjMatrix);
+		getMatrixFunction = bind(&get_proj_matrix);
 		binder->addParameter<Matrix44f>(getMatrixFunction, ProjectionMatrixParamName);
 
-		getMatrixFunction = bind(&getViewMatrix);
+		getMatrixFunction = bind(&get_view_matrix);
 		binder->addParameter<Matrix44f>(getMatrixFunction, ViewMatrixParamName);
 
 		getMatrixFunction = bind(&makeViewInvTranspMatrix);

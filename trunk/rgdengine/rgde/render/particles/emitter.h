@@ -33,7 +33,7 @@ namespace particles
 		virtual void update (float dt) = 0;
 
 		virtual void render() = 0;
-		virtual void debugDraw() = 0;
+		virtual void debug_draw() = 0;
 
 	public:
 		virtual void setFade (bool bFade) = 0;

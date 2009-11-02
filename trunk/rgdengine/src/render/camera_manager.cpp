@@ -9,7 +9,7 @@ namespace render
 {
 	namespace functors
 	{
-		struct SPrioritySorter_Less
+		struct priority_sorter_less
 		{
 			bool operator()(math::camera_ptr &c1, math::camera_ptr &c2)
 			{
@@ -18,45 +18,45 @@ namespace render
 		};
 	}
 
-	CameraManager::CameraManager()
+	camera_manager::camera_manager()
 	{
 	}
 
-	CameraManager::~CameraManager()
+	camera_manager::~camera_manager()
 	{
 	}
 
-	void CameraManager::addCamera(const math::camera_ptr& c)
+	void camera_manager::add_camera(const math::camera_ptr& c)
 	{
 		m_lCameras.push_back(c);
 	}
 
-	void CameraManager::removeCamera(const math::camera_ptr& c)
+	void camera_manager::removeCamera(const math::camera_ptr& c)
 	{
 		m_lCameras.remove(c);
 	}
 
-	void CameraManager::clear()
+	void camera_manager::clear()
 	{
 		m_lCameras.clear();
 	}
 
-	void CameraManager::sortCameras()
+	void camera_manager::sort()
 	{
-		m_lCameras.sort(functors::SPrioritySorter_Less());
+		m_lCameras.sort(functors::priority_sorter_less());
 	}
 
-	CameraManager::CameraListIterator CameraManager::begin()
+	camera_manager::CameraListIterator camera_manager::begin()
 	{
 		return m_lCameras.begin();
 	}
 	
-	CameraManager::CameraListIterator CameraManager::end()
+	camera_manager::CameraListIterator camera_manager::end()
 	{
 		return m_lCameras.end();
 	}
 
-	void CameraManager::setCamera(CameraManager::CameraListIterator it)
+	void camera_manager::set_camera(camera_manager::CameraListIterator it)
 	{
 		//if (m_curCamera)
 		//{
@@ -65,6 +65,6 @@ namespace render
 
 		//m_curCamera = *it;
 		(*it)->activate();
-		render::TheDevice::get().setCurentCamera(*it);
+		render::TheDevice::get().set_camera(*it);
 	}
 }

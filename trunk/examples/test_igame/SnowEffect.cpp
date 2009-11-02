@@ -26,7 +26,7 @@ namespace game
 
 		SnowEffect::SnowEffect(uint numSprites)
 		{
-			m_font = render::IFont::create(12, L"Arial", render::IFont::Heavy);
+			m_font = render::base_font::create(12, L"Arial", render::base_font::Heavy);
 			m_texture = render::texture::create("ZColumns/snow.dds"); 
 
 			m_sprites.resize(numSprites);
@@ -50,7 +50,7 @@ namespace game
 
 
 			std::for_each(m_sprites.begin(), m_sprites.end(), 
-				boost::bind(&render::SpriteManager::addSprite, &m_sprite_renderer, _1));
+				boost::bind(&render::sprite_manager::addSprite, &m_sprite_renderer, _1));
 
 			//for (Sprites::iterator it = m_sprites.begin(); it != m_sprites.end(); ++it)
 			//{

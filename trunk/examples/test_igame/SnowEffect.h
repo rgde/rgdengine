@@ -29,7 +29,7 @@ namespace game
 			float m_rate;
 			float m_time;
 			float m_gravity;
-			render::SpriteManager m_sprite_renderer;
+			render::sprite_manager m_sprite_renderer;
 
 			render::texture_ptr m_texture;
 

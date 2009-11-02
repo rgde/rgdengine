@@ -5,9 +5,9 @@
 namespace math
 {
 
-    target_camera::target_camera(camera_ptr pCamera)
+    target_camera::target_camera(camera_ptr camera)
     {
-        setCamera(pCamera);
+        set_camera(camera);
 
         base::lmsg << "target_camera::target_camera()";
         m_vUp       = Vec3f(0.0f, 1.0f, 0.0f);
@@ -16,12 +16,12 @@ namespace math
         doOrthoNormal();
     }
 
-    target_camera_ptr target_camera::create(camera_ptr pCamera)
+    target_camera_ptr target_camera::create(camera_ptr camera)
     {
-        return target_camera_ptr(new target_camera(pCamera));
+        return target_camera_ptr(new target_camera(camera));
     }
 
-    void target_camera::setPosition(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)
+    void target_camera::set_position(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)
     {
         m_vUp       = vUp;
         m_vEyePt    = vEyePt;

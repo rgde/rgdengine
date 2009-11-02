@@ -40,7 +40,7 @@ namespace render
 
 		void update(float dt);
 
-		void loadFromXML(const std::string& file_name);
+		void load_from_xml(const std::string& file_name);
 
 	private:
 		void init();

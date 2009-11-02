@@ -41,7 +41,7 @@ namespace particles{
 
 		void render();
 		void update(float dt);
-		void debugDraw();
+		void debug_draw();
 
 		void reset()
 		{
@@ -66,7 +66,7 @@ namespace particles{
 		void		setIntense(bool intense);
 		inline bool	getIntense()	const	{return m_bIntense;}
 
-		inline std::string getTextureName() const {return m_TexName;}
+		inline std::string getTextureName() const {return m_texture_name;}
 		void setTexture(std::string tex);
 
 	protected:
@@ -94,7 +94,7 @@ namespace particles{
 		float		m_fScale;
 		
 		std::string m_Name;							// имя файла с данными
-		std::string m_TexName;
+		std::string m_texture_name;
 		
 		// для работы с анимированной текстурой
 		bool			m_bIsAnimTextureUsed;			

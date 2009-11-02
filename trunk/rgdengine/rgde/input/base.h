@@ -7,13 +7,13 @@ namespace input
     class Control;   //элемент (кнопка или ось) ввода
     class Command;   //команда ввода
 
-    typedef boost::shared_ptr<Command> CommandPtr;
+    typedef boost::shared_ptr<Command> command_ptr;
 
 	class Helper;       //базовый класс обьекта-посредника для получения информации о событиях ввода
 	class Button;       //кнопка (нажатие и отжатие клавиш)
 	class Trigger;      //триггер (переключение состояния при каждом НАжатии клавиш)
 	class KeyUp;        //ОТжатие клавиши
-	class KeyDown;      //НАжатие на клавишу
+	class key_down;      //НАжатие на клавишу
 	class RelativeAxis; //относительная ось (сдвиг оси)
 	class AbsoluteAxis; //абсолютная ось (координата оси)
 	class KeyStream;
@@ -158,7 +158,7 @@ namespace input
 			KeyLeft,
 			KeyRight,
 			KeyEnd,
-			KeyDown,
+			key_down,
 			KeyNext,
 			KeyInsert,
 			KeyDelete,
@@ -179,13 +179,13 @@ namespace input
 	}
 
 	//получение строки, соответствующей enum-значению
-	std::wstring Device2String (types::device eName);
+	std::wstring Device2String (types::device name);
 
 	//получение enum-значения, соответствующего строке
     types::device String2Device (const std::wstring &str); 
 
 	//получение строки, соответствующей enum-значению
-    std::wstring Control2String (types::control eName);
+    std::wstring Control2String (types::control name);
 
 	//получение enum-значения, соответствующего строке
     types::control String2Control (const std::wstring &str); 

@@ -11,13 +11,13 @@ namespace input
 	//параметр для Helper::Handler
 	struct HelperEvent
 	{
-		enum EType
+		enum type
 		{
 			Button,
 			Axis
 		};
 
-		EType m_type;
+		type m_type;
 		bool m_press;
 		int  m_delta;
 		int  m_time;
@@ -38,14 +38,14 @@ namespace input
 
 		void operator += (Handler handler);
 
-		CommandPtr getCommand() const {return m_command;}
+		command_ptr getCommand() const {return m_command;}
 
 	protected:
 		friend class Command;
 		virtual void notify (const Control &control);
 
 	private:
-		CommandPtr         m_command;
+		command_ptr         m_command;
 		std::list<Handler> m_handlers;
 	};
 
@@ -84,7 +84,7 @@ namespace input
 
 	protected:
 		friend class CCommand;
-		virtual void notify (const Control &rControl);
+		virtual void notify (const Control &c);
 
 	private:
 		bool m_is_active;
@@ -109,14 +109,14 @@ namespace input
 		std::list<KeyUpHandler> m_keyupHandlers;
 	};
 
-	// KeyDown
+	// key_down
 	//обьект-посредник "НАжатие клавиши"
-	class KeyDown: public Helper
+	class key_down: public Helper
 	{
 	public:
 		typedef boost::function<void()> KeyDownHandler;
-		KeyDown ();
-		KeyDown (const std::wstring &commandName);
+		key_down ();
+		key_down (const std::wstring &commandName);
 
 		void operator += (KeyDownHandler handler);
 
@@ -255,15 +255,15 @@ namespace input
 	//параметр для KeyStream::KeyStreamHandler
 	struct KeyStreamEvent
 	{
-		enum EType
+		enum type
 		{
 			KeyUp,
-			KeyDown,
+			key_down,
 			KeyDownAuto,
 			Char
 		};
 
-		EType m_type;
+		type m_type;
 		bool m_press;
 		int  m_key_code;
 		int  m_char;
@@ -280,7 +280,7 @@ namespace input
 
 	protected:
 		friend class Command;
-		virtual void notify (const Control &rControl);
+		virtual void notify (const Control &c);
 
 	private:
 		std::list<KeyStreamHandler> m_ksHandlers;

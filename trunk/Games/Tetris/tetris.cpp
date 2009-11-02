@@ -29,29 +29,29 @@ public:
 		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
 
 		m_camera = render::render_camera::create();
-		m_camera->setProjection(math::Math::PI/2, 1.0f, 1.0f, 100.0f);
-		render::TheCameraManager::get().addCamera(m_camera);
+		m_camera->set_projection(math::Math::PI/2, 1.0f, 1.0f, 100.0f);
+		render::TheCameraManager::get().add_camera(m_camera);
 
 		m_cTargetCamera = math::target_camera::create( m_camera );
-		m_cTargetCamera->setPosition(vUpVec,vEyePt,vLookatPt);
+		m_cTargetCamera->set_position(vUpVec,vEyePt,vLookatPt);
 
-		m_spFont = render::IFont::create(18, L"Courier New", render::IFont::Heavy);
-		m_spFontBig = render::IFont::create(40,L"Arial", render::IFont::Medium);
+		m_spFont = render::base_font::create(18, L"Courier New", render::base_font::Heavy);
+		m_spFontBig = render::base_font::create(40,L"Arial", render::base_font::Medium);
 
 		//инициализаци€ ввода
 		{
 			using namespace input;
 
-			Input::addCommand(L"Quit");
-			Input::addCommand(L"Left");
-			Input::addCommand(L"Right");
-			Input::addCommand(L"Down");
-			Input::addCommand(L"Drop");
+			Input::add_command(L"Quit");
+			Input::add_command(L"Left");
+			Input::add_command(L"Right");
+			Input::add_command(L"Down");
+			Input::add_command(L"Drop");
 
 			Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
 			Input::get_device(types::Keyboard)->get_control(types::KeyLeft)->bind(L"Left");
 			Input::get_device(types::Keyboard)->get_control(types::KeyRight)->bind(L"Right");
-			Input::get_device(types::Keyboard)->get_control(types::KeyDown)->bind(L"Down");
+			Input::get_device(types::Keyboard)->get_control(types::key_down)->bind(L"Down");
 			Input::get_device(types::Keyboard)->get_control(types::KeySpace)->bind(L"Drop");
 			
 			m_cEsc  .attach(L"Quit");
@@ -74,9 +74,9 @@ public:
 		//render::TheLightManager::get().setAmbientColor(math::Color(20, 20, 20, 255));
 		
 		render::PointLight *pLight = new render::PointLight("point1");
-		scene::TheScene::get().getRootFrame()->add(pLight);		
+		scene::TheScene::get().get_root()->add(pLight);		
 
-		pLight->setPosition(math::Vec3f(-10,-10,-10));				
+		pLight->set_position(math::Vec3f(-10,-10,-10));				
 		pLight->setDiffuse(math::Color(235, 0, 0, 255));
 		pLight->setRange(50.f);
 		pLight->setEnabled(true);
@@ -86,8 +86,8 @@ public:
 		for(int i=0;i < numboxes;i++) 
 		{
 			boxes[i] = render::model::create("gems1");
-			scene::TheScene::get().getRootFrame()->add(boxes[i]);
-			boxes[i]->setPosition(math::Vec3f((i%15)-7.f,(i/15)-7.f,0));
+			scene::TheScene::get().get_root()->add(boxes[i]);
+			boxes[i]->set_position(math::Vec3f((i%15)-7.f,(i/15)-7.f,0));
 			boxes[i]->setScale(scale);
 			boxes[i]->setVisible(false);
 		}
@@ -97,9 +97,9 @@ public:
 		for(int i=0;i < numboxesinablock;i++) 
 		{
 			blocks[i] = render::model::create("gems1");
-			scene::TheScene::get().getRootFrame()->add(blocks[i]);
+			scene::TheScene::get().get_root()->add(blocks[i]);
 			blocks[i]->setScale(scale);
-			blocks[i]->setPosition(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
+			blocks[i]->set_position(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 			blocks[i]->setVisible(false);
 		}
 
@@ -131,9 +131,9 @@ protected:
 			//render::CModel::frames_vector m_frames = blocks[i]->getFrames();
 			//size_t nNumFrames = m_frames.size();
 			//for(size_t j = 0; j < nNumFrames; j++)
-			//  m_frames[j]->setPosition(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
+			//  m_frames[j]->set_position(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 
-			blocks[i]->setPosition(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
+			blocks[i]->set_position(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 		}
 		for(int i=0;i<=3;i++) 
 			for(int j=0;j<=3;j++)
@@ -226,7 +226,7 @@ protected:
 	::render::font_ptr m_spFont,m_spFontBig;
 
 	//данные дл€ ввода
-	input::KeyDown      m_cEsc,m_cLeft,m_cRight,m_cDown,m_cSpace;
+	input::key_down      m_cEsc,m_cLeft,m_cRight,m_cDown,m_cSpace;
 	
 	//данные дл€ камеры
 	math::target_camera_ptr      m_cTargetCamera;      //контроллер камеры "нацеленна€ камера"

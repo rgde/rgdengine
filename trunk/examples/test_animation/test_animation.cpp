@@ -15,7 +15,7 @@ public:
 		m_spApp->add(core::task_ptr(new core::input_task(*m_spApp, 0)));
 		m_spApp->add(core::task_ptr(new core::game_task(*m_spApp, 2)));
 
-		m_spFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
+		m_spFont = render::base_font::create(20, L"Arial", render::base_font::Heavy);
 
 		m_pMesh = render::mesh_ptr(new render::mesh);
 		m_pMesh->load( "media\\meshes\\Box01.xml" );
@@ -31,19 +31,19 @@ public:
 			return ;
 		
 		m_controller.load( xml.FirstChild( "model" )->FirstChild( "node" )->FirstChild( "node" ) );
-		m_controller.atachToFrame( m_spFrame );
+		m_controller.atach( m_spFrame );
 		m_controller.start();
-		m_controller.setRate( 1.0f );
+		m_controller.set_rate( 1.0f );
 		m_controller.setLooped( true );
 
 		math::Vec3f vEyePt( 0.0f, 40, -400 );
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
 		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
 
-		m_camera->setProjection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 
 		m_spTargetCamera = math::target_camera::create(m_camera);
-		m_spTargetCamera->setPosition(vUpVec,vEyePt,vLookatPt);
+		m_spTargetCamera->set_position(vUpVec,vEyePt,vLookatPt);
 
 		{//инициализация ввода
 			using namespace input;
@@ -65,7 +65,7 @@ public:
 
 		m_spApp->run();
 
-		m_controller.atachToFrame(0);
+		m_controller.atach(0);
 	}
 
 protected:

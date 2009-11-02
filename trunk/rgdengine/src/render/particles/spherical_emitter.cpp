@@ -13,9 +13,9 @@ namespace particles
 	//-----------------------------------------------------------------------------------
 	spherical_emitter::spherical_emitter() : base_emitter(emitter::Spherical)
 	{
-		m_Angle.addKey(1, 45.0f);
-		m_Radius.addKey(0, 0);
-		m_Radius.addKey(1.0f, 9.0f);	
+		m_Angle.add_key(1, 45.0f);
+		m_Radius.add_key(0, 0);
+		m_Radius.add_key(1.0f, 9.0f);	
 
 		//addProperty(new property<math::FloatInterp>(m_Radius,			"Radius",	"FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_RadiusSpread,	"RadiusSpread",	"FloatInterp"));
@@ -33,9 +33,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void spherical_emitter::getParticle(particle& p)
+	void spherical_emitter::get_particle(particle& p)
 	{
-		base_emitter::getParticle(p);
+		base_emitter::get_particle(p);
 
 		float radius = m_Radius.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_RadiusSpread.getValue(m_fTimeNormalaized);
@@ -62,9 +62,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void spherical_emitter::debugDraw()
+	void spherical_emitter::debug_draw()
 	{
-		base_emitter::debugDraw();
+		base_emitter::debug_draw();
 
 		render::Line3dManager& line_manager = render::TheLine3dManager::get();
 
