@@ -8,17 +8,17 @@
 
 namespace render
 {
-	typedef boost::shared_ptr<class Material> PMaterial;
+	typedef boost::shared_ptr<class material> PMaterial;
 
-	class Material : public core::named_object//, game::dynamic_object
+	class material : public core::named_object//, game::dynamic_object
 	{
-		Material(math::Color amb, math::Color diff, math::Color spec,
+		material(math::Color amb, math::Color diff, math::Color spec,
 				  math::Color em, float power);
 
 		void load(const std::string& file_name);
 
 	public:
-		class MaterialMap
+		class material_map
 		{
 		public:
 			enum EDefaultTexture
@@ -28,7 +28,7 @@ namespace render
 				DefaultNormalMap = 3
 			};
 
-			MaterialMap(EDefaultTexture defaultTexture = White);
+			material_map(EDefaultTexture defaultTexture = White);
 
 			const texture_ptr& getTexture() const { return m_texture; }
 			void setTexture(const texture_ptr& texure);
@@ -65,7 +65,7 @@ namespace render
 			float m_time;
 		};
 
-		typedef std::map<std::string, MaterialMap> MaterialMaps;
+		typedef std::map<std::string, material_map> MaterialMaps;
 
 		static PMaterial create(math::Color amb = math::Black,
 				  math::Color diff = math::White,
@@ -75,7 +75,7 @@ namespace render
 
 		static PMaterial create(const std::string& file_name);
 
-		virtual ~Material();
+		virtual ~material();
 
 		bool isTransparent() const;
 
@@ -92,8 +92,8 @@ namespace render
 		float getSpecularPower()		const	{return m_fPower;}
 		void setSpecularPower(float p)			{m_fPower = p;}		
 
-		MaterialMap&		getMaterialMap( const std::string& type);
-		const MaterialMap& getMaterialMap( const std::string& type) const;
+		material_map&		getMaterialMap( const std::string& type);
+		const material_map& getMaterialMap( const std::string& type) const;
 
 		const texture_ptr&		getTextureMap( const std::string& type) const;
 
@@ -102,12 +102,12 @@ namespace render
 		
 		void update(float dt);
 
-		void  setEffect(const PEffect& pEffect);
-		const PDynamicBinder& getDynamicBinder();
+		void  setEffect(const effect_ptr& pEffect);
+		const dynamic_binder_ptr& getDynamicBinder();
 		effect::ITechnique* getTechnique() const;
 
 	protected:		
-		PDynamicBinder	m_pDynamicBinder;
+		dynamic_binder_ptr	m_pDynamicBinder;
 		effect::ITechnique* m_technique;
 		MaterialMaps	m_maps;
 		math::Color     m_diffuse;        // Diffuse color RGBA 

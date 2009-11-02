@@ -5,7 +5,7 @@
 
 namespace render 
 {
-	class Bone : public math::Frame, public render::rendererable 
+	class Bone : public math::frame, public render::rendererable 
 	{
 	public:
 		Bone();

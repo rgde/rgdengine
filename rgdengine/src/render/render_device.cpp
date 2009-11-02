@@ -12,77 +12,77 @@ extern LPDIRECT3DDEVICE9 g_pd3dDevice;
 
 namespace render
 {
-	Device::Device() : m_shaderFlags(0)
+	device_dx9::device_dx9() : m_shaderFlags(0)
 	{
         m_clear_color = math::Color(0,0,0,255);
-		//base::lmsg << "Device::Device()";
+		//base::lmsg << "device_dx9::device_dx9()";
 	}
 
 	struct  _deleter
 	{
-		void operator()(IDeviceObject *o)
+		void operator()(device_object *o)
 		{
 			delete o;
 		}
 	};
 
-	Device::~Device()
+	device_dx9::~device_dx9()
 	{
-		//base::lmsg << "Device::~Device()";
+		//base::lmsg << "device_dx9::~device_dx9()";
 		onLost();
 		//std::for_each(m_objects.begin(), m_objects.end(), _deleter());
 	}
 
 	struct  _reseter
 	{
-		void operator()(IDeviceObject *o)
+		void operator()(device_object *o)
 		{
 			o->onResetDevice();
 		}
 	};
 	struct  _loster
 	{
-		void operator()(IDeviceObject *o)
+		void operator()(device_object *o)
 		{
 			o->onLostDevice();
 		}
 	};
 
 
-	void Device::onLost()
+	void device_dx9::onLost()
 	{
 		std::for_each(m_objects.begin(), m_objects.end(), _loster());
 	}
 
-	void Device::onReset()
+	void device_dx9::onReset()
 	{
 		std::for_each(m_objects.begin(), m_objects.end(), _reseter());
 	}
 
-	void Device::addDeviceObject(IDeviceObject *o)
+	void device_dx9::addDeviceObject(device_object *o)
 	{
 		m_objects.push_back(o);
 	}
 
-	void Device::removeDeviceObject(IDeviceObject *o)
+	void device_dx9::removeDeviceObject(device_object *o)
 	{
 		m_objects.remove(o);
 	}
 
-	void Device::addStatistic(unsigned verts, unsigned tris)
+	void device_dx9::addStatistic(unsigned verts, unsigned tris)
 	{
 		m_verts += verts;
 		m_triangles += tris;
 	}
 
-	void Device::resetStats()
+	void device_dx9::resetStats()
 	{
 		m_verts = 0;
 		m_triangles = 0;
 	}
 
 	//--------------------------------------------------------------------------------------
-	math::Vec2f Device::getBackBufferSize()
+	math::Vec2f device_dx9::getBackBufferSize()
 	{
 		if (NULL == g_pd3dDevice)
 			return math::Vec2f(800, 600);
@@ -97,7 +97,7 @@ namespace render
 	}
 
 	//--------------------------------------------------------------------------------------
-	float Device::getFPS(float absoluteTime) const
+	float device_dx9::getFPS(float absoluteTime) const
 	{
 		static float framesPerSecond;
 		static float lastTime		= 0.0f;
@@ -117,7 +117,7 @@ namespace render
 		return framesPerSecond;
 	}
 
-	void Device::showWiredFloorGrid(float size, unsigned num, const math::Color &color)
+	void device_dx9::showWiredFloorGrid(float size, unsigned num, const math::Color &color)
 	{
 		float hsize	= size / 2;
 		float step	= size / num;
@@ -142,30 +142,30 @@ namespace render
 	}
 
 	//--------------------------------------------------------------------------------------
-	void Device::showFPS(const font_ptr& font)
+	void device_dx9::showFPS(const font_ptr& font)
 	{
 		WCHAR szFPSString[64];
 		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(core::TheTimer::get().get_absolute_time()));
 		font->render(szFPSString, math::Rect(1, 1, 400, 400), 0xFFFFFFFF, true);
 	}
 
-	void Device::showStatistics(const font_ptr& font)
+	void device_dx9::showStatistics(const font_ptr& font)
 	{
 		WCHAR szStatisticsString[512];
 		wsprintf(szStatisticsString, L"Tris: %d, Vertices: %d", m_triangles, m_verts);
 		font->render(szStatisticsString, math::Rect(1, 19, 400, 400), 0xFFFFFFFF, true);
 	}
 
-	IDeviceObject::IDeviceObject()
+	device_object::device_object()
 	{
-		//base::lmsg << "IDeviceObject::IDeviceObject()";
+		//base::lmsg << "device_object::device_object()";
 		TheDevice::get().addDeviceObject(this);
 		//m_bIsAtachedToDevice = true;
 	}
 
-	IDeviceObject::~IDeviceObject()
+	device_object::~device_object()
 	{
-		//base::lmsg << "IDeviceObject::~IDeviceObject()";
+		//base::lmsg << "device_object::~device_object()";
 		//if (m_bIsAtachedToDevice)
 		TheDevice::get().removeDeviceObject(this);
 	}

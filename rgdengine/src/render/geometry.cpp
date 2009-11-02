@@ -17,7 +17,7 @@ extern LPDIRECT3DDEVICE9       g_pd3dDevice;
 
 namespace render
 {
-    class GeometryImpl : public IGeometry, public IDeviceObject
+    class GeometryImpl : public base_geometry, public device_object
 	{
 		typedef core::com_ptr<IDirect3DVertexDeclaration9>	SPDirect3DVertexDeclaration9;
 		typedef core::com_ptr<IDirect3DVertexBuffer9>		SPDirect3DVertexBuffer9;
@@ -103,13 +103,13 @@ namespace render
 		SPDirect3DVertexBuffer9			m_spVB;// Buffer to hold vertices
 	};
 
-	IGeometry* IGeometry::create(const vertex::VertexDecl decl, bool isDynamic)
+	base_geometry* base_geometry::create(const vertex::VertexDecl decl, bool isDynamic)
 	{
 		return new GeometryImpl(decl, isDynamic);
 	}
 
 
-	class IndexedGeometryImpl : public IIndexedGeometry, public IDeviceObject
+	class IndexedGeometryImpl : public IIndexedGeometry, public device_object
 	{
 	public:
 		IndexedGeometryImpl(const vertex::VertexDecl decl, bool bUse32bitIndixes)

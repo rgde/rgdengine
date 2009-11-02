@@ -9,20 +9,20 @@
 
 namespace render
 {
-	FlameRenderer::FlameRenderer(const std::string &tex, const math::Color &color, const math::Vec3f &pos, const math::Vec2f &size, uint fps, const std::vector<math::frame_ptr> &vVector)
+	flame_fx::flame_fx(const std::string &tex, const math::Color &color, const math::Vec3f &pos, const math::Vec2f &size, uint fps, const std::vector<math::frame_ptr> &vVector)
 		: rendererable(100000)
 	{
 		hide();
 
-		m_renderInfo.pRenderFunc = boost::bind(&FlameRenderer::render, this);
+		m_renderInfo.pRenderFunc = boost::bind(&flame_fx::render, this);
 		{
-			io::ScopePathAdd p	("common/");
+			io::path_add_scoped p	("common/");
 			m_pParticleTexture = texture::create(tex);
 			std::string strTNFName	= io::helpers::get_shot_filename(tex) + ".tnf";;
 			readTNF(strTNFName);
 		}
 
-		m_pTank = particles::PPTank(new particles::renderer());
+		m_pTank = particles::renderer_ptr(new particles::renderer());
 		m_pTank->setTextureTiling(m_nRows, m_nTotalColumns, m_nTotalRows);
 
 		int nFramesNum								= (int)vVector.size();
@@ -49,7 +49,7 @@ namespace render
 		m_fFPS = float(fps);
 	}
 
-	void FlameRenderer::update(float dt)
+	void flame_fx::update(float dt)
 	{
 		if (m_nFrames == 1)
 			return;
@@ -80,25 +80,25 @@ namespace render
 		}
 	}
 
-	void FlameRenderer::render()
+	void flame_fx::render()
 	{
 		m_pTank->render(m_pParticleTexture, *scene::TheScene::get().getRootFrame().get());
 	}
 
 
-	PFlameRenderer FlameRenderer::create(const std::string &tex, const math::Color &color, const math::Vec3f &pos, const math::Vec2f &size, uint fps, const std::vector<math::frame_ptr> &vVector)
+	PFlameRenderer flame_fx::create(const std::string &tex, const math::Color &color, const math::Vec3f &pos, const math::Vec2f &size, uint fps, const std::vector<math::frame_ptr> &vVector)
 	{
-		return PFlameRenderer(new FlameRenderer(tex, color, pos, size, fps, vVector));
+		return PFlameRenderer(new flame_fx(tex, color, pos, size, fps, vVector));
 	}
 
 
-	PFlameRenderer FlameRenderer::create(const std::string &file_name, const std::vector<math::frame_ptr> &vVector)
+	PFlameRenderer flame_fx::create(const std::string &file_name, const std::vector<math::frame_ptr> &vVector)
 	{
 		//Load from XML
 		//TODO: Make function loadFromXML
 		TiXmlDocument flame;
 		{
-			io::ScopePathAdd p	("Flames/");
+			io::path_add_scoped p	("Flames/");
 			if (!base::load_xml(file_name, flame))
 			{
 				base::lerr << "Can't load flame \"" << file_name << "\".";
@@ -138,7 +138,7 @@ namespace render
 		value = temp;
 	}
 
-	void FlameRenderer::readTNF(const std::string &file_name)
+	void flame_fx::readTNF(const std::string &file_name)
 	{
 		m_nColumns = 1;
 		m_nRows = 1;

@@ -4,14 +4,14 @@
 
 namespace render
 {
-	Sprite::Sprite()
+	sprite::sprite()
 		: spin(0), 
 		uPriority(0), 
 		rect(0, 0, 1, 1)
 	{
 	}
 
-	Sprite::Sprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
+	sprite::sprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
 		const math::Color& color_,render::texture_ptr pTexture_,
 		float spin_, const math::Rect& rect_,
 		unsigned long uPriority_) 
@@ -50,13 +50,13 @@ namespace render
 	{
 	}
 
-	void SpriteManager::addSprite(const Sprite &pSprite)
+	void SpriteManager::addSprite(const sprite &pSprite)
 	{
 		m_bUpdated = false;
 		m_sprites.push_back(pSprite);
 	}
 
-	bool sortPred (const Sprite& pSprite1, Sprite& pSprite2)
+	bool sortPred (const sprite& pSprite1, sprite& pSprite2)
 	{
 		return (pSprite1.uPriority < pSprite2.uPriority);
 	}
@@ -106,7 +106,7 @@ namespace render
 		for (SpritesIter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 		{
 			// Срайты масштабируются только при записи в буфер
-			const Sprite &sprite	= *it;
+			const sprite &sprite	= *it;
 			const math::Color &color= sprite.color;
 			const math::Rect &rect	= sprite.rect;
 			// Сразу же масштабируем позицию и размер
@@ -179,7 +179,7 @@ namespace render
 			texture_ptr cur_tex = m_sprites[0].texture;
 			for (uint i = 0; i < m_sprites.size(); ++i)
 			{
-				Sprite &sprite = m_sprites[i];
+				sprite &sprite = m_sprites[i];
 
 				// если = то отрисовать
 				if (cur_tex != sprite.texture)

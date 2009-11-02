@@ -7,7 +7,7 @@ namespace math
     typedef boost::shared_ptr<class CFlyCamera> PFlyCamera;
 
     //контроллер свободной(летающей) камеры
-    class CFlyCamera: public BaseCameraController
+    class CFlyCamera: public base_camera_controller
     {
         CFlyCamera(camera_ptr pCamera);
 

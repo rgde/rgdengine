@@ -329,7 +329,7 @@ namespace core
 
 			if(!initDevice(deviceInfo))
 			{
-				base::lerr<<"CDXRenderDevice::initDevice(): Can't init D3D Device";
+				base::lerr<<"CDXRenderDevice::initDevice(): Can't init D3D device_dx9";
 				exit(1);//is it right?
 			}
 
@@ -349,7 +349,7 @@ namespace core
 			V(g_pd3dDevice->SetRenderState( D3DRS_LIGHTING, FALSE ));
 			V(g_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE ));
 		
-			// Device state would normally be set here
+			// device_dx9 state would normally be set here
 			return;// S_OK;
 		}
 

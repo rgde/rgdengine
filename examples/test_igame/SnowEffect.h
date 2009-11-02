@@ -6,7 +6,7 @@ namespace game
 {
 	namespace effects
 	{
-		struct SnowSprite : public render::Sprite
+		struct SnowSprite : public render::sprite
 		{
 			void init();
 

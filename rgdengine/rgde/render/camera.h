@@ -17,7 +17,7 @@ namespace render
 	class render_camera;
 	typedef boost::intrusive_ptr<class render_camera> camera_ptr;
 
-	class render_camera : public math::BaseCamera
+	class render_camera : public math::base_camera
 	{
 	public:		
 		~render_camera();

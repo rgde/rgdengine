@@ -40,7 +40,7 @@ public:
 
 
 		// Camera init
-		m_pCamera = new math::BaseCamera;		
+		m_pCamera = new math::base_camera;		
 
 		math::Vec3f vEyePt( 0.0f, 10, -30 );
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );

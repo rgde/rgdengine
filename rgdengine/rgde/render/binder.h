@@ -3,7 +3,7 @@
 // @date 11.06.2006
 // email: sidorenko.alexander@gmail.com
 // project: RGDE
-// description: Binder class. See class description.
+// description: binder class. See class description.
 // example of use:
 //
 // texture_ptr getTexture(int n)
@@ -22,11 +22,11 @@
 //
 // void testBinder()
 // {
-//    typedef Binder<int> CBinder;
+//    typedef binder<int> CBinder;
 //    CBinder* binder = new CBinder(pEffect);//pEffect is some non-null
-//                                           //PEffect pointer
+//                                           //effect_ptr pointer
 //
-//    //Functor parameter. Binder calls taken getter with taken int
+//    //Functor parameter. binder calls taken getter with taken int
 //    //parameter and setups result to effect.
 //    binder->addParameter<texture_ptr>(CBinder::Types<texture_ptr>::getter(
 //                                           boost::bind(&getTexture, _1)),
@@ -34,7 +34,7 @@
 //
 //    SSome some;
 //
-//    //Another functor parameter. Binder calls taken ParamTypeGetFunction 
+//    //Another functor parameter. binder calls taken ParamTypeGetFunction 
 //    //without parameters (in this example only, becose SSome::getColor
 //    //doesn't need any parameters) and setups result to effect. Difference
 //    //is that ParamTypeGetFunction sometimes generates warning "Returning
@@ -66,14 +66,14 @@
 
 namespace render
 {
-	/** Binder template class.
-	  * Binder is used to bind some parameters to effect. See example of use
+	/** binder template class.
+	  * binder is used to bind some parameters to effect. See example of use
 	  * in the beginning of the file. FType is parameter type for getter
-	  * and ParamTypeGetFunction. Binder calls getter (or 
+	  * and ParamTypeGetFunction. binder calls getter (or 
 	  * ParamTypeGetFunction) with Types<FType>::ParamType parameter...
 	  */
 	template <class FType>
-	class Binder
+	class binder
 	{
 	public:
 
@@ -97,19 +97,19 @@ namespace render
 
 		typedef boost::function<void(typename Types<FType>::ParamType)> Functor;
 
-		typedef boost::shared_ptr<Binder> PBinder;
+		typedef boost::shared_ptr<binder> binder_ptr;
 
-		static PBinder create(const PEffect& pEffect)
+		static binder_ptr create(const effect_ptr& pEffect)
 		{
 			if(pEffect)
-				return PBinder(new Binder(pEffect));
+				return binder_ptr(new binder(pEffect));
 			else
-				return PBinder();
+				return binder_ptr();
 		}
 
-		virtual ~Binder() { }
+		virtual ~binder() { }
 
-		const PEffect& getEffect() const { return m_effect; }
+		const effect_ptr& getEffect() const { return m_effect; }
 
 		void setupParameters(typename Types<FType>::ParamType param) const
 		{
@@ -127,7 +127,7 @@ namespace render
 			if(NULL == param)
 				return false;
 
-			addFunctor(Binder::createFunctor<PType>(val, param));
+			addFunctor(binder::createFunctor<PType>(val, param));
 
 			return true;
 		}
@@ -141,7 +141,7 @@ namespace render
 			if(NULL == param)
 				return false;
 
-			addFunctor(Binder::createFunctor<PType>(f, param));
+			addFunctor(binder::createFunctor<PType>(f, param));
 
 			return true;
 		}
@@ -155,13 +155,13 @@ namespace render
 			if(NULL == param)
 				return false;
 
-			addFunctor(Binder::createFunctor<PType>(f, param));
+			addFunctor(binder::createFunctor<PType>(f, param));
 
 			return true;
 		}
 
 	private:
-		Binder(const PEffect& pEffect)
+		binder(const effect_ptr& pEffect)
 			: m_effect(pEffect)
 		{
 		}
@@ -215,19 +215,19 @@ namespace render
 
 		typedef std::vector<Functor> Functors;
 
-		PEffect  m_effect;
+		effect_ptr  m_effect;
 		Functors m_functors;
 
 	};
 	//Dynamic binder is used to setup 'dynamic' parameters,
 	//i.e. parameters which change from object to object.
-	typedef Binder<math::frame_ptr> DynamicBinder;
-	typedef DynamicBinder::PBinder PDynamicBinder;
+	typedef binder<math::frame_ptr> dymamic_binder_ptr;
+	typedef dymamic_binder_ptr::binder_ptr dynamic_binder_ptr;
 
 	//Static binder is used to setup 'static' parameters,
 	//i.e. parameters which are the same for all objects.
 	//We don't need any parameters for this binder so let's
 	//use int.
-	typedef Binder<int> StaticBinder;
-	typedef StaticBinder::PBinder PStaticBinder;
+	typedef binder<int> StaticBinder;
+	typedef StaticBinder::binder_ptr PStaticBinder;
 }

@@ -32,7 +32,7 @@ namespace render
 		Flare temp_flare	= flare;
 		if ((temp_flare.texture == NULL) && (!strTextureName.empty()))
 		{
-			io::ScopePathAdd p	("common/");
+			io::path_add_scoped p	("common/");
 			temp_flare.texture = render::texture::create(strTextureName);
 		}
 		m_flares.push_back(temp_flare);
@@ -40,7 +40,7 @@ namespace render
 
 	inline void LensFlares::progressFlare(Flare &flare, const math::Vec2f &toLightVector, float fToLightLength, float fAngle, float fAlphaScale)
 	{
-		Sprite sprite;
+		sprite sprite;
 		sprite.color = flare.color;
 		sprite.color.a = (char)((float)sprite.color.a * fAlphaScale);
 		math::Vec2f screenCenter= math::Vec2f(400.0f, 300.0f);
@@ -81,7 +81,7 @@ namespace render
 
 		if (!base::load_xml(file_name, lens))
 		{
-			io::ScopePathAdd p	("LensFlares/");
+			io::path_add_scoped p	("LensFlares/");
 			if (!base::load_xml(file_name, lens))
 			{
 				base::lerr << "Can't load Lens Flares effect \"" << file_name << "\".";

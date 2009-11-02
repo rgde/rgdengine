@@ -30,8 +30,8 @@ namespace input
         void Done();
 
         //получить устройство
-        Device* get_device(types::device      eDeviceName, int indx=0);
-        Device* get_device(const std::wstring &sDeviceName, int indx=0);
+        device_dx9* get_device(types::device      eDeviceName, int indx=0);
+        device_dx9* get_device(const std::wstring &sDeviceName, int indx=0);
 
         //есть ли такое устройство
         bool isDevicePresent(types::device      eDeviceName, int indx=0) const;
@@ -61,12 +61,12 @@ namespace input
 		void mProcess (DIDEVICEOBJECTDATA data);
 
     private:
-        std::list<Device*> m_devices;
+        std::list<device_dx9*> m_devices;
         std::list<CommandPtr> m_commands;
 		
 		//вспомогательные переменные для более быстрого доступа
-        Device*            keyboard; 
-        Device*            mouse;    
+        device_dx9*            keyboard; 
+        device_dx9*            mouse;    
 
         bool m_bInit;
 

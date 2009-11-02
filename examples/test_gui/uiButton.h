@@ -9,7 +9,7 @@ namespace ui
 
 		render::font_ptr m_spFont;
 
-		render::Sprite sprite;
+		render::sprite sprite;
 		
 		bool m_pressed;
 		bool m_wait;

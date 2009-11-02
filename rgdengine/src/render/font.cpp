@@ -57,7 +57,7 @@ namespace render
 		render(text, rect, color, isDrawShadow, Top | Left | WordBreak);
 	}	
 
-	class FontImpl : public IFont, public IDeviceObject
+	class FontImpl : public IFont, public device_object
 	{
 		int				m_nHeight;
 		std::wstring	m_name;

@@ -10,7 +10,7 @@
 
 namespace render
 {
-	//Material
+	//material
 	const std::string MaterialDiffuseColorParamName  = "MATERIALDIFFUSE";
 	const std::string MaterialAmbientColorParamName  = "MATERIALAMBIENT";
 	const std::string MaterialSpecularColorParamName = "MATERIALSPECULAR";

@@ -24,12 +24,12 @@ namespace math
 {
 
 	/**
-	class TInterpolator
+	class interpolator
 	used to give smooth linear interpolation different Keys
 	at given parameter (time) t
 	*/
 	template<class T = float>
-	class TInterpolator : public io::serialized_object
+	class interpolator : public io::serialized_object
 	{
 	public:
 		struct Key : public io::serialized_object
@@ -57,7 +57,7 @@ namespace math
 		typedef std::vector<Key> Keys;
 
 	public:
-		TInterpolator():m_bSorted(false) {}
+		interpolator():m_bSorted(false) {}
 
 		T operator()(float t)
 		{
@@ -188,9 +188,9 @@ namespace math
 		mutable Keys m_vKeys;
 	};
 
-	typedef TInterpolator<int>		IntInterp;
-	typedef TInterpolator<float>	FloatInterp;
-	typedef TInterpolator<double>	DoubleInterp;
+	typedef interpolator<int>		IntInterp;
+	typedef interpolator<float>	FloatInterp;
+	typedef interpolator<double>	DoubleInterp;
 
 
 	template<class T = float, int Size = 3>
@@ -222,12 +222,12 @@ namespace math
 				m_vComponents[i].addKey(pos, v[i]);
 		}
 
-		TInterpolator<T>&  getComponent(int component)
+		interpolator<T>&  getComponent(int component)
 		{
             return m_vComponents[component];
 		}
 
-		const TInterpolator<T>&  getComponent(int component) const
+		const interpolator<T>&  getComponent(int component) const
 		{
 			return m_vComponents[component];
 		}
@@ -255,7 +255,7 @@ namespace math
 		}
 
 	private:
-		std::vector<TInterpolator<T> > m_vComponents;
+		std::vector<interpolator<T> > m_vComponents;
 	};
 
 	typedef TVectorInterpolator<float, 3>	Vec3Interp;

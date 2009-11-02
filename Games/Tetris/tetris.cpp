@@ -11,7 +11,7 @@ class My : public game::dynamic_object
 {
 public:
 	// теперь использовать вместо массива моделей
-	struct Stone
+	struct stone
 	{
 		math::frame_ptr frame;
 		uint model_index;		
@@ -85,7 +85,7 @@ public:
 		math::Vec3f scale(0.012f,0.012f,0.012f);
 		for(int i=0;i < numboxes;i++) 
 		{
-			boxes[i] = render::Model::create("gems1");
+			boxes[i] = render::model::create("gems1");
 			scene::TheScene::get().getRootFrame()->add(boxes[i]);
 			boxes[i]->setPosition(math::Vec3f((i%15)-7.f,(i/15)-7.f,0));
 			boxes[i]->setScale(scale);
@@ -96,7 +96,7 @@ public:
 
 		for(int i=0;i < numboxesinablock;i++) 
 		{
-			blocks[i] = render::Model::create("gems1");
+			blocks[i] = render::model::create("gems1");
 			scene::TheScene::get().getRootFrame()->add(blocks[i]);
 			blocks[i]->setScale(scale);
 			blocks[i]->setPosition(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
@@ -128,10 +128,10 @@ protected:
 		{
 			blocks[i]->setVisible(false);
 
-			//render::CModel::Frames m_vFrames = blocks[i]->getFrames();
-			//size_t nNumFrames = m_vFrames.size();
+			//render::CModel::frames_vector m_frames = blocks[i]->getFrames();
+			//size_t nNumFrames = m_frames.size();
 			//for(size_t j = 0; j < nNumFrames; j++)
-			//  m_vFrames[j]->setPosition(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
+			//  m_frames[j]->setPosition(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 
 			blocks[i]->setPosition(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 		}
@@ -208,11 +208,11 @@ protected:
 		bl->rotate();
 	}
 
-	void renderStone(const Stone& stone)
+	void renderStone(const stone& stone)
 	{
 		render::model_ptr& model = m_models[stone.model_index]; // следить что бы не было выхода за пределы вектора
 		render::mesh_ptr& mesh = model->getMeshes()[0]; // мы знаем что у нас только 1 меш в модели. но нет проблем так сделать и для других вариантов
-		render::Mesh::PGeometry geom = mesh->getGeometry();
+		render::mesh::PGeometry geom = mesh->getGeometry();
 		render::PMaterial& material = mesh->getMaterials()[0];		
 
 		//material->bind();
@@ -220,7 +220,7 @@ protected:
 
 protected:
 	std::vector<render::model_ptr> m_models; // тут храним исходные модели камушков
-	render::PEffect				m_effect;
+	render::effect_ptr				m_effect;
 
 	math::camera_ptr       m_camera;            //указатель на камеру
 	::render::font_ptr m_spFont,m_spFontBig;
@@ -237,8 +237,8 @@ protected:
 	render::model_ptr blocks[numboxesinablock];
 
 	// Надо сделать так:
-	//Stone boxes[numboxes];
-	//Stone blocks[numboxesinablock];
+	//stone boxes[numboxes];
+	//stone blocks[numboxesinablock];
 
 	boost::shared_ptr<CBlock> bl;
 };

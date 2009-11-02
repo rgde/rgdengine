@@ -8,7 +8,7 @@
 
 namespace render
 {
-	void Material::MaterialMap::setTexture(const texture_ptr& texture)
+	void material::material_map::setTexture(const texture_ptr& texture)
 	{
 		if (texture != NULL)
 		{
@@ -23,7 +23,7 @@ namespace render
 		}
 	}
 
-	void Material::MaterialMap::update(float dt)
+	void material::material_map::update(float dt)
 	{
 		m_time += dt;
 
@@ -42,15 +42,15 @@ namespace render
 		m_matrix *= tempMatrix;
 	}
 
-	texture_ptr& getDefaultTextureByType(Material::MaterialMap::EDefaultTexture defaultTexture)
+	texture_ptr& getDefaultTextureByType(material::material_map::EDefaultTexture defaultTexture)
 	{
 		switch (defaultTexture)
 		{
-		case Material::MaterialMap::Black:
+		case material::material_map::Black:
 			return TheRenderManager::get().getBlackTexture();
-		case Material::MaterialMap::White:
+		case material::material_map::White:
 			return TheRenderManager::get().getWhiteTexture();
-		case Material::MaterialMap::DefaultNormalMap:
+		case material::material_map::DefaultNormalMap:
 			return TheRenderManager::get().getDefaultNormalMap();
 		}
 
@@ -58,7 +58,7 @@ namespace render
 		return empti_texture_ptr;
 	}
 
-	Material::MaterialMap::MaterialMap(EDefaultTexture defaultTexture)
+	material::material_map::material_map(EDefaultTexture defaultTexture)
 	{
 		m_pDefaultTexture = getDefaultTextureByType(defaultTexture);
 		texture_ptr pNullTexture;
@@ -68,39 +68,39 @@ namespace render
 		m_time = 0.0;
 	}
 
-	PMaterial Material::create(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
+	PMaterial material::create(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
 	{
-		return PMaterial(new Material(amb, diff, spec, em, power));
+		return PMaterial(new material(amb, diff, spec, em, power));
 	}
 
-	PMaterial Material::create(const std::string& file_name)
+	PMaterial material::create(const std::string& file_name)
 	{
-		PMaterial mat = Material::create();
+		PMaterial mat = material::create();
 		mat->load(file_name);
 		return mat;
 	}
 
-	Material::Material(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
+	material::material(math::Color amb, math::Color diff, math::Color spec, math::Color em, float power)
 		: m_ambient(amb),
 		  m_diffuse(diff),
 		  m_specular(spec),
 		  m_emissive(em),
 		  m_fPower(power)
 	{
-		m_maps["diffuse"] = MaterialMap();
-		m_maps["illumination"] = MaterialMap(MaterialMap::Black);
-		m_maps["reflection"] = MaterialMap(MaterialMap::Black);
-		m_maps["bump"] = MaterialMap(MaterialMap::DefaultNormalMap);
-		m_maps["lightmap"] = MaterialMap();
-		//base::lmsg << "Material::Material()";
+		m_maps["diffuse"] = material_map();
+		m_maps["illumination"] = material_map(material_map::Black);
+		m_maps["reflection"] = material_map(material_map::Black);
+		m_maps["bump"] = material_map(material_map::DefaultNormalMap);
+		m_maps["lightmap"] = material_map();
+		//base::lmsg << "material::material()";
 	}
 
-	Material::~Material()
+	material::~material()
 	{
-		//base::lmsg << "Material::~Material()";
+		//base::lmsg << "material::~material()";
 	}
 
-	bool Material::isTransparent() const
+	bool material::isTransparent() const
 	{
 		bool texHasAlpha	= false;
 		MaterialMaps::const_iterator it = m_maps.find("diffuse");
@@ -123,7 +123,7 @@ namespace render
 		return id;
 	}
 
-	TiXmlElement * assignMap(TiXmlElement *elem, std::string name, std::vector<texture_ptr> &textures, Material::MaterialMaps &maps)
+	TiXmlElement * assignMap(TiXmlElement *elem, std::string name, std::vector<texture_ptr> &textures, material::MaterialMaps &maps)
 	{
 		TiXmlElement *pMapEl= elem->FirstChildElement(name);
 		if (NULL == pMapEl)
@@ -176,14 +176,14 @@ namespace render
 		}
 	}
 
-	void Material::load(const std::string& file_name)
+	void material::load(const std::string& file_name)
 	{
 		m_file_name = file_name;
 		base::lmsg << "loading material: " << "\"" << file_name << "\"";
 
 		TiXmlDocument mat;
 		{
-			io::ScopePathAdd p	("Materials/");
+			io::path_add_scoped p	("Materials/");
 			if (!base::load_xml(file_name, mat))
 			{
 				base::lerr << "Не могу загрузить файл материала!" << "\"" << file_name << "\"";
@@ -220,36 +220,36 @@ namespace render
 		m_fPower = 255.0f;
 	}
 
-	const Material::MaterialMap & Material::getMaterialMap(const std::string &type) const
+	const material::material_map & material::getMaterialMap(const std::string &type) const
 	{
 		MaterialMaps::const_iterator it	= m_maps.find(type);
 		return it->second;
 	}
 
-	Material::MaterialMap & Material::getMaterialMap(const std::string &type)
+	material::material_map & material::getMaterialMap(const std::string &type)
 	{
 		MaterialMaps::iterator it	= m_maps.find(type);
 		return it->second;
 	}
 
-	const texture_ptr & Material::getTextureMap(const std::string &type) const
+	const texture_ptr & material::getTextureMap(const std::string &type) const
 	{
 		return getMaterialMap(type).getTexture();
 	}
 
-	void Material::update(float dt)
+	void material::update(float dt)
 	{
 		MaterialMaps::iterator it	= m_maps.begin();
 		for (; it != m_maps.end(); it++)
 			it->second.update(dt);
 	}
 
-	void Material::setEffect(const PEffect& pEffect)
+	void material::setEffect(const effect_ptr& pEffect)
 	{
 		if(m_technique)
 			m_technique = NULL;
 		if(m_pDynamicBinder)
-			m_pDynamicBinder = PDynamicBinder();
+			m_pDynamicBinder = dynamic_binder_ptr();
 
 		std::string techName;
 
@@ -261,14 +261,14 @@ namespace render
 			base::lwrn<<"Technique \""<<techName<<"\" not found in effect \""<<pEffect->get_name()<<"\".";
 	}
 
-	const PDynamicBinder& Material::getDynamicBinder()
+	const dynamic_binder_ptr& material::getDynamicBinder()
 	{
 		if(!m_pDynamicBinder)
 			setEffect(TheRenderManager::get().getDefaultEffect());
 		return m_pDynamicBinder;
 	}
 
-	effect::ITechnique* Material::getTechnique() const
+	effect::ITechnique* material::getTechnique() const
 	{
 		return m_technique;
 	}

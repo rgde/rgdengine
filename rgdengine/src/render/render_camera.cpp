@@ -111,7 +111,7 @@ namespace render
 		if (clearFlags)
 			V(g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, m_clear_color.color, m_clear_depth, 0));
 	
-		BaseCamera::activate();
+		base_camera::activate();
 	}
 
 	void render_camera::setDepthStencilTarget(const PRenderTexture& pTarget, float clearDepth)

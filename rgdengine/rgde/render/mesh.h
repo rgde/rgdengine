@@ -6,7 +6,7 @@
 
 namespace render
 {
-	class Mesh : public math::Frame
+	class mesh : public math::frame
 				, public render::rendererable
 	{
 	public:
@@ -20,13 +20,13 @@ namespace render
 			unsigned int nPrimitiveCount;
 		};
 
-		typedef TIndexedGeometry<vertex::MeshVertex, false> Geometry;
+		typedef indexed_geometry<vertex::MeshVertex, false> Geometry;
 		typedef boost::shared_ptr<Geometry>					PGeometry;
 		typedef std::vector<PMaterial>						MaterialList;
-		typedef std::vector<IndexedSubMeshInfo>			SubMeshes;
+		typedef std::vector<IndexedSubMeshInfo>			sub_meshes;
 
-		Mesh();
-		~Mesh();
+		mesh();
+		~mesh();
 
 		void		  load(const std::string& file_name); // load from xml file
 
@@ -38,9 +38,9 @@ namespace render
 
 		PrimitiveType getPrimitiveType() const	{return m_ePrimType;}
 		unsigned int  getNumPrimitives() const	{return m_nNumPrimitives;}
-		unsigned int  getVertexNum()const;
+		unsigned int  get_num_verts()const;
 
-		void setEffect(PEffect spShader);
+		void setEffect(effect_ptr spShader);
 
 	protected:
 		virtual const SRenderableInfo&	getRenderableInfo() const;
@@ -49,7 +49,7 @@ namespace render
 	protected:
 		std::string		m_file_name;
 		MaterialList	m_materials;
-		SubMeshes		m_sub_meshes;
+		sub_meshes		m_sub_meshes;
 		PGeometry		m_geometry;
 		unsigned int	m_vertex_num;
 
@@ -57,5 +57,5 @@ namespace render
 		PrimitiveType	m_ePrimType;
 	};
 
-	typedef boost::intrusive_ptr<Mesh> mesh_ptr;
+	typedef boost::intrusive_ptr<mesh> mesh_ptr;
 }

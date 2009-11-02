@@ -129,7 +129,7 @@ namespace render
 	//	};
 
 	//	//std::string strLightModelName = lightTypeToStr(eType);
-	//	//model_ptr pModel = Model::create(std::wstring(strLightModelName.begin(), strLightModelName.end()));
+	//	//model_ptr pModel = model::create(std::wstring(strLightModelName.begin(), strLightModelName.end()));
 	//	//m_models.push_back(pModel);
 
 	//	//pLight->getParentFrame()->add(pModel->getRoot());
@@ -265,7 +265,7 @@ namespace render
 
 	//void LightManager::readModelNames(const std::string &strConfigName)
 	//{
-	//	io::ScopePathAdd("Common/");
+	//	io::path_add_scoped("Common/");
 
 	//	TiXmlDocument XmlConfig;
 	//	if(!base::load_xml(strConfigName, XmlConfig))

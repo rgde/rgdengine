@@ -9,19 +9,19 @@
 
 namespace render
 {
-	Mesh::Mesh()
+	mesh::mesh()
 		: rendererable(10)
 	{
 		m_renderInfo.pFrame = this;//m_frame;
-		m_renderInfo.pRenderFunc = boost::bind(&Mesh::render, this);
+		m_renderInfo.pRenderFunc = boost::bind(&mesh::render, this);
 		m_renderInfo.bHaveVolumes = true;
 	}
 
-	Mesh::~Mesh()
+	mesh::~mesh()
 	{
 	}
 
-	void Mesh::render()
+	void mesh::render()
 	{
 		//base::lwrn << "rendering mesh: " << m_file_name;
 
@@ -40,7 +40,7 @@ namespace render
 		}
 		else
 		{
-			for (SubMeshes::iterator it = m_sub_meshes.begin(); it != m_sub_meshes.end(); ++it)
+			for (sub_meshes::iterator it = m_sub_meshes.begin(); it != m_sub_meshes.end(); ++it)
 			{
 				IndexedSubMeshInfo &minfo	= *it;
 				PMaterial m					= mlist[minfo.nMaterialIndex];
@@ -50,10 +50,10 @@ namespace render
 		}
 	}
 
-	unsigned int Mesh::getVertexNum()const
+	unsigned int mesh::get_num_verts()const
 	{
 		unsigned int ret= 0;
-		for (SubMeshes::const_iterator it = m_sub_meshes.begin(); it != m_sub_meshes.end(); ++it)
+		for (sub_meshes::const_iterator it = m_sub_meshes.begin(); it != m_sub_meshes.end(); ++it)
 		{
 			ret += (*it).nNumVertices;
 		}
@@ -62,20 +62,20 @@ namespace render
 		return ret;
 	}
 
-	void Mesh::load(const std::string& file_name)
+	void mesh::load(const std::string& file_name)
 	{
 		m_file_name = file_name;
 		m_geometry = PGeometry(new Geometry());
 
 		io::CFileSystem &fs	= io::TheFileSystem::get();
-		io::ScopePathAdd p	("Meshes/");
+		io::path_add_scoped p	("meshes_vector/");
 
 		m_geometry->load(file_name);
 
 		m_geometry->lockIB();
 		m_geometry->unlockIB();
 
-		m_vertex_num = m_geometry->getVertexNum();
+		m_vertex_num = m_geometry->get_num_verts();
 		m_geometry->lockVB();
 		m_geometry->unlockVB();
 
@@ -90,7 +90,7 @@ namespace render
 	}
 
 	//Neonic: octree
-	void Mesh::updateTree( bool NeedFullUpdate )
+	void mesh::updateTree( bool NeedFullUpdate )
 	{
 		//if( !getRoot() )
 		//{
@@ -135,7 +135,7 @@ namespace render
 		//}
 	};
 
-	void Mesh::setEffect(PEffect spShader)
+	void mesh::setEffect(effect_ptr spShader)
 	{
 		m_renderInfo.spShader = spShader;
 		MaterialList::iterator it;
@@ -145,7 +145,7 @@ namespace render
 		}
 	}
 
-	const SRenderableInfo & Mesh::getRenderableInfo() const
+	const SRenderableInfo & mesh::getRenderableInfo() const
 	{
 		if (m_materials.size() > 0)
 			m_renderInfo.spMaterial = *m_materials.begin();

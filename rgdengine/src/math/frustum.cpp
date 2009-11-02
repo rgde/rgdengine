@@ -10,7 +10,7 @@ namespace math
 
 	// We create an enum of the sides so we don't have to call each side 0 or 1.
 	// This way it makes it more understandable and readable when dealing with frustum sides.
-	enum FrustumSide
+	enum frustum_plane
 	{
 		RIGHT	= 0,		// The RIGHT side of the frustum
 		LEFT	= 1,		// The LEFT	 side of the frustum
@@ -22,7 +22,7 @@ namespace math
 
 	// Like above, instead of saying a number for the ABC and D of the plane, we
 	// want to be more descriptive.
-	enum PlaneData
+	enum plane_data
 	{
 		A = 0,				// The X value of the plane's normal
 		B = 1,				// The Y value of the plane's normal
@@ -35,7 +35,7 @@ namespace math
 	///////	This normalizes a plane (A side) from a given frustum.
 	///////
 	/////////////////////////////////// NORMALIZE PLANE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-	void NormalizePlane(float frustum[6][4], int side)
+	void normalize_plane(float frustum[6][4], int side)
 	{
 		// Here we calculate the magnitude of the normal to the plane (point A B C)
 		// Remember that (A, B, C) is that same thing as the normal's (X, Y, Z).
@@ -52,7 +52,7 @@ namespace math
 		frustum[side][D] /= magnitude; 
 	}
 
-	Frustum::Frustum()
+	frustum::frustum()
 	{
 	}
 
@@ -61,9 +61,9 @@ namespace math
 	///////	This extracts our frustum from the projection and modelview matrix.
 	///////
 	/////////////////////////////////// CALCULATE FRUSTUM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-	void Frustum::CalculateFrustum(const BaseCamera& pCam)
+	void frustum::CalculateFrustum(const base_camera& pCam)
 	{    
-		//ModelViewerCamera* g_Camera	 = reinterpret_cast<ModelViewerCamera*>(dx::Device::get()->get_curent_camera());
+		//ModelViewerCamera* g_Camera	 = reinterpret_cast<ModelViewerCamera*>(dx::device_dx9::get()->get_curent_camera());
 		//D3DXMATRIX &mProj	= *g_Camera->GetProjMatrix();
 		//D3DXMATRIX &mView	= *g_Camera->GetViewMatrix();
 		math::Matrix44f mProj = pCam.getProjMatrix();
@@ -86,7 +86,7 @@ namespace math
 		// Now that we have a normal (A,B,C) and a distance (D) to the plane,
 		// we want to normalize that normal and distance.
 		// Normalize the RIGHT side
-		NormalizePlane(m_Frustum, RIGHT);
+		normalize_plane(m_Frustum, RIGHT);
 
 		// This will extract the LEFT side of the frustum
 		m_Frustum[LEFT][A] = clip[ 3] + clip[ 0];
@@ -95,7 +95,7 @@ namespace math
 		m_Frustum[LEFT][D] = clip[15] + clip[12]; 		
 		
 		// Normalize the LEFT side
-		NormalizePlane(m_Frustum, LEFT);
+		normalize_plane(m_Frustum, LEFT);
 
 		// This will extract the BOTTOM side of the frustum
 		m_Frustum[BOTTOM][A] = clip[ 3] + clip[ 1];
@@ -104,7 +104,7 @@ namespace math
 		m_Frustum[BOTTOM][D] = clip[15] + clip[13]; 
 
 		// Normalize the BOTTOM side
-		NormalizePlane(m_Frustum, BOTTOM); 	
+		normalize_plane(m_Frustum, BOTTOM); 	
 		
 		// This will extract the TOP side of the frustum
 		m_Frustum[TOP][A] = clip[ 3] - clip[ 1];
@@ -113,7 +113,7 @@ namespace math
 		m_Frustum[TOP][D] = clip[15] - clip[13];
 
 		// Normalize the TOP side
-		NormalizePlane(m_Frustum, TOP);
+		normalize_plane(m_Frustum, TOP);
 		
 		// This will extract the BACK side of the frustum
 		m_Frustum[BACK][A] = clip[ 3] - clip[ 2];
@@ -122,7 +122,7 @@ namespace math
 		m_Frustum[BACK][D] = clip[15] - clip[14];
 
 		// Normalize the BACK side
-		NormalizePlane(m_Frustum, BACK);
+		normalize_plane(m_Frustum, BACK);
 
 		// This will extract the FRONT side of the frustum
 		m_Frustum[FRONT][A] = clip[ 3] + clip[ 2];
@@ -131,7 +131,7 @@ namespace math
 		m_Frustum[FRONT][D] = clip[15] + clip[14]; 
 
 		// Normalize the FRONT side
-		NormalizePlane(m_Frustum, FRONT);
+		normalize_plane(m_Frustum, FRONT);
 	} 	
 	
 	// The code below will allow us to make checks within the frustum.  For example,
@@ -144,7 +144,7 @@ namespace math
 	///////	This determines if a point is inside of the frustum
 	///////
 	/////////////////////////////////// POINT IN FRUSTUM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-	bool Frustum::PointInFrustum( float x, float y, float z ) const
+	bool frustum::PointInFrustum( float x, float y, float z ) const
 	{
 		// Go through all the sides of the frustum
 		for(int i = 0; i < 6; i++ )
@@ -163,7 +163,7 @@ namespace math
 	///////	This determines if a sphere is inside of our frustum by it's center and radius.
 	///////
 	/////////////////////////////////// SPHERE IN FRUSTUM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-	bool Frustum::SphereInFrustum( float x, float y, float z, float radius ) const
+	bool frustum::SphereInFrustum( float x, float y, float z, float radius ) const
 	{
 		// Go through all the sides of the frustum
 		for(int i = 0; i < 6; i++ )	
@@ -182,7 +182,7 @@ namespace math
 	///////	This determines if a cube is in or around our frustum by it's center and 1/2 it's length
 	///////
 	/////////////////////////////////// CUBE IN FRUSTUM \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*
-	bool Frustum::CubeInFrustum( float x, float y, float z, float size ) const
+	bool frustum::CubeInFrustum( float x, float y, float z, float size ) const
 	{
 		// Basically, what is going on is, that we are given the center of the cube,
 		// and half the length.  Think of it like a radius.  Then we checking each point

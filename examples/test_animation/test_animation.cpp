@@ -17,12 +17,12 @@ public:
 
 		m_spFont = render::IFont::create(20, L"Arial", render::IFont::Heavy);
 
-		m_pMesh = render::mesh_ptr(new render::Mesh);
+		m_pMesh = render::mesh_ptr(new render::mesh);
 		m_pMesh->load( "media\\meshes\\Box01.xml" );
 
 		m_pTexture = render::texture::create("tiger.bmp");
 
-		m_spFrame = new math::Frame();
+		m_spFrame = new math::frame();
 		m_spFrame->add( m_pMesh );
 
 		TiXmlDocument xml( "media\\1111.XML" ) ;
@@ -109,7 +109,7 @@ protected:
 	math::camera_ptr			m_camera;            //указатель на камеру
 	render::texture_ptr			m_pTexture;
 
-	math::FrameAnimationController	m_controller;
+	math::frame_anim_controller	m_controller;
 	math::frame_ptr				m_spFrame;
 	render::mesh_ptr				m_pMesh;
 

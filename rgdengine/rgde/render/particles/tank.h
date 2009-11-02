@@ -26,7 +26,7 @@ namespace particles
 		virtual ~renderer();
 
 		void update();
-		void render(render::texture_ptr texture, math::Frame& transform);
+		void render(render::texture_ptr texture, math::frame& transform);
 
 		inline ParticleArray& getParticles() { return m_vParticleArray; }
 
@@ -37,7 +37,7 @@ namespace particles
 		unsigned long		m_nReservedSize; ///> Число частиц, для которого зарезервированы буферы
 
 	private:
-		render::PEffect		m_effect;
+		render::effect_ptr		m_effect;
 
 		typedef render::effect::IParameter* EffectParam;
 		EffectParam m_paramUpVec;
@@ -47,7 +47,7 @@ namespace particles
 
 		render::effect::ITechnique* m_pRenderTechnique;
 
-		typedef render::TIndexedGeometry<vertex::PositionColoredTextured2, false> Geometry;
+		typedef render::indexed_geometry<vertex::PositionColoredTextured2, false> Geometry;
 		Geometry			m_Geometry;
 
 		int m_nRows;
@@ -56,5 +56,5 @@ namespace particles
 		float m_fInvTotalRows;
 	};
 
-	typedef boost::shared_ptr<renderer> PPTank;
+	typedef boost::shared_ptr<renderer> renderer_ptr;
 }

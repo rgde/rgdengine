@@ -97,7 +97,7 @@ namespace math
 
 		if (!in)
 		{
-			io::ScopePathAdd p("Tracks/");
+			io::path_add_scoped p("Tracks/");
 			in = fs.find(strTrackFileName);
 		}
 

@@ -1,7 +1,7 @@
 #include <rgde/engine.h>
 
 
-class SceneHelper : public render::rendererable, public math::Frame
+class SceneHelper : public render::rendererable, public math::frame
 {
 public:
 	typedef render::Generator<vertex::PositionNormalColored>::PGeometry geometry_type;

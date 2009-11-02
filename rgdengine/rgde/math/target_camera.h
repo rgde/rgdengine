@@ -8,7 +8,7 @@ namespace math
     typedef boost::shared_ptr<class target_camera> target_camera_ptr;
 
     //контроллер камеры аля "нацеленная камера"
-    class target_camera: public BaseCameraController
+    class target_camera: public base_camera_controller
     {
         target_camera(camera_ptr pCamera);
 

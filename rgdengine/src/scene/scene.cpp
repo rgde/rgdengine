@@ -6,7 +6,7 @@
 
 namespace scene
 {
-	Scene::Scene(): m_pRoot( new math::Frame )
+	Scene::Scene(): m_pRoot( new math::frame )
 	{
 	}
 
@@ -35,7 +35,7 @@ namespace scene
 	void Scene::auxDraw( math::frame_ptr frame )
 	{
 		//frame->debugDraw();
-		//for( math::Frame::children_list::iterator it = frame->get_children().begin(); it != frame->get_children().end(); ++it)
+		//for( math::frame::children_list::iterator it = frame->get_children().begin(); it != frame->get_children().end(); ++it)
 		//{
 		//	auxDraw( (*it) );
 		//}

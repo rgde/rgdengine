@@ -15,11 +15,11 @@ namespace render
 		PrimTypeFORCE_DWORD           = 0x7fffffff, /* force 32-bit size enum */
 	};
 
-	class IGeometry
+	class base_geometry
 	{
 	public:
-		virtual ~IGeometry(){}
-		static IGeometry* create(const vertex::VertexDecl decl, bool isDynamic);
+		virtual ~base_geometry(){}
+		static base_geometry* create(const vertex::VertexDecl decl, bool isDynamic);
 		virtual void update(const void* pdata, size_t bytes, size_t size_of_vertex) = 0;
 		virtual void render(PrimitiveType ePrimType, unsigned int nPrimNum) = 0;		
 	};
@@ -31,7 +31,7 @@ namespace render
 		typedef std::vector<Vertex> Vertexes;
 
 		TGeometry(bool isDynamic = false) : 
-			m_spImpl(IGeometry::create(Vertex::GetDecl(), isDynamic)),
+			m_spImpl(base_geometry::create(Vertex::GetDecl(), isDynamic)),
 			m_bIsDynamic(isDynamic)
 		{			
 			m_bChanged = false;
@@ -164,7 +164,7 @@ namespace render
 	private:
 		bool						m_bIsDynamic;
 		Vertexes					m_vVertexes;
-		std::auto_ptr<IGeometry>	m_spImpl;
+		std::auto_ptr<base_geometry>	m_spImpl;
 		math::AABoxf				m_AABB;
 		math::Spheref				m_Sphere;
 		bool						m_bChanged;
@@ -187,7 +187,7 @@ namespace render
 	};
 
 	template<class Vertex, bool Use32Indexes>
-	class TIndexedGeometry
+	class indexed_geometry
 	{
 	};
 
@@ -338,13 +338,13 @@ namespace render
 
 
 	template<class Vertex>
-	class TIndexedGeometry<Vertex, true>
+	class indexed_geometry<Vertex, true>
 	{
 	public:
 		typedef std::vector<Vertex>			Vertexes;
 		typedef std::vector<unsigned int>	Indexes;
 
-		TIndexedGeometry() : m_spImpl(IIndexedGeometry::create(Vertex::GetDecl(), true))
+		indexed_geometry() : m_spImpl(IIndexedGeometry::create(Vertex::GetDecl(), true))
 		{
 			m_bChanged = false;
 		}
@@ -360,7 +360,7 @@ namespace render
 		void render(PrimitiveType ePrimType, unsigned nPrimitiveCount)
 		{
 			unsigned int nNumVertices = (unsigned int)m_vVertexes.size();
-			Device::get().addStatistic(nNumVertices, nPrimitiveCount);
+			device_dx9::get().addStatistic(nNumVertices, nPrimitiveCount);
 			m_spImpl->render(ePrimType, 0, 0, nNumVertices, 0, nPrimitiveCount);
 		}
 
@@ -368,7 +368,7 @@ namespace render
 		{
 			//TODO for other primitive types
 			unsigned int nNumVertices = (unsigned int)m_vVertexes.size();
-			Device::get().addStatistic(nNumVertices, nPrimitiveCount-nStartPrimitive);
+			device_dx9::get().addStatistic(nNumVertices, nPrimitiveCount-nStartPrimitive);
 			m_spImpl->render(ePrimType, 0, 0, nPrimitiveCount*4, 6*nStartPrimitive, nPrimitiveCount );
 		}
 
@@ -403,7 +403,7 @@ namespace render
 		}
 
 		int getIndexNum() const					{ return (int)m_vIndexes.size(); }
-		int getVertexNum() const				{ return (int)m_vVertexes.size(); }
+		int get_num_verts() const				{ return (int)m_vVertexes.size(); }
 
 		const math::AABoxf& getBBox() const		{ return m_AABB; }
 		const math::Spheref& getBSphere() const { return m_Sphere; }
@@ -441,13 +441,13 @@ namespace render
 
 
 	template<class Vertex>
-	class TIndexedGeometry<Vertex, false>
+	class indexed_geometry<Vertex, false>
 	{
 	public:
 		typedef std::vector<Vertex>			Vertexes;
 		typedef std::vector<unsigned short>	Indexes;
 
-		TIndexedGeometry() 
+		indexed_geometry() 
 			: m_spImpl(IIndexedGeometry::create(Vertex::GetDecl(), false))
 		{			
 			m_bChanged = false;
@@ -556,7 +556,7 @@ namespace render
 		}
 
 		int getIndexNum() const					{ return (int)m_vIndexes.size(); }
-		int getVertexNum() const				{ return (int)m_vVertexes.size(); }
+		int get_num_verts() const				{ return (int)m_vVertexes.size(); }
 
 		const math::AABoxf& getBBox() const		{ return m_AABB; }
 		const math::Spheref& getBSphere() const { return m_Sphere; }

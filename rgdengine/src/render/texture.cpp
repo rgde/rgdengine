@@ -14,8 +14,8 @@ extern IDirect3DDevice9 *g_pd3dDevice;
 
 namespace render
 {
-	typedef ::base::resource_manager<std::string, texture> TextureManager;
-	TextureManager manager(boost::bind(&texture_d3d9::CreateFromFile, _1), true, "default.jpg");
+	typedef ::base::resource_manager<std::string, texture> texture_manager;
+	texture_manager manager(boost::bind(&texture_d3d9::create_from_file, _1), true, "default.jpg");
 
 
 	texture_ptr texture::create(const std::string& file_name)
@@ -65,7 +65,7 @@ namespace render
 		}
 
 		{
-			io::ScopePathAdd p	("Textures/");
+			io::path_add_scoped p	("Textures/");
 			if (io::readstream_ptr in	= fs.find(file_name))
 				return in;
 		}
@@ -79,7 +79,7 @@ namespace render
 		return io::readstream_ptr();
 	}
 
-	texture_ptr texture_d3d9::CreateFromFile(const std::string& file_name)
+	texture_ptr texture_d3d9::create_from_file(const std::string& file_name)
 	{
 		return texture_ptr(new texture_d3d9(file_name));
 	}

@@ -5,7 +5,7 @@
 namespace render
 {
 	//base_light
-	class base_light : public math::Frame
+	class base_light : public math::frame
 	{
 	public:
 		enum EType 

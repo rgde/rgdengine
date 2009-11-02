@@ -9,7 +9,7 @@ using namespace particles::maya_structs;
 namespace particles{
 
 	std::map< std::string, maya_structs::animation> static_emitter::m_FrSeq;
-	static_emitter::PFrames static_emitter::ms_PFrames;
+	static_emitter::frames_map static_emitter::ms_PFrames;
 
 	static std::wstring ms_base_folder;
 
@@ -166,7 +166,7 @@ namespace particles{
 			for (unsigned int i = 0; i < fseq.frames.size(); ++i)
 			{
 				anim_frame& m_spFrame = fseq.frames[i];
-				PPTank spTank(new renderer);
+				renderer_ptr spTank(new renderer);
 				psyst[i] = spTank;
 
 				renderer::ParticleArray& array = spTank->getParticles();
@@ -208,8 +208,8 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void static_emitter::render(unsigned int frame_num)
 	{
-		PTanks& Frames = *m_Frames;
-		PPTank spTank = Frames[(unsigned int)frame_num];
+		PTanks& frames_vector = *m_Frames;
+		renderer_ptr spTank = frames_vector[(unsigned int)frame_num];
 		spTank->render(m_texture, m_Transform);
 	}
 	//----------------------------------------------------------------------------------------
@@ -229,7 +229,7 @@ namespace particles{
 
 		render::Line3dManager& line_manager = render::TheLine3dManager::get();
 
-		PPTank spTank = psyst[frame_num];
+		renderer_ptr spTank = psyst[frame_num];
 		renderer::ParticleArray& array = spTank->getParticles();
 
 		for ( renderer::ParticleArrayIter it = array.begin(); it != array.end(); ++it )

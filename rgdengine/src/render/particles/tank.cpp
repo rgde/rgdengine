@@ -28,7 +28,7 @@ namespace particles
 	{
 	}
 	//-----------------------------------------------------------------------------------
-	void renderer::render(render::texture_ptr texture, math::Frame& frame)
+	void renderer::render(render::texture_ptr texture, math::frame& frame)
 	{
 		if( (m_nReservedSize == 0) )
 			return;

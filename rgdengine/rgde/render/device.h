@@ -7,20 +7,20 @@
 
 namespace render
 {
-	class IDeviceObject;
+	class device_object;
 
-	class Device
+	class device_dx9
 	{
 	protected:
-		Device();
-		~Device();
+		device_dx9();
+		~device_dx9();
 
 	public:
 		void					onLost();
 		void					onReset();
 
-		void					addDeviceObject(IDeviceObject* pObj);
-		void					removeDeviceObject(IDeviceObject* pObj);
+		void					addDeviceObject(device_object* pObj);
+		void					removeDeviceObject(device_object* pObj);
 
 		void					setCurentCamera(const math::camera_ptr& cam){m_curCam = cam; }
 		const math::camera_ptr&	get_curent_camera() const {return m_curCam;}
@@ -59,17 +59,17 @@ namespace render
 		unsigned				m_verts;
 		unsigned				m_triangles;
 
-		typedef std::list<IDeviceObject* > DeviceObjects;
+		typedef std::list<device_object* > DeviceObjects;
 		DeviceObjects m_objects;
 	};
 
-	typedef base::singelton<Device> TheDevice;
+	typedef base::singelton<device_dx9> TheDevice;
 
-	class IDeviceObject
+	class device_object
 	{
 	public:
-								IDeviceObject();
-		virtual					~IDeviceObject();
+								device_object();
+		virtual					~device_object();
 
 		virtual void			onLostDevice() = 0;
 		virtual void			onResetDevice() = 0;

@@ -20,7 +20,7 @@ namespace render
 {
 	texture_ptr safeLoadDefaultTexture(const std::string &strTextureName)
 	{
-		io::ScopePathAdd p	("Common/");
+		io::path_add_scoped p	("Common/");
 		texture_ptr pResult	= texture::create(strTextureName);
 
 		if (!pResult)
@@ -32,7 +32,7 @@ namespace render
 		return pResult;
 	}
 
-	RenderManager::RenderManager()
+	render_manager::render_manager()
 		: 	m_bLightingEnabled(true),
 			m_nFillMode(Solid),
 			m_bVolumes(true),
@@ -60,60 +60,60 @@ namespace render
 		}
 	}
 
-	RenderManager::~RenderManager()
+	render_manager::~render_manager()
 	{
 	}
 
-	PEffect& RenderManager::getDefaultEffect()
+	effect_ptr& render_manager::getDefaultEffect()
 	{
 		return m_pDefaultEffect;
 	}
 
-	font_ptr& RenderManager::getDefaultFont()
+	font_ptr& render_manager::getDefaultFont()
 	{
 		return m_pDefaultFont;
 	}
 
-	texture_ptr& RenderManager::getBlackTexture()
+	texture_ptr& render_manager::getBlackTexture()
 	{
 		return m_pBlackTexture;
 	}
 
-	texture_ptr& RenderManager::getWhiteTexture()
+	texture_ptr& render_manager::getWhiteTexture()
 	{
 		return m_pWhiteTexture;
 	}
 
-	texture_ptr& RenderManager::getDefaultNormalMap()
+	texture_ptr& render_manager::getDefaultNormalMap()
 	{
 		return m_pDefaultNormalMap;
 	}
 
-	void RenderManager::setCurrentFog(const Fog &pFog)
+	void render_manager::setCurrentFog(const Fog &pFog)
 	{
 		m_pCurrentFog = pFog;
 	}
 
-	void RenderManager::add(rendererable *r)
+	void render_manager::add(rendererable *r)
 	{
 		m_lRenderables.push_back(r);
 	}
 
-	void RenderManager::remove(rendererable *r)
+	void render_manager::remove(rendererable *r)
 	{
 		//m_lRenderables.remove(r);
 		Renderables::iterator it = std::find(m_lRenderables.begin(), m_lRenderables.end(), r);
 		m_lRenderables.erase(it);
 	}
 
-	void RenderManager::clear()
+	void render_manager::clear()
 	{
 		m_lRenderables.resize(0);
 	}
 
 	namespace functors
 	{
-		//void setupParameters(PEffect pEffect, const SRenderableInfo &info, PMaterial& mat)
+		//void setupParameters(effect_ptr pEffect, const SRenderableInfo &info, PMaterial& mat)
 		//{
 		//	//assert(info.pFrame);
 		//	if (info.pFrame)
@@ -127,7 +127,7 @@ namespace render
 
 		struct SDefaultRender
 		{
-			PEffect& defaultEffect;
+			effect_ptr& defaultEffect;
 			SDefaultRender() 
 				: defaultEffect(TheRenderManager::get().getDefaultEffect())
 			{
@@ -143,13 +143,13 @@ namespace render
 			{
 				if(info.pFrame)
 				{
-					static PMaterial pDefaultMaterial = Material::create();
+					static PMaterial pDefaultMaterial = material::create();
 
 					//const PMaterial& pMaterial = info.spMaterial ? info.spMaterial : pDefaultMaterial;
-					//const PEffect&	 pEffect	= info.spShader ? info.spShader : defaultEffect;
+					//const effect_ptr&	 pEffect	= info.spShader ? info.spShader : defaultEffect;
 
 					const PMaterial& pMaterial = pDefaultMaterial;
-					const PEffect&	 pEffect	= defaultEffect;
+					const effect_ptr&	 pEffect	= defaultEffect;
 
 
 					//m_pDefaultEffect
@@ -238,9 +238,9 @@ namespace render
 		std::vector<SRenderableInfo const *>   &vsolids;
 		std::vector<SRenderableInfo const *>   &vtrans;
 		std::vector<SRenderableInfo const *>   &vposttrans;
-		const math::Frustum				   &m_frustum;
+		const math::frustum				   &m_frustum;
 
-		SRenderblesSorter(std::vector<SRenderableInfo const *> &solids, std::vector<SRenderableInfo const *> &trans, std::vector<SRenderableInfo const *> &posttrans, const math::Frustum &frustum)
+		SRenderblesSorter(std::vector<SRenderableInfo const *> &solids, std::vector<SRenderableInfo const *> &trans, std::vector<SRenderableInfo const *> &posttrans, const math::frustum &frustum)
 			: vsolids(solids),
 			  vtrans(trans),
 			  vposttrans(posttrans),
@@ -278,7 +278,7 @@ namespace render
 		}
 	};	
 
-	void RenderManager::renderScene()
+	void render_manager::renderScene()
 	{
 		render::TheDevice::get().resetStats();
 
@@ -307,7 +307,7 @@ namespace render
 					createBinder();
 				m_pStaticBinder->setupParameters(0);
 
-				const math::Frustum& frustum = TheDevice::get().get_curent_camera()->getFrustum();
+				const math::frustum& frustum = TheDevice::get().get_curent_camera()->getFrustum();
 				std::for_each(m_lRenderables.begin(), m_lRenderables.end(), SRenderblesSorter(vSolid, vTransparet, vPostTransparet, frustum));
 
 				int nVisibleObjects = static_cast<int>(vTransparet.size() + vSolid.size());
@@ -358,7 +358,7 @@ namespace render
 		//render::TheDevice::get().showStatistics(getDefaultFont());
 	}
 
-	void RenderManager::createBinder()
+	void render_manager::createBinder()
 	{
 		m_pStaticBinder = createStaticBinder(m_pDefaultEffect);
 	}

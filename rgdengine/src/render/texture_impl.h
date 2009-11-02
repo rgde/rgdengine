@@ -11,7 +11,7 @@ namespace render
 							texture_d3d9(const std::string& file_name);
 							~texture_d3d9();
 
-		static texture_ptr		CreateFromFile(const std::string& file_name);
+		static texture_ptr		create_from_file(const std::string& file_name);
 
 		void				createTextureFromFile(const std::string& file_name);
 		void				createRenderTexture(const math::Vec2i &size, TextureFormat format);

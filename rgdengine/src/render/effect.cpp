@@ -22,7 +22,7 @@ namespace
 
 			io::CFileSystem& fs = io::TheFileSystem::get();
 			// already set in effect::load
-			//io::ScopePathAdd p("Common/shaders/");
+			//io::path_add_scoped p("Common/shaders/");
 			io::readstream_ptr in = fs.find(pFileName);
 
 			if (!in)
@@ -80,7 +80,7 @@ namespace render
 	{
 		struct EffectEntry
 		{
-			PEffect			effect;
+			effect_ptr			effect;
 			std::string		name;
 		};
 
@@ -566,10 +566,10 @@ namespace render
 	//------------------------------------------------------------------------------
 	// effect implementation.
 	//------------------------------------------------------------------------------
-	class CEffect : public effect, IDeviceObject
+	class CEffect : public effect, device_object
 	{
 	public:
-		friend PEffect;
+		friend effect_ptr;
 
 		CEffect()
 		{
@@ -599,7 +599,7 @@ namespace render
 
 			try{
 				io::CFileSystem& fs = io::TheFileSystem::get();
-				io::ScopePathAdd p("Common/shaders/");
+				io::path_add_scoped p("Common/shaders/");
 				io::readstream_ptr in = fs.find(m_name);
 
 				if (!in)
@@ -613,7 +613,7 @@ namespace render
 
 				V(D3DXCreateEffect(g_pd3dDevice, (void*)&(data[0]), (uint)data.size() , NULL, &__include_impl, TheDevice::get().getShaderFlags(), 
 					m_spPool, &m_effect, &pErrors));
-				//V(D3DXCreateEffectFromFile( g_pd3dDevice, m_name.c_str() , NULL, NULL, Device::get().getShaderFlags(), 
+				//V(D3DXCreateEffectFromFile( g_pd3dDevice, m_name.c_str() , NULL, NULL, device_dx9::get().getShaderFlags(), 
 				//	m_spPool, &m_effect, &pErrors));
 			}
 			catch(...)
@@ -731,9 +731,9 @@ namespace render
 	//------------------------------------------------------------------------------
 	// Static methods.
 	//------------------------------------------------------------------------------
-	PEffect effect::create(const std::string& file_name)
+	effect_ptr effect::create(const std::string& file_name)
 	{
-		//guard(PEffect effect::create(std::wstring file_name))
+		//guard(effect_ptr effect::create(std::wstring file_name))
 
 		EffectsList::iterator it = std::find_if(effects.begin(), effects.end(), _seacher(file_name));
 
@@ -741,11 +741,11 @@ namespace render
 			return it->effect;
 
 		EffectEntry ee;
-		ee.effect = PEffect(new CEffect());
+		ee.effect = effect_ptr(new CEffect());
 		bool res = ee.effect->load(file_name);
 		ee.name = file_name;
 
-		ee.effect = res ? ee.effect : PEffect();
+		ee.effect = res ? ee.effect : effect_ptr();
 
 		if (!res)
 		{

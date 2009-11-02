@@ -28,7 +28,7 @@ namespace render
 		void render();
 
 	protected:
-		PEffect			m_effect;
+		effect_ptr			m_effect;
 		unsigned long	m_uPriority;			///> Приоритет менеджера линий
 
 		typedef TGeometry<vertex::PositionTransformedColored> Geometry;

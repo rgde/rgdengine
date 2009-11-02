@@ -20,7 +20,7 @@ namespace particles
 		effect();
 		virtual ~effect();
 		
-		inline const math::Frame& getTransform() { return m_Transform; }
+		inline const math::frame& getTransform() { return m_Transform; }
 		
 		void add(emitter* em);
 		void remove(emitter* em);
@@ -46,7 +46,7 @@ namespace particles
 		void setEmittersToFade(bool b);
 
 	protected:
-		math::Frame	m_Transform;
+		math::frame	m_Transform;
 		tEmitters		m_Emitters;						// emitters
 		bool			m_bIsFading;
 		float			old_time;

@@ -204,7 +204,7 @@ namespace particles{
 
 		m_fNormalizedTime = m_pParentEmitter->getTime();
 
-		math::Frame& rParentTransform = m_pParentEmitter->getTransform();
+		math::frame& rParentTransform = m_pParentEmitter->getTransform();
 		//m_fScaling = (m_ParentTransform->getScaling()).x;
 		m_fScaling = rParentTransform.getScale();
 

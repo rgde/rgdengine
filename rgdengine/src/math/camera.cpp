@@ -6,14 +6,14 @@
 
 namespace math
 {
-	const Matrix44f  BaseCamera::getViewMatrix()	const 
+	const Matrix44f  base_camera::getViewMatrix()	const 
 	{
-		Matrix44f m = Frame::getFullTransform();
+		Matrix44f m = frame::getFullTransform();
 		math::invert(m);
 		return m;		
 	}
 
-	void BaseCamera::setProjection(float fFovy, float fAspect, float zn, float zf)
+	void base_camera::setProjection(float fFovy, float fAspect, float zn, float zf)
 	{
 		float hfov = fFovy/2;
 		float yScale = ::cos(hfov)/::sin(hfov);
@@ -30,7 +30,7 @@ namespace math
 		//setRadius(zn);
 	}
 
-	void BaseCamera::activate()
+	void base_camera::activate()
 	{
 		m_frustum.CalculateFrustum(*this);
 
