@@ -94,14 +94,14 @@ bool WaveFile::Open(const char* strFileName, WAVEFORMATEX* pwfx)
 		//	return false;
 		//}
 
-  //      CHAR* pData = new CHAR[ dwSize ];
-  //      memcpy( pData, pvRes, dwSize );
+  //      CHAR* data = new CHAR[ dwSize ];
+  //      memcpy( data, pvRes, dwSize );
 
   //      MMIOINFO mmioInfo;
   //      ZeroMemory(&mmioInfo, sizeof(mmioInfo));
   //      mmioInfo.fccIOProc = FOURCC_MEM;
   //      mmioInfo.cchBuffer = dwSize;
-  //      mmioInfo.pchBuffer = (CHAR*) pData;
+  //      mmioInfo.pchBuffer = (CHAR*) data;
 
   //      m_hmmio = mmioOpen(NULL, &mmioInfo, MMIO_ALLOCBUF | MMIO_READ);
   //  }

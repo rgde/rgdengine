@@ -22,7 +22,7 @@ namespace rgde
 
 			sprite_example::sprite_example() : 
 				m_priorities (1),
-				m_nSpritesPerPriority (100),
+				m_num_sprites_per_priority (100),
 				m_bDebugLog (false),
 				m_bSortSpritesBeforeLog (true),
 				m_sprites_seed (math::Vec2f (770, 570))
@@ -35,7 +35,7 @@ namespace rgde
 					m_cEsc += boost::bind(&sprite_example::onEsc, this);
 				}
 
-				m_font = render::base_font::create(12, L"Arial", render::base_font::Heavy);
+				m_font = render::font::create(12, L"Arial", render::font::Heavy);
 
 				std::vector<render::texture_ptr> vTextures;
 				vTextures.push_back(render::texture::create( "Sprites/test01.jpg" ));
@@ -45,7 +45,7 @@ namespace rgde
 				vTextures.push_back(render::texture::create( "Sprites/test05.bmp" ));
 
 				for( unsigned priority = m_priorities; priority > 0; --priority )
-					for( unsigned sprite = m_nSpritesPerPriority; sprite > 0; --sprite )
+					for( unsigned sprite = m_num_sprites_per_priority; sprite > 0; --sprite )
 					{
 						float x = m_sprites_seed[0];
 						float y = m_sprites_seed[1];
@@ -82,7 +82,7 @@ namespace rgde
 				for (render::sprite_manager::SpritesIter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 				{
 					it->spin += dt;
-					m_sprite_renderer.addSprite(*it);
+					m_sprite_renderer.add_sprite(*it);
 				}
 			}
 

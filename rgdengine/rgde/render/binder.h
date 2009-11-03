@@ -23,7 +23,7 @@
 // void testBinder()
 // {
 //    typedef binder<int> CBinder;
-//    CBinder* binder = new CBinder(pEffect);//pEffect is some non-null
+//    CBinder* binder = new CBinder(effect);//effect is some non-null
 //                                           //effect_ptr pointer
 //
 //    //Functor parameter. binder calls taken getter with taken int
@@ -48,12 +48,12 @@
 //    binder->addParameter<int>(1, "NUM_LIGHTS");
 //
 //    binder->setupParameter(2);//i.e.:
-//    //pEffect->getParams()["TEXTURE_PARAMETER"]->set(get_texture(2));
-//    //pEffect->getParams()["COLOR_PARAMETER"]->set(some.getColor());
-//    //pEffect->getParams()["NUM_LIGHTS"]->set(1);
+//    //effect->get_params()["TEXTURE_PARAMETER"]->set(get_texture(2));
+//    //effect->get_params()["COLOR_PARAMETER"]->set(some.getColor());
+//    //effect->get_params()["NUM_LIGHTS"]->set(1);
 //    //Biner has a number of advantages. It's more stable.
 //    //If there's no parameter with given name, it doesn't call
-//    //set method. It's faster becose pEffect->getParams()["SOME_NAME"]
+//    //set method. It's faster becose effect->get_params()["SOME_NAME"]
 //    //does std::map lookup by std::string (parameter name).
 // }
 //////////////////////////////////////////////////////////////////////////
@@ -92,17 +92,17 @@ namespace render
 			typedef boost::function<ParamType(FTypeParamType)>
 													ParamTypeGetFunction;
 			//effect set function.
-			typedef bool (effect::IParameter::*EffectSetFunction)(ParamType);
+			typedef bool (effect::parameter::*EffectSetFunction)(ParamType);
 		};
 
 		typedef boost::function<void(typename Types<FType>::ParamType)> Functor;
 
 		typedef boost::shared_ptr<binder> binder_ptr;
 
-		static binder_ptr create(const effect_ptr& pEffect)
+		static binder_ptr create(const effect_ptr& effect)
 		{
-			if(pEffect)
-				return binder_ptr(new binder(pEffect));
+			if(effect)
+				return binder_ptr(new binder(effect));
 			else
 				return binder_ptr();
 		}
@@ -122,7 +122,7 @@ namespace render
 		bool addParameter(typename Types<PType>::ParamType val,
 						  const std::string& name)
 		{
-			effect::IParameter* param = getParameter(name);
+			effect::parameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
@@ -136,7 +136,7 @@ namespace render
 		bool addParameter(const typename Types<PType>::getter& f,
 						  const std::string& name)
 		{
-			effect::IParameter* param = getParameter(name);
+			effect::parameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
@@ -150,7 +150,7 @@ namespace render
 		bool addParameter(const typename Types<PType>::ParamTypeGetFunction& f,
 						  const std::string& name)
 		{
-			effect::IParameter* param = getParameter(name);
+			effect::parameter* param = getParameter(name);
 
 			if(NULL == param)
 				return false;
@@ -161,21 +161,21 @@ namespace render
 		}
 
 	private:
-		binder(const effect_ptr& pEffect)
-			: m_effect(pEffect)
+		binder(const effect_ptr& effect)
+			: m_effect(effect)
 		{
 		}
 
 		template <class PType>
 		static Functor createFunctor(typename Types<PType>::ParamType val,
-									 effect::IParameter* param)
+									 effect::parameter* param)
 		{
 			return boost::bind(getEffectSetFunction<PType>(), param, val);
 		}
 
 		template <class PType>
 		static Functor createFunctor(const typename Types<PType>::getter& f,
-									 effect::IParameter* param)
+									 effect::parameter* param)
 		{
 			return boost::bind(getEffectSetFunction<PType>(), param,
 							   boost::bind(f, _1));
@@ -183,7 +183,7 @@ namespace render
 
 		template <class PType>
 		static Functor createFunctor(const typename Types<PType>::ParamTypeGetFunction& f,
-									 effect::IParameter* param)
+									 effect::parameter* param)
 		{
 			return boost::bind(getEffectSetFunction<PType>(), param,
 							   boost::bind(f, _1));
@@ -192,15 +192,15 @@ namespace render
 		template <class PType>
 		static inline typename Types<PType>::EffectSetFunction getEffectSetFunction()
 		{
-			return (typename Types<PType>::EffectSetFunction) &effect::IParameter::set;
+			return (typename Types<PType>::EffectSetFunction) &effect::parameter::set;
 		}
 
-		effect::IParameter* getParameter(const std::string& name) const
+		effect::parameter* getParameter(const std::string& name) const
 		{
-			const effect::Parameters& params = m_effect->getParams();
-			effect::Parameters::const_iterator it = params.find(name);
+			const effect::params_map& params = m_effect->get_params();
+			effect::params_map::const_iterator it = params.find(name);
 
-			effect::IParameter* result = NULL;
+			effect::parameter* result = NULL;
 
 			if(it != params.end())
 				result = it->second;
@@ -221,8 +221,8 @@ namespace render
 	};
 	//Dynamic binder is used to setup 'dynamic' parameters,
 	//i.e. parameters which change from object to object.
-	typedef binder<math::frame_ptr> dymamic_binder_ptr;
-	typedef dymamic_binder_ptr::binder_ptr dynamic_binder_ptr;
+	typedef binder<math::frame_ptr> dymamic_binder;
+	typedef dymamic_binder::binder_ptr dynamic_binder_ptr;
 
 	//Static binder is used to setup 'static' parameters,
 	//i.e. parameters which are the same for all objects.

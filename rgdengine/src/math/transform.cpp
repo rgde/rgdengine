@@ -6,6 +6,7 @@
 #include <rgde/base/lexical_cast.h>
 
 #include <rgde/render/lines3d.h>
+#include <rgde/render/render_device.h>
 
 namespace math
 {
@@ -120,7 +121,7 @@ namespace math
 		math::Point3f Y = p + l * getUpGlobal();
 		math::Point3f Z = p + l * getAtGlobal();
 
-		render::Line3dManager& line_manager = render::TheLine3dManager::get();
+		render::lines3d& line_manager = render::TheDevice::get().get_lines3d();
 		line_manager.add_line( p, X, math::Red );
 		line_manager.add_line( p, Y, math::Green );
 		line_manager.add_line( p, Z, math::Blue );

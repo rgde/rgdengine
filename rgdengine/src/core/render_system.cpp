@@ -12,7 +12,7 @@
 #include <rgde/math/types3d.h>
 #include <rgde/core/application.h>
 
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 #include <rgde/render/effect.h>
 #include <rgde/render/lines2d.h>
 #include <rgde/render/lines3d.h>
@@ -98,11 +98,9 @@ namespace core
 		virtual ~CDXRenderDevice()
 		{
 			::render::TheDevice::destroy(); // here on_lost calling
-			::render::TheLine2dManager::destroy();
-			::render::TheLine3dManager::destroy();
 			::render::TheRenderManager::destroy();
 
-			::render::effect::ClearAll();
+			::render::effect::clear_all();
 
 			SAFE_RELEASE(g_pDefaultColorTarget);
 			SAFE_RELEASE(g_pDefaultDepthStencilTarget);
@@ -329,7 +327,7 @@ namespace core
 
 			if(!initDevice(deviceInfo))
 			{
-				base::lerr<<"CDXRenderDevice::initDevice(): Can't init D3D device_dx9";
+				base::lerr<<"CDXRenderDevice::initDevice(): Can't init D3D render_device";
 				exit(1);//is it right?
 			}
 
@@ -349,7 +347,7 @@ namespace core
 			V(g_d3d->SetRenderState( D3DRS_LIGHTING, FALSE ));
 			V(g_d3d->SetRenderState( D3DRS_ZENABLE, TRUE ));
 		
-			// device_dx9 state would normally be set here
+			// render_device state would normally be set here
 			return;// S_OK;
 		}
 

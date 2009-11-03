@@ -102,7 +102,7 @@ TestMusic::TestMusic()
 {
 	m_sound_system.load("./media/audiodb.xml");
 
-	m_pFont = render::base_font::create(20, L"Arial", render::base_font::Heavy);
+	m_pFont = render::font::create(20, L"Arial", render::font::Heavy);
 
 	m_camera = render::render_camera::create();
 
@@ -139,17 +139,17 @@ void TestMusic::init_input()
 
 void TestMusic::update (float dt)
 {
-	using render::base_font;
+	using render::font;
 
 	for (size_t i = 0; i < quads.size(); ++i)
 	{
-		m_pFont->render(quads[i].text, quads[i].rect, quads[i].color.color, false, base_font::SingleLine | base_font::VCenter);
+		m_pFont->render(quads[i].text, quads[i].rect, quads[i].color.color, false, font::SingleLine | font::VCenter);
 	}
 
 	render::TheDevice::get().showFPS(m_pFont);
 
 
-	unsigned int flags = base_font::SingleLine | base_font::Bottom;
+	unsigned int flags = font::SingleLine | font::Bottom;
 	math::Vec2f size(800, 600);
 
 	const char *cur_music_name = m_sound_system.get_tag_name(cur_music_index);
@@ -180,7 +180,7 @@ TextQuad TestMusic::CreateQuad(std::wstring text)
 	q.text = text;
 	q.color = math::Color(255*math::unitRandom(),255*math::unitRandom(),255*math::unitRandom(), 255);
 
-	q.rect = m_pFont->get_rect(q.text, render::base_font::SingleLine | render::base_font::VCenter);		
+	q.rect = m_pFont->get_rect(q.text, render::font::SingleLine | render::font::VCenter);		
 	math::Vec2f size(800-40-q.rect.size[0], 600-40-q.rect.size[1]);
 
 	float x = 20+math::unitRandom()*size[0];

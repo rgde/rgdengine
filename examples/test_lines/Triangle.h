@@ -4,24 +4,23 @@
 
 namespace lines_test
 {
-
-	class CTriangle
+	class triangle
 	{
 	protected:
-		typedef std::vector<CPoint> tPoints;
-		typedef tPoints::iterator tPointsIter;
+		typedef std::vector<point> points_vector;
+		typedef points_vector::iterator points_iter;
 
 	public:
-		CTriangle();
+		triangle();
 
 		void reset();
 		void update();
 		void render();
 
 	protected:
-		tPoints m_vPoints;						///> Точки
-		math::Color m_Color;				///> Цвет
-		math::Vec2f m_fCColorRange;				///> Разброс колебаний меняющегося цвета
-		float m_fCColorDelta;					///> Приращение меняющегося цвета
+		points_vector m_points;
+		math::Color m_color;
+		math::Vec2f m_color_range;				///> color variation range
+		float m_color_delta;					///> color variation change delta
 	};
 }

@@ -8,15 +8,15 @@ namespace render
 	class Generator
 	{
 	public:
-		typedef indexed_geometry<Vertex, Use32Indexes> TGeometry;
-		typedef boost::shared_ptr<TGeometry> PGeometry;
+		typedef indexed_geometry<Vertex, Use32Indexes> geometry;
+		typedef boost::shared_ptr<geometry> PGeometry;
 		
 		static void GenerateGrid(PGeometry pGeometry, int nXResolution, int nZResolution,
 									float fXScale = 1.0f, float fZScale = 1.0f,
 									const math::Vec3f& CenterPos = math::Vec3f(0.0f, 0.0f, 0.0f))
 		{
-			TGeometry::Vertexes& vertices = pGeometry->lockVB();
-			TGeometry::Indexes&  indices  = pGeometry->lockIB();
+			geometry::Vertexes& vertices = pGeometry->lockVB();
+			geometry::Indexes&  indices  = pGeometry->lockIB();
 
 			vertices.resize(nXResolution*nZResolution);
 			indices.resize((nXResolution - 1)*(nZResolution - 1)*2*3);
@@ -50,8 +50,8 @@ namespace render
 
 			float fHalfOfHeight = fHeight/2.0f;
 
-			TGeometry::Vertexes& vertices = pGeometry->lockVB();
-			TGeometry::Indexes&  indices  = pGeometry->lockIB();
+			geometry::Vertexes& vertices = pGeometry->lockVB();
+			geometry::Indexes&  indices  = pGeometry->lockIB();
 
 			float fUnit = 2*math::Math::PI/nRadialSegments;
 			int nVertCnt = 0;
@@ -81,13 +81,13 @@ namespace render
 
 		static PGeometry CreateBox(const math::Vec3f& Size = math::Vec3f(1.0f, 1.0f, 1.0f), const math::Vec3f& CenterPos = math::Vec3f(0, 0, 0))
 		{
-			PGeometry pResult(new TGeometry);
+			PGeometry pResult(new geometry);
 
 			math::Vec3f HalfOfSize = Size/2.0f;
 			math::Vec3f Normal     = math::Vec3f(0.5774f, 0.5774f, 0.5774f);
 
-			TGeometry::Vertexes& vertices = pResult->lockVB();
-			TGeometry::Indexes&  indices  = pResult->lockIB();
+			geometry::Vertexes& vertices = pResult->lockVB();
+			geometry::Indexes&  indices  = pResult->lockIB();
 
 			vertices.resize(8);
 			indices.resize(12*3);
@@ -134,7 +134,7 @@ namespace render
 									float fXScale = 1.0f, float fZScale = 1.0f,
 									const math::Vec3f& CenterPos = math::Vec3f(0.0f, 0.0f, 0.0f))
 		{
-			PGeometry pResult(new TGeometry);
+			PGeometry pResult(new geometry);
 
 			GenerateGrid(pResult, nXResolution, nZResolution, fXScale, fZScale, CenterPos);
 
@@ -155,8 +155,8 @@ namespace render
 		{
 			PGeometry pResult = CreateGrid(nStep + 1, 3);
 
-			TGeometry::Vertexes& vertices = pResult->lockVB();
-			TGeometry::Indexes&  indices  = pResult->lockIB();
+			geometry::Vertexes& vertices = pResult->lockVB();
+			geometry::Indexes&  indices  = pResult->lockIB();
 
 			float fUnit = 2*math::Math::PI/nStep;
 			int nVertCnt = 0;
@@ -178,8 +178,8 @@ namespace render
 		{
 			PGeometry pResult = CreateGrid(nStepLng + 1, (nStepLat/2) + 1);
 
-			TGeometry::Vertexes& vertices = pResult->lockVB();
-			TGeometry::Indexes&  indices  = pResult->lockIB();
+			geometry::Vertexes& vertices = pResult->lockVB();
+			geometry::Indexes&  indices  = pResult->lockIB();
 
 			float fUnitLng = 2*math::Math::PI/nStepLng;
 			float fUnitLat = math::Math::PI/(nStepLat/2);
@@ -199,8 +199,8 @@ namespace render
 		{
 			PGeometry pResult = CreateGrid(nStepLng + 1, (nStepLat/4) + 2);
 
-			TGeometry::Vertexes& vertices = pResult->lockVB();
-			TGeometry::Indexes&  indices  = pResult->lockIB();
+			geometry::Vertexes& vertices = pResult->lockVB();
+			geometry::Indexes&  indices  = pResult->lockIB();
 
 			float fUnitLng = 2*math::Math::PI/nStepLng;
 			float fUnitLat = math::Math::PI/(nStepLat/2);
@@ -224,8 +224,8 @@ namespace render
 		{
 			PGeometry pResult = CreateGrid(nStepMajor + 1, nStepMinor + 1);
 
-			TGeometry::Vertexes& vertices = pResult->lockVB();
-			TGeometry::Indexes&  indices  = pResult->lockIB();
+			geometry::Vertexes& vertices = pResult->lockVB();
+			geometry::Indexes&  indices  = pResult->lockIB();
 
 			float fUnitMajor = 2*math::Math::PI/nStepMajor;
 			float fUnitMinor = 2*math::Math::PI/nStepMinor;
@@ -246,10 +246,10 @@ namespace render
 
 		static PGeometry CreateOcta()
 		{
-			PGeometry pResult(new TGeometry);
+			PGeometry pResult(new geometry);
 
-			TGeometry::Vertexes& vertices = pResult->lockVB();
-			TGeometry::Indexes&  indices  = pResult->lockIB();
+			geometry::Vertexes& vertices = pResult->lockVB();
+			geometry::Indexes&  indices  = pResult->lockIB();
 
 			vertices.resize(6);
 			indices.resize(8*3);
@@ -279,10 +279,10 @@ namespace render
 
 		static PGeometry CreateTetra()
 		{
-			PGeometry pResult(new TGeometry);
+			PGeometry pResult(new geometry);
 
-			TGeometry::Vertexes& vertices = pResult->lockVB();
-			TGeometry::Indexes&  indices  = pResult->lockIB();
+			geometry::Vertexes& vertices = pResult->lockVB();
+			geometry::Indexes&  indices  = pResult->lockIB();
 
 			vertices.resize(4);
 			indices.resize(4*3);
@@ -306,7 +306,7 @@ namespace render
 
 
 		private:
-			static void setFace(typename TGeometry::Indexes& array, unsigned face_number, unsigned i1, unsigned i2, unsigned i3)
+			static void setFace(typename geometry::Indexes& array, unsigned face_number, unsigned i1, unsigned i2, unsigned i3)
 			{
 				array[face_number*3 + 0] = i1;
 				array[face_number*3 + 1] = i2;

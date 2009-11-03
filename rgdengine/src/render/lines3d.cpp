@@ -2,7 +2,7 @@
 
 #include <rgde/render/lines3d.h>
 #include <rgde/render/effect.h>
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 
 
 #include "../base/exception.h"
@@ -10,21 +10,21 @@
 namespace render
 {
 	//-----------------------------------------------------------------------------------
-	Line3dManager::Line3dManager(unsigned long uPriority)
+	lines3d::lines3d(unsigned long priority)
 		: render::rendererable(1000),
-		  m_effect(effect::create("Line3dManager.fx")),
-		  m_uPriority(uPriority),
-		  m_Geometry(true)
+		  m_effect(effect::create("lines3d.fx")),
+		  m_priority(priority),
+		  m_geometry(true)
 	{
-		//base::lmsg << "Line3dManager::Line3dManager()";
-		m_pVertices = &(m_Geometry.lock());
-		m_renderInfo.render_func = boost::bind(&Line3dManager::render, this);
+		//base::lmsg << "lines3d::lines3d()";
+		m_vertices = &(m_geometry.lock());
+		m_renderInfo.render_func = boost::bind(&lines3d::render, this);
 	}
 
 	//-----------------------------------------------------------------------------------
-	void Line3dManager::render()
+	void lines3d::render()
 	{
-		if (m_pVertices->size() == 0)
+		if (m_vertices->size() == 0)
 			return;
 
 		math::camera_ptr camera	= render::TheDevice::get().get_camera();
@@ -36,41 +36,41 @@ namespace render
 		const math::Matrix44f &mProj = camera->get_proj_matrix();
 		math::Matrix44f mLVP		 = mProj *mView;
 
-		m_effect->getParams()["g_mLVP"]->set(mLVP);
+		m_effect->get_params()["g_mLVP"]->set(mLVP);
 
-		render::effect::ITechnique *pTechnique	= m_effect->findTechnique("Lines3d");
+		render::effect::technique *pTechnique	= m_effect->find_technique("Lines3d");
 		if (0 == pTechnique)
 			return;
 
 		pTechnique->begin();
-		m_effect->commitChanges();
+		m_effect->commit_changes();
 
-		m_Geometry.unlock();
+		m_geometry.unlock();
 
-		size_t cPasses	= pTechnique->getPasses().size();
+		size_t cPasses	= pTechnique->get_passes().size();
 
 		for (unsigned iPass = 0; iPass < cPasses; ++iPass)
 		{
-			pTechnique->getPasses()[iPass]->begin();
-			m_Geometry.render(PrimTypeLineList);
-			pTechnique->getPasses()[iPass]->end();
+			pTechnique->get_passes()[iPass]->begin();
+			m_geometry.render(PrimTypeLineList);
+			pTechnique->get_passes()[iPass]->end();
 		}
 
 		pTechnique->end();
 
 		// Сразу после отрисовки линий выносим все линии
-		m_pVertices = &(m_Geometry.lock());
-		m_pVertices->resize(0);
+		m_vertices = &(m_geometry.lock());
+		m_vertices->resize(0);
 	}
 
 	//-----------------------------------------------------------------------------------
-	void Line3dManager::add_line(const math::Vec3f &vPoint1, const math::Vec3f &vPoint2, const math::Color &color)
+	void lines3d::add_line(const math::Vec3f &point1, const math::Vec3f &point2, const math::Color &color)
 	{
-		m_pVertices->push_back(Point(vPoint1, color));
-		m_pVertices->push_back(Point(vPoint2, color));
+		m_vertices->push_back(Point(point1, color));
+		m_vertices->push_back(Point(point2, color));
 	}
 	//-----------------------------------------------------------------------------------
-	void Line3dManager::addBox(const math::Vec3f& size, const math::Color& color)
+	void lines3d::add_box(const math::Vec3f& size, const math::Color& color)
 	{
 		static const size_t nVerts = 8;
 		static math::Vec3f box[nVerts];
@@ -119,7 +119,7 @@ namespace render
 		add_line(size_box[3], size_box[3 + 4], color);
 	}
 	//-----------------------------------------------------------------------------------
-	void Line3dManager::addBox(const math::AABoxf& box, const math::Color& color)
+	void lines3d::add_box(const math::AABoxf& box, const math::Color& color)
 	{
 		math::Point3f max = box.getMax();
 		math::Point3f min = box.getMin();
@@ -155,7 +155,7 @@ namespace render
 		add_line(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
 	}
 	//-----------------------------------------------------------------------------------
-	void Line3dManager::addBox(const math::Matrix44f &m, const math::AABoxf &box, const math::Color &color)
+	void lines3d::add_box(const math::Matrix44f &m, const math::AABoxf &box, const math::Color &color)
 	{
 		math::Point3f max = box.getMax();
 		math::Point3f min = box.getMin();
@@ -196,7 +196,7 @@ namespace render
 		add_line(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
 	}
 	//-----------------------------------------------------------------------------------
-	void Line3dManager::addBox(const math::Matrix44f &m, const math::Vec3f &size, const math::Color &color)
+	void lines3d::add_box(const math::Matrix44f &m, const math::Vec3f &size, const math::Color &color)
 	{
 		static const int nVerts = 8;
 		static math::Vec3f box[nVerts];				// for size(x,y,z) = 1
@@ -247,7 +247,7 @@ namespace render
 	}
 
 	//-----------------------------------------------------------------------------------
-	void Line3dManager::addDirection(const math::Matrix44f &m, const math::Point3f &dir, const math::Color &color)
+	void lines3d::add_arrow(const math::Matrix44f &m, const math::Point3f &dir, const math::Color &color)
 	{
 		math::Vec3f trans;
 		math::setTrans(trans, m);
@@ -255,7 +255,7 @@ namespace render
 	}
 
 	//-----------------------------------------------------------------------------------
-	void Line3dManager::addSphere(const math::Matrix44f &m, float rad, int angle)
+	void lines3d::add_sphere(const math::Matrix44f &m, float rad, int angle)
 	{
 		static math::Point3f circle[361];				// for radius = 1
 		static math::Point3f circle2[2][361];
@@ -307,7 +307,7 @@ namespace render
 		add_line(yTrans, circle2[0][359 - angle], math::Green);
 	}
 	//-----------------------------------------------------------------------------------
-	void Line3dManager::addQuad(const math::Vec3f &center, const math::Vec2f &size, float fSpin)
+	void lines3d::add_quad(const math::Vec3f &center, const math::Vec2f &size, float spin)
 	{
 		const math::Matrix44f & mView = TheDevice::get().get_camera()->get_view_matrix();
 
@@ -318,8 +318,8 @@ namespace render
 		math::normalize(right);
 		right *= size[1] * 0.5f;
 
-		float cosa		= cos(fSpin);
-		float sina		= sin(fSpin);
+		float cosa		= cos(spin);
+		float sina		= sin(spin);
 
 		math::Vec3f p1	= center + (cosa - sina) * right + (-sina - cosa) * up;
 		math::Vec3f p2	= center + (cosa + sina) * right + (-sina + cosa) * up;

@@ -227,7 +227,7 @@ namespace particles{
 
 		math::Matrix44f m = m_Transform.get_full_tm();
 
-		render::Line3dManager& line_manager = render::TheLine3dManager::get();
+		render::lines3d& line_manager = render::TheDevice::get().get_lines3d();
 
 		renderer_ptr spTank = psyst[frame_num];
 		renderer::ParticleArray& array = spTank->getParticles();
@@ -239,7 +239,7 @@ namespace particles{
 			//else
 			//	center = it->pos;
 
-			line_manager.addQuad( center, it->size, it->spin );	
+			line_manager.add_quad( center, it->size, it->spin );	
 		}
 	}
 	//-----------------------------------------------------------------------------------

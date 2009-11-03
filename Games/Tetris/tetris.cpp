@@ -35,8 +35,8 @@ public:
 		m_cTargetCamera = math::target_camera::create( m_camera );
 		m_cTargetCamera->set_position(vUpVec,vEyePt,vLookatPt);
 
-		m_spFont = render::base_font::create(18, L"Courier New", render::base_font::Heavy);
-		m_spFontBig = render::base_font::create(40,L"Arial", render::base_font::Medium);
+		m_spFont = render::font::create(18, L"Courier New", render::font::Heavy);
+		m_spFontBig = render::font::create(40,L"Arial", render::font::Medium);
 
 		//инициализация ввода
 		{

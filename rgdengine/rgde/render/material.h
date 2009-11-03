@@ -4,7 +4,9 @@
 #include <rgde/math/types3d.h>
 #include <rgde/render/texture.h>
 #include <rgde/render/effect.h>
-#include <rgde/render/binder.h>
+
+#include <rgde/render/binders.h>
+
 
 namespace render
 {
@@ -102,13 +104,13 @@ namespace render
 		
 		void update(float dt);
 
-		void  setEffect(const effect_ptr& pEffect);
+		void  setEffect(const effect_ptr& effect);
 		const dynamic_binder_ptr& getDynamicBinder();
-		effect::ITechnique* getTechnique() const;
+		effect::technique* getTechnique() const;
 
 	protected:		
 		dynamic_binder_ptr	m_pDynamicBinder;
-		effect::ITechnique* m_technique;
+		effect::technique* m_technique;
 		MaterialMaps	m_maps;
 		math::Color     m_diffuse;        // Diffuse color RGBA 
 		math::Color     m_ambient;        // Ambient color RGB 

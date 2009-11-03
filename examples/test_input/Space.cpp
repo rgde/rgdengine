@@ -23,7 +23,7 @@ void Space::ParticleSprite::initParticle()
 {
 	using namespace math;
 	float s = rangeRandom(2.0f, 4.0f);
-	uPriority = (uint)s;
+	priority = (uint)s;
 	size = Vec2f(s, s*2);
 	uint c = (uint)(255*s/4.0f);
 	color = Color(105, 105, 105, c);
@@ -40,7 +40,7 @@ void Space::ParticleSprite::initStar()
 
 	float c = rangeRandom(1.0f, 5.0f) / 4.0f;
 
-	uPriority = (uint).1f;
+	priority = (uint).1f;
 	size = Vec2f(128.f, 128.f);
 	color = Color(255*c, 255*c, 255*c, 255);
 	rect = Rect(0, 0, 1, 1);
@@ -56,7 +56,7 @@ void Space::ParticleSprite::initAlien()
 
 	float c = rangeRandom(1.0f, 5.0f) / 4.0f;
 
-	uPriority = (uint).11f;
+	priority = (uint).11f;
 
 	float sx = rangeRandom(46.0f, 87.0f);
 	float sy = rangeRandom(46.0f, 87.0f);
@@ -79,7 +79,7 @@ Space::Space (int nStars)
     m_speed = 0;
     m_bFirePrimaryWeapon = false;
 
-    m_font = render::base_font::create(12, L"Arial", render::base_font::Heavy);
+    m_font = render::font::create(12, L"Arial", render::font::Heavy);
 
     //кораблик
     m_textureShip = render::texture::create("TestInput/SpaceShip.png"); 
@@ -130,28 +130,28 @@ void Space::update (float dt)
 
     //ship
     m_spriteShip.pos = math::Vec2f(int(m_x)+.5f,int(m_y)+.5f);
-    m_sprite_renderer.addSprite(m_spriteShip);
+    m_sprite_renderer.add_sprite(m_spriteShip);
 
     //dust
     std::for_each(m_particles.begin(), m_particles.end(), 
         boost::bind(&Space::updateSprite, this, _1, dt));
 
     std::for_each(m_particles.begin(), m_particles.end(), 
-        boost::bind(&render::sprite_manager::addSprite, &m_sprite_renderer, _1));
+        boost::bind(&render::sprite_manager::add_sprite, &m_sprite_renderer, _1));
 
     //stars
     std::for_each(m_stars.begin(), m_stars.end(), 
         boost::bind(&Space::updateStar, this, _1, dt));
 
     std::for_each(m_stars.begin(), m_stars.end(), 
-        boost::bind(&render::sprite_manager::addSprite, &m_sprite_renderer, _1));
+        boost::bind(&render::sprite_manager::add_sprite, &m_sprite_renderer, _1));
 
     //aliens
     std::for_each(m_aliens.begin(), m_aliens.end(), 
         boost::bind(&Space::updateAlien, this, _1, dt));
 
     std::for_each(m_aliens.begin(), m_aliens.end(), 
-        boost::bind(&render::sprite_manager::addSprite, &m_sprite_renderer, _1));
+        boost::bind(&render::sprite_manager::add_sprite, &m_sprite_renderer, _1));
 
     //primary weapon
     if (m_bFirePrimaryWeapon)
@@ -164,7 +164,7 @@ void Space::update (float dt)
         {
             m_spriteLazer.rect = math::Rect(0, math::rangeRandom(0,.2f), 1, 1-math::rangeRandom(0,.2f));
             m_spriteLazer.pos = math::Vec2f(x,y);
-            m_sprite_renderer.addSprite(m_spriteLazer);
+            m_sprite_renderer.add_sprite(m_spriteLazer);
         }
     }
 }

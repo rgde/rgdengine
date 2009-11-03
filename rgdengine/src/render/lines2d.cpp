@@ -7,43 +7,43 @@
 namespace render
 {
 	//-----------------------------------------------------------------------------------
-	Line2dManager::Line2dManager(unsigned long uPriority)
+	lines2d::lines2d(unsigned long priority)
 		: render::rendererable(1111),
-		  m_Geometry(true)
+		  m_geometry(true)
 	{
-		base::lmsg << "Line2dManager::Line2dManager()";
-		m_pVertices = &(m_Geometry.lock());
-		m_uPriority = uPriority;
-		m_effect = effect::create("Line3dManager.fx");
-		m_renderInfo.render_func = boost::bind(&Line2dManager::render, this);
+		base::lmsg << "lines2d::lines2d()";
+		m_vertices = &(m_geometry.lock());
+		m_priority = priority;
+		m_effect = effect::create("lines3d.fx");
+		m_renderInfo.render_func = boost::bind(&lines2d::render, this);
 	}
 	//-----------------------------------------------------------------------------------
-	void Line2dManager::render()
+	void lines2d::render()
 	{
-		if (m_pVertices->size() == 0) return;
-		m_Geometry.unlock();
-		render::effect::ITechnique *pTechnique	= m_effect->findTechnique("Lines2d");
+		if (m_vertices->size() == 0) return;
+		m_geometry.unlock();
+		render::effect::technique *pTechnique	= m_effect->find_technique("Lines2d");
 		pTechnique->begin();
-		for (unsigned iPass = 0; iPass < pTechnique->getPasses().size(); ++iPass)
+		for (unsigned iPass = 0; iPass < pTechnique->get_passes().size(); ++iPass)
 		{
-			effect::ITechnique::IPass *pPass	= pTechnique->getPasses()[iPass];
+			effect::technique::pass *pPass	= pTechnique->get_passes()[iPass];
 			pPass->begin();
-			m_Geometry.render(PrimTypeLineList);
+			m_geometry.render(PrimTypeLineList);
 			pPass->end();
 		}
 		pTechnique->end();
 
 		// Сразу после отрисовки линий выносим все линии
-		m_pVertices = &(m_Geometry.lock());
-		m_pVertices->resize(0);
+		m_vertices = &(m_geometry.lock());
+		m_vertices->resize(0);
 	}
 	//-----------------------------------------------------------------------------------
-	void Line2dManager::add_line(const math::Vec2f &vPoint1, const math::Vec2f vPoint2, math::Color color)
+	void lines2d::add_line(const math::Vec2f &point1, const math::Vec2f point2, math::Color color)
 	{
 		math::Vec2f screenSize(800, 600); //virtual screen size
 		math::Vec2f vFrontBufferSize= render::TheDevice::get().getBackBufferSize();
 		math::Vec2f m_vScale		= vFrontBufferSize / screenSize;
-		m_pVertices->push_back(Point(vPoint1 * m_vScale, color));
-		m_pVertices->push_back(Point(vPoint2 * m_vScale, color));
+		m_vertices->push_back(Point(point1 * m_vScale, color));
+		m_vertices->push_back(Point(point2 * m_vScale, color));
 	}
 } //~ namespace utility

@@ -47,17 +47,17 @@ namespace render
 
 	static int fontsCreated	= 0;
 
-	void base_font::render(const std::wstring &text, const math::Rect &rect, unsigned int color)
+	void font::render(const std::wstring &text, const math::Rect &rect, unsigned int color)
 	{
 		render(text, rect, color, false, Top | Left | WordBreak);
 	}	
 
-	void base_font::render(const std::wstring &text, const math::Rect &rect, unsigned int color, bool isDrawShadow)
+	void font::render(const std::wstring &text, const math::Rect &rect, unsigned int color, bool isDrawShadow)
 	{
 		render(text, rect, color, isDrawShadow, Top | Left | WordBreak);
 	}	
 
-	class FontImpl : public base_font, public device_object
+	class font_impl : public font, public device_object
 	{
 		int				m_nHeight;
 		std::wstring	m_name;
@@ -86,12 +86,12 @@ namespace render
 
 			if (FAILED(D3DXCreateFont(g_d3d, -m_nHeight, 0, m_eFontWeght, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 5, DEFAULT_PITCH | FF_DONTCARE, m_name.c_str(), &m_pFont)))
 			{
-				throw std::bad_exception("FontImpl():Can't create device font object!");
+				throw std::bad_exception("font_impl():Can't create device font object!");
 			}			fontsCreated++;
 		}
 
 	public:
-		FontImpl(int height, const std::wstring &name, FontWeight font_weigh)
+		font_impl(int height, const std::wstring &name, FontWeight font_weigh)
 			: m_pFont(0),
 			  m_nHeight(height),
 			  m_name(name),
@@ -139,7 +139,7 @@ namespace render
 				textShadowLocation.bottom = textShadowLocation.top + (LONG)(rect.size[1] * ratio[1]);
 
 				//doRender(text, textShadowLocation, nShadowColor, flags);
-				rm.addText(boost::bind(&FontImpl::doRender, this, text, textShadowLocation, nShadowColor, flags));
+				rm.addText(boost::bind(&font_impl::doRender, this, text, textShadowLocation, nShadowColor, flags));
 			}
 
 			RECT	textLocation;
@@ -150,7 +150,7 @@ namespace render
 
 			
 			//doRender(text, textLocation, color, flags);
-			rm.addText(boost::bind(&FontImpl::doRender, this, text, textLocation, color, flags));
+			rm.addText(boost::bind(&font_impl::doRender, this, text, textLocation, color, flags));
 		}		
 
 		virtual void onLostDevice()
@@ -169,7 +169,7 @@ namespace render
 				m_pFont->OnResetDevice();
 		}
 
-		virtual ~FontImpl()
+		virtual ~font_impl()
 		{
 			destroy();
 
@@ -183,11 +183,11 @@ namespace render
 		ID3DXFont	*m_pFont;
 	};
 
-	font_ptr base_font::create(int height, const std::wstring &name, FontWeight font_weigh)
+	font_ptr font::create(int height, const std::wstring &name, FontWeight font_weigh)
 	{
 		try
 		{
-			return font_ptr(new FontImpl(height, name, font_weigh));
+			return font_ptr(new font_impl(height, name, font_weigh));
 		}
 		catch (...)
 		{

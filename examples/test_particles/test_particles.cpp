@@ -23,7 +23,7 @@ public:
 			  .add<core::game_task>(1)
 			  .add<core::input_task>(0, false);
 
-		m_spFont = render::base_font::create(20, L"Arial", render::base_font::Heavy);
+		m_spFont = render::font::create(20, L"Arial", render::font::Heavy);
 
 		math::Vec3f vEyePt(40, 40, -40);
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
@@ -202,7 +202,7 @@ protected:
 	{
 		//delete m_pEffect;
 		particles::static_emitter::ClearCachedData();
-		render::effect::ClearAll();
+		render::effect::clear_all();
 	}
 
 	//-----------------------------------------------------------------------------------

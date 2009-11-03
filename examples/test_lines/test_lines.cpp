@@ -15,7 +15,7 @@ public:
 		spApp->add(core::task_ptr(new core::input_task(*spApp,0)));
 		spApp->add(core::task_ptr(new core::game_task(*spApp,2)));
 
-		m_pFont = render::base_font::create(20, L"Arial", render::base_font::Heavy);
+		m_pFont = render::font::create(20, L"Arial", render::font::Heavy);
 
 		m_camera = render::render_camera::create();
 
@@ -56,7 +56,7 @@ protected:
 protected:
 	render::font_ptr                         m_pFont;
 	render::camera_ptr                       m_camera;
-	lines_test::CTriangleManager          m_TrianglesManager;
+	lines_test::triangle_manager          m_TrianglesManager;
 	boost::scoped_ptr<core::application> spApp;
 	input::key_down                       m_cEsc;
 };

@@ -45,13 +45,13 @@ namespace particles
 		math::Vec3f direction_rand = m_DirectionSpread(m_fTimeNormalaized);
 
 		math::Matrix44f m = getTransform().get_full_tm();
-		render::Line3dManager& line_manager = render::TheLine3dManager::get();
-		line_manager.addBox( m, (math::Vec3f)(size + size_rand), math::Color(0, 255, 0, 255) );
-		line_manager.addBox( m, (math::Vec3f)(size - size_rand), math::Color(0, 255, 0, 255) );
+		render::lines3d& line_manager = render::TheDevice::get().get_lines3d();
+		line_manager.add_box( m, (math::Vec3f)(size + size_rand), math::Color(0, 255, 0, 255) );
+		line_manager.add_box( m, (math::Vec3f)(size - size_rand), math::Color(0, 255, 0, 255) );
 
-		line_manager.addBox( m, size, math::Color(0, 255, 0, 255) );
+		line_manager.add_box( m, size, math::Color(0, 255, 0, 255) );
 
-		line_manager.addDirection( m, direction, math::Color(0, 255, 0, 255) );
+		line_manager.add_arrow( m, direction, math::Color(0, 255, 0, 255) );
 	}
 
 	//-----------------------------------------------------------------------------------

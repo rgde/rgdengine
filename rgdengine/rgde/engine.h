@@ -110,7 +110,7 @@ typedef unsigned int  uint;
 
 #include "render\\common.h"
 #include "render\\font.h"
-#include "render\\device.h"
+#include "render\\render_device.h"
 #include "render\\texture.h"
 #include "render\\effect.h"
 #include "render\\material.h"
@@ -130,7 +130,6 @@ typedef unsigned int  uint;
 #include "render\\model.h"
 #include "render\\sprites.h"
 #include "render\\geom_generator.h"
-#include "render\\auxilary.h"
 #include "render\\flame_renderer.h"
 #include "render\\lens_flares.h"
 #include "render\\screen_fader.h"

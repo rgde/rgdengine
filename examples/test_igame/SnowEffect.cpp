@@ -10,7 +10,7 @@ namespace game
 			using namespace math;
 
 			float s = rangeRandom(5.0f, 25.0f);
-			uPriority = (uint)s;
+			priority = (uint)s;
 			size = Vec2f(s, s);
 			uint c = (uint)(255*s/25.0f);
 			color = Color(255, 255, 255, c);
@@ -26,7 +26,7 @@ namespace game
 
 		SnowEffect::SnowEffect(uint numSprites)
 		{
-			m_font = render::base_font::create(12, L"Arial", render::base_font::Heavy);
+			m_font = render::font::create(12, L"Arial", render::font::Heavy);
 			m_texture = render::texture::create("ZColumns/snow.dds"); 
 
 			m_sprites.resize(numSprites);
@@ -50,11 +50,11 @@ namespace game
 
 
 			std::for_each(m_sprites.begin(), m_sprites.end(), 
-				boost::bind(&render::sprite_manager::addSprite, &m_sprite_renderer, _1));
+				boost::bind(&render::sprite_manager::add_sprite, &m_sprite_renderer, _1));
 
 			//for (Sprites::iterator it = m_sprites.begin(); it != m_sprites.end(); ++it)
 			//{
-			//	m_sprite_renderer.addSprite(*it);
+			//	m_sprite_renderer.add_sprite(*it);
 			//}
 		}
 

@@ -53,7 +53,7 @@ namespace render
 	{
 		using namespace math;
 		using namespace boost;
-		typedef dymamic_binder_ptr::Types<Matrix44f>::getter
+		typedef dymamic_binder::Types<Matrix44f>::getter
 											GetMatrix44fFunction;
 
 		GetMatrix44fFunction getMatrixFunction;
@@ -77,9 +77,9 @@ namespace render
 	{
 		using namespace math;
 		using namespace boost;
-		typedef dymamic_binder_ptr::Types<math::Color>::ParamTypeGetFunction
+		typedef dymamic_binder::Types<math::Color>::ParamTypeGetFunction
 													ParamTypeGetColorFunction;
-		typedef dymamic_binder_ptr::Types<float>::getter GetFloatFunction;
+		typedef dymamic_binder::Types<float>::getter GetFloatFunction;
 
 		ParamTypeGetColorFunction getColorFunction;
 		GetFloatFunction          getFloatFunction;
@@ -149,11 +149,11 @@ namespace render
 		return strTechName;
 	}
 
-	dynamic_binder_ptr createDynamicBinder(const effect_ptr& pEffect,
+	dynamic_binder_ptr createDynamicBinder(const effect_ptr& effect,
 									   const material& mat,
 									   std::string& techniqueName)
 	{
-		dynamic_binder_ptr result = dymamic_binder_ptr::create(pEffect);
+		dynamic_binder_ptr result = dymamic_binder::create(effect);
 
 		if(result)
 		{
@@ -290,9 +290,9 @@ namespace render
 		binder->addParameter<Matrix44f>(getMatrixFunction, ViewITMatrixParamName);
 	}
 
-	PStaticBinder createStaticBinder(const effect_ptr& pEffect)
+	PStaticBinder createStaticBinder(const effect_ptr& effect)
 	{
-		PStaticBinder binder = StaticBinder::create(pEffect);
+		PStaticBinder binder = StaticBinder::create(effect);
 
 		if(binder)
 		{

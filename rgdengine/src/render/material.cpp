@@ -2,8 +2,6 @@
 
 #include <rgde/render/material.h>
 #include <rgde/render/manager.h>
-#include <rgde/render/binders.h>
-
 #include <rgde/base/xml_helpers.h>
 
 namespace render
@@ -19,7 +17,6 @@ namespace render
 		{
 			m_texture = m_pDefaultTexture;
 			m_bTextureIsValid = false;
-			//m_bTextureIsValid = true;
 		}
 	}
 
@@ -244,7 +241,7 @@ namespace render
 			it->second.update(dt);
 	}
 
-	void material::setEffect(const effect_ptr& pEffect)
+	void material::setEffect(const effect_ptr& effect)
 	{
 		if(m_technique)
 			m_technique = NULL;
@@ -253,12 +250,12 @@ namespace render
 
 		std::string techName;
 
-		m_pDynamicBinder = createDynamicBinder(pEffect, *this, techName);
+		m_pDynamicBinder = createDynamicBinder(effect, *this, techName);
 
-		m_technique = pEffect->findTechnique(techName);
+		m_technique = effect->find_technique(techName);
 
 		if(!m_technique)
-			base::lwrn<<"Technique \""<<techName<<"\" not found in effect \""<<pEffect->get_name()<<"\".";
+			base::lwrn<<"effect_technique_impl \""<<techName<<"\" not found in effect \""<<effect->get_name()<<"\".";
 	}
 
 	const dynamic_binder_ptr& material::getDynamicBinder()
@@ -268,7 +265,7 @@ namespace render
 		return m_pDynamicBinder;
 	}
 
-	effect::ITechnique* material::getTechnique() const
+	effect::technique* material::getTechnique() const
 	{
 		return m_technique;
 	}

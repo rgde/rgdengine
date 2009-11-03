@@ -18,20 +18,20 @@ namespace rgde
 
 			protected:
 				render::sprite_manager			m_sprite_renderer;
-				render::sprite_manager::SpritesVector m_sprites;
+				render::sprite_manager::sprites_vector m_sprites;
 				input::key_down                  m_cEsc;
-				// Число приоритетов спрайтов
+				// num of different sprites priority
 				unsigned						m_priorities;
-				// Число спрайтов с одинаковым приоритетом
-				unsigned						m_nSpritesPerPriority;
-				// Стоит ли выводить отладочный лог
+				// num of sprites with equal priority
+				unsigned						m_num_sprites_per_priority;
+				// do we need debug logging? 
 				bool							m_bDebugLog;
-				// Стоит ли сортировать спрайты перед логом
+				// do we need sort sprites before debug log output?
 				bool							m_bSortSpritesBeforeLog;
-				// Область разброса спрайтов
+				// sprite size variation
 				math::Vec2f						m_sprites_seed;
-				::render::font_ptr					m_font;
-				math::camera_ptr					m_camera;
+				::render::font_ptr				m_font;
+				math::camera_ptr				m_camera;
 			};
 		}
 	}
