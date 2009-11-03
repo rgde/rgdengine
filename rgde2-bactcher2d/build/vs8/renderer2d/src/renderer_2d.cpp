@@ -2,6 +2,8 @@
 #include "primitives.h"
 #include "renderer_2d.h"
 
+#include "engine/render/buffer.h"
+
 namespace rgde
 {
 	namespace render
@@ -124,9 +126,13 @@ namespace rgde
 				if(m_buffer_offset >= m_buffer_size)
 					m_buffer_offset = 0;
 
-				primitives_2d::prim_vertex* vertices = (primitives_2d::prim_vertex*)m_vb->lock(m_buffer_offset * sizeof(primitives_2d::prim_vertex), 
-																			m_butch_size * sizeof(primitives_2d::prim_vertex), 
-																			m_buffer_offset ? buffer::nooverwrite | buffer::discard);
+
+				const ulong lock_flags = buffer::nooverwrite | buffer::discard;
+
+				primitives_2d::prim_vertex* vertices = (primitives_2d::prim_vertex*)m_vb->lock
+					(m_buffer_offset * sizeof(primitives_2d::prim_vertex),
+					m_butch_size * sizeof(primitives_2d::prim_vertex), 
+					lock_flags);
 
 				// текущий размер данных
 				ulong current_data_size = 0;
@@ -229,7 +235,7 @@ namespace rgde
 				m_buffer_offset = 0;
 
 			vert = m_vb->lock(m_buffer_offset * sizeof(primitives_2d::prim_vertex), m_butch_size * sizeof(primitives_2d::prim_vertex), 
-				   m_buffer_offset ? buffer::nooverwrite | buffer::discard);
+				   buffer::nooverwrite | buffer::discard);
 		}
 
 	}
