@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="scene"
 	ProjectGUID="{6C7EFBA0-0A07-4E1E-8B1F-725BD44C8276}"
 	RootNamespace="scene"
