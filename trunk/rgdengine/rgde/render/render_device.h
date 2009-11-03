@@ -8,12 +8,17 @@
 namespace render
 {
 	class device_object;
+	class lines3d;
+	class lines2d;
 
-	class device_dx9
+	typedef boost::shared_ptr<lines2d> lines2d_ptr;
+	typedef boost::shared_ptr<lines3d> lines3d_ptr;
+
+	class render_device
 	{
 	protected:
-		device_dx9();
-		~device_dx9();
+		render_device();
+		~render_device();
 
 	public:
 		void					on_lost();
@@ -34,13 +39,12 @@ namespace render
 		inline unsigned			get_tris()	const {return m_triangles;}
 		inline unsigned			get_verts()	const {return m_verts;}
 
-		/// Возвращает размер BackBuffer
 		math::Vec2f				getBackBufferSize();		
 
 		void					showWiredFloorGrid(float size, unsigned num = 20, const math::Color& color = math::Green);
 
-		float                   getFPS(float absoluteTime) const;
-		void                    showFPS(const font_ptr& font);
+		float                   getFPS(float abs_time) const;
+		void                    draw_fps(float abs_time, const font_ptr& font);
 		void                    showStatistics(const font_ptr& font);
 
         //->
@@ -48,22 +52,26 @@ namespace render
         math::Color             getClearColor () {return m_clear_color;}
         //-<
 
+		lines3d&				get_lines3d();
+		lines2d&				get_lines2d();
+
 	protected:
         //->
         math::Color             m_clear_color;
         //-<
 
 		unsigned long			m_shaderFlags;
-		math::camera_ptr			m_cam;
+		math::camera_ptr		m_cam;
 
 		unsigned				m_verts;
 		unsigned				m_triangles;
 
-		typedef std::list<device_object* > DeviceObjects;
-		DeviceObjects m_objects;
-	};
+		typedef std::list<device_object* > device_objects;
+		device_objects			m_objects;
 
-	typedef base::singelton<device_dx9> TheDevice;
+		lines2d_ptr				m_lines2d;
+		lines3d_ptr				m_lines3d;
+	};
 
 	class device_object
 	{
