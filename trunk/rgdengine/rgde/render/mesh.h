@@ -20,8 +20,8 @@ namespace render
 			unsigned int nPrimitiveCount;
 		};
 
-		typedef indexed_geometry<vertex::MeshVertex, false> Geometry;
-		typedef boost::shared_ptr<Geometry>					PGeometry;
+		typedef indexed_geometry<vertex::MeshVertex, false> geometry;
+		typedef boost::shared_ptr<geometry>					PGeometry;
 		typedef std::vector<material_ptr>						MaterialList;
 		typedef std::vector<IndexedSubMeshInfo>			sub_meshes;
 
@@ -36,7 +36,7 @@ namespace render
 		PGeometry	  getGeometry()				{return m_geometry;}
 		MaterialList& getMaterials()			{return m_materials;}
 
-		PrimitiveType getPrimitiveType() const	{return m_ePrimType;}
+		primitive_type getPrimitiveType() const	{return m_ePrimType;}
 		unsigned int  getNumPrimitives() const	{return m_nNumPrimitives;}
 		unsigned int  get_num_verts()const;
 
@@ -54,7 +54,7 @@ namespace render
 		unsigned int	m_vertex_num;
 
 		unsigned int	m_nNumPrimitives;
-		PrimitiveType	m_ePrimType;
+		primitive_type	m_ePrimType;
 	};
 
 	typedef boost::intrusive_ptr<mesh> mesh_ptr;

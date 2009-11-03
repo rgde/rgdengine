@@ -16,6 +16,6 @@ namespace core
 		virtual void update() const = 0;
 
 	protected:
-		virtual ~render_system() {}		
+		virtual ~render_system() {}
 	};
 }

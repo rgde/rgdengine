@@ -45,10 +45,10 @@ namespace
 			return S_OK;
 		}
 
-		STDMETHOD(Close)(LPCVOID pData)
+		STDMETHOD(Close)(LPCVOID data)
 		{
-			byte* data = (byte*)pData;
-			delete []data;
+			byte* data_bytes = (byte*)data;
+			delete []data_bytes;
 			return S_OK;
 		}
 	} __include_impl;
@@ -57,22 +57,22 @@ namespace
 
 namespace render
 {
-	void getAnnotation(ID3DXEffect* pEffect, D3DXHANDLE hParentHandle, int id, effect::Annotation& annotation)
+	void getAnnotation(ID3DXEffect* effect, D3DXHANDLE hParentHandle, int id, effect::annotation& annotation)
 	{
-		D3DXHANDLE hAnnotationHandle = pEffect->GetAnnotation(hParentHandle, id);
+		D3DXHANDLE hAnnotationHandle = effect->GetAnnotation(hParentHandle, id);
 					
 		D3DXPARAMETER_DESC desc;
-		pEffect->GetParameterDesc(hAnnotationHandle, &desc);
+		effect->GetParameterDesc(hAnnotationHandle, &desc);
 		annotation.name = desc.Name;
 		if(desc.Type != D3DXPT_STRING)
 		{
-			//base::lmsg << "Annotation "<< annotation.name << " type isn't string. Annotation has been skiped...";
+			//base::lmsg << "annotation "<< annotation.name << " type isn't string. annotation has been skiped...";
 			return;
 		}
 		LPCSTR strAnnotationValue;
-		pEffect->GetString(hAnnotationHandle, &strAnnotationValue);
+		effect->GetString(hAnnotationHandle, &strAnnotationValue);
 		annotation.value = strAnnotationValue;
-		//base::lmsg << "Annotation name: " << annotation.name << ", value: " << annotation.value;
+		//base::lmsg << "annotation name: " << annotation.name << ", value: " << annotation.value;
 	}
 
 	//------------------------------------------------------------------------------
@@ -103,12 +103,12 @@ namespace render
 	//------------------------------------------------------------------------------
 	// effect parameter implementation.
 	//------------------------------------------------------------------------------
-	class Parameter: public effect::IParameter
+	class effect_param_impl: public effect::parameter
 	{
 	public:
-		Parameter(ID3DXEffect* effect, unsigned int index)
+		effect_param_impl(ID3DXEffect* effect, unsigned int index)
 		{
-			//guard(render::effect::Parameter())
+			//guard(render::effect::effect_param_impl())
 			m_effect = effect;
 			D3DXHANDLE paramHandle = m_effect->GetParameter(NULL, index);
 
@@ -134,14 +134,14 @@ namespace render
 
 			for(unsigned int i = 0; i < paramDesc.Annotations; i++)
 			{
-				effect::Annotation annotation;
+				effect::annotation annotation;
 				getAnnotation(m_effect, m_Handle, i, annotation);
 				m_vecAnnotations.push_back(annotation);
 			}
 			//unguard
 		}
 
-		effect::AnnotationsVector& getAnnotations()
+		effect::annotations_vector& get_annotations()
 		{
 			return m_vecAnnotations;
 		}
@@ -151,7 +151,7 @@ namespace render
 			return m_name;
 		}
 
-		const std::string& getSemantic() const
+		const std::string& get_semantic() const
 		{
 			return m_semantic;
 		}
@@ -166,11 +166,11 @@ namespace render
 			return m_type;
 		}
 
-		bool set(const void* pData, unsigned int iSize)
+		bool set(const void* data, unsigned int size)
 		{
-			if (FAILED(m_effect->SetValue(m_Handle, pData, iSize)))
+			if (FAILED(m_effect->SetValue(m_Handle, data, size)))
 			{
-				base::lwrn << "const void* pData, unsigned int iSize.";
+				base::lwrn << "const void* data, unsigned int size.";
 				return false;
 			}
 
@@ -396,21 +396,21 @@ namespace render
 		unsigned int m_size;
 		type m_type;
 		D3DXHANDLE m_Handle;
-		effect::AnnotationsVector m_vecAnnotations;
+		effect::annotations_vector m_vecAnnotations;
 	};
 
 	//------------------------------------------------------------------------------
 	// effect technique implementation.
 	//------------------------------------------------------------------------------
-	class Technique: public effect::ITechnique
+	class effect_technique_impl: public effect::technique
 	{
 	public:
-		class Pass: public IPass
+		class pass_impl: public pass
 		{
 		public:
-			Pass(ID3DXEffect* effect, const D3DXHANDLE& technique, unsigned int index)
+			pass_impl(ID3DXEffect* effect, const D3DXHANDLE& technique, unsigned int index)
 			{
-				//guard(Technique::Pass())
+				//guard(effect_technique_impl::pass_impl())
 
 				m_effect = effect;
 				D3DXPASS_DESC passDesc;
@@ -422,7 +422,7 @@ namespace render
 				m_nCurrentPass = index;
 				m_name = passDesc.Name;
 
-				//base::lmsg << "Pass name: " << m_name;
+				//base::lmsg << "pass_impl name: " << m_name;
 
 				//------------------------------------------------------------------------------
 				// ATTENTION: Number of pass annotations is zero, when the pass name is exist !!
@@ -432,7 +432,7 @@ namespace render
 
 				for (unsigned int i = 0; i < passDesc.Annotations; i ++)
 				{
-					effect::Annotation annotation;
+					effect::annotation annotation;
 					getAnnotation(m_effect, pass, i, annotation);
 					m_vecAnnotations.push_back(annotation);
 				}
@@ -440,20 +440,20 @@ namespace render
 				//unguard
 			}
 
-			~Pass()
+			~pass_impl()
 			{
 			}
 
 			void begin()
 			{
-				//guard(Technique::Pass::begin())
+				//guard(effect_technique_impl::pass_impl::begin())
 					m_effect->BeginPass(m_nCurrentPass);
 				//unguard
 			}
 
 			void end()
 			{
-				//guard(Technique::Pass::end())
+				//guard(effect_technique_impl::pass_impl::end())
 					m_effect->EndPass();
 				//unguard
 			}
@@ -463,7 +463,7 @@ namespace render
 				return m_name;
 			}
 
-			effect::AnnotationsVector& getAnnotations()
+			effect::annotations_vector& get_annotations()
 			{
 				return m_vecAnnotations;
 			}
@@ -471,24 +471,24 @@ namespace render
 			unsigned int m_nCurrentPass;
 			std::string m_name;
 			ID3DXEffect* m_effect;
-			effect::AnnotationsVector m_vecAnnotations;
+			effect::annotations_vector m_vecAnnotations;
 		};
 
-		Technique(ID3DXEffect* effect, unsigned int index)
+		effect_technique_impl(ID3DXEffect* effect, unsigned int index)
 		{
-			//guard(Technique())
+			//guard(effect_technique_impl())
 
 			m_effect = effect;
 			techniqueHandle = m_effect->GetTechnique(index);
 			if( !techniqueHandle )
-				base::lerr << "Technique::Technique(): NULL parameter handler at position " << index;
+				base::lerr << "effect_technique_impl::effect_technique_impl(): NULL parameter handler at position " << index;
 
 			m_effect->GetTechniqueDesc(techniqueHandle, &Desc);
 
 			//base::lmsg << "Num passes in technique '" << Desc.Name << "': " << Desc.Passes;
 			for (unsigned int i = 0; i < Desc.Passes; i ++)
 			{
-				IPass* pass = new Pass(m_effect, techniqueHandle, i);
+				pass* pass = new pass_impl(m_effect, techniqueHandle, i);
 				m_arPasses.push_back(pass);
 			}
 
@@ -500,7 +500,7 @@ namespace render
 
 			for (unsigned int i = 0; i < Desc.Annotations; i ++)
 			{
-				effect::Annotation annotation;
+				effect::annotation annotation;
 				getAnnotation(m_effect, techniqueHandle, i, annotation);
 				m_vecAnnotations.push_back(annotation);
 			}
@@ -508,12 +508,12 @@ namespace render
 			//unguard
 		}
 
-		~Technique()
+		~effect_technique_impl()
 		{
 			m_effect = NULL;
 		}
 
-		std::vector <IPass*>& getPasses()
+		std::vector <pass*>& get_passes()
 		{
 			return m_arPasses;
 		}
@@ -523,14 +523,14 @@ namespace render
 			return m_name;
 		}
 
-		effect::AnnotationsVector& getAnnotations()
+		effect::annotations_vector& get_annotations()
 		{
 			return m_vecAnnotations;
 		}
 
 		void begin()
 		{
-			//guard(Technique::begin())
+			//guard(effect_technique_impl::begin())
 			if(NULL != m_effect)
 			{
 				m_effect->SetTechnique(m_name.c_str());
@@ -542,7 +542,7 @@ namespace render
 
 		void end()
 		{
-			//guard(Technique::end())
+			//guard(effect_technique_impl::end())
 			if(NULL != m_effect)
 				m_effect->End();
 			//unguard
@@ -558,9 +558,9 @@ namespace render
 		D3DXTECHNIQUE_DESC Desc;
 		unsigned int m_nPasses;
 		unsigned int m_nAnnotations;
-		std::vector <IPass*> m_arPasses;
+		std::vector <pass*> m_arPasses;
 		D3DXHANDLE techniqueHandle;
-		effect::AnnotationsVector m_vecAnnotations;
+		effect::annotations_vector m_vecAnnotations;
 	};
 
 	//------------------------------------------------------------------------------
@@ -629,14 +629,14 @@ namespace render
 			// Retrieve parameters.
 			for(unsigned int i = 0; i < desc.Parameters; i ++)
 			{
-				IParameter* effectParam = new Parameter(m_effect, i);
-				m_mapParameters[effectParam->getSemantic()] = effectParam;
+				parameter* effectParam = new effect_param_impl(m_effect, i);
+				m_mapParameters[effectParam->get_semantic()] = effectParam;
 			}
 
 			// Retrieve techniques.
 			for(unsigned int i = 0; i < desc.Techniques; i ++)
 			{
-				Technique* technique = new Technique(m_effect, i);
+				effect_technique_impl* technique = new effect_technique_impl(m_effect, i);
 
 				if(FAILED(m_effect->ValidateTechnique(technique->getHandle())))
 					base::lerr << "ValidateTechnique fault. effect file: " << effect_name << " tech: " << technique->get_name();
@@ -662,9 +662,9 @@ namespace render
 			//unguard
 		}
 
-		void commitChanges()
+		void commit_changes()
 		{
-			//guard(CEffect::commitChanges())
+			//guard(CEffect::commit_changes())
 			if(NULL != m_effect)
 				m_effect->CommitChanges();
 			//unguard
@@ -691,21 +691,21 @@ namespace render
 			return m_name;
 		}
 
-		Parameters& getParams()
+		params_map& get_params()
 		{
 			return m_mapParameters;
 		}
 
-		Techniques& getTechnics()
+		techniques_list& get_technics()
 		{
 			return m_listTechniques;
 		}
 
-		ITechnique* findTechnique(const std::string& name)
+		technique* find_technique(const std::string& name)
 		{
-			//guard(ITechnique* CEffect::getTechnique(std::string name))
+			//guard(technique* CEffect::getTechnique(std::string name))
 
-			Techniques::iterator technique = m_listTechniques.begin();
+			techniques_list::iterator technique = m_listTechniques.begin();
 			while (technique != m_listTechniques.end())
 			{
 				if ((*technique)->get_name() == name)
@@ -721,8 +721,8 @@ namespace render
 		static LPD3DXEFFECTPOOL m_spPool;
 		static int m_sNumEffects;
 		std::string				m_name;
-		Parameters m_mapParameters;
-		Techniques m_listTechniques;
+		params_map m_mapParameters;
+		techniques_list m_listTechniques;
 	};
 
 	LPD3DXEFFECTPOOL CEffect::m_spPool = NULL;
@@ -759,9 +759,9 @@ namespace render
 		//unguard
 	}
 
-	void effect::ClearAll()
+	void effect::clear_all()
 	{
-		//guard(void effect::ClearAll())
+		//guard(void effect::clear_all())
 			effects.clear();
 		//unguard
 	}

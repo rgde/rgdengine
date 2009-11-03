@@ -71,7 +71,7 @@ namespace math
 
 			//if (t > 1 || t < 0)
 			//{
-			//	throw(std::exception("Parameter out of range !"));
+			//	throw(std::exception("effect_param_impl out of range !"));
 			//}
 			if (t > 1) t = 1.0f;
 			else if (t < 0) t = 0;

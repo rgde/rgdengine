@@ -11,14 +11,14 @@ namespace particles
 	{
 		m_effect = render::effect::create( "particles.fx" );
 
-		render::effect::Parameters& params = m_effect->getParams();
+		render::effect::params_map& params = m_effect->get_params();
 
 		m_paramUpVec			= params["m_vUp"];
 		m_paramRightVec			= params["m_vRight"];
 		m_paramParticleTexture	= params["ParticlesTexture"];
 		m_paramTransformMatrix	= params["m_mLVP"];
 
-		m_pRenderTechnique = m_effect->findTechnique("PartilesRenderModulate");
+		m_pRenderTechnique = m_effect->find_technique("PartilesRenderModulate");
 
 		setTextureTiling(1, 1, 1);
 	}
@@ -63,15 +63,15 @@ namespace particles
 		m_paramUpVec->set(up);
 
 		
-		std::vector<render::effect::ITechnique::IPass*>& passes = m_pRenderTechnique->getPasses();
+		std::vector<render::effect::technique::pass*>& passes = m_pRenderTechnique->get_passes();
 
-		m_effect->commitChanges();
+		m_effect->commit_changes();
 		m_pRenderTechnique->begin();
 
 		for(size_t pass = 0; pass < passes.size(); ++pass)
 		{
 			passes[pass]->begin();
-			m_Geometry.render( render::PrimTypeTriangleList, 2*(unsigned)m_vParticleArray.size() );
+			m_geometry.render( render::PrimTypeTriangleList, 2*(unsigned)m_vParticleArray.size() );
 			passes[pass]->end();
 		}
 
@@ -88,7 +88,7 @@ namespace particles
 		{
 			m_nReservedSize = nParticles;
 
-			Geometry::Indexes& vIndices = m_Geometry.lockIB();
+			geometry::Indexes& vIndices = m_geometry.lockIB();
 			if( vIndices.size() < nParticles*6 )
 				vIndices.resize(nParticles*6);
 			for(unsigned i = 0; i < nParticles; ++i)
@@ -100,10 +100,10 @@ namespace particles
 				vIndices[i * 6 + 4] = i * 4 + 2;
 				vIndices[i * 6 + 5] = i * 4 + 1;
 			}
-			m_Geometry.unlockIB();
+			m_geometry.unlockIB();
 		}
 
-		Geometry::Vertexes& vVertices = m_Geometry.lockVB();
+		geometry::Vertexes& vVertices = m_geometry.lockVB();
 		if( vVertices.size() < nParticles*4 )
 			vVertices.resize(nParticles*4);
 
@@ -148,7 +148,7 @@ namespace particles
 			vVertices[j].color = p.color;
 			++j;
 		}
-		m_Geometry.unlockVB();
+		m_geometry.unlockVB();
 	}
 
 	void renderer::setTextureTiling(int nRows, int nColumnsTotal, int nRowsTotal)

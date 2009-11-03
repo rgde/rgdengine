@@ -65,7 +65,7 @@ namespace render
 	void mesh::load(const std::string& file_name)
 	{
 		m_file_name = file_name;
-		m_geometry = PGeometry(new Geometry());
+		m_geometry = PGeometry(new geometry());
 
 		io::CFileSystem &fs	= io::TheFileSystem::get();
 		io::path_add_scoped p	("meshes_vector/");

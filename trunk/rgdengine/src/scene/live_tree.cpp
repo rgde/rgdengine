@@ -11,6 +11,7 @@
 #include <rgde/base/smart_ptr_helpers.h>
 #include <rgde/math/types3d.h>
 #include <rgde/render/lines3d.h>
+#include <rgde/render/render_device.h>
 
 #include <rgde/scene/live_tree.h>
 
@@ -56,7 +57,7 @@ namespace live_tree
 			if(pObj->isEmpty())
 			{
 //				max = math::Point3f(min[0]+1,min[1]+1,min[2]+1);
-//				render::Line3dManager::get().add_line( min, max, color );
+//				render::lines3d::get().add_line( min, max, color );
 				// or
 				render::ThePoint3dManager::get().addPoint( min, color );
 				return;
@@ -94,7 +95,7 @@ namespace live_tree
 			SizeBox[i] = Point3f(box[i][0]?max[0]:min[0], box[i][1]?max[1]:min[1], box[i][2]?max[2]:min[2]);
 
 
-		render::Line3dManager& line_manager = render::TheLine3dManager::get();
+		render::lines3d& line_manager = render::TheDevice::get().get_lines3d();
 		// Добавляем линии
 		// up size
 		line_manager.add_line( SizeBox[0], SizeBox[1], color );

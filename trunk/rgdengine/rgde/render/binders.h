@@ -10,13 +10,15 @@
 #pragma once
 
 #include <rgde/render/binder.h>
-#include <rgde/render/material.h>
 
 namespace render
 {
-	dynamic_binder_ptr createDynamicBinder(const effect_ptr& pEffect,
-									   const material& mat,
-									   std::string& techniqueName);
+	class material;
+	typedef boost::shared_ptr<class effect> effect_ptr;
 
-	PStaticBinder createStaticBinder(const effect_ptr& pEffect);
+	dynamic_binder_ptr createDynamicBinder(const effect_ptr& effect,
+										   const material& mat,
+										   std::string& techniqueName);
+
+	PStaticBinder createStaticBinder(const effect_ptr& effect);
 }

@@ -30,7 +30,7 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 // render
 #include <rgde/render/manager.h>
 #include <rgde/render/effect.h>
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 #include <rgde/render/texture.h>
 #include <rgde/render/geometry.h>
 

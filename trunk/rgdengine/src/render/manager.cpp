@@ -40,7 +40,7 @@ namespace render
 			m_pDefaultNormalMap(safeLoadDefaultTexture("DefaultNormalMap.jpg")),
 			m_pBlackTexture(safeLoadDefaultTexture("Black.jpg")),
 			m_pDefaultEffect(effect::create("Default.fx")),
-			m_pDefaultFont(base_font::create(11,  L"Arial", render::base_font::Heavy))			
+			m_pDefaultFont(font::create(11,  L"Arial", render::font::Heavy))			
 	{
 
 		m_pDefaultFog.load_from_xml("Default.xml");
@@ -113,7 +113,7 @@ namespace render
 
 	namespace functors
 	{
-		//void setupParameters(effect_ptr pEffect, const renderable_info &info, material_ptr& mat)
+		//void setupParameters(effect_ptr effect, const renderable_info &info, material_ptr& mat)
 		//{
 		//	//assert(info.frame);
 		//	if (info.frame)
@@ -146,28 +146,28 @@ namespace render
 					static material_ptr pDefaultMaterial = material::create();
 
 					//const material_ptr& pMaterial = info.spMaterial ? info.spMaterial : pDefaultMaterial;
-					//const effect_ptr&	 pEffect	= info.spShader ? info.spShader : defaultEffect;
+					//const effect_ptr&	 effect	= info.spShader ? info.spShader : defaultEffect;
 
 					const material_ptr& pMaterial = pDefaultMaterial;
-					const effect_ptr&	 pEffect	= defaultEffect;
+					const effect_ptr&	 effect	= defaultEffect;
 
 
 					//m_pDefaultEffect
 					
 					pMaterial->getDynamicBinder()->setupParameters(info.frame);
 									
-					effect::ITechnique *pTechnique = pMaterial->getTechnique();
+					effect::technique *pTechnique = pMaterial->getTechnique();
 
 					if(NULL != pTechnique)
 					{	
 						pTechnique->begin();
 						//base::lmsg << "effect tech -=" << pTechnique->get_name() << "=- begin";
 
-						std::vector<effect::ITechnique::IPass*>   &vecPasses = pTechnique->getPasses();
+						std::vector<effect::technique::pass*>   &vecPasses = pTechnique->get_passes();
 
 						for (size_t i = 0; i < vecPasses.size(); i++)
 						{
-							effect::ITechnique::IPass	*pass = vecPasses[i];
+							effect::technique::pass	*pass = vecPasses[i];
 							pass->begin();
 								info.render_func();
 							pass->end();

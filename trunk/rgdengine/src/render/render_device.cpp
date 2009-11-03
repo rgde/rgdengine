@@ -1,6 +1,6 @@
 #include "precompiled.h"
 
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 #include <rgde/render/binders.h>
 #include <rgde/render/lines3d.h>
 
@@ -12,10 +12,10 @@ extern LPDIRECT3DDEVICE9 g_d3d;
 
 namespace render
 {
-	device_dx9::device_dx9() : m_shaderFlags(0)
+	render_device::render_device() : m_shaderFlags(0)
 	{
         m_clear_color = math::Color(0,0,0,255);
-		//base::lmsg << "device_dx9::device_dx9()";
+		//base::lmsg << "render_device::render_device()";
 	}
 
 	struct  _deleter
@@ -26,9 +26,9 @@ namespace render
 		}
 	};
 
-	device_dx9::~device_dx9()
+	render_device::~render_device()
 	{
-		//base::lmsg << "device_dx9::~device_dx9()";
+		//base::lmsg << "render_device::~render_device()";
 		on_lost();
 		//std::for_each(m_objects.begin(), m_objects.end(), _deleter());
 	}
@@ -49,40 +49,40 @@ namespace render
 	};
 
 
-	void device_dx9::on_lost()
+	void render_device::on_lost()
 	{
 		std::for_each(m_objects.begin(), m_objects.end(), _loster());
 	}
 
-	void device_dx9::on_reset()
+	void render_device::on_reset()
 	{
 		std::for_each(m_objects.begin(), m_objects.end(), _reseter());
 	}
 
-	void device_dx9::add_object(device_object *o)
+	void render_device::add_object(device_object *o)
 	{
 		m_objects.push_back(o);
 	}
 
-	void device_dx9::remove_object(device_object *o)
+	void render_device::remove_object(device_object *o)
 	{
 		m_objects.remove(o);
 	}
 
-	void device_dx9::add_statistics(unsigned verts, unsigned tris)
+	void render_device::add_statistics(unsigned verts, unsigned tris)
 	{
 		m_verts += verts;
 		m_triangles += tris;
 	}
 
-	void device_dx9::reset_statistics()
+	void render_device::reset_statistics()
 	{
 		m_verts = 0;
 		m_triangles = 0;
 	}
 
 	//--------------------------------------------------------------------------------------
-	math::Vec2f device_dx9::getBackBufferSize()
+	math::Vec2f render_device::getBackBufferSize()
 	{
 		if (NULL == g_d3d)
 			return math::Vec2f(800, 600);
@@ -97,7 +97,7 @@ namespace render
 	}
 
 	//--------------------------------------------------------------------------------------
-	float device_dx9::getFPS(float absoluteTime) const
+	float render_device::getFPS(float absoluteTime) const
 	{
 		static float framesPerSecond;
 		static float lastTime		= 0.0f;
@@ -117,7 +117,7 @@ namespace render
 		return framesPerSecond;
 	}
 
-	void device_dx9::showWiredFloorGrid(float size, unsigned num, const math::Color &color)
+	void render_device::showWiredFloorGrid(float size, unsigned num, const math::Color &color)
 	{
 		float hsize	= size / 2;
 		float step	= size / num;
@@ -129,27 +129,27 @@ namespace render
 				float z			= i *step - hsize;
 				math::Vec3f v1	(-hsize, z, 0);
 				math::Vec3f v2(hsize, z, 0);
-				TheLine3dManager::get().add_line(v1, v2, color);
+				get_lines3d().add_line(v1, v2, color);
 			}
 			{
 				// Y
 				float x	= i *step - hsize;
 				math::Vec3f v1(x, -hsize, 0);
 				math::Vec3f v2(x, hsize, 0);
-				TheLine3dManager::get().add_line(v1, v2, color);
+				get_lines3d().add_line(v1, v2, color);
 			}
 		}
 	}
 
 	//--------------------------------------------------------------------------------------
-	void device_dx9::showFPS(const font_ptr& font)
+	void render_device::showFPS(const font_ptr& font)
 	{
 		WCHAR szFPSString[64];
 		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(core::TheTimer::get().get_absolute_time()));
 		font->render(szFPSString, math::Rect(1, 1, 400, 400), 0xFFFFFFFF, true);
 	}
 
-	void device_dx9::showStatistics(const font_ptr& font)
+	void render_device::showStatistics(const font_ptr& font)
 	{
 		WCHAR szStatisticsString[512];
 		wsprintf(szStatisticsString, L"Tris: %d, Vertices: %d", m_triangles, m_verts);

@@ -148,7 +148,7 @@ namespace game
 		sprite.color = 0xFFFFFFFF;
 		sprite.rect = math::Rect(0,0,1,1);
 		sprite.spin = 0;
-		sprite.uPriority = 0;
+		sprite.priority = 0;
 		sprite.size = math::Vec2f(m_brickSize, m_brickSize);
 
 		for (uint i = 0; i < m_field.size(); ++i)
@@ -160,7 +160,7 @@ namespace game
 				{
 					sprite.texture = m_textures[l[j].id];
 					sprite.pos = l[j].rect.position;
-					m_spriteRenderer.addSprite(sprite);
+					m_spriteRenderer.add_sprite(sprite);
 				}
 			}
 		}

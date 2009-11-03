@@ -11,14 +11,14 @@ namespace render
 	class effect
 	{
 	public:
-		struct Annotation
+		struct annotation
 		{
 			std::string name;
 			std::string value;
 		};
-		typedef std::vector<Annotation> AnnotationsVector;
+		typedef std::vector<annotation> annotations_vector;
 
-		class IParameter
+		class parameter
 		{
 		public:
 			enum type
@@ -44,16 +44,16 @@ namespace render
 				VertexFragment
 			};
 
-			virtual ~IParameter(){}
+			virtual ~parameter(){}
 
 			virtual const std::string& get_name() const = 0;
-			virtual const std::string& getSemantic() const = 0;
+			virtual const std::string& get_semantic() const = 0;
 			virtual unsigned int get_size() const = 0;
 			virtual type get_type() const = 0;
 
-			virtual AnnotationsVector& getAnnotations() = 0;
+			virtual annotations_vector& get_annotations() = 0;
 
-			virtual bool set(const void* pData, unsigned int iSize) = 0;
+			virtual bool set(const void* data, unsigned int size) = 0;
 
 			virtual bool set(int value) = 0;
 			virtual bool set(bool value) = 0;
@@ -88,32 +88,32 @@ namespace render
 			virtual bool set(const math::Vec2f* value, int num) = 0;
 		};
 
-		class ITechnique
+		class technique
 		{
 		public:
-			class IPass
+			class pass
 			{
 			public:
-				virtual ~IPass(){}
+				virtual ~pass(){}
 
 				virtual void begin() = 0;
 				virtual void end() = 0;
 
 				virtual const std::string& get_name() const = 0;
-				virtual AnnotationsVector& getAnnotations() = 0;
+				virtual annotations_vector& get_annotations() = 0;
 			};
 
-			virtual ~ITechnique(){}
-			virtual std::vector <IPass*>& getPasses() = 0;
+			virtual ~technique(){}
+			virtual std::vector <pass*>& get_passes() = 0;
 			virtual const std::string& get_name() const = 0;
-			virtual AnnotationsVector& getAnnotations() = 0;
+			virtual annotations_vector& get_annotations() = 0;
 			
 			virtual void begin() = 0;
 			virtual void end() = 0;
 		};
 
-		typedef std::map <std::string, IParameter*> Parameters;
-		typedef std::list <ITechnique*> Techniques;
+		typedef std::map <std::string, parameter*> params_map;
+		typedef std::list <technique*> techniques_list;
 
 		friend effect_ptr;
 	protected:
@@ -122,16 +122,16 @@ namespace render
 		virtual ~effect(){}
 
 		static effect_ptr create(const std::string& file_name);
-		static void ClearAll();
+		static void clear_all();
 
 		///////////////////////////////////////////////////
 
-		virtual void commitChanges() = 0;
+		virtual void commit_changes() = 0;
 		virtual void onLostDevice() = 0;
 		virtual void onResetDevice() = 0;
 		virtual const std::string& get_name() const= 0;
-		virtual Parameters& getParams() = 0;
-		virtual Techniques& getTechnics() = 0;
-		virtual ITechnique* findTechnique(const std::string& name) = 0;
+		virtual params_map& get_params() = 0;
+		virtual techniques_list& get_technics() = 0;
+		virtual technique* find_technique(const std::string& name) = 0;
 	};
 }

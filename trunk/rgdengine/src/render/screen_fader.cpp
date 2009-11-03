@@ -111,10 +111,10 @@ namespace render
 		sprite.rect = math::Rect(0.0f, 0.0f, 1.0f, 1.0f);
 		sprite.size = math::Vec2f(800.0f, 600.0f);
 		sprite.spin = 0.0f;
-		sprite.uPriority = 20;
+		sprite.priority = 20;
 
 		//TODO: create own sprite renderer
-		//TheSpriteManager::get().addSprite(sprite);
+		//TheSpriteManager::get().add_sprite(sprite);
 	}
 
 	void fader::update(float dt)

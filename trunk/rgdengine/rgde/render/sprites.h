@@ -4,7 +4,7 @@
 
 #include <rgde/math/types3d.h>
 
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 #include <rgde/render/manager.h>
 #include <rgde/render/geometry.h>
 
@@ -19,7 +19,7 @@ namespace render
 		math::Vec2f pos;					///> Позиция спрайта (в экранных координатах)
 		math::Vec2f size;					///> Размер спрайта (в экранных координатах)
 		float spin;							///< Поворот
-		unsigned long uPriority;			///> Приоритет отрисовки
+		unsigned long priority;			///> Приоритет отрисовки
 		render::texture_ptr texture;			///> Адрес текстуры
 		math::Color color;					///> Цвет
 
@@ -33,21 +33,21 @@ namespace render
 	class sprite_manager : public device_object, public rendererable
 	{
 	public:
-		typedef std::vector<sprite> SpritesVector;
-		typedef SpritesVector::iterator SpritesIter;
+		typedef std::vector<sprite> sprites_vector;
+		typedef sprites_vector::iterator SpritesIter;
 
 		sprite_manager(int priority = 0);
 		~sprite_manager();
 	
 		void setAditiveBlending(bool bAditive) { m_bAditive = bAditive; }
 
-		inline SpritesVector& getSprites() { return m_sprites; }
+		inline sprites_vector& getSprites() { return m_sprites; }
 		inline unsigned getNumSpritesRendered() { return m_nSpritesRendered; }
 
 		inline math::Vec2f& getOrigin() { return m_vOrigin; }
 		inline void			setOrigin(math::Vec2f& vNewOrigin) { m_vOrigin = vNewOrigin; }
 
-		virtual void addSprite(const sprite& pSprite);
+		virtual void add_sprite(const sprite& pSprite);
 
 	protected:
 		void render();
@@ -59,13 +59,13 @@ namespace render
 	protected:
 		bool m_bAditive;
 
-		SpritesVector m_sprites;						// Спрайты
+		sprites_vector m_sprites;						// Спрайты
 		unsigned m_nSpritesRendered;				/// Число отрисованных в последний раз спрайтов
 
 		effect_ptr  m_effect;
 
-		typedef indexed_geometry<vertex::PositionTransformedColoredTextured, false> Geometry;
-		Geometry m_Geometry;						/// Геометрия
+		typedef indexed_geometry<vertex::PositionTransformedColoredTextured, false> geometry;
+		geometry m_geometry;						/// Геометрия
 
 		unsigned m_nReservedSize;					/// Число спрайтов, под которое зарезервированы буферы
 

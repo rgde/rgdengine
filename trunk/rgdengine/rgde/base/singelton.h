@@ -5,9 +5,9 @@ namespace base
 	template<class T, int tag = 0>
 	class singelton : T, boost::noncopyable
 	{
-	private:
+	protected:
 		singelton()				{}
-		virtual ~singelton()		{}
+		virtual ~singelton()	{}
 
 	public:
 		static T& get();

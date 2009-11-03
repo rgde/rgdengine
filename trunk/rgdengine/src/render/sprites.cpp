@@ -6,7 +6,7 @@ namespace render
 {
 	sprite::sprite()
 		: spin(0), 
-		uPriority(0), 
+		priority(0), 
 		rect(0, 0, 1, 1)
 	{
 	}
@@ -20,7 +20,7 @@ namespace render
 		pos (pos_), 
 		size (size_), 
 		spin (spin_), 
-		uPriority (uPriority_), 
+		priority (uPriority_), 
 		texture (pTexture_), 
 		color (color_)
 	{
@@ -50,15 +50,15 @@ namespace render
 	{
 	}
 
-	void sprite_manager::addSprite(const sprite &s)
+	void sprite_manager::add_sprite(const sprite &s)
 	{
 		m_bUpdated = false;
 		m_sprites.push_back(s);
 	}
 
-	bool sortPred (const sprite& s1, sprite& s2)
+	bool sorting_pred (const sprite& s1, sprite& s2)
 	{
-		return (s1.uPriority < s2.uPriority);
+		return (s1.priority < s2.priority);
 	}
 
 	inline math::Vec2f rotatePos(float x, float y, float sina, float cosa)
@@ -70,7 +70,7 @@ namespace render
 	{
 		using namespace math;
 
-		std::sort( m_sprites.begin(), m_sprites.end(), sortPred );
+		std::sort( m_sprites.begin(), m_sprites.end(), sorting_pred );
 
 		if (m_sprites.empty())
 		{
@@ -84,7 +84,7 @@ namespace render
 		{
 			m_nReservedSize = nSprites;
 
-			Geometry::Indexes &vIndices	= m_Geometry.lockIB();
+			geometry::Indexes &vIndices	= m_geometry.lockIB();
 			if (vIndices.size() < nSprites * 6)
 				vIndices.resize(nSprites * 6);
 			for (unsigned i = 0; i < nSprites; ++i)
@@ -96,10 +96,10 @@ namespace render
 				vIndices[i * 6 + 4] = i * 4 + 2;
 				vIndices[i * 6 + 5] = i * 4 + 3;
 			}
-			m_Geometry.unlockIB();
+			m_geometry.unlockIB();
 		}
 
-		Geometry::Vertexes &vVertices	= m_Geometry.lockVB();
+		geometry::Vertexes &vVertices	= m_geometry.lockVB();
 		if (vVertices.size() < nSprites * 4)
 			vVertices.resize(nSprites * 4);
 		unsigned i	= 0;
@@ -144,7 +144,7 @@ namespace render
 			vVertices[i].color = color;
 			++i;
 		}
-		m_Geometry.unlockVB();
+		m_geometry.unlockVB();
 
 		m_bUpdated = true;
 	}
@@ -155,25 +155,25 @@ namespace render
 
 		update();
 
-		render::effect::ITechnique *pTech	= NULL;
+		render::effect::technique *pTech	= NULL;
 
 		if (m_bAditive)
-			pTech = m_effect->findTechnique("aditive");
+			pTech = m_effect->find_technique("aditive");
 		else
-			pTech = m_effect->findTechnique("alpha");
+			pTech = m_effect->find_technique("alpha");
 
 		assert(0 != pTech && "sprite_manager::render(): Can't find effect technique!");
 		pTech->begin();
 
-		for (unsigned iPass = 0; iPass < pTech->getPasses().size(); iPass++)
+		for (unsigned iPass = 0; iPass < pTech->get_passes().size(); iPass++)
 		{
-			effect::ITechnique::IPass& pass = *pTech->getPasses()[iPass];
+			effect::technique::pass& pass = *pTech->get_passes()[iPass];
 			pass.begin();
 
 			unsigned nSpritesRendered = 0;
-			effect::IParameter *textureShaderParam	= m_effect->getParams()["spriteTexture"];
+			effect::parameter *textureShaderParam	= m_effect->get_params()["spriteTexture"];
 
-			assert(0 != textureShaderParam && "m_effect->getParams()[\"spriteTexture\"] == NULL !");
+			assert(0 != textureShaderParam && "m_effect->get_params()[\"spriteTexture\"] == NULL !");
 
 			uint start_sprite = 0;
 			texture_ptr cur_tex = m_sprites[0].texture;
@@ -190,8 +190,8 @@ namespace render
 					if (nSprites > 0)
 					{
 						textureShaderParam->set(cur_tex);
-						m_effect->commitChanges();
-						m_Geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, nSprites * 4, 6 * start_sprite, nSprites * 2);
+						m_effect->commit_changes();
+						m_geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, nSprites * 4, 6 * start_sprite, nSprites * 2);
 						nSpritesRendered += nSprites;
 					}
 					cur_tex = sprite.texture;
@@ -205,8 +205,8 @@ namespace render
 					if (nSprites > 0)
 					{
 						textureShaderParam->set(cur_tex);
-						m_effect->commitChanges();
-						m_Geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, nSprites * 4, 6 * start_sprite, nSprites * 2);
+						m_effect->commit_changes();
+						m_geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, nSprites * 4, 6 * start_sprite, nSprites * 2);
 						nSpritesRendered += nSprites;
 					}
 				}

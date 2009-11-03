@@ -5,7 +5,7 @@
 namespace render
 {
 	// Primitives supported by draw-primitive API
-	enum PrimitiveType{
+	enum primitive_type{
 		PrimTypePointList             = 1,
 		PrimTypeLineList              = 2,
 		PrimTypeLineStrip             = 3,
@@ -21,17 +21,17 @@ namespace render
 		virtual ~base_geometry(){}
 		static base_geometry* create(const vertex::VertexDecl decl, bool isDynamic);
 		virtual void update(const void* pdata, size_t bytes, size_t size_of_vertex) = 0;
-		virtual void render(PrimitiveType ePrimType, unsigned int nPrimNum) = 0;		
+		virtual void render(primitive_type ePrimType, unsigned int nPrimNum) = 0;		
 	};
 
     template<class Vertex>
-	class TGeometry
+	class geometry
 	{
 	public:
 		typedef std::vector<Vertex> Vertexes;
 
-		TGeometry(bool isDynamic = false) : 
-			m_spImpl(base_geometry::create(Vertex::GetDecl(), isDynamic)),
+		geometry(bool isDynamic = false) : 
+			m_spImpl(base_geometry::create(Vertex::get_decl(), isDynamic)),
 			m_bIsDynamic(isDynamic)
 		{			
 			m_bChanged = false;
@@ -39,7 +39,7 @@ namespace render
 
 		bool isDynamic() const {return m_bIsDynamic;}
 
-		void render(PrimitiveType ePrimType = PrimTypeTriangleList)
+		void render(primitive_type ePrimType = PrimTypeTriangleList)
 		{
 			unsigned nNumVertices = static_cast<unsigned>(m_vVertexes.size());
 			unsigned nPrimNum = nNumVertices;
@@ -179,9 +179,9 @@ namespace render
 		//static IIndexedGeometry* create(std::wstring xml_filename);
 
 		//static IIndexedGeometry* create(TiXmlNode* root_geom_node);
-		virtual void updateVB(const void* pData, size_t nBytes, size_t size_of_vertex) = 0;
-		virtual void updateIB(const void* pData, size_t nBytes) = 0;
-		virtual void render(PrimitiveType ePrimType, unsigned nBaseVertexIndex, 
+		virtual void updateVB(const void* data, size_t nBytes, size_t size_of_vertex) = 0;
+		virtual void updateIB(const void* data, size_t nBytes) = 0;
+		virtual void render(primitive_type ePrimType, unsigned nBaseVertexIndex, 
 							unsigned nMinIndex, unsigned nNumVertices, 
 							unsigned nStartIndex, unsigned nPrimitiveCount) = 0;
 	};
@@ -344,12 +344,12 @@ namespace render
 		typedef std::vector<Vertex>			Vertexes;
 		typedef std::vector<unsigned int>	Indexes;
 
-		indexed_geometry() : m_spImpl(IIndexedGeometry::create(Vertex::GetDecl(), true))
+		indexed_geometry() : m_spImpl(IIndexedGeometry::create(Vertex::get_decl(), true))
 		{
 			m_bChanged = false;
 		}
 
-		void render(PrimitiveType ePrimType, unsigned nBaseVertexIndex, 
+		void render(primitive_type ePrimType, unsigned nBaseVertexIndex, 
 			unsigned nMinIndex, unsigned nNumVertices, 
 			unsigned nStartIndex, unsigned nPrimitiveCount)
 		{
@@ -357,18 +357,18 @@ namespace render
 				nNumVertices, nStartIndex, nPrimitiveCount); //TODO
 		}
 
-		void render(PrimitiveType ePrimType, unsigned nPrimitiveCount)
+		void render(primitive_type ePrimType, unsigned nPrimitiveCount)
 		{
 			unsigned int nNumVertices = (unsigned int)m_vVertexes.size();
-			device_dx9::get().add_statistics(nNumVertices, nPrimitiveCount);
+			render_device::get().add_statistics(nNumVertices, nPrimitiveCount);
 			m_spImpl->render(ePrimType, 0, 0, nNumVertices, 0, nPrimitiveCount);
 		}
 
-		void render(PrimitiveType ePrimType, unsigned nStartPrimitive, unsigned nPrimitiveCount)
+		void render(primitive_type ePrimType, unsigned nStartPrimitive, unsigned nPrimitiveCount)
 		{
 			//TODO for other primitive types
 			unsigned int nNumVertices = (unsigned int)m_vVertexes.size();
-			device_dx9::get().add_statistics(nNumVertices, nPrimitiveCount-nStartPrimitive);
+			render_device::get().add_statistics(nNumVertices, nPrimitiveCount-nStartPrimitive);
 			m_spImpl->render(ePrimType, 0, 0, nPrimitiveCount*4, 6*nStartPrimitive, nPrimitiveCount );
 		}
 
@@ -448,12 +448,12 @@ namespace render
 		typedef std::vector<unsigned short>	Indexes;
 
 		indexed_geometry() 
-			: m_spImpl(IIndexedGeometry::create(Vertex::GetDecl(), false))
+			: m_spImpl(IIndexedGeometry::create(Vertex::get_decl(), false))
 		{			
 			m_bChanged = false;
 		}
 
-		void render(PrimitiveType ePrimType, unsigned nBaseVertexIndex, 
+		void render(primitive_type ePrimType, unsigned nBaseVertexIndex, 
 					unsigned nMinIndex, unsigned nNumVertices, 
 					unsigned nStartIndex, unsigned nPrimitiveCount)
 		{
@@ -461,13 +461,13 @@ namespace render
 				nNumVertices, nStartIndex, nPrimitiveCount); //TODO
 		}
 
-		void render(PrimitiveType ePrimType, unsigned nPrimitiveCount)
+		void render(primitive_type ePrimType, unsigned nPrimitiveCount)
 		{
 			unsigned int nNumVertices = (unsigned int)m_vVertexes.size();
 			m_spImpl->render(ePrimType, 0, 0, nNumVertices, 0, nPrimitiveCount);
 		}
 
-		void render(PrimitiveType ePrimType, unsigned nStartPrimitive, unsigned nPrimitiveCount)
+		void render(primitive_type ePrimType, unsigned nStartPrimitive, unsigned nPrimitiveCount)
 		{
 			//TODO for other primitive types
 			m_spImpl->render(ePrimType, 0, 0, nPrimitiveCount*4, 6*nStartPrimitive, nPrimitiveCount );

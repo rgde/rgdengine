@@ -3,7 +3,7 @@
 #include "precompiled.h"
 
 #include <rgde/render/geometry.h>
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 
 #include <rgde/core/coreComPtr.h>
 
@@ -17,19 +17,19 @@ extern LPDIRECT3DDEVICE9       g_d3d;
 
 namespace render
 {
-    class GeometryImpl : public base_geometry, public device_object
+    class geometry_impl : public base_geometry, public device_object
 	{
 		typedef core::com_ptr<IDirect3DVertexDeclaration9>	SPDirect3DVertexDeclaration9;
 		typedef core::com_ptr<IDirect3DVertexBuffer9>		SPDirect3DVertexBuffer9;
 		//IDirect3DIndexBuffer9	
 	public:
-		GeometryImpl(const vertex::VertexDecl decl, bool isDynamic)
+		geometry_impl(const vertex::VertexDecl decl, bool isDynamic)
 			:m_spVB(0), m_spVertexDeclaration(0), m_bDynamic(isDynamic), m_size(0)
 		{
 			g_d3d->CreateVertexDeclaration((const D3DVERTEXELEMENT9*)decl, &m_spVertexDeclaration);
 		}
 
-		virtual ~GeometryImpl()
+		virtual ~geometry_impl()
 		{
 		}
 
@@ -83,7 +83,7 @@ namespace render
 			m_spVB->Unlock();
 		}
 
-		virtual void render(PrimitiveType ePrimType, unsigned nPrimNum)
+		virtual void render(primitive_type ePrimType, unsigned nPrimNum)
 		{
 			if (0 == nPrimNum) return;
 
@@ -105,7 +105,7 @@ namespace render
 
 	base_geometry* base_geometry::create(const vertex::VertexDecl decl, bool isDynamic)
 	{
-		return new GeometryImpl(decl, isDynamic);
+		return new geometry_impl(decl, isDynamic);
 	}
 
 
@@ -163,7 +163,7 @@ namespace render
 			}
 		}
 
-		virtual void updateVB(const void *pData, size_t nBytes, size_t size_of_vertex)
+		virtual void updateVB(const void *data, size_t nBytes, size_t size_of_vertex)
 		{
 			m_nSizeOfVertex = size_of_vertex;
 
@@ -179,7 +179,7 @@ namespace render
 			// Fill the vertex buffer.
 			void* pVertices = 0;
 			m_pVB->Lock( 0, (UINT)nBytes, (void**)&pVertices, 0 );
-				memcpy( pVertices, pData, nBytes);
+				memcpy( pVertices, data, nBytes);
 			m_pVB->Unlock();
 		}
 
@@ -210,7 +210,7 @@ namespace render
 			}
 		}
 
-		virtual void updateIB(const void *pData, size_t nBytes)
+		virtual void updateIB(const void *data, size_t nBytes)
 		{
 			if (0 == nBytes)
 				return;
@@ -221,11 +221,11 @@ namespace render
 
 			void* pIndexes = 0;
 			m_pIB->Lock(0, (UINT)nBytes, &pIndexes, 0);
-				memcpy( pIndexes, pData, nBytes);
+				memcpy( pIndexes, data, nBytes);
 			m_pIB->Unlock();
 		}
 
-		virtual void render(PrimitiveType ePrimType, unsigned nBaseVertexIndex, unsigned nMinIndex, unsigned nNumVertices, unsigned nStartIndex, unsigned nPrimitiveCount)
+		virtual void render(primitive_type ePrimType, unsigned nBaseVertexIndex, unsigned nMinIndex, unsigned nNumVertices, unsigned nStartIndex, unsigned nPrimitiveCount)
 		{
 			if (0 == nPrimitiveCount)
 				return;

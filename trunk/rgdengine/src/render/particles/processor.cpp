@@ -324,7 +324,7 @@ namespace particles{
 			m = math::setTrans( m, math::Vec3f(0,0,0) );
 
 		math::Vec3f center, vel;
-		render::Line3dManager& line_manager = render::TheLine3dManager::get();
+		render::lines3d& line_manager = render::TheDevice::get().get_lines3d(); 
 		for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
 		{
 			if ((*it).dead)
@@ -341,7 +341,7 @@ namespace particles{
 				vel = it->pos + (*it).sum_vel*5.0f;
 			}
 
-			line_manager.addQuad( center, math::Vec2f (it->size, it->size), 0 );	
+			line_manager.add_quad( center, math::Vec2f (it->size, it->size), 0 );	
 			line_manager.add_line( center, vel, math::Green );
 		}
 	}

@@ -2,19 +2,18 @@
 
 namespace lines_test
 {
-
-	class CPoint
+	class point
 	{
 	public:
-		CPoint();
+		point();
 
 		void reset();
 		void update();
 
-		inline math::Vec3f& get_pos() { return m_vPos; }
+		inline math::Vec3f& get_pos() { return m_pos; }
 
 	protected:
-		math::Vec3f m_vPos;							///> Позиция
-		math::Vec3f m_vVel;							///> Скорость
+		math::Vec3f m_pos;							///> Позиция
+		math::Vec3f m_vel;							///> Скорость
 	};
 }

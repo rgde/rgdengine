@@ -6,30 +6,30 @@
 namespace lines_test
 {
 	//-----------------------------------------------------------------------------------
-	CTriangleManager::CTriangleManager( unsigned nTriangles )
+	triangle_manager::triangle_manager( unsigned num_triangles )
 	{
-		m_vTriangles.resize(nTriangles);
+		m_triangles.resize(num_triangles);
 		reset();
 	}
 	//-----------------------------------------------------------------------------------
-	void CTriangleManager::reset()
+	void triangle_manager::reset()
 	{
-		for( tTrianglesIter it = m_vTriangles.begin(); it != m_vTriangles.end(); ++it )
+		for( triangles_iter it = m_triangles.begin(); it != m_triangles.end(); ++it )
 			it->reset();
 	}
 	//-----------------------------------------------------------------------------------
-	void CTriangleManager::update()
+	void triangle_manager::update()
 	{
-		for( tTrianglesIter it = m_vTriangles.begin(); it != m_vTriangles.end(); ++it )
+		for( triangles_iter it = m_triangles.begin(); it != m_triangles.end(); ++it )
 			it->update();
 	}
 	//-----------------------------------------------------------------------------------
-	void CTriangleManager::render()
+	void triangle_manager::render()
 	{
-		for( tTrianglesIter it = m_vTriangles.begin(); it != m_vTriangles.end(); ++it )
+		for( triangles_iter it = m_triangles.begin(); it != m_triangles.end(); ++it )
 			it->render();
 
-		render::Line3dManager& pLineManager = render::TheLine3dManager::get();
-		pLineManager.addQuad( math::Vec3f(0,0,0), math::Vec2f(40,40), 0 );
+		render::lines3d& line_manager = render::TheDevice::get().get_lines3d();
+		line_manager.add_quad( math::Vec3f(0,0,0), math::Vec2f(40,40), 0 );
 	}
 }

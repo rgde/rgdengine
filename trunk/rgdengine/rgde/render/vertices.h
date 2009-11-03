@@ -98,20 +98,20 @@ namespace  vertex
 		math::Vec3f binormal;
 		math::Vec3f tangent;
 
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	//typedef PositionNormalColoredTexturedBinormalTangent MeshVertex;
 
 	/// позиция + цвет
-	struct PositionColored : public TCustomVertex<PositionColored>
+	struct position_colored : public TCustomVertex<position_colored>
 	{
-		PositionColored(){}
-		PositionColored(const math::Vec3f& pos, math::Color color);
+		position_colored(){}
+		position_colored(const math::Vec3f& pos, math::Color color);
 
 		math::Vec3f position;
 		math::Color	color;
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	/// позиция + цвет + текстура
@@ -120,7 +120,7 @@ namespace  vertex
 		math::Vec3f		position;
 		math::Color		color;
 		math::Vec2f		tex;
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	/// позиция + цвет + текстура1 + текстура2
@@ -137,14 +137,14 @@ namespace  vertex
 		math::Vec2f		tex0;
 		math::Vec2f		tex1;
 
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct PositionNormal : public TCustomVertex<PositionNormal>
 	{
 		math::Vec3f		position;
 		math::Vec3f		normal;
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct PositionNormalColored : public TCustomVertex<PositionNormalColored>
@@ -153,7 +153,7 @@ namespace  vertex
 		math::Vec3f		normal;
 		math::Color		color;
 
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct PositionNormalColoredTextured : public TCustomVertex<PositionNormalColoredTextured>
@@ -163,7 +163,7 @@ namespace  vertex
 		math::Color		color;
 		math::Vec2f		tex;
 
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct PositionNormalColoredTextured2 : public TCustomVertex<PositionNormalColoredTextured2>
@@ -174,14 +174,14 @@ namespace  vertex
 		math::Vec2f		tex0;
 		math::Vec2f		tex1;
 
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct Position : public TCustomVertex<Position>
 	{
 		math::Vec3f		position;
 
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct PositionTextured : public TCustomVertex<PositionTextured>
@@ -189,7 +189,7 @@ namespace  vertex
 		math::Vec3f		position;
 		math::Vec2f		tex;
 
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct PositionTextured2 : public TCustomVertex<PositionTextured2>
@@ -198,25 +198,25 @@ namespace  vertex
 		math::Vec2f		tex0;
 		math::Vec2f		tex1;
 
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 
 	struct PositionTransformed : public TCustomVertex<PositionTransformed>
 	{
 		math::Vec4f		position;
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
-	struct PositionTransformedColored : public TCustomVertex<PositionTransformedColored>
+	struct position_transformed_colored : public TCustomVertex<position_transformed_colored>
 	{
-		PositionTransformedColored(){}
-		PositionTransformedColored(const math::Vec4f& pos, math::Color color);
-		PositionTransformedColored(const math::Vec2f& pos, math::Color color);
+		position_transformed_colored(){}
+		position_transformed_colored(const math::Vec4f& pos, math::Color color);
+		position_transformed_colored(const math::Vec2f& pos, math::Color color);
 
 		math::Vec4f		position;
 		math::Color		color;
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct PositionTransformedColoredTextured : public TCustomVertex<PositionTransformedColoredTextured>
@@ -230,7 +230,7 @@ namespace  vertex
 		math::Color		color;
 		math::Vec2f		tex;
 
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct PositionNormalTexturedTangentBinorm : public TCustomVertex<PositionNormalTexturedTangentBinorm>
@@ -240,7 +240,7 @@ namespace  vertex
 		math::Vec2f		tex;
 		math::Vec3f		tangent;
 		math::Vec3f		binormal;
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct PositionNormalTextured2TangentBinorm : public TCustomVertex<PositionNormalTextured2TangentBinorm>
@@ -251,7 +251,7 @@ namespace  vertex
 		math::Vec2f		tex1;
 		math::Vec3f		tangent;
 		math::Vec3f		binormal;
-		static const VertexDecl GetDecl();
+		static const VertexDecl get_decl();
 	};
 
 	struct PositionSkinnedNormalColoredTextured2TangentBinorm : public vertex::TCustomVertex<PositionSkinnedNormalColoredTextured2TangentBinorm>
@@ -266,7 +266,7 @@ namespace  vertex
 		math::Vec3f		tangent;
 		math::Vec3f		binormal;
 
-		static const vertex::VertexDecl GetDecl();
+		static const vertex::VertexDecl get_decl();
 	};
 
 	typedef PositionNormalTextured2TangentBinorm MeshVertex;

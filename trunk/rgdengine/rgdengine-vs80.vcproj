@@ -368,10 +368,6 @@
 				Name="render"
 				>
 				<File
-					RelativePath=".\rgde\render\auxilary.h"
-					>
-				</File>
-				<File
 					RelativePath=".\rgde\render\binder.h"
 					>
 				</File>
@@ -389,10 +385,6 @@
 				</File>
 				<File
 					RelativePath=".\rgde\render\common.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\render\device.h"
 					>
 				</File>
 				<File
@@ -457,6 +449,10 @@
 				</File>
 				<File
 					RelativePath=".\rgde\render\model.h"
+					>
+				</File>
+				<File
+					RelativePath=".\rgde\render\render_device.h"
 					>
 				</File>
 				<File
@@ -695,10 +691,6 @@
 			<Filter
 				Name="render"
 				>
-				<File
-					RelativePath=".\src\render\auxilary.cpp"
-					>
-				</File>
 				<File
 					RelativePath=".\src\render\binders.cpp"
 					>

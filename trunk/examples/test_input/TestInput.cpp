@@ -39,7 +39,7 @@ TestInput::TestInput():
     {
 	    using namespace math;
         m_cursor.texture = render::texture::create("TestInput/cursor.png");
-	    m_cursor.uPriority = (uint)1000;
+	    m_cursor.priority = (uint)1000;
 	    m_cursor.size = Vec2f(32, 32);
 	    m_cursor.color = Color(255, 255, 255, 255);
 	    m_cursor.rect = Rect(0, 0, 1, 1);
@@ -73,7 +73,7 @@ void TestInput::update (float dt)
             //...
         }
 		m_cursor.pos = math::Vec2f(m_mouse.getX(), m_mouse.getY());
-        m_sprite_renderer.addSprite(m_cursor);
+        m_sprite_renderer.add_sprite(m_cursor);
         //-<
     }
     else

@@ -26,8 +26,8 @@ MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
         m_cEsc   += boost::bind(&MenuLevelObject::onEsc,     this);
     }
 
-	using render::base_font;
-	m_menu_font = base_font::create(40, L"Arial", base_font::ExtraBold);
+	using render::font;
+	m_menu_font = font::create(40, L"Arial", font::ExtraBold);
 
 	using namespace game;
 	PMenuItem item(new TMenuItem<events::on_complite_level>(L"PLAY GAME", events::on_complite_level()));
@@ -43,8 +43,8 @@ MenuLevelObject::~MenuLevelObject()
 
 void MenuLevelObject::update(float dt)
 {
-	using render::base_font;
-	unsigned int flags = base_font::Center | base_font::SingleLine | base_font::VCenter | base_font::Center;
+	using render::font;
+	unsigned int flags = font::Center | font::SingleLine | font::VCenter | font::Center;
 	math::Vec2f size(800, 600);
 
 	for (unsigned int i = 0; i < m_items.size(); ++i)

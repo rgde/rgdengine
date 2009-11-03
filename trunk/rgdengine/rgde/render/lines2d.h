@@ -1,6 +1,6 @@
 #pragma once
 
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 #include <rgde/render/vertices.h>
 #include <rgde/render/geometry.h>
 #include <rgde/render/effect.h>
@@ -12,16 +12,16 @@
 
 namespace render
 {
-	class Line2dManager : public rendererable
+	class lines2d : public rendererable
 	{
 	protected:
-		Line2dManager( unsigned long uPriority = 10);
-		~Line2dManager() {};
+		lines2d( unsigned long priority = 10);
+		~lines2d() {};
 
 	public:
-		typedef vertex::PositionTransformedColored Point;
+		typedef vertex::position_transformed_colored Point;
 
-		void add_line( const math::Vec2f& vPoint1, const math::Vec2f vPoint2, 
+		void add_line( const math::Vec2f& point1, const math::Vec2f point2, 
 			math::Color color = 0xffffffff );
 
 	protected:
@@ -29,12 +29,10 @@ namespace render
 
 	protected:
 		effect_ptr			m_effect;
-		unsigned long	m_uPriority;			///> Приоритет менеджера линий
+		unsigned long	m_priority;			///> Приоритет менеджера линий
 
-		typedef TGeometry<vertex::PositionTransformedColored> Geometry;
-		Geometry m_Geometry;					///> Геометрия
-		std::vector<vertex::PositionTransformedColored>* m_pVertices;
+		typedef geometry<vertex::position_transformed_colored> geometry;
+		geometry m_geometry;
+		std::vector<vertex::position_transformed_colored>* m_vertices;
 	};
-
-	typedef base::singelton<Line2dManager> TheLine2dManager;
 } //~ namespace utility

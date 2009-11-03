@@ -49,9 +49,9 @@ namespace render
 		sprite.rect = math::Rect(0.0f, 0.0f, 1.0f, 1.0f);
 		sprite.size = math::Vec2f(flare.image_scale, flare.image_scale);
 		sprite.spin = angle * flare.angle_scale;
-		sprite.uPriority = 1;
+		sprite.priority = 1;
 
-		TheSpriteManager2::get().addSprite(sprite);
+		TheSpriteManager2::get().add_sprite(sprite);
 	}
 
 	void progressNode(TiXmlNode *pNode, lens_flares *pLensFlares)
