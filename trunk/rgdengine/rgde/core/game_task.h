@@ -1,6 +1,7 @@
 #pragma once
 
 #include <rgde/core/task.h>
+#include <rgde/game/game.h>
 
 namespace core
 {
@@ -13,5 +14,8 @@ namespace core
 
 	protected:
 		virtual void run();
+
+	private:
+		game::game_system m_game;
 	};
 }

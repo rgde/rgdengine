@@ -10,7 +10,7 @@
 
 #include <rgde/render/binders.h>
 #include <rgde/render/effect_parameter_names.h>
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 #include <rgde/render/manager.h>
 #include <rgde/render/light_manager.h>
 #include <rgde/render/fog.h>

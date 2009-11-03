@@ -2,8 +2,8 @@
 
 namespace game
 {
-	//динамический обьект для игры
-	//(у него вызывается метод update из game_task)
+	// dynamic game object class
+	// used to get update notification from game
 	class dynamic_object
 	{
 		friend class game_system;

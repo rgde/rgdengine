@@ -35,7 +35,7 @@ public:
 		m_cTargetCamera = math::target_camera::create( m_camera );
 		m_cTargetCamera->set_position(vUpVec,vEyePt,vLookatPt);
 
-		m_spFont = render::font::create(18, L"Courier New", render::font::Heavy);
+		m_font = render::font::create(18, L"Courier New", render::font::Heavy);
 		m_spFontBig = render::font::create(40,L"Arial", render::font::Medium);
 
 		//инициализация ввода
@@ -157,7 +157,9 @@ protected:
 			bl->move(2); 
 			elapsed=0;
 		}
-		render::TheDevice::get().showFPS(m_spFont);
+
+		float abs_time = game::game_system::get().get_timer().get_absolute_time();
+		render::TheDevice::get().draw_fps(abs_time, m_font);
 		
 		render::TheDevice::get().showWiredFloorGrid(15.0f, 15, math::Color(60, 60, 60, 255));
 		renderMatr();
@@ -176,7 +178,7 @@ protected:
 		}
 		WCHAR str[80];
 		swprintf(str,L"Ваш счёт:   %d",bl->m_ipoints);
-		m_spFont->render(str,math::Rect(400,1,200,200),0xEEEEEEEE,true);
+		m_font->render(str,math::Rect(400,1,200,200),0xEEEEEEEE,true);
 	}
 
 	//выход из программы
@@ -223,7 +225,7 @@ protected:
 	render::effect_ptr				m_effect;
 
 	math::camera_ptr       m_camera;            //указатель на камеру
-	::render::font_ptr m_spFont,m_spFontBig;
+	::render::font_ptr m_font,m_spFontBig;
 
 	//данные для ввода
 	input::key_down      m_cEsc,m_cLeft,m_cRight,m_cDown,m_cSpace;

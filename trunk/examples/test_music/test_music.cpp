@@ -28,7 +28,7 @@ protected:
 
 protected:
 	int cur_music_index;
-	render::font_ptr	m_pFont;
+	render::font_ptr	m_font;
 	render::camera_ptr	m_camera;
 	input::key_down		m_cEsc;
 	input::key_down		m_cSpace;
@@ -102,7 +102,7 @@ TestMusic::TestMusic()
 {
 	m_sound_system.load("./media/audiodb.xml");
 
-	m_pFont = render::font::create(20, L"Arial", render::font::Heavy);
+	m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
 	m_camera = render::render_camera::create();
 
@@ -143,10 +143,11 @@ void TestMusic::update (float dt)
 
 	for (size_t i = 0; i < quads.size(); ++i)
 	{
-		m_pFont->render(quads[i].text, quads[i].rect, quads[i].color.color, false, font::SingleLine | font::VCenter);
+		m_font->render(quads[i].text, quads[i].rect, quads[i].color.color, false, font::SingleLine | font::VCenter);
 	}
 
-	render::TheDevice::get().showFPS(m_pFont);
+	float abs_time = game::game_system::get().get_timer().get_absolute_time();
+	render::TheDevice::get().draw_fps(abs_time, m_font);
 
 
 	unsigned int flags = font::SingleLine | font::Bottom;
@@ -156,7 +157,7 @@ void TestMusic::update (float dt)
 
 	std::string s(cur_music_name);
 	std::wstring ws(s.begin(), s.end());
-	m_pFont->render(ws, math::Rect(0, 0, 800, 600), 0xFFFFFFFF, true, flags);
+	m_font->render(ws, math::Rect(0, 0, 800, 600), 0xFFFFFFFF, true, flags);
 
 	m_sound_system.update((int)dt*1000);
 }
@@ -180,7 +181,7 @@ TextQuad TestMusic::CreateQuad(std::wstring text)
 	q.text = text;
 	q.color = math::Color(255*math::unitRandom(),255*math::unitRandom(),255*math::unitRandom(), 255);
 
-	q.rect = m_pFont->get_rect(q.text, render::font::SingleLine | render::font::VCenter);		
+	q.rect = m_font->get_rect(q.text, render::font::SingleLine | render::font::VCenter);		
 	math::Vec2f size(800-40-q.rect.size[0], 600-40-q.rect.size[1]);
 
 	float x = 20+math::unitRandom()*size[0];

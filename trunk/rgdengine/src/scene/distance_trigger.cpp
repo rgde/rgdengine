@@ -1,11 +1,11 @@
 #include "precompiled.h"
 
-#include <rgde/scene/distance_trigger.h>
-
 #include <rgde/math/transform.h>
 #include <rgde/math/camera.h>
 
-#include <rgde/render/device.h>
+#include <rgde/scene/distance_trigger.h>
+
+#include <rgde/render/render_device.h>
 
 namespace scene
 {
@@ -31,18 +31,18 @@ namespace scene
 		if (!m_frame)
 			return;
 
-		math::camera_ptr pCam = render::TheDevice::get().get_camera();
+		math::camera_ptr cam = render::TheDevice::get().get_camera();
 
-		if (!pCam)
+		if (!cam)
 			return;
 
-		float distance	= math::length<float, 3>(pCam->get_pos() - m_frame->get_world_pos());
+		float distance	= math::length<float, 3>(cam->get_pos() - m_frame->get_world_pos());
 
-		bool isCameraInside	= distance <= m_distance;
+		bool is_inside	= distance <= m_distance;
 
-		if (isCameraInside != m_is_triggered)
+		if (is_inside != m_is_triggered)
 		{
-			m_is_triggered = isCameraInside;
+			m_is_triggered = is_inside;
 			trigger(m_is_triggered);
 		}
 	}

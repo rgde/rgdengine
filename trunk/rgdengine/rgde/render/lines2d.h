@@ -1,14 +1,10 @@
 #pragma once
 
-#include <rgde/render/render_device.h>
-#include <rgde/render/vertices.h>
 #include <rgde/render/geometry.h>
 #include <rgde/render/effect.h>
 #include <rgde/render/manager.h>
 
 #include <rgde/math/types3d.h>
-
-#include <rgde/base/singelton.h>
 
 namespace render
 {
@@ -28,7 +24,7 @@ namespace render
 		void render();
 
 	protected:
-		effect_ptr			m_effect;
+		effect_ptr		m_effect;
 		unsigned long	m_priority;			///> Приоритет менеджера линий
 
 		typedef geometry<vertex::position_transformed_colored> geometry;

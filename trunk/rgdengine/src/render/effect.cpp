@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
 #include <rgde/render/effect.h>
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 
 #include <rgde/core/application.h>
 

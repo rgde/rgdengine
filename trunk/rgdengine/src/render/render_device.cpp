@@ -97,13 +97,13 @@ namespace render
 	}
 
 	//--------------------------------------------------------------------------------------
-	float render_device::getFPS(float absoluteTime) const
+	float render_device::getFPS(float abs_time) const
 	{
 		static float framesPerSecond;
 		static float lastTime		= 0.0f;
 		static unsigned int frames	= 0;
 
-		float currentTime			= absoluteTime;
+		float currentTime			= abs_time;
 
 		++ frames;
 
@@ -141,11 +141,21 @@ namespace render
 		}
 	}
 
+	lines3d& render_device::get_lines3d()
+	{
+		return *m_lines3d.get();
+	}
+
+	lines2d& render_device::get_lines2d()
+	{
+		return *m_lines2d.get();
+	}
+
 	//--------------------------------------------------------------------------------------
-	void render_device::showFPS(const font_ptr& font)
+	void render_device::draw_fps(float abs_time, const font_ptr& font)
 	{
 		WCHAR szFPSString[64];
-		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(core::TheTimer::get().get_absolute_time()));
+		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(abs_time));
 		font->render(szFPSString, math::Rect(1, 1, 400, 400), 0xFFFFFFFF, true);
 	}
 
@@ -155,6 +165,8 @@ namespace render
 		wsprintf(szStatisticsString, L"Tris: %d, Vertices: %d", m_triangles, m_verts);
 		font->render(szStatisticsString, math::Rect(1, 19, 400, 400), 0xFFFFFFFF, true);
 	}
+
+//////////////////////////////////////////////////////////////////////////
 
 	device_object::device_object()
 	{

@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
 #include <rgde/render/camera_manager.h>
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 
 #include <rgde/math/camera.h>
 

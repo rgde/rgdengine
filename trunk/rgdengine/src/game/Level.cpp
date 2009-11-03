@@ -6,7 +6,7 @@ namespace game
 {
 	level::level(const std::string& name, const std::string& next_level)
 		:	m_name(name),
-			m_next_level(next_level)
+			m_next_level_name(next_level)
 	{
 		base::lmsg << "level::level() " << name << base::endl;
 

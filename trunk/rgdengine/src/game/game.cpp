@@ -7,10 +7,63 @@
 
 namespace game
 {
-	//инициализация
+	namespace events
+	{
+		on_level_set::on_level_set(const std::string& next_level)
+			: m_next_level_name(next_level)
+		{
+		}
+	}
+
+	game_system* game_system::m_instance = 0;
+
+	game_system& game_system::get()
+	{
+		return *m_instance;
+	}
+
+
+	game_system::game_system()
+		: m_change_level(false)
+	{
+		assert(m_instance == 0 && "Error! GameSystem must be only one!");
+
+		m_instance = this;
+
+		subscribe<events::on_close_game>     (&game_system::onCloseGame);
+		subscribe<events::on_complite_level> (&game_system::onCompliteLevel);
+		subscribe<events::on_level_set>      (&game_system::onSetLevel);
+		m_timer.start();
+	}
+
+	game_system::~game_system()
+	{
+		//unsubscribe all dynamic objects
+		for (objects_iter it = m_objects.begin();
+			it != m_objects.end(); ++it)
+		{
+			(*it)->unsubscribe();
+		}
+
+		m_objects.clear();
+
+		level* current_level = get_level(m_cur_level_name);
+		if (0 != current_level)
+			current_level->leave();
+
+		while (m_levels.begin() != m_levels.end())
+		{
+			delete *m_levels.begin();
+			m_levels.erase(m_levels.begin());
+		}
+
+		m_instance = 0;
+	}	
+
+
 	void game_system::init(const std::string& strXmlGameConfig)
 	{
-        //ничего не делаем, если имя конфига не задано
+        // skip init if config name are not supplied
         if (strXmlGameConfig == "")
             return;
 
@@ -43,11 +96,11 @@ namespace game
 			while (level_el)
 			{
 				std::string name = level_el->Attribute("name");
-				std::string nextlevel = level_el->Attribute("nextlevel");
+				std::string next_level = level_el->Attribute("next_level");
 
 				//добавить уровень
-				level* pLevel = new level(name,nextlevel);
-				addLevel(name,nextlevel);
+				level* pLevel = new level(name,next_level);
+				addLevel(name,next_level);
 
 				//прочитать список объектов, которые должен создать уровень	
 				TiXmlElement *levelobject = level_el->FirstChildElement("levelobject");
@@ -66,7 +119,7 @@ namespace game
 		}
 	}
 
-    void game_system::addLevel(const std::string &name, const std::string &nextlevel)
+    void game_system::addLevel(const std::string &name, const std::string &next_level)
     {
         //убедимся, что уровней с таким именем нет
         if (get_level(name) != 0)
@@ -76,8 +129,8 @@ namespace game
         }
 
         //добавляем уровень
-		level* pLevel = new level(name,nextlevel);
-		m_listLevels.push_back(pLevel);
+		level* pLevel = new level(name,next_level);
+		m_levels.push_back(pLevel);
     }
 
     //написана отдельная функция, лишь бы не давать доступа к
@@ -96,39 +149,7 @@ namespace game
         pLevel->call_function("AddTypeToCreate", type_name);
     }
 
-	game_system::game_system(): m_change_level(false)
-	{
-		subscribe<events::on_close_game>     (&game_system::onCloseGame);
-		subscribe<events::on_complite_level> (&game_system::onCompliteLevel);
-		subscribe<events::on_level_set>      (&game_system::onSetLevel);
-		core::TheTimer::get().start();
-	}
 
-	game_system::~game_system()
-	{
-		typedef std::list<dynamic_object*> DinamicObjects;
-		typedef DinamicObjects::iterator DinamicObjsIter;
-
-		//отписать все динамические объекты
-		for (DinamicObjsIter it = m_objects.begin();
-			it != m_objects.end(); ++it)
-		{
-			(*it)->unsubscribe();
-		}
-
-		m_objects.clear();
-
-		level* current_level = get_level(m_strCurrentLevel);
-		if (0 != current_level)
-			current_level->leave();
-
-        while (m_listLevels.begin() != m_listLevels.end())
-        {
-            delete *m_listLevels.begin();
-            m_listLevels.erase(m_listLevels.begin());
-        }
-	}	
-	
 	void game_system::onCloseGame(events::on_close_game)
 	{
 		setCurrentLevel("");
@@ -138,7 +159,7 @@ namespace game
 	void game_system::onCompliteLevel(events::on_complite_level)
 	{
 		std::string next_level;
-		level *pLevel = get_level(m_strCurrentLevel);
+		level *pLevel = get_level(m_cur_level_name);
 
 		if (0 != pLevel)
 			next_level = pLevel->get_next_level();
@@ -154,12 +175,14 @@ namespace game
 	void game_system::setCurrentLevel(const std::string& next_level)
 	{
 		m_change_level = true;
-		m_next_level = next_level;
+		m_next_level_name = next_level;
 	}
 
 	void game_system::update()
 	{
-		float dt = core::TheTimer::get().get_elapsed();
+		float dt = m_timer.get_elapsed();
+
+		m_cur_frame_delta = dt;
 
 		//static_cast<float>(m_timer.elapsed());
 		typedef std::list<dynamic_object*> DinamicObjects;
@@ -175,14 +198,14 @@ namespace game
 		//сменим уровень (если надо)
 		if (m_change_level)
 		{
-			level* current_level = get_level(m_strCurrentLevel);
+			level* current_level = get_level(m_cur_level_name);
 
 			if (0 != current_level)
 				current_level->leave();
 
-			m_strCurrentLevel = m_next_level;
+			m_cur_level_name = m_next_level_name;
 
-			current_level = get_level(m_strCurrentLevel);
+			current_level = get_level(m_cur_level_name);
 
 			if (0 != current_level)
 				current_level->enter();
@@ -229,7 +252,7 @@ namespace game
 
 	level* game_system::get_level(const std::string& name)
 	{
-		for(std::list<level*>::iterator i = m_listLevels.begin(); i != m_listLevels.end(); ++i)
+		for(std::list<level*>::iterator i = m_levels.begin(); i != m_levels.end(); ++i)
 		{
 			if ((*i)->get_name() == name)
 				return (*i);

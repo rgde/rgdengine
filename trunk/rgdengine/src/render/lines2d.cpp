@@ -1,6 +1,7 @@
 #include "precompiled.h"
 
 #include <rgde/render/lines2d.h>
+#include <rgde/render/render_device.h>
 
 #include "../base/exception.h"
 
