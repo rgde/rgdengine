@@ -81,7 +81,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float timer::get_absolute_time()
+	float timer::get_absolute_time() const
 	{
 		LARGE_INTEGER time;
 
@@ -95,7 +95,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float timer::get_current_time()
+	float timer::get_current_time() const
 	{
 		LARGE_INTEGER time;
 
@@ -108,6 +108,21 @@ namespace core
 		return (time.QuadPart-BaseTime) / (float)TicksPerSecond;
 	}
 
+	//-----------------------------------------------------------------------------
+	float timer::get_elapsed() const
+	{
+		LARGE_INTEGER time;
+
+		if( 0 != StopTime )
+			time.QuadPart = StopTime;
+		else
+			QueryPerformanceCounter(&time);
+
+		// Calculate a elapsed time
+		float elapsed = float(time.QuadPart-LastTime) / (float)TicksPerSecond;
+
+		return elapsed;
+	}
 	//-----------------------------------------------------------------------------
 	float timer::get_elapsed()
 	{
@@ -125,9 +140,8 @@ namespace core
 	
 		return elapsed;
 	}
-
 	//-----------------------------------------------------------------------------
-	bool timer::is_stoped()
+	bool timer::is_stoped() const
 	{
 		return Stopped;
 	}

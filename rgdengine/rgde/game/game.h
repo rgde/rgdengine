@@ -1,12 +1,12 @@
 #pragma once
 
-#include "rgde/event/events.h"
+#include <rgde/core/Timer.h>
 
-#include "rgde/game/level.h"
-#include "rgde/game/dynamic_object.h"
-#include "rgde/game/level_object.h"
+#include <rgde/event/events.h>
 
-#include "rgde/base/singelton.h"
+#include <rgde/game/level.h>
+#include <rgde/game/dynamic_object.h>
+#include <rgde/game/level_object.h>
 
 namespace game
 {
@@ -23,15 +23,11 @@ namespace game
 		class on_level_set
 		{
 		public:
-			on_level_set(const std::string& next_level)
-				: m_next_level(next_level)
-			{
-			}
-
-			const std::string& get_next_level()  const { return m_next_level; }
+			on_level_set(const std::string& next_level);
+			const std::string& get_next_level()  const { return m_next_level_name; }
 
 		private:
-			std::string m_next_level;
+			std::string m_next_level_name;
 		};
 	}
 
@@ -39,17 +35,20 @@ namespace game
 	class game_system: public event::listener
 	{
 	public:
-        //инициализация из xml файла
+		game_system();
+		~game_system();
+
+        //initialization from XML file
 		void init(const std::string&); 
 
-        //или динамическое создание уровней игры
-        void addLevel(const std::string &name, const std::string &nextlevel);
+        //or dynamic game levels creation
+        void addLevel(const std::string &name, const std::string &next_level);
         void addLevelTypeToCreate(const std::string &name, const std::string& type_name);
 
-		//узнать имя текущего уровня
-		const std::string& getCurrentLevel() const {return m_strCurrentLevel;} 
+		//get name of current game level
+		const std::string& getCurrentLevel() const {return m_cur_level_name;} 
 
-		//задать текущий уровень (по имени)
+		//set current level (by name)
 		void setCurrentLevel(const std::string&);   
 
 		void update();
@@ -58,23 +57,31 @@ namespace game
 		void onCompliteLevel(events::on_complite_level);
 		void onSetLevel(events::on_level_set);
 
-		void register_object(dynamic_object*);   //зарегестрировать динамический (т.е. с методом update) объект
-		void unregister_object(dynamic_object*); //РАЗрегестрировать динамический объект
+		void register_object(dynamic_object*);   //register dynamic object
+		void unregister_object(dynamic_object*); //unregister dynamic object
+
+		const core::timer& get_timer() const {return m_timer;}
+		float get_frame_dt() const {return m_cur_frame_delta;}
+
+		static game_system& get();
 
 	private:
-		level* get_level(const std::string& level_name);
-	
-	protected:
-		game_system();
-		~game_system();
+		level* get_level(const std::string& level_name);	
 
 	private:
-		std::string                m_strCurrentLevel;    //имя текущего уровня
-		std::string                m_next_level;       //имя следующего уровня
-		std::list<level*>         m_listLevels;         //список уровней
-		std::list<dynamic_object*> m_objects; //список динамических обьектов
-		bool                       m_change_level;
+		std::string                m_cur_level_name;	// current level name
+		std::string                m_next_level_name;	// next level name
+		std::list<level*>          m_levels;			// levels list
+		
+		std::list<dynamic_object*> m_objects;			// dynamic objects list
+		typedef std::list<dynamic_object*> dynamic_objects;
+		typedef dynamic_objects::iterator objects_iter;
+
+		bool        m_change_level;
+
+		core::timer m_timer;
+		float		m_cur_frame_delta;
+
+		static game_system* m_instance;
 	};
-
-	typedef base::singelton<game_system>	TheGame;
 }

@@ -3,7 +3,7 @@
 #include <rgde/render/manager.h>
 #include <rgde/render/binders.h>
 #include <rgde/render/light_manager.h>
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 #include <rgde/render/camera_manager.h>
 
 #include <rgde/base/lexical_cast.h>

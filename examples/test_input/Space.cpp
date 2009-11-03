@@ -126,7 +126,8 @@ Space::Space (int nStars)
 void Space::update (float dt)
 {
 	//FPS
-	render::TheDevice::get().showFPS(m_font);
+	float abs_time = game::game_system::get().get_timer().get_absolute_time();
+	render::TheDevice::get().draw_fps(abs_time, m_font);
 
     //ship
     m_spriteShip.pos = math::Vec2f(int(m_x)+.5f,int(m_y)+.5f);

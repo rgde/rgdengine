@@ -19,17 +19,17 @@ int main()
 		//pApp->add(task_ptr(new game_task(*pApp, 2, "gameconfig.xml")));
         pApp->add(task_ptr(new game_task(*pApp, 2)));
 
-        game::TheGame::get().addLevel("intro", "menu");
-        game::TheGame::get().addLevelTypeToCreate("intro", "AviLevelObject");
+        game::game_system::get().addLevel("intro", "menu");
+        game::game_system::get().addLevelTypeToCreate("intro", "AviLevelObject");
 
-        game::TheGame::get().addLevel("menu", "play");
-        game::TheGame::get().addLevelTypeToCreate("menu", "MenuLevelObject");
+        game::game_system::get().addLevel("menu", "play");
+        game::game_system::get().addLevelTypeToCreate("menu", "MenuLevelObject");
 
-        game::TheGame::get().addLevel("play", "menu");
-        game::TheGame::get().addLevelTypeToCreate("play", "PlayLevelObject");
-        game::TheGame::get().addLevelTypeToCreate("play", "MapLevelObject");
+        game::game_system::get().addLevel("play", "menu");
+        game::game_system::get().addLevelTypeToCreate("play", "PlayLevelObject");
+        game::game_system::get().addLevelTypeToCreate("play", "MapLevelObject");
 
-        game::TheGame::get().setCurrentLevel("intro");
+        game::game_system::get().setCurrentLevel("intro");
         //-<
 
 		game::effects::SnowEffect background_effect;

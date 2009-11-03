@@ -23,7 +23,7 @@ public:
 			  .add<core::game_task>(1)
 			  .add<core::input_task>(0, false);
 
-		m_spFont = render::font::create(20, L"Arial", render::font::Heavy);
+		m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
 		math::Vec3f vEyePt(40, 40, -40);
 		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
@@ -247,7 +247,7 @@ protected:
 	math::camera_ptr			m_pCamera;
 	math::target_camera_ptr		m_cTargetCamera;      //контроллер камеры "нацеленная камера"
 
-	render::font_ptr		m_spFont;
+	render::font_ptr		m_font;
 
 	bool m_bDebugDraw;				// Стоит ли проводить в тесте дебажную отрисовку
 	bool m_bSaveParticles;			// Стоит ли сохранить эффект частиц в файл

@@ -77,7 +77,8 @@ namespace rgde
 
 			void sprite_example::update(float dt)
 			{
-				render::TheDevice::get().showFPS(m_font);
+				float abs_time = game::game_system::get().get_timer().get_absolute_time();
+				render::TheDevice::get().draw_fps(abs_time, m_font);
 
 				for (render::sprite_manager::SpritesIter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 				{

@@ -1,15 +1,15 @@
 <game startlevel="intro">
 
-  <level name="intro" nextlevel="menu">
+  <level name="intro" next_level="menu">
     <levelobject type="AviLevelObject"/>
     <fake/>
   </level>
 
-  <level name="menu" nextlevel="play">
+  <level name="menu" next_level="play">
     <levelobject type="MenuLevelObject"/>
   </level>
   
-  <level name="play" nextlevel="menu">
+  <level name="play" next_level="menu">
     <levelobject type="PlayLevelObject"/>
     <levelobject type="MapLevelObject"/>
   </level>

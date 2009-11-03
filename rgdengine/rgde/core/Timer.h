@@ -2,9 +2,6 @@
 /// Related methods associated with timer.
 #pragma once
 
-#include <rgde/base/singelton.h>
-
-//-----------------------------------------------------------------------------
 namespace core
 {
 	class timer
@@ -25,16 +22,17 @@ namespace core
 		void advance();
 
 		/// Returns the absolute system time
-		float get_absolute_time();
+		float get_absolute_time() const;
 
 		/// Returns the current time
-		float get_current_time();
+		float get_current_time() const;
 
 		/// Returns a time that elapsed between get_elapsed() calls
 		float get_elapsed();
+		float get_elapsed() const;
 
 		/// Indicates that a timer is stopped or paused
-		bool is_stoped();
+		bool is_stoped() const;
 
 	protected:
 		bool Stopped;
@@ -44,6 +42,4 @@ namespace core
 		__int64 StopTime;
 		__int64 TicksPerSecond;
 	};
-
-	typedef base::singelton<timer> TheTimer;
 }

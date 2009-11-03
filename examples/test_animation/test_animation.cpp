@@ -15,7 +15,7 @@ public:
 		m_spApp->add(core::task_ptr(new core::input_task(*m_spApp, 0)));
 		m_spApp->add(core::task_ptr(new core::game_task(*m_spApp, 2)));
 
-		m_spFont = render::font::create(20, L"Arial", render::font::Heavy);
+		m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
 		m_pMesh = render::mesh_ptr(new render::mesh);
 		m_pMesh->load( "media\\meshes\\Box01.xml" );
@@ -105,7 +105,7 @@ protected:
 protected:
 	std::auto_ptr<core::application> m_spApp;
 
-	render::font_ptr			m_spFont;
+	render::font_ptr			m_font;
 	math::camera_ptr			m_camera;            //указатель на камеру
 	render::texture_ptr			m_pTexture;
 

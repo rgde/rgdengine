@@ -2,7 +2,7 @@
 
 #include <rgde/render/font.h>
 #include <rgde/render/manager.h>
-#include <rgde/render/device.h>
+#include <rgde/render/render_device.h>
 
 #include <d3dx9.h>
 extern LPDIRECT3DDEVICE9 g_d3d;
@@ -71,20 +71,20 @@ namespace render
 
 		void destroy()
 		{
-			if (m_pFont != NULL)
+			if (m_font != NULL)
 			{
-				m_pFont->Release();
-				m_pFont = 0;
+				m_font->Release();
+				m_font = 0;
 				fontsCreated--;
 			}
 		}
 
 		void create()
 		{
-			if (g_d3d == NULL || m_pFont != NULL)
+			if (g_d3d == NULL || m_font != NULL)
 				return;
 
-			if (FAILED(D3DXCreateFont(g_d3d, -m_nHeight, 0, m_eFontWeght, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 5, DEFAULT_PITCH | FF_DONTCARE, m_name.c_str(), &m_pFont)))
+			if (FAILED(D3DXCreateFont(g_d3d, -m_nHeight, 0, m_eFontWeght, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 5, DEFAULT_PITCH | FF_DONTCARE, m_name.c_str(), &m_font)))
 			{
 				throw std::bad_exception("font_impl():Can't create device font object!");
 			}			fontsCreated++;
@@ -92,7 +92,7 @@ namespace render
 
 	public:
 		font_impl(int height, const std::wstring &name, FontWeight font_weigh)
-			: m_pFont(0),
+			: m_font(0),
 			  m_nHeight(height),
 			  m_name(name),
 			  m_eFontWeght(font_weigh),
@@ -104,16 +104,16 @@ namespace render
 
 		void doRender(const std::wstring text, RECT textLocation, unsigned int color, int flags)
 		{
-			if (m_pFont != NULL)
-				m_pFont->DrawText(NULL, text.c_str(), -1, &textLocation, flags, color);
+			if (m_font != NULL)
+				m_font->DrawText(NULL, text.c_str(), -1, &textLocation, flags, color);
 		}		
 
 		math::Rect get_rect(const std::wstring &text, int flags)
 		{
 			RECT rc	= {0, 0, 0, 200};
 
-			if (m_pFont != NULL)
-				m_pFont->DrawText(NULL, text.c_str(), -1, &rc, DT_CALCRECT | flags, 0);
+			if (m_font != NULL)
+				m_font->DrawText(NULL, text.c_str(), -1, &rc, DT_CALCRECT | flags, 0);
 
 			math::Rect	ret((float)rc.left, (float)rc.top, (float)rc.right - rc.left, (float)rc.bottom - rc.top);
 			return ret;
@@ -155,9 +155,9 @@ namespace render
 
 		virtual void onLostDevice()
 		{
-			if (m_pFont != NULL)
+			if (m_font != NULL)
 			{
-				m_pFont->OnLostDevice();
+				m_font->OnLostDevice();
 				destroy();
 			}
 		}		
@@ -165,8 +165,8 @@ namespace render
 		virtual void onResetDevice()
 		{
 			create();
-			if (m_pFont != NULL) 
-				m_pFont->OnResetDevice();
+			if (m_font != NULL) 
+				m_font->OnResetDevice();
 		}
 
 		virtual ~font_impl()
@@ -180,7 +180,7 @@ namespace render
 		}	
 
 	private:		
-		ID3DXFont	*m_pFont;
+		ID3DXFont	*m_font;
 	};
 
 	font_ptr font::create(int height, const std::wstring &name, FontWeight font_weigh)
