@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9,00"
 	Name="vorbisfile_static"
 	ProjectGUID="{4B61F965-D1DA-4454-8983-D645CC327633}"
 	RootNamespace="vorbisfile_static"
