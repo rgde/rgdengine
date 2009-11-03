@@ -35,7 +35,8 @@ namespace rgde
 			void clear_all();
 
 			void render_all();
-			void drawButch(primitive::prim_vertex& vert)
+			void drawButch(primitives_2d::prim_vertex& vert);
+
 		private:
 			lines_vector m_lines;
 			sprites_vector m_sprites;

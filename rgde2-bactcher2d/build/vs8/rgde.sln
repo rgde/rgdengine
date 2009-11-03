@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "engine", "engine", "{11DEB151-F4E3-4A9B-9641-D07822BF7B73}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{64D121FF-0272-4189-B61A-2FA431241D01}"
@@ -53,12 +53,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbis_static", "..\..\exte
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbisfile_static", "..\..\external\vorbis\win32\vorbisfile_static.vcproj", "{4B61F965-D1DA-4454-8983-D645CC327633}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "renderer_2d", "renderer_2d\renderer_2d.vcproj", "{F5246D11-C7F2-4DC0-BA55-4EF0681A53D4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{98B9C120-939A-4A20-9231-B25805EB85D1} = {98B9C120-939A-4A20-9231-B25805EB85D1}
-		{DD993359-1DA6-4B02-A429-827CDC85D983} = {DD993359-1DA6-4B02-A429-827CDC85D983}
-		{C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6} = {C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "renderer_2d", "renderer2d\renderer_2d.vcproj", "{F5246D11-C7F2-4DC0-BA55-4EF0681A53D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
