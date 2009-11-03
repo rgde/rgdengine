@@ -29,7 +29,7 @@ namespace rgde
 			// описание вершины 2d-примитива
 			struct prim_vertex		
 			{
-				math::vec4f	position;	
+				math::vec4f	pos;	
 				ulong color;
 				math::vec2f	tex;			
 			};
