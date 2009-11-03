@@ -12,7 +12,7 @@ namespace rgde
 			typedef lines_vector::iterator lines_iter;
 			typedef sprites_vector::iterator sprites_iter;
 
-			renderer_2d(const device& dev, const uint buff_size = 2097152, const uint butch_size = 524288);
+			renderer_2d(device& dev, const uint buff_size = 2097152, const uint butch_size = 524288);
 			~renderer_2d();
 
 			void init_device();
@@ -26,7 +26,7 @@ namespace rgde
 			void add_sprite(const math::vec2f& pos_, const math::vec2f& size_,
 						    const math::rect tex_coord_, const float spin_, 
 							const math::color& color_=0xffffffff,
-						    const texture_ptr texture_=default_texture);
+						    const texture_ptr texture_=texture_ptr());
 
 			void load_buffers();
 
@@ -48,7 +48,7 @@ namespace rgde
 			vertex_buffer_ptr m_vb;
 			index_buffer_ptr m_ib;
 
-			base_texture_ptr default_texture;
+			texture_ptr default_texture;
 
 			// смещение вершин в буфере
 			uint m_buffer_offset;
