@@ -376,7 +376,7 @@ namespace audio
 
 
 	void audio_manager::Play(const char* szTagName,
-		world_object* pObj,
+		world_object* obj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -391,20 +391,20 @@ namespace audio
 				AudioWaitingToBePlayed wait;
 				wait.pTag = pTag;
 				wait.msDuration = msDuration;
-				wait.pObj = pObj;
+				wait.obj = obj;
 				wait.msDelay = msDelay;
 				wait.pNotify = pNotify;
 				m_toBePlayed.push_back(wait);
 			}
 			else
 			{
-				Play(pTag, pObj, msDuration, msDelay, pNotify);
+				Play(pTag, obj, msDuration, msDelay, pNotify);
 			}
 		}
 	}
 
 	void audio_manager::Play(audio_tag* pTag,
-		world_object* pObj,
+		world_object* obj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -416,14 +416,14 @@ namespace audio
 			AudioWaitingToBePlayed wait;
 			wait.pTag = pTag;
 			wait.msDuration = msDuration;
-			wait.pObj = pObj;
+			wait.obj = obj;
 			wait.msDelay = msDelay;
 			wait.pNotify = pNotify;
 			m_toBePlayed.push_back(wait);
 		}
 		else
 		{
-			internal::base_audio* pAudio = pTag->create_audio(pObj, msDuration, msDelay, pNotify);
+			internal::base_audio* pAudio = pTag->create_audio(obj, msDuration, msDelay, pNotify);
 
 			if (pAudio)			// some tags don't create any actual audio
 			{
@@ -438,9 +438,9 @@ namespace audio
 				case internal::base_audio::SOUND3D:
 					{
 						Sound3D* pSound3D = (Sound3D*)(pAudio);
-						if (pObj)
+						if (obj)
 						{
-							pSound3D->SetWorldObject(pObj);
+							pSound3D->SetWorldObject(obj);
 						}
 
 						PlayEffect(pTag, pSound3D, msDuration);
@@ -800,7 +800,7 @@ namespace audio
 		{
 			if (iToBePlayed->msDelay <= msElapsed)
 			{
-				Play(iToBePlayed->pTag, iToBePlayed->pObj, iToBePlayed->msDuration, 0, iToBePlayed->pNotify);
+				Play(iToBePlayed->pTag, iToBePlayed->obj, iToBePlayed->msDuration, 0, iToBePlayed->pNotify);
 				iToBePlayed = m_toBePlayed.erase(iToBePlayed);
 			}
 			else

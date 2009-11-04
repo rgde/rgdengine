@@ -20,7 +20,7 @@ namespace audio
 		int GetLoopDelay();  // returns milliseconds to delay next play of tag
 
 		// called to audio create internal::base_audio object based on this tag's data
-		virtual internal::base_audio* create_audio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* obj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify) = 0;
@@ -57,7 +57,7 @@ namespace audio
 		int GetCascadeNumber() { return m_cascadeNum; }
 		const char* GetCascadeTag() { return m_cascadeTag.c_str(); }
 
-		virtual internal::base_audio* create_audio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* obj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);
@@ -80,7 +80,7 @@ namespace audio
 		AudioAmbientTag();
 		virtual ~AudioAmbientTag();
 
-		virtual internal::base_audio* create_audio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* obj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);
@@ -107,7 +107,7 @@ namespace audio
 		AudioRandomTag();
 		virtual ~AudioRandomTag();
 
-		virtual internal::base_audio* create_audio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* obj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);
@@ -126,7 +126,7 @@ namespace audio
 		AudioMusicTag();
 		virtual ~AudioMusicTag();
 
-		virtual internal::base_audio* create_audio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* obj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);
@@ -146,7 +146,7 @@ namespace audio
 		AudioCompositionTag();
 		virtual ~AudioCompositionTag();
 
-		virtual internal::base_audio* create_audio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* obj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);
@@ -181,7 +181,7 @@ namespace audio
 		AudioGroupTag();
 		virtual ~AudioGroupTag();
 
-		virtual internal::base_audio* create_audio(world_object* pObj,
+		virtual internal::base_audio* create_audio(world_object* obj,
 			int msDuration,
 			int msDelay,
 			audio::listener* pNotify);

@@ -24,7 +24,7 @@ namespace render
 //\---------------------------------------------------------------------------/
 	inline const math::camera_ptr& get_camera()
 	{
-		return TheDevice::get().get_camera();
+		return render_device::get().get_camera();
 	}
 
 	math::Matrix44f makeWorldViewProjMatrix(const math::frame_ptr& frame)

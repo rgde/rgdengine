@@ -54,7 +54,7 @@ namespace live_tree
 			color = g_colorBranch;
 		else
 		{
-			if(pObj->isEmpty())
+			if(obj->isEmpty())
 			{
 //				max = math::Point3f(min[0]+1,min[1]+1,min[2]+1);
 //				render::lines3d::get().add_line( min, max, color );
@@ -468,73 +468,73 @@ namespace live_tree
 			getBranch()->draw();
 	};
 
-	void CTRoot::inject( PObject pObj, AABoxf* pAABB )
+	void CTRoot::inject( PObject obj, AABoxf* pAABB )
 	{
-		if(pObj->getRoot())
+		if(obj->getRoot())
 			return;
 
 		AABoxf aabb;
 		if(pAABB)
 			aabb = *pAABB;
 		else
-			aabb = pObj->getAABB();
+			aabb = obj->getAABB();
 
-		CInjector injector(pObj,this,aabb,m_LimitDivisions);
+		CInjector injector(obj,this,aabb,m_LimitDivisions);
 		if(injector())
 		{
-			pObj->setRoot(this);
+			obj->setRoot(this);
 			// stat
 			m_iObjInTree++;
 		}
 	};
 
-	void CTRoot::eject( PObject pObj, AABoxf* pAABB )
+	void CTRoot::eject( PObject obj, AABoxf* pAABB )
 	{
-		if(!pObj->getRoot())
+		if(!obj->getRoot())
 			return;
 
-		AABoxf aabb = pAABB? *pAABB : pObj->getAABB();
+		AABoxf aabb = pAABB? *pAABB : obj->getAABB();
 
-		CEjector ejector(pObj,this,aabb,m_LimitDivisions);
+		CEjector ejector(obj,this,aabb,m_LimitDivisions);
 		if(ejector())
 		{
-			pObj->setRoot(0);
+			obj->setRoot(0);
 			// stat
 			m_iObjInTree--;
 		}
 	};
 
-	void CTRoot::ejectNow( PObject pObj )
+	void CTRoot::ejectNow( PObject obj )
 	{
-		eject(pObj);
+		eject(obj);
 	};
 
-	void CTRoot::set_pos( PObject pObj, const Point3f pos )
+	void CTRoot::set_pos( PObject obj, const Point3f pos )
 	{
-		if(pObj->getRoot())
-			CTRoot::move(pObj,pos);
+		if(obj->getRoot())
+			CTRoot::move(obj,pos);
 		else
-			pObj->set_pos(pos);
+			obj->set_pos(pos);
 	};
 
-	void CTRoot::setExt( PObject pObj, const Point3f ext )
+	void CTRoot::setExt( PObject obj, const Point3f ext )
 	{
-		if(pObj->getRoot())
+		if(obj->getRoot())
 		{
-			CTRoot::eject(pObj);
-			pObj->setExt(ext);
-			CTRoot::inject(pObj);
+			CTRoot::eject(obj);
+			obj->setExt(ext);
+			CTRoot::inject(obj);
 		}
 		else
-			pObj->setExt(ext);
+			obj->setExt(ext);
 	};
 
-	void CTRoot::move( PObject pObj, const Point3f& pos )
+	void CTRoot::move( PObject obj, const Point3f& pos )
 	{
-		if(pObj->getRoot())
-			CTRoot::eject(pObj);
-		pObj->set_pos(pos);
-		CTRoot::inject(pObj);
+		if(obj->getRoot())
+			CTRoot::eject(obj);
+		obj->set_pos(pos);
+		CTRoot::inject(obj);
 	};
 
 
@@ -811,45 +811,45 @@ namespace live_tree
 		// nothing
 	};
 
-	void CDynamicTreeRoot::inject( PObject pObj )
+	void CDynamicTreeRoot::inject( PObject obj )
 	{
-		m_arrayInject.push_back(pObj);
+		m_arrayInject.push_back(obj);
 	};
 
-	void CDynamicTreeRoot::eject( PObject pObj )
+	void CDynamicTreeRoot::eject( PObject obj )
 	{
-		m_arrayEject.push_back(pObj);
+		m_arrayEject.push_back(obj);
 	};
 
-	void CDynamicTreeRoot::ejectNow( PObject pObj )
+	void CDynamicTreeRoot::ejectNow( PObject obj )
 	{
-		ejectDynamic(pObj);
+		ejectDynamic(obj);
 	};
 
-	void CDynamicTreeRoot::set_pos( PObject pObj, const Point3f pos )
+	void CDynamicTreeRoot::set_pos( PObject obj, const Point3f pos )
 	{
-		if(pObj->getRoot())
-			move(pObj, pos);
+		if(obj->getRoot())
+			move(obj, pos);
 		else
-			m_sortMove[pObj] = pos;
+			m_sortMove[obj] = pos;
 	};
 
-	void CDynamicTreeRoot::setExt( PObject pObj, const Point3f ext )
+	void CDynamicTreeRoot::setExt( PObject obj, const Point3f ext )
 	{
-		m_sortChange[pObj] = ext;
-		if(pObj->getRoot())
+		m_sortChange[obj] = ext;
+		if(obj->getRoot())
 		{
-			inject(pObj);
-			eject(pObj);
+			inject(obj);
+			eject(obj);
 		}
 	};
 
-	void CDynamicTreeRoot::move( PObject pObj, const Point3f& pos )
+	void CDynamicTreeRoot::move( PObject obj, const Point3f& pos )
 	{
-		if(pObj->getRoot())
-			eject(pObj);
-		m_sortMove[pObj] = pos;
-		inject(pObj);
+		if(obj->getRoot())
+			eject(obj);
+		m_sortMove[obj] = pos;
+		inject(obj);
 	};
 
 	void CDynamicTreeRoot::approximate()
@@ -992,20 +992,20 @@ namespace live_tree
 		return m_arrayDynamic;
 	};
 
-	void  CDynamicTreeRoot::ejectDynamic( PObject pObj )
+	void  CDynamicTreeRoot::ejectDynamic( PObject obj )
 	{
-		if( !pObj->isDynamic() )
-			CTRoot::eject(pObj);
+		if( !obj->isDynamic() )
+			CTRoot::eject(obj);
 		else
-			CTRoot::eject(pObj, &pObj->getDynamicAABB());
+			CTRoot::eject(obj, &obj->getDynamicAABB());
 	};
 
-	void CDynamicTreeRoot::injectDynamic( PObject pObj )
+	void CDynamicTreeRoot::injectDynamic( PObject obj )
 	{
-		if( !pObj->isDynamic() )
-			CTRoot::inject(pObj);
+		if( !obj->isDynamic() )
+			CTRoot::inject(obj);
 		else
-			CTRoot::inject(pObj, &pObj->getDynamicAABB());
+			CTRoot::inject(obj, &obj->getDynamicAABB());
 	};
 
 

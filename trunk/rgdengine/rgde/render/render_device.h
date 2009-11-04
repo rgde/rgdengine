@@ -24,8 +24,8 @@ namespace render
 		void					on_lost();
 		void					on_reset();
 
-		void					add_object(device_object* pObj);
-		void					remove_object(device_object* pObj);
+		void					add_object(device_object* obj);
+		void					remove_object(device_object* obj);
 
 		void					set_camera(const math::camera_ptr& cam){m_cam = cam; }
 		const math::camera_ptr&	get_camera() const {return m_cam;}
