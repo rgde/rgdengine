@@ -1,6 +1,7 @@
 #include "stdafx.h"
+
 #include "BatcherApplication.h"
-#include <windows.h>
+
 
 namespace rgde
 {
