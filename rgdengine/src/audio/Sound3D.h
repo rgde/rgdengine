@@ -13,7 +13,7 @@ class Sound3D : public Sound
         Sound3D(const char* szWaveFileName);
         virtual ~Sound3D();
 
-		void SetWorldObject(world_object* pObj) { m_pObj = pObj; }
+		void SetWorldObject(world_object* obj) { m_pObj = obj; }
 
 		world_object* GetWorldObject() { return m_pObj; }
 

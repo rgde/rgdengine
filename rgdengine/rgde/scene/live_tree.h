@@ -208,17 +208,17 @@ namespace live_tree
 	// next funcs produce 'static/immediate' effect in action
 	// overwrite all of them if you need 'Another' correct workflow
 		// inject object
-		virtual void			inject( PObject pObj, AABoxf* pAABB =0 );
+		virtual void			inject( PObject obj, AABoxf* pAABB =0 );
 		// eject object
-		virtual void			eject( PObject pObj, AABoxf* pAABB =0 );
+		virtual void			eject( PObject obj, AABoxf* pAABB =0 );
 		// eject object now in any case
-		virtual void			ejectNow( PObject pObj );
+		virtual void			ejectNow( PObject obj );
 		// set object new position
-		virtual void			set_pos( PObject pObj, const Point3f pos );
+		virtual void			set_pos( PObject obj, const Point3f pos );
 		// set object new extents
-		virtual void			setExt( PObject pObj, const Point3f ext );
+		virtual void			setExt( PObject obj, const Point3f ext );
 		// move object to new position
-		virtual void			move( PObject pObj, const Point3f& pos );
+		virtual void			move( PObject obj, const Point3f& pos );
 
 		// get current query status for dynamic. static tree always finalized
 		virtual bool			isApproximated( void ) { return 0; };
@@ -299,17 +299,17 @@ namespace live_tree
 		// Neonic: write override for clear... if it needed
 
 		// inject object
-		void					inject( PObject pObj );
+		void					inject( PObject obj );
 		// eject object
-		void					eject( PObject pObj );
+		void					eject( PObject obj );
 		// eject object now in any case. correctly eject dynamic object
-		void					ejectNow( PObject pObj );
+		void					ejectNow( PObject obj );
 		// set object new position
-		void					set_pos( PObject pObj, const Point3f pos );
+		void					set_pos( PObject obj, const Point3f pos );
 		// set object new extents
-		void					setExt( PObject pObj, const Point3f ext );
+		void					setExt( PObject obj, const Point3f ext );
 		// move object to new position
-		void					move( PObject pObj, const Point3f& pos );
+		void					move( PObject obj, const Point3f& pos );
 		// process approximation with deferred queryes before asking position.
 		virtual void			approximate( void );
 		// process objects finalizationt. you can make object static after this query(use isApproximated())
@@ -321,9 +321,9 @@ namespace live_tree
 
 	private:
 		// eject object in case of their state.
-		void					ejectDynamic( PObject pObj );
+		void					ejectDynamic( PObject obj );
 		// inject object in case of their state
-		void					injectDynamic( PObject pObj );
+		void					injectDynamic( PObject obj );
 
 		bool			m_isApproximated;
 		Array			m_arrayEject, m_arrayInject, m_arrayDynamic;

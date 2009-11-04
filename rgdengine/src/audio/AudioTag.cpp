@@ -175,7 +175,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioEffectTag::create_audio(world_object* pObj,
+	internal::base_audio* AudioEffectTag::create_audio(world_object* obj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -239,7 +239,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioMusicTag::create_audio(world_object* pObj,
+	internal::base_audio* AudioMusicTag::create_audio(world_object* obj,
 		int msDuration,
 		int msDelay, 
 		audio::listener* pNotify)
@@ -287,7 +287,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioCompositionTag::create_audio(world_object* pObj,
+	internal::base_audio* AudioCompositionTag::create_audio(world_object* obj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -298,13 +298,13 @@ namespace audio
 		case SECTION_NONE:
 		case SECTION_OUT:
 			m_lastSection = SECTION_IN;
-			audio_manager::get()->Play(m_inTag.c_str(), pObj, msDuration, msDelay, this);
+			audio_manager::get()->Play(m_inTag.c_str(), obj, msDuration, msDelay, this);
 			break;
 
 		case SECTION_IN:
 			{
 				int delay;
-				audio_manager::get()->Play(m_loopTag.c_str(), pObj, msDuration, msDelay, this);
+				audio_manager::get()->Play(m_loopTag.c_str(), obj, msDuration, msDelay, this);
 
 				// set out music to fade in if we need it to
 				if (msDuration > 0)
@@ -317,7 +317,7 @@ namespace audio
 				}
 
 				m_lastSection = SECTION_LOOP;
-				audio_manager::get()->Play(m_outTag.c_str(), pObj, 0, delay, this);
+				audio_manager::get()->Play(m_outTag.c_str(), obj, 0, delay, this);
 				break;
 			}
 
@@ -392,7 +392,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioRandomTag::create_audio(world_object* pObj,
+	internal::base_audio* AudioRandomTag::create_audio(world_object* obj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -416,7 +416,7 @@ namespace audio
 		// play the tag, if we've selected one
 		if (i < size)
 		{
-			audio_manager::get()->Play(m_tags[i].c_str(), pObj, msDuration, msDelay, this);
+			audio_manager::get()->Play(m_tags[i].c_str(), obj, msDuration, msDelay, this);
 		}
 
 		return NULL;
@@ -470,7 +470,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioAmbientTag::create_audio(world_object* pObj,
+	internal::base_audio* AudioAmbientTag::create_audio(world_object* obj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -555,7 +555,7 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioGroupTag::create_audio(world_object* pObj,
+	internal::base_audio* AudioGroupTag::create_audio(world_object* obj,
 		int msDuration,
 		int msDelay,
 		audio::listener* pNotify)
@@ -579,7 +579,7 @@ namespace audio
 			if (delay < 0)
 				delay = 0;
 
-			audio_manager::get()->Play(m_tags[i].c_str(), pObj, msDuration, msDelay+delay, this);
+			audio_manager::get()->Play(m_tags[i].c_str(), obj, msDuration, msDelay+delay, this);
 		}
 
 		return NULL;

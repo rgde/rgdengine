@@ -69,13 +69,13 @@ namespace audio
 		void Update(int msElapsed);
 
 		void Play(const char* szTagName,
-			world_object* pObj = NULL,		// used for positional sound effects
+			world_object* obj = NULL,		// used for positional sound effects
 			int msDuration = 0,			// length of time to play sound
 			int msDelay = 0,				// time to wait before playing
 			audio::listener* pNotify = NULL); // listener to receive notification when sound is done
 
 		void Play(audio_tag* pTag,
-			world_object* pObj = NULL,		// used for positional sound effects
+			world_object* obj = NULL,		// used for positional sound effects
 			int msDuration = 0,			// length of time to play sound
 			int msDelay = 0,				// time to wait before playing
 			audio::listener* pNotify = NULL);	// listener to receive notification when sound is done
@@ -129,7 +129,7 @@ namespace audio
 		struct AudioWaitingToBePlayed
 		{
 			audio_tag*				pTag;		// the tag waiting to be played
-			world_object*			pObj;		// the obj we want to attach it to (for 3D sound effects)
+			world_object*			obj;		// the obj we want to attach it to (for 3D sound effects)
 			int		                msDuration; // time to play
 			int                     msDelay;	// wait before playing
 			audio::listener*			pNotify;	// the listener to receive finished notification
