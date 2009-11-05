@@ -53,7 +53,7 @@ namespace render
 				if (!m_bDynamic)
 					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_spVB, NULL);
 				else
-					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC, 0, D3DPOOL_DEFAULT, &m_spVB, NULL);
+					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &m_spVB, NULL);
 
 				m_size = bytes;
 				m_used_size = m_size;
@@ -154,9 +154,9 @@ namespace render
 				m_pVB->Release();
 
 			if (!m_is_dynamic)
-				g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pVB, NULL);
+				g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &m_pVB, NULL);
 			else
-				g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC, 0, D3DPOOL_DEFAULT, &m_pVB, NULL);
+				g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &m_pVB, NULL);
 
 				m_vb_size = bytes;
 				m_vb_used_size = m_vb_size;
@@ -204,10 +204,10 @@ namespace render
 					format = D3DFMT_INDEX16;
 
 
-				//if (!m_is_dynamic)
-					g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, format, D3DPOOL_MANAGED, &m_pIB, NULL);
-				//else
-				//	g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC, format, D3DPOOL_DEFAULT, &m_pIB, NULL);
+				if (!m_is_dynamic)
+					g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, format, D3DPOOL_DEFAULT, &m_pIB, NULL);
+				else
+					g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, format, D3DPOOL_DEFAULT, &m_pIB, NULL);
 
 				m_ib_size = bytes;
 				m_ib_used_size = m_ib_size;
