@@ -56,10 +56,10 @@ public:
             Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
             Input::get_device(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
 			Input::get_device(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
-            m_cEsc  .attach(L"Quit");
+            m_esc  .attach(L"Quit");
             m_cXAxis.attach(L"Horz");
             m_cYAxis.attach(L"Vert");
-            m_cEsc   += boost::bind(&SampleApp::onEsc,   this);
+            m_esc   += boost::bind(&SampleApp::onEsc,   this);
             m_cXAxis += boost::bind(&SampleApp::onXAxis, this, _1);
             m_cYAxis += boost::bind(&SampleApp::onYAxis, this, _1);
         }
@@ -119,7 +119,7 @@ protected:
 	boost::intrusive_ptr<SceneHelper> m_pMySuper;
 
 	//данные для ввода
-	input::key_down      m_cEsc;
+	input::key_down      m_esc;
 	input::RelativeAxis m_cXAxis;
 	input::RelativeAxis m_cYAxis;
 

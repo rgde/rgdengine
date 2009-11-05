@@ -12,7 +12,7 @@ int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 	app->add<core::render_task>(2);
 
 	{
-		rgde::exapmles::sprites::sprite_example test;
+		rgde::examples::sprites::sprite_example test;
 
 		app->run();
 	}

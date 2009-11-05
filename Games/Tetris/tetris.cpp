@@ -54,13 +54,13 @@ public:
 			Input::get_device(types::Keyboard)->get_control(types::key_down)->bind(L"Down");
 			Input::get_device(types::Keyboard)->get_control(types::KeySpace)->bind(L"Drop");
 			
-			m_cEsc  .attach(L"Quit");
+			m_esc  .attach(L"Quit");
 			m_cLeft.attach(L"Left");
 			m_cRight.attach(L"Right");
 			m_cDown.attach(L"Down");
 			m_cSpace.attach(L"Drop");
 
-			m_cEsc   += boost::bind(&My::onEsc,   this);
+			m_esc   += boost::bind(&My::onEsc,   this);
 			m_cLeft   += boost::bind(&My::onLeft,   this);
 			m_cRight   += boost::bind(&My::onRight,   this);
 			m_cDown   += boost::bind(&My::onDown,   this);
@@ -228,7 +228,7 @@ protected:
 	::render::font_ptr m_font,m_spFontBig;
 
 	//данные для ввода
-	input::key_down      m_cEsc,m_cLeft,m_cRight,m_cDown,m_cSpace;
+	input::key_down      m_esc,m_cLeft,m_cRight,m_cDown,m_cSpace;
 	
 	//данные для камеры
 	math::target_camera_ptr      m_cTargetCamera;      //контроллер камеры "нацеленная камера"

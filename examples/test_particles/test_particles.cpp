@@ -14,15 +14,10 @@ class CParticleTest : public game::dynamic_object
 {
 public:
 	CParticleTest() 
-		: spApp(core::application::create(L"Test Particles Example", 640, 480, false))
-		, m_bDebugDraw (false)
+		: m_bDebugDraw (false)
 		, m_bSaveParticles (false)
 		, m_bLoadParticles (false)
 	{
-		spApp->add<core::render_task>(2)
-			  .add<core::game_task>(1)
-			  .add<core::input_task>(0, false);
-
 		m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
 		math::Vec3f vEyePt(40, 40, -40);
@@ -51,8 +46,6 @@ public:
 		render::TheCameraManager::get().add_camera(m_pCamera);
 		m_cTargetCamera->set_position(vEyePt,vLookatPt,vUpVec);
 		m_cTargetCamera->activate();
-
-		spApp->run();
 	}
 
 	void initInput()
@@ -71,7 +64,7 @@ public:
 		//m_cYAxis.attachToControl(input::Mouse, input::AxisY);
 		//m_cRightButton.attachToControl(input::Mouse, input::ButtonRight);
 		//m_cZAxis.attachToControl(input::Mouse, input::AxisWheel);
-		//m_cEsc.addHandler(this,&CParticleTest::onEsc);
+		//m_esc.addHandler(this,&CParticleTest::onEsc);
 		//m_cYAxis.addHandler(this,&CParticleTest::onYAxis);
 		//m_cXAxis.addHandler(this,&CParticleTest::onXAxis);
 		//m_cZAxis.addHandler(this,&CParticleTest::onWheelAxis);
@@ -96,7 +89,7 @@ public:
 		m_cYAxis.attach(L"Vert");
 
 		//задаем для команд функции-обработчики		
-		//m_cEsc   += boost::bind(&TestInterpolator::onEsc,   this);
+		//m_esc   += boost::bind(&TestInterpolator::onEsc,   this);
 		//m_cR     += boost::bind(&TestInterpolator::on_reset, this);
 		m_keyupQuit += boost::bind(&CParticleTest::onQuit, this);
 		m_cYAxis += boost::bind(&CParticleTest::onYAxis, this, _1);
@@ -234,13 +227,11 @@ protected:
 
 
 protected:
-	std::auto_ptr<core::application> spApp;
-
 	//данные для ввода
 	input::KeyUp        m_keyupQuit;
 	input::RelativeAxis m_cXAxis;
 	input::RelativeAxis m_cYAxis;
-	input::KeyUp       m_cEsc;
+	input::KeyUp       m_esc;
 	input::KeyUp		m_cRightButton;
 	input::RelativeAxis m_cZAxis;
 
@@ -257,6 +248,17 @@ protected:
 
 int main()
 {
-	CParticleTest particleTest;
+	std::auto_ptr<core::application> app(core::application::create(L"Test Particles Example", 800, 600, false));
+
+	app->add<core::input_task>(0, true);
+	app->add<core::game_task>(1);
+	app->add<core::render_task>(2);
+
+
+	{
+		CParticleTest particleTest;
+		app->run();
+	}
+
 	return 0;
 }

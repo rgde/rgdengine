@@ -15,7 +15,7 @@ namespace math
 
 namespace rgde
 {
-	namespace exapmles
+	namespace examples
 	{
 		namespace sprites
 		{
@@ -23,26 +23,29 @@ namespace rgde
 			sprite_example::sprite_example() : 
 				m_priorities (1),
 				m_num_sprites_per_priority (100),
-				m_bDebugLog (false),
-				m_bSortSpritesBeforeLog (true),
+				m_enable_debug_log (false),
+				m_do_sort_before_log (true),
 				m_sprites_seed (math::Vec2f (770, 570))
 			{
 				{
 					using namespace input;
 
-					m_cEsc.attach(L"Quit");
+					m_esc.attach(L"Quit");
 					Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");            
-					m_cEsc += boost::bind(&sprite_example::onEsc, this);
+					m_esc += boost::bind(&sprite_example::onEsc, this);
 				}
 
 				m_font = render::font::create(12, L"Arial", render::font::Heavy);
 
-				std::vector<render::texture_ptr> vTextures;
-				vTextures.push_back(render::texture::create( "Sprites/test01.jpg" ));
-				vTextures.push_back(render::texture::create( "Sprites/test02.jpg" ));
-				vTextures.push_back(render::texture::create( "Sprites/test03.jpg" ));
-				vTextures.push_back(render::texture::create( "Sprites/test04.jpg" ));
-				vTextures.push_back(render::texture::create( "Sprites/test05.bmp" ));
+
+				using render::texture;
+
+				std::vector<render::texture_ptr> textures;
+				textures.push_back(texture::create( "Sprites/test01.jpg" ));
+				textures.push_back(texture::create( "Sprites/test02.jpg" ));
+				textures.push_back(texture::create( "Sprites/test03.jpg" ));
+				textures.push_back(texture::create( "Sprites/test04.jpg" ));
+				textures.push_back(texture::create( "Sprites/test05.bmp" ));
 
 				for( unsigned priority = m_priorities; priority > 0; --priority )
 					for( unsigned sprite = m_num_sprites_per_priority; sprite > 0; --sprite )
@@ -55,7 +58,7 @@ namespace rgde
 						using math::unitRandom;
 						using math::rangeRandom;
 
-						for (uint i = 0; i < vTextures.size(); ++i)
+						for (uint i = 0; i < textures.size(); ++i)
 						{
 							math::Vec2f size(rangeRandom(0,80),rangeRandom(0,80));
 							math::Vec2f pos(rangeRandom(0, x), rangeRandom(0, y));
@@ -64,7 +67,7 @@ namespace rgde
 
 							float spin = rangeRandom (0, math::TWO_PI);
 
-							render::sprite sprite(pos, size, color, vTextures[i], spin, rect, priority);
+							render::sprite sprite(pos, size, color, textures[i], spin, rect, priority);
 							m_sprites.push_back(sprite);
 						}
 					}
@@ -77,16 +80,17 @@ namespace rgde
 
 			void sprite_example::update(float dt)
 			{
-				float abs_time = game::game_system::get().get_timer().get_absolute_time();
-				render::render_device::get().draw_fps(abs_time, m_font);
+				float time = game::game_system::get().get_timer().get_absolute_time();
+				render::render_device::get().draw_fps(time, m_font);
 
-				for (render::sprite_manager::SpritesIter it = m_sprites.begin(); it != m_sprites.end(); ++it)
+				typedef render::sprite_manager::SpritesIter iter;
+
+				for (iter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 				{
 					it->spin += dt;
 					m_sprite_renderer.add_sprite(*it);
 				}
 			}
-
 		}
 	}
 }
