@@ -6,7 +6,7 @@
 
 namespace vertex
 {
-	position_colored::position_colored(const math::Vec3f &pos, math::Color c)
+	position_colored::position_colored(const math::vec3f &pos, math::Color c)
 		: position(pos),
 		  color(c)
 	{
@@ -166,13 +166,13 @@ namespace vertex
 		return aDecl;
 	}
 
-	position_transformed_colored::position_transformed_colored(const math::Vec4f &pos, math::Color c)
+	position_transformed_colored::position_transformed_colored(const math::vec4f &pos, math::Color c)
 		: position(pos),
 		  color(c)
 	{
 	}
 
-	position_transformed_colored::position_transformed_colored(const math::Vec2f &pos, math::Color c)
+	position_transformed_colored::position_transformed_colored(const math::vec2f &pos, math::Color c)
 		: position(pos[0], pos[1], 0, 0),
 		  color(c)
 	{

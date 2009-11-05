@@ -38,7 +38,7 @@
 
 #include <gmtl/AxisAngle.h>
 
-namespace gmtl
+namespace math
 {
 
 /** @ingroup Compare

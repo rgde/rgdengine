@@ -40,7 +40,7 @@ public:
 	inline processors_list& getProcessors() { return m_lProcessors; }
 
 	inline float getTime() { return m_fTimeNormalaized; }
-	inline math::Vec3f&	getSpeed() {return m_vCurSpeed;}
+	inline math::vec3f&	getSpeed() {return m_vCurSpeed;}
 
 	// Акксессоры задания
 	void setFade(bool b);
@@ -94,15 +94,15 @@ protected:
 	float			m_fCurrentTime;				// текущее время (меньше времени повтора)
 	bool			m_bIsEnded;					// флаг: емиттер отработал
 
-	math::Vec3f		m_vCurSpeed;
-	math::Vec3f		m_vCurSpeedTransformed;
-	math::Vec3f		m_vCurDisplacement;
-	math::Vec3f		m_vOldPos;
+	math::vec3f		m_vCurSpeed;
+	math::vec3f		m_vCurSpeedTransformed;
+	math::vec3f		m_vCurDisplacement;
+	math::vec3f		m_vOldPos;
 
-	math::Vec3f		m_vAccelerationPrecomputed;
-	math::Vec3f		m_vPAcceleration;
-	math::Vec3f		m_vGlobalVelPrecomputed;
-	math::Vec3f		m_vGlobalVel;
+	math::vec3f		m_vAccelerationPrecomputed;
+	math::vec3f		m_vPAcceleration;
+	math::vec3f		m_vGlobalVelPrecomputed;
+	math::vec3f		m_vGlobalVel;
 };
 
 }

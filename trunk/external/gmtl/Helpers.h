@@ -38,7 +38,7 @@
 #include <gmtl/Config.h>
 
 // Helper classes
-namespace gmtl
+namespace math
 {
 namespace helpers
 {

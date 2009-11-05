@@ -40,7 +40,7 @@
 #include <gmtl/VecOps.h>
 #include <gmtl/Ray.h>
 
-namespace gmtl {
+namespace math {
 
 /**
  * Describes a line segment. This is represented by a point origin O and a

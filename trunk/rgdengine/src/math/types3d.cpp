@@ -5,12 +5,12 @@
 namespace math
 {
 	// Color
-	Color::Color(const Vec3f& v) 	
+	Color::Color(const vec3f& v) 	
 	{
 		set(v[0], v[1], v[2], 1.0f);
 	}
 
-	Color::Color(const Vec4f& v)
+	Color::Color(const vec4f& v)
 	{
 		set(v[0], v[1], v[2], v[3]);
 	}
@@ -47,7 +47,7 @@ namespace math
 		a = (uchar)(255*_a);
 	}
 
-	Color& Color::operator=(const math::Vec4f& vec)
+	Color& Color::operator=(const math::vec4f& vec)
 	{
 		set(vec[0], vec[1], vec[2], vec[3]);
 		return *this;
@@ -70,7 +70,7 @@ namespace math
 		return Color(c1.r - c2.r, c1.g - c2.g, c1.b - c2.b, c1.a - c2.a);
 	}
 
-	Rect::Rect(const Vec2f& pos, const Vec2f& s) 
+	Rect::Rect(const vec2f& pos, const vec2f& s) 
 		: position(pos), size(s)
 	{
 

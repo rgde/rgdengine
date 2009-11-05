@@ -32,9 +32,9 @@ namespace render
 		if (!camera)
 			return;
 
-		const math::Matrix44f &mView = camera->get_view_matrix();
-		const math::Matrix44f &mProj = camera->get_proj_matrix();
-		math::Matrix44f mLVP		 = mProj *mView;
+		const math::matrix44f &mView = camera->get_view_matrix();
+		const math::matrix44f &mProj = camera->get_proj_matrix();
+		math::matrix44f mLVP		 = mProj *mView;
 
 		m_effect->get_params()["g_mLVP"]->set(mLVP);
 
@@ -64,38 +64,38 @@ namespace render
 	}
 
 	//-----------------------------------------------------------------------------------
-	void lines3d::add_line(const math::Vec3f &point1, const math::Vec3f &point2, const math::Color &color)
+	void lines3d::add_line(const math::vec3f &point1, const math::vec3f &point2, const math::Color &color)
 	{
 		m_vertices->push_back(Point(point1, color));
 		m_vertices->push_back(Point(point2, color));
 	}
 	//-----------------------------------------------------------------------------------
-	void lines3d::add_box(const math::Vec3f& size, const math::Color& color)
+	void lines3d::add_box(const math::vec3f& size, const math::Color& color)
 	{
 		static const size_t nVerts = 8;
-		static math::Vec3f box[nVerts];
+		static math::vec3f box[nVerts];
 		static bool isVertexesCreated	= false;
 
 		if (!isVertexesCreated)
 		{
 			isVertexesCreated = true;
 
-			box[0] = math::Vec3f(-1, 1, -1);
-			box[1] = math::Vec3f(-1, 1, 1);
-			box[2] = math::Vec3f(1, 1, 1);
-			box[3] = math::Vec3f(1, 1, -1);
+			box[0] = math::vec3f(-1, 1, -1);
+			box[1] = math::vec3f(-1, 1, 1);
+			box[2] = math::vec3f(1, 1, 1);
+			box[3] = math::vec3f(1, 1, -1);
 
-			box[4] = math::Vec3f(-1, -1, -1);
-			box[5] = math::Vec3f(-1, -1, 1);
-			box[6] = math::Vec3f(1, -1, 1);
-			box[7] = math::Vec3f(1, -1, -1);
+			box[4] = math::vec3f(-1, -1, -1);
+			box[5] = math::vec3f(-1, -1, 1);
+			box[6] = math::vec3f(1, -1, 1);
+			box[7] = math::vec3f(1, -1, -1);
 		}
 
-		static math::Point3f size_box[nVerts];
+		static math::point3f size_box[nVerts];
 		for (unsigned i = 0; i < nVerts; ++i)
 		{
-			const math::Vec3f &v= box[i];			
-			size_box[i] = math::Point3f(v[0] * size[0], v[1] * size[1], v[2] * size[2]);
+			const math::vec3f &v= box[i];			
+			size_box[i] = math::point3f(v[0] * size[0], v[1] * size[1], v[2] * size[2]);
 		}
 
 
@@ -119,22 +119,22 @@ namespace render
 		add_line(size_box[3], size_box[3 + 4], color);
 	}
 	//-----------------------------------------------------------------------------------
-	void lines3d::add_box(const math::AABoxf& box, const math::Color& color)
+	void lines3d::add_box(const math::aaboxf& box, const math::Color& color)
 	{
-		math::Point3f max = box.getMax();
-		math::Point3f min = box.getMin();
+		math::point3f max = box.getMax();
+		math::point3f min = box.getMin();
 
-		math::Point3f center = min + (max - min) / 2.0f;
-		math::Point3f r		 = max - center;
+		math::point3f center = min + (max - min) / 2.0f;
+		math::point3f r		 = max - center;
 
-		math::Point3f x(r[0], 0.0f, 0.0f);
-		math::Point3f y(0.0f, r[1], 0.0f);
-		math::Point3f z(0.0f, 0.0f, r[2]);
+		math::point3f x(r[0], 0.0f, 0.0f);
+		math::point3f y(0.0f, r[1], 0.0f);
+		math::point3f z(0.0f, 0.0f, r[2]);
 
-		math::Point3f& xm		= x;
-		math::Point3f& ym		= y;
-		math::Point3f& zm		= z;
-		math::Point3f& centerm	= center;
+		math::point3f& xm		= x;
+		math::point3f& ym		= y;
+		math::point3f& zm		= z;
+		math::point3f& centerm	= center;
 
 		add_line(centerm + xm + ym + zm, centerm - xm + ym + zm, color);
 		add_line(centerm + xm + ym - zm, centerm - xm + ym - zm, color);
@@ -155,27 +155,27 @@ namespace render
 		add_line(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
 	}
 	//-----------------------------------------------------------------------------------
-	void lines3d::add_box(const math::Matrix44f &m, const math::AABoxf &box, const math::Color &color)
+	void lines3d::add_box(const math::matrix44f &m, const math::aaboxf &box, const math::Color &color)
 	{
-		math::Point3f max = box.getMax();
-		math::Point3f min = box.getMin();
+		math::point3f max = box.getMax();
+		math::point3f min = box.getMin();
 
-		math::Point3f center = min + (max - min) / 2.0f;
-		math::Point3f r		 = max - center;
+		math::point3f center = min + (max - min) / 2.0f;
+		math::point3f r		 = max - center;
 
-		math::Point3f x(r[0], 0.0f, 0.0f);
-		math::Point3f y(0.0f, r[1], 0.0f);
-		math::Point3f z(0.0f, 0.0f, r[2]);
+		math::point3f x(r[0], 0.0f, 0.0f);
+		math::point3f y(0.0f, r[1], 0.0f);
+		math::point3f z(0.0f, 0.0f, r[2]);
 
-		math::Matrix44f noTransTM	= m;
+		math::matrix44f noTransTM	= m;
 		noTransTM[0][3] = 0.0f;
 		noTransTM[1][3] = 0.0f;
 		noTransTM[2][3] = 0.0f;
 
-		math::Point3f xm		= noTransTM *x;
-		math::Point3f ym		= noTransTM *y;
-		math::Point3f zm		= noTransTM *z;
-		math::Point3f centerm	= m *center;
+		math::point3f xm		= noTransTM *x;
+		math::point3f ym		= noTransTM *y;
+		math::point3f zm		= noTransTM *z;
+		math::point3f centerm	= m *center;
 
 		add_line(centerm + xm + ym + zm, centerm - xm + ym + zm, color);
 		add_line(centerm + xm + ym - zm, centerm - xm + ym - zm, color);
@@ -196,33 +196,33 @@ namespace render
 		add_line(centerm - xm - ym + zm, centerm - xm - ym - zm, color);
 	}
 	//-----------------------------------------------------------------------------------
-	void lines3d::add_box(const math::Matrix44f &m, const math::Vec3f &size, const math::Color &color)
+	void lines3d::add_box(const math::matrix44f &m, const math::vec3f &size, const math::Color &color)
 	{
 		static const int nVerts = 8;
-		static math::Vec3f box[nVerts];				// for size(x,y,z) = 1
+		static math::vec3f box[nVerts];				// for size(x,y,z) = 1
 		static bool isVertexesCreated	= false;
 
 		if (!isVertexesCreated)
 		{
 			isVertexesCreated = true;
 
-			box[0] = math::Vec3f(-1, 1, -1);
-			box[1] = math::Vec3f(-1, 1, 1);
-			box[2] = math::Vec3f(1, 1, 1);
-			box[3] = math::Vec3f(1, 1, -1);
+			box[0] = math::vec3f(-1, 1, -1);
+			box[1] = math::vec3f(-1, 1, 1);
+			box[2] = math::vec3f(1, 1, 1);
+			box[3] = math::vec3f(1, 1, -1);
 
-			box[4] = math::Vec3f(-1, -1, -1);
-			box[5] = math::Vec3f(-1, -1, 1);
-			box[6] = math::Vec3f(1, -1, 1);
-			box[7] = math::Vec3f(1, -1, -1);
+			box[4] = math::vec3f(-1, -1, -1);
+			box[5] = math::vec3f(-1, -1, 1);
+			box[6] = math::vec3f(1, -1, 1);
+			box[7] = math::vec3f(1, -1, -1);
 		}
 
-		math::Point3f SizeBox[nVerts];
+		math::point3f SizeBox[nVerts];
 		for (unsigned i = 0; i < nVerts; ++i)
 		{
 			// by Korak
-			const math::Vec3f &v= box[i];			
-			SizeBox[i] = m * math::Point3f(v[0] * size[0], v[1] * size[1], v[2] * size[2]);
+			const math::vec3f &v= box[i];			
+			SizeBox[i] = m * math::point3f(v[0] * size[0], v[1] * size[1], v[2] * size[2]);
 		}
 
 
@@ -247,18 +247,18 @@ namespace render
 	}
 
 	//-----------------------------------------------------------------------------------
-	void lines3d::add_arrow(const math::Matrix44f &m, const math::Point3f &dir, const math::Color &color)
+	void lines3d::add_arrow(const math::matrix44f &m, const math::point3f &dir, const math::Color &color)
 	{
-		math::Vec3f trans;
+		math::vec3f trans;
 		math::setTrans(trans, m);
 		add_line(trans, m * dir, color);
 	}
 
 	//-----------------------------------------------------------------------------------
-	void lines3d::add_sphere(const math::Matrix44f &m, float rad, int angle)
+	void lines3d::add_sphere(const math::matrix44f &m, float rad, int angle)
 	{
-		static math::Point3f circle[361];				// for radius = 1
-		static math::Point3f circle2[2][361];
+		static math::point3f circle[361];				// for radius = 1
+		static math::point3f circle2[2][361];
 		static bool isVertexesCreated	= false;
 
 		if (!isVertexesCreated)
@@ -272,8 +272,8 @@ namespace render
 			}
 		}
 
-		math::Matrix44f m90z= math::makeRot<math::Matrix44f>(math::AxisAnglef(90.0f * 3.1415f / 180.0f, 0, 0, 1));
-		math::Matrix44f m90y= math::makeRot<math::Matrix44f>(math::AxisAnglef(90.0f * 3.1415f / 180.0f, 0, 1, 0));
+		math::matrix44f m90z= math::makeRot<math::matrix44f>(math::AxisAnglef(90.0f * 3.1415f / 180.0f, 0, 0, 1));
+		math::matrix44f m90y= math::makeRot<math::matrix44f>(math::AxisAnglef(90.0f * 3.1415f / 180.0f, 0, 1, 0));
 		m90y = m * m90y * m90z;
 		m90z = m * m90z;
 
@@ -282,7 +282,7 @@ namespace render
 			if ((i > angle + 1) && (i < 359 - angle))
 				continue;
 
-			math::Point3f radCircle	= circle[i] * rad;
+			math::point3f radCircle	= circle[i] * rad;
 			circle2[0][i] = m90y * radCircle;
 			circle2[1][i] = m90z * radCircle;
 		}
@@ -296,35 +296,35 @@ namespace render
 			add_line(circle2[1][i], circle2[1][i + 1], math::Green);
 		}
 
-		math::Vec3f zTrans;
+		math::vec3f zTrans;
 		math::setTrans(zTrans, m90z);
 		add_line(circle2[1][angle], zTrans, math::Green);
 		add_line(zTrans, circle2[1][359 - angle], math::Green);
 
-		math::Vec3f yTrans;
+		math::vec3f yTrans;
 		math::setTrans(yTrans, m90y);
 		add_line(circle2[0][angle], yTrans, math::Green);
 		add_line(yTrans, circle2[0][359 - angle], math::Green);
 	}
 	//-----------------------------------------------------------------------------------
-	void lines3d::add_quad(const math::Vec3f &center, const math::Vec2f &size, float spin)
+	void lines3d::add_quad(const math::vec3f &center, const math::vec2f &size, float spin)
 	{
-		const math::Matrix44f & mView = render_device::get().get_camera()->get_view_matrix();
+		const math::matrix44f & mView = render_device::get().get_camera()->get_view_matrix();
 
-		math::Vec3f up	(mView.mData[0], mView.mData[4], mView.mData[8]);
+		math::vec3f up	(mView.mData[0], mView.mData[4], mView.mData[8]);
 		math::normalize(up);
 		up *= size[0] * 0.5f;
-		math::Vec3f right	(mView.mData[1], mView.mData[5], mView.mData[9]);
+		math::vec3f right	(mView.mData[1], mView.mData[5], mView.mData[9]);
 		math::normalize(right);
 		right *= size[1] * 0.5f;
 
 		float cosa		= cos(spin);
 		float sina		= sin(spin);
 
-		math::Vec3f p1	= center + (cosa - sina) * right + (-sina - cosa) * up;
-		math::Vec3f p2	= center + (cosa + sina) * right + (-sina + cosa) * up;
-		math::Vec3f p3	= center + (-cosa + sina) * right + (sina + cosa) * up;
-		math::Vec3f p4	= center + (-cosa - sina) * right + (sina - cosa) * up;
+		math::vec3f p1	= center + (cosa - sina) * right + (-sina - cosa) * up;
+		math::vec3f p2	= center + (cosa + sina) * right + (-sina + cosa) * up;
+		math::vec3f p3	= center + (-cosa + sina) * right + (sina + cosa) * up;
+		math::vec3f p4	= center + (-cosa - sina) * right + (sina - cosa) * up;
 
 		add_line(p1, p2, math::Blue);
 		add_line(p2, p3, math::Blue);

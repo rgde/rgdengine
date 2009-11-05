@@ -55,7 +55,7 @@ namespace particles
 		float y = sinf(a * angl_to_rad) * radius;
 		float x = sinf(b * angl_to_rad) * r1;
 
-		math::Vec3f pos(x, y, z);
+		math::vec3f pos(x, y, z);
 		p.initial_pos = pos;
 		math::normalize( pos );
 		p.vel = pos * velocity;
@@ -72,7 +72,7 @@ namespace particles
 		float r_rand = m_RadiusSpread.getValue(m_fTimeNormalaized);
 		int angle = (int)(m_Angle.getValue(m_fTimeNormalaized));
 
-		math::Matrix44f m = getTransform().get_full_tm();
+		math::matrix44f m = getTransform().get_full_tm();
 
 		line_manager.add_sphere( m , rad, angle );
 		if( r_rand != 0 )

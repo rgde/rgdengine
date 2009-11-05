@@ -11,17 +11,17 @@ namespace game
 
 			float s = rangeRandom(5.0f, 25.0f);
 			priority = (uint)s;
-			size = Vec2f(s, s);
+			size = vec2f(s, s);
 			uint c = (uint)(255*s/25.0f);
 			color = Color(255, 255, 255, c);
 			//color = 0xFFFFFFFF;
 			rect = Rect(0, 0, 1, 1);
-			pos = Vec2f(rangeRandom(0,800.0f), rangeRandom(0,620.0f));
+			pos = vec2f(rangeRandom(0,800.0f), rangeRandom(0,620.0f));
 
 			spin = 0;
 			rot_speed = rangeRandom(0,1.0f);
 
-			velocity = Vec2f(rangeRandom(0,0.55f), 1.5f)*s;
+			velocity = vec2f(rangeRandom(0,0.55f), 1.5f)*s;
 		}
 
 		SnowEffect::SnowEffect(uint numSprites)
@@ -62,7 +62,7 @@ namespace game
 		void SnowEffect::initSprite(SnowSprite& s)
 		{				
 			s.init();
-			s.pos = math::Vec2f(math::rangeRandom (0, 800.0f), -s.size[1]*2);
+			s.pos = math::vec2f(math::rangeRandom (0, 800.0f), -s.size[1]*2);
 			//s.pTexture = m_texture;
 		}
 

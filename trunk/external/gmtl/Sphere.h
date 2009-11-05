@@ -37,7 +37,7 @@
 
 #include <gmtl/Point.h>
 
-namespace gmtl
+namespace math
 {
 
 /**

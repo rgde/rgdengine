@@ -15,16 +15,16 @@ namespace math
 		virtual ~base_camera_controller() {}
 
 		//управление камерой
-		void set_camera(camera_ptr cam)			{m_pCamera = cam;}
-		void resetCamera()						{m_pCamera = camera_ptr();}
-		const camera_ptr& get_camera()	const	{return m_pCamera;}
+		void set_camera(camera_ptr cam)			{m_camera = cam;}
+		void resetCamera()						{m_camera = camera_ptr();}
+		const camera_ptr& get_camera()	const	{return m_camera;}
 		virtual void activate() = 0;
 
 	protected:
 		virtual void update(float dt){}
 
 	protected:
-		camera_ptr m_pCamera;
+		camera_ptr m_camera;
 	};
 
 } //namespace math

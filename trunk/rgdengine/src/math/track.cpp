@@ -136,9 +136,9 @@ namespace math
 
 				double t;
 				float fSpeed;
-				math::Vec3f vUp;
-				math::Vec3f vEye;
-				math::Vec3f vLookAt;
+				math::vec3f vUp;
+				math::vec3f vEye;
+				math::vec3f vLookAt;
 
 				tx->Attribute("speed", &t); fSpeed = (float)t;
 

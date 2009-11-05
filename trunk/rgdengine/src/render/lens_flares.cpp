@@ -38,16 +38,16 @@ namespace render
 		m_flares.push_back(temp_flare);
 	}
 
-	inline void lens_flares::update_flare(flare &flare, const math::Vec2f &toLightVector, float fToLightLength, float angle, float alpha_scale)
+	inline void lens_flares::update_flare(flare &flare, const math::vec2f &toLightVector, float fToLightLength, float angle, float alpha_scale)
 	{
 		sprite sprite;
 		sprite.color = flare.color;
 		sprite.color.a = (char)((float)sprite.color.a * alpha_scale);
-		math::Vec2f screenCenter= math::Vec2f(400.0f, 300.0f);
+		math::vec2f screenCenter= math::vec2f(400.0f, 300.0f);
 		sprite.pos = toLightVector * flare.distance * fToLightLength + screenCenter;
 		sprite.texture = flare.texture;
 		sprite.rect = math::Rect(0.0f, 0.0f, 1.0f, 1.0f);
-		sprite.size = math::Vec2f(flare.image_scale, flare.image_scale);
+		sprite.size = math::vec2f(flare.image_scale, flare.image_scale);
 		sprite.spin = angle * flare.angle_scale;
 		sprite.priority = 1;
 
@@ -107,28 +107,28 @@ namespace render
 	{
 		math::camera_ptr camera	= render_device::get().get_camera();
 
-		math::Matrix44f projView= camera->get_proj_matrix() * camera->get_view_matrix();
+		math::matrix44f projView= camera->get_proj_matrix() * camera->get_view_matrix();
 
-		math::Vec3f framePos3	= m_frame->get_world_pos();
-		math::Vec4f framePos4	= math::Vec4f(framePos3[0], framePos3[1], framePos3[2], 1.0f);
-		math::Vec4f lightPos4	= projView *framePos4;
+		math::vec3f framePos3	= m_frame->get_world_pos();
+		math::vec4f framePos4	= math::vec4f(framePos3[0], framePos3[1], framePos3[2], 1.0f);
+		math::vec4f lightPos4	= projView *framePos4;
 
 		if (lightPos4[3] == 0.0f)
 			return;
 
-		math::Vec3f lightPos3		= math::Vec3f((lightPos4[0] / lightPos4[3] + 1.0f) / 2.0f, (lightPos4[1] / lightPos4[3] + 1.0f) / 2.0f, (lightPos4[2] / lightPos4[3] + 1.0f) / 2.0f);
-		math::Vec2f lightPos		= math::Vec2f(lightPos3[0] * 800.0f, (1.0f - lightPos3[1]) * 600.0f);
-		math::Vec2f screenCenter	= math::Vec2f(400.0f, 300.0f);
-		math::Vec2f toLightVector	= lightPos - screenCenter;
+		math::vec3f lightPos3		= math::vec3f((lightPos4[0] / lightPos4[3] + 1.0f) / 2.0f, (lightPos4[1] / lightPos4[3] + 1.0f) / 2.0f, (lightPos4[2] / lightPos4[3] + 1.0f) / 2.0f);
+		math::vec2f lightPos		= math::vec2f(lightPos3[0] * 800.0f, (1.0f - lightPos3[1]) * 600.0f);
+		math::vec2f screenCenter	= math::vec2f(400.0f, 300.0f);
+		math::vec2f toLightVector	= lightPos - screenCenter;
 		float length				= math::normalize(toLightVector);
 
-		float angle				= math::Math::aCos(math::dot(toLightVector, math::Vec2f(1.0f, 0.0f)));
+		float angle				= math::Math::aCos(math::dot(toLightVector, math::vec2f(1.0f, 0.0f)));
 
 		/*
-					math::Vec3f toLightVector3 = framePos3 - camera->get_pos();
+					math::vec3f toLightVector3 = framePos3 - camera->get_pos();
 					math::normalize(toLightVector3);
-					math::Matrix44f mat = camera->get_view_matrix();
-					math::Vec3f at = math::Vec3f(mat.mData[0], mat.mData[4], mat.mData[8]);
+					math::matrix44f mat = camera->get_view_matrix();
+					math::vec3f at = math::vec3f(mat.mData[0], mat.mData[4], mat.mData[8]);
 					math::normalize(at);
 					float alpha_scale = math::dot(at, toLightVector3);
 			*/

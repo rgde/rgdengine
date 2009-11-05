@@ -39,7 +39,7 @@
 #include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>
 
-namespace gmtl {
+namespace math {
 
 /**
  * Describes a ray. This is represented by a point origin O and a

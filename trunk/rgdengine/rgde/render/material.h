@@ -38,17 +38,17 @@ namespace render
 			//Returns true if texture was valid for the last call of set_texture
 			bool isTextureValid() const { return m_bTextureIsValid; }
 
-			const math::Matrix44f& getMatrix() const { return m_matrix; }
-			math::Matrix44f&       getMatrix()       { return m_matrix; }
+			const math::matrix44f& getMatrix() const { return m_matrix; }
+			math::matrix44f&       getMatrix()       { return m_matrix; }
 
-			const math::Vec3f& getScrollSpeed() const { return m_scrollSpeed; }
-			math::Vec3f&       getScrollSpeed()       { return m_scrollSpeed; }
+			const math::vec3f& getScrollSpeed() const { return m_scrollSpeed; }
+			math::vec3f&       getScrollSpeed()       { return m_scrollSpeed; }
 
 			float	getRotationSpeed() const			{ return m_fRotationSpeed; }
 			void	setRotationSpeed(float f)			{ m_fRotationSpeed = f;}
 
-			const math::Vec3f&	getRotationCenter() const { return m_rotationCenter; }
-			void				setRotationCenter(const math::Vec3f& v)       {m_rotationCenter = v; }
+			const math::vec3f&	getRotationCenter() const { return m_rotationCenter; }
+			void				setRotationCenter(const math::vec3f& v)       {m_rotationCenter = v; }
 
 			void update(float dt);
 
@@ -59,10 +59,10 @@ namespace render
 			bool            m_bTextureIsValid;
 
 			texture_ptr        m_texture;
-			math::Matrix44f m_matrix;
-			math::Vec3f     m_scrollSpeed;
+			math::matrix44f m_matrix;
+			math::vec3f     m_scrollSpeed;
 			float           m_fRotationSpeed;
-			math::Vec3f     m_rotationCenter;
+			math::vec3f     m_rotationCenter;
 
 			float m_time;
 		};

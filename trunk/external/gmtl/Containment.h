@@ -41,7 +41,7 @@
 #include <gmtl/AABox.h>
 #include <gmtl/VecOps.h>
 
-namespace gmtl
+namespace math
 {
 
 //-----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ bool isInVolume( const Sphere<DATA_TYPE>& container,
    // the sphere to the point has a magnitude less than or equal to the radius
    // of the sphere.
    // |pt - center| <= radius
-   return ( length(gmtl::Vec<DATA_TYPE,3>(pt - container.mCenter)) <= container.mRadius );
+   return ( length(math::Vec<DATA_TYPE,3>(pt - container.mCenter)) <= container.mRadius );
 }
 
 /**
@@ -85,7 +85,7 @@ bool isInVolume( const Sphere<DATA_TYPE>& container,
    // spheres plus the radius of the inner sphere is less than or equal to the
    // radius of the containing sphere.
    // |sphere.center - container.center| + sphere.radius <= container.radius
-   return ( length(gmtl::Vec<DATA_TYPE,3>(sphere.mCenter - container.mCenter)) + sphere.mRadius
+   return ( length(math::Vec<DATA_TYPE,3>(sphere.mCenter - container.mCenter)) + sphere.mRadius
             <= container.mRadius );
 }
 
@@ -191,7 +191,7 @@ void makeVolume( Sphere<DATA_TYPE>& container,
    DATA_TYPE radiusSqr(0);
    for ( itr = pts.begin(); itr != pts.end(); ++itr )
    {
-      DATA_TYPE len = lengthSquared( gmtl::Vec<DATA_TYPE,3>( (*itr) - container.mCenter) );
+      DATA_TYPE len = lengthSquared( math::Vec<DATA_TYPE,3>( (*itr) - container.mCenter) );
       if ( len > radiusSqr )
          radiusSqr = len;
    }
@@ -283,7 +283,7 @@ bool isOnVolume( const Sphere<DATA_TYPE>& container,
                  const Point<DATA_TYPE, 3>& pt )
 {
    // |center - pt| - radius == 0
-   return ( length(gmtl::Vec<DATA_TYPE,3>(container.mCenter - pt)) - container.mRadius == 0 );
+   return ( length(math::Vec<DATA_TYPE,3>(container.mCenter - pt)) - container.mRadius == 0 );
 }
 
 /**
@@ -304,7 +304,7 @@ bool isOnVolume( const Sphere<DATA_TYPE>& container,
    gmtlASSERT( tol >= 0 && "tolerance must be positive" );
 
    // abs( |center-pt| - radius ) < tol
-   return ( Math::abs( length( gmtl::Vec<DATA_TYPE,3>(container.mCenter - pt)) - container.mRadius )
+   return ( Math::abs( length( math::Vec<DATA_TYPE,3>(container.mCenter - pt)) - container.mRadius )
             <= tol );
 }
 
@@ -490,14 +490,14 @@ void extendVolume(AABox<DATA_TYPE>& container,
 template< class DATA_TYPE >
 void makeVolume(AABox<DATA_TYPE>& box, const Sphere<DATA_TYPE>& sph)
 {
-   const gmtl::Point<DATA_TYPE, 3>& center = sph.getCenter();
+   const math::Point<DATA_TYPE, 3>& center = sph.getCenter();
    const DATA_TYPE& radius = sph.getRadius();
 
    // Calculate the min and max points for the box
-   gmtl::Point<DATA_TYPE, 3> min_pt(center[0] - radius,
+   math::Point<DATA_TYPE, 3> min_pt(center[0] - radius,
                                     center[1] - radius,
                                     center[2] - radius);
-   gmtl::Point<DATA_TYPE, 3> max_pt(center[0] + radius,
+   math::Point<DATA_TYPE, 3> max_pt(center[0] + radius,
                                     center[1] + radius,
                                     center[2] + radius);
 

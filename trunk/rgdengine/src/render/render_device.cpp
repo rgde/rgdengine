@@ -105,10 +105,10 @@ namespace render
 	}
 
 	//--------------------------------------------------------------------------------------
-	math::Vec2f render_device::getBackBufferSize()
+	math::vec2f render_device::getBackBufferSize()
 	{
 		if (NULL == g_d3d)
-			return math::Vec2f(800, 600);
+			return math::vec2f(800, 600);
 
 		IDirect3DSurface9 *pBackBufferSurface;
 		g_d3d->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &pBackBufferSurface);
@@ -116,7 +116,7 @@ namespace render
 		D3DSURFACE_DESC sd;
 		pBackBufferSurface->GetDesc(&sd);
 
-		return math::Vec2f(static_cast<float> (sd.Width), static_cast<float> (sd.Height));
+		return math::vec2f(static_cast<float> (sd.Width), static_cast<float> (sd.Height));
 	}
 
 	//--------------------------------------------------------------------------------------
@@ -150,15 +150,15 @@ namespace render
 			{
 				// X
 				float z			= i *step - hsize;
-				math::Vec3f v1	(-hsize, z, 0);
-				math::Vec3f v2(hsize, z, 0);
+				math::vec3f v1	(-hsize, z, 0);
+				math::vec3f v2(hsize, z, 0);
 				get_lines3d().add_line(v1, v2, color);
 			}
 			{
 				// Y
 				float x	= i *step - hsize;
-				math::Vec3f v1(x, -hsize, 0);
-				math::Vec3f v2(x, hsize, 0);
+				math::vec3f v1(x, -hsize, 0);
+				math::vec3f v2(x, hsize, 0);
 				get_lines3d().add_line(v1, v2, color);
 			}
 		}

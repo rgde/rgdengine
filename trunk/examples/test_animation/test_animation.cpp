@@ -31,14 +31,14 @@ public:
 		m_controller.set_rate( 1.0f );
 		m_controller.setLooped( true );
 
-		math::Vec3f vEyePt( 0.0f, 40, -400 );
-		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
-		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
+		math::vec3f eye( 0.0f, 40, -400 );
+		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
+		math::vec3f up_vec( 0.0f, 1.0f, 0.0f );
 
 		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 
 		m_spTargetCamera = math::target_camera::create(m_camera);
-		m_spTargetCamera->set_position(vUpVec,vEyePt,vLookatPt);
+		m_spTargetCamera->set_position(up_vec,eye,look_at);
 
 		{//инициализация ввода
 			using namespace input;

@@ -70,19 +70,19 @@ namespace io
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	read_stream & operator >>(read_stream &rf, math::Vec3f &vec)
+	read_stream & operator >>(read_stream &rf, math::vec3f &vec)
 	{
 		rf >> vec[0] >> vec[1] >> vec[2];
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	read_stream & operator >>(read_stream &rf, math::Vec4f &vec)
+	read_stream & operator >>(read_stream &rf, math::vec4f &vec)
 	{
 		rf >> vec[0] >> vec[1] >> vec[2] >> vec[3];
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	read_stream & operator >>(read_stream &rf, math::Point3f &point)
+	read_stream & operator >>(read_stream &rf, math::point3f &point)
 	{
 		rf >> point[0] >> point[1] >> point[2];
 		return rf;
@@ -119,19 +119,19 @@ namespace io
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	write_stream & operator <<(write_stream &wf, const math::Vec3f &vec)
+	write_stream & operator <<(write_stream &wf, const math::vec3f &vec)
 	{
 		wf << vec[0] << vec[1] << vec[2];
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	write_stream & operator <<(write_stream &wf, const math::Vec4f &vec)
+	write_stream & operator <<(write_stream &wf, const math::vec4f &vec)
 	{
 		wf << vec[0] << vec[1] << vec[2] << vec[3];
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	write_stream & operator <<(write_stream &wf, const math::Point3f &point)
+	write_stream & operator <<(write_stream &wf, const math::point3f &point)
 	{
 		wf << point[0] << point[1] << point[2];
 		return wf;

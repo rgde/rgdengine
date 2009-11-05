@@ -22,8 +22,8 @@ namespace lines_test
 		float rd = g_range;					///> range delta
 		float vd = 0.2f;						///> velocity delta
 
-		m_pos = math::Vec3f( rangeRandom(-rd, rd), rangeRandom(-rd, rd),0 );
-		m_vel = math::Vec3f( rangeRandom(-vd, vd), rangeRandom(-vd, vd),0 );
+		m_pos = math::vec3f( rangeRandom(-rd, rd), rangeRandom(-rd, rd),0 );
+		m_vel = math::vec3f( rangeRandom(-vd, vd), rangeRandom(-vd, vd),0 );
 	}
 	//-----------------------------------------------------------------------------------
 	void point::update()

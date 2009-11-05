@@ -9,7 +9,7 @@
 
 namespace render
 {
-	flame_fx::flame_fx(const std::string &tex, const math::Color &color, const math::Vec3f &pos, const math::Vec2f &size, uint fps, const std::vector<math::frame_ptr> &vVector)
+	flame_fx::flame_fx(const std::string &tex, const math::Color &color, const math::vec3f &pos, const math::vec2f &size, uint fps, const std::vector<math::frame_ptr> &vVector)
 		: rendererable(100000)
 	{
 		hide();
@@ -86,7 +86,7 @@ namespace render
 	}
 
 
-	PFlameRenderer flame_fx::create(const std::string &tex, const math::Color &color, const math::Vec3f &pos, const math::Vec2f &size, uint fps, const std::vector<math::frame_ptr> &vVector)
+	PFlameRenderer flame_fx::create(const std::string &tex, const math::Color &color, const math::vec3f &pos, const math::vec2f &size, uint fps, const std::vector<math::frame_ptr> &vVector)
 	{
 		return PFlameRenderer(new flame_fx(tex, color, pos, size, fps, vVector));
 	}
@@ -115,9 +115,9 @@ namespace render
 		float x						= base::safe_read_attr(root, "size", "x", 0.0f);
 		float y						= base::safe_read_attr(root, "size", "y", 0.0f);
 
-		math::Vec3f pos				(base::safe_read_attr(root, "pos", "x", 0.0f), base::safe_read_attr(root, "pos", "y", 0.0f), base::safe_read_attr(root, "pos", "z", 0.0f));
+		math::vec3f pos				(base::safe_read_attr(root, "pos", "x", 0.0f), base::safe_read_attr(root, "pos", "y", 0.0f), base::safe_read_attr(root, "pos", "z", 0.0f));
 
-		math::Vec2f size(x, y);
+		math::vec2f size(x, y);
 
 		char r	= base::safe_read_attr(root, "color", "r", 0);
 		char g	= base::safe_read_attr(root, "color", "g", 0);

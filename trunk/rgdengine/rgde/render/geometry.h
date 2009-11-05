@@ -126,17 +126,17 @@ namespace render
 			m_bChanged = true;
 		}
 
-		const math::AABoxf& getBBox()
+		const math::aaboxf& getBBox()
 		{
 			if ( m_bChanged )
 			{
 
 				for ( int i = 0; i < m_vVertexes.size(); ++i )
 				{
-					math::Point3f point = m_vVertexes[ i ].position ;
+					math::point3f point = m_vVertexes[ i ].position ;
 					math::extendVolume( m_AABB, point );
 				}
-				math::Vec3f cent = (m_AABB.getMin()+m_AABB.getMax())*0.5f;
+				math::vec3f cent = (m_AABB.getMin()+m_AABB.getMax())*0.5f;
 				m_Sphere.setCenter( cent );
 				m_Sphere.setRadius( math::length( cent ) );
 				m_bChanged = false;
@@ -150,10 +150,10 @@ namespace render
 			{
 				for ( int i = 0; i < m_vVertexes.size(); ++i )
 				{
-					math::Point3f point = m_vVertexes[ i ].position ;
+					math::point3f point = m_vVertexes[ i ].position ;
 					math::extendVolume( m_AABB, point );
 				}
-				math::Vec3f cent = (m_AABB.getMin()+m_AABB.getMax())*0.5f;
+				math::vec3f cent = (m_AABB.getMin()+m_AABB.getMax())*0.5f;
 				m_Sphere.setCenter( cent );
 				m_Sphere.setRadius( math::length( cent ) );
 				m_bChanged = false;
@@ -165,7 +165,7 @@ namespace render
 		bool						m_bIsDynamic;
 		Vertexes					m_vVertexes;
 		std::auto_ptr<base_geometry>	m_spImpl;
-		math::AABoxf				m_AABB;
+		math::aaboxf				m_AABB;
 		math::Spheref				m_Sphere;
 		bool						m_bChanged;
 	};
@@ -210,13 +210,13 @@ namespace render
 #define END_VERTEX_READER	}
 
 	void readColor( TiXmlElement* pNode, math::Color& color);
-	void readPosition( TiXmlElement* pNode, math::Vec3f& position);
-	void readTangent( TiXmlElement* pNode, math::Vec3f& tangent);
-	void readBinormal( TiXmlElement* pNode, math::Vec3f& binormal);
-	void readNormal( TiXmlElement* pNode, math::Vec3f& normal);
-	void readTexCoords( TiXmlElement* pNode, math::Vec2f& tex);
-	void readTexCoords2( TiXmlElement* pNode, math::Vec2f& tex0, math::Vec2f& tex1);
-	void readWeights( TiXmlElement* pNode, math::Vec4f& weights);
+	void readPosition( TiXmlElement* pNode, math::vec3f& position);
+	void readTangent( TiXmlElement* pNode, math::vec3f& tangent);
+	void readBinormal( TiXmlElement* pNode, math::vec3f& binormal);
+	void readNormal( TiXmlElement* pNode, math::vec3f& normal);
+	void readTexCoords( TiXmlElement* pNode, math::vec2f& tex);
+	void readTexCoords2( TiXmlElement* pNode, math::vec2f& tex0, math::vec2f& tex1);
+	void readWeights( TiXmlElement* pNode, math::vec4f& weights);
 
 
 	#define READ_COLOR		readColor(pNode, vertex.color);
@@ -405,7 +405,7 @@ namespace render
 		int getIndexNum() const					{ return (int)m_vIndexes.size(); }
 		int get_num_verts() const				{ return (int)m_vVertexes.size(); }
 
-		const math::AABoxf& getBBox() const		{ return m_AABB; }
+		const math::aaboxf& getBBox() const		{ return m_AABB; }
 		const math::Spheref& getBSphere() const { return m_Sphere; }
 
 		void updateBVolumes()
@@ -415,10 +415,10 @@ namespace render
 			size_t nNumVerts = m_vVertexes.size();
 			for(size_t i = 0; i < nNumVerts; i++)
 			{
-				const math::Point3f& point = m_vVertexes[i].position;
+				const math::point3f& point = m_vVertexes[i].position;
 				math::extendVolume(m_AABB, point);
 			}
-			math::Vec3f cent = (m_AABB.getMin()+m_AABB.getMax())*0.5f;
+			math::vec3f cent = (m_AABB.getMin()+m_AABB.getMax())*0.5f;
 			m_Sphere.setCenter( cent );
 			m_Sphere.setRadius( math::length( cent ) );
 			m_bChanged = false;
@@ -434,7 +434,7 @@ namespace render
 		Vertexes						m_vVertexes;
 		std::auto_ptr<IIndexedGeometry>	m_spImpl;
 		Indexes							m_vIndexes;
-		math::AABoxf					m_AABB;
+		math::aaboxf					m_AABB;
 		math::Spheref					m_Sphere;
 		bool							m_bChanged;
 	};
@@ -558,7 +558,7 @@ namespace render
 		int getIndexNum() const					{ return (int)m_vIndexes.size(); }
 		int get_num_verts() const				{ return (int)m_vVertexes.size(); }
 
-		const math::AABoxf& getBBox() const		{ return m_AABB; }
+		const math::aaboxf& getBBox() const		{ return m_AABB; }
 		const math::Spheref& getBSphere() const { return m_Sphere; }
 
 		void updateBVolumes()
@@ -569,13 +569,13 @@ namespace render
 			for(size_t i = 0; i < nNumVerts; i++)
 			{
 				//TODO: need more effective solution!
-				math::Point3f point(m_vVertexes[i].position[0], 
+				math::point3f point(m_vVertexes[i].position[0], 
 					m_vVertexes[i].position[1], 
 					m_vVertexes[i].position[2]);
 
 				math::extendVolume(m_AABB, point);
 			}
-			math::Vec3f cent = (m_AABB.getMin()+m_AABB.getMax())*0.5f;
+			math::vec3f cent = (m_AABB.getMin()+m_AABB.getMax())*0.5f;
 			m_Sphere.setCenter( cent );
 			m_Sphere.setRadius( math::length( cent ) );
 			m_bChanged = false;
@@ -591,7 +591,7 @@ namespace render
 		Vertexes						m_vVertexes;
 		std::auto_ptr<IIndexedGeometry>	m_spImpl;
 		Indexes							m_vIndexes;
-		math::AABoxf					m_AABB;
+		math::aaboxf					m_AABB;
 		math::Spheref					m_Sphere;
 		bool							m_bChanged;
 	};

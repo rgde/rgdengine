@@ -20,7 +20,7 @@ namespace lines_test
 	protected:
 		points_vector m_points;
 		math::Color m_color;
-		math::Vec2f m_color_range;				///> color variation range
+		math::vec2f m_color_range;				///> color variation range
 		float m_color_delta;					///> color variation change delta
 	};
 }

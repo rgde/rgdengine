@@ -39,7 +39,7 @@ namespace render
 		inline unsigned			get_tris()	const {return m_triangles;}
 		inline unsigned			get_verts()	const {return m_verts;}
 
-		math::Vec2f				getBackBufferSize();		
+		math::vec2f				getBackBufferSize();		
 
 		void					showWiredFloorGrid(float size, unsigned num = 20, const math::Color& color = math::Green);
 

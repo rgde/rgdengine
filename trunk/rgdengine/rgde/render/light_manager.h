@@ -58,14 +58,14 @@ namespace render
 	//		SLightData();
 
 	//		int         m_nType;
-	//		math::Vec3f m_position;
-	//		math::Vec3f m_direction;
-	//		math::Vec4f m_ambient;
-	//		math::Vec4f m_diffuse;
-	//		math::Vec4f m_specular;
+	//		math::vec3f m_position;
+	//		math::vec3f m_direction;
+	//		math::vec4f m_ambient;
+	//		math::vec4f m_diffuse;
+	//		math::vec4f m_specular;
 	//		float       m_fRange;
-	//		math::Vec3f m_attenuations;//1, D, D^2;
-	//		math::Vec3f m_spot;
+	//		math::vec3f m_attenuations;//1, D, D^2;
+	//		math::vec3f m_spot;
 	//		bool        m_bEnable;
 	//	};
 

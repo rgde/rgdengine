@@ -2,8 +2,8 @@
 
 namespace ui
 {
-	typedef gmtl::Vec2f Position;
-	typedef gmtl::Vec2f Size;
+	typedef math::vec2f Position;
+	typedef math::vec2f Size;
 
 	struct Rect
 	{

@@ -25,7 +25,7 @@ namespace rgde
 				m_num_sprites_per_priority (100),
 				m_enable_debug_log (false),
 				m_do_sort_before_log (true),
-				m_sprites_seed (math::Vec2f (770, 570))
+				m_sprites_seed (math::vec2f (770, 570))
 			{
 				{
 					using namespace input;
@@ -60,8 +60,8 @@ namespace rgde
 
 						for (uint i = 0; i < textures.size(); ++i)
 						{
-							math::Vec2f size(rangeRandom(0,80),rangeRandom(0,80));
-							math::Vec2f pos(rangeRandom(0, x), rangeRandom(0, y));
+							math::vec2f size(rangeRandom(0,80),rangeRandom(0,80));
+							math::vec2f pos(rangeRandom(0, x), rangeRandom(0, y));
 							math::Color color;
 							color.set(unitRandom(),	unitRandom(), unitRandom(),	unitRandom());
 

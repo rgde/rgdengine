@@ -39,7 +39,7 @@
 #include <gmtl/VecOps.h>
 #include <gmtl/Math.h>
 
-namespace gmtl
+namespace math
 {
 
 /** @ingroup Compare Sphere 
@@ -95,7 +95,7 @@ inline bool isEqual( const Sphere<DATA_TYPE>& s1, const Sphere<DATA_TYPE>& s2, c
 }
 /** @} */
 
-} // namespace gmtl
+} // namespace math
 
 #endif
 

@@ -43,7 +43,7 @@
 #include <gmtl/VecOps.h>
 #include <gmtl/Util/Assert.h>
 
-namespace gmtl
+namespace math
 {
 /** @ingroup Ops
  * @name Matrix Operations
@@ -367,12 +367,12 @@ namespace gmtl
       // do non-uniform scale inversion
       if (src.mState & Matrix<DATA_TYPE, ROWS, COLS>::NON_UNISCALE)
       {
-         DATA_TYPE l0 = gmtl::lengthSquared( gmtl::Vec<DATA_TYPE, 3>( result[0][0], result[0][1], result[0][2] ) );
-         DATA_TYPE l1 = gmtl::lengthSquared( gmtl::Vec<DATA_TYPE, 3>( result[1][0], result[1][1], result[1][2] ) );
-         DATA_TYPE l2 = gmtl::lengthSquared( gmtl::Vec<DATA_TYPE, 3>( result[2][0], result[2][1], result[2][2] ) );
-         if (gmtl::Math::abs( l0 ) > eps) l0 = 1.0f / l0;
-         if (gmtl::Math::abs( l1 ) > eps) l1 = 1.0f / l1;
-         if (gmtl::Math::abs( l2 ) > eps) l2 = 1.0f / l2;
+         DATA_TYPE l0 = math::lengthSquared( math::Vec<DATA_TYPE, 3>( result[0][0], result[0][1], result[0][2] ) );
+         DATA_TYPE l1 = math::lengthSquared( math::Vec<DATA_TYPE, 3>( result[1][0], result[1][1], result[1][2] ) );
+         DATA_TYPE l2 = math::lengthSquared( math::Vec<DATA_TYPE, 3>( result[2][0], result[2][1], result[2][2] ) );
+         if (math::Math::abs( l0 ) > eps) l0 = 1.0f / l0;
+         if (math::Math::abs( l1 ) > eps) l1 = 1.0f / l1;
+         if (math::Math::abs( l2 ) > eps) l2 = 1.0f / l2;
          // apply the inverse scale to the 3x3
          // for each axis: normalize it (1/length), and then mult by inverse scale (1/length)
          result[0][0] *= l0;
@@ -403,7 +403,7 @@ namespace gmtl
          if (ROWS == 4)
          {
             // invert scale.
-            const DATA_TYPE tw = (gmtl::Math::abs( src[3][3] ) > eps) ? 1.0f / src[3][3] : 0.0f;
+            const DATA_TYPE tw = (math::Math::abs( src[3][3] ) > eps) ? 1.0f / src[3][3] : 0.0f;
 
             // handle uniform scale in Nx4 matrices
             result[0][3] = -( result[0][0] * tx + result[0][1] * ty + result[0][2] * tz ) * tw;
@@ -453,12 +453,12 @@ namespace gmtl
       for(pivot=0; pivot<SIZE;++pivot)
       {
          unsigned    pivot_row(pivot);
-         DATA_TYPE   pivot_value(gmtl::Math::abs(result(pivot_row, pivot)));    // Initialize to beginning of current row
+         DATA_TYPE   pivot_value(math::Math::abs(result(pivot_row, pivot)));    // Initialize to beginning of current row
 
          // find pivot row - (max pivot element)
          for(unsigned pr=pivot+1;pr<SIZE;++pr)
          {
-            const DATA_TYPE cur_val(gmtl::Math::abs(result(pr,pivot)));   // get value at current point
+            const DATA_TYPE cur_val(math::Math::abs(result(pr,pivot)));   // get value at current point
             if (cur_val > pivot_value)
             {
                pivot_row = pr;
@@ -466,7 +466,7 @@ namespace gmtl
             }
          }
 
-         if(gmtl::Math::isEqual(DATA_TYPE(0),pivot_value,pivot_eps))
+         if(math::Math::isEqual(DATA_TYPE(0),pivot_value,pivot_eps))
          {
             std::cerr << "*** pivot = " << pivot_value << " in mat_inv. ***\n";
             result.setError();
@@ -481,7 +481,7 @@ namespace gmtl
             {  std::swap(result(pivot,c), result(pivot_row,c)); }
          }
          // ASSERT: row to use in now in "row" (check that row starts with max pivot value found)
-         gmtlASSERT(gmtl::Math::isEqual(pivot_value,gmtl::Math::abs(result(pivot,pivot)),DATA_TYPE(0.00001)));
+         gmtlASSERT(math::Math::isEqual(pivot_value,math::Math::abs(result(pivot,pivot)),DATA_TYPE(0.00001)));
 
          // Compute pivot factor
          const DATA_TYPE mult_factor(1.0f/pivot_value);
@@ -588,7 +588,7 @@ namespace gmtl
             {
                if ( col[ j] )
                   continue;
-               tmp_m = gmtl::Math::abs( m[ i][ j]);
+               tmp_m = math::Math::abs( m[ i][ j]);
                if ( tmp_m > max_m)
                {
                   max_m = tmp_m;
@@ -601,7 +601,7 @@ namespace gmtl
          pivot = m[ r[ k] ][ c[ k] ];
 
 
-         if ( gmtl::Math::abs( pivot) <= 1e-20)
+         if ( math::Math::abs( pivot) <= 1e-20)
          {
             std::cerr << "*** pivot = " << pivot << " in mat_inv. ***\n";
             result.setError();
@@ -765,6 +765,6 @@ namespace gmtl
    }
 /** @} */
 
-} // end of namespace gmtl
+} // end of namespace math
 
 #endif

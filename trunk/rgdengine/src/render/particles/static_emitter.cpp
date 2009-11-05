@@ -175,8 +175,8 @@ namespace particles{
 				for ( unsigned int pn = 0; pn < m_spFrame.number_of_particles; ++pn )
 				{
 					static_particle& p = m_spFrame.particles[pn];
-					array[pn].pos = math::Vec3f(p.x, p.y, p.z);
-					array[pn].size = math::Vec2f(p.scale, p.scale);
+					array[pn].pos = math::vec3f(p.x, p.y, p.z);
+					array[pn].size = math::vec2f(p.scale, p.scale);
 					array[pn].spin = p.spin * 3.1415926f/180.0f;
 
 					math::Color c;
@@ -225,7 +225,7 @@ namespace particles{
 		PTanks& psyst = it->second;
 		assert( frame_num < psyst.size() );
 
-		math::Matrix44f m = m_Transform.get_full_tm();
+		math::matrix44f m = m_Transform.get_full_tm();
 
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 
@@ -235,7 +235,7 @@ namespace particles{
 		for ( renderer::ParticleArrayIter it = array.begin(); it != array.end(); ++it )
 		{
 			//if (!m_bIsGlobal)
-			math::Vec3f center = m * (math::Point3f)it->pos;
+			math::vec3f center = m * (math::point3f)it->pos;
 			//else
 			//	center = it->pos;
 

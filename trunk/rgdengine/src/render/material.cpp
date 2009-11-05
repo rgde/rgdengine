@@ -24,7 +24,7 @@ namespace render
 	{
 		m_time += dt;
 
-		math::Matrix44f tempMatrix;
+		math::matrix44f tempMatrix;
 
 		math::setTrans(tempMatrix, m_scrollSpeed * m_time);
 		m_matrix = tempMatrix;
@@ -32,7 +32,7 @@ namespace render
 		math::setTrans(tempMatrix, m_rotationCenter);
 		m_matrix *= tempMatrix;
 
-		math::setRot(tempMatrix, math::AxisAnglef(m_fRotationSpeed * m_time, math::Vec3f(0.0f, 0.0f, 1.0f)));//Is it right? (rotating around Z axis)
+		math::setRot(tempMatrix, math::AxisAnglef(m_fRotationSpeed * m_time, math::vec3f(0.0f, 0.0f, 1.0f)));//Is it right? (rotating around Z axis)
 		m_matrix *= tempMatrix;
 
 		math::setTrans(tempMatrix, -m_rotationCenter);

@@ -45,7 +45,7 @@ void MenuLevelObject::update(float dt)
 {
 	using render::font;
 	unsigned int flags = font::Center | font::SingleLine | font::VCenter | font::Center;
-	math::Vec2f size(800, 600);
+	math::vec2f size(800, 600);
 
 	for (unsigned int i = 0; i < m_items.size(); ++i)
 	{

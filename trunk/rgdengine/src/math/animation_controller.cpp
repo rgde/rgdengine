@@ -46,7 +46,7 @@ namespace math
 				child->Attribute("y", &y);
 				child->Attribute("z", &z);
 
-				m_PosInterpolyator.add_key( (float)time, math::Vec3f((float)x,(float)y,(float)z) );
+				m_PosInterpolyator.add_key( (float)time, math::vec3f((float)x,(float)y,(float)z) );
 			}
 
 			if ( child = ev->FirstChildElement("rotation" ) )
@@ -56,9 +56,9 @@ namespace math
 				child->Attribute("y", &y);
 				child->Attribute("z", &z);
 
-				using gmtl::Math::deg2Rad;
+				using math::Math::deg2Rad;
 
-				math::Vec3f v((float)deg2Rad(x), (float)deg2Rad(y), (float)deg2Rad(z));
+				math::vec3f v((float)deg2Rad(x), (float)deg2Rad(y), (float)deg2Rad(z));
 				m_RotationInterpolyator.add_key( (float)time, v );
 			}
 
@@ -69,7 +69,7 @@ namespace math
 				child->Attribute("y", &y);
 				child->Attribute("z", &z);
 
-				m_ScaleInterpolyator.add_key( (float)time, math::Vec3f((float)x,(float)y,(float)z) );
+				m_ScaleInterpolyator.add_key( (float)time, math::vec3f((float)x,(float)y,(float)z) );
 			}
 
 		}
@@ -106,7 +106,7 @@ namespace math
 
 	void frame_anim_controller::updateMatrix()
 	{
-		math::Vec3f vec = m_RotationInterpolyator.getValue( m_fCurrentTime );
+		math::vec3f vec = m_RotationInterpolyator.getValue( m_fCurrentTime );
 		math::EulerAngleXYZf ang( vec[ 0 ], vec[ 1 ], vec[ 2 ] );
 
 		math::Quatf q;

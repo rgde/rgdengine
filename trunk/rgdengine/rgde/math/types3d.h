@@ -4,8 +4,8 @@ namespace math
 {
 	struct Color
 	{
-		Color(const Vec3f& v);
-		Color(const Vec4f& v);
+		Color(const vec3f& v);
+		Color(const vec4f& v);
 
 		Color(unsigned long c = 0) : color(c){}
 		Color(const Color& c) :color(c.color) {}
@@ -15,9 +15,9 @@ namespace math
 		void set(float _r, float _g, float _b, float _a);
 		void set(double _r, double _g, double _b, double _a);
 
-		Color& operator=(const math::Vec4f& vec);
+		Color& operator=(const math::vec4f& vec);
 
-		operator Vec4f() const {return Vec4f(r/255.0f, g/255.0f, b/255.0f, a/255.0f);}
+		operator vec4f() const {return vec4f(r/255.0f, g/255.0f, b/255.0f, a/255.0f);}
 
 		union
 		{
@@ -49,16 +49,16 @@ namespace math
 			: position(x,y) , size(w,h)
 		{}
 
-		Rect(const Vec2f& pos, const Vec2f& s);
+		Rect(const vec2f& pos, const vec2f& s);
 
-		const Vec2f& getTopLeft()		const	{ return position; }
-		const Vec2f& get_size()			const	{ return size;}
-		const Vec2f& get_pos()		const	{ return position;}
-		Vec2f getTopRight()		const	{ return Vec2f (x+w, y); }
-		Vec2f getBottomLeft()	const	{ return Vec2f (x, y+h); }
-		Vec2f getBottomRight()	const	{ return Vec2f (x+w, y+h); }
+		const vec2f& getTopLeft()		const	{ return position; }
+		const vec2f& get_size()			const	{ return size;}
+		const vec2f& get_pos()		const	{ return position;}
+		vec2f getTopRight()		const	{ return vec2f (x+w, y); }
+		vec2f getBottomLeft()	const	{ return vec2f (x, y+h); }
+		vec2f getBottomRight()	const	{ return vec2f (x+w, y+h); }
 
-		bool isPointInside(const math::Vec2f& point) const
+		bool isPointInside(const math::vec2f& point) const
 		{
 			if (position[0] > point[0] || position[1] > point[1]) 
 				return false;
@@ -74,8 +74,8 @@ namespace math
 		{
 			struct 
 			{
-				Vec2f position;
-				Vec2f size;
+				vec2f position;
+				vec2f size;
 			};
 			struct 
 			{
@@ -89,7 +89,7 @@ namespace math
 std::istream&  operator >> (std::istream& in, math::Color& color);
 
 template<unsigned int Size, typename Type>
-void operator >> (std::string& str, math::VecBase<Type, Size>& v)
+void operator >> (std::string& str, math::vec_base<Type, Size>& v)
 {
 	using boost::tokenizer;
 	tokenizer<> tok(str);
@@ -102,7 +102,7 @@ void operator >> (std::string& str, math::VecBase<Type, Size>& v)
 }
 
 template<typename T, int Size>
-std::istream& operator>>(std::istream& in, math::VecBase<T, Size>& v)
+std::istream& operator>>(std::istream& in, math::vec_base<T, Size>& v)
 {
 	using boost::tokenizer;
 	int i = 0;
@@ -127,9 +127,9 @@ std::istream& operator>>(std::istream& in, math::VecBase<T, Size>& v)
 
 //---------------------------------------------------------------------------------------
 template<typename T, int Size>
-math::VecBase<T, Size> operator/ (const math::VecBase<T, Size>& a, const math::VecBase<T, Size>& b)
+math::vec_base<T, Size> operator/ (const math::vec_base<T, Size>& a, const math::vec_base<T, Size>& b)
 {
-	math::VecBase<T, Size> c;
+	math::vec_base<T, Size> c;
 	for (unsigned i = 0; i < Size; ++i)
 		c[i] = a[i] / b[i];
 	return c;
@@ -137,9 +137,9 @@ math::VecBase<T, Size> operator/ (const math::VecBase<T, Size>& a, const math::V
 
 //---------------------------------------------------------------------------------------
 template<typename T, int Size>
-math::VecBase<T, Size> operator* (const math::VecBase<T, Size>& a, const math::VecBase<T, Size>& b)
+math::vec_base<T, Size> operator* (const math::vec_base<T, Size>& a, const math::vec_base<T, Size>& b)
 {
-	math::VecBase<T, Size> c;
+	math::vec_base<T, Size> c;
 	for (unsigned i = 0; i < Size; ++i)
 		c[i] = a[i] * b[i];
 	return c;
@@ -147,9 +147,9 @@ math::VecBase<T, Size> operator* (const math::VecBase<T, Size>& a, const math::V
 
 //---------------------------------------------------------------------------------------
 template<typename T, int Size>
-math::VecBase<T, Size> operator+ (const math::VecBase<T, Size>& a, const math::VecBase<T, Size>& b)
+math::vec_base<T, Size> operator+ (const math::vec_base<T, Size>& a, const math::vec_base<T, Size>& b)
 {
-	math::VecBase<T, Size> c;
+	math::vec_base<T, Size> c;
 	for (unsigned i = 0; i < Size; ++i)
 		c[i] = a[i] + b[i];
 	return c;
@@ -157,9 +157,9 @@ math::VecBase<T, Size> operator+ (const math::VecBase<T, Size>& a, const math::V
 
 //---------------------------------------------------------------------------------------
 template<typename T, int Size>
-math::VecBase<T, Size> operator- (const math::VecBase<T, Size>& a, const math::VecBase<T, Size>& b)
+math::vec_base<T, Size> operator- (const math::vec_base<T, Size>& a, const math::vec_base<T, Size>& b)
 {
-	math::VecBase<T, Size> c;
+	math::vec_base<T, Size> c;
 	for (unsigned i = 0; i < Size; ++i)
 		c[i] = a[i] - b[i];
 	return c;

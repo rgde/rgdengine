@@ -48,11 +48,11 @@ protected:
 //		CoInitialize(0);
 //
 //		m_pSound3d = sound::CSound3d::Create (L"helicopter.wav");
-//		m_pSound3d->set_pos (math::Vec3f (0, 10, 0));
+//		m_pSound3d->set_pos (math::vec3f (0, 10, 0));
 //		m_pSound3d->setLoop (true);
 //		m_pSound3d->play();
 //
-//		sound::Sound3dManager::get().set_pos (math::Vec3f (0, 0, 0));
+//		sound::Sound3dManager::get().set_pos (math::vec3f (0, 0, 0));
 //	}
 //
 //	~CSound3dTest()
@@ -65,7 +65,7 @@ protected:
 //		static float angle = 0.0f;
 //		angle += math::Math::PI / 100;
 //
-//		m_pSound3d->set_pos (math::Vec3f ( 100.0f + 100.0f*cosf(angle), 0, 100.0f*sinf(angle) ));
+//		m_pSound3d->set_pos (math::vec3f ( 100.0f + 100.0f*cosf(angle), 0, 100.0f*sinf(angle) ));
 //
 //		sound::Sound3dManager::get().update (dt);
 //	}
@@ -109,11 +109,11 @@ TestMusic::TestMusic()
 
 	m_camera = render::render_camera::create();
 
-	math::Vec3f vEyePt( 0.0f, 0, -50 );
-	math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
-	math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
+	math::vec3f eye( 0.0f, 0, -50 );
+	math::vec3f look_at( 0.0f, 0.0f, 0.0f );
+	math::vec3f up_vec( 0.0f, 1.0f, 0.0f );
 
-	m_camera->look_at(vEyePt, vLookatPt, vUpVec);
+	m_camera->look_at(eye, look_at, up_vec);
 	m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 
 	init_input();
@@ -154,7 +154,7 @@ void TestMusic::update (float dt)
 
 
 	unsigned int flags = font::SingleLine | font::Bottom;
-	math::Vec2f size(800, 600);
+	math::vec2f size(800, 600);
 
 	const char *cur_music_name = m_sound_system.get_tag_name(cur_music_index);
 
@@ -185,12 +185,12 @@ TextQuad TestMusic::CreateQuad(std::wstring text)
 	q.color = math::Color(255*math::unitRandom(),255*math::unitRandom(),255*math::unitRandom(), 255);
 
 	q.rect = m_font->get_rect(q.text, render::font::SingleLine | render::font::VCenter);		
-	math::Vec2f size(800-40-q.rect.size[0], 600-40-q.rect.size[1]);
+	math::vec2f size(800-40-q.rect.size[0], 600-40-q.rect.size[1]);
 
 	float x = 20+math::unitRandom()*size[0];
 	float y = 20+math::unitRandom()*size[1];
 
-	q.rect.position = math::Vec2f(x, y);
+	q.rect.position = math::vec2f(x, y);
 
 	return q;
 }

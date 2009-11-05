@@ -14,9 +14,9 @@ namespace math
         //ключ трека
         struct Key
         {
-		    Vec3f m_vUp;
-		    Vec3f m_vEyePt;
-		    Vec3f m_vLookatPt;
+		    vec3f m_vUp;
+		    vec3f m_vEyePt;
+		    vec3f m_vLookatPt;
             float m_fSpeed;
         };
 

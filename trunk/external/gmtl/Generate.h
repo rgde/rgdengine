@@ -52,7 +52,7 @@
 #include <gmtl/EulerAngle.h>
 #include <gmtl/AxisAngle.h>
 
-namespace gmtl
+namespace math
 {
    /** @ingroup Generate
     *  @name Vec Generators
@@ -233,7 +233,7 @@ namespace gmtl
    template <typename DATA_TYPE>
    inline Quat<DATA_TYPE>& setRot( Quat<DATA_TYPE>& result, const AxisAngle<DATA_TYPE>& axisAngle )
    {
-      return gmtl::set( result, axisAngle );
+      return math::set( result, axisAngle );
    }
 
    /** Convert an EulerAngle rotation to a Quaternion rotation.
@@ -297,7 +297,7 @@ namespace gmtl
    template <typename DATA_TYPE, typename ROT_ORDER>
    inline Quat<DATA_TYPE>& setRot( Quat<DATA_TYPE>& result, const EulerAngle<DATA_TYPE, ROT_ORDER>& euler )
    {
-      return gmtl::set( result, euler );
+      return math::set( result, euler );
    }
 
    /** Convert a Matrix to a Quat.
@@ -369,7 +369,7 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Quat<DATA_TYPE>& setRot( Quat<DATA_TYPE>& result, const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
-      return gmtl::set( result, mat );
+      return math::set( result, mat );
    }
    /** @} */
 
@@ -394,7 +394,7 @@ namespace gmtl
       // set sure we don't get a NaN result from acos...
       if (Math::abs( quat[Welt] ) > (DATA_TYPE)1.0)
       {
-         gmtl::normalize( quat );
+         math::normalize( quat );
       }
       gmtlASSERT( Math::abs( quat[Welt] ) <= (DATA_TYPE)1.0 && "acos returns NaN when quat[Welt] > 1, try normalizing your quat." );
 
@@ -422,8 +422,8 @@ namespace gmtl
          // one of the terms should be a 1,
          // so we can maintain unit-ness
          // in case w is 0 (which here w is 0)
-         axisAngle.setAxis( gmtl::Vec<DATA_TYPE, 3>(
-                             DATA_TYPE( 1.0 ) /*- gmtl::Math::abs( quat[Welt] )*/,
+         axisAngle.setAxis( math::Vec<DATA_TYPE, 3>(
+                             DATA_TYPE( 1.0 ) /*- math::Math::abs( quat[Welt] )*/,
                             (DATA_TYPE)0.0,
                             (DATA_TYPE)0.0 ) );
       }
@@ -436,7 +436,7 @@ namespace gmtl
    template <typename DATA_TYPE>
    inline AxisAngle<DATA_TYPE>& setRot( AxisAngle<DATA_TYPE>& result, Quat<DATA_TYPE> quat )
    {
-      return gmtl::set( result, quat );
+      return math::set( result, quat );
    }
 
    /** make the axis of an AxisAngle normalized */
@@ -484,9 +484,9 @@ namespace gmtl
 #else
             DATA_TYPE x(0), y(0), z(0);
             y = Math::aSin( mat(0,2));
-            if (y < gmtl::Math::PI_OVER_2)
+            if (y < math::Math::PI_OVER_2)
             {
-               if(y > -gmtl::Math::PI_OVER_2)
+               if(y > -math::Math::PI_OVER_2)
                {
                   x = Math::aTan2(-mat(1,2),mat(2,2));
                   z = Math::aTan2(-mat(0,1),mat(0,0));
@@ -628,7 +628,7 @@ namespace gmtl
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, typename ROT_ORDER >
    inline EulerAngle<DATA_TYPE, ROT_ORDER>& setRot( EulerAngle<DATA_TYPE, ROT_ORDER>& result, const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
-      return gmtl::set( result, mat );
+      return math::set( result, mat );
    }
    /** @} */
 
@@ -736,7 +736,7 @@ namespace gmtl
    /*
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE, typename REP >
    inline Matrix<DATA_TYPE, ROWS, COLS>& setTrans( Matrix<DATA_TYPE, ROWS, COLS>& result,
-                                                   const VecBase<DATA_TYPE, SIZE, REP>& trans )
+                                                   const vec_base<DATA_TYPE, SIZE, REP>& trans )
    {
       const Vec<DATA_TYPE,SIZE,meta::DefaultVecTag> temp_vec(trans);
       return setTrans(result,trans);
@@ -755,11 +755,11 @@ namespace gmtl
 #ifdef GMTL_NO_METAPROG
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE >
    inline Matrix<DATA_TYPE, ROWS, COLS>& setTrans( Matrix<DATA_TYPE, ROWS, COLS>& result,
-                                                   const VecBase<DATA_TYPE, SIZE>& trans )
+                                                   const vec_base<DATA_TYPE, SIZE>& trans )
 #else
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, unsigned SIZE, typename REP >
    inline Matrix<DATA_TYPE, ROWS, COLS>& setTrans( Matrix<DATA_TYPE, ROWS, COLS>& result,
-                                                   const VecBase<DATA_TYPE, SIZE, REP>& trans )
+                                                   const vec_base<DATA_TYPE, SIZE, REP>& trans )
 #endif
    {
       /* @todo make this a compile time assert... */
@@ -832,7 +832,7 @@ namespace gmtl
    inline MATRIX_TYPE makeScale( const INPUT_TYPE& scale,
                                Type2Type< MATRIX_TYPE > t = Type2Type< MATRIX_TYPE >() )
    {
-      gmtl::ignore_unused_variable_warning(t);
+      math::ignore_unused_variable_warning(t);
       MATRIX_TYPE temporary;
       return setScale( temporary, scale );
    }
@@ -935,7 +935,7 @@ namespace gmtl
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline Matrix<DATA_TYPE, ROWS, COLS>& set( Matrix<DATA_TYPE, ROWS, COLS>& result, const AxisAngle<DATA_TYPE>& axisAngle )
    {
-      gmtl::identity( result );
+      math::identity( result );
       return setRot( result, axisAngle );
    }
 
@@ -945,7 +945,7 @@ namespace gmtl
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS, typename ROT_ORDER >
    inline Matrix<DATA_TYPE, ROWS, COLS>& set( Matrix<DATA_TYPE, ROWS, COLS>& result, const EulerAngle<DATA_TYPE, ROT_ORDER>& euler )
    {
-      gmtl::identity( result );
+      math::identity( result );
       return setRot( result, euler );
    }
 
@@ -956,21 +956,21 @@ namespace gmtl
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline DATA_TYPE makeYRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
-      const gmtl::Vec<DATA_TYPE, 3> forward_point(0.0f, 0.0f, -1.0f);   // -Z
-      const gmtl::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
-      gmtl::Vec<DATA_TYPE, 3> end_point, start_point;
+      const math::Vec<DATA_TYPE, 3> forward_point(0.0f, 0.0f, -1.0f);   // -Z
+      const math::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
+      math::Vec<DATA_TYPE, 3> end_point, start_point;
 
-      gmtl::xform(end_point, mat, forward_point);
-      gmtl::xform(start_point, mat, origin_point);
-      gmtl::Vec<DATA_TYPE, 3> direction_vector = end_point - start_point;
+      math::xform(end_point, mat, forward_point);
+      math::xform(start_point, mat, origin_point);
+      math::Vec<DATA_TYPE, 3> direction_vector = end_point - start_point;
 
       // Constrain the direction to XZ-plane only.
       direction_vector[1] = 0.0f;                  // Eliminate Y value
-      gmtl::normalize(direction_vector);
-      DATA_TYPE y_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
+      math::normalize(direction_vector);
+      DATA_TYPE y_rot = math::Math::aCos(math::dot(direction_vector,
                                                    forward_point));
 
-      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::makeCross(forward_point,
+      math::Vec<DATA_TYPE, 3> which_side = math::makeCross(forward_point,
                                                            direction_vector);
 
       // If direction vector to "right" (negative) side of forward
@@ -989,21 +989,21 @@ namespace gmtl
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline DATA_TYPE makeXRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
-      const gmtl::Vec<DATA_TYPE, 3> forward_point(0.0f, 0.0f, -1.0f);   // -Z
-      const gmtl::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
-      gmtl::Vec<DATA_TYPE, 3> end_point, start_point;
+      const math::Vec<DATA_TYPE, 3> forward_point(0.0f, 0.0f, -1.0f);   // -Z
+      const math::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
+      math::Vec<DATA_TYPE, 3> end_point, start_point;
 
-      gmtl::xform(end_point, mat, forward_point);
-      gmtl::xform(start_point, mat, origin_point);
-      gmtl::Vec<DATA_TYPE, 3> direction_vector = end_point - start_point;
+      math::xform(end_point, mat, forward_point);
+      math::xform(start_point, mat, origin_point);
+      math::Vec<DATA_TYPE, 3> direction_vector = end_point - start_point;
 
       // Constrain the direction to YZ-plane only.
       direction_vector[0] = 0.0f;                  // Eliminate X value
-      gmtl::normalize(direction_vector);
-      DATA_TYPE x_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
+      math::normalize(direction_vector);
+      DATA_TYPE x_rot = math::Math::aCos(math::dot(direction_vector,
                                                    forward_point));
 
-      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::makeCross(forward_point,
+      math::Vec<DATA_TYPE, 3> which_side = math::makeCross(forward_point,
                                                            direction_vector);
 
       // If direction vector to "bottom" (negative) side of forward
@@ -1022,21 +1022,21 @@ namespace gmtl
    template< typename DATA_TYPE, unsigned ROWS, unsigned COLS >
    inline DATA_TYPE makeZRot( const Matrix<DATA_TYPE, ROWS, COLS>& mat )
    {
-      const gmtl::Vec<DATA_TYPE, 3> forward_point(1.0f, 0.0f, 0.0f);   // +x
-      const gmtl::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
-      gmtl::Vec<DATA_TYPE, 3> end_point, start_point;
+      const math::Vec<DATA_TYPE, 3> forward_point(1.0f, 0.0f, 0.0f);   // +x
+      const math::Vec<DATA_TYPE, 3> origin_point(0.0f, 0.0f, 0.0f);
+      math::Vec<DATA_TYPE, 3> end_point, start_point;
 
-      gmtl::xform(end_point, mat, forward_point);
-      gmtl::xform(start_point, mat, origin_point);
-      gmtl::Vec<DATA_TYPE, 3> direction_vector = end_point - start_point;
+      math::xform(end_point, mat, forward_point);
+      math::xform(start_point, mat, origin_point);
+      math::Vec<DATA_TYPE, 3> direction_vector = end_point - start_point;
 
       // Constrain the direction to XY-plane only.
       direction_vector[2] = 0.0f;                  // Eliminate Z value
-      gmtl::normalize(direction_vector);
-      DATA_TYPE z_rot = gmtl::Math::aCos(gmtl::dot(direction_vector,
+      math::normalize(direction_vector);
+      DATA_TYPE z_rot = math::Math::aCos(math::dot(direction_vector,
                                                    forward_point));
 
-      gmtl::Vec<DATA_TYPE, 3> which_side = gmtl::makeCross(forward_point,
+      math::Vec<DATA_TYPE, 3> which_side = math::makeCross(forward_point,
                                                            direction_vector);
 
       // If direction vector to "right" (negative) side of forward
@@ -1136,7 +1136,7 @@ namespace gmtl
                                   const Vec<typename ROTATION_TYPE::DataType, 3>& zAxis,
                                   Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
    {
-      gmtl::ignore_unused_variable_warning(t);
+      math::ignore_unused_variable_warning(t);
       ROTATION_TYPE temporary;
       return setAxes( temporary, xAxis, yAxis, zAxis );
    }
@@ -1217,7 +1217,7 @@ namespace gmtl
                                                    const Coord<POS_TYPE, ROT_TYPE>& coord )
    {
       // set to ident first...
-      gmtl::identity( mat );
+      math::identity( mat );
 
       // set translation
       // @todo metaprogram this out for 3x3 and 2x2 matrices
@@ -1271,8 +1271,8 @@ namespace gmtl
    template <typename DATATYPE, typename POS_TYPE, typename ROT_TYPE, unsigned MATCOLS, unsigned MATROWS >
    inline Coord<POS_TYPE, ROT_TYPE>& set( Coord<POS_TYPE, ROT_TYPE>& eulercoord, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat )
    {
-      gmtl::setTrans( eulercoord.pos(), mat );
-      gmtl::set( eulercoord.rot(), mat );
+      math::setTrans( eulercoord.pos(), mat );
+      math::set( eulercoord.rot(), mat );
       return eulercoord;
    }
 
@@ -1282,7 +1282,7 @@ namespace gmtl
    template <typename DATATYPE, typename POS_TYPE, typename ROT_TYPE, unsigned MATCOLS, unsigned MATROWS >
    inline Coord<POS_TYPE, ROT_TYPE>& setRot( Coord<POS_TYPE, ROT_TYPE>& result, const Matrix<DATATYPE, MATROWS, MATCOLS>& mat )
    {
-      return gmtl::set( result, mat );
+      return math::set( result, mat );
    }
 
    /** @} */
@@ -1305,9 +1305,9 @@ namespace gmtl
    inline TARGET_TYPE make( const SOURCE_TYPE& src,
                            Type2Type< TARGET_TYPE > t = Type2Type< TARGET_TYPE >() )
    {
-      gmtl::ignore_unused_variable_warning(t);
+      math::ignore_unused_variable_warning(t);
       TARGET_TYPE target;
-      return gmtl::set( target, src );
+      return math::set( target, src );
    }
 
    /** Create a rotation datatype from another rotation datatype.
@@ -1318,9 +1318,9 @@ namespace gmtl
    inline ROTATION_TYPE makeRot( const SOURCE_TYPE& coord,
                                 Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
    {
-      gmtl::ignore_unused_variable_warning(t);
+      math::ignore_unused_variable_warning(t);
       ROTATION_TYPE temporary;
-      return gmtl::set( temporary, coord );
+      return math::set( temporary, coord );
    }
 
    /** Create a rotation matrix or quaternion (or any other rotation data type) using direction cosines.
@@ -1343,7 +1343,7 @@ namespace gmtl
                                   const Vec<typename ROTATION_TYPE::DataType, 3>& zSrcAxis = Vec<typename ROTATION_TYPE::DataType, 3>(0,0,1),
                                Type2Type< ROTATION_TYPE > t = Type2Type< ROTATION_TYPE >() )
    {
-      gmtl::ignore_unused_variable_warning(t);
+      math::ignore_unused_variable_warning(t);
       ROTATION_TYPE temporary;
       return setDirCos( temporary, xDestAxis, yDestAxis, zDestAxis, xSrcAxis, ySrcAxis, zSrcAxis );
    }
@@ -1367,7 +1367,7 @@ namespace gmtl
    inline TRANS_TYPE makeTrans( const SRC_TYPE& arg,
                              Type2Type< TRANS_TYPE > t = Type2Type< TRANS_TYPE >())
    {
-      gmtl::ignore_unused_variable_warning(t);
+      math::ignore_unused_variable_warning(t);
       TRANS_TYPE temporary;
       return setTrans( temporary, arg );
    }
@@ -1395,8 +1395,8 @@ namespace gmtl
       // @todo should assert that DEST_TYPE::DataType == DATA_TYPE
       const DATA_TYPE epsilon = (DATA_TYPE)0.00001;
 
-      gmtlASSERT( gmtl::Math::isEqual( gmtl::length( from ), (DATA_TYPE)1.0, epsilon ) &&
-                  gmtl::Math::isEqual( gmtl::length( to ), (DATA_TYPE)1.0, epsilon ) /* &&
+      gmtlASSERT( math::Math::isEqual( math::length( from ), (DATA_TYPE)1.0, epsilon ) &&
+                  math::Math::isEqual( math::length( to ), (DATA_TYPE)1.0, epsilon ) /* &&
                   "input params not normalized" */);
 
       DATA_TYPE cosangle = dot( from, to );
@@ -1415,7 +1415,7 @@ namespace gmtl
          Vec<DATA_TYPE, 3> to_rot( to[0] + (DATA_TYPE)0.3, to[1] - (DATA_TYPE)0.15, to[2] - (DATA_TYPE)0.15 ), axis;
          normalize( cross( axis, from, to_rot ) ); // setRot requires normalized vec
          DATA_TYPE angle = Math::aCos( cosangle );
-         return setRot( result, gmtl::AxisAngle<DATA_TYPE>( angle, axis ) );
+         return setRot( result, math::AxisAngle<DATA_TYPE>( angle, axis ) );
       }
 
       // This is the usual situation - take a cross-product of vec1 and vec2
@@ -1425,7 +1425,7 @@ namespace gmtl
          Vec<DATA_TYPE, 3> axis;
          normalize( cross( axis, from, to ) ); // setRot requires normalized vec
          DATA_TYPE angle = Math::aCos( cosangle );
-         return setRot( result, gmtl::AxisAngle<DATA_TYPE>( angle, axis ) );
+         return setRot( result, math::AxisAngle<DATA_TYPE>( angle, axis ) );
       }
    }
 
@@ -1495,6 +1495,6 @@ namespace gmtl
       return result;
    }
 
-} // end gmtl namespace.
+} // end math namespace.
 
 #endif

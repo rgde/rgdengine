@@ -41,7 +41,7 @@
 
 /** Expression template classes for vec operations
  */
-namespace gmtl
+namespace math
 {
 namespace meta
 {
@@ -91,15 +91,15 @@ struct ExprTraits
 };
 
 template<typename T, unsigned SIZE>
-struct ExprTraits< VecBase<T, SIZE, ScalarArg<T> > >
+struct ExprTraits< vec_base<T, SIZE, ScalarArg<T> > >
 {
-   typedef const VecBase<T,SIZE,ScalarArg<T> > ExprRef;
+   typedef const vec_base<T,SIZE,ScalarArg<T> > ExprRef;
 };
 
 template<typename T, unsigned SIZE>
-struct ExprTraits< VecBase<T, SIZE, DefaultVecTag> >
+struct ExprTraits< vec_base<T, SIZE, DefaultVecTag> >
 {
-   typedef const VecBase<T,SIZE,DefaultVecTag>& ExprRef;
+   typedef const vec_base<T,SIZE,DefaultVecTag>& ExprRef;
 };
 
 
@@ -178,27 +178,27 @@ struct VecNegUnary
 
 /*
 template<typename T, unsigned SIZE, typename R1, typename R2>
-inline VecBase<T,SIZE, VecBinaryExpr<VecBase<T,SIZE,R1>, VecBase<T,SIZE,R2>, VecPlusBinary> >
-sum(const VecBase<T,SIZE,R1>& v1, const VecBase<T,SIZE,R2>& v2)
+inline vec_base<T,SIZE, VecBinaryExpr<vec_base<T,SIZE,R1>, vec_base<T,SIZE,R2>, VecPlusBinary> >
+sum(const vec_base<T,SIZE,R1>& v1, const vec_base<T,SIZE,R2>& v2)
 {
-   return VecBase<T,SIZE,
-               VecBinaryExpr<VecBase<T,SIZE,R1>,
-                             VecBase<T,SIZE,R2>,
-                             VecPlusBinary> >( VecBinaryExpr<VecBase<T,SIZE,R1>,
-                                                             VecBase<T,SIZE,R2>,
+   return vec_base<T,SIZE,
+               VecBinaryExpr<vec_base<T,SIZE,R1>,
+                             vec_base<T,SIZE,R2>,
+                             VecPlusBinary> >( VecBinaryExpr<vec_base<T,SIZE,R1>,
+                                                             vec_base<T,SIZE,R2>,
                                                              VecPlusBinary>(v1,v2) );
 }
 
 
 template<typename T, unsigned SIZE, typename R1>
-inline VecBase<T,SIZE, VecBinaryExpr<VecBase<T,SIZE,R1>, VecBase<T,SIZE,ScalarArg<T> >, VecPlusBinary> >
-sum(const VecBase<T,SIZE,R1>& v1, const T& arg)
+inline vec_base<T,SIZE, VecBinaryExpr<vec_base<T,SIZE,R1>, vec_base<T,SIZE,ScalarArg<T> >, VecPlusBinary> >
+sum(const vec_base<T,SIZE,R1>& v1, const T& arg)
 {
-   return VecBase<T,SIZE,
-               VecBinaryExpr<VecBase<T,SIZE,R1>,
-                             VecBase<T,SIZE,ScalarArg<T> >,
-                             VecPlusBinary> >( VecBinaryExpr<VecBase<T,SIZE,R1>,
-                                                             VecBase<T,SIZE,ScalarArg<T> >,
+   return vec_base<T,SIZE,
+               VecBinaryExpr<vec_base<T,SIZE,R1>,
+                             vec_base<T,SIZE,ScalarArg<T> >,
+                             VecPlusBinary> >( VecBinaryExpr<vec_base<T,SIZE,R1>,
+                                                             vec_base<T,SIZE,ScalarArg<T> >,
                                                              VecPlusBinary>(v1,ScalarArg<T>(arg)) );
 }
 */

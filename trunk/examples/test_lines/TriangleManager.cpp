@@ -30,6 +30,6 @@ namespace lines_test
 			it->render();
 
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
-		line_manager.add_quad( math::Vec3f(0,0,0), math::Vec2f(40,40), 0 );
+		line_manager.add_quad( math::vec3f(0,0,0), math::vec2f(40,40), 0 );
 	}
 }

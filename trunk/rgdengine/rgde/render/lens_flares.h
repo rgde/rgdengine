@@ -31,7 +31,7 @@ namespace render
 	private:
 		void load_from_xml(const std::string& file_name);
 		void render();
-		inline void update_flare(flare& flare, const math::Vec2f& toLightVector, float fToLightLength, float angle, float alpha_scale);
+		inline void update_flare(flare& flare, const math::vec2f& toLightVector, float fToLightLength, float angle, float alpha_scale);
 
 	private:
 		math::frame_ptr m_frame;

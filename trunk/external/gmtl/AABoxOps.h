@@ -38,7 +38,7 @@
 #include <gmtl/AABox.h>
 #include <gmtl/VecOps.h>
 
-namespace gmtl
+namespace math
 {
 
 /** @ingroup Compare AABox 

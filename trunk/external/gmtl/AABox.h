@@ -37,7 +37,7 @@
 
 #include <gmtl/Point.h>
 
-namespace gmtl
+namespace math
 {
    /**
     * Describes an axially aligned box in 3D space. This is usually used for
@@ -169,7 +169,7 @@ namespace gmtl
    };
 
    // --- helper types --- //
-   typedef AABox<float>    AABoxf;
+   typedef AABox<float>    aaboxf;
    typedef AABox<double>   AABoxd;
 }
 

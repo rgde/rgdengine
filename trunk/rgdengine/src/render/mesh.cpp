@@ -10,7 +10,7 @@
 namespace render
 {
 	mesh::mesh()
-		: rendererable(10)
+	: rendererable(10)
 	{
 		m_renderInfo.frame = this;//m_frame;
 		m_renderInfo.render_func = boost::bind(&mesh::render, this);
@@ -95,8 +95,8 @@ namespace render
 		//if( !getRoot() )
 		//{
 		////	// calc global AABB from OOB
-		////	AABoxf global_aabb;
-		////	Matrix44f m = m_frame.get()->get_full_tm();
+		////	aaboxf global_aabb;
+		////	matrix44f m = m_frame.get()->get_full_tm();
 		////	float	Xmax = m_renderInfo.bbox.getMax()[0],
 		////			Ymax = m_renderInfo.bbox.getMax()[1],
 		////			Zmax = m_renderInfo.bbox.getMax()[2],
@@ -104,16 +104,16 @@ namespace render
 		////			Ymin = m_renderInfo.bbox.getMin()[1],
 		////			Zmin = m_renderInfo.bbox.getMin()[2];
 		//////(MAX/min)
-		////	extendVolume(global_aabb,m*Point3f(Xmax,Ymax,Zmax));	// XYZ
-		////	extendVolume(global_aabb,m*Point3f(Xmax,Ymax,Zmin));	// XYz
-		////	extendVolume(global_aabb,m*Point3f(Xmax,Ymin,Zmax));	// XyZ
-		////	extendVolume(global_aabb,m*Point3f(Xmax,Ymin,Zmin));	// Xyz
-		////	extendVolume(global_aabb,m*Point3f(Xmin,Ymax,Zmax));	// xYZ
-		////	extendVolume(global_aabb,m*Point3f(Xmin,Ymax,Zmin));	// xYz
-		////	extendVolume(global_aabb,m*Point3f(Xmin,Ymin,Zmax));	// xyZ
-		////	extendVolume(global_aabb,m*Point3f(Xmin,Ymin,Zmin));	// xyz
+		////	extendVolume(global_aabb,m*point3f(Xmax,Ymax,Zmax));	// XYZ
+		////	extendVolume(global_aabb,m*point3f(Xmax,Ymax,Zmin));	// XYz
+		////	extendVolume(global_aabb,m*point3f(Xmax,Ymin,Zmax));	// XyZ
+		////	extendVolume(global_aabb,m*point3f(Xmax,Ymin,Zmin));	// Xyz
+		////	extendVolume(global_aabb,m*point3f(Xmin,Ymax,Zmax));	// xYZ
+		////	extendVolume(global_aabb,m*point3f(Xmin,Ymax,Zmin));	// xYz
+		////	extendVolume(global_aabb,m*point3f(Xmin,Ymin,Zmax));	// xyZ
+		////	extendVolume(global_aabb,m*point3f(Xmin,Ymin,Zmin));	// xyz
 
-		//	math::AABoxf global_aabb = m_renderInfo.bbox;
+		//	math::aaboxf global_aabb = m_renderInfo.bbox;
 		//	collision::calcAABB(get_full_tm(),global_aabb);
 		//	setAABB(global_aabb);
 		//	//Neonic: корректируем динамические меши в пространстве 
@@ -124,7 +124,7 @@ namespace render
 		//else 
 		//if( NeedFullUpdate )
 		//{
-		//	math::AABoxf global_aabb = m_renderInfo.bbox;
+		//	math::aaboxf global_aabb = m_renderInfo.bbox;
 		//	collision::calcAABB(get_full_tm(),global_aabb);
 		//	setAABB(global_aabb);
 		//	scene::TheScene::get().inject(this);

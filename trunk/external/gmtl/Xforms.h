@@ -45,7 +45,7 @@
 #include <gmtl/LineSeg.h>
 #include <gmtl/Util/StaticAssert.h>
 
-namespace gmtl
+namespace math
 {
    /** @ingroup Transforms
     *  @name Vector Transform (Quaternion)
@@ -66,7 +66,7 @@ namespace gmtl
     *        then this might not give the correct result, since conj and invert is only equiv when normalized...
     */
    template <typename DATA_TYPE>
-   inline VecBase<DATA_TYPE, 3>& xform( VecBase<DATA_TYPE, 3>& result, const Quat<DATA_TYPE>& rot, const VecBase<DATA_TYPE, 3>& vector )
+   inline vec_base<DATA_TYPE, 3>& xform( vec_base<DATA_TYPE, 3>& result, const Quat<DATA_TYPE>& rot, const vec_base<DATA_TYPE, 3>& vector )
    {
       // check preconditions...
       gmtlASSERT( Math::isEqual( length( rot ), (DATA_TYPE)1.0, (DATA_TYPE)0.0001 ) && "must pass a rotation quaternion to xform(result,quat,vec) - by definition, a rotation quaternion is normalized).  if you need non-rotation quaternion support, let us know." );
@@ -100,9 +100,9 @@ namespace gmtl
     * @post v' = q P(v) q*  (where result is v', rot is q, and vector is v.  q* is conj(q), and P(v) is pure quaternion made from v)
     */
    template <typename DATA_TYPE>
-   inline VecBase<DATA_TYPE, 3> operator*( const Quat<DATA_TYPE>& rot, const VecBase<DATA_TYPE, 3>& vector )
+   inline vec_base<DATA_TYPE, 3> operator*( const Quat<DATA_TYPE>& rot, const vec_base<DATA_TYPE, 3>& vector )
    {
-      VecBase<DATA_TYPE, 3> temporary;
+      vec_base<DATA_TYPE, 3> temporary;
       return xform( temporary, rot, vector );
    }
 
@@ -114,9 +114,9 @@ namespace gmtl
     * @post v' = q P(v) q*  (where result is v', rot is q, and vector is v.  q* is conj(q), and P(v) is pure quaternion made from v)
     */   
    template <typename DATA_TYPE>
-   inline VecBase<DATA_TYPE, 3> operator*=(VecBase<DATA_TYPE, 3>& vector, const Quat<DATA_TYPE>& rot)
+   inline vec_base<DATA_TYPE, 3> operator*=(vec_base<DATA_TYPE, 3>& vector, const Quat<DATA_TYPE>& rot)
    {
-      VecBase<DATA_TYPE, 3> temporary = vector;
+      vec_base<DATA_TYPE, 3> temporary = vector;
       return xform( vector, rot, temporary);
    }
 
@@ -395,8 +395,8 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline Ray<DATA_TYPE>& xform( Ray<DATA_TYPE>& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const Ray<DATA_TYPE>& ray )
    {
-      gmtl::Point<DATA_TYPE, 3> pos;
-      gmtl::Vec<DATA_TYPE, 3> dir;
+      math::Point<DATA_TYPE, 3> pos;
+      math::Vec<DATA_TYPE, 3> dir;
       result.setOrigin( xform( pos, matrix, ray.getOrigin() ) );
       result.setDir( xform( dir, matrix, ray.getDir() ) );
       return result;
@@ -442,8 +442,8 @@ namespace gmtl
    template <typename DATA_TYPE, unsigned ROWS, unsigned COLS>
    inline LineSeg<DATA_TYPE>& xform( LineSeg<DATA_TYPE>& result, const Matrix<DATA_TYPE, ROWS, COLS>& matrix, const LineSeg<DATA_TYPE>& seg )
    {
-      gmtl::Point<DATA_TYPE, 3> pos;
-      gmtl::Vec<DATA_TYPE, 3> dir;
+      math::Point<DATA_TYPE, 3> pos;
+      math::Vec<DATA_TYPE, 3> dir;
       result.setOrigin( xform( pos, matrix, seg.getOrigin() ) );
       result.setDir( xform( dir, matrix, seg.getDir() ) );
       return result;

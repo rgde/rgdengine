@@ -33,19 +33,19 @@ namespace particles
 		if( (m_nReservedSize == 0) )
 			return;
 
-		const math::Matrix44f& mLocal	= frame.get_full_tm();
+		const math::matrix44f& mLocal	= frame.get_full_tm();
 		math::camera_ptr camera		= render::render_device::get().get_camera();
-		const math::Matrix44f& mProj	= camera->get_proj_matrix();
-		const math::Matrix44f& mView	= camera->get_view_matrix();
+		const math::matrix44f& mProj	= camera->get_proj_matrix();
+		const math::matrix44f& mView	= camera->get_view_matrix();
 		
-		math::Matrix44f mSystem = mView * mLocal;
-		math::Matrix44f mLVP = mProj * mSystem;
+		math::matrix44f mSystem = mView * mLocal;
+		math::matrix44f mLVP = mProj * mSystem;
 
 		bool useGlobalUp = true;
 
-		math::Vec4f right(mSystem.mData[0], mSystem.mData[4], mSystem.mData[8], 0.0f);
+		math::vec4f right(mSystem.mData[0], mSystem.mData[4], mSystem.mData[8], 0.0f);
 		//math::normalize(right);
-		math::Vec4f up(mSystem.mData[1], mSystem.mData[5], mSystem.mData[9], 0);
+		math::vec4f up(mSystem.mData[1], mSystem.mData[5], mSystem.mData[9], 0);
 		//math::normalize(up);
 	
 
@@ -53,7 +53,7 @@ namespace particles
 		{
 			right[2] = 0;
 			math::normalize(right);
-			up = math::Vec4f(0, 0, 1, 0);
+			up = math::vec4f(0, 0, 1, 0);
 		}
 
 
@@ -125,26 +125,26 @@ namespace particles
 
 
 			vVertices[j].position = p.pos;
-			vVertices[j].tex1 = math::Vec2f( -xcos - ysin, -xsin + ycos );
-			vVertices[j].tex0 = math::Vec2f(fTileX*m_fInvTotalColumns, fTileY*m_fInvTotalRows);
+			vVertices[j].tex1 = math::vec2f( -xcos - ysin, -xsin + ycos );
+			vVertices[j].tex0 = math::vec2f(fTileX*m_fInvTotalColumns, fTileY*m_fInvTotalRows);
 			vVertices[j].color = p.color;
 			++j;
 
 			vVertices[j].position = p.pos;
-			vVertices[j].tex1 = math::Vec2f( xcos - ysin, xsin + ycos );
-			vVertices[j].tex0 = math::Vec2f((fTileX + 1.0f)*m_fInvTotalColumns, fTileY*m_fInvTotalRows);
+			vVertices[j].tex1 = math::vec2f( xcos - ysin, xsin + ycos );
+			vVertices[j].tex0 = math::vec2f((fTileX + 1.0f)*m_fInvTotalColumns, fTileY*m_fInvTotalRows);
 			vVertices[j].color = p.color;
 			++j;
 
 			vVertices[j].position = p.pos;
-			vVertices[j].tex1 = math::Vec2f( -xcos + ysin, -xsin - ycos );
-			vVertices[j].tex0 = math::Vec2f(fTileX*m_fInvTotalColumns, (fTileY + 1.0f)*m_fInvTotalRows);
+			vVertices[j].tex1 = math::vec2f( -xcos + ysin, -xsin - ycos );
+			vVertices[j].tex0 = math::vec2f(fTileX*m_fInvTotalColumns, (fTileY + 1.0f)*m_fInvTotalRows);
 			vVertices[j].color = p.color;
 			++j;
 
 			vVertices[j].position = p.pos;
-			vVertices[j].tex1 = math::Vec2f( xcos + ysin, xsin - ycos );
-			vVertices[j].tex0 = math::Vec2f((fTileX + 1.0f)*m_fInvTotalColumns, (fTileY + 1.0f)*m_fInvTotalRows);
+			vVertices[j].tex1 = math::vec2f( xcos + ysin, xsin - ycos );
+			vVertices[j].tex0 = math::vec2f((fTileX + 1.0f)*m_fInvTotalColumns, (fTileY + 1.0f)*m_fInvTotalRows);
 			vVertices[j].color = p.color;
 			++j;
 		}

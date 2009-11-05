@@ -94,9 +94,9 @@ namespace io
 
 	write_stream& operator << (write_stream& wf, const std::string& str);
 	write_stream& operator << (write_stream& wf, const serialized_object& so);
-	write_stream& operator << (write_stream& wf, const math::Vec3f& vec);
-	write_stream& operator << (write_stream& wf, const math::Vec4f& vec);
-	write_stream& operator << (write_stream& wf, const math::Point3f& point);
+	write_stream& operator << (write_stream& wf, const math::vec3f& vec);
+	write_stream& operator << (write_stream& wf, const math::vec4f& vec);
+	write_stream& operator << (write_stream& wf, const math::point3f& point);
 	write_stream& operator << (write_stream& wf, const math::Quatf& quat);
 	write_stream& operator << (write_stream& wf, const std::wstring& str);
 
@@ -154,9 +154,9 @@ namespace io
 
 	read_stream& operator >> (read_stream& rf, std::string& str);
 	read_stream& operator >> (read_stream& rf, serialized_object& so);
-	read_stream& operator >> (read_stream& rf, math::Vec3f& vec);
-	read_stream& operator >> (read_stream& rf, math::Vec4f& vec);
-	read_stream& operator >> (read_stream& rf, math::Point3f& point);
+	read_stream& operator >> (read_stream& rf, math::vec3f& vec);
+	read_stream& operator >> (read_stream& rf, math::vec4f& vec);
+	read_stream& operator >> (read_stream& rf, math::point3f& point);
 	read_stream& operator >> (read_stream& rf, math::Quatf& quat);
 	read_stream& operator >> (read_stream& rf, std::wstring& str);
 	//////////////////////////////////////////////////////////////////////////

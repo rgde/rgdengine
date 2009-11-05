@@ -87,12 +87,12 @@ namespace render
 		renderable_info();
 
 		math::frame*				 frame;
-		material_ptr					 spMaterial;
+		material_ptr				 spMaterial;
 		boost::function<void (void)> render_func;
 		boost::function<void (void)> pDebugRenderFunc;
-		render::effect_ptr				 spShader;
+		render::effect_ptr			 spShader;
 		bool						 bHaveVolumes;
-		math::AABoxf				 bbox;
+		math::aaboxf				 bbox;
 		math::Spheref				 bsphere;
 	};
 

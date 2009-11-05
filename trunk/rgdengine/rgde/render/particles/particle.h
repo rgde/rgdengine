@@ -11,7 +11,7 @@ namespace particles
 	{
 		base_particle();
 
-		math::Vec3f pos;
+		math::vec3f pos;
 		float size;					// size variation
 		math::Color color;			// color variation
 		float rotation;				// rotation variation
@@ -33,12 +33,12 @@ namespace particles
 		float initial_spin;
 		float cur_tex_frame;
 
-		math::Vec3f vel;
-		math::Vec3f vel_spread;
-		math::Vec3f initial_vel;
-		math::Vec3f initial_pos;
-		math::Vec3f sum_vel;
-		math::Vec3f old_pos;
+		math::vec3f vel;
+		math::vec3f vel_spread;
+		math::vec3f initial_vel;
+		math::vec3f initial_pos;
+		math::vec3f sum_vel;
+		math::vec3f old_pos;
 	};
 
 	//////////////////////////////////////////////////////////////////////////

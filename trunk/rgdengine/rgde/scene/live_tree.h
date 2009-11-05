@@ -50,7 +50,7 @@ namespace live_tree
 	typedef boost::intrusive_ptr<TreeObject> PObject;
 
 	typedef std::vector<PObject>			Array;
-	typedef std::map<PObject, Point3f>		Sorted;
+	typedef std::map<PObject, point3f>		Sorted;
 
 	/// Найти ближайшее число в прогрессии(out), включающее заданное число(in)
 	bool calcProgression( const int &in, int &out );
@@ -71,25 +71,25 @@ namespace live_tree
 		virtual ~TreeObject( void ) ;
 
 		// get object AABB
-		AABoxf					getAABB( void );
+		aaboxf					getAABB( void );
 		// get object dynamic AABB. sure you call this func then object dynamic, otherwise it fail.
-		AABoxf					getDynamicAABB( void );
+		aaboxf					getDynamicAABB( void );
 		// set object dimensions as aabb
-		void					setAABB( const AABoxf& aabb );
+		void					setAABB( const aaboxf& aabb );
 		// get object position
-		const Point3f&			get_pos( void ) const;
+		const point3f&			get_pos( void ) const;
 		// set object position
-		void					set_pos( const Point3f& pos );
+		void					set_pos( const point3f& pos );
 		// get object extents
-		const Point3f&			getExt( void ) const;
+		const point3f&			getExt( void ) const;
 		// set object extents
-		void					setExt( const Point3f& ext );
+		void					setExt( const point3f& ext );
 		// inject object into selected tree
 		void					inject( CTRoot* p );
 		// eject object from tree
 		void					eject( void );
 		// move object in tree. sure you inject object before, otherwise it fail
-		void					move( const Point3f& pos );
+		void					move( const point3f& pos );
 		// set object tree root
 		void					setRoot( CTRoot* p );
 		// get object tree root
@@ -107,16 +107,16 @@ namespace live_tree
 		// test for dynamic enabled
 		bool					isDynamic( void );
 		// get last updated pos
-		Point3f					getOldPos( void );
+		point3f					getOldPos( void );
 		// update pos from current
 		void					updatePos( void );
 
 	private:
 		CTRoot*				m_pRoot;
 
-		Point3f*			m_pPosOld;
-		Point3f				m_Position;
-		Point3f				m_Ext;
+		point3f*			m_pPosOld;
+		point3f				m_Position;
+		point3f				m_Ext;
 
 	};
 
@@ -208,17 +208,17 @@ namespace live_tree
 	// next funcs produce 'static/immediate' effect in action
 	// overwrite all of them if you need 'Another' correct workflow
 		// inject object
-		virtual void			inject( PObject obj, AABoxf* pAABB =0 );
+		virtual void			inject( PObject obj, aaboxf* pAABB =0 );
 		// eject object
-		virtual void			eject( PObject obj, AABoxf* pAABB =0 );
+		virtual void			eject( PObject obj, aaboxf* pAABB =0 );
 		// eject object now in any case
 		virtual void			ejectNow( PObject obj );
 		// set object new position
-		virtual void			set_pos( PObject obj, const Point3f pos );
+		virtual void			set_pos( PObject obj, const point3f pos );
 		// set object new extents
-		virtual void			setExt( PObject obj, const Point3f ext );
+		virtual void			setExt( PObject obj, const point3f ext );
 		// move object to new position
-		virtual void			move( PObject obj, const Point3f& pos );
+		virtual void			move( PObject obj, const point3f& pos );
 
 		// get current query status for dynamic. static tree always finalized
 		virtual bool			isApproximated( void ) { return 0; };
@@ -226,17 +226,17 @@ namespace live_tree
 		class CCollector
 		{
 		public:
-			CCollector( CTRoot* pRoot, const AABoxf& aabb, PObject exclude =0);
+			CCollector( CTRoot* pRoot, const aaboxf& aabb, PObject exclude =0);
 			Array&				operator()( void );
 		
 		private:
-			void				parse( CTBranch* pBranch, const Point3f& cnt, const float& ext );
+			void				parse( CTBranch* pBranch, const point3f& cnt, const float& ext );
 			void				collect( CTBranch* pBranch );
-			void				call( CTBranch* pBranch, const unsigned& iIndex, const Point3f& cnt, const float& ext );
+			void				call( CTBranch* pBranch, const unsigned& iIndex, const point3f& cnt, const float& ext );
 
 			PObject		m_pExcludeObject;
 			CTRoot*		m_pRoot;
-			AABoxf		m_AABB;
+			aaboxf		m_AABB;
 
 		public:
 			Array		m_Array;
@@ -245,32 +245,32 @@ namespace live_tree
 		class CInjector
 		{
 		public:
-			CInjector( PObject p, CTRoot* pRoot, const AABoxf& aabb, int LimitDivisions =-1);
+			CInjector( PObject p, CTRoot* pRoot, const aaboxf& aabb, int LimitDivisions =-1);
 			bool				operator()( void );
 		
 		private:
-			bool				parse( CTBranch* pBranch, const Point3f& cnt, const float& ext, const unsigned& division );
+			bool				parse( CTBranch* pBranch, const point3f& cnt, const float& ext, const unsigned& division );
 			bool				inject( CTBranch* pBranch, const unsigned& division );
 
 			PObject		m_pObject;
 			CTRoot*		m_pRoot;
-			AABoxf		m_AABB;
+			aaboxf		m_AABB;
 			int			m_LimitDivisions;
 		};
 
 		class CEjector
 		{
 		public:
-			CEjector( PObject p, CTRoot* pRoot, const AABoxf& aabb, int LimitDivisions =-1 );
+			CEjector( PObject p, CTRoot* pRoot, const aaboxf& aabb, int LimitDivisions =-1 );
 			bool				operator()( void );
 		
 		private:
-			bool				parse( CTBranch* pBranch, const Point3f& cnt, const float& ext, const unsigned& division );
+			bool				parse( CTBranch* pBranch, const point3f& cnt, const float& ext, const unsigned& division );
 			bool				eject( CTBranch* pBranch );
 
 			PObject		m_pObject;
 			CTRoot*		m_pRoot;
-			AABoxf		m_AABB;
+			aaboxf		m_AABB;
 			int			m_LimitDivisions;
 		};
 
@@ -305,11 +305,11 @@ namespace live_tree
 		// eject object now in any case. correctly eject dynamic object
 		void					ejectNow( PObject obj );
 		// set object new position
-		void					set_pos( PObject obj, const Point3f pos );
+		void					set_pos( PObject obj, const point3f pos );
 		// set object new extents
-		void					setExt( PObject obj, const Point3f ext );
+		void					setExt( PObject obj, const point3f ext );
 		// move object to new position
-		void					move( PObject obj, const Point3f& pos );
+		void					move( PObject obj, const point3f& pos );
 		// process approximation with deferred queryes before asking position.
 		virtual void			approximate( void );
 		// process objects finalizationt. you can make object static after this query(use isApproximated())

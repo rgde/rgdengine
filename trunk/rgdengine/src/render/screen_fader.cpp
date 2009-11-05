@@ -107,9 +107,9 @@ namespace render
 			fAlphaFactor = m_fTimeElapsed / m_fFadingTime;
 
 		sprite.color.a = (char)((float)sprite.color.a * fAlphaFactor);
-		sprite.pos = math::Vec2f(400.0f, 300.0f);
+		sprite.pos = math::vec2f(400.0f, 300.0f);
 		sprite.rect = math::Rect(0.0f, 0.0f, 1.0f, 1.0f);
-		sprite.size = math::Vec2f(800.0f, 600.0f);
+		sprite.size = math::vec2f(800.0f, 600.0f);
 		sprite.spin = 0.0f;
 		sprite.priority = 20;
 

@@ -62,7 +62,7 @@
 
 
 /** Meta programming classes */
-namespace gmtl
+namespace math
 {
    /** @ingroup Meta */
    //@{
@@ -89,7 +89,7 @@ namespace gmtl
 } // end namespace
 
 #ifndef GMTL_NO_METAPROG
-namespace gmtl
+namespace math
 {
 namespace meta
 {
@@ -131,7 +131,7 @@ struct AssignArrayUnrolled<0,T>
 };
 
 }  // namespace meta
-}  // namespace gmtl
+}  // namespace math
 #endif /* ! GMTL_NO_METAPROG */
 
 #endif

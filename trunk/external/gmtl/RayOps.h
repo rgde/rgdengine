@@ -37,7 +37,7 @@
 
 #include <gmtl/Ray.h>
 
-namespace gmtl {
+namespace math {
 
 //--- Ray Comparitor ---//
 /**
@@ -91,5 +91,5 @@ inline bool isEqual( const Ray<DATA_TYPE>& ls1,
             (isEqual(ls1.mDir, ls2.mDir, eps)) );
 }
 
-} // namespace gmtl
+} // namespace math
 #endif

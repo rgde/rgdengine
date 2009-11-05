@@ -40,7 +40,7 @@
 #include <gmtl/Defines.h>
 #include <gmtl/Util/Assert.h>
 
-namespace gmtl
+namespace math
 {
 
 /** Base class for Rotation orders
@@ -155,7 +155,7 @@ inline int sign( T iValue )
 template <typename T>
 inline T zeroClamp( T value, T eps = T(0) )
 {
-   return ( (gmtl::Math::abs(value) <= eps) ? T(0) : value );
+   return ( (math::Math::abs(value) <= eps) ? T(0) : value );
 }
 
 //----------------------------------------------------------------------------
@@ -181,7 +181,7 @@ inline float aCos( float fValue )
     }
     else
     {
-        return (float)gmtl::Math::PI;
+        return (float)math::Math::PI;
     }
 }
 inline double aCos( double fValue )
@@ -195,7 +195,7 @@ inline double aCos( double fValue )
     }
     else
     {
-        return (double)gmtl::Math::PI;
+        return (double)math::Math::PI;
     }
 }
 //----------------------------------------------------------------------------
@@ -214,11 +214,11 @@ inline float aSin( float fValue )
 #endif
         }
         else
-            return (float)-gmtl::Math::PI_OVER_2;
+            return (float)-math::Math::PI_OVER_2;
     }
     else
     {
-        return (float)gmtl::Math::PI_OVER_2;
+        return (float)math::Math::PI_OVER_2;
     }
 }
 inline double aSin( double fValue )
@@ -228,11 +228,11 @@ inline double aSin( double fValue )
         if ( fValue < 1.0 )
             return double( ::asin( fValue ) );
         else
-            return (double)-gmtl::Math::PI_OVER_2;
+            return (double)-math::Math::PI_OVER_2;
     }
     else
     {
-        return (double)gmtl::Math::PI_OVER_2;
+        return (double)math::Math::PI_OVER_2;
     }
 }
 //----------------------------------------------------------------------------
@@ -434,7 +434,7 @@ inline float unitRandom()
  */
 inline float rangeRandom( float x1, float x2 )
 {
-   float r = gmtl::Math::unitRandom();
+   float r = math::Math::unitRandom();
    float size = x2 - x1;
    return float( r * size + x1 );
 }
@@ -449,20 +449,20 @@ float SymmetricRandom ()
 
 inline float deg2Rad( float fVal )
 {
-   return float( fVal * (float)(gmtl::Math::PI/180.0) );
+   return float( fVal * (float)(math::Math::PI/180.0) );
 }
 inline double deg2Rad( double fVal )
 {
-   return double( fVal * (double)(gmtl::Math::PI/180.0) );
+   return double( fVal * (double)(math::Math::PI/180.0) );
 }
 
 inline float rad2Deg( float fVal )
 {
-   return float( fVal * (float)(180.0/gmtl::Math::PI) );
+   return float( fVal * (float)(180.0/math::Math::PI) );
 }
 inline double rad2Deg( double fVal )
 {
-   return double( fVal * (double)(180.0/gmtl::Math::PI) );
+   return double( fVal * (double)(180.0/math::Math::PI) );
 }
 //----------------------------------------------------------------------------
 
@@ -474,20 +474,20 @@ template <class T>
 inline bool isEqual( const T& a, const T& b, const T& tolerance )
 {
    gmtlASSERT( tolerance >= (T)0 );
-   return bool( gmtl::Math::abs( a - b ) <= tolerance );
+   return bool( math::Math::abs( a - b ) <= tolerance );
 }
 //----------------------------------------------------------------------------
 /** cut off the digits after the decimal place */
 template <class T>
 inline T trunc( T val )
 {
-   return T( (val < ((T)0)) ? gmtl::Math::ceil( val ) : gmtl::Math::floor( val ) );
+   return T( (val < ((T)0)) ? math::Math::ceil( val ) : math::Math::floor( val ) );
 }
 /** round to nearest integer */
 template <class T>
 inline T round( T p )
 {
-   return T( gmtl::Math::floor( p + (T)0.5 ) );
+   return T( math::Math::floor( p + (T)0.5 ) );
 }
 //----------------------------------------------------------------------------
 /** min returns the minimum of 2 values */
@@ -500,13 +500,13 @@ inline T Min( const T& x, const T& y )
 template <class T>
 inline T Min( const T& x, const T& y, const T& z )
 {
-   return Min( gmtl::Math::Min( x, y ), z );
+   return Min( math::Math::Min( x, y ), z );
 }
 /** min returns the minimum of 4 values */
 template <class T>
 inline T Min( const T& w, const T& x, const T& y, const T& z )
 {
-   return gmtl::Math::Min( gmtl::Math::Min( w, x ), gmtl::Math::Min( y, z ) );
+   return math::Math::Min( math::Math::Min( w, x ), math::Math::Min( y, z ) );
 }
 
 /** max returns the maximum of 2 values */
@@ -519,13 +519,13 @@ inline T Max( const T& x, const T& y )
 template <class T>
 inline T Max( const T& x, const T& y, const T& z )
 {
-   return Max( gmtl::Math::Max( x, y ), z );
+   return Max( math::Math::Max( x, y ), z );
 }
 /** max returns the maximum of 4 values */
 template <class T>
 inline T Max( const T& w, const T& x, const T& y, const T& z )
 {
-   return gmtl::Math::Max( gmtl::Math::Max( w, x ), gmtl::Math::Max( y, z ) );
+   return math::Math::Max( math::Math::Max( w, x ), math::Math::Max( y, z ) );
 }
 //----------------------------------------------------------------------------
 /** Compute the factorial.
@@ -595,7 +595,7 @@ inline bool quadraticFormula(T& r1, T& r2, const T& a, const T& b, const T& c)
    // the result has real roots
    if (q >= 0)
    {
-      const T sq = gmtl::Math::sqrt(q);
+      const T sq = math::Math::sqrt(q);
       const T d = T(1) / (T(2) * a);
       r1 = (-b + sq) * d;
       r2 = (-b - sq) * d;
@@ -609,6 +609,6 @@ inline bool quadraticFormula(T& r1, T& r2, const T& a, const T& b, const T& c)
 }
 
 } // end namespace Math
-} // end namespace gmtl
+} // end namespace math
 
 #endif

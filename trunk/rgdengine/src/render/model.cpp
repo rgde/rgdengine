@@ -105,7 +105,7 @@ namespace render
 			// translation
 			if (TiXmlElement * pNode = elem->FirstChildElement("translation"))
 			{
-				math::Vec3f v;
+				math::vec3f v;
 				base::read(v, pNode);
 				rootFrame.set_position(v);
 			}
@@ -113,7 +113,7 @@ namespace render
 			//rotation
 			if (TiXmlElement * pNode = elem->FirstChildElement("rotation"))
 			{
-				math::Vec3f v;
+				math::vec3f v;
 				base::read(v, pNode);
 
 				using math::Math::deg2Rad;				
@@ -128,7 +128,7 @@ namespace render
 			//scale
 			if (TiXmlElement * pNode = elem->FirstChildElement("scale"))
 			{
-				math::Vec3f v;
+				math::vec3f v;
 				base::read(v, pNode);
 				rootFrame.set_scale(v);
 			}

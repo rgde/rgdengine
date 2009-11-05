@@ -38,7 +38,7 @@
 #include <gmtl/Defines.h>
 #include <gmtl/Vec.h>
  
-namespace gmtl
+namespace math
 {
 
 /** Quat: Class to encapsulate quaternion behaviors.
@@ -184,6 +184,6 @@ const Quat<double> QUAT_IDENTITYD( QUAT_MULT_IDENTITYD );
 typedef Quat<float> Quatf;
 typedef Quat<double> Quatd;
 
-} // end of namespace gmtl
+} // end of namespace math
 
 #endif

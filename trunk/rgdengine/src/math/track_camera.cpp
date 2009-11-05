@@ -39,13 +39,13 @@ namespace math
         if (m_fPosition > m_path.getTotalTime())
             m_fPosition = m_path.getTotalTime();
 
-        if (m_pCamera)
+        if (m_camera)
         {
             try{
                 CTrack::Key key = m_path.getKey(m_fPosition);
                 //todo: возможно потребуется ортонормализация векторов [Dub]
-                m_pCamera->look_at(key.m_vEyePt, key.m_vLookatPt, key.m_vUp);
-                m_pCamera->activate();
+                m_camera->look_at(key.m_vEyePt, key.m_vLookatPt, key.m_vUp);
+                m_camera->activate();
             }
             catch(...){}
         }

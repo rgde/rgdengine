@@ -15,11 +15,11 @@ public:
 
 		m_camera = render::render_camera::create();
 
-		math::Vec3f vEyePt( 0.0f, 0, -50 );
-		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
-		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
+		math::vec3f eye( 0.0f, 0, -50 );
+		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
+		math::vec3f up_vec( 0.0f, 1.0f, 0.0f );
 
-		m_camera->look_at(vEyePt, vLookatPt, vUpVec);
+		m_camera->look_at(eye, look_at, up_vec);
 		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 
         {

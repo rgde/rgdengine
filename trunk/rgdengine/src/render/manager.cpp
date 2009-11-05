@@ -18,18 +18,18 @@ extern LPDIRECT3DDEVICE9 g_d3d;
 
 namespace render
 {
-	texture_ptr safeLoadDefaultTexture(const std::string &strTextureName)
+	texture_ptr safeLoadDefaultTexture(const std::string &texture_name)
 	{
 		io::path_add_scoped p	("Common/");
-		texture_ptr pResult	= texture::create(strTextureName);
+		texture_ptr tex	= texture::create(texture_name);
 
-		if (!pResult)
+		if (!tex)
 		{
-			base::lerr << "Can't load default texture \"" << strTextureName << "\"";
+			base::lerr << "Can't load default texture \"" << texture_name << "\"";
 			core::application::get()->close();
 		}
 
-		return pResult;
+		return tex;
 	}
 
 	render_manager::render_manager()
@@ -209,8 +209,8 @@ namespace render
 
 		struct SDistanceSorter_Less
 		{
-			math::Vec3f	vCamPos;
-			SDistanceSorter_Less(const math::Vec3f &camPos)
+			math::vec3f	vCamPos;
+			SDistanceSorter_Less(const math::vec3f &camPos)
 				: vCamPos(camPos)
 			{
 			}
@@ -220,7 +220,7 @@ namespace render
 				const math::frame_ptr& pFrame1 = r1->frame;
 				const math::frame_ptr& pFrame2 = r2->frame;
 
-				math::Vec3f		pos1, pos2;
+				math::vec3f		pos1, pos2;
 				if (pFrame1)
 					pos1 = pFrame1->get_world_pos();
 				if (pFrame2)
@@ -257,16 +257,17 @@ namespace render
 
 			if (ri.frame)
 			{
-				const math::Point3f& max	= ri.bbox.getMax();
-				const math::Point3f& min	= ri.bbox.getMin();
-				math::Point3f center		= min + (max - min) / 2.0f;
+				const math::point3f& max	= ri.bbox.getMax();
+				const math::point3f& min	= ri.bbox.getMin();
+				math::point3f center		= min + (max - min) / 2.0f;
 
 				float fHalfLenght = math::length<float, 3>(max - min) / 2.0f;
 
-				math::Point3f centerGlobal = ri.frame->get_full_tm() * center;
+				math::point3f centerGlobal = ri.frame->get_full_tm() * center;
 
-				if (!m_frustum.CubeInFrustum(centerGlobal[0], centerGlobal[1], centerGlobal[2], fHalfLenght))
-					return;
+				// skip test on that low level.
+				//if (!m_frustum.test_sphere(centerGlobal[0], centerGlobal[1], centerGlobal[2], fHalfLenght))
+				//	return;
 			}
 
 			if (r->get_priority() >= 1000)
@@ -320,8 +321,8 @@ namespace render
 				{
 					{
 						const math::camera_ptr& cam = *camera;
-						const math::Matrix44f& mView = cam->get_view_matrix();
-						const math::Matrix44f& mProj = cam->get_proj_matrix();
+						const math::matrix44f& mView = cam->get_view_matrix();
+						const math::matrix44f& mProj = cam->get_proj_matrix();
 						//return mProj*(mView*frame->get_full_tm());
 						g_d3d->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&mView[0]);
 						g_d3d->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&mProj[0]);

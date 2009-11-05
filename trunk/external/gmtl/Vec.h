@@ -40,7 +40,7 @@
 #include <gmtl/VecBase.h>
 #include <gmtl/Util/StaticAssert.h>
 
-namespace gmtl
+namespace math
 {
 
 /**
@@ -48,18 +48,18 @@ namespace gmtl
  * type for each component.
  *
  * @param DATA_TYPE     the datatype to use for the components
- * @param SIZE          the number of components this VecBase has
- * @see Vec3f
- * @see Vec4f
+ * @param SIZE          the number of components this vec_base has
+ * @see vec3f
+ * @see vec4f
  * @see Vec3d
- * @see Vec4f
+ * @see vec4f
  * @ingroup Types
  */
 template<class DATA_TYPE, unsigned SIZE>
 #ifdef GMTL_NO_METAPROG
-class Vec : public VecBase<DATA_TYPE, SIZE>
+class Vec : public vec_base<DATA_TYPE, SIZE>
 #else
-class Vec : public VecBase<DATA_TYPE, SIZE, meta::DefaultVecTag>
+class Vec : public vec_base<DATA_TYPE, SIZE, meta::DefaultVecTag>
 #endif
 {
 public:
@@ -70,7 +70,7 @@ public:
    enum Params { Size = SIZE };
 
    /// The superclass type.
-   typedef VecBase<DATA_TYPE, SIZE> BaseType;
+   typedef vec_base<DATA_TYPE, SIZE> BaseType;
    typedef Vec<DATA_TYPE, SIZE> VecType;
 
 public:
@@ -97,13 +97,13 @@ public:
    */
 
 #ifdef GMTL_NO_METAPROG
-   Vec( const VecBase<DATA_TYPE, SIZE>& rVec )
+   Vec( const vec_base<DATA_TYPE, SIZE>& rVec )
       : BaseType( rVec )
    {
    }
 #else
    template<typename REP2>
-   Vec( const VecBase<DATA_TYPE, SIZE, REP2>& rVec )
+   Vec( const vec_base<DATA_TYPE, SIZE, REP2>& rVec )
       : BaseType( rVec )
    {
    }
@@ -133,14 +133,14 @@ public:
 
    /** Assign from different rep. */
 #ifdef GMTL_NO_METAPROG
-   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE>& rhs)
+   inline VecType& operator=(const vec_base<DATA_TYPE,SIZE>& rhs)
    {
       BaseType::operator=(rhs);
       return *this;
    }
 #else
    template<typename REP2>
-   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE,REP2>& rhs)
+   inline VecType& operator=(const vec_base<DATA_TYPE,SIZE,REP2>& rhs)
    {
       BaseType::operator=(rhs);
       return *this;
@@ -150,13 +150,13 @@ public:
 
 // --- helper types --- //
 typedef Vec<int, 2> Vec2i;
-typedef Vec<float,2> Vec2f;
+typedef Vec<float,2> vec2f;
 typedef Vec<double,2> Vec2d;
 typedef Vec<int, 3> Vec3i;
-typedef Vec<float,3> Vec3f;
+typedef Vec<float,3> vec3f;
 typedef Vec<double,3> Vec3d;
 typedef Vec<int, 4> Vec4i;
-typedef Vec<float,4> Vec4f;
+typedef Vec<float,4> vec4f;
 typedef Vec<double,4> Vec4d;
 
 }

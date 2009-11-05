@@ -24,16 +24,16 @@ public:
 		m_spApp->add(core::task_ptr(new core::game_task(*m_spApp, 1)));
 		m_spApp->add(core::task_ptr(new core::render_task(*m_spApp, 2)));
 
-		math::Vec3f vEyePt( 0.0f, 0.f, -8.f );
-		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
-		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
+		math::vec3f eye( 0.0f, 0.f, -8.f );
+		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
+		math::vec3f up_vec( 0.0f, 1.0f, 0.0f );
 
 		m_camera = render::render_camera::create();
 		m_camera->set_projection(math::Math::PI/2, 1.0f, 1.0f, 100.0f);
 		render::TheCameraManager::get().add_camera(m_camera);
 
 		m_cTargetCamera = math::target_camera::create( m_camera );
-		m_cTargetCamera->set_position(vUpVec,vEyePt,vLookatPt);
+		m_cTargetCamera->set_position(up_vec,eye,look_at);
 
 		m_font = render::font::create(18, L"Courier New", render::font::Heavy);
 		m_spFontBig = render::font::create(40,L"Arial", render::font::Medium);
@@ -76,18 +76,18 @@ public:
 		render::PointLight *pLight = new render::PointLight("point1");
 		scene::TheScene::get().get_root()->add(pLight);		
 
-		pLight->set_position(math::Vec3f(-10,-10,-10));				
+		pLight->set_position(math::vec3f(-10,-10,-10));				
 		pLight->setDiffuse(math::Color(235, 0, 0, 255));
 		pLight->setRange(50.f);
 		pLight->setEnabled(true);
 
 		render::TheRenderManager::get().enableVolumes(false);
-		math::Vec3f scale(0.012f,0.012f,0.012f);
+		math::vec3f scale(0.012f,0.012f,0.012f);
 		for(int i=0;i < numboxes;i++) 
 		{
 			boxes[i] = render::model::create("gems1");
 			scene::TheScene::get().get_root()->add(boxes[i]);
-			boxes[i]->set_position(math::Vec3f((i%15)-7.f,(i/15)-7.f,0));
+			boxes[i]->set_position(math::vec3f((i%15)-7.f,(i/15)-7.f,0));
 			boxes[i]->set_scale(scale);
 			boxes[i]->setVisible(false);
 		}
@@ -99,7 +99,7 @@ public:
 			blocks[i] = render::model::create("gems1");
 			scene::TheScene::get().get_root()->add(blocks[i]);
 			blocks[i]->set_scale(scale);
-			blocks[i]->set_position(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
+			blocks[i]->set_position(math::vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 			blocks[i]->setVisible(false);
 		}
 
@@ -131,9 +131,9 @@ protected:
 			//render::CModel::frames_vector m_frames = blocks[i]->getFrames();
 			//size_t nNumFrames = m_frames.size();
 			//for(size_t j = 0; j < nNumFrames; j++)
-			//  m_frames[j]->set_position(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
+			//  m_frames[j]->set_position(math::vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 
-			blocks[i]->set_position(math::Vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
+			blocks[i]->set_position(math::vec3f(bl->getx()+(i%4)-7,bl->gety()+(i/4)-7,0.f));
 		}
 		for(int i=0;i<=3;i++) 
 			for(int j=0;j<=3;j++)

@@ -25,7 +25,7 @@ namespace game
 	
 	void Glass::initField(uint w, uint h)
 	{
-		math::Vec2f c = m_rect.getBottomLeft();
+		math::vec2f c = m_rect.getBottomLeft();
 		float size = m_brickSize;
 
 		m_field.resize(w);
@@ -53,7 +53,7 @@ namespace game
 
 	math::Vec2i Glass::recalcPos(const Brick& b)
 	{
-		math::Vec2f c = m_rect.getBottomLeft();
+		math::vec2f c = m_rect.getBottomLeft();
 		float size = m_brickSize;
 		uint x = (b.rect.position[0] - c[0])/size;
 		uint y = (c[1] - b.rect.position[1])/size;
@@ -64,14 +64,14 @@ namespace game
 	void Glass::fixPos(Brick& b)
 	{
 		math::Vec2i pos = recalcPos(b);
-		math::Vec2f c = m_rect.getBottomLeft();
+		math::vec2f c = m_rect.getBottomLeft();
 		float size = m_brickSize;
-		b.rect.position = math::Vec2f(c[0] + pos[0]*size, c[1]-pos[1]*size);
+		b.rect.position = math::vec2f(c[0] + pos[0]*size, c[1]-pos[1]*size);
 	}
 
 	bool Glass::isCanMove(const Brick& b, MoveDirection dir)
 	{
-		math::Vec2f c = m_rect.getBottomLeft();
+		math::vec2f c = m_rect.getBottomLeft();
 		uint x = (b.rect.position[0] - c[0])/m_brickSize;
 		uint y = (c[1] - b.rect.position[1])/m_brickSize;
 
@@ -149,7 +149,7 @@ namespace game
 		sprite.rect = math::Rect(0,0,1,1);
 		sprite.spin = 0;
 		sprite.priority = 0;
-		sprite.size = math::Vec2f(m_brickSize, m_brickSize);
+		sprite.size = math::vec2f(m_brickSize, m_brickSize);
 
 		for (uint i = 0; i < m_field.size(); ++i)
 		{

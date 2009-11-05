@@ -11,7 +11,7 @@ namespace game
 			void init();
 
 			float rot_speed;
-			math::Vec2f velocity;
+			math::vec2f velocity;
 		};
 
 		class SnowEffect : public game::dynamic_object

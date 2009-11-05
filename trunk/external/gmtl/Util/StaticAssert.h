@@ -4,7 +4,7 @@
 #ifndef GMTL_STATIC_ASSERT_HPP
 #define GMTL_STATIC_ASSERT_HPP
 
-namespace gmtl
+namespace math
 {
    /**
     * Define a structure that will contain our static assert; the name 
@@ -25,7 +25,7 @@ namespace gmtl
  *                   contain spaces!
  */
 #define GMTL_STATIC_ASSERT(expr, msg) \
-   { gmtl::CompileTimeError<((expr) != 0)> ERROR_##msg; (void)ERROR_##msg; }
+   { math::CompileTimeError<((expr) != 0)> ERROR_##msg; (void)ERROR_##msg; }
 
 // -- OLD Static assert --- //
 // -- To be used if the new one causes problems -- //
@@ -39,7 +39,7 @@ namespace gmtl
 #define GMTL_BUGGY_INTEGRAL_CONSTANT_EXPRESSIONS
 #endif
 
-namespace gmtl
+namespace math
 {
 
 // HP aCC cannot deal with missing names for template value parameters
@@ -77,22 +77,22 @@ template<int x> struct static_assert_test{};
 #if !defined(GMTL_BUGGY_INTEGRAL_CONSTANT_EXPRESSIONS) && !defined(__MWERKS__)
 #ifndef GMTL_MSVC
 #define GMTL_STATIC_ASSERT( B ) \
-   typedef ::gmtl::static_assert_test<\
-      sizeof(::gmtl::STATIC_ASSERTION_FAILURE< (bool)( B ) >)>\
+   typedef ::math::static_assert_test<\
+      sizeof(::math::STATIC_ASSERTION_FAILURE< (bool)( B ) >)>\
          GMTL_JOIN(gmtl_static_assert_typedef_, __LINE__)
 #else
 // __LINE__ macro broken when -ZI is used see Q199057
 // fortunately MSVC ignores duplicate typedef's.
 #define GMTL_STATIC_ASSERT( B ) \
-   typedef ::gmtl::static_assert_test<\
-      sizeof(::gmtl::STATIC_ASSERTION_FAILURE< (bool)( B ) >)\
+   typedef ::math::static_assert_test<\
+      sizeof(::math::STATIC_ASSERTION_FAILURE< (bool)( B ) >)\
       > gmtl_static_assert_typedef_
 #endif
 #else
 // alternative enum based implementation:
 #define GMTL_STATIC_ASSERT( B ) \
    enum { GMTL_JOIN(gmtl_static_assert_enum_, __LINE__) \
-      = sizeof(::gmtl::STATIC_ASSERTION_FAILURE< (bool)( B ) >) }
+      = sizeof(::math::STATIC_ASSERTION_FAILURE< (bool)( B ) >) }
 #endif
 
 */

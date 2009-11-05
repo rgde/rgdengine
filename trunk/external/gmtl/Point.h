@@ -38,7 +38,7 @@
 #include <gmtl/Defines.h>
 #include <gmtl/VecBase.h>
 
-namespace gmtl
+namespace math
 {
 
 /** Point
@@ -49,21 +49,21 @@ namespace gmtl
  *  while a Point xformed by a matrix is a full matrix transform
  *  (rotation, skew, translation, scale).
  *
- * @see Point3f
+ * @see point3f
  * @see Point4f
  * @see Point3d
  * @see Point4f
  * @ingroup Types
  */
 template<class DATA_TYPE, unsigned SIZE>
-class Point : public VecBase<DATA_TYPE, SIZE>
+class Point : public vec_base<DATA_TYPE, SIZE>
 {
 public:
    typedef DATA_TYPE DataType;
    enum Params { Size = SIZE };
 
    /** Placeholder for the base type */
-   typedef VecBase<DATA_TYPE, SIZE> BaseType;
+   typedef vec_base<DATA_TYPE, SIZE> BaseType;
    typedef Point<DATA_TYPE, SIZE> VecType;
 
 public:
@@ -86,12 +86,12 @@ public:
    */
 
 #ifdef GMTL_NO_METAPROG
-   Point(const VecBase<DATA_TYPE, SIZE>& rVec)
+   Point(const vec_base<DATA_TYPE, SIZE>& rVec)
       : BaseType(rVec)
    {;}
 #else
    template<typename REP2>
-   Point( const VecBase<DATA_TYPE, SIZE, REP2>& rVec )
+   Point( const vec_base<DATA_TYPE, SIZE, REP2>& rVec )
       : BaseType( rVec )
    {
    }
@@ -130,14 +130,14 @@ public:
 
    /** Assign from different rep. */
 #ifdef GMTL_NO_METAPROG
-   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE>& rhs)
+   inline VecType& operator=(const vec_base<DATA_TYPE,SIZE>& rhs)
    {
       BaseType::operator=(rhs);
       return *this;
    }
 #else
    template<typename REP2>
-   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE,REP2>& rhs)
+   inline VecType& operator=(const vec_base<DATA_TYPE,SIZE,REP2>& rhs)
    {
       BaseType::operator=(rhs);
       return *this;
@@ -151,7 +151,7 @@ typedef Point<int,2> Point2i;
 typedef Point<float,2> Point2f;
 typedef Point<double,2> Point2d;
 typedef Point<int, 3> Point3i;
-typedef Point<float,3> Point3f;
+typedef Point<float,3> point3f;
 typedef Point<double,3> Point3d;
 typedef Point<int, 4> Point4i;
 typedef Point<float,4> Point4f;

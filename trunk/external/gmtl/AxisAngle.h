@@ -39,7 +39,7 @@
 #include <gmtl/VecBase.h>  // base class of AxisAngle
 #include <gmtl/Vec.h>      // axis data format
  
-namespace gmtl
+namespace math
 {
 
 /** AxisAngle: Represents a "twist about an axis"
@@ -61,33 +61,33 @@ namespace gmtl
  * @ingroup Types
  */
 template <typename DATA_TYPE>
-class AxisAngle : public VecBase<DATA_TYPE, 4>
+class AxisAngle : public vec_base<DATA_TYPE, 4>
 {
 public:
    enum Params { Size = 4 };
    
    /** default constructor. initializes to identity rotation (no rotation). */
    AxisAngle() : 
-      VecBase<DATA_TYPE, 4>( (DATA_TYPE)0.0, (DATA_TYPE)1.0, 
+      vec_base<DATA_TYPE, 4>( (DATA_TYPE)0.0, (DATA_TYPE)1.0, 
                              (DATA_TYPE)0.0, (DATA_TYPE)0.0 )
    {
    }
    
    /** copy constructor. */
-   AxisAngle( const AxisAngle& e ) : VecBase<DATA_TYPE, 4>( e )
+   AxisAngle( const AxisAngle& e ) : vec_base<DATA_TYPE, 4>( e )
    {
    }
    
    /** data constructor (angle/x,y,z).   angles are in radians. */
    AxisAngle( const DATA_TYPE& rad_angle, const DATA_TYPE& x, 
               const DATA_TYPE& y, const DATA_TYPE& z ) :
-            VecBase<DATA_TYPE, 4>( rad_angle, x, y, z )
+            vec_base<DATA_TYPE, 4>( rad_angle, x, y, z )
    {
    }
    
    /** data constructor (angle/Vec3).   angles are in radians. */
    AxisAngle( const DATA_TYPE& rad_angle, const Vec<DATA_TYPE, 3>& axis ) :
-            VecBase<DATA_TYPE, 4>( rad_angle, axis[0], axis[1], axis[2] )
+            vec_base<DATA_TYPE, 4>( rad_angle, axis[0], axis[1], axis[2] )
    {
    }
    
@@ -95,13 +95,13 @@ public:
    void set( const DATA_TYPE& rad_angle, const DATA_TYPE& x, 
              const DATA_TYPE& y, const DATA_TYPE& z )
    {
-      VecBase<DATA_TYPE, 4>::set( rad_angle, x, y, z );
+      vec_base<DATA_TYPE, 4>::set( rad_angle, x, y, z );
    }
    
    /** set data.   angles are in radians. */
    void set( const DATA_TYPE& rad_angle, const Vec<DATA_TYPE, 3>& axis )
    {
-      VecBase<DATA_TYPE, 4>::set( rad_angle, axis[0], axis[1], axis[2] );
+      vec_base<DATA_TYPE, 4>::set( rad_angle, axis[0], axis[1], axis[2] );
    }
    
    /** set the axis portion of the AxisAngle
@@ -110,9 +110,9 @@ public:
     */
    void setAxis( const Vec<DATA_TYPE, 3>& axis ) 
    { 
-      VecBase<DATA_TYPE, 4>::operator[]( 1 ) = axis[0];
-      VecBase<DATA_TYPE, 4>::operator[]( 2 ) = axis[1];
-      VecBase<DATA_TYPE, 4>::operator[]( 3 ) = axis[2];
+      vec_base<DATA_TYPE, 4>::operator[]( 1 ) = axis[0];
+      vec_base<DATA_TYPE, 4>::operator[]( 2 ) = axis[1];
+      vec_base<DATA_TYPE, 4>::operator[]( 3 ) = axis[2];
    }
    
    /** set the angle (twist) part of the AxisAngle, as a radian value.
@@ -121,7 +121,7 @@ public:
     */
    void setAngle( const DATA_TYPE& rad_angle ) 
    {
-      VecBase<DATA_TYPE, 4>::operator[]( 0 ) = rad_angle;
+      vec_base<DATA_TYPE, 4>::operator[]( 0 ) = rad_angle;
    }
    
    /** get the axis portion of the AxisAngle
@@ -129,9 +129,9 @@ public:
     */
    Vec<DATA_TYPE, 3> getAxis() const 
    { 
-      return Vec<DATA_TYPE, 3>( VecBase<DATA_TYPE, 4>::operator[]( 1 ),
-                                VecBase<DATA_TYPE, 4>::operator[]( 2 ),
-                                VecBase<DATA_TYPE, 4>::operator[]( 3 ) );
+      return Vec<DATA_TYPE, 3>( vec_base<DATA_TYPE, 4>::operator[]( 1 ),
+                                vec_base<DATA_TYPE, 4>::operator[]( 2 ),
+                                vec_base<DATA_TYPE, 4>::operator[]( 3 ) );
    }
    
    /** get the angle (twist) part of the AxisAngle.
@@ -139,7 +139,7 @@ public:
     */
    const DATA_TYPE& getAngle() const 
    {
-      return VecBase<DATA_TYPE, 4>::operator[]( 0 );
+      return vec_base<DATA_TYPE, 4>::operator[]( 0 );
    }
 };
 
@@ -149,6 +149,6 @@ const AxisAngle<double> AXISANGLE_IDENTITYD( 0.0, 1.0, 0.0, 0.0 );
 typedef AxisAngle<float> AxisAnglef;
 typedef AxisAngle<double> AxisAngled;
 
-} // end of namespace gmtl
+} // end of namespace math
 
 #endif

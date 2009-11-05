@@ -39,7 +39,7 @@
 #include <gmtl/Point3.h>
 #include <gmtl/matVecFuncs.h>
 
-namespace gmtl
+namespace math
 {
 
 // AABox : Defines an object aligned box
