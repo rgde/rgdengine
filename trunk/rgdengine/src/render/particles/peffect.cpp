@@ -21,7 +21,7 @@ namespace particles
 	, core::meta_class("ParticleEffect")
 	{	
 		m_renderInfo.render_func		= boost::bind( &effect::render, this );
-		m_renderInfo.pDebugRenderFunc	= boost::bind(&effect::debug_draw, this);
+		m_renderInfo.debug_render_func	= boost::bind(&effect::debug_draw, this);
 		
 		// public properties:
 		//REGISTER_PROPERTY(Transform, math::frame)

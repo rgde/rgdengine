@@ -229,5 +229,5 @@ namespace render
 	//We don't need any parameters for this binder so let's
 	//use int.
 	typedef binder<int> StaticBinder;
-	typedef StaticBinder::binder_ptr PStaticBinder;
+	typedef StaticBinder::binder_ptr static_binder_ptr;
 }

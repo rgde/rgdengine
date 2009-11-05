@@ -40,7 +40,7 @@ namespace render
 		unsigned int  getNumPrimitives() const	{return m_nNumPrimitives;}
 		unsigned int  get_num_verts()const;
 
-		void setEffect(effect_ptr spShader);
+		void setEffect(effect_ptr shader);
 
 	protected:
 		virtual const renderable_info&	getRenderableInfo() const;
