@@ -5,9 +5,9 @@
 namespace render
 {
 	sprite::sprite()
-		: spin(0), 
-		priority(0), 
-		rect(0, 0, 1, 1)
+		: spin(0)
+		, priority(0)
+		, rect(0, 0, 1, 1)
 	{
 	}
 
@@ -15,14 +15,13 @@ namespace render
 		const math::Color& color_,render::texture_ptr pTexture_,
 		float spin_, const math::Rect& rect_,
 		unsigned long uPriority_) 
-		:
-		rect (rect_), 
-		pos (pos_), 
-		size (size_), 
-		spin (spin_), 
-		priority (uPriority_), 
-		texture (pTexture_), 
-		color (color_)
+		: rect (rect_)
+		, pos (pos_)
+		, size (size_)
+		, spin (spin_)
+		, priority (uPriority_)
+		, texture (pTexture_)
+		, color (color_)
 	{
 	}
 
@@ -55,9 +54,12 @@ namespace render
 		m_sprites.push_back(s);
 	}
 
-	bool sorting_pred (const sprite& s1, sprite& s2)
+	inline bool sorting_pred(const sprite& s1, sprite& s2)
 	{
-		return (s1.priority < s2.priority);
+		return s1.priority == s2.priority ?
+			s1.texture < s2.texture
+			:
+			s1.priority < s2.priority;
 	}
 
 	inline math::vec2f rotatePos(float x, float y, float sina, float cosa)
@@ -192,10 +194,11 @@ namespace render
 			assert(0 != textureShaderParam && "m_effect->get_params()[\"spriteTexture\"] == NULL !");
 
 			uint start_sprite = 0;
-			texture_ptr cur_tex = m_sprites[0].texture;
-			for (uint i = 0; i < m_sprites.size(); ++i)
+			sprite* sp = &m_sprites.front();
+			texture_ptr cur_tex = sp->texture;
+			for (uint i = 0, size = m_sprites.size(); i < size; ++i)
 			{
-				sprite &sprite = m_sprites[i];
+				sprite &sprite = sp[i];
 
 				// если = то отрисовать
 				if (cur_tex != sprite.texture)
@@ -227,6 +230,31 @@ namespace render
 					}
 				}
 			}
+			
+			//sprites_iter it = m_sprites.begin();
+			//sprites_iter start_sprite = it;
+			//texture_ptr cur_tex = it->texture;
+			//for (; it != m_sprites.end(); ++it)
+			//{
+			//	sprite &sprite = *it;
+
+			//	// если = то отрисовать
+			//	if (cur_tex != sprite.texture)
+			//	{
+			//		int num_sprites = it - start_sprite;
+			//		
+			//		if (num_sprites > 0)
+			//		{
+			//			int start_index = start_sprite - m_sprites.begin();
+			//			textureShaderParam->set(cur_tex);
+			//			m_effect->commit_changes();
+			//			m_geometry.render(PrimTypeTriangleList, 0, 4 * start_index, num_sprites * 4, 6 * start_index, num_sprites * 2);
+			//			nSpritesRendered += num_sprites;
+			//		}
+			//		cur_tex = sprite.texture;
+			//		start_sprite = it;
+			//	}
+			//}
 			m_sprites_rendered = nSpritesRendered;
 
 			pass.end();
@@ -242,9 +270,9 @@ namespace render
 
 	void sprite_manager::onResetDevice()
 	{
-		// Вычисляем коэффициенты масштабирования
-		math::vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
-		m_scale = vFrontBufferSize / m_screen_size;
+		// calc scale coefs
+		math::vec2f front_buffer_size = render::render_device::get().getBackBufferSize();
+		m_scale = front_buffer_size / m_screen_size;
 		update();
 	}
 }

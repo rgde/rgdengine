@@ -3,8 +3,8 @@
 // example of use:														//
 //		code:															//
 //			LerpFloat lf;												//
-//			lf.add_key(0, 0.0f);											//	
-//			lf.add_key(1, 5.0f);											//
+//			lf.add_key(0, 0.0f);										//	
+//			lf.add_key(1, 5.0f);										//
 //			float result = lf.getValue(0.5f);							//
 //																		//
 //		result:															//

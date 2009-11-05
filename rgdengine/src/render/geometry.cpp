@@ -21,7 +21,7 @@ namespace render
 	{
 		typedef core::com_ptr<IDirect3DVertexDeclaration9>	SPDirect3DVertexDeclaration9;
 		typedef core::com_ptr<IDirect3DVertexBuffer9>		SPDirect3DVertexBuffer9;
-		//IDirect3DIndexBuffer9	
+
 	public:
 		geometry_impl(const vertex::VertexDecl decl, bool is_dynamic)
 			:m_spVB(0), m_spVertexDeclaration(0), m_bDynamic(is_dynamic), m_size(0)
@@ -74,10 +74,8 @@ namespace render
 
 			// Fill the vertex buffer.
 			void* pVertices = 0;
-			if (!m_bDynamic)
-				m_spVB->Lock( 0, (UINT)bytes, (void**)&pVertices, 0 );
-			else
-				m_spVB->Lock( 0, (UINT)bytes, (void**)&pVertices, D3DLOCK_DISCARD);
+
+			m_spVB->Lock( 0, (UINT)bytes, (void**)&pVertices, m_bDynamic ? D3DLOCK_DISCARD : 0);
 
 				memcpy( pVertices, pdata, bytes);
 			m_spVB->Unlock();
@@ -154,7 +152,7 @@ namespace render
 				m_pVB->Release();
 
 			if (!m_is_dynamic)
-				g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &m_pVB, NULL);
+				g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pVB, NULL);
 			else
 				g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &m_pVB, NULL);
 
@@ -182,7 +180,7 @@ namespace render
 
 			// Fill the vertex buffer.
 			void* pVertices = 0;
-			m_pVB->Lock( 0, (UINT)nBytes, (void**)&pVertices, D3DLOCK_DISCARD );
+			m_pVB->Lock( 0, (UINT)nBytes, (void**)&pVertices, m_is_dynamic ? D3DLOCK_DISCARD : 0 );
 				memcpy( pVertices, data, nBytes);
 			m_pVB->Unlock();
 		}
@@ -205,7 +203,7 @@ namespace render
 
 
 				if (!m_is_dynamic)
-					g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, format, D3DPOOL_DEFAULT, &m_pIB, NULL);
+					g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, format, D3DPOOL_MANAGED, &m_pIB, NULL);
 				else
 					g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, format, D3DPOOL_DEFAULT, &m_pIB, NULL);
 
@@ -228,7 +226,7 @@ namespace render
 			if (!m_pIB) return;
 
 			void* pIndexes = 0;
-			m_pIB->Lock(0, (UINT)nBytes, &pIndexes, 0);
+			m_pIB->Lock(0, (UINT)nBytes, &pIndexes, m_is_dynamic ? D3DLOCK_DISCARD : 0);
 				memcpy( pIndexes, data, nBytes);
 			m_pIB->Unlock();
 		}
@@ -268,61 +266,6 @@ namespace render
 	{
 		return new IndexedGeometryImpl(decl, bUse32bitIndixes, is_dynamic);
 	}
-
-	//IIndexedGeometry* IIndexedGeometry::create( std::wstring xml_filename )
-	//{
-	//	//TiXmlDocument xml( xml_filename ) ;
-
-	//	//if ( !xml.LoadFile() )
-	//	//	return 0;
-
-	//	return 0;//create( xml.FirstChild( "mesh" ) );
-	//}
-
-	//IIndexedGeometry* IIndexedGeometry::create( TiXmlNode* root_geom_node )
-	//{
-	//	/*TiXmlElement *elem = root_geom_node->FirstChildElement("faces");            
-	//	TiXmlElement* ev = 0;
-
-	//	int ninds;
-	//	std::vector< unsigned short > inds;
-	//	elem->Attribute("num", &ninds);           
-	//	inds.reserve(ninds * 3);
-
-	//	while (ev = elem->IterateChildren("face", ev)->ToElement()) 
-	//	{		
-	//		int x,y,z;
-
-	//		ev->Attribute("a", &x);
-	//		ev->Attribute("b", &y);
-	//		ev->Attribute("c", &z);
-
-	//		inds.push_back((unsigned int)x);
-	//		inds.push_back((unsigned int)y);
-	//		inds.push_back((unsigned int)z);
-	//	}
-
-	//	elem = root_geom_node->FirstChildElement("vertices");
-	//	
-	//	ev = 0;
-	//	ev = elem->IterateChildren("vertex", ev)->ToElement();
-
-	//	int vertex_count;
-	//	elem->Attribute( "num", &vertex_count ); 
-
-	//	std::vector< vertex::PositionNormalColoredTexturedBinormalTangent > verts;
-	//	std::vector< vertex::PositionNormalColoredTexturedBinormalTangent >::iterator vi;
-	//	verts.resize( vertex_count );
-
-	//	vi = verts.begin();
-	//	do 
-	//	{
-	//		XmlVertexReader< vertex::PositionNormalColoredTexturedBinormalTangent >::Read( ev, (*vi) );
-	//		++vi;
-	//	} while( ev = elem->IterateChildren("vertex", ev)->ToElement() );*/
-	//	return 0;
-
-	//}
 
 	void readColor( TiXmlElement* pNode, math::Color& color)
 	{		
