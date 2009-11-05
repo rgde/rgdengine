@@ -17,7 +17,7 @@ namespace particles
 	effect::effect()
 	: render::rendererable(9)
 	, old_time(0)
-	, m_bIsFading(false)
+	, m_is_fading(false)
 	, core::meta_class("ParticleEffect")
 	{	
 		m_renderInfo.render_func		= boost::bind( &effect::render, this );
@@ -36,8 +36,8 @@ namespace particles
 	//-----------------------------------------------------------------------------------
 	void effect::reset()
 	{
-		m_bIsFading = false;
-		setEmittersToFade(m_bIsFading);
+		m_is_fading = false;
+		setEmittersToFade(m_is_fading);
 
 		for (tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
 			(*it)->reset();
@@ -75,29 +75,29 @@ namespace particles
 	{
 		assert(0 != em);
 		m_Emitters.push_back(em);
-		m_Transform.add(&em->getTransform());
+		m_transform.add(&em->getTransform());
 	}
 	
 	//-----------------------------------------------------------------------------------
 	void effect::remove(emitter* em)
 	{
 		assert(0 != em);
-		m_Transform.remove(&em->getTransform());		
+		m_transform.remove(&em->getTransform());		
 		m_Emitters.remove(em);
 	}
 
 	//-----------------------------------------------------------------------------------
 	void effect::debug_draw()
 	{
-		m_Transform.debug_draw();
+		m_transform.debug_draw();
 		for( tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it )
 			(*it)->debug_draw();
 	}
 	//-----------------------------------------------------------------------------------
-	void effect::toStream(io::write_stream& wf)
+	void effect::to_stream(io::write_stream& wf)
 	{
 		wf << file_version;
-		wf << m_Transform;
+		wf << m_transform;
 
 		// Сохраняем абстрактные эмитеры
 		wf << (unsigned)m_Emitters.size();
@@ -110,14 +110,14 @@ namespace particles
 		return m_renderInfo;		
 	}
 	//-----------------------------------------------------------------------------------
-	void effect::fromStream(io::read_stream& rf)
+	void effect::from_stream(io::read_stream& rf)
 	{
 		unsigned version;
 		rf >> version;
 		if (version != file_version)
-			throw std::exception("pfx::effect::fromStream(...): Unknown version !");
+			throw std::exception("pfx::effect::from_stream(...): Unknown version !");
 		
-		rf >> m_Transform;
+		rf >> m_transform;
 
 		unsigned size;
 		rf >> size;

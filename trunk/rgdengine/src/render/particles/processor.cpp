@@ -10,54 +10,55 @@ namespace particles{
 
 	//-----------------------------------------------------------------------------------
 	processor::processor(base_emitter* em )   // конструктор
-	: m_is_visible(true), m_pParentEmitter(em), m_bIsGeometric(false), core::meta_class("processor")
+	: m_is_visible(true), m_parent_emitter(em), m_is_geometric(false), core::meta_class("processor")
 	{
-		//addProperty(new property<bool>(m_bIsAnimTextureUsed, "AnimTextureUse", "bool"));
-		m_bIsAnimTextureUsed = false; 
-		//addProperty(new property<bool>(m_bIsTexAnimCycled, "TexAnimCycled", "bool"));
-		m_bIsTexAnimCycled	= false;
-		//addProperty(new property<unsigned>(m_cTexFps, "TexFps", "int"));
-		m_cTexFps			= 25;
-		//addProperty(new property<int>(m_iRndSeed, "RndSeed", "int"));
-		m_iRndSeed			= 0;
-		//addProperty(new property<bool>(m_bIsSparks, "IsSparks", "bool"));
-		m_bIsSparks			= false;
-		//addProperty(new property<bool>(m_bIsGeometric, "IsGeometric", "bool"));
-		m_bIsGeometric		= false;
+		m_is_anim_texture_used = false; 		
+		m_is_anim_texture_cycled = false;		
+		m_texture_fps		= 25;		
+		m_rnd_seed			= 0;		
+		m_is_sparks			= false;		
+		m_is_geometric		= false;
 		m_dt				= 0;
-		m_fRateAccum		= 0;
-		m_bIsFading			= false;
-		fistTimeInit();
-		m_pParentEmitter	= 0;
-		//addProperty(new property<bool>(m_bIsGlobal, "IsGlobal", "bool"));
-		m_bIsGlobal			= true;
+		m_rate_accum		= 0;
+		m_is_fading			= false;
+		first_time_init();
+		m_parent_emitter	= 0;
+		m_is_global			= true;
 
 		m_ngkx = 1.8f;
 
-		m_nRndFrame			 = 0;
-		m_bIsPlayTexAnimation = true;
+		m_rnd_frame			 = 0;
+		m_is_play_tex_anim = true;
 
-		m_spTank = NULL;
+		m_tank = NULL;
 
-		m_PColorAlpha.add_key (0, math::Color (255, 255, 255, 255));
-		m_PColorAlpha.add_key (1, math::Color (0, 0, 0, 0));
-		m_PLife.add_key(1, 1.0f);
-		m_PSize.add_key(1, 1.0f);
-		m_PRate.add_key(1, 10.0f);
-		m_PVelSpreadAmplifier.add_key(1, 1.0f);
+		m_color_alpha.add_key (0, math::Color (255, 255, 255, 255));
+		m_color_alpha.add_key (1, math::Color (0, 0, 0, 0));
+		m_life.add_key(1, 1.0f);
+		m_size.add_key(1, 1.0f);
+		m_rate.add_key(1, 10.0f);
+		m_vel_spread_amp.add_key(1, 1.0f);
 
-		//addProperty(new property<math::FloatInterp>(m_PRate, "PRate", "FloatInterp"));
+		//addProperty(new property<bool>(m_is_anim_texture_used, "AnimTextureUse", "bool"));
+		//addProperty(new property<bool>(m_is_anim_texture_cycled, "TexAnimCycled", "bool"));
+		//addProperty(new property<unsigned>(m_texture_fps, "TexFps", "int"));
+		//addProperty(new property<int>(m_rnd_seed, "RndSeed", "int"));
+		//addProperty(new property<bool>(m_is_sparks, "IsSparks", "bool"));
+		//addProperty(new property<bool>(m_is_geometric, "IsGeometric", "bool"));
+		//addProperty(new property<bool>(m_is_global, "IsGlobal", "bool"));
+
+		//addProperty(new property<math::FloatInterp>(m_rate, "PRate", "FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_PResistance, "PResistance", "FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_PSpin, "PSpin", "FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_PSpinSpread, "PSpinSpread", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_PLife, "PLife", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_life, "PLife", "FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_PLifeSpread, "PLifeSpread", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_PSize, "PSize", "FloatInterp"));
-		//addProperty(new property<math::ColorInterp>(m_PColorAlpha, "PColorAlpha", "ColorInterp"));
+		//addProperty(new property<math::FloatInterp>(m_size, "PSize", "FloatInterp"));
+		//addProperty(new property<math::ColorInterp>(m_color_alpha, "PColorAlpha", "ColorInterp"));
 		//addProperty(new property<math::Vec3Interp>(m_PActingForce, "PActingForce", "Vec3Interp"));
-		//addProperty(new property<math::Vec3Interp>(m_PVelocity, "PVelocity", "Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_velocity, "PVelocity", "Vec3Interp"));
 		//addProperty(new property<math::Vec3Interp>(m_PInitialVelSpread, "PInitialVelSpread", "Vec3Interp"));
-		//addProperty(new property<math::FloatInterp>(m_PVelSpreadAmplifier, "PVelSpreadAmplifier", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_vel_spread_amp, "PVelSpreadAmplifier", "FloatInterp"));
 	
 		// public properties:
 		//REGISTER_PROPERTY(bIsAnimTextureUsed,	bool)
@@ -81,13 +82,12 @@ namespace particles{
 		//REGISTER_PROPERTY(PInitialVelSpread,	math::Vec3Interp)
 		//REGISTER_PROPERTY(PVelSpreadAmplifier,	math::FloatInterp)
 		//REGISTER_PROPERTY(TexName,				std::string)
-
 	}
 
 	//-----------------------------------------------------------------------------------
 	processor::~processor()
 	{
-		delete m_spTank;
+		delete m_tank;
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -104,12 +104,12 @@ namespace particles{
 			return;
 		}
 
-		p.color = m_PColorAlpha(t);
+		p.color = m_color_alpha(t);
 
-		math::vec3f velocity = m_PVelocity(t);
+		math::vec3f velocity = m_velocity(t);
 		
 		// setGlobal acceleration
-		//const math::vec3f &acceleration = m_pParentEmitter->getAcceleration(m_bIsGlobal);
+		//const math::vec3f &acceleration = m_parent_emitter->getAcceleration(m_is_global);
 		const math::vec3f force = m_PActingForce(m_fNormalizedTime);
 
 		p.vel += dt * (/*acceleration + */force * 0.5f / p.mass);
@@ -118,10 +118,10 @@ namespace particles{
 		// initial velocity
 		velocity += p.vel;
 		// setGlobal velocity
-		// velocity += m_pParentEmitter->getGlobalVelocity(m_bIsGlobal);
+		// velocity += m_parent_emitter->getGlobalVelocity(m_is_global);
 
 		float resistance = math::length(m_fScaling) * math::length(m_fScaling) * (m_PResistance(t) + 1.0f);
-		float vel_spread_amp = m_PVelSpreadAmplifier(t);
+		float vel_spread_amp = m_vel_spread_amp(t);
 
 		velocity = math::length(m_fScaling) * math::length(m_fScaling) * (p.vel_spread * vel_spread_amp + velocity ) / resistance;
 			
@@ -129,7 +129,7 @@ namespace particles{
 
 		p.pos += p.sum_vel;
 		        
-		p.size = math::length(m_fScaling)*math::length(m_fScaling) * m_PSize(t);
+		p.size = math::length(m_fScaling)*math::length(m_fScaling) * m_size(t);
 
 		p.rot_speed = m_PSpin(t);
 		p.rotation += p.rot_speed + p.initial_spin;
@@ -137,13 +137,13 @@ namespace particles{
 		// save current update time
 		p.old_time = p.time;
 
-		//m_cTexFps
+		//m_texture_fps
 	}
 
 	//-----------------------------------------------------------------------------------
 	void processor::reset()								// ReStart процессор - сбросить его время на 0
 	{
-		m_bIsFading = false;
+		m_is_fading = false;
 
 		unsigned size = static_cast<unsigned>(m_Particles.size());
 		particle* pp = &(m_Particles[0]);//[i]
@@ -156,10 +156,10 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void processor::fistTimeInit()
+	void processor::first_time_init()
 	{
-		m_bIsAnimTextureUsed		= false;
-		m_bIsGlobal				= true;
+		m_is_anim_texture_used		= false;
+		m_is_global				= true;
 		m_bModifiersLoaded		= false;
 		m_bIsPtankInited		= false;
 		m_is_visible			= true;
@@ -179,9 +179,9 @@ namespace particles{
 
 		formTank();
 
-		if (!m_bIsGeometric)
+		if (!m_is_geometric)
 		{
-			m_spTank->render(m_texture, m_pParentEmitter->getTransform());
+			m_tank->render(m_texture, m_parent_emitter->getTransform());
 		}
 		else
 			geomRender();
@@ -195,32 +195,32 @@ namespace particles{
 	void processor::update(float dt) 
 	{
 		/*
-		if (m_iRndSeed){
-			rnd.set_seed(m_iRndSeed);
+		if (m_rnd_seed){
+			rnd.set_seed(m_rnd_seed);
 		}
 		*/
 
 		m_dt += dt;
 
-		m_fNormalizedTime = m_pParentEmitter->getTime();
+		m_fNormalizedTime = m_parent_emitter->getTime();
 
-		math::frame& rParentTransform = m_pParentEmitter->getTransform();
+		math::frame& rParentTransform = m_parent_emitter->getTransform();
 		//m_fScaling = (m_ParentTransform->getScaling()).x;
 		m_fScaling = rParentTransform.get_scale();
 
 		int m_acting_particles = 0;
 		// здесь происходит апдейт партиклов
 		//for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
-		//	if (!(it->dead) && m_bIsGlobal)
+		//	if (!(it->dead) && m_is_global)
 		//	{
-		//		it->pos += m_ngkx * m_pParentEmitter->m_vCurDisplacement * (1.0f - (it->time / it->ttl));
+		//		it->pos += m_ngkx * m_parent_emitter->m_vCurDisplacement * (1.0f - (it->time / it->ttl));
 		//	}
 
 		if (m_dt > 0.01f)
 		{
 			// здесь происходит апдейт партиклов
 			for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
-				if (!(it->dead))// && m_bIsGlobal)
+				if (!(it->dead))// && m_is_global)
 				{
 					++m_acting_particles;
 					it->time += m_dt;
@@ -230,7 +230,7 @@ namespace particles{
 			m_dt = 0;
 			// добавить новые партиклы если есть(если есть место в танке)
 			// куда и если оно надо (опр-ся Rate)
-			if (!m_bIsFading)
+			if (!m_is_fading)
 				addNewParticles(m_nMaxParticles - m_acting_particles);
 		}
 	}
@@ -243,10 +243,10 @@ namespace particles{
 			return;
 
 		// скорость появления партиклов кол=во\за секунду
-		float rate = m_PRate.getValue(m_fNormalizedTime) / 25.0f;
-		m_fRateAccum += rate;
+		float rate = m_rate.getValue(m_fNormalizedTime) / 25.0f;
+		m_rate_accum += rate;
 
-		int to_add  = (int)m_fRateAccum;
+		int to_add  = (int)m_rate_accum;
 
 		if (to_add > num2add) 
 			to_add = num2add;
@@ -261,16 +261,16 @@ namespace particles{
 			}
 			else if(to_add < 1)
 				break;
-		m_fRateAccum -= added_num;
+		m_rate_accum -= added_num;
 	}
 
 	//-----------------------------------------------------------------------------------
 	void processor::createParticle(particle& p)
 	{
-		m_pParentEmitter->get_particle(p);
+		m_parent_emitter->get_particle(p);
 		p.dead = false;
 		
-		p.ttl = (m_PLife.getValue(m_fNormalizedTime)
+		p.ttl = (m_life.getValue(m_fNormalizedTime)
 			+ rnd()* m_PLifeSpread.getValue(m_fNormalizedTime));// * 10.0f; // debug
 
 		if (!p.ttl)
@@ -285,9 +285,9 @@ namespace particles{
 		p.initial_spin = (rnd() * m_PSpinSpread.getValue(m_fNormalizedTime))
 						/(25.0f);
 		
-		if (m_bIsGlobal){
+		if (m_is_global){
 			math::xform( p.initial_pos, getLTM(), p.initial_pos );
-			p.initial_vel = m_pParentEmitter->getSpeed();// / 2.0f;
+			p.initial_vel = m_parent_emitter->getSpeed();// / 2.0f;
 		}
 
 		p.pos = p.initial_pos;
@@ -296,9 +296,9 @@ namespace particles{
 
 		static math::unit_rand_2k lrnd;
 
-		if (m_bIsPlayTexAnimation)
+		if (m_is_play_tex_anim)
 		{
-			float f = (float)m_nRndFrame;
+			float f = (float)m_rnd_frame;
 			p.cur_tex_frame = lrnd() * f;
 
 			if (p.cur_tex_frame  > m_ucTexFrames)
@@ -320,7 +320,7 @@ namespace particles{
 
 		math::matrix44f m = getLTM();
 
-		if (m_bIsGlobal)
+		if (m_is_global)
 			m = math::setTrans( m, math::vec3f(0,0,0) );
 
 		math::vec3f center, vel;
@@ -330,7 +330,7 @@ namespace particles{
 			if ((*it).dead)
 				continue;
 
-			if (!m_bIsGlobal)
+			if (!m_is_global)
 			{
 				center = m * (math::point3f)((*it).pos);
 				vel = it->pos + m * (math::point3f)((*it).sum_vel*5.0f);
@@ -348,12 +348,12 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void processor::formTank()
 	{
-		if (m_bIsGeometric)
+		if (m_is_geometric)
 			return;
 
 		const math::matrix44f& ltm = getLTM();
 
-		renderer::ParticleArray& array = m_spTank->getParticles();
+		renderer::ParticleArray& array = m_tank->getParticles();
 		array.resize( m_Particles.size() );
 		int i = 0;
 
@@ -361,7 +361,7 @@ namespace particles{
 		{
 			particle &p = *it;
 
-			//if (m_bIsGlobal)
+			//if (m_is_global)
 			//	//*poss = p.pos;
 			//	array[i].pos = p.pos;
 			//else{
@@ -375,25 +375,25 @@ namespace particles{
 			array[i].spin = p.rotation * 3.1415926f/180.0f;
 			array[i].color = p.color.color;
 
-			//if (m_bIsAnimTextureUsed)
+			//if (m_is_anim_texture_used)
 			//{
 			//	agl::AglTexCoords uv1, uv2;
 
 			//	unsigned char frame = 0;
 
-			//	if (m_bIsPlayTexAnimation)
+			//	if (m_is_play_tex_anim)
 			//	{
-			//		if (!m_bIsTexAnimCycled)
+			//		if (!m_is_anim_texture_cycled)
 			//			frame = (unsigned char)((m_ucTexFrames - 1) * (p.time / p.ttl));
 			//		else 
-			//			frame = (unsigned char)(p.time * m_cTexFps);
+			//			frame = (unsigned char)(p.time * m_texture_fps);
 			//	}
 
 			//	frame += (unsigned char)p.cur_tex_frame;
 
 			//	if (frame > m_ucTexFrames)
 			//	{
-			//		if (!m_bIsTexAnimCycled)
+			//		if (!m_is_anim_texture_cycled)
 			//			frame = m_ucTexFrames;
 			//		else
 			//			frame = frame % m_ucTexFrames;
@@ -426,7 +426,7 @@ namespace particles{
 			//}				
 				i++;
 		}
-		m_spTank->update();
+		m_tank->update();
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -446,7 +446,7 @@ namespace particles{
 		//	{
 		//		clx::rstream in(base::ResourceMaster::get()->getResource(ext_path));//ResourseMaster
 		//		//m_texture.load(clx::cstr("anim_explode.png"));
-		//		m_bIsAnimTextureUsed = true;
+		//		m_is_anim_texture_used = true;
 		//		in  >> m_ucRow			// = 4;
 		//			>> m_ucCol			// = 4;
 		//			>> m_ucTexFrames		// = 16;
@@ -454,7 +454,7 @@ namespace particles{
 		//			>> m_ucTcol;
 		//	}
 		//	else 
-		//		m_bIsAnimTextureUsed = false;
+		//		m_is_anim_texture_used = false;
 
 		//	m_texture.setFilterMode(agl::filter_Linear);
 		//}
@@ -469,23 +469,23 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void processor::setTextureName( const std::string& texName )
 	{
-		m_bIsTexLoaded = false;
+		m_is_texture_loaded = false;
 
 		if ( texName.length() != 0 )
 		{
 			m_texture_name = texName;	
 			loadTexture();
-			if( !m_spTank )
+			if( !m_tank )
 				return;
 
-			m_bIsTexLoaded = true;
+			m_is_texture_loaded = true;
 		}
 	}
 
 	//-----------------------------------------------------------------------------------
 	const math::matrix44f& processor::getLTM()
 	{
-		return m_pParentEmitter->getTransform().get_full_tm();
+		return m_parent_emitter->getTransform().get_full_tm();
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -501,9 +501,9 @@ namespace particles{
 	{
 		if (!m_nMaxParticles) return;
 
-		if( m_spTank ) 	delete m_spTank;
+		if( m_tank ) 	delete m_tank;
 
-		m_spTank = new renderer();
+		m_tank = new renderer();
 
 
 		if( m_texture_name.length() )
@@ -525,37 +525,37 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void processor::toStream(io::write_stream& wf) const
+	void processor::to_stream(io::write_stream& wf) const
 	{
 		wf  << file_version
 			<< m_bIntense
 			<< m_fScaling
-			<< m_bIsGlobal
+			<< m_is_global
 			<< m_nMaxParticles
 			<< m_texture_name
-			<< m_bIsSparks
+			<< m_is_sparks
 			//<< m_DffName
-			<< m_iRndSeed
+			<< m_rnd_seed
 			<< m_ngkx
-			<< m_cTexFps
-			<< (m_bIsTexAnimCycled)
-			<< (m_PRate)
+			<< m_texture_fps
+			<< (m_is_anim_texture_cycled)
+			<< (m_rate)
 			<< (m_PResistance)
 			<< (m_PSpin)
 			<< (m_PSpinSpread)
-			<< (m_PLife)
+			<< (m_life)
 			<< (m_PLifeSpread)
-			<< (m_PSize)
-			<< (m_PColorAlpha)
+			<< (m_size)
+			<< (m_color_alpha)
 			<< (m_PActingForce)
-			<< (m_PVelocity)
+			<< (m_velocity)
 			<< (m_PInitialVelSpread)
-			<< (m_PVelSpreadAmplifier)
-			<< m_nRndFrame
-			<< m_bIsPlayTexAnimation;
+			<< (m_vel_spread_amp)
+			<< m_rnd_frame
+			<< m_is_play_tex_anim;
 	}
 
-	void processor::fromStream(io::read_stream& rf)
+	void processor::from_stream(io::read_stream& rf)
 	{
 		unsigned version;
 		rf  >> version;
@@ -564,29 +564,29 @@ namespace particles{
 
 		rf	>> m_bIntense
 			>> m_fScaling
-			>> m_bIsGlobal
+			>> m_is_global
 			>> m_nMaxParticles
 			>> m_texture_name
-			>> m_bIsSparks
+			>> m_is_sparks
 			//>> m_DffName
-			>> m_iRndSeed
+			>> m_rnd_seed
 			>> m_ngkx
-			>> m_cTexFps
-			>> (m_bIsTexAnimCycled)
-			>> (m_PRate)
+			>> m_texture_fps
+			>> (m_is_anim_texture_cycled)
+			>> (m_rate)
 			>> (m_PResistance)
 			>> (m_PSpin)
 			>> (m_PSpinSpread)
-			>> (m_PLife)
+			>> (m_life)
 			>> (m_PLifeSpread)
-			>> (m_PSize)
-			>> (m_PColorAlpha)
+			>> (m_size)
+			>> (m_color_alpha)
 			>> (m_PActingForce)
-			>> (m_PVelocity)
+			>> (m_velocity)
 			>> (m_PInitialVelSpread)
-			>> (m_PVelSpreadAmplifier)
-			>> m_nRndFrame
-			>> m_bIsPlayTexAnimation;
+			>> (m_vel_spread_amp)
+			>> m_rnd_frame
+			>> m_is_play_tex_anim;
 
 		setMaxParticles( m_nMaxParticles );
 	}

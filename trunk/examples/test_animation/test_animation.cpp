@@ -92,7 +92,7 @@ protected:
 		const float fast = 2*slow;
 		float angle = dy>accel ? dy*fast : dy*slow;
 
-		m_spTargetCamera->rotateUp(angle);
+		m_spTargetCamera->rotate_up(angle);
 	}
 protected:
 	render::font_ptr			m_font;

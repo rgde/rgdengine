@@ -42,13 +42,13 @@ namespace math
 			bool operator<(const Key& k) {return position < k.position;}
 
 		protected:
-			void toStream(io::write_stream& wf) const
+			void to_stream(io::write_stream& wf) const
 			{
 				wf	<< value
 					<< position;
 			}
 
-			void fromStream(io::read_stream& rf)
+			void from_stream(io::read_stream& rf)
 			{
 				rf	>> value >> position;
 			}
@@ -156,7 +156,7 @@ namespace math
 		}
 
 	protected:
-		virtual void toStream(io::write_stream& wf) const
+		virtual void to_stream(io::write_stream& wf) const
 		{
 			//sortVector();		//save only sorted data
 			// ^^^ - now we perform sorting on load
@@ -167,7 +167,7 @@ namespace math
 				wf << (*it);
 		}
 
-		virtual void fromStream(io::read_stream& rf)
+		virtual void from_stream(io::read_stream& rf)
 		{
 			unsigned nKeys;
 			rf >> nKeys;
@@ -233,7 +233,7 @@ namespace math
 		}
 
 	protected:
-		virtual void toStream(io::write_stream& wf) const
+		virtual void to_stream(io::write_stream& wf) const
 		{
 			wf << Size;
 
@@ -241,7 +241,7 @@ namespace math
 				wf << m_vComponents[i];
 		}
 
-		virtual void fromStream(io::read_stream& rf)
+		virtual void from_stream(io::read_stream& rf)
 		{
 			int size;
 			rf >> size;
@@ -293,12 +293,12 @@ namespace math
 		const FloatInterp& getAlpha() const { return m_Alpha; }
 
 	protected:
-		virtual void toStream(io::write_stream& wf) const
+		virtual void to_stream(io::write_stream& wf) const
 		{
 			wf << m_vColor << m_Alpha;
 		}
 
-		virtual void fromStream(io::read_stream& rf)
+		virtual void from_stream(io::read_stream& rf)
 		{
 			rf >> m_vColor >> m_Alpha;
 		}

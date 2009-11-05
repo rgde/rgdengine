@@ -229,7 +229,7 @@ namespace math
 	};
 
 	//-----------------------------------------------------------------------------------
-	void frame::toStream(io::write_stream& wf) const
+	void frame::to_stream(io::write_stream& wf) const
 	{
 		wf	<< m_scale
 			<< m_position
@@ -238,11 +238,11 @@ namespace math
 		//// Сохраняем дочерние трансформации
 		wf << (unsigned int)m_children.size();
 		for( children_list::const_iterator it = m_children.begin(); it != m_children.end(); it++ )
-			(*it)->toStream( wf );
+			(*it)->to_stream( wf );
 	}
 
 	//-----------------------------------------------------------------------------------
-	void frame::fromStream(io::read_stream& rf)
+	void frame::from_stream(io::read_stream& rf)
 	{
 		rf	>> m_scale
 			>> m_position
@@ -257,7 +257,7 @@ namespace math
 		for(unsigned i = 0; i < nChildren; i++)
 		{
 			frame_ptr child = new frame;
-			child->fromStream( rf );
+			child->from_stream( rf );
 			add( child );
 		}
 	}

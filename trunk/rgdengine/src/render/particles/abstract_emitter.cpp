@@ -85,7 +85,7 @@ namespace particles{
 			//}
 		}
 		
-		math::matrix44f m = m_Transform.get_full_tm();
+		math::matrix44f m = m_transform.get_full_tm();
 
 		math::invert( m );
 		m_vPAcceleration = m_PAcceleration.getValue(m_fTimeNormalaized);
@@ -144,7 +144,7 @@ namespace particles{
 		//addProperty(new property<math::FloatInterp>(m_PMass,		"PMass",	"FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_PMassSpread,	"PMassSpread",	"FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_PRotationSpread,	"PRotationSpread",	"FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_PVelocity,	"PVelocity",	"FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_velocity,	"PVelocity",	"FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_PVelSpread,	"PVelSpread",	"FloatInterp"));
 		//addProperty(new property<math::Vec3Interp>(m_PAcceleration,	"PAcceleration",	"Vec3Interp"));
 		//addProperty(new property<math::Vec3Interp>(m_GlobalVelocity,	"GlobalVelocity",	"Vec3Interp"));
@@ -193,9 +193,9 @@ namespace particles{
 		m_lProcessors.remove(p);
 	}
 
-	void base_emitter::toStream(io::write_stream& wf) const
+	void base_emitter::to_stream(io::write_stream& wf) const
 	{
-		emitter::toStream (wf);
+		emitter::to_stream (wf);
 
 		wf	<< m_fCycleTime
 			<< m_bIsCycling
@@ -206,7 +206,7 @@ namespace particles{
 			<< (m_PMassSpread)
 			<< (m_PAcceleration)
 			<< (m_GlobalVelocity)
-			<< (m_PVelocity)
+			<< (m_velocity)
 			<< (m_PVelSpread)
 			<< (m_PRotationSpread);
 
@@ -216,9 +216,9 @@ namespace particles{
 			wf << *(*it);
 	}
 
-	void base_emitter::fromStream(io::read_stream& rf)
+	void base_emitter::from_stream(io::read_stream& rf)
 	{
-		emitter::fromStream (rf);
+		emitter::from_stream (rf);
 
 		rf	>> m_fCycleTime
 			>> m_bIsCycling
@@ -229,7 +229,7 @@ namespace particles{
 			>> (m_PMassSpread)
 			>> (m_PAcceleration)
 			>> (m_GlobalVelocity)
-			>> (m_PVelocity)
+			>> (m_velocity)
 			>> (m_PVelSpread)
 			>> (m_PRotationSpread);
 
@@ -247,7 +247,7 @@ namespace particles{
 
 	void base_emitter::debug_draw()
 	{
-		m_Transform.debug_draw();
+		m_transform.debug_draw();
 
 		for( processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it )
 			(*it)->debug_draw();

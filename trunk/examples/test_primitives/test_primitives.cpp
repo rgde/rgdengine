@@ -1,5 +1,6 @@
 #include <rgde/engine.h>
 
+#include <boost/scoped_ptr.hpp>
 
 class SceneHelper : public render::rendererable, public math::frame
 {
@@ -29,12 +30,8 @@ void SceneHelper::render()
 class SampleApp
 {
 public:
-	SampleApp() :  m_spApp(core::application::create())
+	SampleApp()
 	{
-		m_spApp->add(core::task_ptr(new core::input_task(*m_spApp,0,false)));
-		m_spApp->add(core::task_ptr(new core::render_task(*m_spApp,1)));
-		m_spApp->add(core::task_ptr(new core::game_task(*m_spApp,2)));
-
 		math::vec3f eye( 0.0f, 0, -30 );
 		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
 		math::vec3f up_vec( 0.0f, 1.0f, 0.0f );
@@ -80,8 +77,6 @@ public:
 		m_pMySuper = boost::intrusive_ptr<SceneHelper>(new SceneHelper(m_pGeometry));
 		scene::TheScene::get().get_root()->add(m_pMySuper);
 		m_pMySuper->set_position(math::vec3f(0,0,-5));
-
-		m_spApp->run();
 	}
 protected:
 	//выход из программы
@@ -109,12 +104,12 @@ protected:
 		const float fast = 2*slow;
 		float angle = dy>accel ? dy*fast : dy*slow;
 
-		m_spTargetCamera->rotateUp(angle);
+		m_spTargetCamera->rotate_up(angle);
 	}
 protected:
 	math::camera_ptr       m_camera;
 
-	::render::Generator<vertex::PositionNormalColored>::PGeometry m_pGeometry;
+	render::Generator<vertex::PositionNormalColored>::PGeometry m_pGeometry;
 
 	boost::intrusive_ptr<SceneHelper> m_pMySuper;
 
@@ -125,13 +120,23 @@ protected:
 
 	//данные для камеры
 	//контроллер камеры "нацеленная камера"
-	math::target_camera_ptr  m_spTargetCamera; 
-
-	std::auto_ptr<core::application> m_spApp;
+	math::target_camera_ptr  m_spTargetCamera;
 };
 
 // The application's entry point
 int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 {
-	SampleApp r;
+	using namespace core;
+
+	boost::scoped_ptr<application> 
+	app(application::create(L"Test_Lines Example", 800, 600, false, false));
+
+	app->add<render_task>(1);
+	app->add<input_task>(0);
+	app->add<game_task>(2);
+
+	{
+		SampleApp r;
+		app->run();
+	}	
 }

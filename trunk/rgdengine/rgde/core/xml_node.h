@@ -55,6 +55,7 @@ namespace core
 			if (0 != m_parent)
 			{
 				m_parent->remove((T*)this);
+				m_parent = 0;
 			}
 		}
 
@@ -63,8 +64,8 @@ namespace core
 		virtual void on_parent_change(){}
 
 	protected:
-		children_list m_children;
-		node_ptr		 m_parent;
+		children_list	m_children;
+		node_ptr		m_parent;
 	};
 
 	template <class T>

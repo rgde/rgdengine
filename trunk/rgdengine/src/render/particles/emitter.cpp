@@ -5,18 +5,26 @@
 
 namespace particles
 {
+	emitter::emitter(Type _type) : m_type(_type)//, core::meta_class("ParticleEmitter") 
+	{
+	}
 
 	//-----------------------------------------------------------------------------------
-	void emitter::toStream (io::write_stream& wf) const
+	emitter::~emitter()
+	{
+		m_transform.get_parent();
+	}
+
+	//-----------------------------------------------------------------------------------
+	void emitter::to_stream (io::write_stream& wf) const
 	{
 		wf	<< (unsigned)m_type
-			<< m_Transform;
+			<< m_transform;
 	}
 
 	//-----------------------------------------------------------------------------------
-	void emitter::fromStream (io::read_stream& rf)
+	void emitter::from_stream (io::read_stream& rf)
 	{
-		rf	>> m_Transform;
+		rf	>> m_transform;
 	}
-
 }

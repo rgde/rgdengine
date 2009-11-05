@@ -32,8 +32,8 @@ public:
 		m_camera->set_projection(math::Math::PI/2, 1.0f, 1.0f, 100.0f);
 		render::TheCameraManager::get().add_camera(m_camera);
 
-		m_cTargetCamera = math::target_camera::create( m_camera );
-		m_cTargetCamera->set_position(up_vec,eye,look_at);
+		m_target_camera = math::target_camera::create( m_camera );
+		m_target_camera->set_position(up_vec,eye,look_at);
 
 		m_font = render::font::create(18, L"Courier New", render::font::Heavy);
 		m_spFontBig = render::font::create(40,L"Arial", render::font::Medium);
@@ -67,7 +67,7 @@ public:
 			m_cSpace   += boost::bind(&My::onSpace,   this);
 		}
 
-		m_cTargetCamera->activate();
+		m_target_camera->activate();
 
 		render::TheRenderManager::get().enableLighting(true);
 
@@ -231,7 +231,7 @@ protected:
 	input::key_down      m_esc,m_cLeft,m_cRight,m_cDown,m_cSpace;
 	
 	//данные для камеры
-	math::target_camera_ptr      m_cTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::target_camera_ptr      m_target_camera;      //контроллер камеры "нацеленная камера"
 
 	std::auto_ptr<core::application> m_spApp;
 

@@ -25,8 +25,9 @@ public:
 		math::vec3f up_vec( 00.0f, 1.0f, 0.0f );
 
 		// Создаём эффект
-		m_pEffect = new particles::effect();
-		//m_pEffect->setDebugDraw(m_debug_draw);
+		m_effect = new particles::effect();
+		//m_effect->debug_draw(m_debug_draw);
+		//m_effect->debug_draw();
 
 		if (m_load_particles)
 			loadParticles();
@@ -42,10 +43,10 @@ public:
 		// Инициализация камеры
 		m_camera  = render::render_camera::create();
 		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
-		m_cTargetCamera = math::target_camera::create(m_camera);
+		m_target_camera = math::target_camera::create(m_camera);
 		render::TheCameraManager::get().add_camera(m_camera);
-		m_cTargetCamera->set_position(eye,look_at,up_vec);
-		m_cTargetCamera->activate();
+		m_target_camera->set_position(eye,look_at,up_vec);
+		m_target_camera->activate();
 	}
 
 	void initInput()
@@ -117,7 +118,7 @@ public:
 		float angle = dx>accel ? dx*fast : dx*slow;
 
 		//if (m_cRightButton)
-			m_cTargetCamera->rotateLeft(-angle);
+			m_target_camera->rotateLeft(-angle);
 	}
 
 	//ось Y
@@ -129,14 +130,14 @@ public:
 		float angle = dy>accel ? dy*fast : dy*slow;
 
 		//if (m_cRightButton)
-			m_cTargetCamera->rotateUp(angle);
+			m_target_camera->rotate_up(angle);
 	}
 
 	///*onWheelAxis*/
 	void onWheelAxis(int dw)
 	{
 		const float slow = .1f;
-		m_cTargetCamera->goBackward(-dw*slow);
+		m_target_camera->goBackward(-dw*slow);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -149,13 +150,17 @@ protected:
 	//-----------------------------------------------------------------------------------
 	void initParticles()
 	{
+		particles::spherical_emitter* sph_emitter = new particles::spherical_emitter();
+		m_effect->add(sph_emitter);
+
+		return;
 		// Создаём эмиттеры
 		for( int i = 0; i < 3; i++ )
 		{
 			float fDist = (float)i*10;
 			// Создаём сферический эмитер
 			particles::spherical_emitter* sph_emitter = new particles::spherical_emitter();
-			m_pEffect->add(sph_emitter);
+			m_effect->add(sph_emitter);
 
 			particles::processor* proc = new particles::processor();
 			proc->setTextureName( "particles/Shot_Smoke.png" );
@@ -168,7 +173,7 @@ protected:
 
 			// Создаём кубический эмитер
 			particles::box_emitter* box_emitter = new particles::box_emitter();
-			m_pEffect->add(box_emitter);
+			m_effect->add(box_emitter);
 
 			proc = new particles::processor();
 			box_emitter->addProcessor(proc);
@@ -181,7 +186,7 @@ protected:
 
 			// Создаём майя эмитер
 			particles::static_emitter* static_emitter = new particles::static_emitter("particles/cannonShot_smoke.prt", "particles/shot_smoke.png");
-			m_pEffect->add( static_emitter );
+			m_effect->add( static_emitter );
 
 			static_emitter->setCycling(true);
 			static_emitter->setVisible(true);
@@ -193,8 +198,8 @@ protected:
 	//-----------------------------------------------------------------------------------
 	void deleteParticles()
 	{
-		//delete m_pEffect;
-		particles::static_emitter::ClearCachedData();
+		delete m_effect;
+		particles::static_emitter::clear_cached_data();
 		render::effect::clear_all();
 	}
 
@@ -210,11 +215,11 @@ protected:
 			//deleteParticles();
 
 			// Создаём эффект
-			//m_pEffect = new particles::IEffect();
-			//m_pEffect->setDebugDraw(true);
+			//m_effect = new particles::IEffect();
+			//m_effect->setDebugDraw(true);
 		//	in.open( io::helpers::createFullFilePathA(L"Media/particles/particles_serialization.dat").c_str() );
 		//}
-		//in >> *m_pEffect;
+		//in >> *m_effect;
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -222,7 +227,7 @@ protected:
 	{
 		//io::write_file out( 
 		//	io::helpers::createFullFilePathA(L"Media/particles/particles_serialization.dat").c_str() );
-		//out << *m_pEffect;
+		//out << *m_effect;
 	}
 
 
@@ -236,21 +241,21 @@ protected:
 	input::RelativeAxis m_cZAxis;
 
 	math::camera_ptr			m_camera;
-	math::target_camera_ptr		m_cTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::target_camera_ptr		m_target_camera;      //контроллер камеры "нацеленная камера"
 
 	render::font_ptr		m_font;
 
 	bool m_debug_draw;				// Стоит ли проводить в тесте дебажную отрисовку
 	bool m_save_particles;			// Стоит ли сохранить эффект частиц в файл
 	bool m_load_particles;			// Стоит ли создавать эффект частиц программно или грузить из файла
-	particles::effect*	m_pEffect;	// Эффект частиц
+	particles::effect*	m_effect;	// Эффект частиц
 };
 
 int main()
 {
 	std::auto_ptr<core::application> app(core::application::create(L"Test Particles Example", 800, 600, false));
 
-	app->add<core::input_task>(0, true);
+	app->add<core::input_task>(0);
 	app->add<core::game_task>(1);
 	app->add<core::render_task>(2);
 

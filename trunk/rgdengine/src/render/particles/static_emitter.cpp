@@ -8,7 +8,7 @@ using namespace particles::maya_structs;
 
 namespace particles{
 
-	std::map< std::string, maya_structs::animation> static_emitter::m_FrSeq;
+	std::map< std::string, maya_structs::animation> static_emitter::ms_frame_seq;
 	static_emitter::frames_map static_emitter::ms_PFrames;
 
 	static std::wstring ms_base_folder;
@@ -16,10 +16,10 @@ namespace particles{
 	int em_num = 0;
 
 	//-----------------------------------------------------------------------------------
-	void static_emitter::ClearCachedData()
+	void static_emitter::clear_cached_data()
 	{
 		ms_PFrames.clear();
-		m_FrSeq.clear();
+		ms_frame_seq.clear();
 
 		em_num = 0;			// zero emitters counter
 	}
@@ -30,10 +30,10 @@ namespace particles{
 	{
 		m_bIntense				= false;
 
-		m_bIsSeqLoaded			= false;
-		m_bIsTexLoaded			= false;
+		m_is_seq_loaded			= false;
+		m_is_texture_loaded			= false;
 
-		m_bIsFading				= false;
+		m_is_fading				= false;
 
 		m_is_visible				= false;
 		m_bCycling				= false;
@@ -43,40 +43,45 @@ namespace particles{
 		m_fLastFrame			= 0;
 		m_fLastTime				= -1.0f;
 
-		m_bIsAnimTextureUsed	= false;
-		m_cTexFps				= 25;
+		m_is_anim_texture_used	= false;
+		m_texture_fps				= 25;
 
 		m_texture_name				= texture_name;
 
 		loadTexture();
-		loadFrames(sequence_name);
-
-		// public properties:
-		//REGISTER_PROPERTY(bIsFading, bool)
-		//REGISTER_PROPERTY(fTimeShift, int)
-		//REGISTER_PROPERTY(bVisible, bool)
-		//REGISTER_PROPERTY(bCycling, bool)
-		//REGISTER_PROPERTY(bIntense, bool)
-		//REGISTER_PROPERTY(TexName, std::string)
+		loadFrames(sequence_name);	
+	}
+	//-----------------------------------------------------------------------------------
+	static_emitter::static_emitter() 
+		: emitter(emitter::Static) 
+	{
 	}
 	//-----------------------------------------------------------------------------------
 	static_emitter::~static_emitter()
 	{
 	}
 	//-----------------------------------------------------------------------------------
+	void static_emitter::reset()
+	{
+		m_fLastFrame = 0;
+		m_fLastTime = 0;
+		m_is_visible = true;
+		m_is_fading = false;
+	}
+	//-----------------------------------------------------------------------------------
 	void static_emitter::loadTexture()
 	{
 		m_texture = render::texture::create(m_texture_name);
-		m_bIsTexLoaded = true;
+		m_is_texture_loaded = true;
 	}
 	//-----------------------------------------------------------------------------------
 	void static_emitter::update(float dt)
 	{
-		if (!m_bIsSeqLoaded) return;
+		if (!m_is_seq_loaded) return;
 
-		m_fLastFrame += dt * m_cTexFps;//25.0f;
+		m_fLastFrame += dt * m_texture_fps;//25.0f;
 
-		if (!(m_fLastFrame < m_time_shift + m_Frames->size()))
+		if (!(m_fLastFrame < m_time_shift + m_rames->size()))
 		{
 			if (m_bCycling) 
 			{
@@ -93,7 +98,7 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void static_emitter::render()
 	{
-		if (!(m_is_visible && m_bIsSeqLoaded))
+		if (!(m_is_visible && m_is_seq_loaded))
 			return;
 
 		int frame_to_render = (int)(m_fLastFrame - m_time_shift);
@@ -108,7 +113,7 @@ namespace particles{
 		m_fLastFrame = 0;
 		m_fLastTime = -1.0f;	
 		{
-			if (!m_bIsTexLoaded){
+			if (!m_is_texture_loaded){
 				m_Name.clear();
 				return;
 			}
@@ -118,20 +123,20 @@ namespace particles{
 			// повторно грузить то что уже было не надо :)
 			if (m_Name == file_name) 
 			{
-				if (m_bIsSeqLoaded)
+				if (m_is_seq_loaded)
 					return;
 				else
 					just_reload = true;
 			}
 
-			PFramesIter it = ms_PFrames.find(file_name);
+			frames_iter it = ms_PFrames.find(file_name);
 			m_Name = file_name;
 		
 			if (it != ms_PFrames.end())
 				if (!just_reload)
 				{
-					m_bIsSeqLoaded = true;
-					m_Frames = &(ms_PFrames[m_Name]);
+					m_is_seq_loaded = true;
+					m_rames = &(ms_PFrames[m_Name]);
 					return;
 				}
 				else 
@@ -139,7 +144,7 @@ namespace particles{
 		}
 
 		{
-			animation& fseq = m_FrSeq[m_Name];
+			animation& fseq = ms_frame_seq[m_Name];
 		
 			{
 				std::string str = "Media/" + m_Name;
@@ -148,7 +153,7 @@ namespace particles{
 				{
 					if (!fseq.Load(pfxFile))
 					{
-						m_bIsSeqLoaded = false;
+						m_is_seq_loaded = false;
 						return;
 					}
 				}
@@ -159,7 +164,7 @@ namespace particles{
 				}
 			}
 
-			PTanks& psyst = ms_PFrames[m_Name];
+			renderers& psyst = ms_PFrames[m_Name];
 			psyst.resize(fseq.frames.size());
 			
 
@@ -185,10 +190,10 @@ namespace particles{
 				}
 				spTank->update();
 			}
-			m_Frames = &psyst;
+			m_rames = &psyst;
 		}
 
-		m_bIsSeqLoaded  = true;
+		m_is_seq_loaded  = true;
 	}
 	//-----------------------------------------------------------------------------------
 	void static_emitter::setIntense(bool intense)
@@ -208,24 +213,24 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void static_emitter::render(unsigned int frame_num)
 	{
-		PTanks& frames_vector = *m_Frames;
+		renderers& frames_vector = *m_rames;
 		renderer_ptr spTank = frames_vector[(unsigned int)frame_num];
-		spTank->render(m_texture, m_Transform);
+		spTank->render(m_texture, m_transform);
 	}
 	//----------------------------------------------------------------------------------------
 	void static_emitter::debug_draw()
 	{
-		m_Transform.debug_draw();
+		m_transform.debug_draw();
 
 		unsigned frame_num = (int)(m_fLastFrame - m_time_shift);
 		if (frame_num < 0) return;
 
-		PFramesIter& it = ms_PFrames.find(m_Name);
+		frames_iter& it = ms_PFrames.find(m_Name);
 		assert( it != ms_PFrames.end() );
-		PTanks& psyst = it->second;
+		renderers& psyst = it->second;
 		assert( frame_num < psyst.size() );
 
-		math::matrix44f m = m_Transform.get_full_tm();
+		math::matrix44f m = m_transform.get_full_tm();
 
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 
@@ -234,7 +239,7 @@ namespace particles{
 
 		for ( renderer::ParticleArrayIter it = array.begin(); it != array.end(); ++it )
 		{
-			//if (!m_bIsGlobal)
+			//if (!m_is_global)
 			math::vec3f center = m * (math::point3f)it->pos;
 			//else
 			//	center = it->pos;
@@ -243,9 +248,9 @@ namespace particles{
 		}
 	}
 	//-----------------------------------------------------------------------------------
-	void static_emitter::fromStream(io::read_stream& rf)
+	void static_emitter::from_stream(io::read_stream& rf)
 	{
-		emitter::fromStream (rf);
+		emitter::from_stream (rf);
 
 		unsigned version;
 		rf  >> version;
@@ -259,7 +264,7 @@ namespace particles{
 			>> m_bIntense
 			>> m_is_visible
 			>> m_bCycling
-			>> m_cTexFps;
+			>> m_texture_fps;
 		
 		loadTexture();
 		loadFrames(seqName);
@@ -269,9 +274,9 @@ namespace particles{
 		setVisible( m_is_visible );
 	}
 	//-----------------------------------------------------------------------------------
-	void static_emitter::toStream(io::write_stream& wf) const
+	void static_emitter::to_stream(io::write_stream& wf) const
 	{
-		emitter::toStream (wf);
+		emitter::to_stream (wf);
 
 		wf  << file_version
 			<< m_Name
@@ -280,6 +285,6 @@ namespace particles{
 			<< m_bIntense
 			<< m_is_visible
 			<< m_bCycling
-			<< m_cTexFps;
+			<< m_texture_fps;
 	}
 }

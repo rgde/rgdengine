@@ -16,10 +16,8 @@ namespace scene
 	class ISceneManager;
 	typedef boost::shared_ptr<ISceneManager> scene_manager_ptr;
 
-	class Scene
-		: public io::serialized_object
-		//Neonic: octree
-		, public live_tree::CDynamicTreeRoot
+	class Scene : public io::serialized_object				
+				//, public live_tree::CDynamicTreeRoot //Neonic: octree
 	{
 	protected:
 		Scene();
@@ -34,13 +32,13 @@ namespace scene
 		void debug_draw( );
 
 	protected:
-		void auxDraw( math::frame_ptr frame );
-		virtual void toStream(io::write_stream& wf) const;
-		virtual void fromStream(io::read_stream& rf);
+		void aux_draw( math::frame_ptr frame );
+		virtual void to_stream(io::write_stream& wf) const;
+		virtual void from_stream(io::read_stream& rf);
 
 	private:
-		std::list<scene_manager_ptr> m_Managers;
-		math::frame_ptr			 m_pRoot;
+		std::list<scene_manager_ptr> m_managers;
+		math::frame_ptr			 m_root;
 	};
 
 	typedef base::singelton<Scene> TheScene;
