@@ -33,27 +33,27 @@ namespace render
 	}
 
 	render_manager::render_manager()
-		: 	m_bLightingEnabled(true),
-			m_nFillMode(Solid),
-			m_bVolumes(true),
-			m_pWhiteTexture(safeLoadDefaultTexture("White.jpg")),
-			m_pDefaultNormalMap(safeLoadDefaultTexture("DefaultNormalMap.jpg")),
-			m_pBlackTexture(safeLoadDefaultTexture("Black.jpg")),
-			m_pDefaultEffect(effect::create("Default.fx")),
-			m_pDefaultFont(font::create(11,  L"Arial", render::font::Heavy))			
+		: 	m_lighting_enabled(true),
+			m_fill_mode(Solid),
+			m_volumes(true),
+			m_white_texture(safeLoadDefaultTexture("White.jpg")),
+			m_flat_normal_texture(safeLoadDefaultTexture("DefaultNormalMap.jpg")),
+			m_black_texture(safeLoadDefaultTexture("Black.jpg")),
+			m_default_sffect(effect::create("Default.fx")),
+			m_default_font(font::create(11,  L"Arial", render::font::Heavy))			
 	{
 
-		m_pDefaultFog.load_from_xml("Default.xml");
-		m_pCurrentFog = m_pDefaultFog;
+		m_default_fog.load_from_xml("Default.xml");
+		m_current_fog = m_default_fog;
 
 
-		if (!m_pDefaultEffect)
+		if (!m_default_sffect)
 		{
 			base::lerr << "Can't load effect \"graphics/shaders/Default.fx\"";
 			core::application::get()->close();
 		}
 
-		if (!m_pDefaultFont)
+		if (!m_default_font)
 		{
 			base::lerr << "Can't create font \"" << "Arial" << "\"";
 			core::application::get()->close();
@@ -66,32 +66,32 @@ namespace render
 
 	effect_ptr& render_manager::getDefaultEffect()
 	{
-		return m_pDefaultEffect;
+		return m_default_sffect;
 	}
 
 	font_ptr& render_manager::getDefaultFont()
 	{
-		return m_pDefaultFont;
+		return m_default_font;
 	}
 
 	texture_ptr& render_manager::getBlackTexture()
 	{
-		return m_pBlackTexture;
+		return m_black_texture;
 	}
 
 	texture_ptr& render_manager::getWhiteTexture()
 	{
-		return m_pWhiteTexture;
+		return m_white_texture;
 	}
 
 	texture_ptr& render_manager::getDefaultNormalMap()
 	{
-		return m_pDefaultNormalMap;
+		return m_flat_normal_texture;
 	}
 
 	void render_manager::setCurrentFog(const Fog &pFog)
 	{
-		m_pCurrentFog = pFog;
+		m_current_fog = pFog;
 	}
 
 	void render_manager::add(rendererable *r)
@@ -145,14 +145,14 @@ namespace render
 				{
 					static material_ptr pDefaultMaterial = material::create();
 
-					//const material_ptr& pMaterial = info.spMaterial ? info.spMaterial : pDefaultMaterial;
-					//const effect_ptr&	 effect	= info.spShader ? info.spShader : defaultEffect;
+					//const material_ptr& pMaterial = info.material ? info.material : pDefaultMaterial;
+					//const effect_ptr&	 effect	= info.shader ? info.shader : defaultEffect;
 
 					const material_ptr& pMaterial = pDefaultMaterial;
 					const effect_ptr&	 effect	= defaultEffect;
 
 
-					//m_pDefaultEffect
+					//m_default_sffect
 					
 					pMaterial->getDynamicBinder()->setupParameters(info.frame);
 									
@@ -194,8 +194,8 @@ namespace render
 
 			inline void renderDebug(renderable_info &info)
 			{
-				if (info.pDebugRenderFunc != NULL)
-					info.pDebugRenderFunc();
+				if (info.debug_render_func != NULL)
+					info.debug_render_func();
 			}
 		};
 
@@ -272,7 +272,7 @@ namespace render
 
 			if (r->get_priority() >= 1000)
 				vposttrans.push_back(&ri);
-			else if (ri.spMaterial && ri.spMaterial->isTransparent())
+			else if (ri.material && ri.material->isTransparent())
 				vtrans.push_back(&ri);
 			else
 				vsolids.push_back(&ri);
@@ -304,9 +304,9 @@ namespace render
 
 				TheCameraManager::get().set_camera(camera);
 
-				if(!m_pStaticBinder)
+				if(!m_static_binder)
 					createBinder();
-				m_pStaticBinder->setupParameters(0);
+				m_static_binder->setupParameters(0);
 
 				const math::frustum& frustum = render_device::get().get_camera()->get_frustum();
 				std::for_each(m_lRenderables.begin(), m_lRenderables.end(), SRenderblesSorter(vSolid, vTransparet, vPostTransparet, frustum));
@@ -338,9 +338,9 @@ namespace render
 		}
 		else // на случай если нам надо рисовать что-то в экранных координатах и только
 		{
-			if(!m_pStaticBinder) 
+			if(!m_static_binder) 
 				createBinder();
-			m_pStaticBinder->setupParameters(0);
+			m_static_binder->setupParameters(0);
 
 			functors::SDefaultRender r;
 
@@ -361,7 +361,7 @@ namespace render
 
 	void render_manager::createBinder()
 	{
-		m_pStaticBinder = createStaticBinder(m_pDefaultEffect);
+		m_static_binder = createStaticBinder(m_default_sffect);
 	}
 
 	rendererable::rendererable(unsigned priority)
@@ -380,8 +380,8 @@ namespace render
 
 	renderable_info::renderable_info()
 		: frame(0),
-		  bHaveVolumes(false),
-		  spMaterial()
+		  has_volumes(false),
+		  material()
 	{
 	}
 }

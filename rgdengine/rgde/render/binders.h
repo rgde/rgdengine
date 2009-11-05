@@ -20,5 +20,5 @@ namespace render
 										   const material& mat,
 										   std::string& techniqueName);
 
-	PStaticBinder createStaticBinder(const effect_ptr& effect);
+	static_binder_ptr createStaticBinder(const effect_ptr& effect);
 }

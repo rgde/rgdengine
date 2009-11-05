@@ -33,25 +33,25 @@ namespace render
 		void clear();
 		void renderScene();
 		
-		void enableVolumes( bool flag )		{ m_bVolumes = flag; }
-		bool isVolumeDrawing() const		{ return m_bVolumes; }
+		void enableVolumes( bool flag )		{ m_volumes = flag; }
+		bool isVolumeDrawing() const		{ return m_volumes; }
 
-		void enableLighting(bool bLightingEnabled)  { m_bLightingEnabled = bLightingEnabled; }
-		bool isLightingEnabled() const		{ return m_bLightingEnabled; }
+		void enableLighting(bool bLightingEnabled)  { m_lighting_enabled = bLightingEnabled; }
+		bool isLightingEnabled() const		{ return m_lighting_enabled; }
 
-		void setFillMode(FillMode mode)		{ m_nFillMode = mode; }
-		FillMode  getFillMode() const			{ return m_nFillMode; }
+		void setFillMode(FillMode mode)		{ m_fill_mode = mode; }
+		FillMode  getFillMode() const			{ return m_fill_mode; }
 
 		effect_ptr& getDefaultEffect();
 		font_ptr&   getDefaultFont();
-		const Fog&    getDefaultFog()	const {return m_pDefaultFog;}
+		const Fog&    getDefaultFog()	const {return m_default_fog;}
 
 		texture_ptr& getBlackTexture();
 		texture_ptr& getWhiteTexture();
 		texture_ptr& getDefaultNormalMap();
 
 		void setCurrentFog(const Fog& fog);
-		const Fog& getCurrentFog() const	{return m_pCurrentFog;}
+		const Fog& getCurrentFog() const	{return m_current_fog;}
 
 	private:
 		void add(rendererable* r);
@@ -62,22 +62,22 @@ namespace render
 	protected:
 		typedef std::vector<rendererable*> Renderables;
 		Renderables m_lRenderables;
-		//std::list<rendererable*>	           m_lRenderables;
-		bool						           m_bVolumes;
-		bool                                   m_bLightingEnabled;
-		FillMode                               m_nFillMode;
 
-		effect_ptr                                m_pDefaultEffect;
-		font_ptr                                  m_pDefaultFont;
-		Fog                                   m_pDefaultFog;
+		bool			  m_volumes;
+		bool              m_lighting_enabled;
+		FillMode          m_fill_mode;
 
-		texture_ptr                               m_pBlackTexture;
-		texture_ptr                               m_pWhiteTexture;
-		texture_ptr                               m_pDefaultNormalMap;
+		effect_ptr        m_default_sffect;
+		font_ptr          m_default_font;
+		Fog               m_default_fog;
 
-		Fog                                   m_pCurrentFog;
+		texture_ptr       m_black_texture;
+		texture_ptr       m_white_texture;
+		texture_ptr       m_flat_normal_texture;
 
-		PStaticBinder                          m_pStaticBinder;
+		Fog               m_current_fog;
+
+		static_binder_ptr     m_static_binder;
 	};
 
 	typedef base::singelton<render_manager> TheRenderManager;
@@ -87,11 +87,11 @@ namespace render
 		renderable_info();
 
 		math::frame*				 frame;
-		material_ptr				 spMaterial;
+		material_ptr				 material;
 		boost::function<void (void)> render_func;
-		boost::function<void (void)> pDebugRenderFunc;
-		render::effect_ptr			 spShader;
-		bool						 bHaveVolumes;
+		boost::function<void (void)> debug_render_func;
+		render::effect_ptr			 shader;
+		bool						 has_volumes;
 		math::aaboxf				 bbox;
 		math::Spheref				 bsphere;
 	};

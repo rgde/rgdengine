@@ -14,7 +14,7 @@ namespace render
 	{
 		m_renderInfo.frame = this;//m_frame;
 		m_renderInfo.render_func = boost::bind(&mesh::render, this);
-		m_renderInfo.bHaveVolumes = true;
+		m_renderInfo.has_volumes = true;
 	}
 
 	mesh::~mesh()
@@ -135,22 +135,22 @@ namespace render
 		//}
 	};
 
-	void mesh::setEffect(effect_ptr spShader)
+	void mesh::setEffect(effect_ptr shader)
 	{
-		m_renderInfo.spShader = spShader;
+		m_renderInfo.shader = shader;
 		MaterialList::iterator it;
 		for (it = m_materials.begin(); it != m_materials.end(); ++it)
 		{
-			(*it)->setEffect(spShader);
+			(*it)->setEffect(shader);
 		}
 	}
 
 	const renderable_info & mesh::getRenderableInfo() const
 	{
 		if (m_materials.size() > 0)
-			m_renderInfo.spMaterial = *m_materials.begin();
+			m_renderInfo.material = *m_materials.begin();
 		else
-			m_renderInfo.spMaterial = material_ptr();
+			m_renderInfo.material = material_ptr();
 
 		return m_renderInfo;
 	}

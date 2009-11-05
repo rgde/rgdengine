@@ -169,7 +169,7 @@ namespace render
 ///---------------------------------------------------------------------------\
 //|                              Static binder                                |
 //\---------------------------------------------------------------------------/
-	void addPixelVertexPipeParameters(const PStaticBinder& binder)
+	void addPixelVertexPipeParameters(const static_binder_ptr& binder)
 	{
 		using namespace math;
 		using namespace boost;
@@ -190,7 +190,7 @@ namespace render
 								   FogParamName);
 	}
 
-	void addLightingParameters(const PStaticBinder& binder)
+	void addLightingParameters(const static_binder_ptr& binder)
 	{
 		//using namespace math;
 		//using namespace boost;
@@ -272,7 +272,7 @@ namespace render
 		return result;
 	}
 
-	void addMatrixParameters(const PStaticBinder& binder)
+	void addMatrixParameters(const static_binder_ptr& binder)
 	{
 		using namespace math;
 		using namespace boost;
@@ -290,9 +290,9 @@ namespace render
 		binder->addParameter<matrix44f>(getMatrixFunction, ViewITMatrixParamName);
 	}
 
-	PStaticBinder createStaticBinder(const effect_ptr& effect)
+	static_binder_ptr createStaticBinder(const effect_ptr& effect)
 	{
-		PStaticBinder binder = StaticBinder::create(effect);
+		static_binder_ptr binder = StaticBinder::create(effect);
 
 		if(binder)
 		{
