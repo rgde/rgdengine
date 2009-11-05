@@ -176,9 +176,7 @@ namespace render
 	public:
 		virtual ~IIndexedGeometry(){}
 		static IIndexedGeometry* create(const vertex::VertexDecl decl, bool bUse32bitIndixes, bool is_dynamic);
-		//static IIndexedGeometry* create(std::wstring xml_filename);
 
-		//static IIndexedGeometry* create(TiXmlNode* root_geom_node);
 		virtual void updateVB(const void* data, size_t nBytes, size_t size_of_vertex) = 0;
 		virtual void updateIB(const void* data, size_t nBytes) = 0;
 		virtual void render(primitive_type ePrimType, unsigned nBaseVertexIndex, 
@@ -346,7 +344,7 @@ namespace render
 		typedef Vertex vertex_type;
 
 		indexed_geometry(bool is_dynamic = false) 
-			: m_spImpl(IIndexedGeometry::create(Vertex::get_decl(), true, is_dynamic))
+			: m_spImpl(IIndexedGeometry::create(Vertex::get_decl(), false, is_dynamic))
 		{
 			m_bChanged = false;
 		}
