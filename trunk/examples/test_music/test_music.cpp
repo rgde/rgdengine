@@ -78,20 +78,23 @@ protected:
 // The application's entry point
 int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 {
-	std::auto_ptr<core::application> spApp(
-		core::application::create(L"Test Music", 640, 480, false));
 	using namespace core;
 
-	spApp->add(task_ptr(new render_task(*spApp, 0)));
-	spApp->add(task_ptr(new input_task(*spApp, 1, false)));
-	spApp->add(task_ptr(new game_task(*spApp, 2)));
+	typedef std::auto_ptr<application> app_ptr;
+
+	 app_ptr app(application::create(L"Test Music", 640, 480, false));
+	
+
+	app->add<render_task>(0);
+	app->add<input_task>(1, false);
+	app->add<game_task>(2);
 //
 	TestMusic r;
 //	SimpleInput i;
 //	CSound3dTest test;
 ////	CMusicTest test;
 //
-	spApp->run();
+	app->run();
 }
 
 //////////////////////////////////////////////////////////////////////////
