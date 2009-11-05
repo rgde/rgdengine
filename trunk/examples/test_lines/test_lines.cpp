@@ -25,10 +25,10 @@ public:
         {
             using namespace input;
 
-            m_cEsc.attach(L"Quit");
+            m_esc.attach(L"Quit");
 			Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
             
-            m_cEsc += boost::bind(&HelloMessage::onEsc, this);
+            m_esc += boost::bind(&HelloMessage::onEsc, this);
         }
 
 		render::TheCameraManager::get().add_camera(m_camera);		
@@ -54,7 +54,7 @@ protected:
 	render::camera_ptr                   m_camera;
 	lines_test::triangle_manager         m_TrianglesManager;
 	core::application&					 m_app;
-	input::key_down                      m_cEsc;
+	input::key_down                      m_esc;
 };
 
 // The application's entry point

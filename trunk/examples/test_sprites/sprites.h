@@ -3,7 +3,7 @@
 
 namespace rgde
 {
-	namespace exapmles
+	namespace examples
 	{
 		namespace sprites
 		{
@@ -17,21 +17,24 @@ namespace rgde
 				void update (float dt);
 
 			protected:
-				render::sprite_manager			m_sprite_renderer;
-				render::sprite_manager::sprites_vector m_sprites;
-				input::key_down                  m_cEsc;
+				typedef render::sprite_manager::sprites_vector sprites_vector;
+				
+				render::sprite_manager		m_sprite_renderer;				
+				sprites_vector				m_sprites;
+
+				input::key_down             m_esc;
 				// num of different sprites priority
-				unsigned						m_priorities;
+				unsigned					m_priorities;
 				// num of sprites with equal priority
-				unsigned						m_num_sprites_per_priority;
+				unsigned					m_num_sprites_per_priority;
 				// do we need debug logging? 
-				bool							m_bDebugLog;
+				bool						m_enable_debug_log;
 				// do we need sort sprites before debug log output?
-				bool							m_bSortSpritesBeforeLog;
+				bool						m_do_sort_before_log;
 				// sprite size variation
-				math::Vec2f						m_sprites_seed;
-				::render::font_ptr				m_font;
-				math::camera_ptr				m_camera;
+				math::Vec2f					m_sprites_seed;
+				render::font_ptr			m_font;
+				math::camera_ptr			m_camera;
 			};
 		}
 	}

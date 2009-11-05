@@ -52,12 +52,12 @@ public:
 			Input::get_device(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
 			Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
 
-			m_cEsc  .attach(L"Quit");
+			m_esc  .attach(L"Quit");
 			m_cXAxis.attach(L"Horz");
 			m_cYAxis.attach(L"Vert");
 
 
-			m_cEsc += boost::bind(&AnimationTest::onEsc, this);
+			m_esc += boost::bind(&AnimationTest::onEsc, this);
 			m_cYAxis += boost::bind(&AnimationTest::onYAxis, this, _1);
 			m_cXAxis += boost::bind(&AnimationTest::onXAxis, this, _1);
 		}
@@ -114,7 +114,7 @@ protected:
 	render::mesh_ptr				m_pMesh;
 
 	//данные для ввода
-	input::Button       m_cEsc;
+	input::Button       m_esc;
 	input::RelativeAxis m_cXAxis;
 	input::RelativeAxis m_cYAxis;
 

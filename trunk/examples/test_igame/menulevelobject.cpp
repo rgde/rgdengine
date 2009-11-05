@@ -13,7 +13,7 @@ MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
 		m_up    .attach(L"Up");
 		m_down  .attach(L"Down");
 		m_cSpace.attach(L"Space");
-		m_cEsc  .attach(L"Escape");
+		m_esc  .attach(L"Escape");
 
 		Input::get_device(types::Keyboard)->get_control(types::KeyUp    )->bind(L"Up");
         Input::get_device(types::Keyboard)->get_control(types::key_down  )->bind(L"Down");
@@ -23,7 +23,7 @@ MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
         m_up     += boost::bind(&MenuLevelObject::onUpKey,   this);
         m_down   += boost::bind(&MenuLevelObject::onDownKey, this);
         m_cSpace += boost::bind(&MenuLevelObject::onSpace,   this);
-        m_cEsc   += boost::bind(&MenuLevelObject::onEsc,     this);
+        m_esc   += boost::bind(&MenuLevelObject::onEsc,     this);
     }
 
 	using render::font;

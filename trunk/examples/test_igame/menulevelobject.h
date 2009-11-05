@@ -52,5 +52,5 @@ private:
 	input::key_down m_up;
 	input::key_down m_down;
 	input::key_down m_cSpace;
-	input::key_down m_cEsc;
+	input::key_down m_esc;
 };

@@ -4,14 +4,17 @@
 
 int main()
 {
-    std::auto_ptr<core::application> pApp(core::application::create(L"Test Input", 800, 600, false));
-    pApp->add(core::task_ptr(new core::input_task(*pApp, 0, true)));
-    pApp->add(core::task_ptr(new core::game_task(*pApp, 1)));
-    pApp->add(core::task_ptr(new core::render_task(*pApp, 2)));
+    std::auto_ptr<core::application> app(core::application::create(L"Test Input", 800, 600, false));
+    
+	app->add<core::input_task>(0, true);
+    app->add<core::game_task>(1);
+    app->add<core::render_task>(2);
 
-    TestInput r;
+	{
+		TestInput r;
 
-    pApp->run();
+		app->run();
+	}
 
     return 0;
 }

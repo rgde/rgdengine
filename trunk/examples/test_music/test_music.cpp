@@ -30,7 +30,7 @@ protected:
 	int cur_music_index;
 	render::font_ptr	m_font;
 	render::camera_ptr	m_camera;
-	input::key_down		m_cEsc;
+	input::key_down		m_esc;
 	input::key_down		m_cSpace;
 	audio::system		m_sound_system;
 
@@ -131,9 +131,9 @@ void TestMusic::init_input()
 	Input::get_device(types::Keyboard)->get_control(types::KeySpace)->bind(L"NextMusic");
 	m_cSpace += boost::bind(&TestMusic::NextMusic, this);
 
-	m_cEsc.attach(L"Quit");
-	Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(m_cEsc.getCommand());
-	m_cEsc += boost::bind(&TestMusic::onEsc, this);
+	m_esc.attach(L"Quit");
+	Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(m_esc.getCommand());
+	m_esc += boost::bind(&TestMusic::onEsc, this);
 }
 
 
