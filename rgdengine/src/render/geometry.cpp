@@ -23,8 +23,8 @@ namespace render
 		typedef core::com_ptr<IDirect3DVertexBuffer9>		SPDirect3DVertexBuffer9;
 		//IDirect3DIndexBuffer9	
 	public:
-		geometry_impl(const vertex::VertexDecl decl, bool isDynamic)
-			:m_spVB(0), m_spVertexDeclaration(0), m_bDynamic(isDynamic), m_size(0)
+		geometry_impl(const vertex::VertexDecl decl, bool is_dynamic)
+			:m_spVB(0), m_spVertexDeclaration(0), m_bDynamic(is_dynamic), m_size(0)
 		{
 			g_d3d->CreateVertexDeclaration((const D3DVERTEXELEMENT9*)decl, &m_spVertexDeclaration);
 		}
@@ -53,7 +53,7 @@ namespace render
 				if (!m_bDynamic)
 					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_spVB, NULL);
 				else
-					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC, 0, D3DPOOL_SYSTEMMEM, &m_spVB, NULL);
+					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC, 0, D3DPOOL_DEFAULT, &m_spVB, NULL);
 
 				m_size = bytes;
 				m_used_size = m_size;
@@ -103,20 +103,21 @@ namespace render
 		SPDirect3DVertexBuffer9			m_spVB;// Buffer to hold vertices
 	};
 
-	base_geometry* base_geometry::create(const vertex::VertexDecl decl, bool isDynamic)
+	base_geometry* base_geometry::create(const vertex::VertexDecl decl, bool is_dynamic)
 	{
-		return new geometry_impl(decl, isDynamic);
+		return new geometry_impl(decl, is_dynamic);
 	}
 
 
 	class IndexedGeometryImpl : public IIndexedGeometry, public device_object
 	{
 	public:
-		IndexedGeometryImpl(const vertex::VertexDecl decl, bool bUse32bitIndixes)
-			: m_ib_size(0),
-			  m_ib_used_size(0),
-			  m_vb_size(0),
-			  m_vb_used_size(0)
+		IndexedGeometryImpl(const vertex::VertexDecl decl, bool bUse32bitIndixes, bool is_dynamic)
+			: m_ib_size(0)
+			, m_ib_used_size(0)
+			, m_vb_size(0)
+			, m_vb_used_size(0)
+			, m_is_dynamic(is_dynamic)
 		{
 			m_bUse32bitIndixes = bUse32bitIndixes;
 			m_pVB	= 0;
@@ -152,7 +153,10 @@ namespace render
 			if( m_pVB != 0 )
 				m_pVB->Release();
 
+			if (!m_is_dynamic)
 				g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pVB, NULL);
+			else
+				g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC, 0, D3DPOOL_DEFAULT, &m_pVB, NULL);
 
 				m_vb_size = bytes;
 				m_vb_used_size = m_vb_size;
@@ -178,7 +182,7 @@ namespace render
 
 			// Fill the vertex buffer.
 			void* pVertices = 0;
-			m_pVB->Lock( 0, (UINT)nBytes, (void**)&pVertices, 0 );
+			m_pVB->Lock( 0, (UINT)nBytes, (void**)&pVertices, D3DLOCK_DISCARD );
 				memcpy( pVertices, data, nBytes);
 			m_pVB->Unlock();
 		}
@@ -186,20 +190,24 @@ namespace render
 		void recreateIB(size_t bytes)
 		{
 			if (m_ib_size < bytes)
-		{
-			if (0 != m_pIB)
-				m_pIB->Release();
+			{
+				if (0 != m_pIB)
+					m_pIB->Release();
 
-			//if (0 == nBytes)
-			//	return;
+				//if (0 == nBytes)
+				//	return;
 
-			D3DFORMAT format;
-			if (m_bUse32bitIndixes)
-				format = D3DFMT_INDEX32;
-			else 
-				format = D3DFMT_INDEX16;
+				D3DFORMAT format;
+				if (m_bUse32bitIndixes)
+					format = D3DFMT_INDEX32;
+				else 
+					format = D3DFMT_INDEX16;
 
-				g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, format, D3DPOOL_MANAGED, &m_pIB, NULL);
+
+				//if (!m_is_dynamic)
+					g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, format, D3DPOOL_MANAGED, &m_pIB, NULL);
+				//else
+				//	g_d3d->CreateIndexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC, format, D3DPOOL_DEFAULT, &m_pIB, NULL);
 
 				m_ib_size = bytes;
 				m_ib_used_size = m_ib_size;
@@ -247,6 +255,8 @@ namespace render
 		size_t							m_ib_used_size;
 		size_t							m_ib_size;
 
+		bool							m_is_dynamic;
+
 		bool							m_bUse32bitIndixes;
 		size_t							m_nSizeOfVertex;
 		LPDIRECT3DVERTEXDECLARATION9	m_pVertexDeclaration;
@@ -254,9 +264,9 @@ namespace render
 		IDirect3DIndexBuffer9*			m_pIB;
 	};
 
-	IIndexedGeometry* IIndexedGeometry::create(const vertex::VertexDecl decl, bool bUse32bitIndixes)
+	IIndexedGeometry* IIndexedGeometry::create(const vertex::VertexDecl decl, bool bUse32bitIndixes, bool is_dynamic)
 	{
-		return new IndexedGeometryImpl(decl, bUse32bitIndixes);
+		return new IndexedGeometryImpl(decl, bUse32bitIndixes, is_dynamic);
 	}
 
 	//IIndexedGeometry* IIndexedGeometry::create( std::wstring xml_filename )

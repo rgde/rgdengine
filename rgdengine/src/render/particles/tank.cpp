@@ -7,7 +7,7 @@
 namespace particles
 {
 	//-----------------------------------------------------------------------------------
-	renderer::renderer() : m_nReservedSize(0)
+	renderer::renderer() : m_reserved_size(0)
 	{
 		m_effect = render::effect::create( "particles.fx" );
 
@@ -30,7 +30,7 @@ namespace particles
 	//-----------------------------------------------------------------------------------
 	void renderer::render(render::texture_ptr texture, math::frame& frame)
 	{
-		if( (m_nReservedSize == 0) )
+		if( (m_reserved_size == 0) )
 			return;
 
 		const math::matrix44f& mLocal	= frame.get_full_tm();
@@ -84,28 +84,28 @@ namespace particles
 
 		if( nParticles == 0 ) return;
 
-		if( (nParticles > m_nReservedSize) )
+		if( (nParticles > m_reserved_size) )
 		{
-			m_nReservedSize = nParticles;
+			m_reserved_size = nParticles;
 
-			geometry::Indexes& vIndices = m_geometry.lockIB();
-			if( vIndices.size() < nParticles*6 )
-				vIndices.resize(nParticles*6);
+			geometry::indexies& indexies = m_geometry.lock_ib();
+			if( indexies.size() < nParticles*6 )
+				indexies.resize(nParticles*6);
 			for(unsigned i = 0; i < nParticles; ++i)
 			{
-				vIndices[i * 6 + 0] = i * 4 + 0;
-				vIndices[i * 6 + 1] = i * 4 + 1;
-				vIndices[i * 6 + 2] = i * 4 + 2;
-				vIndices[i * 6 + 3] = i * 4 + 3;
-				vIndices[i * 6 + 4] = i * 4 + 2;
-				vIndices[i * 6 + 5] = i * 4 + 1;
+				indexies[i * 6 + 0] = i * 4 + 0;
+				indexies[i * 6 + 1] = i * 4 + 1;
+				indexies[i * 6 + 2] = i * 4 + 2;
+				indexies[i * 6 + 3] = i * 4 + 3;
+				indexies[i * 6 + 4] = i * 4 + 2;
+				indexies[i * 6 + 5] = i * 4 + 1;
 			}
-			m_geometry.unlockIB();
+			m_geometry.unlock_ib();
 		}
 
-		geometry::Vertexes& vVertices = m_geometry.lockVB();
-		if( vVertices.size() < nParticles*4 )
-			vVertices.resize(nParticles*4);
+		geometry::vertexies& vertexies = m_geometry.lock_vb();
+		if( vertexies.size() < nParticles*4 )
+			vertexies.resize(nParticles*4);
 
 		unsigned int j = 0;
 		for( unsigned int i = 0; i < nParticles; ++i )
@@ -124,31 +124,31 @@ namespace particles
 				  fTileX = ((float)p.nTile - fTileY)*m_fInvRows;
 
 
-			vVertices[j].position = p.pos;
-			vVertices[j].tex1 = math::vec2f( -xcos - ysin, -xsin + ycos );
-			vVertices[j].tex0 = math::vec2f(fTileX*m_fInvTotalColumns, fTileY*m_fInvTotalRows);
-			vVertices[j].color = p.color;
+			vertexies[j].position = p.pos;
+			vertexies[j].tex1 = math::vec2f( -xcos - ysin, -xsin + ycos );
+			vertexies[j].tex0 = math::vec2f(fTileX*m_fInvTotalColumns, fTileY*m_fInvTotalRows);
+			vertexies[j].color = p.color;
 			++j;
 
-			vVertices[j].position = p.pos;
-			vVertices[j].tex1 = math::vec2f( xcos - ysin, xsin + ycos );
-			vVertices[j].tex0 = math::vec2f((fTileX + 1.0f)*m_fInvTotalColumns, fTileY*m_fInvTotalRows);
-			vVertices[j].color = p.color;
+			vertexies[j].position = p.pos;
+			vertexies[j].tex1 = math::vec2f( xcos - ysin, xsin + ycos );
+			vertexies[j].tex0 = math::vec2f((fTileX + 1.0f)*m_fInvTotalColumns, fTileY*m_fInvTotalRows);
+			vertexies[j].color = p.color;
 			++j;
 
-			vVertices[j].position = p.pos;
-			vVertices[j].tex1 = math::vec2f( -xcos + ysin, -xsin - ycos );
-			vVertices[j].tex0 = math::vec2f(fTileX*m_fInvTotalColumns, (fTileY + 1.0f)*m_fInvTotalRows);
-			vVertices[j].color = p.color;
+			vertexies[j].position = p.pos;
+			vertexies[j].tex1 = math::vec2f( -xcos + ysin, -xsin - ycos );
+			vertexies[j].tex0 = math::vec2f(fTileX*m_fInvTotalColumns, (fTileY + 1.0f)*m_fInvTotalRows);
+			vertexies[j].color = p.color;
 			++j;
 
-			vVertices[j].position = p.pos;
-			vVertices[j].tex1 = math::vec2f( xcos + ysin, xsin - ycos );
-			vVertices[j].tex0 = math::vec2f((fTileX + 1.0f)*m_fInvTotalColumns, (fTileY + 1.0f)*m_fInvTotalRows);
-			vVertices[j].color = p.color;
+			vertexies[j].position = p.pos;
+			vertexies[j].tex1 = math::vec2f( xcos + ysin, xsin - ycos );
+			vertexies[j].tex0 = math::vec2f((fTileX + 1.0f)*m_fInvTotalColumns, (fTileY + 1.0f)*m_fInvTotalRows);
+			vertexies[j].color = p.color;
 			++j;
 		}
-		m_geometry.unlockVB();
+		m_geometry.unlock_vb();
 	}
 
 	void renderer::setTextureTiling(int nRows, int nColumnsTotal, int nRowsTotal)

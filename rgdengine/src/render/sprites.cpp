@@ -27,20 +27,19 @@ namespace render
 	}
 
 	sprite_manager::sprite_manager(int priority)
-		: m_cvScreenSize(800, 600),
-		  m_nReservedSize(0),
-		  m_nSpritesRendered(0),
-		  m_bSorted(false),
-		  m_bUpdated(true),
-		  rendererable(priority),
-		  m_vOrigin(0, 0)
+		: m_screen_size(800, 600)
+		, m_reserved_size(0)
+		, m_sprites_rendered(0)
+		, m_sorted(false)
+		, m_updated(true)
+		, rendererable(priority)
+		, m_origin(0, 0)
+		, m_geometry(true)
+		, m_aditive(false)
 	{
 		//base::lmsg << "sprite_manager::sprite_manager()";
 		math::vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
-		m_vScale = vFrontBufferSize / m_cvScreenSize;
-
-
-		m_bAditive = false;
+		m_scale = vFrontBufferSize / m_screen_size;
 
 		m_effect = effect::create("SpriteManager.fx");
 		m_renderInfo.render_func = boost::bind(&sprite_manager::render, this);
@@ -52,7 +51,7 @@ namespace render
 
 	void sprite_manager::add_sprite(const sprite &s)
 	{
-		m_bUpdated = false;
+		m_updated = false;
 		m_sprites.push_back(s);
 	}
 
@@ -66,98 +65,115 @@ namespace render
 		return math::vec2f(x * cosa - y * sina, x * sina + y * cosa);
 	}
 
+	inline void rotatePos(math::vec2f& pos, float sina, float cosa)
+	{
+		float x = pos[0];
+		float y = pos[1];
+		pos[0] = x * cosa - y * sina;
+		pos[1] = x * sina + y * cosa;
+	}
+
 	void sprite_manager::update()
 	{
+		if (m_sprites.empty())
+			m_updated = true;
+
+		if (m_updated)
+			return;
+
 		using namespace math;
 
 		std::sort( m_sprites.begin(), m_sprites.end(), sorting_pred );
 
-		if (m_sprites.empty())
-		{
-			m_bUpdated = true;
-			return;
-		}
-
-		unsigned nSprites	= (unsigned)m_sprites.size();
+		unsigned num_sprites	= (unsigned)m_sprites.size();
 		// На случай, если число спрайтов в векторе больше, чем зарезервировано в буферах
-		if ((nSprites > m_nReservedSize))
+		if ((num_sprites > m_reserved_size))
 		{
-			m_nReservedSize = nSprites;
+			m_reserved_size = num_sprites;
 
-			geometry::Indexes &vIndices	= m_geometry.lockIB();
-			if (vIndices.size() < nSprites * 6)
-				vIndices.resize(nSprites * 6);
-			for (unsigned i = 0; i < nSprites; ++i)
+			geometry::indexies &indexies = m_geometry.lock_ib();
+			
+			if (indexies.size() < num_sprites * 6)
+				indexies.resize(num_sprites * 6);
+
+			for (unsigned i = 0; i < num_sprites; ++i)
 			{
-				vIndices[i * 6 + 0] = i * 4 + 0;
-				vIndices[i * 6 + 1] = i * 4 + 1;
-				vIndices[i * 6 + 2] = i * 4 + 2;
-				vIndices[i * 6 + 3] = i * 4 + 0;
-				vIndices[i * 6 + 4] = i * 4 + 2;
-				vIndices[i * 6 + 5] = i * 4 + 3;
+				indexies[i * 6 + 0] = i * 4 + 0;
+				indexies[i * 6 + 1] = i * 4 + 1;
+				indexies[i * 6 + 2] = i * 4 + 2;
+				indexies[i * 6 + 3] = i * 4 + 0;
+				indexies[i * 6 + 4] = i * 4 + 2;
+				indexies[i * 6 + 5] = i * 4 + 3;
 			}
-			m_geometry.unlockIB();
+			m_geometry.unlock_ib();
 		}
 
-		geometry::Vertexes &vVertices	= m_geometry.lockVB();
-		if (vVertices.size() < nSprites * 4)
-			vVertices.resize(nSprites * 4);
-		unsigned i	= 0;
-		for (SpritesIter it = m_sprites.begin(); it != m_sprites.end(); ++it)
+		geometry::vertexies &vertexies	= m_geometry.lock_vb();
+		
+		if (vertexies.size() < num_sprites * 4)
+			vertexies.resize(num_sprites * 4);
+
+		//unsigned i	= 0;
+
+		geometry::vertex_type* v = &(*vertexies.begin());
+
+		for (sprites_iter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 		{
 			// Срайты масштабируются только при записи в буфер
 			const sprite &sprite	= *it;
 			const math::Color &color= sprite.color;
 			const math::Rect &rect	= sprite.rect;
-			// Сразу же масштабируем позицию и размер
-			math::vec2f hsize		= math::vec2f(sprite.size[0] * m_vScale[0], sprite.size[1] * m_vScale[1]) / 2.0f;
-			math::vec2f pos			= math::vec2f(sprite.pos[0] * m_vScale[0], sprite.pos[1] * m_vScale[1]);
 
-			float cosa				= ::cos(sprite.spin);
-			float sina				= ::sin(sprite.spin);
+			// Сразу же масштабируем позицию и размер
+			math::vec2f hsize(sprite.size[0] * m_scale[0]*0.5f, sprite.size[1] * m_scale[1]*0.5f);
+			math::vec2f pos(sprite.pos[0] * m_scale[0], sprite.pos[1] * m_scale[1]);
+
+			float cosa = ::cos(sprite.spin);
+			float sina = ::sin(sprite.spin);
 
 			// Top left
-			math::vec2f rotPos		= rotatePos(-hsize[0], -hsize[1], sina, cosa) + pos;
-			vVertices[i].position = math::vec4f(rotPos[0], rotPos[1], 0, 0);
-			vVertices[i].tex = rect.getTopLeft();
-			vVertices[i].color = color;
-			++i;
+			math::vec2f rotPos = rotatePos(-hsize[0], -hsize[1], sina, cosa) + pos;
+			v->position.set(rotPos[0], rotPos[1], 0, 0);
+			v->tex = rect.getTopLeft();
+			v->color = color;
+			v++;
 
 			// Top right
 			rotPos = rotatePos(hsize[0], -hsize[1], sina, cosa) + pos;
-			vVertices[i].position = math::vec4f(rotPos[0], rotPos[1], 0, 0);
-			vVertices[i].tex = rect.getTopRight();
-			vVertices[i].color = color;
-			++i;
+			v->position.set(rotPos[0], rotPos[1], 0, 0);
+			v->tex = rect.getTopRight();
+			v->color = color;
+			v++;
 
 			// Bottom right
 			rotPos = rotatePos(hsize[0], hsize[1], sina, cosa) + pos;
-			vVertices[i].position = math::vec4f(rotPos[0], rotPos[1], 0, 0);
-			vVertices[i].tex = rect.getBottomRight();
-			vVertices[i].color = color;
-			++i;
+			v->position.set(rotPos[0], rotPos[1], 0, 0);
+			v->tex = rect.getBottomRight();
+			v->color = color;
+			v++;
 
 			// Bottom left
 			rotPos = rotatePos(-hsize[0], hsize[1], sina, cosa) + pos;
-			vVertices[i].position = math::vec4f(rotPos[0], rotPos[1], 0, 0);
-			vVertices[i].tex = rect.getBottomLeft();
-			vVertices[i].color = color;
-			++i;
+			v->position.set(rotPos[0], rotPos[1], 0, 0);
+			v->tex = rect.getBottomLeft();
+			v->color = color;
+			v++;
 		}
-		m_geometry.unlockVB();
+		m_geometry.unlock_vb();
 
-		m_bUpdated = true;
+		m_updated = true;
 	}
 
 	void sprite_manager::render()
 	{
-		if (m_sprites.empty()) return;
+		if (m_sprites.empty()) 
+			return;
 
 		update();
 
-		render::effect::technique *pTech	= NULL;
+		render::effect::technique *pTech = NULL;
 
-		if (m_bAditive)
+		if (m_aditive)
 			pTech = m_effect->find_technique("aditive");
 		else
 			pTech = m_effect->find_technique("alpha");
@@ -185,14 +201,14 @@ namespace render
 				if (cur_tex != sprite.texture)
 				{
 					int cur_sprite = i - 1;
-					int nSprites = cur_sprite - start_sprite + 1;
+					int num_sprites = cur_sprite - start_sprite + 1;
 					//i == m_sprites.size()-1
-					if (nSprites > 0)
+					if (num_sprites > 0)
 					{
 						textureShaderParam->set(cur_tex);
 						m_effect->commit_changes();
-						m_geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, nSprites * 4, 6 * start_sprite, nSprites * 2);
-						nSpritesRendered += nSprites;
+						m_geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, num_sprites * 4, 6 * start_sprite, num_sprites * 2);
+						nSpritesRendered += num_sprites;
 					}
 					cur_tex = sprite.texture;
 					start_sprite = i;
@@ -201,17 +217,17 @@ namespace render
 				if (i == m_sprites.size()-1)
 				{
 					int cur_sprite = i;
-					int nSprites = i - start_sprite + 1;
-					if (nSprites > 0)
+					int num_sprites = i - start_sprite + 1;
+					if (num_sprites > 0)
 					{
 						textureShaderParam->set(cur_tex);
 						m_effect->commit_changes();
-						m_geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, nSprites * 4, 6 * start_sprite, nSprites * 2);
-						nSpritesRendered += nSprites;
+						m_geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, num_sprites * 4, 6 * start_sprite, num_sprites * 2);
+						nSpritesRendered += num_sprites;
 					}
 				}
 			}
-			m_nSpritesRendered = nSpritesRendered;
+			m_sprites_rendered = nSpritesRendered;
 
 			pass.end();
 		}
@@ -228,7 +244,7 @@ namespace render
 	{
 		// Вычисляем коэффициенты масштабирования
 		math::vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
-		m_vScale = vFrontBufferSize / m_cvScreenSize;
+		m_scale = vFrontBufferSize / m_screen_size;
 		update();
 	}
 }

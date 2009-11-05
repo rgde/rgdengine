@@ -24,7 +24,7 @@ namespace render
 	{
 		m_renderInfo.frame = m_frame.get();
 		m_renderInfo.render_func = boost::bind(&lens_flares::render, this);
-		TheSpriteManager2::get().setAditiveBlending(true);
+		TheSpriteManager2::get().set_blending(true);
 	}
 
 	void lens_flares::add_flare(const flare &f, const std::string &strTextureName)

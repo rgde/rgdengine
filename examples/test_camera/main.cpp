@@ -61,7 +61,7 @@ class CTest : public game::IDynamicObject
 		render::TheCameraManager::Get().addCamera(m_pRenderCameraSecondary);
 
 		// Создание спрайта для отображения вида вторичной камеры
-		render::TheSpriteManager::Get().setOrigin(math::Vec2f(0, 0));
+		render::TheSpriteManager::Get().set_origin(math::Vec2f(0, 0));
 
 		math::Rect	rect(0, 0, 1, 1);
 		math::Vec2f pos	(0, 0);

@@ -254,7 +254,7 @@ namespace live_tree
 		return 0;
 	};
 	
-	bool TreeObject::isDynamic( void )
+	bool TreeObject::is_dynamic( void )
 	{
 		return m_pPosOld;
 	};
@@ -994,7 +994,7 @@ namespace live_tree
 
 	void  CDynamicTreeRoot::ejectDynamic( PObject obj )
 	{
-		if( !obj->isDynamic() )
+		if( !obj->is_dynamic() )
 			CTRoot::eject(obj);
 		else
 			CTRoot::eject(obj, &obj->getDynamicAABB());
@@ -1002,7 +1002,7 @@ namespace live_tree
 
 	void CDynamicTreeRoot::injectDynamic( PObject obj )
 	{
-		if( !obj->isDynamic() )
+		if( !obj->is_dynamic() )
 			CTRoot::inject(obj);
 		else
 			CTRoot::inject(obj, &obj->getDynamicAABB());

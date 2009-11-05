@@ -5,6 +5,8 @@
 #include <rgde/core/timer.h>
 #include <rgde/core/application.h>
 
+#include <rgde/render/sprites.h>
+
 namespace game
 {
 	namespace events
@@ -194,6 +196,8 @@ namespace game
 		{
 			(*it)->update(dt);
 		}
+
+		render::TheSpriteManager::get().update();
 
 		//сменим уровень (если надо)
 		if (m_change_level)

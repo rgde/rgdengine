@@ -19,7 +19,7 @@ namespace render
 	{
 	public:
 		virtual ~base_geometry(){}
-		static base_geometry* create(const vertex::VertexDecl decl, bool isDynamic);
+		static base_geometry* create(const vertex::VertexDecl decl, bool is_dynamic);
 		virtual void update(const void* pdata, size_t bytes, size_t size_of_vertex) = 0;
 		virtual void render(primitive_type ePrimType, unsigned int nPrimNum) = 0;		
 	};
@@ -28,16 +28,16 @@ namespace render
 	class geometry
 	{
 	public:
-		typedef std::vector<Vertex> Vertexes;
+		typedef std::vector<Vertex> vertexies;
 
-		geometry(bool isDynamic = false) : 
-			m_spImpl(base_geometry::create(Vertex::get_decl(), isDynamic)),
-			m_bIsDynamic(isDynamic)
+		geometry(bool is_dynamic = false) : 
+			m_spImpl(base_geometry::create(Vertex::get_decl(), is_dynamic)),
+			m_bIsDynamic(is_dynamic)
 		{			
 			m_bChanged = false;
 		}
 
-		bool isDynamic() const {return m_bIsDynamic;}
+		bool is_dynamic() const {return m_bIsDynamic;}
 
 		void render(primitive_type ePrimType = PrimTypeTriangleList)
 		{
@@ -104,7 +104,7 @@ namespace render
 			//int vertex_count;
 			//elem->Attribute( "num", &vertex_count ); 
 
-			//Vertexes::iterator vi,end;
+			//vertexies::iterator vi,end;
 			//m_vVertexes.resize( vertex_count );
 
 			//vi = m_vVertexes.begin();
@@ -116,7 +116,7 @@ namespace render
 			//};
 		}
 
-		Vertexes& lock() {return m_vVertexes;}
+		vertexies& lock() {return m_vVertexes;}
 
 		void unlock()
 		{
@@ -163,7 +163,7 @@ namespace render
 
 	private:
 		bool						m_bIsDynamic;
-		Vertexes					m_vVertexes;
+		vertexies					m_vVertexes;
 		std::auto_ptr<base_geometry>	m_spImpl;
 		math::aaboxf				m_AABB;
 		math::Spheref				m_Sphere;
@@ -175,7 +175,7 @@ namespace render
 	{
 	public:
 		virtual ~IIndexedGeometry(){}
-		static IIndexedGeometry* create(const vertex::VertexDecl decl, bool bUse32bitIndixes);
+		static IIndexedGeometry* create(const vertex::VertexDecl decl, bool bUse32bitIndixes, bool is_dynamic);
 		//static IIndexedGeometry* create(std::wstring xml_filename);
 
 		//static IIndexedGeometry* create(TiXmlNode* root_geom_node);
@@ -341,10 +341,12 @@ namespace render
 	class indexed_geometry<Vertex, true>
 	{
 	public:
-		typedef std::vector<Vertex>			Vertexes;
-		typedef std::vector<unsigned int>	Indexes;
+		typedef std::vector<Vertex>			vertexies;
+		typedef std::vector<unsigned int>	indexies;
+		typedef Vertex vertex_type;
 
-		indexed_geometry() : m_spImpl(IIndexedGeometry::create(Vertex::get_decl(), true))
+		indexed_geometry(bool is_dynamic = false) 
+			: m_spImpl(IIndexedGeometry::create(Vertex::get_decl(), true, is_dynamic))
 		{
 			m_bChanged = false;
 		}
@@ -376,16 +378,16 @@ namespace render
 		{
 			loadGeomDataFromXmlFile(xml_filename, m_vVertexes, m_vIndexes);
 
-			unlockVB();
-			unlockIB();
+			unlock_vb();
+			unlock_ib();
 
 			updateBVolumes();
 		}
 
-		Vertexes& lockVB() {return m_vVertexes;}
-		const Vertexes& getVB() const {return m_vVertexes;}
+		vertexies& lock_vb() {return m_vVertexes;}
+		const vertexies& getVB() const {return m_vVertexes;}
 
-		void unlockVB()
+		void unlock_vb()
 		{
 			const size_t nVertexSize = sizeof(Vertex);
 			const size_t nSize = m_vVertexes.size() * nVertexSize;
@@ -394,10 +396,10 @@ namespace render
 		}
 
 
-		Indexes& lockIB()	{return m_vIndexes;}
-		const Indexes& getIB() const {return m_vIndexes;}
+		indexies& lock_ib()	{return m_vIndexes;}
+		const indexies& getIB() const {return m_vIndexes;}
 
-		void unlockIB() 
+		void unlock_ib() 
 		{
 			m_spImpl->updateIB(&m_vIndexes[0], m_vIndexes.size()*sizeof(unsigned int);)
 		}
@@ -431,9 +433,9 @@ namespace render
 		}
 
 	private:
-		Vertexes						m_vVertexes;
+		vertexies						m_vVertexes;
 		std::auto_ptr<IIndexedGeometry>	m_spImpl;
-		Indexes							m_vIndexes;
+		indexies							m_vIndexes;
 		math::aaboxf					m_AABB;
 		math::Spheref					m_Sphere;
 		bool							m_bChanged;
@@ -444,11 +446,12 @@ namespace render
 	class indexed_geometry<Vertex, false>
 	{
 	public:
-		typedef std::vector<Vertex>			Vertexes;
-		typedef std::vector<unsigned short>	Indexes;
+		typedef std::vector<Vertex>			vertexies;
+		typedef std::vector<unsigned short>	indexies;
+		typedef Vertex vertex_type;
 
-		indexed_geometry() 
-			: m_spImpl(IIndexedGeometry::create(Vertex::get_decl(), false))
+		indexed_geometry(bool is_dynamic = false) 
+			: m_spImpl(IIndexedGeometry::create(Vertex::get_decl(), false, is_dynamic))
 		{			
 			m_bChanged = false;
 		}
@@ -526,16 +529,16 @@ namespace render
 			if (!loaded)
 				loadGeomDataFromXmlFile(filename, m_vVertexes, m_vIndexes);
 
-			unlockIB();
-			unlockVB();
+			unlock_ib();
+			unlock_vb();
 
 			updateBVolumes();
 		}
 
-		Vertexes& lockVB() {return m_vVertexes;}
-		const Vertexes& getVB() const {return m_vVertexes;}
+		vertexies& lock_vb() {return m_vVertexes;}
+		const vertexies& getVB() const {return m_vVertexes;}
 
-		void unlockVB()
+		void unlock_vb()
 		{
 			if (!m_vVertexes.empty())
 			{
@@ -546,10 +549,10 @@ namespace render
 			}
 		}
 
-		Indexes& lockIB(){return m_vIndexes;}
-		const Indexes& getIB() const {return m_vIndexes;}
+		indexies& lock_ib(){return m_vIndexes;}
+		const indexies& getIB() const {return m_vIndexes;}
 
-		void unlockIB() 
+		void unlock_ib() 
 		{
 			if (!m_vIndexes.empty())
 				m_spImpl->updateIB(&m_vIndexes[0], m_vIndexes.size()*sizeof(unsigned short));
@@ -588,9 +591,9 @@ namespace render
 		}
 
 	private:
-		Vertexes						m_vVertexes;
+		vertexies						m_vVertexes;
 		std::auto_ptr<IIndexedGeometry>	m_spImpl;
-		Indexes							m_vIndexes;
+		indexies							m_vIndexes;
 		math::aaboxf					m_AABB;
 		math::Spheref					m_Sphere;
 		bool							m_bChanged;

@@ -34,7 +34,7 @@ namespace particles
 
 	protected:
 		ParticleArray		m_vParticleArray;///> Вектор частиц
-		unsigned long		m_nReservedSize; ///> Число частиц, для которого зарезервированы буферы
+		unsigned long		m_reserved_size; ///> Число частиц, для которого зарезервированы буферы
 
 	private:
 		render::effect_ptr		m_effect;
