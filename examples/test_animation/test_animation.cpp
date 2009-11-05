@@ -8,13 +8,8 @@
 class AnimationTest : public game::dynamic_object
 {
 public:
-	AnimationTest() :  m_spApp(core::application::create(L"Animation Test", 640, 480, false)),
-					   m_camera(render::render_camera::create())
+	AnimationTest() : m_camera(render::render_camera::create())
 	{
-		m_spApp->add(core::task_ptr(new core::render_task(*m_spApp, 1)));
-		m_spApp->add(core::task_ptr(new core::input_task(*m_spApp, 0)));
-		m_spApp->add(core::task_ptr(new core::game_task(*m_spApp, 2)));
-
 		m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
 		m_pMesh = render::mesh_ptr(new render::mesh);
@@ -62,10 +57,7 @@ public:
 			m_cXAxis += boost::bind(&AnimationTest::onXAxis, this, _1);
 		}
 
-
-		m_spApp->run();
-
-		m_controller.atach(0);
+		//m_controller.atach(0);
 	}
 
 protected:
@@ -103,8 +95,6 @@ protected:
 		m_spTargetCamera->rotateUp(angle);
 	}
 protected:
-	std::auto_ptr<core::application> m_spApp;
-
 	render::font_ptr			m_font;
 	math::camera_ptr			m_camera;            //указатель на камеру
 	render::texture_ptr			m_pTexture;
@@ -126,5 +116,17 @@ protected:
 // The application's entry point
 int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 {
+	using namespace core;
+
+	typedef std::auto_ptr<application> app_ptr;
+
+	app_ptr app(application::create(L"Animation Test", 640, 480, false));
+
+	app->add<render_task>(0);
+	app->add<input_task>(1, false);
+	app->add<game_task>(2);
+
 	AnimationTest r;
+
+	app->run();
 }
