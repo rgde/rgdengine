@@ -32,8 +32,8 @@ public:
 	void				deleteProcessor(processor* proc);	
 	
 protected:
-	virtual void toStream(io::write_stream& wf) const;
-	virtual void fromStream(io::read_stream& rf);
+	virtual void to_stream(io::write_stream& wf) const;
+	virtual void from_stream(io::read_stream& rf);
 
 // Акксессоры
 public:
@@ -49,7 +49,7 @@ public:
 	inline math::FloatInterp& particleMass()			{ return m_PMass; }
 	inline math::FloatInterp& particleMassSpread()		{ return m_PMassSpread; }
 	inline math::FloatInterp& particleRotationSpread()	{ return m_PRotationSpread; }
-	inline math::FloatInterp& particleVelocity()		{ return m_PVelocity; }
+	inline math::FloatInterp& particleVelocity()		{ return m_velocity; }
 	inline math::FloatInterp& particleVelocitySpread()	{ return m_PVelSpread; }
 	inline math::Vec3Interp& particleAcceleration()		{ return m_PAcceleration; }
 	inline math::Vec3Interp& getGlobalVelocityInterp()	{ return m_GlobalVelocity; }
@@ -84,7 +84,7 @@ protected:
 	math::FloatInterp	m_PMass;				// Масса частицы
 	math::FloatInterp	m_PMassSpread;			// Произвольный разброс по массе частиц
 	math::FloatInterp	m_PRotationSpread;		// разброс поворота
-	math::FloatInterp	m_PVelocity;			// скорость вылета
+	math::FloatInterp	m_velocity;			// скорость вылета
 	math::FloatInterp	m_PVelSpread;			// разброс скорости
 	math::Vec3Interp	m_PAcceleration;		// ускорение частицы
 	math::Vec3Interp	m_GlobalVelocity;		// глобальная скорость эмиттера

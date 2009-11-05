@@ -6,7 +6,7 @@
 
 namespace scene
 {
-	Scene::Scene(): m_pRoot( new math::frame )
+	Scene::Scene(): m_root( new math::frame )
 	{
 	}
 
@@ -14,42 +14,42 @@ namespace scene
 
 	math::frame_ptr& Scene::get_root()
 	{
-		return m_pRoot;
+		return m_root;
 	}
 
 	void Scene::add_manager(const scene_manager_ptr& manager)
 	{
-		m_Managers.push_back(manager);
+		m_managers.push_back(manager);
 	}
 
 	void Scene::removeManager( const scene_manager_ptr& manager )
 	{
-		m_Managers.remove( manager );
+		m_managers.remove( manager );
 	}
 
 	void Scene::debug_draw( )
 	{
-		auxDraw( m_pRoot );
+		aux_draw( m_root );
 	}
 
-	void Scene::auxDraw( math::frame_ptr frame )
+	void Scene::aux_draw( math::frame_ptr frame )
 	{
 		//frame->debug_draw();
 		//for( math::frame::children_list::iterator it = frame->get_children().begin(); it != frame->get_children().end(); ++it)
 		//{
-		//	auxDraw( (*it) );
+		//	aux_draw( (*it) );
 		//}
 	}
 
-	void Scene::toStream(io::write_stream& wf) const
+	void Scene::to_stream(io::write_stream& wf) const
 	{
-		wf << *m_pRoot;
+		wf << *m_root;
 		// manager saving
 	}
 
-	void Scene::fromStream(io::read_stream& rf)
+	void Scene::from_stream(io::read_stream& rf)
 	{
-		rf >> *m_pRoot;
+		rf >> *m_root;
 		// manager loading
 	}
 }

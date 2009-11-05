@@ -16,15 +16,15 @@ namespace scene
 		m_children.clear();
 	}
 
-	void node::update(double dTime, double dElapsedTime)
+	void node::update(double time, double elapsed_time)
 	{
 		//for (child_iter it = m_children.begin(); it != m_children.end(); ++it)
 		//{
-		//	(*it)->update(dTime, dElapsedTime);
+		//	(*it)->update(time, elapsed_time);
 		//}
 	}
 
-	void node::toStream(io::write_stream& wf)
+	void node::to_stream(io::write_stream& wf)
 	{
 		//unsigned num_children = (unsigned)m_children.size();
 		//wf << num_children;
@@ -34,7 +34,7 @@ namespace scene
 		//	wf << *(*it);
 		//}
 	}
-	void node::fromStream(io::read_stream& rf)
+	void node::from_stream(io::read_stream& rf)
 	{
 		//unsigned num_children;
 		//rf >> num_children;
@@ -48,12 +48,20 @@ namespace scene
 		//}
 	}
 
+	scene_tree::scene_tree()
+	: m_root_node("Root") 
+	{
+	}
 
-	void SceneTree::toStream(io::write_stream& wf)
+	scene_tree::~scene_tree()
+	{
+	}
+
+	void scene_tree::to_stream(io::write_stream& wf)
 	{
 		//wf << m_root_node;
 	}
-	void SceneTree::fromStream(io::read_stream& rf)
+	void scene_tree::from_stream(io::read_stream& rf)
 	{
 		//rf >> m_root_node;
 	}

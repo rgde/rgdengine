@@ -14,7 +14,7 @@ namespace particles
 	{
 		m_name = "box_emitter";
 
-		m_BoxSize.add_key(1, math::vec3f(3, 3, 3) );
+		m_box_size.add_key(1, math::vec3f(3, 3, 3) );
 
 		// public properties:
 		//REGISTER_PROPERTY(BoxSize, math::Vec3Interp)
@@ -22,7 +22,7 @@ namespace particles
 		//REGISTER_PROPERTY(Direction, math::Vec3Interp)
 		//REGISTER_PROPERTY(DirectionSpread, math::Vec3Interp)
 
-		//addProperty(new property<math::Vec3Interp>(m_BoxSize,			"BoxSize",			"Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_box_size,			"BoxSize",			"Vec3Interp"));
 		//addProperty(new property<math::Vec3Interp>(m_BoxSizeSpread,	"BoxSizeSpread",	"Vec3Interp"));
 		//addProperty(new property<math::Vec3Interp>(m_Direction,		"Direction",		"Vec3Interp"));
 		//addProperty(new property<math::Vec3Interp>(m_DirectionSpread,	"DirectionSpread",	"Vec3Interp"));
@@ -38,7 +38,7 @@ namespace particles
 	{
 		base_emitter::debug_draw();
 
-		math::vec3f size = m_BoxSize(m_fTimeNormalaized);
+		math::vec3f size = m_box_size(m_fTimeNormalaized);
 		math::vec3f size_rand = m_BoxSizeSpread(m_fTimeNormalaized);
 
 		math::vec3f direction = m_Direction(m_fTimeNormalaized);
@@ -62,11 +62,11 @@ namespace particles
 		math::vec3f dir = m_Direction.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_DirectionSpread.getValue(m_fTimeNormalaized);
 
-		float velocity = m_PVelocity.getValue(m_fTimeNormalaized) 
+		float velocity = m_velocity.getValue(m_fTimeNormalaized) 
 			+ m_Rand() * m_PVelSpread.getValue(m_fTimeNormalaized);
 
 
-		math::vec3f size = m_BoxSize.getValue(m_fTimeNormalaized)
+		math::vec3f size = m_box_size.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_BoxSizeSpread.getValue(m_fTimeNormalaized);
 
 		float x = (m_Rand()* 2.0f - 1.0f) * size[0];
@@ -83,22 +83,22 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void box_emitter::toStream(io::write_stream& wf) const
+	void box_emitter::to_stream(io::write_stream& wf) const
 	{
-		base_emitter::toStream(wf);
+		base_emitter::to_stream(wf);
 
-		wf	<< (m_BoxSize)
+		wf	<< (m_box_size)
 			<< (m_BoxSizeSpread)
 			<< (m_Direction)
 			<< (m_DirectionSpread);
 	}
 
 	//-----------------------------------------------------------------------------------
-	void box_emitter::fromStream(io::read_stream& rf)
+	void box_emitter::from_stream(io::read_stream& rf)
 	{
-		base_emitter::fromStream(rf);
+		base_emitter::from_stream(rf);
 
-		rf  >> (m_BoxSize)
+		rf  >> (m_box_size)
 			>> (m_BoxSizeSpread)
 			>> (m_Direction)
 			>> (m_DirectionSpread);

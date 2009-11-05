@@ -147,7 +147,7 @@ protected:
 			if (m_cA) m_cTargetCamera.rotateLeft(rotate);
 			if (m_cD) m_cTargetCamera.rotateRight(rotate);
 			if (m_cF) m_cTargetCamera.rotateDown(rotate);
-			if (m_cC) m_cTargetCamera.rotateUp(rotate);
+			if (m_cC) m_cTargetCamera.rotate_up(rotate);
 			if (m_cQ) m_cTargetCamera.rotateCCW(rotate);
 			if (m_cE) m_cTargetCamera.rotateCW(rotate);
 			m_cTargetCamera.getCameraPosition(vEyePt);
@@ -206,8 +206,8 @@ protected:
 
 		switch(m_nCamera)
 		{
-		case 0: m_cFirstPersonCamera.rotateUp(angle); break;
-		case 1: m_cTargetCamera.rotateUp(angle); break;
+		case 0: m_cFirstPersonCamera.rotate_up(angle); break;
+		case 1: m_cTargetCamera.rotate_up(angle); break;
 		}
 	}
 protected:

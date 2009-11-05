@@ -28,8 +28,8 @@ namespace math
         virtual VALUE interpolate(POSITION position) const = 0;
 
     protected:
-        void toStream(io::write_stream& ws) const;
-        void fromStream(io::read_stream& rs);
+        void to_stream(io::write_stream& ws) const;
+        void from_stream(io::read_stream& rs);
 
     private:
         TInterpolatorEx(const TInterpolatorEx&);
@@ -82,7 +82,7 @@ namespace math
     }
 
     template <typename VALUE, typename POSITION>
-    void TInterpolatorEx<VALUE, POSITION>::toStream(io::write_stream& ws) const
+    void TInterpolatorEx<VALUE, POSITION>::to_stream(io::write_stream& ws) const
     {
         ws << uint(m_values.size());
 
@@ -94,7 +94,7 @@ namespace math
     }
 
     template <typename VALUE, typename POSITION>
-    void TInterpolatorEx<VALUE, POSITION>::fromStream(io::read_stream& rs)
+    void TInterpolatorEx<VALUE, POSITION>::from_stream(io::read_stream& rs)
     {
         m_values.swap(Map());
 

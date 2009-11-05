@@ -29,7 +29,7 @@ namespace particles{
 		// need to manualy increment after each file format change (for code simplisity)
 		static const unsigned file_version = 1004;
 	public:
-		inline void setEmitter(base_emitter* em) { m_pParentEmitter = em; }
+		inline void setEmitter(base_emitter* em) { m_parent_emitter = em; }
 		
 		processor(base_emitter* em = 0);
 		virtual ~processor();
@@ -47,25 +47,25 @@ namespace particles{
 		void setTextureName(const std::string& texName);
 
 		// interpolators
-		inline math::FloatInterp& particleRate()				{ return m_PRate; }
+		inline math::FloatInterp& particleRate()				{ return m_rate; }
 		inline math::FloatInterp& particleResistance()			{ return m_PResistance; }
 		inline math::FloatInterp& particleSpin()				{ return m_PSpin; }
 		inline math::FloatInterp& particleSpinSpread()			{ return m_PSpinSpread; }
-		inline math::FloatInterp& particleLife()				{ return m_PLife; }
+		inline math::FloatInterp& particleLife()				{ return m_life; }
 		inline math::FloatInterp& particleLifeSpread()			{ return m_PLifeSpread; }
-		inline math::FloatInterp& particleSize()				{ return m_PSize; }
-		inline math::ColorInterp& particleColorAlpha()			{ return m_PColorAlpha; }
+		inline math::FloatInterp& particleSize()				{ return m_size; }
+		inline math::ColorInterp& particleColorAlpha()			{ return m_color_alpha; }
 		inline math::Vec3Interp& particleActingForce()			{ return m_PActingForce; }
-		inline math::Vec3Interp& particleVelocity()				{ return m_PVelocity; }
+		inline math::Vec3Interp& particleVelocity()				{ return m_velocity; }
 		inline math::Vec3Interp& particleInitialVelSpread()		{ return m_PInitialVelSpread; }
-		inline math::FloatInterp& particleVelSpreadAmplifier()	{ return m_PVelSpreadAmplifier; }
+		inline math::FloatInterp& particleVelSpreadAmplifier()	{ return m_vel_spread_amp; }
 
 		// getters/setters
-		inline bool isGlobal() const { return m_bIsGlobal; }
-		inline void setGlobal(bool b) { m_bIsGlobal = b; }
+		inline bool isGlobal() const { return m_is_global; }
+		inline void setGlobal(bool b) { m_is_global = b; }
 
-		inline bool isFading() const { return m_bIsFading; }
-		inline void setFade(bool b) { m_bIsFading = b; }
+		inline bool isFading() const { return m_is_fading; }
+		inline void setFade(bool b) { m_is_fading = b; }
 
 		inline unsigned getMaxParticles() const { return m_nMaxParticles; }
 		inline void setMaxParticles (unsigned num) { 
@@ -74,7 +74,7 @@ namespace particles{
 		}
 
 		inline int getSeed() const { return m_nMaxParticles; }
-		inline void set_seed(int seed) { m_iRndSeed = seed; }
+		inline void set_seed(int seed) { m_rnd_seed = seed; }
 
 		inline bool isVisible() const { return m_is_visible; }
 		inline void setVisible(bool visible) { m_is_visible = visible; }
@@ -82,8 +82,8 @@ namespace particles{
 		inline bool getIntenseMode() const { return m_bIntense; }
 		inline void setIntenseMode(bool intense) { m_bIntense = intense; }
 
-		inline bool getSparkMode() { return m_bIsSparks; }
-		inline void setSparkMode(bool sm) { m_bIsSparks = sm; }
+		inline bool getSparkMode() { return m_is_sparks; }
+		inline void setSparkMode(bool sm) { m_is_sparks = sm; }
 
 	protected:
 		void loadTexture();
@@ -92,16 +92,16 @@ namespace particles{
 		inline void createParticle(particle& p);
 
 		virtual void geomRender();
-		void fistTimeInit();
+		void first_time_init();
 		void updateParticle(particle& p);
 		void formTank();
 		void addNewParticles(int num2add);
 
-		virtual void toStream(io::write_stream& wf) const;
-		virtual void fromStream(io::read_stream& rf);
+		virtual void to_stream(io::write_stream& wf) const;
+		virtual void from_stream(io::read_stream& rf);
 
 	protected:
-		renderer* m_spTank;
+		renderer* m_tank;
 		render::texture_ptr m_texture;
 
 		//////////////////////////////////////////////////////////////////////////
@@ -109,7 +109,7 @@ namespace particles{
 		//////////////////////////////////////////////////////////////////////////
 		// флаг выставляется автоматически если загруженная текстура 
 		// определена как анимированная
-		bool m_bIsAnimTextureUsed;
+		bool m_is_anim_texture_used;
 		// кол-во заполненных колонок
 		unsigned char m_ucCol;
 		// кол-во заполненных строк
@@ -122,40 +122,40 @@ namespace particles{
 		unsigned char m_ucTexFrames;
 		// включено ли зацикливание текстурной анимации
 		// если нет - то анимация растянута на время жизни партикла
-		bool m_bIsTexAnimCycled;
+		bool m_is_anim_texture_cycled;
 		// скорость воспроизведения текстурной анимации
 		// в кадрах в секунду, время вычисляется по "возрасту" частицы
-		unsigned m_cTexFps;
+		unsigned m_texture_fps;
 		// animation m_Texture frame random shift 
-		unsigned m_nRndFrame;
+		unsigned m_rnd_frame;
 		// is play animation, if not - will randomize m_Texture
-		bool m_bIsPlayTexAnimation;
+		bool m_is_play_tex_anim;
 		//////////////////////////////////////////////////////////////////////////
 
-		base_emitter* m_pParentEmitter;
+		base_emitter* m_parent_emitter;
 
 		math::unit_rand_2k  rnd;
 
-		int m_iRndSeed;
+		int m_rnd_seed;
 
-		math::FloatInterp m_PRate;						// Число излучаемых частиц в единицу времени
+		math::FloatInterp m_rate;						// Число излучаемых частиц в единицу времени
 		math::FloatInterp m_PResistance;				// Трение (торможение)
 		math::FloatInterp m_PSpin;						// Вращение
 		math::FloatInterp m_PSpinSpread;
-		math::FloatInterp m_PLife;						// Время жизни (Time to live, TTL)
+		math::FloatInterp m_life;						// Время жизни (Time to live, TTL)
 		math::FloatInterp m_PLifeSpread;
-		math::FloatInterp m_PSize;						// Размер 
-		math::ColorInterp m_PColorAlpha;				// Цвет и альфа, 2 в 1
+		math::FloatInterp m_size;						// Размер 
+		math::ColorInterp m_color_alpha;				// Цвет и альфа, 2 в 1
 		math::Vec3Interp m_PActingForce;
-		math::Vec3Interp m_PVelocity;					// Скорость (XYZ)
+		math::Vec3Interp m_velocity;					// Скорость (XYZ)
 		math::Vec3Interp m_PInitialVelSpread;
-		math::FloatInterp m_PVelSpreadAmplifier;		// Усилитель начального рандома скорости
+		math::FloatInterp m_vel_spread_amp;		// Усилитель начального рандома скорости
 
 		//std::string name; // для будущего использования
 		std::string m_texture_name;
 
-		bool m_bIsFading;								// Затухает ли процессор (затухающий процессор не излучает новых частиц)
-		bool m_bIsGlobal;								// Является ли процессор глобальным (т.е. не имеющим родительских трансформаций)
+		bool m_is_fading;								// Затухает ли процессор (затухающий процессор не излучает новых частиц)
+		bool m_is_global;								// Является ли процессор глобальным (т.е. не имеющим родительских трансформаций)
 
 		bool m_bIntense;								// Меняет режим блендинга
 		math::vec3f m_fScaling;								// Масштабирование родительского эмитера
@@ -163,8 +163,8 @@ namespace particles{
 
 		float m_ngkx;
 		
-		bool m_bIsSparks;
-		bool m_bIsGeometric;
+		bool m_is_sparks;
+		bool m_is_geometric;
 		//std::string m_DffName;
 		//agl::PAtomic m_spGeom;
 
@@ -172,11 +172,11 @@ namespace particles{
 
 		bool m_bModifiersLoaded;
 		bool m_is_visible;
-		bool m_bIsTexLoaded;
+		bool m_is_texture_loaded;
 		bool m_bIsPtankInited;
 
 		float m_fNormalizedTime;		// нормированное от 0 до 1
-		float m_fRateAccum;				// собирает нецелые части от rate от кадра к кадру
+		float m_rate_accum;				// собирает нецелые части от rate от кадра к кадру
 		float m_dt;
 	};
 

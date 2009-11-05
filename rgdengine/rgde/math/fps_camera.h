@@ -29,8 +29,8 @@ namespace math
         //вращение
         void rotateRight(float angle);
         void rotateLeft(float angle) {rotateRight(-angle);}
-        void rotateUp(float angle);
-        void rotateDown(float angle) {rotateUp(-angle);}
+        void rotate_up(float angle);
+        void rotateDown(float angle) {rotate_up(-angle);}
 
         void activate();
 

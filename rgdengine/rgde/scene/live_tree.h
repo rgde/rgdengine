@@ -53,7 +53,7 @@ namespace live_tree
 	typedef std::map<PObject, point3f>		Sorted;
 
 	/// Найти ближайшее число в прогрессии(out), включающее заданное число(in)
-	bool calcProgression( const int &in, int &out );
+	bool calc_progression( const int &in, int &out );
 
 
 	////////////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ namespace live_tree
 		void					updatePos( void );
 
 	private:
-		CTRoot*				m_pRoot;
+		CTRoot*				m_root;
 
 		point3f*			m_pPosOld;
 		point3f				m_Position;
@@ -235,7 +235,7 @@ namespace live_tree
 			void				call( CTBranch* pBranch, const unsigned& iIndex, const point3f& cnt, const float& ext );
 
 			PObject		m_pExcludeObject;
-			CTRoot*		m_pRoot;
+			CTRoot*		m_root;
 			aaboxf		m_AABB;
 
 		public:
@@ -253,7 +253,7 @@ namespace live_tree
 			bool				inject( CTBranch* pBranch, const unsigned& division );
 
 			PObject		m_pObject;
-			CTRoot*		m_pRoot;
+			CTRoot*		m_root;
 			aaboxf		m_AABB;
 			int			m_LimitDivisions;
 		};
@@ -269,7 +269,7 @@ namespace live_tree
 			bool				eject( CTBranch* pBranch );
 
 			PObject		m_pObject;
-			CTRoot*		m_pRoot;
+			CTRoot*		m_root;
 			aaboxf		m_AABB;
 			int			m_LimitDivisions;
 		};

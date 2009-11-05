@@ -39,7 +39,7 @@ namespace particles
 
 		float radius = m_Radius.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_RadiusSpread.getValue(m_fTimeNormalaized);
-		float velocity = m_PVelocity.getValue(m_fTimeNormalaized) 
+		float velocity = m_velocity.getValue(m_fTimeNormalaized) 
 			+ m_Rand() * m_PVelSpread.getValue(m_fTimeNormalaized);
 
 		float angle = m_Angle.getValue(m_fTimeNormalaized);
@@ -83,9 +83,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void spherical_emitter::toStream(io::write_stream& wf) const
+	void spherical_emitter::to_stream(io::write_stream& wf) const
 	{
-		base_emitter::toStream(wf);
+		base_emitter::to_stream(wf);
 
 		wf	<< m_Radius
 			<< m_RadiusSpread
@@ -93,9 +93,9 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void spherical_emitter::fromStream(io::read_stream& rf)
+	void spherical_emitter::from_stream(io::read_stream& rf)
 	{
-		base_emitter::fromStream(rf);
+		base_emitter::from_stream(rf);
 
 		rf  >> m_Radius
 			>> m_RadiusSpread

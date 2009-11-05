@@ -20,7 +20,7 @@ namespace particles
 		effect();
 		virtual ~effect();
 		
-		inline const math::frame& getTransform() { return m_Transform; }
+		inline const math::frame& getTransform() { return m_transform; }
 		
 		void add(emitter* em);
 		void remove(emitter* em);
@@ -29,14 +29,14 @@ namespace particles
 
 		void reset();
 
-		inline void fade(){setEmittersToFade(true); m_bIsFading = true;}
-		inline bool isFading(){return m_bIsFading;}
+		inline void fade(){setEmittersToFade(true); m_is_fading = true;}
+		inline bool isFading(){return m_is_fading;}
 
 		virtual render::renderable_info&	getRenderableInfo();
 
 	protected:
-		virtual void toStream(io::write_stream& wf);
-		virtual void fromStream(io::read_stream& rf);
+		virtual void to_stream(io::write_stream& wf);
+		virtual void from_stream(io::read_stream& rf);
 
 		virtual void update(float);
 
@@ -46,9 +46,9 @@ namespace particles
 		void setEmittersToFade(bool b);
 
 	protected:
-		math::frame	m_Transform;
+		math::frame	m_transform;
 		tEmitters		m_Emitters;						// emitters
-		bool			m_bIsFading;
+		bool			m_is_fading;
 		float			old_time;
 
 	private:

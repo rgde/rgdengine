@@ -29,8 +29,8 @@ namespace particles{
 		virtual void get_particle(particle& p);
 	
 	protected:
-		virtual void toStream(io::write_stream& wf) const;
-		virtual void fromStream(io::read_stream& rf);
+		virtual void to_stream(io::write_stream& wf) const;
+		virtual void from_stream(io::read_stream& rf);
 
 	// Акксессоры
 	public:

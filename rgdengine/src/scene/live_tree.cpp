@@ -17,7 +17,7 @@
 
 namespace live_tree
 {
-	bool calcProgression( const int &in, int &out)
+	bool calc_progression( const int &in, int &out)
 	{
 		int i, shift = 16, curr = 16, src = in, dst;
 		//steps are: 16 8 4 2 1 - total 5
@@ -124,7 +124,7 @@ namespace live_tree
 	////////////////////////////////////////////////////////////////////////
 
 	TreeObject::TreeObject( void )
-		: m_pRoot(0), m_pPosOld(0)
+		: m_root(0), m_pPosOld(0)
 	{
 		// nothing
 	};
@@ -207,12 +207,12 @@ namespace live_tree
 
 	void TreeObject::setRoot( CTRoot* p )
 	{
-		m_pRoot = p;
+		m_root = p;
 	};
 
 	CTRoot* TreeObject::getRoot( void )
 	{
-		return m_pRoot;
+		return m_root;
 	};
 
 	void TreeObject::draw( void )
@@ -543,14 +543,14 @@ namespace live_tree
 	// 
 
 	CTRoot::CCollector::CCollector( CTRoot* pRoot, const aaboxf& aabb, PObject exclude )
-		: m_pRoot(pRoot), m_AABB(aabb), m_pExcludeObject(exclude)
+		: m_root(pRoot), m_AABB(aabb), m_pExcludeObject(exclude)
 	{
 		// nothing
 	};
 
 	Array& CTRoot::CCollector::operator ()( void )
 	{
-		parse(m_pRoot->getBranch(),point3f(),m_pRoot->getExt());
+		parse(m_root->getBranch(),point3f(),m_root->getExt());
 		
 		// Neonic: if got object repeats - add here sort&duplicaton removals
 		
@@ -654,20 +654,20 @@ namespace live_tree
 	// 
 
 	CTRoot::CInjector::CInjector( PObject p, CTRoot* pRoot, const aaboxf& aabb, int LimitDivisions )
-		: m_pObject(p), m_pRoot(pRoot), m_AABB(aabb), m_LimitDivisions(LimitDivisions)
+		: m_pObject(p), m_root(pRoot), m_AABB(aabb), m_LimitDivisions(LimitDivisions)
 	{
 		// nothing
 	};
 
 	bool CTRoot::CInjector::operator ()( void )
 	{
-		return parse(m_pRoot->getBranch(),point3f(),m_pRoot->getExt(),0);
+		return parse(m_root->getBranch(),point3f(),m_root->getExt(),0);
 	};
 
 	bool CTRoot::CInjector::parse( CTBranch* pBranch, const point3f& cnt, const float& ext, const unsigned& division )
 	{
 		// test for limits
-		if( division==m_LimitDivisions || ext <= m_pRoot->getBase() )
+		if( division==m_LimitDivisions || ext <= m_root->getBase() )
 			return inject(pBranch,division);
 
 		int iIndexMin =   (m_AABB.getMin()[2] > cnt[2]? AXIS_Z:0)
@@ -700,8 +700,8 @@ namespace live_tree
 	bool CTRoot::CInjector::inject( CTBranch* pBranch, const unsigned& division )
 	{
 		pBranch->getArray().push_back(m_pObject);
-		if(division > m_pRoot->m_iDeepLevel)
-			m_pRoot->m_iDeepLevel = division;
+		if(division > m_root->m_iDeepLevel)
+			m_root->m_iDeepLevel = division;
 		return 1;
 	};
 
@@ -711,20 +711,20 @@ namespace live_tree
 	// 
 
 	CTRoot::CEjector::CEjector( PObject p, CTRoot* pRoot, const aaboxf& aabb, int LimitDivisions )
-		: m_pObject(p), m_pRoot(pRoot), m_AABB(aabb), m_LimitDivisions(LimitDivisions)
+		: m_pObject(p), m_root(pRoot), m_AABB(aabb), m_LimitDivisions(LimitDivisions)
 	{
 		// nothing
 	};
 
 	bool CTRoot::CEjector::operator ()( void )
 	{
-		return parse(m_pRoot->getBranch(),point3f(),m_pRoot->getExt(),0);
+		return parse(m_root->getBranch(),point3f(),m_root->getExt(),0);
 	};
 
 	bool CTRoot::CEjector::parse( CTBranch* pBranch, const point3f& cnt, const float& ext, const unsigned& division )
 	{
 		// test for limits
-		if( division==m_LimitDivisions || ext <= m_pRoot->getBase() )
+		if( division==m_LimitDivisions || ext <= m_root->getBase() )
 			return eject(pBranch);
 
 		int iIndexMin =   (m_AABB.getMin()[2] > cnt[2]? AXIS_Z:0)

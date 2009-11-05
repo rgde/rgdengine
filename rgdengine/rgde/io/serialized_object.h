@@ -8,20 +8,20 @@ namespace io
 		friend class read_stream;
 
 	protected:
-		virtual void toStream(write_stream& wf) const = 0;
-		virtual void fromStream(read_stream& rf) = 0;
+		virtual void to_stream(write_stream& wf) const = 0;
+		virtual void from_stream(read_stream& rf) = 0;
 
 	public:
 		bool write(write_stream& wf) const
 		{
-			toStream(wf);
+			to_stream(wf);
 			// TODO: catch any exception, if so - return false;
 			return true;
 		}
 
 		bool read(read_stream& rf)
 		{
-			fromStream(rf);
+			from_stream(rf);
 			// TODO: catch any exception, if so - return false;
 			return true;
 		}

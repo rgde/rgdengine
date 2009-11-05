@@ -63,7 +63,7 @@ namespace math
 		apply();
     }
 
-    void target_camera::rotateUp(float angle)
+    void target_camera::rotate_up(float angle)
     {
 		Quatf rot;
         vec3f vAxis;
