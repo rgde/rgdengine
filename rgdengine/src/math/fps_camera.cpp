@@ -10,9 +10,9 @@ namespace math
         set_camera(camera);
 
         base::lmsg << "fps_camera::fps_camera()";
-        m_vUp       = Vec3f(0.0f, 1.0f, 0.0f);
-        m_vEyePt    = Vec3f(0.0f, 0.0f, 0.0f);
-        m_vLookatPt = Vec3f(0.0f, 0.0f, 1.0f);
+        m_vUp       = vec3f(0.0f, 1.0f, 0.0f);
+        m_vEyePt    = vec3f(0.0f, 0.0f, 0.0f);
+        m_vLookatPt = vec3f(0.0f, 0.0f, 1.0f);
     }
 
     fps_camera_ptr fps_camera::create(camera_ptr camera)
@@ -20,24 +20,24 @@ namespace math
         return fps_camera_ptr(new fps_camera(camera));
     }
 
-    void fps_camera::set_position(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)
+    void fps_camera::set_position(const vec3f& vUp, const vec3f& eye, const vec3f& look_at)
     {
         m_vUp       = vUp;
-        m_vEyePt    = vEyePt;
-        m_vLookatPt = vLookatPt;
+        m_vEyePt    = eye;
+        m_vLookatPt = look_at;
         apply();
     }
 
-    void fps_camera::get_pos(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt)
+    void fps_camera::get_pos(vec3f& vUp, vec3f& eye, vec3f& look_at)
     {
         vUp       = m_vUp;
-        vEyePt    = m_vEyePt;
-        vLookatPt = m_vLookatPt;
+        eye    = m_vEyePt;
+        look_at = m_vLookatPt;
     }
 
     void fps_camera::goForward(float delta)
     {
-		Vec3f vDir = m_vLookatPt-m_vEyePt;
+		vec3f vDir = m_vLookatPt-m_vEyePt;
 		normalize(vDir);
 		vDir*=delta;
 		m_vEyePt+=vDir;
@@ -47,8 +47,8 @@ namespace math
 
     void fps_camera::goLeft(float delta)
     {
-		Vec3f vDir = m_vLookatPt-m_vEyePt;
-		Vec3f vRight;
+		vec3f vDir = m_vLookatPt-m_vEyePt;
+		vec3f vRight;
 		cross(vRight,m_vUp,vDir);
 		normalize(vRight);
 		vRight*=delta;
@@ -59,7 +59,7 @@ namespace math
 
     void fps_camera::goUp(float delta)
     {
-		Vec3f vDir = m_vUp;
+		vec3f vDir = m_vUp;
 		normalize(vDir);
 		vDir*=delta;
 		m_vEyePt+=vDir;
@@ -70,7 +70,7 @@ namespace math
     void fps_camera::rotateRight(float angle)
     {
  		Quatf rot;
-        Vec3f vAxis = m_vUp;
+        vec3f vAxis = m_vUp;
 
 		normalize(vAxis);
         setRot(rot, AxisAnglef(angle, vAxis));
@@ -85,8 +85,8 @@ namespace math
     void fps_camera::rotateUp(float angle)
     {
 		Quatf rot;
-        Vec3f vAxis;
-        Vec3f vDir = m_vLookatPt-m_vEyePt;
+        vec3f vAxis;
+        vec3f vDir = m_vLookatPt-m_vEyePt;
 
         //боремся с гатством "взгляд вертикально вверх или вниз"
         const float fSmallAngle = 0.01f; //не позволяем приближать направление взгляда к вертикали ближе чем на этот угол
@@ -119,11 +119,11 @@ namespace math
 
     void fps_camera::apply()
     {
-        if (m_pCamera)
+        if (m_camera)
         {
             try{
-                m_pCamera->look_at(m_vEyePt,m_vLookatPt,m_vUp);
-                m_pCamera->activate();
+                m_camera->look_at(m_vEyePt,m_vLookatPt,m_vUp);
+                m_camera->activate();
             }
             catch(...){}
         }

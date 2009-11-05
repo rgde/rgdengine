@@ -39,7 +39,7 @@
 #include <gmtl/Vec.h>
 #include <gmtl/VecOps.h>
  
-namespace gmtl
+namespace math
 {
 /**
  * This class defines a triangle as a set of 3 points order in CCW fashion.

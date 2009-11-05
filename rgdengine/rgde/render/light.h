@@ -30,7 +30,7 @@ namespace render
 		const math::Color& getAmbient() const;
 		void               setAmbient(const math::Color& ambient);
 
-		void setDirection(const math::Vec3f& direction);
+		void setDirection(const math::vec3f& direction);
 
 		bool isEnabled() const;
 		void setEnabled(bool bEnabled);

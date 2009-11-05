@@ -232,11 +232,11 @@ namespace render
 			return true;
 		}
 
-		bool set(const math::Matrix44f& value)
+		bool set(const math::matrix44f& value)
 		{
 			if (FAILED(m_effect->SetMatrix(m_Handle, (const D3DXMATRIX*)&value)))
 			{
-				base::lwrn << "EffectParam::set(math::Matrix44f& value) failed.";
+				base::lwrn << "EffectParam::set(math::matrix44f& value) failed.";
 				return false;
 			}
 
@@ -245,7 +245,7 @@ namespace render
 
 		bool set(const math::Color& value)
 		{
-			if (FAILED(m_effect->SetVector(m_Handle, (const D3DXVECTOR4*)&math::Vec4f(value))))
+			if (FAILED(m_effect->SetVector(m_Handle, (const D3DXVECTOR4*)&math::vec4f(value))))
 			{
 				base::lwrn << "EffectParam::set(math::Color& value) failed.";
 				return false;
@@ -254,33 +254,33 @@ namespace render
 			return true;
 		}
 
-		bool set(const math::Vec4f& value)
+		bool set(const math::vec4f& value)
 		{
 			if (FAILED(m_effect->SetVector(m_Handle, (const D3DXVECTOR4*)&value)))
 			{
-				base::lwrn << "EffectParam::set(math::Vec4f& value) failed.";
+				base::lwrn << "EffectParam::set(math::vec4f& value) failed.";
 				return false;
 			}
 
 			return true;
 		}
 
-		bool set(const math::Vec3f& value)
+		bool set(const math::vec3f& value)
 		{
 			if (FAILED(m_effect->SetVector(m_Handle, (const D3DXVECTOR4*)&value)))
 			{
-				base::lwrn << "EffectParam::set(math::Vec3f& value) failed.";
+				base::lwrn << "EffectParam::set(math::vec3f& value) failed.";
 				return false;
 			}
 
 			return true;
 		}
 
-		bool set(const math::Vec2f& value)
+		bool set(const math::vec2f& value)
 		{
 			if (FAILED(m_effect->SetVector(m_Handle, (const D3DXVECTOR4*)&value)))
 			{
-				base::lwrn << "EffectParam::set(math::Vec2f& value) failed.";
+				base::lwrn << "EffectParam::set(math::vec2f& value) failed.";
 				return false;
 			}
 
@@ -345,44 +345,44 @@ namespace render
 			return true;
 		}
 
-		bool set(const math::Matrix44f* value, int num)
+		bool set(const math::matrix44f* value, int num)
 		{
 			if (FAILED(m_effect->SetMatrixArray(m_Handle, (const D3DXMATRIX*)value, num)))
 			{
-				base::lwrn << "EffectParam::set(math::Matrix44f* value, int num) failed.";
+				base::lwrn << "EffectParam::set(math::matrix44f* value, int num) failed.";
 				return false;
 			}
 
 			return true;
 		}
 
-		bool set(const math::Vec4f* value, int num)
+		bool set(const math::vec4f* value, int num)
 		{
 			if (FAILED(m_effect->SetVectorArray(m_Handle, (const D3DXVECTOR4*)value, num)))
 			{
-				base::lwrn << "EffectParam::set(math::Vec4f* value, int num) failed.";
+				base::lwrn << "EffectParam::set(math::vec4f* value, int num) failed.";
 				return false;
 			}
 
 			return true;
 		}
 
-		bool set(const math::Vec3f* value, int num)
+		bool set(const math::vec3f* value, int num)
 		{
 			if (FAILED(m_effect->SetVectorArray(m_Handle, (const D3DXVECTOR4*)value, num)))
 			{
-				base::lwrn << "EffectParam::set(math::Vec3f* value, int num) failed.";
+				base::lwrn << "EffectParam::set(math::vec3f* value, int num) failed.";
 				return false;
 			}
 
 			return true;
 		}
 
-		bool set(const math::Vec2f* value, int num)
+		bool set(const math::vec2f* value, int num)
 		{
 			if (FAILED(m_effect->SetVectorArray(m_Handle, (const D3DXVECTOR4*)value, num)))
 			{
-				base::lwrn << "EffectParam::set(math::Vec2f* value, int num) failed.";
+				base::lwrn << "EffectParam::set(math::vec2f* value, int num) failed.";
 				return false;
 			}
 

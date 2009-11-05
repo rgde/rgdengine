@@ -35,14 +35,14 @@
 #ifndef _GMTL_DEFINES_H
 #define _GMTL_DEFINES_H
 
-namespace gmtl
+namespace math
 {
    /** use the values in this enum to index vector data 
     *  types (such as Vec, Point, Quat).
     *
-    * <h3> "Example (access elements in a Vec3f):" </h3>
+    * <h3> "Example (access elements in a vec3f):" </h3>
     * \code
-    *    Vec3f vec;
+    *    vec3f vec;
     *    vec[Xelt] = 1.0f;
     *    vec[Yelt] = 3.0f;
     *    vec[Zelt] = 2.0f;
@@ -74,7 +74,7 @@ namespace gmtl
    const float GMTL_VEC_EQUAL_EPSILON = 0.0001f; // Epsilon for vectors to be equal
    /** @} */
    
-#define GMTL_NEAR(x,y,eps) (gmtl::Math::abs((x)-(y))<(eps))
+#define GMTL_NEAR(x,y,eps) (math::Math::abs((x)-(y))<(eps))
 
 };
 

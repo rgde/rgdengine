@@ -6,9 +6,9 @@
 
 namespace math
 {
-	const Matrix44f  base_camera::get_view_matrix()	const 
+	const matrix44f  base_camera::get_view_matrix()	const 
 	{
-		Matrix44f m = frame::get_full_tm();
+		matrix44f m = frame::get_full_tm();
 		math::invert(m);
 		return m;		
 	}
@@ -24,7 +24,7 @@ namespace math
 							0,		0,		zf/(zf-zn),		1,
 							0,		0,		-zn*zf/(zf-zn), 0);
 
-		gmtl::transpose(m_projection);
+		math::transpose(m_projection);
 
 		//Neonic: octree
 		//setRadius(zn);
@@ -32,7 +32,7 @@ namespace math
 
 	void base_camera::activate()
 	{
-		m_frustum.CalculateFrustum(*this);
+		m_frustum.calculate(*this);
 
 		//Neonic: octree. Этот код выполняет обновление положения камеры в дереве,
 		// т.к. вызывается из выведенных камерах.

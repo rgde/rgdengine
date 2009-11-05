@@ -155,14 +155,14 @@ namespace base
 	font_manip font(int col, int style = 0);
 
 	//-----------------------------------------------------------------------------------
-	inline log& operator << ( log& l, math::Vec3f& v )
+	inline log& operator << ( log& l, math::vec3f& v )
 	{
 		l << "(" << v[0] << "," << v[1] << "," << v[2] << ")\n";
 		return l;
 	}
 
 	//-----------------------------------------------------------------------------------
-	inline log& operator << ( log& l, math::Vec2f& v )
+	inline log& operator << ( log& l, math::vec2f& v )
 	{
 		l << "(" << v[0] << "," << v[1] << ")\n";
 		return l;
@@ -193,7 +193,7 @@ namespace base
 	}
 
 	//-----------------------------------------------------------------------------------
-	inline log& operator << ( log& l, math::Vec4f& v )
+	inline log& operator << ( log& l, math::vec4f& v )
 	{
 		l << "(" << v[0] << "," << v[1] << "," << v[2] << "," << v[3] << ")\n";
 		return l;

@@ -39,7 +39,7 @@
 #include <gmtl/Plane.h>
 #include <gmtl/Math.h>
 
-namespace gmtl
+namespace math
 {
 
 /** @ingroup Ops Plane 
@@ -143,9 +143,9 @@ void reflect( Point<DATA_TYPE, SIZE>& result,
               const Plane<DATA_TYPE>& plane,
               const Point<DATA_TYPE, SIZE>& point )
 {
-   gmtl::Point<DATA_TYPE, SIZE> point_on_plane;
+   math::Point<DATA_TYPE, SIZE> point_on_plane;
    findNearestPt( plane, point, point_on_plane );
-   gmtl::Vec<DATA_TYPE, SIZE> dir = point_on_plane - point;
+   math::Vec<DATA_TYPE, SIZE> dir = point_on_plane - point;
    result = point + (dir * DATA_TYPE(2.0f));
 }
 /** @} */
@@ -207,7 +207,7 @@ inline bool isEqual( const Plane<DATA_TYPE>& p1, const Plane<DATA_TYPE>& p2,
 /** @} */
 
 
-} // namespace gmtl
+} // namespace math
 
 #endif
 

@@ -17,7 +17,7 @@ namespace render
 	{
 	public:
 		static PFlameRenderer create(const std::string& tex, const math::Color& color, 
-			const math::Vec3f& pos, const math::Vec2f& size, uint fps,  const std::vector<math::frame_ptr>& vVector);
+			const math::vec3f& pos, const math::vec2f& size, uint fps,  const std::vector<math::frame_ptr>& vVector);
 
 		static PFlameRenderer create(const std::string& file_name, const std::vector<math::frame_ptr>& vVector);
 	
@@ -25,8 +25,8 @@ namespace render
 		void  setFPS(float fFPS) {m_fFPS = fFPS;}
 
 	private:
-		flame_fx(const std::string& tex, const math::Color& color, const math::Vec3f& pos, 
-			const math::Vec2f& size, uint fps, const std::vector<math::frame_ptr>& vVector);
+		flame_fx(const std::string& tex, const math::Color& color, const math::vec3f& pos, 
+			const math::vec2f& size, uint fps, const std::vector<math::frame_ptr>& vVector);
 
 		void readTNF(const std::string& file_name);
 		void render();

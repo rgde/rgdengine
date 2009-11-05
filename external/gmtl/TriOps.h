@@ -39,7 +39,7 @@
 #include <gmtl/Generate.h>
 #include <gmtl/VecOps.h>
 
-namespace gmtl
+namespace math
 {
 /** @ingroup Ops Tri
  *  @name Triangle Operations
@@ -70,7 +70,7 @@ Point<DATA_TYPE, 3> center( const Tri<DATA_TYPE>& tri )
 template< class DATA_TYPE >
 Vec<DATA_TYPE, 3> normal( const Tri<DATA_TYPE>& tri )
 {
-   Vec<DATA_TYPE, 3> normal = makeCross( gmtl::Vec<DATA_TYPE,3>(tri[1] - tri[0]), gmtl::Vec<DATA_TYPE,3>(tri[2] - tri[0]) );
+   Vec<DATA_TYPE, 3> normal = makeCross( math::Vec<DATA_TYPE,3>(tri[1] - tri[0]), math::Vec<DATA_TYPE,3>(tri[2] - tri[0]) );
    normalize( normal );
    return normal;
 }
@@ -133,7 +133,7 @@ bool isEqual( const Tri<DATA_TYPE>& tri1, const Tri<DATA_TYPE>& tri2,
 }
 /** @} */
 
-} // namespace gmtl
+} // namespace math
 
 #endif
 

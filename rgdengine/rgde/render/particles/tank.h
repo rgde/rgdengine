@@ -11,8 +11,8 @@ namespace particles
 		/// Структура с информацией по частице 
 		struct SParticle
 		{
-			math::Vec3f		pos;			///> Позиция
-			math::Vec2f		size;			///> Размер
+			math::vec3f		pos;			///> Позиция
+			math::vec2f		size;			///> Размер
 			float			spin;			///> Поворот
 			unsigned long	color;			///> Цвет
 			unsigned int    nTile; //Temporary

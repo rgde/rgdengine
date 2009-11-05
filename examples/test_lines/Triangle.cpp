@@ -38,7 +38,7 @@ namespace lines_test
 		else
 		{
 			m_color = math::Color( 128, 0, 255, static_cast<unsigned char> (rangeRandom (0, 255)) );
-			m_color_range = math::Vec2f(0,1);
+			m_color_range = math::vec2f(0,1);
 			m_color_delta = 0.01f;
 		}
 	}

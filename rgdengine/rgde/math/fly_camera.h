@@ -15,8 +15,8 @@ namespace math
         static free_camera_ptr create(camera_ptr camera);
 
         //posotion
-        void set_position(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt);
-        void get_pos(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt);
+        void set_position(const vec3f& vUp, const vec3f& eye, const vec3f& look_at);
+        void get_pos(vec3f& vUp, vec3f& eye, vec3f& look_at);
 
         //moving
         void goForward(float delta);
@@ -40,9 +40,9 @@ namespace math
         void apply();
         void doOrthoNormal();
 
-        Vec3f m_vUp;
-        Vec3f m_vEyePt;
-        Vec3f m_vLookatPt;
+        vec3f m_vUp;
+        vec3f m_vEyePt;
+        vec3f m_vLookatPt;
     };
 
 } //namespace math

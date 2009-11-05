@@ -25,7 +25,7 @@
 
 namespace math
 {
-	using namespace gmtl;
+	//using namespace math;
 	using namespace Math;
 }
 

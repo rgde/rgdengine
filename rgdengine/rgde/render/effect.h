@@ -60,11 +60,11 @@ namespace render
 			virtual bool set(float value) = 0;
 			virtual bool set(const std::string& value) = 0;
 			virtual bool set(const math::Matrix33f& value) = 0;
-			virtual bool set(const math::Matrix44f& value) = 0;
+			virtual bool set(const math::matrix44f& value) = 0;
 			virtual bool set(const math::Color& value) = 0;
-			virtual bool set(const math::Vec4f& value) = 0;
-			virtual bool set(const math::Vec3f& value) = 0;
-			virtual bool set(const math::Vec2f& value) = 0;
+			virtual bool set(const math::vec4f& value) = 0;
+			virtual bool set(const math::vec3f& value) = 0;
+			virtual bool set(const math::vec2f& value) = 0;
 			virtual bool set(const texture_ptr& value) = 0;
 
 			template <class T>
@@ -82,10 +82,10 @@ namespace render
 			virtual bool set(const int* value, int num) = 0;
 			virtual bool set(const float* value, int num) = 0;
 			virtual bool set(const math::Matrix33f* value, int num) = 0;
-			virtual bool set(const math::Matrix44f* value, int num) = 0;
-			virtual bool set(const math::Vec4f* value, int num) = 0;
-			virtual bool set(const math::Vec3f* value, int num) = 0;
-			virtual bool set(const math::Vec2f* value, int num) = 0;
+			virtual bool set(const math::matrix44f* value, int num) = 0;
+			virtual bool set(const math::vec4f* value, int num) = 0;
+			virtual bool set(const math::vec3f* value, int num) = 0;
+			virtual bool set(const math::vec2f* value, int num) = 0;
 		};
 
 		class technique

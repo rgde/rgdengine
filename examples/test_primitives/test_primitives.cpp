@@ -35,9 +35,9 @@ public:
 		m_spApp->add(core::task_ptr(new core::render_task(*m_spApp,1)));
 		m_spApp->add(core::task_ptr(new core::game_task(*m_spApp,2)));
 
-		math::Vec3f vEyePt( 0.0f, 0, -30 );
-		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
-		math::Vec3f vUpVec( 0.0f, 1.0f, 0.0f );
+		math::vec3f eye( 0.0f, 0, -30 );
+		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
+		math::vec3f up_vec( 0.0f, 1.0f, 0.0f );
 
 		m_camera = render::render_camera::create();
 		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
@@ -45,7 +45,7 @@ public:
 
 
 		m_spTargetCamera = math::target_camera::create(m_camera);
-		m_spTargetCamera->set_position(vUpVec,vEyePt,vLookatPt);
+		m_spTargetCamera->set_position(up_vec,eye,look_at);
 
         {
             using namespace input;
@@ -70,7 +70,7 @@ public:
 	
 		//render::CPointLight *pLight = new render::CPointLight("point1");
 		//scene::TheScene::get().get_root()->add(pLight);
-		//pLight->set_position(math::Vec3f(0,0,5));
+		//pLight->set_position(math::vec3f(0,0,5));
 
 		//pLight->setDiffuse(math::Color(230, 170, 170, 0));
 		//pLight->setRange(100);
@@ -79,7 +79,7 @@ public:
 
 		m_pMySuper = boost::intrusive_ptr<SceneHelper>(new SceneHelper(m_pGeometry));
 		scene::TheScene::get().get_root()->add(m_pMySuper);
-		m_pMySuper->set_position(math::Vec3f(0,0,-5));
+		m_pMySuper->set_position(math::vec3f(0,0,-5));
 
 		m_spApp->run();
 	}

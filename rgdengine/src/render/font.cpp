@@ -121,12 +121,12 @@ namespace render
 
 		virtual void render(const std::wstring &text, const math::Rect &rect, unsigned int color, bool isDrawShadow, int flags)
 		{
-			const math::Vec2f virtSize(800, 600);
+			const math::vec2f virtSize(800, 600);
 
 			unsigned	nShadowDistance	= 2;
 			unsigned	nShadowColor	= 0xFF000000; //Black
-			math::Vec2f	screen_size		= render::render_device::get().getBackBufferSize();
-			math::Vec2f	ratio = screen_size / virtSize;
+			math::vec2f	screen_size		= render::render_device::get().getBackBufferSize();
+			math::vec2f	ratio = screen_size / virtSize;
 
 			font_manager& rm = TheFontRenderManager::get();
 

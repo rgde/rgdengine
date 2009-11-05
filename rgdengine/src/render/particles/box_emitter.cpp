@@ -14,7 +14,7 @@ namespace particles
 	{
 		m_name = "box_emitter";
 
-		m_BoxSize.add_key(1, math::Vec3f(3, 3, 3) );
+		m_BoxSize.add_key(1, math::vec3f(3, 3, 3) );
 
 		// public properties:
 		//REGISTER_PROPERTY(BoxSize, math::Vec3Interp)
@@ -38,16 +38,16 @@ namespace particles
 	{
 		base_emitter::debug_draw();
 
-		math::Vec3f size = m_BoxSize(m_fTimeNormalaized);
-		math::Vec3f size_rand = m_BoxSizeSpread(m_fTimeNormalaized);
+		math::vec3f size = m_BoxSize(m_fTimeNormalaized);
+		math::vec3f size_rand = m_BoxSizeSpread(m_fTimeNormalaized);
 
-		math::Vec3f direction = m_Direction(m_fTimeNormalaized);
-		math::Vec3f direction_rand = m_DirectionSpread(m_fTimeNormalaized);
+		math::vec3f direction = m_Direction(m_fTimeNormalaized);
+		math::vec3f direction_rand = m_DirectionSpread(m_fTimeNormalaized);
 
-		math::Matrix44f m = getTransform().get_full_tm();
+		math::matrix44f m = getTransform().get_full_tm();
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
-		line_manager.add_box( m, (math::Vec3f)(size + size_rand), math::Color(0, 255, 0, 255) );
-		line_manager.add_box( m, (math::Vec3f)(size - size_rand), math::Color(0, 255, 0, 255) );
+		line_manager.add_box( m, (math::vec3f)(size + size_rand), math::Color(0, 255, 0, 255) );
+		line_manager.add_box( m, (math::vec3f)(size - size_rand), math::Color(0, 255, 0, 255) );
 
 		line_manager.add_box( m, size, math::Color(0, 255, 0, 255) );
 
@@ -59,21 +59,21 @@ namespace particles
 	{
 		base_emitter::get_particle(p);
 
-		math::Vec3f dir = m_Direction.getValue(m_fTimeNormalaized)
+		math::vec3f dir = m_Direction.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_DirectionSpread.getValue(m_fTimeNormalaized);
 
 		float velocity = m_PVelocity.getValue(m_fTimeNormalaized) 
 			+ m_Rand() * m_PVelSpread.getValue(m_fTimeNormalaized);
 
 
-		math::Vec3f size = m_BoxSize.getValue(m_fTimeNormalaized)
+		math::vec3f size = m_BoxSize.getValue(m_fTimeNormalaized)
 			+ (m_Rand()* 2.0f - 1.0f) * m_BoxSizeSpread.getValue(m_fTimeNormalaized);
 
 		float x = (m_Rand()* 2.0f - 1.0f) * size[0];
 		float y = (m_Rand()* 2.0f - 1.0f) * size[1];
 		float z = (m_Rand()* 2.0f - 1.0f) * size[2];
 
-		math::Vec3f pos(x, y, z);
+		math::vec3f pos(x, y, z);
 
 		p.initial_pos = pos;
 		//math::normalize( pos );

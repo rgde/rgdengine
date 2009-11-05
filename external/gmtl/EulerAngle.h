@@ -37,7 +37,7 @@
 
 #include <gmtl/Math.h>     // for rotation order
  
-namespace gmtl
+namespace math
 {
 
 /** EulerAngle: Represents a group of euler angles.
@@ -155,6 +155,6 @@ typedef EulerAngle<double, ZYX> EulerAngleZYXd;
 typedef EulerAngle<float, ZXY> EulerAngleZXYf;
 typedef EulerAngle<double, ZXY> EulerAngleZXYd;
 
-} // end of namespace gmtl
+} // end of namespace math
 
 #endif

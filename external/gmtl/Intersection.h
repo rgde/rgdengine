@@ -49,7 +49,7 @@
 #include <gmtl/Tri.h>
 #include <gmtl/PlaneOps.h>
 
-namespace gmtl
+namespace math
 {
    /**
     * Tests if the given AABoxes intersect with each other. Sharing an edge IS
@@ -135,7 +135,7 @@ namespace gmtl
       Vec<DATA_TYPE, 3> overlap2(DATA_TYPE(1), DATA_TYPE(1), DATA_TYPE(1));
 
       // Check if the boxes already overlap
-      if (gmtl::intersect(box1, box2))
+      if (math::intersect(box1, box2))
       {
          firstContact = secondContact = DATA_TYPE(0);
          return true;
@@ -186,8 +186,8 @@ namespace gmtl
     * @note Internal function for performing an intersection test between an
     *       axis-aligned bounding box and a ray. User code should not call this
     *       function directly. It is used to capture the common code between
-    *       the gmtl::Ray<T> and gmtl::LineSeg<T> overloads of
-    *       gmtl::intersect() when intersecting with a gmtl::AABox<T>.
+    *       the math::Ray<T> and math::LineSeg<T> overloads of
+    *       math::intersect() when intersecting with a math::AABox<T>.
     */
    template<class DATA_TYPE>
    bool intersectAABoxRay(const AABox<DATA_TYPE>& box,
@@ -200,7 +200,7 @@ namespace gmtl
       const DATA_TYPE epsilon(0.0000001);
 
       // YZ plane.
-      if ( gmtl::Math::abs(ray.mDir[0]) < epsilon )
+      if ( math::Math::abs(ray.mDir[0]) < epsilon )
       {
          // Ray parallel to plane.
          if ( ray.mOrigin[0] < box.mMin[0] || ray.mOrigin[0] > box.mMax[0] )
@@ -210,7 +210,7 @@ namespace gmtl
       }
 
       // XZ plane.
-      if ( gmtl::Math::abs(ray.mDir[1]) < epsilon )
+      if ( math::Math::abs(ray.mDir[1]) < epsilon )
       {
          // Ray parallel to plane.
          if ( ray.mOrigin[1] < box.mMin[1] || ray.mOrigin[1] > box.mMax[1] )
@@ -220,7 +220,7 @@ namespace gmtl
       }
 
       // XY plane.
-      if ( gmtl::Math::abs(ray.mDir[2]) < epsilon )
+      if ( math::Math::abs(ray.mDir[2]) < epsilon )
       {
          // Ray parallel to plane.
          if ( ray.mOrigin[2] < box.mMin[2] || ray.mOrigin[2] > box.mMax[2] )
@@ -515,7 +515,7 @@ namespace gmtl
    template<class DATA_TYPE>
    bool intersect(const Sphere<DATA_TYPE>& sph, const AABox<DATA_TYPE>& box)
    {
-      return gmtl::intersect(box, sph);
+      return math::intersect(box, sph);
    }
 
    /**
@@ -527,7 +527,7 @@ namespace gmtl
    template<class DATA_TYPE>
    bool intersect( const Sphere<DATA_TYPE>& sphere, const Point<DATA_TYPE, 3>& point )
    {
-      gmtl::Vec<DATA_TYPE, 3> offset = point - sphere.getCenter();
+      math::Vec<DATA_TYPE, 3> offset = point - sphere.getCenter();
       DATA_TYPE dist = lengthSquared( offset ) - sphere.getRadius() * sphere.getRadius();
 
       // point is inside the sphere when true
@@ -661,7 +661,7 @@ namespace gmtl
          const T rsq = sphere.getRadius() * sphere.getRadius();
          const Vec<T, 3> dist = ray.getOrigin() - sphere.getCenter();
          const T a = lengthSquared( dist ) - rsq;
-         const T b = lengthSquared( gmtl::Vec<T,3>(dist + ray.getDir()) ) - rsq;
+         const T b = lengthSquared( math::Vec<T,3>(dist + ray.getDir()) ) - rsq;
 
          bool inside1 = a <= T( 0 );
          bool inside2 = b <= T( 0 );
@@ -749,7 +749,7 @@ namespace gmtl
       // t = -(n·P + d)
       Vec<DATA_TYPE, 3> N( plane.getNormal() );
       float denom( dot(N,ray.getDir()) );
-      if(gmtl::Math::abs(denom) < eps)    // Ray parallel to plane
+      if(math::Math::abs(denom) < eps)    // Ray parallel to plane
       {
          t = 0;
          if(distance(plane, ray.mOrigin) < eps)     // Test for ray on plane
@@ -804,10 +804,10 @@ namespace gmtl
       edge2 = tri[2] - tri[0];
 
       /* begin calculating determinant - also used to calculate U parameter */
-      gmtl::cross( pvec, ray.getDir(), edge2 );
+      math::cross( pvec, ray.getDir(), edge2 );
 
       /* if determinant is near zero, ray lies in plane of triangle */
-      det = gmtl::dot( edge1, pvec );
+      det = math::dot( edge1, pvec );
 
       if (det < EPSILON)
          return false;
@@ -816,20 +816,20 @@ namespace gmtl
       tvec = ray.getOrigin() - tri[0];
 
       /* calculate U parameter and test bounds */
-      u = gmtl::dot( tvec, pvec );
+      u = math::dot( tvec, pvec );
       if (u < 0.0 || u > det)
          return false;
 
       /* prepare to test V parameter */
-      gmtl::cross( qvec, tvec, edge1 );
+      math::cross( qvec, tvec, edge1 );
 
       /* calculate V parameter and test bounds */
-      v = gmtl::dot( ray.getDir(), qvec );
+      v = math::dot( ray.getDir(), qvec );
       if (v < 0.0 || u + v > det)
          return false;
 
       /* calculate t, scale parameters, ray intersects triangle */
-      t = gmtl::dot( edge2, qvec );
+      t = math::dot( edge2, qvec );
       inv_det = ((DATA_TYPE)1.0) / det;
       t *= inv_det;
       u *= inv_det;

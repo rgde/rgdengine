@@ -10,9 +10,9 @@ namespace math
         set_camera(camera);
 
         base::lmsg << "free_camera::free_camera()";
-        m_vUp       = Vec3f(0.0f, 1.0f, 0.0f);
-        m_vEyePt    = Vec3f(0.0f, 0.0f, 0.0f);
-        m_vLookatPt = Vec3f(0.0f, 0.0f, 1.0f);
+        m_vUp       = vec3f(0.0f, 1.0f, 0.0f);
+        m_vEyePt    = vec3f(0.0f, 0.0f, 0.0f);
+        m_vLookatPt = vec3f(0.0f, 0.0f, 1.0f);
         doOrthoNormal();
     }
 
@@ -21,24 +21,24 @@ namespace math
         return free_camera_ptr(new free_camera(camera));
     }
 
-    void free_camera::set_position(const Vec3f& vUp, const Vec3f& vEyePt, const Vec3f& vLookatPt)
+    void free_camera::set_position(const vec3f& vUp, const vec3f& eye, const vec3f& look_at)
     {
         m_vUp       = vUp;
-        m_vEyePt    = vEyePt;
-        m_vLookatPt = vLookatPt;
+        m_vEyePt    = eye;
+        m_vLookatPt = look_at;
         apply();
     }
 
-    void free_camera::get_pos(Vec3f& vUp, Vec3f& vEyePt, Vec3f& vLookatPt)
+    void free_camera::get_pos(vec3f& vUp, vec3f& eye, vec3f& look_at)
     {
         vUp       = m_vUp;
-        vEyePt    = m_vEyePt;
-        vLookatPt = m_vLookatPt;
+        eye    = m_vEyePt;
+        look_at = m_vLookatPt;
     }
 
     void free_camera::goForward(float delta)
     {
-        Vec3f vDelta = m_vLookatPt-m_vEyePt;
+        vec3f vDelta = m_vLookatPt-m_vEyePt;
         normalize(vDelta);
         vDelta *= delta;
 
@@ -50,8 +50,8 @@ namespace math
 
     void free_camera::goLeft(float delta)
     {
-        Vec3f vDelta;
-        cross(vDelta, m_vUp, Vec3f(m_vLookatPt-m_vEyePt));
+        vec3f vDelta;
+        cross(vDelta, m_vUp, vec3f(m_vLookatPt-m_vEyePt));
         normalize(vDelta);
         vDelta *= delta;
 
@@ -63,7 +63,7 @@ namespace math
 
     void free_camera::goUp(float delta)
     {
-        Vec3f vDelta = m_vUp;
+        vec3f vDelta = m_vUp;
         normalize(vDelta);
         vDelta *= delta;
 
@@ -76,7 +76,7 @@ namespace math
     void free_camera::rotateRight(float angle)
     {
         Quatf rot;
-        Vec3f vAxis = m_vUp;
+        vec3f vAxis = m_vUp;
 
         normalize(vAxis);
         setRot(rot, AxisAnglef(angle, vAxis));
@@ -88,9 +88,9 @@ namespace math
     void free_camera::rotateUp(float angle)
     {
         Quatf rot;
-        Vec3f vAxis;
+        vec3f vAxis;
 
-        cross(vAxis, m_vUp, Vec3f(m_vLookatPt-m_vEyePt));
+        cross(vAxis, m_vUp, vec3f(m_vLookatPt-m_vEyePt));
         normalize(vAxis);
         setRot(rot, AxisAnglef(angle, vAxis));
 
@@ -102,7 +102,7 @@ namespace math
     void free_camera::rotateCW(float angle)
     {
         Quatf rot;
-        Vec3f vAxis = m_vLookatPt-m_vEyePt;
+        vec3f vAxis = m_vLookatPt-m_vEyePt;
 
         normalize(vAxis);
         setRot(rot, AxisAnglef(angle, vAxis));
@@ -119,11 +119,11 @@ namespace math
     void free_camera::apply()
     {
         doOrthoNormal();
-        if (m_pCamera)
+        if (m_camera)
         {
             try{
-                m_pCamera->look_at(m_vEyePt,m_vLookatPt,m_vUp);
-                m_pCamera->activate();
+                m_camera->look_at(m_vEyePt,m_vLookatPt,m_vUp);
+                m_camera->activate();
             }
             catch(...){}
         }
@@ -134,11 +134,11 @@ namespace math
     {
         normalize(m_vUp);
 
-        Vec3f vForward = m_vLookatPt-m_vEyePt;
+        vec3f vForward = m_vLookatPt-m_vEyePt;
         normalize(vForward);
 
         //m_vUp
-        Vec3f vTmp;
+        vec3f vTmp;
         cross(vTmp, m_vUp, vForward);
         cross(m_vUp, vForward, vTmp);
 

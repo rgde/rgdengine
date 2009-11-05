@@ -106,11 +106,11 @@ namespace particles{
 
 		p.color = m_PColorAlpha(t);
 
-		math::Vec3f velocity = m_PVelocity(t);
+		math::vec3f velocity = m_PVelocity(t);
 		
 		// setGlobal acceleration
-		//const math::Vec3f &acceleration = m_pParentEmitter->getAcceleration(m_bIsGlobal);
-		const math::Vec3f force = m_PActingForce(m_fNormalizedTime);
+		//const math::vec3f &acceleration = m_pParentEmitter->getAcceleration(m_bIsGlobal);
+		const math::vec3f force = m_PActingForce(m_fNormalizedTime);
 
 		p.vel += dt * (/*acceleration + */force * 0.5f / p.mass);
 		
@@ -276,9 +276,9 @@ namespace particles{
 		if (!p.ttl)
 			p.dead = true;
 
-		math::Vec3f ivs = m_PInitialVelSpread.getValue(m_fNormalizedTime);
+		math::vec3f ivs = m_PInitialVelSpread.getValue(m_fNormalizedTime);
 
-		p.vel_spread = math::Vec3f(ivs[0] * (rnd()*2.0f - 1.0f),
+		p.vel_spread = math::vec3f(ivs[0] * (rnd()*2.0f - 1.0f),
 							ivs[1] * (rnd()*2.0f - 1.0f),
 							ivs[2] * (rnd()*2.0f - 1.0f));
 
@@ -318,12 +318,12 @@ namespace particles{
 		if( !m_is_visible )
 			return;
 
-		math::Matrix44f m = getLTM();
+		math::matrix44f m = getLTM();
 
 		if (m_bIsGlobal)
-			m = math::setTrans( m, math::Vec3f(0,0,0) );
+			m = math::setTrans( m, math::vec3f(0,0,0) );
 
-		math::Vec3f center, vel;
+		math::vec3f center, vel;
 		render::lines3d& line_manager = render::render_device::get().get_lines3d(); 
 		for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
 		{
@@ -332,8 +332,8 @@ namespace particles{
 
 			if (!m_bIsGlobal)
 			{
-				center = m * (math::Point3f)((*it).pos);
-				vel = it->pos + m * (math::Point3f)((*it).sum_vel*5.0f);
+				center = m * (math::point3f)((*it).pos);
+				vel = it->pos + m * (math::point3f)((*it).sum_vel*5.0f);
 			}
 			else
 			{
@@ -341,7 +341,7 @@ namespace particles{
 				vel = it->pos + (*it).sum_vel*5.0f;
 			}
 
-			line_manager.add_quad( center, math::Vec2f (it->size, it->size), 0 );	
+			line_manager.add_quad( center, math::vec2f (it->size, it->size), 0 );	
 			line_manager.add_line( center, vel, math::Green );
 		}
 	}
@@ -351,7 +351,7 @@ namespace particles{
 		if (m_bIsGeometric)
 			return;
 
-		const math::Matrix44f& ltm = getLTM();
+		const math::matrix44f& ltm = getLTM();
 
 		renderer::ParticleArray& array = m_spTank->getParticles();
 		array.resize( m_Particles.size() );
@@ -371,7 +371,7 @@ namespace particles{
 			array[i].pos = p.pos;
 
 
-			array[i].size = math::Vec2f( p.size, p.size );
+			array[i].size = math::vec2f( p.size, p.size );
 			array[i].spin = p.rotation * 3.1415926f/180.0f;
 			array[i].color = p.color.color;
 
@@ -483,7 +483,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	const math::Matrix44f& processor::getLTM()
+	const math::matrix44f& processor::getLTM()
 	{
 		return m_pParentEmitter->getTransform().get_full_tm();
 	}

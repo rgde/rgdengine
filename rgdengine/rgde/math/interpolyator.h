@@ -274,7 +274,7 @@ namespace math
 
 		Color getValue(float t)
 		{
-			Vec3f vColor = m_vColor(t);
+			vec3f vColor = m_vColor(t);
 			Color out( static_cast<unsigned char>(vColor[0]), static_cast<unsigned char>(vColor[1]),
 				static_cast<unsigned char>(vColor[2]), static_cast<unsigned char>(m_Alpha(t)) );
 			return out;
@@ -282,7 +282,7 @@ namespace math
 
 		void add_key(float pos, const Color& v)
 		{
-			m_vColor.add_key (pos, Vec3f(v.r, v.g, v.b));
+			m_vColor.add_key (pos, vec3f(v.r, v.g, v.b));
 			m_Alpha.add_key (pos, v.a);
 		}
 

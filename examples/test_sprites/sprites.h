@@ -32,7 +32,7 @@ namespace rgde
 				// do we need sort sprites before debug log output?
 				bool						m_do_sort_before_log;
 				// sprite size variation
-				math::Vec2f					m_sprites_seed;
+				math::vec2f					m_sprites_seed;
 				render::font_ptr			m_font;
 				math::camera_ptr			m_camera;
 			};

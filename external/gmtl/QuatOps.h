@@ -38,7 +38,7 @@
 #include <gmtl/Math.h>
 #include <gmtl/Quat.h>
 
-namespace gmtl
+namespace math
 {
 /** @ingroup Ops Quat 
  * @name Quat Operations
@@ -551,10 +551,10 @@ namespace gmtl
       {
          // Standard case (slerp)
          DATA_TYPE omega, sinom;
-         omega = gmtl::Math::aCos( cosom ); // extract theta from dot product's cos theta
-         sinom = gmtl::Math::sin( omega );
-         sclp  = gmtl::Math::sin( ((DATA_TYPE)1.0 - t) * omega ) / sinom;
-         sclq  = gmtl::Math::sin( t * omega ) / sinom;
+         omega = math::Math::aCos( cosom ); // extract theta from dot product's cos theta
+         sinom = math::Math::sin( omega );
+         sclp  = math::Math::sin( ((DATA_TYPE)1.0 - t) * omega ) / sinom;
+         sclq  = math::Math::sin( t * omega ) / sinom;
       }
       else
       {

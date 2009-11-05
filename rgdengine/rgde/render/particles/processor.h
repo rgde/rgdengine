@@ -42,7 +42,7 @@ namespace particles{
 		void reset();
 
 
-		const math::Matrix44f& getLTM();
+		const math::matrix44f& getLTM();
 
 		void setTextureName(const std::string& texName);
 
@@ -158,7 +158,7 @@ namespace particles{
 		bool m_bIsGlobal;								// Является ли процессор глобальным (т.е. не имеющим родительских трансформаций)
 
 		bool m_bIntense;								// Меняет режим блендинга
-		math::Vec3f m_fScaling;								// Масштабирование родительского эмитера
+		math::vec3f m_fScaling;								// Масштабирование родительского эмитера
 		int m_nMaxParticles;							// Максимальное число частиц в процессоре
 
 		float m_ngkx;

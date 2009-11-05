@@ -49,7 +49,7 @@
 #include <gmtl/LineSeg.h>
 #include <gmtl/Coord.h>
 
-namespace gmtl
+namespace math
 {
    namespace output
    {
@@ -58,18 +58,18 @@ namespace gmtl
       template<typename DATA_TYPE, unsigned SIZE, typename REP>
       struct VecOutputter
       {
-         static std::ostream& outStream(std::ostream& out, const VecBase<DATA_TYPE,SIZE,REP>& v)
+         static std::ostream& outStream(std::ostream& out, const vec_base<DATA_TYPE,SIZE,REP>& v)
          {
-            VecBase<DATA_TYPE,SIZE, gmtl::meta::DefaultVecTag> temp_vec(v);
-            VecOutputter<DATA_TYPE,SIZE,gmtl::meta::DefaultVecTag>::outStream(out,v);
+            vec_base<DATA_TYPE,SIZE, math::meta::DefaultVecTag> temp_vec(v);
+            VecOutputter<DATA_TYPE,SIZE,math::meta::DefaultVecTag>::outStream(out,v);
             return out;
          }
       };
 
       template<typename DATA_TYPE, unsigned SIZE>
-      struct VecOutputter<DATA_TYPE,SIZE,gmtl::meta::DefaultVecTag>
+      struct VecOutputter<DATA_TYPE,SIZE,math::meta::DefaultVecTag>
       {
-         static std::ostream& outStream(std::ostream& out, const VecBase<DATA_TYPE,SIZE,gmtl::meta::DefaultVecTag>& v)
+         static std::ostream& outStream(std::ostream& out, const vec_base<DATA_TYPE,SIZE,math::meta::DefaultVecTag>& v)
          {
             out << "(";
             for ( unsigned i=0; i<SIZE; ++i )
@@ -92,18 +92,18 @@ namespace gmtl
     */
    //@{
    /**
-    * Outputs a string representation of the given VecBase type to the given
+    * Outputs a string representation of the given vec_base type to the given
     * output stream. This works for both Point and Vec types. The output is
     * formatted such that Vec<int, 4>(1,2,3,4) will appear as "(1, 2, 3, 4)".
     *
     * @param out     the stream to write to
-    * @param v       the VecBase type to output
+    * @param v       the vec_base type to output
     *
     * @return  out after it has been written to
     */
 #ifdef GMTL_NO_METAPROG
    template<typename DATA_TYPE, unsigned SIZE>
-   std::ostream& operator<<(std::ostream& out, const VecBase<DATA_TYPE, SIZE>& v)
+   std::ostream& operator<<(std::ostream& out, const vec_base<DATA_TYPE, SIZE>& v)
    {
       out << "(";
       for ( unsigned i=0; i<SIZE; ++i )
@@ -119,7 +119,7 @@ namespace gmtl
    }
 #else
    template<typename DATA_TYPE, unsigned SIZE, typename REP>
-   std::ostream& operator<<(std::ostream& out, const VecBase<DATA_TYPE, SIZE, REP>& v)
+   std::ostream& operator<<(std::ostream& out, const vec_base<DATA_TYPE, SIZE, REP>& v)
    {
       return output::VecOutputter<DATA_TYPE,SIZE,REP>::outStream(out,v);
    }
@@ -326,6 +326,6 @@ namespace gmtl
    }
    //@}
 
-} // end namespace gmtl
+} // end namespace math
 
 #endif

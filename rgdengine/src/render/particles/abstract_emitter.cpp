@@ -28,9 +28,9 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void base_emitter::reset()
 	{
-		//m_vCurDisplacement = math::Vec3f();
-		//m_vCurSpeed = math::Vec3f();
-		//m_vOldPos = math::Vec3f();
+		//m_vCurDisplacement = math::vec3f();
+		//m_vCurSpeed = math::vec3f();
+		//m_vOldPos = math::vec3f();
 
 		m_fCurrentTime = 0;
 		m_bIsEnded = false;
@@ -73,11 +73,11 @@ namespace particles{
 		
 		m_fTimeNormalaized = m_fCurrentTime / m_fCycleTime;
 		{
-			//math::Matrix44f m = getLTM();
+			//math::matrix44f m = getLTM();
 
 			//if (!m_bIsJustCreated)
 			//{
-			//	math::Vec3f new_pos;
+			//	math::vec3f new_pos;
 			//	math::setTrans(new_pos, m);
 			//	m_vCurDisplacement = new_pos - m_vOldPos;
 			//	m_vCurSpeed = m_vCurDisplacement / (dt * 20.0f);
@@ -85,7 +85,7 @@ namespace particles{
 			//}
 		}
 		
-		math::Matrix44f m = m_Transform.get_full_tm();
+		math::matrix44f m = m_Transform.get_full_tm();
 
 		math::invert( m );
 		m_vPAcceleration = m_PAcceleration.getValue(m_fTimeNormalaized);
@@ -172,7 +172,7 @@ namespace particles{
 	}
 
 	//
-	//math::Vec3f base_emitter::getGlobalVelocity(bool global)
+	//math::vec3f base_emitter::getGlobalVelocity(bool global)
 	//{
 	//	if (!global)
 	//		return m_vGlobalVelPrecomputed;
@@ -180,7 +180,7 @@ namespace particles{
 	//		return m_vGlobalVel;
 	//}
 	//
-	//math::Vec3f base_emitter::getAcceleration(bool global)
+	//math::vec3f base_emitter::getAcceleration(bool global)
 	//{
 	//	if (!global)
 	//		return m_vAccelerationPrecomputed;

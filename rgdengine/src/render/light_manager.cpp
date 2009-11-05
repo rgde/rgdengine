@@ -8,7 +8,7 @@ namespace render
 	//LightManager::SLightData::SLightData()
 	//	:	m_nType(base_light::Point),
 	//		m_fRange(0),
-	//		m_attenuations(math::Vec3f(1, 0, 0)),
+	//		m_attenuations(math::vec3f(1, 0, 0)),
 	//		m_bEnable(false)
 	//{
 	//}
@@ -202,10 +202,10 @@ namespace render
 	//					FILL_BASE_LIGHT_MEMBERS(m_lightData[i], pPointLight)
 	//					m_lightData[i].m_fRange = pPointLight->getRange();
 	//					m_lightData[i].m_attenuations =
-	//					math::Vec3f(pPointLight->getConstantAttenuation(),
+	//					math::vec3f(pPointLight->getConstantAttenuation(),
 	//								pPointLight->getLinearAttenuation(),
 	//								pPointLight->getQuadraticAttenuation());
-	//					m_lightData[i].m_spot = math::Vec3f(0, 0, 0);
+	//					m_lightData[i].m_spot = math::vec3f(0, 0, 0);
 
 	//					m_nActivePointLightsNum++;
 	//					i++;
@@ -227,11 +227,11 @@ namespace render
 	//					FILL_BASE_LIGHT_MEMBERS(m_lightData[i], pSpotLight)
 	//					m_lightData[i].m_fRange = pSpotLight->getRange();
 	//					m_lightData[i].m_attenuations =
-	//					math::Vec3f(pSpotLight->getConstantAttenuation(),
+	//					math::vec3f(pSpotLight->getConstantAttenuation(),
 	//								pSpotLight->getLinearAttenuation(),
 	//								pSpotLight->getQuadraticAttenuation());
 	//					m_lightData[i].m_spot =
-	//					math::Vec3f(pSpotLight->getTheta(),
+	//					math::vec3f(pSpotLight->getTheta(),
 	//								pSpotLight->getPhi(),
 	//								pSpotLight->getFalloff());
 
@@ -255,8 +255,8 @@ namespace render
 	//					FILL_BASE_LIGHT_MEMBERS(m_lightData[i],
 	//													pDirectionalLight)
 	//					m_lightData[i].m_fRange = 0;
-	//					m_lightData[i].m_attenuations = math::Vec3f(0, 0, 0);
-	//					m_lightData[i].m_spot = math::Vec3f(0, 0, 0);
+	//					m_lightData[i].m_attenuations = math::vec3f(0, 0, 0);
+	//					m_lightData[i].m_spot = math::vec3f(0, 0, 0);
 
 	//					m_nActiveDirectionalLightsNum++;
 	//					i++;

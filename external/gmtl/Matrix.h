@@ -40,7 +40,7 @@
 #include <gmtl/Util/Assert.h>
 #include <gmtl/Util/StaticAssert.h>
 
-namespace gmtl
+namespace math
 {
 
 /**
@@ -48,7 +48,7 @@ namespace gmtl
  *
  * <b>Memory mapping:</b>
  *
- * gmtl::Matrix stores its elements in column major order.
+ * math::Matrix stores its elements in column major order.
  * That is, it stores each column end-to-end in memory.
  *
  * Typically, for 3D transform matrices, the 3x3 rotation is
@@ -63,17 +63,17 @@ namespace gmtl
  *
  * <b>NOTES on Matrix memory layout and [][] accessors:</b>
  * <ul>
- * <li> gmtl Matrix memory is "column major" ordered, where columns are end
+ * <li> math Matrix memory is "column major" ordered, where columns are end
  *      to end in memory, while a C/C++ Matrix accessed the same way
- *      (using operator[][]) as a gmtl Matrix is "row major" ordered.
+ *      (using operator[][]) as a math Matrix is "row major" ordered.
  *
- * <li> As a result, a gmtl matrix stores elements in memory transposed from
+ * <li> As a result, a math matrix stores elements in memory transposed from
  *      the equivelent matrix defined using an array in the C/C++
  *      language, assuming they are accessed the same way (see example).
  * <ul>
  *    <li> Illustrative Example:                                           <br>
- *         Given two flavors of matrix, C/C++, and gmtl:                   <br>
- *             float cmat[n][m];   and    gmtl::Matrix<float, n, m> mat;   <br>
+ *         Given two flavors of matrix, C/C++, and math:                   <br>
+ *             float cmat[n][m];   and    math::Matrix<float, n, m> mat;   <br>
  *         Writing values into each, while accessing them the same:        <br>
  *             cmat[row][col] = mat[row][col] = some_values[x];            <br>
  *         Then reading values from the matrix array:                      <br>
@@ -82,7 +82,7 @@ namespace gmtl
  * </ul>
  * <li> In practice, the differences between GMTL and C/C++ defined matrices
  *      all depends how you iterate over your matrix.                                              <br>
- *      If gmtl is accessed mat[row][col] and C/C++ is accessed mat[col][row], then
+ *      If math is accessed mat[row][col] and C/C++ is accessed mat[col][row], then
  *      memory-wise, these two will yield the same memory mapping (column major as described above),
  *      thus, are equivelent and can both be used interchangably in many popular graphics APIs
  *      such as OpenGL, DirectX, and others.
@@ -98,7 +98,7 @@ namespace gmtl
  *    (0,0) (0,1) (0,2) (0,3) (1,0) (1,1) (1,2) (1,3) (2,0) (2,1) (2,2) (2,3) (3,0) (3,1) (3,2) (3,3)
  *  </pre>
  *
- * <li> In gmtl, access of a matrix via mat[row][col] yields this memory mapping after using getData() to return it:<br>
+ * <li> In math, access of a matrix via mat[row][col] yields this memory mapping after using getData() to return it:<br>
  *  <pre>
  *    (0,0) (0,1) (0,2) (0,3)
  *    (1,0) (1,1) (1,2) (1,3)
@@ -123,12 +123,12 @@ namespace gmtl
  *
  * One side effect of this state tracking is that EVERY MATRIC FUNCTION NEEDS TO
  * TRACK STATE.  This means that anyone writing custom methods, or extentions to
- * gmtl, will need to pay close attention to matrix state.
+ * math, will need to pay close attention to matrix state.
  *
  * To facilitate state tracking in extensions, we've provided the function
- * gmtl::combineMatrixStates() to help in determining state based on two
+ * math::combineMatrixStates() to help in determining state based on two
  * combined matrices.
- * @see Matrix44f
+ * @see matrix44f
  * @see Matrix44d
  * @ingroup Types
  */
@@ -386,13 +386,13 @@ public:
     *    pfMatrix other_matrix;
     *    other_matrix.setRot( 90, 1, 0, 0 );
     *
-    *    gmtl::Matrix44f mat;
+    *    math::matrix44f mat;
     *    mat.set( other_matrix.getFloatPtr() );
     * \endcode
     *
     *  WARNING: this isn't really safe, size and datatype are not enforced by
     *           the compiler.
-    * @pre data is in the native format of the gmtl::Matrix class, if not,
+    * @pre data is in the native format of the math::Matrix class, if not,
     *      then you might be able to use the setTranspose function.
     * @pre i.e. in a 4x4 data[0-3] is the 1st column, data[4-7] is 2nd, etc...
     */
@@ -417,7 +417,7 @@ public:
     *                     0, 1, 0, -4,
     *                     0, 0, 1, 20,
     *                     0, 0, 0, 1   };
-    *    gmtl::Matrix44f mat;
+    *    math::matrix44f mat;
     *    mat.setTranspose( data );
     * \endcode
     *
@@ -525,7 +525,7 @@ typedef Matrix<float, 3, 3> Matrix33f;
 typedef Matrix<double, 3, 3> Matrix33d;
 typedef Matrix<float, 3, 4> Matrix34f;
 typedef Matrix<double, 3, 4> Matrix34d;
-typedef Matrix<float, 4, 4> Matrix44f;
+typedef Matrix<float, 4, 4> matrix44f;
 typedef Matrix<double, 4, 4> Matrix44d;
 
 /** 32bit floating point 2x2 identity matrix */
@@ -553,7 +553,7 @@ const Matrix34f MAT_IDENTITY34F = Matrix34f();
 const Matrix34d MAT_IDENTITY34D = Matrix34d();
 
 /** 32bit floating point 4x4 identity matrix */
-const Matrix44f MAT_IDENTITY44F = Matrix44f();
+const matrix44f MAT_IDENTITY44F = matrix44f();
 
 /** 64bit floating point 4x4 identity matrix */
 const Matrix44d MAT_IDENTITY44D = Matrix44d();
@@ -566,63 +566,63 @@ inline int combineMatrixStates( int state1, int state2 )
 {
    switch (state1)
    {
-   case Matrix44f::IDENTITY:
+   case matrix44f::IDENTITY:
       switch (state2)
       {
-      case Matrix44f::XFORM_ERROR: return state2;
-      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      case matrix44f::XFORM_ERROR: return state2;
+      case matrix44f::NON_UNISCALE: return matrix44f::XFORM_ERROR;
       default: return state2;
       }
-   case Matrix44f::TRANS:
+   case matrix44f::TRANS:
       switch (state2)
       {
-      case Matrix44f::IDENTITY: return state1;
-      case Matrix44f::ORTHOGONAL: return Matrix44f::AFFINE;
-      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      case matrix44f::IDENTITY: return state1;
+      case matrix44f::ORTHOGONAL: return matrix44f::AFFINE;
+      case matrix44f::NON_UNISCALE: return matrix44f::XFORM_ERROR;
       default: return state2;
       }
-   case Matrix44f::ORTHOGONAL:
+   case matrix44f::ORTHOGONAL:
       switch (state2)
       {
-      case Matrix44f::IDENTITY: return state1;
-      case Matrix44f::TRANS: return Matrix44f::AFFINE;
-      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      case matrix44f::IDENTITY: return state1;
+      case matrix44f::TRANS: return matrix44f::AFFINE;
+      case matrix44f::NON_UNISCALE: return matrix44f::XFORM_ERROR;
       default: return state2;
       }
-   case Matrix44f::AFFINE:
+   case matrix44f::AFFINE:
       switch (state2)
       {
-      case Matrix44f::IDENTITY:
-      case Matrix44f::TRANS:
-      case Matrix44f::ORTHOGONAL:  return state1;
-      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
-      case Matrix44f::AFFINE | Matrix44f::NON_UNISCALE:
+      case matrix44f::IDENTITY:
+      case matrix44f::TRANS:
+      case matrix44f::ORTHOGONAL:  return state1;
+      case matrix44f::NON_UNISCALE: return matrix44f::XFORM_ERROR;
+      case matrix44f::AFFINE | matrix44f::NON_UNISCALE:
       default: return state2;
       }
-   case Matrix44f::AFFINE | Matrix44f::NON_UNISCALE:
+   case matrix44f::AFFINE | matrix44f::NON_UNISCALE:
       switch (state2)
       {
-      case Matrix44f::IDENTITY:
-      case Matrix44f::TRANS:
-      case Matrix44f::ORTHOGONAL:
-      case Matrix44f::AFFINE:  return state1;
-      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      case matrix44f::IDENTITY:
+      case matrix44f::TRANS:
+      case matrix44f::ORTHOGONAL:
+      case matrix44f::AFFINE:  return state1;
+      case matrix44f::NON_UNISCALE: return matrix44f::XFORM_ERROR;
       default: return state2;
       }
-   case Matrix44f::FULL:
+   case matrix44f::FULL:
       switch (state2)
       {
-      case Matrix44f::XFORM_ERROR: return state2;
-      case Matrix44f::NON_UNISCALE: return Matrix44f::XFORM_ERROR;
+      case matrix44f::XFORM_ERROR: return state2;
+      case matrix44f::NON_UNISCALE: return matrix44f::XFORM_ERROR;
       default: return state1;
       }
       break;
    default:
-      return Matrix44f::XFORM_ERROR;
+      return matrix44f::XFORM_ERROR;
    }
 }
 
-} // end namespace gmtl
+} // end namespace math
 
 
 

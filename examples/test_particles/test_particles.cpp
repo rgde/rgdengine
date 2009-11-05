@@ -14,37 +14,37 @@ class CParticleTest : public game::dynamic_object
 {
 public:
 	CParticleTest() 
-		: m_bDebugDraw (false)
-		, m_bSaveParticles (false)
-		, m_bLoadParticles (false)
+		: m_debug_draw (false)
+		, m_save_particles (false)
+		, m_load_particles (false)
 	{
 		m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
-		math::Vec3f vEyePt(40, 40, -40);
-		math::Vec3f vLookatPt( 0.0f, 0.0f, 0.0f );
-		math::Vec3f vUpVec( 00.0f, 1.0f, 0.0f );
+		math::vec3f eye(40, 40, -40);
+		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
+		math::vec3f up_vec( 00.0f, 1.0f, 0.0f );
 
 		// Создаём эффект
 		m_pEffect = new particles::effect();
-		//m_pEffect->setDebugDraw(m_bDebugDraw);
+		//m_pEffect->setDebugDraw(m_debug_draw);
 
-		if (m_bLoadParticles)
+		if (m_load_particles)
 			loadParticles();
 		else
 			initParticles();
 
-		if (m_bSaveParticles)
+		if (m_save_particles)
 			saveParticles();
 
 		// Инициализация ввода
 		initInput();
 
 		// Инициализация камеры
-		m_pCamera  = render::render_camera::create();
-		m_pCamera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
-		m_cTargetCamera = math::target_camera::create(m_pCamera);
-		render::TheCameraManager::get().add_camera(m_pCamera);
-		m_cTargetCamera->set_position(vEyePt,vLookatPt,vUpVec);
+		m_camera  = render::render_camera::create();
+		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+		m_cTargetCamera = math::target_camera::create(m_camera);
+		render::TheCameraManager::get().add_camera(m_camera);
+		m_cTargetCamera->set_position(eye,look_at,up_vec);
 		m_cTargetCamera->activate();
 	}
 
@@ -164,7 +164,7 @@ protected:
 			sph_emitter->addProcessor(proc);
 			proc->load();
 
-			sph_emitter->getTransform().set_position(math::Point3f( fDist, 0, -fDist/1.732f));
+			sph_emitter->getTransform().set_position(math::point3f( fDist, 0, -fDist/1.732f));
 
 			// Создаём кубический эмитер
 			particles::box_emitter* box_emitter = new particles::box_emitter();
@@ -177,7 +177,7 @@ protected:
 			proc->setGlobal( false );
 			proc->load();
 
-			box_emitter->getTransform().set_position( math::Point3f( -fDist, 0, -fDist/1.732f) );
+			box_emitter->getTransform().set_position( math::point3f( -fDist, 0, -fDist/1.732f) );
 
 			// Создаём майя эмитер
 			particles::static_emitter* static_emitter = new particles::static_emitter("particles/cannonShot_smoke.prt", "particles/shot_smoke.png");
@@ -186,7 +186,7 @@ protected:
 			static_emitter->setCycling(true);
 			static_emitter->setVisible(true);
 
-			static_emitter->getTransform().set_position( math::Point3f(0, 0, fDist ) );
+			static_emitter->getTransform().set_position( math::point3f(0, 0, fDist ) );
 		}
 	}
 
@@ -235,14 +235,14 @@ protected:
 	input::KeyUp		m_cRightButton;
 	input::RelativeAxis m_cZAxis;
 
-	math::camera_ptr			m_pCamera;
+	math::camera_ptr			m_camera;
 	math::target_camera_ptr		m_cTargetCamera;      //контроллер камеры "нацеленная камера"
 
 	render::font_ptr		m_font;
 
-	bool m_bDebugDraw;				// Стоит ли проводить в тесте дебажную отрисовку
-	bool m_bSaveParticles;			// Стоит ли сохранить эффект частиц в файл
-	bool m_bLoadParticles;			// Стоит ли создавать эффект частиц программно или грузить из файла
+	bool m_debug_draw;				// Стоит ли проводить в тесте дебажную отрисовку
+	bool m_save_particles;			// Стоит ли сохранить эффект частиц в файл
+	bool m_load_particles;			// Стоит ли создавать эффект частиц программно или грузить из файла
 	particles::effect*	m_pEffect;	// Эффект частиц
 };
 

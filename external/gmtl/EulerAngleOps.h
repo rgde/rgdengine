@@ -37,7 +37,7 @@
 
 #include <gmtl/EulerAngle.h>
 
-namespace gmtl
+namespace math
 {
 
 /** @ingroup Compare

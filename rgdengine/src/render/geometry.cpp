@@ -329,37 +329,37 @@ namespace render
 		color = math::Color( (unsigned char)(r*255),(unsigned char)(g*255), (unsigned char)(b*255), (unsigned char)(a*255) );
 	}
 
-	void readPosition( TiXmlElement* pNode, math::Vec3f& position)
+	void readPosition( TiXmlElement* pNode, math::vec3f& position)
 	{
 		if ( TiXmlElement *elem = pNode->FirstChildElement("position") )
 			base::read(position, elem);
 	}
 
-	void readTangent( TiXmlElement* pNode, math::Vec3f& tangent)
+	void readTangent( TiXmlElement* pNode, math::vec3f& tangent)
 	{
 		if (TiXmlElement *elem = pNode->FirstChildElement("tangent") )
 			base::read(tangent, elem);
 	}
 
-	void readBinormal( TiXmlElement* pNode, math::Vec3f& binormal)
+	void readBinormal( TiXmlElement* pNode, math::vec3f& binormal)
 	{
 		if (TiXmlElement *elem = pNode->FirstChildElement("binormal") )
 			base::read(binormal, elem);
 	}
 
-	void readNormal( TiXmlElement* pNode, math::Vec3f& normal)
+	void readNormal( TiXmlElement* pNode, math::vec3f& normal)
 	{		
 		if (TiXmlElement *elem = pNode->FirstChildElement("normal") )
 			base::read(normal, elem);
 	}
 
-	void readTexCoords( TiXmlElement* pNode, math::Vec2f& tex)
+	void readTexCoords( TiXmlElement* pNode, math::vec2f& tex)
 	{
 		if (TiXmlElement *elem = pNode->FirstChildElement("uvset") )
 			base::read(tex, elem);
 	}
 
-	void readTexCoords2( TiXmlElement* pNode, math::Vec2f& tex0, math::Vec2f& tex1)
+	void readTexCoords2( TiXmlElement* pNode, math::vec2f& tex0, math::vec2f& tex1)
 	{
 		if (TiXmlElement *elem = pNode->FirstChildElement("uvset") )
 		{
@@ -370,7 +370,7 @@ namespace render
 		}
 	}
 
-	void readWeights( TiXmlElement* pNode, math::Vec4f& weights)
+	void readWeights( TiXmlElement* pNode, math::vec4f& weights)
 	{		
 		if (TiXmlElement *elem = pNode->FirstChildElement("weights") )
 			base::read(weights, elem);

@@ -135,7 +135,7 @@ namespace base
 		color = math::Color(r, g, b, a);
 	}
 
-	inline void read(math::Vec4f& v, TiXmlElement* pNode)
+	inline void read(math::vec4f& v, TiXmlElement* pNode)
 	{
 		double x = 0;
 		pNode->Attribute("x", &x);
@@ -155,7 +155,7 @@ namespace base
 		v[3] = static_cast<float>(w);
 	}
 
-	inline void read(math::Vec3f& v, TiXmlElement* pNode)
+	inline void read(math::vec3f& v, TiXmlElement* pNode)
 	{
 		double x = 0;
 		pNode->Attribute("x", &x);
@@ -171,7 +171,7 @@ namespace base
 		v[2] = static_cast<float>(z);
 	}
 
-	inline void read(math::Vec2f& v, TiXmlElement* pNode)
+	inline void read(math::vec2f& v, TiXmlElement* pNode)
 	{
 		double x = 0;
 		pNode->Attribute("u", &x);

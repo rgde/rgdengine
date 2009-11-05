@@ -10,10 +10,10 @@ namespace lines_test
 		void reset();
 		void update();
 
-		inline math::Vec3f& get_pos() { return m_pos; }
+		inline math::vec3f& get_pos() { return m_pos; }
 
 	protected:
-		math::Vec3f m_pos;							///> Позиция
-		math::Vec3f m_vel;							///> Скорость
+		math::vec3f m_pos;							///> Позиция
+		math::vec3f m_vel;							///> Скорость
 	};
 }

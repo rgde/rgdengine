@@ -14,7 +14,7 @@ class Space
 		void initStar();
 		void initAlien();
 
-		math::Vec2f velocity;
+		math::vec2f velocity;
 
         //только для чужих
         float damage;

@@ -11,7 +11,7 @@ namespace render
 	{
 	}
 
-	sprite::sprite( const math::Vec2f& pos_, const math::Vec2f& size_, 
+	sprite::sprite( const math::vec2f& pos_, const math::vec2f& size_, 
 		const math::Color& color_,render::texture_ptr pTexture_,
 		float spin_, const math::Rect& rect_,
 		unsigned long uPriority_) 
@@ -36,7 +36,7 @@ namespace render
 		  m_vOrigin(0, 0)
 	{
 		//base::lmsg << "sprite_manager::sprite_manager()";
-		math::Vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
+		math::vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
 		m_vScale = vFrontBufferSize / m_cvScreenSize;
 
 
@@ -61,9 +61,9 @@ namespace render
 		return (s1.priority < s2.priority);
 	}
 
-	inline math::Vec2f rotatePos(float x, float y, float sina, float cosa)
+	inline math::vec2f rotatePos(float x, float y, float sina, float cosa)
 	{
-		return math::Vec2f(x * cosa - y * sina, x * sina + y * cosa);
+		return math::vec2f(x * cosa - y * sina, x * sina + y * cosa);
 	}
 
 	void sprite_manager::update()
@@ -110,36 +110,36 @@ namespace render
 			const math::Color &color= sprite.color;
 			const math::Rect &rect	= sprite.rect;
 			// Сразу же масштабируем позицию и размер
-			math::Vec2f hsize		= math::Vec2f(sprite.size[0] * m_vScale[0], sprite.size[1] * m_vScale[1]) / 2.0f;
-			math::Vec2f pos			= math::Vec2f(sprite.pos[0] * m_vScale[0], sprite.pos[1] * m_vScale[1]);
+			math::vec2f hsize		= math::vec2f(sprite.size[0] * m_vScale[0], sprite.size[1] * m_vScale[1]) / 2.0f;
+			math::vec2f pos			= math::vec2f(sprite.pos[0] * m_vScale[0], sprite.pos[1] * m_vScale[1]);
 
 			float cosa				= ::cos(sprite.spin);
 			float sina				= ::sin(sprite.spin);
 
 			// Top left
-			math::Vec2f rotPos		= rotatePos(-hsize[0], -hsize[1], sina, cosa) + pos;
-			vVertices[i].position = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+			math::vec2f rotPos		= rotatePos(-hsize[0], -hsize[1], sina, cosa) + pos;
+			vVertices[i].position = math::vec4f(rotPos[0], rotPos[1], 0, 0);
 			vVertices[i].tex = rect.getTopLeft();
 			vVertices[i].color = color;
 			++i;
 
 			// Top right
 			rotPos = rotatePos(hsize[0], -hsize[1], sina, cosa) + pos;
-			vVertices[i].position = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+			vVertices[i].position = math::vec4f(rotPos[0], rotPos[1], 0, 0);
 			vVertices[i].tex = rect.getTopRight();
 			vVertices[i].color = color;
 			++i;
 
 			// Bottom right
 			rotPos = rotatePos(hsize[0], hsize[1], sina, cosa) + pos;
-			vVertices[i].position = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+			vVertices[i].position = math::vec4f(rotPos[0], rotPos[1], 0, 0);
 			vVertices[i].tex = rect.getBottomRight();
 			vVertices[i].color = color;
 			++i;
 
 			// Bottom left
 			rotPos = rotatePos(-hsize[0], hsize[1], sina, cosa) + pos;
-			vVertices[i].position = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+			vVertices[i].position = math::vec4f(rotPos[0], rotPos[1], 0, 0);
 			vVertices[i].tex = rect.getBottomLeft();
 			vVertices[i].color = color;
 			++i;
@@ -227,7 +227,7 @@ namespace render
 	void sprite_manager::onResetDevice()
 	{
 		// Вычисляем коэффициенты масштабирования
-		math::Vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
+		math::vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
 		m_vScale = vFrontBufferSize / m_cvScreenSize;
 		update();
 	}

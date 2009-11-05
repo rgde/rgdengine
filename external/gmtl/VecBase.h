@@ -6,7 +6,7 @@
  *   Allen Bierbaum
  *
  * -----------------------------------------------------------------
- * File:          $RCSfile: VecBase.h,v $
+ * File:          $RCSfile: vec_base.h,v $
  * Date modified: $Date: 2006/07/19 14:12:43 $
  * Version:       $Revision: 1.3 $
  * -----------------------------------------------------------------
@@ -43,7 +43,7 @@
 #include <gmtl/Helpers.h>
 
 
-namespace gmtl
+namespace math
 {
 
 #ifndef GMTL_NO_METAPROG
@@ -66,7 +66,7 @@ namespace meta
  */
 #ifndef GMTL_NO_METAPROG
 template<class DATA_TYPE, unsigned SIZE, typename REP=meta::DefaultVecTag>
-class VecBase
+class vec_base
 {
 protected:
    const REP  expRep;      // The expression rep
@@ -79,18 +79,18 @@ public:
    enum Params { Size = SIZE };
 
 public:
-   VecBase()
+   vec_base()
    {;}
 
-   VecBase(const REP& rep)
+   vec_base(const REP& rep)
       : expRep(rep)
    {;}
 
    /** Conversion operator to default vecbase type. */
    /*
-   operator VecBase<DATA_TYPE,SIZE,meta::DefaultVecTag>()
+   operator vec_base<DATA_TYPE,SIZE,meta::DefaultVecTag>()
    {
-      return VecBase<DATA_TYPE,SIZE,meta::DefaultVecTag>(*this);
+      return vec_base<DATA_TYPE,SIZE,meta::DefaultVecTag>(*this);
    }
    */
 
@@ -110,30 +110,30 @@ public:
 
 
 /**
- * Specialized version of VecBase that is actually used for all user interaction
+ * Specialized version of vec_base that is actually used for all user interaction
  * with a traditional vector.
  *
  * @param DATA_TYPE  the datatype to use for the components
- * @param SIZE       the number of components this VecBase has
+ * @param SIZE       the number of components this vec_base has
  */
 template<class DATA_TYPE, unsigned SIZE>
 #ifdef GMTL_NO_METAPROG
-class VecBase
+class vec_base
 #else
-class VecBase<DATA_TYPE,SIZE,meta::DefaultVecTag>
+class vec_base<DATA_TYPE,SIZE,meta::DefaultVecTag>
 #endif
 {
 public:
-   /// The datatype used for the components of this VecBase.
+   /// The datatype used for the components of this vec_base.
    typedef DATA_TYPE DataType;
 
 #ifdef GMTL_NO_METAPROG
-   typedef VecBase<DATA_TYPE, SIZE> VecType;
+   typedef vec_base<DATA_TYPE, SIZE> VecType;
 #else
-   typedef VecBase<DATA_TYPE, SIZE, meta::DefaultVecTag> VecType;
+   typedef vec_base<DATA_TYPE, SIZE, meta::DefaultVecTag> VecType;
 #endif
 
-   /// The number of components this VecBase has.
+   /// The number of components this vec_base has.
    enum Params { Size = SIZE };
 
 public:
@@ -143,37 +143,37 @@ public:
     * This is for performance because this constructor is called by derived class constructors
     * Even when they just want to set the data directly
     */
-   VecBase()
+   vec_base()
    {
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
-      gmtl::helpers::VecCtrCounterInstance()->inc();
+      math::helpers::VecCtrCounterInstance()->inc();
 #endif
    }
 
    /**
-    * Makes an exact copy of the given VecBase object.
+    * Makes an exact copy of the given vec_base object.
     *
-    * @param rVec    the VecBase object to copy
+    * @param rVec    the vec_base object to copy
     */
-   VecBase(const VecBase<DATA_TYPE, SIZE>& rVec)
+   vec_base(const vec_base<DATA_TYPE, SIZE>& rVec)
    {
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
-      gmtl::helpers::VecCtrCounterInstance()->inc();
+      math::helpers::VecCtrCounterInstance()->inc();
 #endif
 #ifdef GMTL_NO_METAPROG
       for(unsigned i=0;i<SIZE;++i)
          mData[i] = rVec.mData[i];
 #else
-      gmtl::meta::AssignVecUnrolled<SIZE-1, VecBase<DATA_TYPE,SIZE> >::func(*this, rVec);
+      math::meta::AssignVecUnrolled<SIZE-1, vec_base<DATA_TYPE,SIZE> >::func(*this, rVec);
 #endif
    }
 
 #ifndef GMTL_NO_METAPROG
    template<typename REP2>
-   VecBase(const VecBase<DATA_TYPE, SIZE, REP2>& rVec)
+   vec_base(const vec_base<DATA_TYPE, SIZE, REP2>& rVec)
    {
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
-      gmtl::helpers::VecCtrCounterInstance()->inc();
+      math::helpers::VecCtrCounterInstance()->inc();
 #endif
       for(unsigned i=0;i<SIZE;++i)
       {  mData[i] = rVec[i]; }
@@ -182,28 +182,28 @@ public:
 
    //@{
    /**
-    * Creates a new VecBase initialized to the given values.
+    * Creates a new vec_base initialized to the given values.
     */
-   VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1)
+   vec_base(const DATA_TYPE& val0,const DATA_TYPE& val1)
    {
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
-      gmtl::helpers::VecCtrCounterInstance()->inc();
+      math::helpers::VecCtrCounterInstance()->inc();
 #endif
       GMTL_STATIC_ASSERT( SIZE == 2, Invalid_constructor_of_size_2_used);
       mData[0] = val0; mData[1] = val1;
    }
-   VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
+   vec_base(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2)
    {
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
-      gmtl::helpers::VecCtrCounterInstance()->inc();
+      math::helpers::VecCtrCounterInstance()->inc();
 #endif
       GMTL_STATIC_ASSERT( SIZE == 3, Invalid_constructor_of_size_3_used );
       mData[0] = val0;  mData[1] = val1;  mData[2] = val2;
    }
-   VecBase(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
+   vec_base(const DATA_TYPE& val0,const DATA_TYPE& val1,const DATA_TYPE& val2,const DATA_TYPE& val3)
    {
 #ifdef GMTL_COUNT_CONSTRUCT_CALLS
-      gmtl::helpers::VecCtrCounterInstance()->inc();
+      math::helpers::VecCtrCounterInstance()->inc();
 #endif
       // @todo need compile time assert
       GMTL_STATIC_ASSERT( SIZE == 4, Invalid_constructor_of_size_4_used);
@@ -212,7 +212,7 @@ public:
    //@}
 
    /**
-    * Sets the components in this VecBase using the given array.
+    * Sets the components in this vec_base using the given array.
     *
     * @param dataPtr    the array containing the values to copy
     * @pre dataPtr has at least SIZE elements
@@ -225,14 +225,14 @@ public:
          mData[i] = dataPtr[i];
       }
 #else
-      gmtl::meta::AssignArrayUnrolled<SIZE-1, DATA_TYPE>::func(&(mData[0]),
+      math::meta::AssignArrayUnrolled<SIZE-1, DATA_TYPE>::func(&(mData[0]),
                                                                dataPtr);
 #endif
    }
 
    //@{
    /**
-    * Sets the components in this VecBase to the given values.
+    * Sets the components in this vec_base to the given values.
     */
    inline void set(const DATA_TYPE& val0)
    { mData[0] = val0; }
@@ -256,7 +256,7 @@ public:
 
    //@{
    /**
-    * Gets the ith component in this VecBase.
+    * Gets the ith component in this vec_base.
     *
     * @param i    the zero-based index of the component to access.
     * @pre i < SIZE
@@ -277,7 +277,7 @@ public:
 
    /** Assign from different rep. */
 #ifdef GMTL_NO_METAPROG
-   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE>& rhs)
+   inline VecType& operator=(const vec_base<DATA_TYPE,SIZE>& rhs)
    {
       for(unsigned i=0;i<SIZE;++i)
       {
@@ -288,14 +288,14 @@ public:
    }
 #else
    template<typename REP2>
-   inline VecType& operator=(const VecBase<DATA_TYPE,SIZE,REP2>& rhs)
+   inline VecType& operator=(const vec_base<DATA_TYPE,SIZE,REP2>& rhs)
    {
       for(unsigned i=0;i<SIZE;++i)
       {
          mData[i] = rhs[i];
       }
 
-      //gmtl::meta::AssignVecUnrolled<SIZE-1, VecBase<DATA_TYPE,SIZE> >::func(*this, rVec);
+      //math::meta::AssignVecUnrolled<SIZE-1, vec_base<DATA_TYPE,SIZE> >::func(*this, rVec);
       return *this;
    }
 #endif

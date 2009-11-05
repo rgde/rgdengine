@@ -39,7 +39,7 @@
 #include <gmtl/Point.h>
 #include <gmtl/VecOps.h>
 
-namespace gmtl
+namespace math
 {
 
 /**
@@ -251,5 +251,5 @@ int sgPlane::isectLine(const sgSeg& seg, float* t)
 }
 */
 
-} // namespace gmtl
+} // namespace math
 #endif

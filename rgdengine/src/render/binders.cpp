@@ -27,22 +27,22 @@ namespace render
 		return render_device::get().get_camera();
 	}
 
-	math::Matrix44f makeWorldViewProjMatrix(const math::frame_ptr& frame)
+	math::matrix44f makeWorldViewProjMatrix(const math::frame_ptr& frame)
 	{
 		const math::camera_ptr& camera = get_camera();
-		const math::Matrix44f& mView = camera->get_view_matrix();
-		const math::Matrix44f& mProj = camera->get_proj_matrix();
+		const math::matrix44f& mView = camera->get_view_matrix();
+		const math::matrix44f& mProj = camera->get_proj_matrix();
 		return mProj*(mView*frame->get_full_tm());
 	}
 
-	math::Matrix44f makeWorldViewMatrix(const math::frame_ptr& frame)
+	math::matrix44f makeWorldViewMatrix(const math::frame_ptr& frame)
 	{
 		return frame->get_full_tm()*get_camera()->get_view_matrix();
 	}
 
-	math::Matrix44f makeWorldViewInvTranspMatrix(const math::frame_ptr& frame)
+	math::matrix44f makeWorldViewInvTranspMatrix(const math::frame_ptr& frame)
 	{
-		math::Matrix44f result = frame->get_full_tm();
+		math::matrix44f result = frame->get_full_tm();
 		result *= get_camera()->get_view_matrix();
 		math::invert(result);
 		math::transpose(result);
@@ -53,22 +53,22 @@ namespace render
 	{
 		using namespace math;
 		using namespace boost;
-		typedef dymamic_binder::Types<Matrix44f>::getter
+		typedef dymamic_binder::Types<matrix44f>::getter
 											GetMatrix44fFunction;
 
 		GetMatrix44fFunction getMatrixFunction;
 		
 		getMatrixFunction = bind(&makeWorldViewProjMatrix, _1);
-		binder->addParameter<Matrix44f>(getMatrixFunction,
+		binder->addParameter<matrix44f>(getMatrixFunction,
 										WorldViewProjectionMatrixParamName);
 		getMatrixFunction = bind(&makeWorldViewMatrix, _1);
-		binder->addParameter<Matrix44f>(getMatrixFunction,
+		binder->addParameter<matrix44f>(getMatrixFunction,
 										WorldViewMatrixParamName);
 		getMatrixFunction = bind(&makeWorldViewInvTranspMatrix, _1);
-		binder->addParameter<Matrix44f>(getMatrixFunction,
+		binder->addParameter<matrix44f>(getMatrixFunction,
 										WorldViewITMatrixParamName);
 		getMatrixFunction = bind(&frame::get_full_tm, _1);
-		binder->addParameter<Matrix44f>(getMatrixFunction,
+		binder->addParameter<matrix44f>(getMatrixFunction,
 										WorldMatrixParamName);
 	}
 
@@ -245,28 +245,28 @@ namespace render
 		//binder->addParameter<LightDatas>(getLightsFunction, "LIGHTS");
 	}
 
-	math::Matrix44f get_view_matrix()
+	math::matrix44f get_view_matrix()
 	{
 		if(!get_camera())
-			return math::Matrix44f();
+			return math::matrix44f();
 
 		return get_camera()->get_view_matrix();
 	}
 
-	math::Matrix44f get_proj_matrix()
+	math::matrix44f get_proj_matrix()
 	{
 		if(!get_camera())
-			return math::Matrix44f();
+			return math::matrix44f();
 
 		return get_camera()->get_proj_matrix();
 	}
 
-	math::Matrix44f makeViewInvTranspMatrix()
+	math::matrix44f makeViewInvTranspMatrix()
 	{
 		if(!get_camera())
-			return math::Matrix44f();
+			return math::matrix44f();
 
-		math::Matrix44f result = get_camera()->get_view_matrix();
+		math::matrix44f result = get_camera()->get_view_matrix();
 		math::invert(result);
 		math::transpose(result);
 		return result;
@@ -276,18 +276,18 @@ namespace render
 	{
 		using namespace math;
 		using namespace boost;
-		typedef StaticBinder::Types<Matrix44f>::getter GetMatrix44fFunction;
+		typedef StaticBinder::Types<matrix44f>::getter GetMatrix44fFunction;
 
 		GetMatrix44fFunction getMatrixFunction;
 		
 		getMatrixFunction = bind(&get_proj_matrix);
-		binder->addParameter<Matrix44f>(getMatrixFunction, ProjectionMatrixParamName);
+		binder->addParameter<matrix44f>(getMatrixFunction, ProjectionMatrixParamName);
 
 		getMatrixFunction = bind(&get_view_matrix);
-		binder->addParameter<Matrix44f>(getMatrixFunction, ViewMatrixParamName);
+		binder->addParameter<matrix44f>(getMatrixFunction, ViewMatrixParamName);
 
 		getMatrixFunction = bind(&makeViewInvTranspMatrix);
-		binder->addParameter<Matrix44f>(getMatrixFunction, ViewITMatrixParamName);
+		binder->addParameter<matrix44f>(getMatrixFunction, ViewITMatrixParamName);
 	}
 
 	PStaticBinder createStaticBinder(const effect_ptr& effect)

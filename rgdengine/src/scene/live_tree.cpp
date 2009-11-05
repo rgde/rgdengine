@@ -44,10 +44,10 @@ namespace live_tree
 	Color g_colorObject(255,255,255,255);
 	Color g_colorDynamic(0,0,255,255);
 
-	void drawObjectCube( const AABoxf& aabb, int iColor =0 )
+	void drawObjectCube( const aaboxf& aabb, int iColor =0 )
 	{
-		math::Point3f max = aabb.getMax();
-		math::Point3f min = aabb.getMin();
+		math::point3f max = aabb.getMax();
+		math::point3f min = aabb.getMin();
 
 		/*
 		if(!bObject)
@@ -56,7 +56,7 @@ namespace live_tree
 		{
 			if(obj->isEmpty())
 			{
-//				max = math::Point3f(min[0]+1,min[1]+1,min[2]+1);
+//				max = math::point3f(min[0]+1,min[1]+1,min[2]+1);
 //				render::lines3d::get().add_line( min, max, color );
 				// or
 				render::ThePoint3dManager::get().addPoint( min, color );
@@ -72,27 +72,27 @@ namespace live_tree
 		}
 
 		static const int nVerts = 8;
-		static Vec3f box[nVerts];
+		static vec3f box[nVerts];
 		static bool isVertexesCreated = false;
 
 		if (!isVertexesCreated)
 		{
 			isVertexesCreated = true;
 
-			box[0] = Vec3f( 0, 1, 0 );		// 0 mean min point, 1 mean max point
-			box[1] = Vec3f( 0, 1, 1 );
-			box[2] = Vec3f( 1, 1, 1 );
-			box[3] = Vec3f( 1, 1, 0 );
+			box[0] = vec3f( 0, 1, 0 );		// 0 mean min point, 1 mean max point
+			box[1] = vec3f( 0, 1, 1 );
+			box[2] = vec3f( 1, 1, 1 );
+			box[3] = vec3f( 1, 1, 0 );
 
-			box[4] = Vec3f( 0, 0, 0 );
-			box[5] = Vec3f( 0, 0, 1 );
-			box[6] = Vec3f( 1, 0, 1 );
-			box[7] = Vec3f( 1, 0, 0 );
+			box[4] = vec3f( 0, 0, 0 );
+			box[5] = vec3f( 0, 0, 1 );
+			box[6] = vec3f( 1, 0, 1 );
+			box[7] = vec3f( 1, 0, 0 );
 		}
 
-		Point3f SizeBox[nVerts];
+		point3f SizeBox[nVerts];
 		for (unsigned i = 0; i < nVerts; ++i)
-			SizeBox[i] = Point3f(box[i][0]?max[0]:min[0], box[i][1]?max[1]:min[1], box[i][2]?max[2]:min[2]);
+			SizeBox[i] = point3f(box[i][0]?max[0]:min[0], box[i][1]?max[1]:min[1], box[i][2]?max[2]:min[2]);
 
 
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
@@ -141,33 +141,33 @@ namespace live_tree
 		}
 	};
 
-	AABoxf TreeObject::getAABB( void )
+	aaboxf TreeObject::getAABB( void )
 	{
-		return AABoxf(get_pos()-getExt(), get_pos()+getExt());
+		return aaboxf(get_pos()-getExt(), get_pos()+getExt());
 	};
 
-	AABoxf TreeObject::getDynamicAABB( void )
+	aaboxf TreeObject::getDynamicAABB( void )
 	{
 		if(!m_pPosOld)
 			return getAABB();
 
-		AABoxf aabb(*m_pPosOld-getExt(), *m_pPosOld+getExt());
+		aaboxf aabb(*m_pPosOld-getExt(), *m_pPosOld+getExt());
 		extendVolume(aabb,getAABB());
 		return aabb;
 	};
 	
-	void TreeObject::setAABB( const AABoxf& aabb )
+	void TreeObject::setAABB( const aaboxf& aabb )
 	{
 		set_pos((aabb.getMin()+aabb.getMax())*0.5f);
 		setExt((aabb.getMax()-aabb.getMin())*0.5f);
 	};
 
-	const Point3f& TreeObject::get_pos( void ) const
+	const point3f& TreeObject::get_pos( void ) const
 	{
 		return m_Position;
 	};
 
-	void TreeObject::set_pos( const Point3f& pos )
+	void TreeObject::set_pos( const point3f& pos )
 	{
 		if(getRoot())
 			getRoot()->set_pos(this,pos);
@@ -175,12 +175,12 @@ namespace live_tree
 			m_Position = pos;
 	};
 
-	const Point3f& TreeObject::getExt( void ) const
+	const point3f& TreeObject::getExt( void ) const
 	{
 		return m_Ext;
 	};
 	
-	void TreeObject::setExt( const Point3f& ext )
+	void TreeObject::setExt( const point3f& ext )
 	{
 		if(getRoot())
 			getRoot()->setExt(this,ext);
@@ -199,7 +199,7 @@ namespace live_tree
 			getRoot()->eject(this);
 	};
 
-	void TreeObject::move( const Point3f& pos )
+	void TreeObject::move( const point3f& pos )
 	{
 		if(getRoot())
 			getRoot()->move(this,pos);
@@ -230,7 +230,7 @@ namespace live_tree
 	void TreeObject::makeDynamic( void )
 	{
 		if(!m_pPosOld)	
-			m_pPosOld = new Point3f();
+			m_pPosOld = new point3f();
 		updatePos();
 	};
 
@@ -259,7 +259,7 @@ namespace live_tree
 		return m_pPosOld;
 	};
 
-	Point3f TreeObject::getOldPos( void )
+	point3f TreeObject::getOldPos( void )
 	{
 		if(!m_pPosOld)
 			return get_pos();
@@ -436,7 +436,7 @@ namespace live_tree
 	/*
 	bool CTRoot::test_obj_in_branch( PObject pBranch, PObject obj )
 	{
-		AABoxf BranchAABB(pBranch->getAABB()), aabb;
+		aaboxf BranchAABB(pBranch->getAABB()), aabb;
 		aabb = obj->getDynamicAABB();
 		return intersect(BranchAABB,aabb);
 	};
@@ -468,12 +468,12 @@ namespace live_tree
 			getBranch()->draw();
 	};
 
-	void CTRoot::inject( PObject obj, AABoxf* pAABB )
+	void CTRoot::inject( PObject obj, aaboxf* pAABB )
 	{
 		if(obj->getRoot())
 			return;
 
-		AABoxf aabb;
+		aaboxf aabb;
 		if(pAABB)
 			aabb = *pAABB;
 		else
@@ -488,12 +488,12 @@ namespace live_tree
 		}
 	};
 
-	void CTRoot::eject( PObject obj, AABoxf* pAABB )
+	void CTRoot::eject( PObject obj, aaboxf* pAABB )
 	{
 		if(!obj->getRoot())
 			return;
 
-		AABoxf aabb = pAABB? *pAABB : obj->getAABB();
+		aaboxf aabb = pAABB? *pAABB : obj->getAABB();
 
 		CEjector ejector(obj,this,aabb,m_LimitDivisions);
 		if(ejector())
@@ -509,7 +509,7 @@ namespace live_tree
 		eject(obj);
 	};
 
-	void CTRoot::set_pos( PObject obj, const Point3f pos )
+	void CTRoot::set_pos( PObject obj, const point3f pos )
 	{
 		if(obj->getRoot())
 			CTRoot::move(obj,pos);
@@ -517,7 +517,7 @@ namespace live_tree
 			obj->set_pos(pos);
 	};
 
-	void CTRoot::setExt( PObject obj, const Point3f ext )
+	void CTRoot::setExt( PObject obj, const point3f ext )
 	{
 		if(obj->getRoot())
 		{
@@ -529,7 +529,7 @@ namespace live_tree
 			obj->setExt(ext);
 	};
 
-	void CTRoot::move( PObject obj, const Point3f& pos )
+	void CTRoot::move( PObject obj, const point3f& pos )
 	{
 		if(obj->getRoot())
 			CTRoot::eject(obj);
@@ -542,7 +542,7 @@ namespace live_tree
 	// CCollector
 	// 
 
-	CTRoot::CCollector::CCollector( CTRoot* pRoot, const AABoxf& aabb, PObject exclude )
+	CTRoot::CCollector::CCollector( CTRoot* pRoot, const aaboxf& aabb, PObject exclude )
 		: m_pRoot(pRoot), m_AABB(aabb), m_pExcludeObject(exclude)
 	{
 		// nothing
@@ -550,7 +550,7 @@ namespace live_tree
 
 	Array& CTRoot::CCollector::operator ()( void )
 	{
-		parse(m_pRoot->getBranch(),Point3f(),m_pRoot->getExt());
+		parse(m_pRoot->getBranch(),point3f(),m_pRoot->getExt());
 		
 		// Neonic: if got object repeats - add here sort&duplicaton removals
 		
@@ -560,7 +560,7 @@ namespace live_tree
 		return m_Array;
 	};
 
-	void CTRoot::CCollector::parse( CTBranch* pBranch, const Point3f& cnt, const float& ext )
+	void CTRoot::CCollector::parse( CTBranch* pBranch, const point3f& cnt, const float& ext )
 	{
 		collect(pBranch);
 
@@ -632,12 +632,12 @@ namespace live_tree
 			std::copy( pBranch->getArray().begin(), pBranch->getArray().end(), std::back_inserter(m_Array) );
 	};
 
-	void CTRoot::CCollector::call( CTBranch* pBranch, const unsigned& iIndex, const Point3f& cnt, const float& ext )
+	void CTRoot::CCollector::call( CTBranch* pBranch, const unsigned& iIndex, const point3f& cnt, const float& ext )
 	{
 		assert(iIndex<8);
 		if(pBranch->getBranch(iIndex))
 		{
-			Point3f center;
+			point3f center;
 			float fQuart = ext*0.5f;
 			for(unsigned iStep = 0; iStep<3; iStep++)
 			{
@@ -653,7 +653,7 @@ namespace live_tree
 	// CInjector
 	// 
 
-	CTRoot::CInjector::CInjector( PObject p, CTRoot* pRoot, const AABoxf& aabb, int LimitDivisions )
+	CTRoot::CInjector::CInjector( PObject p, CTRoot* pRoot, const aaboxf& aabb, int LimitDivisions )
 		: m_pObject(p), m_pRoot(pRoot), m_AABB(aabb), m_LimitDivisions(LimitDivisions)
 	{
 		// nothing
@@ -661,10 +661,10 @@ namespace live_tree
 
 	bool CTRoot::CInjector::operator ()( void )
 	{
-		return parse(m_pRoot->getBranch(),Point3f(),m_pRoot->getExt(),0);
+		return parse(m_pRoot->getBranch(),point3f(),m_pRoot->getExt(),0);
 	};
 
-	bool CTRoot::CInjector::parse( CTBranch* pBranch, const Point3f& cnt, const float& ext, const unsigned& division )
+	bool CTRoot::CInjector::parse( CTBranch* pBranch, const point3f& cnt, const float& ext, const unsigned& division )
 	{
 		// test for limits
 		if( division==m_LimitDivisions || ext <= m_pRoot->getBase() )
@@ -681,7 +681,7 @@ namespace live_tree
 		if(iIndexMin==iIndexMax)
 		{
 			// way 1: indexes are same. branches divided
-			Point3f center;
+			point3f center;
 			float fQuart = ext*0.5f;
 			for(unsigned iStep = 0; iStep<3; iStep++)
 			{
@@ -710,7 +710,7 @@ namespace live_tree
 	// CEjector
 	// 
 
-	CTRoot::CEjector::CEjector( PObject p, CTRoot* pRoot, const AABoxf& aabb, int LimitDivisions )
+	CTRoot::CEjector::CEjector( PObject p, CTRoot* pRoot, const aaboxf& aabb, int LimitDivisions )
 		: m_pObject(p), m_pRoot(pRoot), m_AABB(aabb), m_LimitDivisions(LimitDivisions)
 	{
 		// nothing
@@ -718,10 +718,10 @@ namespace live_tree
 
 	bool CTRoot::CEjector::operator ()( void )
 	{
-		return parse(m_pRoot->getBranch(),Point3f(),m_pRoot->getExt(),0);
+		return parse(m_pRoot->getBranch(),point3f(),m_pRoot->getExt(),0);
 	};
 
-	bool CTRoot::CEjector::parse( CTBranch* pBranch, const Point3f& cnt, const float& ext, const unsigned& division )
+	bool CTRoot::CEjector::parse( CTBranch* pBranch, const point3f& cnt, const float& ext, const unsigned& division )
 	{
 		// test for limits
 		if( division==m_LimitDivisions || ext <= m_pRoot->getBase() )
@@ -746,7 +746,7 @@ namespace live_tree
 			assert(pBranch->getBranch(iIndexMin));
 //			if(pBranch->getBranch(iIndexMin))
 //			{
-				Point3f center;
+				point3f center;
 				float fQuart = ext*0.5f;
 				for(unsigned iStep = 0; iStep<3; iStep++)
 				{
@@ -826,7 +826,7 @@ namespace live_tree
 		ejectDynamic(obj);
 	};
 
-	void CDynamicTreeRoot::set_pos( PObject obj, const Point3f pos )
+	void CDynamicTreeRoot::set_pos( PObject obj, const point3f pos )
 	{
 		if(obj->getRoot())
 			move(obj, pos);
@@ -834,7 +834,7 @@ namespace live_tree
 			m_sortMove[obj] = pos;
 	};
 
-	void CDynamicTreeRoot::setExt( PObject obj, const Point3f ext )
+	void CDynamicTreeRoot::setExt( PObject obj, const point3f ext )
 	{
 		m_sortChange[obj] = ext;
 		if(obj->getRoot())
@@ -844,7 +844,7 @@ namespace live_tree
 		}
 	};
 
-	void CDynamicTreeRoot::move( PObject obj, const Point3f& pos )
+	void CDynamicTreeRoot::move( PObject obj, const point3f& pos )
 	{
 		if(obj->getRoot())
 			eject(obj);

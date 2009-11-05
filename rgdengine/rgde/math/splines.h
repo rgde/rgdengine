@@ -13,9 +13,9 @@ namespace math
     typedef TCatmulRomSpline<float>       FloatCatmulRomSpline;
     typedef TCatmulRomSpline<int>         IntCatmulRomSpline;
 
-    typedef TCatmulRomSpline<math::Vec2f> Vec2fCatmulRomSpline;
-    typedef TCatmulRomSpline<math::Vec3f> Vec3fCatmulRomSpline;
-    typedef TCatmulRomSpline<math::Vec4f> Vec4fCatmulRomSpline;
+    typedef TCatmulRomSpline<math::vec2f> Vec2fCatmulRomSpline;
+    typedef TCatmulRomSpline<math::vec3f> Vec3fCatmulRomSpline;
+    typedef TCatmulRomSpline<math::vec4f> Vec4fCatmulRomSpline;
 
     typedef TCatmulRomSpline<math::Quatf> QuatfCatmulRomSpline;
 
@@ -31,10 +31,10 @@ namespace math
         }
     };
 
-    //для типа Vec3f
+    //для типа vec3f
     struct Vec3fDistance
     {
-        float operator()(const Vec3f &k1, const Vec3f &k2)
+        float operator()(const vec3f &k1, const vec3f &k2)
         {
             return length<float,3>(k2-k1);
         }
@@ -42,6 +42,6 @@ namespace math
 
     //сплайны Кэтмула-Рома с параметризацией длинной сплайна
     typedef TCatmulRomDistSpline<float, FloatDistance> FloatCatmulRomDistSpline;
-    typedef TCatmulRomDistSpline<Vec3f, Vec3fDistance> Vec3fCatmulRomDistSpline;
+    typedef TCatmulRomDistSpline<vec3f, Vec3fDistance> Vec3fCatmulRomDistSpline;
 
 } //namespace math

@@ -39,11 +39,11 @@ namespace render
 		m_vertices->resize(0);
 	}
 	//-----------------------------------------------------------------------------------
-	void lines2d::add_line(const math::Vec2f &point1, const math::Vec2f point2, math::Color color)
+	void lines2d::add_line(const math::vec2f &point1, const math::vec2f point2, math::Color color)
 	{
-		math::Vec2f screenSize(800, 600); //virtual screen size
-		math::Vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
-		math::Vec2f m_vScale		= vFrontBufferSize / screenSize;
+		math::vec2f screenSize(800, 600); //virtual screen size
+		math::vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
+		math::vec2f m_vScale		= vFrontBufferSize / screenSize;
 		m_vertices->push_back(Point(point1 * m_vScale, color));
 		m_vertices->push_back(Point(point2 * m_vScale, color));
 	}

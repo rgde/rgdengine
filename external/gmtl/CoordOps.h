@@ -37,7 +37,7 @@
 
 #include <gmtl/Coord.h>
 
-namespace gmtl
+namespace math
 {
 /** @ingroup Compare Coord 
  * @name Coord Comparitors

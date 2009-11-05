@@ -8,9 +8,9 @@ namespace math
 
 	class frame_anim_controller
 	{
-		typedef math::interpolator<math::Vec3f> position_interpolator;
-		typedef math::interpolator<math::Vec3f> rotation_interpolator;
-		typedef math::interpolator<math::Vec3f> scale_interpolator;
+		typedef math::interpolator<math::vec3f> position_interpolator;
+		typedef math::interpolator<math::vec3f> rotation_interpolator;
+		typedef math::interpolator<math::vec3f> scale_interpolator;
 
 	public:
 		frame_anim_controller( TiXmlNode* pXmlNode = 0, math::frame_ptr frame = frame_ptr());

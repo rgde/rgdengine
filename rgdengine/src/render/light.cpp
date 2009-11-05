@@ -54,9 +54,9 @@ namespace render
 		m_ambient = ambient;
 	}
 
-	void base_light::setDirection(const math::Vec3f& direction)
+	void base_light::setDirection(const math::vec3f& direction)
 	{
-		math::Vec3f position= get_pos();
+		math::vec3f position= get_pos();
 		look_at(position, position + direction, getUp());
 	}
 

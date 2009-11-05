@@ -38,7 +38,7 @@
 #include <gmtl/LineSeg.h>
 #include <gmtl/RayOps.h>
 
-namespace gmtl {
+namespace math {
 
 /**
  * Finds the closest point on the line segment to a given point.
@@ -69,7 +69,7 @@ template< class DATA_TYPE >
 inline DATA_TYPE distance( const LineSeg<DATA_TYPE>& lineseg,
                            const Point<DATA_TYPE, 3>& pt )
 {
-   return gmtl::length(gmtl::Vec<DATA_TYPE, 3>(pt - findNearestPt(lineseg, pt)));
+   return math::length(math::Vec<DATA_TYPE, 3>(pt - findNearestPt(lineseg, pt)));
 }
 
 /**
@@ -84,9 +84,9 @@ template< class DATA_TYPE >
 inline DATA_TYPE distanceSquared( const LineSeg<DATA_TYPE>& lineseg,
                            const Point<DATA_TYPE, 3>& pt )
 {
-   return gmtl::lengthSquared(gmtl::Vec<DATA_TYPE, 3>(pt - findNearestPt(lineseg, pt)));
+   return math::lengthSquared(math::Vec<DATA_TYPE, 3>(pt - findNearestPt(lineseg, pt)));
 }
 
 
-} // namespace gmtl
+} // namespace math
 #endif

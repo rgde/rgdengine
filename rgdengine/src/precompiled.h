@@ -31,7 +31,7 @@
 
 namespace math
 {
-	using namespace gmtl;
+	//using namespace math;
 }
 
 #define TIXML_USE_STL

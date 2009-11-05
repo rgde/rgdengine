@@ -44,7 +44,7 @@
 #include <gmtl/Vec3.h>
 #include <gmtl/Point3.h>
 
-namespace gmtl
+namespace math
 {
    // Allows for the comparison of projected point distances
    // onto a given vector
@@ -63,7 +63,7 @@ namespace gmtl
       }
 
       const std::vector<Point3>* points;
-      gmtl::Vec3                 sortDir;       // Direction to sort by
+      math::Vec3                 sortDir;       // Direction to sort by
    };
 };
 

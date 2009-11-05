@@ -135,13 +135,13 @@
 //--------------------------------------------------------------------------
 // Declare a version string constant that can be used at runtime.
 //--------------------------------------------------------------------------
-namespace gmtl
+namespace math
 {
    inline const char* getVersion()
    {
       return GMTL_XSTR(GMTL_VERSION_STRING);
    }
-} // end namespace gmtl
+} // end namespace math
 
 //--------------------------------------------------------------------------
 // Cleanup after ourselves and undef all internal macros.

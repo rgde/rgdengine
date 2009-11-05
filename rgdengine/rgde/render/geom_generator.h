@@ -13,7 +13,7 @@ namespace render
 		
 		static void GenerateGrid(PGeometry pGeometry, int nXResolution, int nZResolution,
 									float fXScale = 1.0f, float fZScale = 1.0f,
-									const math::Vec3f& CenterPos = math::Vec3f(0.0f, 0.0f, 0.0f))
+									const math::vec3f& CenterPos = math::vec3f(0.0f, 0.0f, 0.0f))
 		{
 			geometry::Vertexes& vertices = pGeometry->lockVB();
 			geometry::Indexes&  indices  = pGeometry->lockIB();
@@ -27,8 +27,8 @@ namespace render
 			for(int x = 0; x < nXResolution; x++)
 				for(int z = 0; z < nZResolution; z++)
 				{
-					vertices[nVertCnt].position = math::Vec3f((0.5f - (float)x/(nXResolution - 1))*fXScale, 0, (0.5f - (float)z/(nZResolution - 1))*fZScale);
-					vertices[nVertCnt].normal   = math::Vec3f(0.0f, 1.0f, 0.0f);
+					vertices[nVertCnt].position = math::vec3f((0.5f - (float)x/(nXResolution - 1))*fXScale, 0, (0.5f - (float)z/(nZResolution - 1))*fZScale);
+					vertices[nVertCnt].normal   = math::vec3f(0.0f, 1.0f, 0.0f);
 
 					if(x < nXResolution - 1 && z < nZResolution - 1)
 					{
@@ -44,7 +44,7 @@ namespace render
 		}
 
 		static void GenerateCylinder(PGeometry pGeometry, int nRadialSegments = 16, int nHeightSegments = 16, float fRadius = 1.0f, float fHeight = 1.0f,
-										const math::Vec3f& CenterPosition = math::Vec3f(0.0f, 0.0f, 0.0f))
+										const math::vec3f& CenterPosition = math::vec3f(0.0f, 0.0f, 0.0f))
 		{
 			GenerateGrid(pGeometry, nRadialSegments + 1, 3 + nHeightSegments);
 
@@ -57,21 +57,21 @@ namespace render
 			int nVertCnt = 0;
 			for(int i = 0; i < nRadialSegments + 1; i++)
 			{
-				vertices[nVertCnt].normal = math::Vec3f(0, 1.0f, 0);
-				vertices[nVertCnt++].position = math::Vec3f(0, fHalfOfHeight, 0) + CenterPosition;
+				vertices[nVertCnt].normal = math::vec3f(0, 1.0f, 0);
+				vertices[nVertCnt++].position = math::vec3f(0, fHalfOfHeight, 0) + CenterPosition;
 
-				math::Vec3f v = math::makeRot<math::Matrix33f>(math::AxisAnglef(i*fUnit, 0, 1, 0))*math::Vec3f(0, 0, 1.0f);
-				math::Vec3f normal = v;
+				math::vec3f v = math::makeRot<math::Matrix33f>(math::AxisAnglef(i*fUnit, 0, 1, 0))*math::vec3f(0, 0, 1.0f);
+				math::vec3f normal = v;
 				v = v*fRadius;
 
 				for(int j = 0; j < nHeightSegments + 1; j++)
 				{
 					vertices[nVertCnt].normal = normal;
-					vertices[nVertCnt++].position = math::Vec3f(v[0], v[1] + fHalfOfHeight - fHeight*((float)j/(float)nHeightSegments), v[2]) + CenterPosition;
+					vertices[nVertCnt++].position = math::vec3f(v[0], v[1] + fHalfOfHeight - fHeight*((float)j/(float)nHeightSegments), v[2]) + CenterPosition;
 				}
 				
-				vertices[nVertCnt].normal = math::Vec3f(0, -1.0f, 0);
-				vertices[nVertCnt++].position = math::Vec3f(0, -fHalfOfHeight, 0) + CenterPosition;
+				vertices[nVertCnt].normal = math::vec3f(0, -1.0f, 0);
+				vertices[nVertCnt++].position = math::vec3f(0, -fHalfOfHeight, 0) + CenterPosition;
 			}
 
 			pGeometry->unlockVB();
@@ -79,12 +79,12 @@ namespace render
 			pGeometry->getBBox();
 		}
 
-		static PGeometry CreateBox(const math::Vec3f& Size = math::Vec3f(1.0f, 1.0f, 1.0f), const math::Vec3f& CenterPos = math::Vec3f(0, 0, 0))
+		static PGeometry CreateBox(const math::vec3f& Size = math::vec3f(1.0f, 1.0f, 1.0f), const math::vec3f& CenterPos = math::vec3f(0, 0, 0))
 		{
 			PGeometry pResult(new geometry);
 
-			math::Vec3f HalfOfSize = Size/2.0f;
-			math::Vec3f Normal     = math::Vec3f(0.5774f, 0.5774f, 0.5774f);
+			math::vec3f HalfOfSize = Size/2.0f;
+			math::vec3f Normal     = math::vec3f(0.5774f, 0.5774f, 0.5774f);
 
 			geometry::Vertexes& vertices = pResult->lockVB();
 			geometry::Indexes&  indices  = pResult->lockIB();
@@ -92,23 +92,23 @@ namespace render
 			vertices.resize(8);
 			indices.resize(12*3);
 
-			vertices[0].position = math::Vec3f(-HalfOfSize[0], -HalfOfSize[1], -HalfOfSize[2]) + CenterPos;
-			vertices[1].position = math::Vec3f( HalfOfSize[0], -HalfOfSize[1], -HalfOfSize[2]) + CenterPos;
-			vertices[2].position = math::Vec3f( HalfOfSize[0], -HalfOfSize[1],  HalfOfSize[2]) + CenterPos;
-			vertices[3].position = math::Vec3f(-HalfOfSize[0], -HalfOfSize[1],  HalfOfSize[2]) + CenterPos;
-			vertices[4].position = math::Vec3f(-HalfOfSize[0],  HalfOfSize[1], -HalfOfSize[2]) + CenterPos;
-			vertices[5].position = math::Vec3f( HalfOfSize[0],  HalfOfSize[1], -HalfOfSize[2]) + CenterPos;
-			vertices[6].position = math::Vec3f( HalfOfSize[0],  HalfOfSize[1],  HalfOfSize[2]) + CenterPos;
-			vertices[7].position = math::Vec3f(-HalfOfSize[0],  HalfOfSize[1],  HalfOfSize[2]) + CenterPos;
+			vertices[0].position = math::vec3f(-HalfOfSize[0], -HalfOfSize[1], -HalfOfSize[2]) + CenterPos;
+			vertices[1].position = math::vec3f( HalfOfSize[0], -HalfOfSize[1], -HalfOfSize[2]) + CenterPos;
+			vertices[2].position = math::vec3f( HalfOfSize[0], -HalfOfSize[1],  HalfOfSize[2]) + CenterPos;
+			vertices[3].position = math::vec3f(-HalfOfSize[0], -HalfOfSize[1],  HalfOfSize[2]) + CenterPos;
+			vertices[4].position = math::vec3f(-HalfOfSize[0],  HalfOfSize[1], -HalfOfSize[2]) + CenterPos;
+			vertices[5].position = math::vec3f( HalfOfSize[0],  HalfOfSize[1], -HalfOfSize[2]) + CenterPos;
+			vertices[6].position = math::vec3f( HalfOfSize[0],  HalfOfSize[1],  HalfOfSize[2]) + CenterPos;
+			vertices[7].position = math::vec3f(-HalfOfSize[0],  HalfOfSize[1],  HalfOfSize[2]) + CenterPos;
 
-			vertices[0].normal = math::Vec3f(-Normal[0], -Normal[1], -Normal[2]);
-			vertices[1].normal = math::Vec3f( Normal[0], -Normal[1], -Normal[2]);
-			vertices[2].normal = math::Vec3f( Normal[0], -Normal[1],  Normal[2]);
-			vertices[3].normal = math::Vec3f(-Normal[0], -Normal[1],  Normal[2]);
-			vertices[4].normal = math::Vec3f(-Normal[0],  Normal[1], -Normal[2]);
-			vertices[5].normal = math::Vec3f( Normal[0],  Normal[1], -Normal[2]);
-			vertices[6].normal = math::Vec3f( Normal[0],  Normal[1],  Normal[2]);
-			vertices[7].normal = math::Vec3f(-Normal[0],  Normal[1],  Normal[2]);
+			vertices[0].normal = math::vec3f(-Normal[0], -Normal[1], -Normal[2]);
+			vertices[1].normal = math::vec3f( Normal[0], -Normal[1], -Normal[2]);
+			vertices[2].normal = math::vec3f( Normal[0], -Normal[1],  Normal[2]);
+			vertices[3].normal = math::vec3f(-Normal[0], -Normal[1],  Normal[2]);
+			vertices[4].normal = math::vec3f(-Normal[0],  Normal[1], -Normal[2]);
+			vertices[5].normal = math::vec3f( Normal[0],  Normal[1], -Normal[2]);
+			vertices[6].normal = math::vec3f( Normal[0],  Normal[1],  Normal[2]);
+			vertices[7].normal = math::vec3f(-Normal[0],  Normal[1],  Normal[2]);
 
 			setFace(indices, 0,  0, 4, 5);
 			setFace(indices, 1,  5, 1, 0);
@@ -132,7 +132,7 @@ namespace render
 		
 		static PGeometry CreateGrid(int nXResolution, int nZResolution,
 									float fXScale = 1.0f, float fZScale = 1.0f,
-									const math::Vec3f& CenterPos = math::Vec3f(0.0f, 0.0f, 0.0f))
+									const math::vec3f& CenterPos = math::vec3f(0.0f, 0.0f, 0.0f))
 		{
 			PGeometry pResult(new geometry);
 
@@ -142,7 +142,7 @@ namespace render
 		}
 		
 		static PGeometry CreateCylinder(int nRadialSegments = 16, int nHeightSegments = 16, float fRadius = 1.0f, float fHeight = 1.0f,
-										const math::Vec3f& CenterPosition = math::Vec3f(0.0f, 0.0f, 0.0f))
+										const math::vec3f& CenterPosition = math::vec3f(0.0f, 0.0f, 0.0f))
 		{
 			PGeometry pResult = CreateGrid(nRadialSegments + 1, 3 + nHeightSegments);
 
@@ -162,9 +162,9 @@ namespace render
 			int nVertCnt = 0;
 			for(int i = 0; i < nStep + 1; i++)
 			{
-				vertices[nVertCnt++].position = math::Vec3f(0, 1, 0);
-				vertices[nVertCnt++].position = math::makeRot<math::Matrix33f>(math::AxisAnglef(i*fUnit, 0, 1, 0))*math::Vec3f(0, 0, 1);
-				vertices[nVertCnt++].position = math::Vec3f(0, 0, 0);
+				vertices[nVertCnt++].position = math::vec3f(0, 1, 0);
+				vertices[nVertCnt++].position = math::makeRot<math::Matrix33f>(math::AxisAnglef(i*fUnit, 0, 1, 0))*math::vec3f(0, 0, 1);
+				vertices[nVertCnt++].position = math::vec3f(0, 0, 0);
 			}
 
 			pResult->unlockVB();
@@ -186,7 +186,7 @@ namespace render
 			int nVertCnt = 0;
 			for(int i = 0; i < nStepLng + 1; i++)
 				for(int j = 0; j < (nStepLat/2) + 1; j++)
-					vertices[nVertCnt++].position = math::makeRot<math::Matrix33f>(math::AxisAnglef(i*fUnitLng, 0, 1, 0))*math::makeRot<math::Matrix33f>(math::AxisAnglef(j*fUnitLat, 1, 0, 0))*math::Vec3f(0, 1, 0);
+					vertices[nVertCnt++].position = math::makeRot<math::Matrix33f>(math::AxisAnglef(i*fUnitLng, 0, 1, 0))*math::makeRot<math::Matrix33f>(math::AxisAnglef(j*fUnitLat, 1, 0, 0))*math::vec3f(0, 1, 0);
 
 			pResult->unlockVB();
 			pResult->unlockIB();
@@ -208,9 +208,9 @@ namespace render
 			for(int i = 0; i < nStepLng + 1; i++)
 			{
 				for(int j = 0; j < (nStepLat/4) + 1; j++)
-					vertices[nVertCnt++].position =  math::makeRot<math::Matrix33f>(math::AxisAnglef(i*fUnitLng, 0, 1, 0))*math::makeRot<math::Matrix33f>(math::AxisAnglef(j*fUnitLat, 1, 0, 0))*math::Vec3f(0, 1, 0);
+					vertices[nVertCnt++].position =  math::makeRot<math::Matrix33f>(math::AxisAnglef(i*fUnitLng, 0, 1, 0))*math::makeRot<math::Matrix33f>(math::AxisAnglef(j*fUnitLat, 1, 0, 0))*math::vec3f(0, 1, 0);
 
-				vertices[nVertCnt++].position = math::Vec3f(0, 0, 0);
+				vertices[nVertCnt++].position = math::vec3f(0, 0, 0);
 			}
 
 			pResult->unlockVB();
@@ -233,9 +233,9 @@ namespace render
 			for(int i = 0; i < nStepMajor + 1; i++)
 				for(int j = 0; j < nStepMinor + 1; j++)
 					vertices[nVertCnt++].position = math::makeRot<math::Matrix33f>(math::AxisAnglef(i*fUnitMajor, 0, 1, 0))*
-													math::makeTrans<math::Matrix33f>(math::Vec3f(0, 0, fRadMajor))*
+													math::makeTrans<math::Matrix33f>(math::vec3f(0, 0, fRadMajor))*
 													math::makeRot<math::Matrix33f>(math::AxisAnglef(j*fUnitMinor, 1, 0, 0))*
-													math::Vec3f(0, fRadMinor, 0);
+													math::vec3f(0, fRadMinor, 0);
 
 			pResult->unlockVB();
 			pResult->unlockIB();
@@ -254,12 +254,12 @@ namespace render
 			vertices.resize(6);
 			indices.resize(8*3);
 
-			vertices[0].position = math::Vec3f(0, 0, 0);
-			vertices[1].position = math::Vec3f(1, 0, 0);
-			vertices[2].position = math::Vec3f(1, 0, 1);
-			vertices[3].position = math::Vec3f(0, 0, 1);
-			vertices[4].position = math::Vec3f(0.5f, -1, 0.5f);
-			vertices[5].position = math::Vec3f(0.5f, 1, 0.5f);
+			vertices[0].position = math::vec3f(0, 0, 0);
+			vertices[1].position = math::vec3f(1, 0, 0);
+			vertices[2].position = math::vec3f(1, 0, 1);
+			vertices[3].position = math::vec3f(0, 0, 1);
+			vertices[4].position = math::vec3f(0.5f, -1, 0.5f);
+			vertices[5].position = math::vec3f(0.5f, 1, 0.5f);
 
 			setFace(indices, 0, 0, 1, 4);
 			setFace(indices, 1, 1, 2, 4);
@@ -287,10 +287,10 @@ namespace render
 			vertices.resize(4);
 			indices.resize(4*3);
 
-			vertices[0].position = math::Vec3f(0, 0, 0);
-			vertices[1].position = math::Vec3f(1, 1, 0);
-			vertices[2].position = math::Vec3f(1, 1, 1);
-			vertices[3].position = math::Vec3f(1, 0, 1);
+			vertices[0].position = math::vec3f(0, 0, 0);
+			vertices[1].position = math::vec3f(1, 1, 0);
+			vertices[2].position = math::vec3f(1, 1, 1);
+			vertices[3].position = math::vec3f(1, 0, 1);
 
 			setFace(indices, 0, 0, 1, 3);
 			setFace(indices, 1, 0, 2, 1);

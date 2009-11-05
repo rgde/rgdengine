@@ -39,7 +39,7 @@
 
 /** Meta programming classes for vec operations
  */
-namespace gmtl
+namespace math
 {
 namespace meta
 {

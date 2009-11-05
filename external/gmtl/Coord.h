@@ -43,7 +43,7 @@
 #include <gmtl/Util/Meta.h>
 #include <gmtl/Util/StaticAssert.h>
 
-namespace gmtl
+namespace math
 {
    
 /** coord is a position/rotation pair. 
@@ -51,7 +51,7 @@ namespace gmtl
  *
  * <h3> "How to define an Vector/Euler pair (32 bit float precision):" </h3>
  * \code
- *    Coord<Vec3f, EulerAngleXYZf> myEulerCoord;
+ *    Coord<vec3f, EulerAngleXYZf> myEulerCoord;
  * \endcode
  *
  * <h3> "Or use the built in typedefs:" </h3>
@@ -167,58 +167,58 @@ public:
 };
 
 typedef Coord<Vec3d, EulerAngleXYZd> CoordVec3EulerAngleXYZd;
-typedef Coord<Vec3f, EulerAngleXYZf> CoordVec3EulerAngleXYZf;
+typedef Coord<vec3f, EulerAngleXYZf> CoordVec3EulerAngleXYZf;
 typedef Coord<Vec4d, EulerAngleXYZd> CoordVec4EulerAngleXYZd;
-typedef Coord<Vec4f, EulerAngleXYZf> CoordVec4EulerAngleXYZf;
+typedef Coord<vec4f, EulerAngleXYZf> CoordVec4EulerAngleXYZf;
 
 typedef Coord<Vec3d, EulerAngleZYXd> CoordVec3EulerAngleZYXd;
-typedef Coord<Vec3f, EulerAngleZYXf> CoordVec3EulerAngleZYXf;
+typedef Coord<vec3f, EulerAngleZYXf> CoordVec3EulerAngleZYXf;
 typedef Coord<Vec4d, EulerAngleZYXd> CoordVec4EulerAngleZYXd;
-typedef Coord<Vec4f, EulerAngleZYXf> CoordVec4EulerAngleZYXf;
+typedef Coord<vec4f, EulerAngleZYXf> CoordVec4EulerAngleZYXf;
 
 typedef Coord<Vec3d, EulerAngleZXYd> CoordVec3EulerAngleZXYd;
-typedef Coord<Vec3f, EulerAngleZXYf> CoordVec3EulerAngleZXYf;
+typedef Coord<vec3f, EulerAngleZXYf> CoordVec3EulerAngleZXYf;
 typedef Coord<Vec4d, EulerAngleZXYd> CoordVec4EulerAngleZXYd;
-typedef Coord<Vec4f, EulerAngleZXYf> CoordVec4EulerAngleZXYf;
+typedef Coord<vec4f, EulerAngleZXYf> CoordVec4EulerAngleZXYf;
 
 typedef Coord<Vec3d, AxisAngled> CoordVec3AxisAngled;
-typedef Coord<Vec3f, AxisAnglef> CoordVec3AxisAnglef;
+typedef Coord<vec3f, AxisAnglef> CoordVec3AxisAnglef;
 typedef Coord<Vec4d, AxisAngled> CoordVec4AxisAngled;
-typedef Coord<Vec4f, AxisAnglef> CoordVec4AxisAnglef;
+typedef Coord<vec4f, AxisAnglef> CoordVec4AxisAnglef;
 
 
 
 /** 3 elt types */
-typedef Coord<Vec3f, EulerAngleXYZf> Coord3fXYZ;
-typedef Coord<Vec3f, EulerAngleZYXf> Coord3fZYX;
-typedef Coord<Vec3f, EulerAngleZXYf> Coord3fZXY;
+typedef Coord<vec3f, EulerAngleXYZf> Coord3fXYZ;
+typedef Coord<vec3f, EulerAngleZYXf> Coord3fZYX;
+typedef Coord<vec3f, EulerAngleZXYf> Coord3fZXY;
 typedef Coord<Vec3d, EulerAngleXYZd> Coord3dXYZ;
 typedef Coord<Vec3d, EulerAngleZYXd> Coord3dZYX;
 typedef Coord<Vec3d, EulerAngleZXYd> Coord3dZXY;
 
 /** 4 elt types */
-typedef Coord<Vec4f, EulerAngleXYZf> Coord4fXYZ;
-typedef Coord<Vec4f, EulerAngleZYXf> Coord4fZYX;
-typedef Coord<Vec4f, EulerAngleZXYf> Coord4fZXY;
+typedef Coord<vec4f, EulerAngleXYZf> Coord4fXYZ;
+typedef Coord<vec4f, EulerAngleZYXf> Coord4fZYX;
+typedef Coord<vec4f, EulerAngleZXYf> Coord4fZXY;
 typedef Coord<Vec4d, EulerAngleXYZd> Coord4dXYZ;
 typedef Coord<Vec4d, EulerAngleZYXd> Coord4dZYX;
 typedef Coord<Vec4d, EulerAngleZXYd> Coord4dZXY;
 
 /** 3 elt types */
-typedef Coord<Vec3f, Quatf> Coord3fQuat;
+typedef Coord<vec3f, Quatf> Coord3fQuat;
 typedef Coord<Vec3d, Quatd> Coord3dQuat;
 
 /** 4 elt types */
-typedef Coord<Vec4f, Quatf> Coord4fQuat;
+typedef Coord<vec4f, Quatf> Coord4fQuat;
 typedef Coord<Vec4d, Quatd> Coord4dQuat;
 
 
 /** 3 elt types */
-typedef Coord<Vec3f, AxisAnglef> Coord3fAxisAngle;
+typedef Coord<vec3f, AxisAnglef> Coord3fAxisAngle;
 typedef Coord<Vec3d, AxisAngled> Coord3dAxisAngle;
 
 /** 4 elt types */
-typedef Coord<Vec4f, AxisAnglef> Coord4fAxisAngle;
+typedef Coord<vec4f, AxisAnglef> Coord4fAxisAngle;
 typedef Coord<Vec4d, AxisAngled> Coord4dAxisAngle;
 
 }
