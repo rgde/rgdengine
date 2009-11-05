@@ -105,7 +105,7 @@ namespace render
 
 	void lens_flares::render()
 	{
-		math::camera_ptr camera	= TheDevice::get().get_camera();
+		math::camera_ptr camera	= render_device::get().get_camera();
 
 		math::Matrix44f projView= camera->get_proj_matrix() * camera->get_view_matrix();
 

@@ -12,7 +12,7 @@ namespace render
 	//-----------------------------------------------------------------------------------
 	lines3d::lines3d(unsigned long priority)
 		: render::rendererable(1000),
-		  m_effect(effect::create("lines3d.fx")),
+		  m_effect(effect::create("Line3dManager.fx")),
 		  m_priority(priority),
 		  m_geometry(true)
 	{
@@ -27,7 +27,7 @@ namespace render
 		if (m_vertices->size() == 0)
 			return;
 
-		math::camera_ptr camera	= render::TheDevice::get().get_camera();
+		math::camera_ptr camera	= render::render_device::get().get_camera();
 
 		if (!camera)
 			return;
@@ -309,7 +309,7 @@ namespace render
 	//-----------------------------------------------------------------------------------
 	void lines3d::add_quad(const math::Vec3f &center, const math::Vec2f &size, float spin)
 	{
-		const math::Matrix44f & mView = TheDevice::get().get_camera()->get_view_matrix();
+		const math::Matrix44f & mView = render_device::get().get_camera()->get_view_matrix();
 
 		math::Vec3f up	(mView.mData[0], mView.mData[4], mView.mData[8]);
 		math::normalize(up);

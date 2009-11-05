@@ -34,7 +34,7 @@ namespace particles
 			return;
 
 		const math::Matrix44f& mLocal	= frame.get_full_tm();
-		math::camera_ptr camera		= render::TheDevice::get().get_camera();
+		math::camera_ptr camera		= render::render_device::get().get_camera();
 		const math::Matrix44f& mProj	= camera->get_proj_matrix();
 		const math::Matrix44f& mView	= camera->get_view_matrix();
 		

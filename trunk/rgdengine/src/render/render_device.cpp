@@ -2,7 +2,9 @@
 
 #include <rgde/render/render_device.h>
 #include <rgde/render/binders.h>
+
 #include <rgde/render/lines3d.h>
+#include <rgde/render/lines2d.h>
 
 #include <rgde/core/timer.h>
 
@@ -12,10 +14,24 @@ extern LPDIRECT3DDEVICE9 g_d3d;
 
 namespace render
 {
+	render_device* render_device::ms_instance = 0;
+	bool render_device::ms_is_created = false;
+
+	render_device&	render_device::get()
+	{
+		return *ms_instance;
+	}
+
+	bool render_device::is_created()
+	{
+		return ms_is_created;
+	}
+
 	render_device::render_device() : m_shaderFlags(0)
 	{
         m_clear_color = math::Color(0,0,0,255);
-		//base::lmsg << "render_device::render_device()";
+		ms_instance = this;
+		ms_is_created = true;
 	}
 
 	struct  _deleter
@@ -28,9 +44,16 @@ namespace render
 
 	render_device::~render_device()
 	{
-		//base::lmsg << "render_device::~render_device()";
 		on_lost();
-		//std::for_each(m_objects.begin(), m_objects.end(), _deleter());
+		//TODO: add assert on m_objects.empty()
+		ms_instance = 0;
+		ms_is_created = false;
+	}
+
+	void render_device::init()
+	{
+		m_lines2d.reset(new lines2d());
+		m_lines3d.reset(new lines3d());
 	}
 
 	struct  _reseter
@@ -171,7 +194,7 @@ namespace render
 	device_object::device_object()
 	{
 		//base::lmsg << "device_object::device_object()";
-		TheDevice::get().add_object(this);
+		render_device::get().add_object(this);
 		//m_bIsAtachedToDevice = true;
 	}
 
@@ -179,6 +202,6 @@ namespace render
 	{
 		//base::lmsg << "device_object::~device_object()";
 		//if (m_bIsAtachedToDevice)
-		TheDevice::get().remove_object(this);
+		render_device::get().remove_object(this);
 	}
 }

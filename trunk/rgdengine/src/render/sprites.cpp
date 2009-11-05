@@ -36,7 +36,7 @@ namespace render
 		  m_vOrigin(0, 0)
 	{
 		//base::lmsg << "sprite_manager::sprite_manager()";
-		math::Vec2f vFrontBufferSize= render::TheDevice::get().getBackBufferSize();
+		math::Vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
 		m_vScale = vFrontBufferSize / m_cvScreenSize;
 
 
@@ -227,7 +227,7 @@ namespace render
 	void sprite_manager::onResetDevice()
 	{
 		// Вычисляем коэффициенты масштабирования
-		math::Vec2f vFrontBufferSize= render::TheDevice::get().getBackBufferSize();
+		math::Vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
 		m_vScale = vFrontBufferSize / m_cvScreenSize;
 		update();
 	}

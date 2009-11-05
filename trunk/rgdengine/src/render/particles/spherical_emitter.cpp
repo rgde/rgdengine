@@ -66,7 +66,7 @@ namespace particles
 	{
 		base_emitter::debug_draw();
 
-		render::lines3d& line_manager = render::TheDevice::get().get_lines3d();
+		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 
 		float rad = m_Radius.getValue(m_fTimeNormalaized);// + 
 		float r_rand = m_RadiusSpread.getValue(m_fTimeNormalaized);

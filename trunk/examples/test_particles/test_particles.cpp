@@ -149,8 +149,8 @@ public:
 	//-----------------------------------------------------------------------------------
 	virtual void update(float dt)
 	{
-		render::TheDevice::get().showWiredFloorGrid(100.0f, 20, math::Color(150, 150, 150, 255));
-		render::TheDevice::get().showWiredFloorGrid(100.0f, 2, math::Color(60, 60, 60, 255));
+		render::render_device::get().showWiredFloorGrid(100.0f, 20, math::Color(150, 150, 150, 255));
+		render::render_device::get().showWiredFloorGrid(100.0f, 2, math::Color(60, 60, 60, 255));
 	}
 protected:
 	//-----------------------------------------------------------------------------------

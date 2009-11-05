@@ -280,7 +280,7 @@ namespace render
 
 	void render_manager::renderScene()
 	{
-		render::TheDevice::get().reset_statistics();
+		render::render_device::get().reset_statistics();
 
 		//m_lRenderables.sort(functors::priority_sorter_less());
 		std::sort(m_lRenderables.begin(), m_lRenderables.end(), functors::priority_sorter_less());
@@ -307,7 +307,7 @@ namespace render
 					createBinder();
 				m_pStaticBinder->setupParameters(0);
 
-				const math::frustum& frustum = TheDevice::get().get_camera()->get_frustum();
+				const math::frustum& frustum = render_device::get().get_camera()->get_frustum();
 				std::for_each(m_lRenderables.begin(), m_lRenderables.end(), SRenderblesSorter(vSolid, vTransparet, vPostTransparet, frustum));
 
 				int nVisibleObjects = static_cast<int>(vTransparet.size() + vSolid.size());
@@ -315,7 +315,7 @@ namespace render
 				//std::wstring wstr(str.begin(), str.end());
 				//getDefaultFont()->renderText(wstr, math::Rect(1, 29, 400, 400), 0xFFFFFFFF, true);
 
-				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(TheDevice::get().get_camera()->get_pos()));
+				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(render_device::get().get_camera()->get_pos()));
 
 				{
 					{
@@ -355,7 +355,7 @@ namespace render
 
 		// draw debug information
 		//scene::TheScene::get().debug_draw();
-		//render::TheDevice::get().showStatistics(getDefaultFont());
+		//render::render_device::get().showStatistics(getDefaultFont());
 	}
 
 	void render_manager::createBinder()

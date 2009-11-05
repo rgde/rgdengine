@@ -227,7 +227,7 @@ namespace particles{
 
 		math::Matrix44f m = m_Transform.get_full_tm();
 
-		render::lines3d& line_manager = render::TheDevice::get().get_lines3d();
+		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 
 		renderer_ptr spTank = psyst[frame_num];
 		renderer::ParticleArray& array = spTank->getParticles();
