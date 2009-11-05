@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="Enginelib"
 	ProjectGUID="{3A68081D-E8F9-4523-9436-530DE9E5530A}"
 	RootNamespace="rgde"
@@ -1024,6 +1024,18 @@
 					</File>
 					<File
 						RelativePath=".\src\forms\window.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="impl"
+					>
+					<File
+						RelativePath=".\src\core\render_system_impl.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\core\render_system_impl.h"
 						>
 					</File>
 				</Filter>

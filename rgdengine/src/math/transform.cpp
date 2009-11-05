@@ -121,7 +121,7 @@ namespace math
 		math::Point3f Y = p + l * getUpGlobal();
 		math::Point3f Z = p + l * getAtGlobal();
 
-		render::lines3d& line_manager = render::TheDevice::get().get_lines3d();
+		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 		line_manager.add_line( p, X, math::Red );
 		line_manager.add_line( p, Y, math::Green );
 		line_manager.add_line( p, Z, math::Blue );

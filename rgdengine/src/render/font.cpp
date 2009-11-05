@@ -125,7 +125,7 @@ namespace render
 
 			unsigned	nShadowDistance	= 2;
 			unsigned	nShadowColor	= 0xFF000000; //Black
-			math::Vec2f	screen_size		= render::TheDevice::get().getBackBufferSize();
+			math::Vec2f	screen_size		= render::render_device::get().getBackBufferSize();
 			math::Vec2f	ratio = screen_size / virtSize;
 
 			font_manager& rm = TheFontRenderManager::get();

@@ -7,11 +7,9 @@ namespace render
 {
 	class lines3d : public rendererable
 	{
-	protected:
-		lines3d( unsigned long priority = 10);
-		virtual ~lines3d() {}
-
 	public:
+		explicit lines3d(unsigned long priority = 10);
+	
 		typedef vertex::position_colored Point;
 
 		void add_line( const math::Vec3f& point1, const math::Vec3f& point2, 

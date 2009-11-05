@@ -159,9 +159,9 @@ protected:
 		}
 
 		float abs_time = game::game_system::get().get_timer().get_absolute_time();
-		render::TheDevice::get().draw_fps(abs_time, m_font);
+		render::render_device::get().draw_fps(abs_time, m_font);
 		
-		render::TheDevice::get().showWiredFloorGrid(15.0f, 15, math::Color(60, 60, 60, 255));
+		render::render_device::get().showWiredFloorGrid(15.0f, 15, math::Color(60, 60, 60, 255));
 		renderMatr();
 		renderBlock();
 		switch(bl->m_ilastnum)

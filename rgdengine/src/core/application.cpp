@@ -554,7 +554,7 @@ namespace core
 		}
 
 		// destroy all tasks
-		m_tasks.clear();
+		//m_tasks.clear();
 
 		// send device destroy reset
 		//PostQuitMessage(0);		

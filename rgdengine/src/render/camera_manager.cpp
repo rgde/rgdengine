@@ -65,6 +65,6 @@ namespace render
 
 		//m_curCamera = *it;
 		(*it)->activate();
-		render::TheDevice::get().set_camera(*it);
+		render::render_device::get().set_camera(*it);
 	}
 }

@@ -60,7 +60,7 @@ namespace lines_test
 	//-----------------------------------------------------------------------------------
 	void triangle::render()
 	{
-		render::lines3d& line_manager = render::TheDevice::get().get_lines3d();
+		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 
 		for( points_iter it = m_points.begin(); it != (m_points.end()-1); ++it )
 			line_manager.add_line( it->get_pos(), (it+1)->get_pos(), m_color.color );

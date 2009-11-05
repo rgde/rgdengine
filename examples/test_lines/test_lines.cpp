@@ -38,7 +38,7 @@ protected:
 	void update (float dt)
 	{
 		float abs_time = game::game_system::get().get_timer().get_absolute_time();
-		render::TheDevice::get().draw_fps(abs_time, m_font);
+		render::render_device::get().draw_fps(abs_time, m_font);
 
 		m_TrianglesManager.update();
 		m_TrianglesManager.render();

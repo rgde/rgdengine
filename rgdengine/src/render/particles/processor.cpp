@@ -324,7 +324,7 @@ namespace particles{
 			m = math::setTrans( m, math::Vec3f(0,0,0) );
 
 		math::Vec3f center, vel;
-		render::lines3d& line_manager = render::TheDevice::get().get_lines3d(); 
+		render::lines3d& line_manager = render::render_device::get().get_lines3d(); 
 		for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
 		{
 			if ((*it).dead)

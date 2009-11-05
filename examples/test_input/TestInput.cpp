@@ -17,7 +17,7 @@ TestInput::TestInput():
     m_btnPrimaryFire   (L"PrimaryFire"),
     m_btnSecondaryFire (L"SecondaryFire")
 {
-    render::TheDevice::get().setClearColor(math::Color(0,0,0,255));
+    render::render_device::get().setClearColor(math::Color(0,0,0,255));
 
     input::Input::LoadFromFile("TestInput/input.xml");
 

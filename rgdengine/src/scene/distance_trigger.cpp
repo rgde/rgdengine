@@ -31,7 +31,7 @@ namespace scene
 		if (!m_frame)
 			return;
 
-		math::camera_ptr cam = render::TheDevice::get().get_camera();
+		math::camera_ptr cam = render::render_device::get().get_camera();
 
 		if (!cam)
 			return;

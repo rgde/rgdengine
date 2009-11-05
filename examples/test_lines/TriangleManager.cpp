@@ -29,7 +29,7 @@ namespace lines_test
 		for( triangles_iter it = m_triangles.begin(); it != m_triangles.end(); ++it )
 			it->render();
 
-		render::lines3d& line_manager = render::TheDevice::get().get_lines3d();
+		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 		line_manager.add_quad( math::Vec3f(0,0,0), math::Vec2f(40,40), 0 );
 	}
 }

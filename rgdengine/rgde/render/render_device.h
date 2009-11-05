@@ -49,11 +49,17 @@ namespace render
 
         //->
         void                    setClearColor (math::Color color) {m_clear_color = color;}
-        math::Color             getClearColor () {return m_clear_color;}
+        const math::Color&      getClearColor () const {return m_clear_color;}
         //-<
 
 		lines3d&				get_lines3d();
 		lines2d&				get_lines2d();
+
+		static render_device&	get();
+		static bool				is_created();
+
+	protected:
+		void init();
 
 	protected:
         //->
@@ -71,6 +77,9 @@ namespace render
 
 		lines2d_ptr				m_lines2d;
 		lines3d_ptr				m_lines3d;
+
+		static render_device*	ms_instance;
+		static bool				ms_is_created;
 	};
 
 	class device_object

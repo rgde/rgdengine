@@ -611,7 +611,7 @@ namespace render
 				std::vector<byte> data;
 				io::stream_to_vector(data, in);
 
-				V(D3DXCreateEffect(g_d3d, (void*)&(data[0]), (uint)data.size() , NULL, &__include_impl, TheDevice::get().get_shader_flags(), 
+				V(D3DXCreateEffect(g_d3d, (void*)&(data[0]), (uint)data.size() , NULL, &__include_impl, render_device::get().get_shader_flags(), 
 					m_spPool, &m_effect, &pErrors));
 				//V(D3DXCreateEffectFromFile( g_d3d, m_name.c_str() , NULL, NULL, device_dx9::get().get_shader_flags(), 
 				//	m_spPool, &m_effect, &pErrors));

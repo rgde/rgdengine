@@ -92,7 +92,7 @@ namespace render
 			D3DPRIMITIVETYPE dxPrimTypeEnum = (D3DPRIMITIVETYPE)ePrimType;
 			g_d3d->DrawPrimitive(dxPrimTypeEnum, 0, nPrimNum);
 
-			TheDevice::get().add_statistics(nPrimNum * 3, nPrimNum);
+			render_device::get().add_statistics(nPrimNum * 3, nPrimNum);
 		}
 	private:
 		size_t							m_used_size;
@@ -237,7 +237,7 @@ namespace render
 			D3DPRIMITIVETYPE dxPrimTypeEnum = (D3DPRIMITIVETYPE)ePrimType;
 			g_d3d->DrawIndexedPrimitive(dxPrimTypeEnum, nBaseVertexIndex, nMinIndex, nNumVertices, nStartIndex, nPrimitiveCount);
 
-			TheDevice::get().add_statistics(nNumVertices, nPrimitiveCount);
+			render_device::get().add_statistics(nNumVertices, nPrimitiveCount);
 		}
 
 	private:
