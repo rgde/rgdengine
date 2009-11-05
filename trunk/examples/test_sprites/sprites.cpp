@@ -80,16 +80,23 @@ namespace rgde
 
 			void sprite_example::update(float dt)
 			{
+				static bool drawen = false;
+
 				float time = game::game_system::get().get_timer().get_absolute_time();
 				render::render_device::get().draw_fps(time, m_font);
 
-				typedef render::sprite_manager::SpritesIter iter;
+				//if (drawen)
+				//	return;
+
+				typedef render::sprite_manager::sprites_iter iter;
 
 				for (iter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 				{
 					it->spin += dt;
 					m_sprite_renderer.add_sprite(*it);
 				}
+
+				drawen = true;
 			}
 		}
 	}

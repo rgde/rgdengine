@@ -57,7 +57,7 @@ namespace math
 		typedef std::vector<Key> Keys;
 
 	public:
-		interpolator():m_bSorted(false) {}
+		interpolator():m_sorted(false) {}
 
 		T operator()(float t)
 		{
@@ -66,7 +66,7 @@ namespace math
 
 		T getValue(float t)
 		{
-			if (!m_bSorted)
+			if (!m_sorted)
 				sortVector();
 
 			//if (t > 1 || t < 0)
@@ -107,7 +107,7 @@ namespace math
 
 		void add_key(float pos, const T& value)
 		{
-			m_bSorted = false;
+			m_sorted = false;
 			m_vKeys.push_back(Key(value, pos));
 		}
 
@@ -123,9 +123,9 @@ namespace math
 
 		void sortVector(bool forceSort = false)
 		{
-			if (m_bSorted && !forceSort) return;
+			if (m_sorted && !forceSort) return;
 			std::sort(m_vKeys.begin(), m_vKeys.end());
-			m_bSorted = true;
+			m_sorted = true;
 		}
 
 		Key* getLessOrEqualKey(float t) 
@@ -178,13 +178,13 @@ namespace math
 				m_vKeys.push_back( key );
 			}
 
-			m_bSorted = false;
+			m_sorted = false;
 
 			sortVector(); // to be sure
 		}
 
 	private:
-		bool m_bSorted;
+		bool m_sorted;
 		mutable Keys m_vKeys;
 	};
 

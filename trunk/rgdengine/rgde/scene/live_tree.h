@@ -105,7 +105,7 @@ namespace live_tree
 		// convert back to static from dynamic. it can happen only before Approximate() in dynamic begin.
 		bool					makeStatic( void );
 		// test for dynamic enabled
-		bool					isDynamic( void );
+		bool					is_dynamic( void );
 		// get last updated pos
 		point3f					getOldPos( void );
 		// update pos from current

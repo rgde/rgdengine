@@ -43,8 +43,8 @@ namespace render
 	{
 		math::vec2f screenSize(800, 600); //virtual screen size
 		math::vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
-		math::vec2f m_vScale		= vFrontBufferSize / screenSize;
-		m_vertices->push_back(Point(point1 * m_vScale, color));
-		m_vertices->push_back(Point(point2 * m_vScale, color));
+		math::vec2f m_scale		= vFrontBufferSize / screenSize;
+		m_vertices->push_back(Point(point1 * m_scale, color));
+		m_vertices->push_back(Point(point2 * m_scale, color));
 	}
 } //~ namespace utility

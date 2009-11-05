@@ -72,12 +72,12 @@ namespace render
 
 		m_geometry->load(file_name);
 
-		m_geometry->lockIB();
-		m_geometry->unlockIB();
+		m_geometry->lock_ib();
+		m_geometry->unlock_ib();
 
 		m_vertex_num = m_geometry->get_num_verts();
-		m_geometry->lockVB();
-		m_geometry->unlockVB();
+		m_geometry->lock_vb();
+		m_geometry->unlock_vb();
 
 		m_ePrimType = PrimTypeTriangleList;
 		m_nNumPrimitives = m_geometry->getIndexNum() / 3;
@@ -117,7 +117,7 @@ namespace render
 		//	collision::calcAABB(get_full_tm(),global_aabb);
 		//	setAABB(global_aabb);
 		//	//Neonic: корректируем динамические меши в пространстве 
-		//	if(isDynamic())
+		//	if(is_dynamic())
 		//		updatePos();
 		//	scene::TheScene::get().inject(this);
 		//}

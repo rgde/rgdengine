@@ -15,13 +15,13 @@ namespace render
 
 	struct sprite
 	{
-		math::Rect rect;					///> Прямоугольник текстурных координат спрайта
-		math::vec2f pos;					///> Позиция спрайта (в экранных координатах)
-		math::vec2f size;					///> Размер спрайта (в экранных координатах)
-		float spin;							///< Поворот
-		unsigned long priority;			///> Приоритет отрисовки
-		render::texture_ptr texture;			///> Адрес текстуры
-		math::Color color;					///> Цвет
+		math::Rect rect;				///> sprites UV rect
+		math::vec2f pos;				///> sprite position (in screen coords)
+		math::vec2f size;				///> sprite size (in screen coords)
+		float spin;						///< sprite rotation
+		unsigned long priority;			///> drawing priority
+		render::texture_ptr texture;	///> texture pointer
+		math::Color color;				///> color
 
 		sprite();
 		sprite( const math::vec2f& pos_, const math::vec2f& size_, 
@@ -34,50 +34,51 @@ namespace render
 	{
 	public:
 		typedef std::vector<sprite> sprites_vector;
-		typedef sprites_vector::iterator SpritesIter;
+		typedef sprites_vector::iterator sprites_iter;
 
 		sprite_manager(int priority = 0);
 		~sprite_manager();
 	
-		void setAditiveBlending(bool bAditive) { m_bAditive = bAditive; }
+		void set_blending(bool bAditive) { m_aditive = bAditive; }
 
-		inline sprites_vector& getSprites() { return m_sprites; }
-		inline unsigned getNumSpritesRendered() { return m_nSpritesRendered; }
+		inline sprites_vector& get_sprites() { return m_sprites; }
+		inline unsigned get_num_rendered() { return m_sprites_rendered; }
 
-		inline math::vec2f& getOrigin() { return m_vOrigin; }
-		inline void			setOrigin(math::vec2f& vNewOrigin) { m_vOrigin = vNewOrigin; }
+		inline math::vec2f& get_origin() { return m_origin; }
+		inline void			set_origin(math::vec2f& vNewOrigin) { m_origin = vNewOrigin; }
 
-		virtual void add_sprite(const sprite& pSprite);
+		virtual void add_sprite(const sprite& s);
+
+		void update();
 
 	protected:
-		void render();
-		void update();
+		void render();		
 		
 		virtual void onLostDevice();
 		virtual void onResetDevice();
 
 	protected:
-		bool m_bAditive;
+		bool m_aditive;
 
 		sprites_vector m_sprites;						// Спрайты
-		unsigned m_nSpritesRendered;				/// Число отрисованных в последний раз спрайтов
+		unsigned m_sprites_rendered;				/// Число отрисованных в последний раз спрайтов
 
 		effect_ptr  m_effect;
 
 		typedef indexed_geometry<vertex::PositionTransformedColoredTextured, false> geometry;
 		geometry m_geometry;						/// Геометрия
 
-		unsigned m_nReservedSize;					/// Число спрайтов, под которое зарезервированы буферы
+		unsigned m_reserved_size;					/// Число спрайтов, под которое зарезервированы буферы
 
-		bool m_bSorted;								/// Отсортированы ли спрайты в массиве по приоритету
-		bool m_bUpdated;							/// Были ли спрайты добавлены / удалены
+		bool m_sorted;								/// Отсортированы ли спрайты в массиве по приоритету
+		bool m_updated;							/// Были ли спрайты добавлены / удалены
 		
-		const math::vec2f m_cvScreenSize;			// Разрешение экрана, для которого менеджер проводит внутренние вычисления
-		math::vec2f m_vScale;						// Коэффиценты масштабирования разрешений взаимодействия с внешним миром на реальные экранные координаты
-		math::vec2f m_vOrigin;
+		const math::vec2f m_screen_size;			// Разрешение экрана, для которого менеджер проводит внутренние вычисления
+		math::vec2f m_scale;						// Коэффиценты масштабирования разрешений взаимодействия с внешним миром на реальные экранные координаты
+		math::vec2f m_origin;
 
 		/// Эти переменные используются только для хранения внутренних расчётов
-		std::vector<unsigned> m_vEqualPrioritiesN;	/// Число спрайтов в группах с одинаковыми приоритетами
+		std::vector<unsigned> m_equal_priorities_num;	/// Число спрайтов в группах с одинаковыми приоритетами
 	};
 
 	typedef base::singelton<sprite_manager> TheSpriteManager;

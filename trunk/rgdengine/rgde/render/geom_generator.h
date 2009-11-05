@@ -15,8 +15,8 @@ namespace render
 									float fXScale = 1.0f, float fZScale = 1.0f,
 									const math::vec3f& CenterPos = math::vec3f(0.0f, 0.0f, 0.0f))
 		{
-			geometry::Vertexes& vertices = pGeometry->lockVB();
-			geometry::Indexes&  indices  = pGeometry->lockIB();
+			geometry::vertexies& vertices = pGeometry->lock_vb();
+			geometry::indexies&  indices  = pGeometry->lock_ib();
 
 			vertices.resize(nXResolution*nZResolution);
 			indices.resize((nXResolution - 1)*(nZResolution - 1)*2*3);
@@ -38,8 +38,8 @@ namespace render
 					nVertCnt++;
 				}
 
-			pGeometry->unlockVB();
-			pGeometry->unlockIB();
+			pGeometry->unlock_vb();
+			pGeometry->unlock_ib();
 			pGeometry->getBBox();
 		}
 
@@ -50,8 +50,8 @@ namespace render
 
 			float fHalfOfHeight = fHeight/2.0f;
 
-			geometry::Vertexes& vertices = pGeometry->lockVB();
-			geometry::Indexes&  indices  = pGeometry->lockIB();
+			geometry::vertexies& vertices = pGeometry->lock_vb();
+			geometry::indexies&  indices  = pGeometry->lock_ib();
 
 			float fUnit = 2*math::Math::PI/nRadialSegments;
 			int nVertCnt = 0;
@@ -74,8 +74,8 @@ namespace render
 				vertices[nVertCnt++].position = math::vec3f(0, -fHalfOfHeight, 0) + CenterPosition;
 			}
 
-			pGeometry->unlockVB();
-			pGeometry->unlockIB();
+			pGeometry->unlock_vb();
+			pGeometry->unlock_ib();
 			pGeometry->getBBox();
 		}
 
@@ -86,8 +86,8 @@ namespace render
 			math::vec3f HalfOfSize = Size/2.0f;
 			math::vec3f Normal     = math::vec3f(0.5774f, 0.5774f, 0.5774f);
 
-			geometry::Vertexes& vertices = pResult->lockVB();
-			geometry::Indexes&  indices  = pResult->lockIB();
+			geometry::vertexies& vertices = pResult->lock_vb();
+			geometry::indexies&  indices  = pResult->lock_ib();
 
 			vertices.resize(8);
 			indices.resize(12*3);
@@ -123,8 +123,8 @@ namespace render
 			setFace(indices, 10, 5, 4, 7);
 			setFace(indices, 11, 7, 6, 5);
 
-			pResult->unlockVB();
-			pResult->unlockIB();
+			pResult->unlock_vb();
+			pResult->unlock_ib();
 			pResult->getBBox();//To rebuild BBox and BSphere
 
 			return pResult;
@@ -155,8 +155,8 @@ namespace render
 		{
 			PGeometry pResult = CreateGrid(nStep + 1, 3);
 
-			geometry::Vertexes& vertices = pResult->lockVB();
-			geometry::Indexes&  indices  = pResult->lockIB();
+			geometry::vertexies& vertices = pResult->lock_vb();
+			geometry::indexies&  indices  = pResult->lock_ib();
 
 			float fUnit = 2*math::Math::PI/nStep;
 			int nVertCnt = 0;
@@ -167,8 +167,8 @@ namespace render
 				vertices[nVertCnt++].position = math::vec3f(0, 0, 0);
 			}
 
-			pResult->unlockVB();
-			pResult->unlockIB();
+			pResult->unlock_vb();
+			pResult->unlock_ib();
 			pResult->getBBox();
 
 			return pResult;
@@ -178,8 +178,8 @@ namespace render
 		{
 			PGeometry pResult = CreateGrid(nStepLng + 1, (nStepLat/2) + 1);
 
-			geometry::Vertexes& vertices = pResult->lockVB();
-			geometry::Indexes&  indices  = pResult->lockIB();
+			geometry::vertexies& vertices = pResult->lock_vb();
+			geometry::indexies&  indices  = pResult->lock_ib();
 
 			float fUnitLng = 2*math::Math::PI/nStepLng;
 			float fUnitLat = math::Math::PI/(nStepLat/2);
@@ -188,8 +188,8 @@ namespace render
 				for(int j = 0; j < (nStepLat/2) + 1; j++)
 					vertices[nVertCnt++].position = math::makeRot<math::Matrix33f>(math::AxisAnglef(i*fUnitLng, 0, 1, 0))*math::makeRot<math::Matrix33f>(math::AxisAnglef(j*fUnitLat, 1, 0, 0))*math::vec3f(0, 1, 0);
 
-			pResult->unlockVB();
-			pResult->unlockIB();
+			pResult->unlock_vb();
+			pResult->unlock_ib();
 			pResult->getBBox();
 
 			return pResult;
@@ -199,8 +199,8 @@ namespace render
 		{
 			PGeometry pResult = CreateGrid(nStepLng + 1, (nStepLat/4) + 2);
 
-			geometry::Vertexes& vertices = pResult->lockVB();
-			geometry::Indexes&  indices  = pResult->lockIB();
+			geometry::vertexies& vertices = pResult->lock_vb();
+			geometry::indexies&  indices  = pResult->lock_ib();
 
 			float fUnitLng = 2*math::Math::PI/nStepLng;
 			float fUnitLat = math::Math::PI/(nStepLat/2);
@@ -213,8 +213,8 @@ namespace render
 				vertices[nVertCnt++].position = math::vec3f(0, 0, 0);
 			}
 
-			pResult->unlockVB();
-			pResult->unlockIB();
+			pResult->unlock_vb();
+			pResult->unlock_ib();
 			pResult->getBBox();
 
 			return pResult;
@@ -224,8 +224,8 @@ namespace render
 		{
 			PGeometry pResult = CreateGrid(nStepMajor + 1, nStepMinor + 1);
 
-			geometry::Vertexes& vertices = pResult->lockVB();
-			geometry::Indexes&  indices  = pResult->lockIB();
+			geometry::vertexies& vertices = pResult->lock_vb();
+			geometry::indexies&  indices  = pResult->lock_ib();
 
 			float fUnitMajor = 2*math::Math::PI/nStepMajor;
 			float fUnitMinor = 2*math::Math::PI/nStepMinor;
@@ -237,8 +237,8 @@ namespace render
 													math::makeRot<math::Matrix33f>(math::AxisAnglef(j*fUnitMinor, 1, 0, 0))*
 													math::vec3f(0, fRadMinor, 0);
 
-			pResult->unlockVB();
-			pResult->unlockIB();
+			pResult->unlock_vb();
+			pResult->unlock_ib();
 			pResult->getBBox();
 
 			return pResult;
@@ -248,8 +248,8 @@ namespace render
 		{
 			PGeometry pResult(new geometry);
 
-			geometry::Vertexes& vertices = pResult->lockVB();
-			geometry::Indexes&  indices  = pResult->lockIB();
+			geometry::vertexies& vertices = pResult->lock_vb();
+			geometry::indexies&  indices  = pResult->lock_ib();
 
 			vertices.resize(6);
 			indices.resize(8*3);
@@ -270,8 +270,8 @@ namespace render
 			setFace(indices, 6, 2, 5, 3);
 			setFace(indices, 7, 3, 5, 0);
 
-			pResult->unlockVB();
-			pResult->unlockIB();
+			pResult->unlock_vb();
+			pResult->unlock_ib();
 			pResult->getBBox();
 
 			return pResult;
@@ -281,8 +281,8 @@ namespace render
 		{
 			PGeometry pResult(new geometry);
 
-			geometry::Vertexes& vertices = pResult->lockVB();
-			geometry::Indexes&  indices  = pResult->lockIB();
+			geometry::vertexies& vertices = pResult->lock_vb();
+			geometry::indexies&  indices  = pResult->lock_ib();
 
 			vertices.resize(4);
 			indices.resize(4*3);
@@ -297,8 +297,8 @@ namespace render
 			setFace(indices, 2, 0, 3, 2);
 			setFace(indices, 3, 1, 2, 3);
 
-			pResult->unlockVB();
-			pResult->unlockIB();
+			pResult->unlock_vb();
+			pResult->unlock_ib();
 			pResult->getBBox();
 
 			return pResult;
@@ -306,7 +306,7 @@ namespace render
 
 
 		private:
-			static void setFace(typename geometry::Indexes& array, unsigned face_number, unsigned i1, unsigned i2, unsigned i3)
+			static void setFace(typename geometry::indexies& array, unsigned face_number, unsigned i1, unsigned i2, unsigned i3)
 			{
 				array[face_number*3 + 0] = i1;
 				array[face_number*3 + 1] = i2;
