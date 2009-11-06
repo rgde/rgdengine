@@ -24,10 +24,10 @@ namespace render
 		static model_ptr create(const std::string& file_name);
 		~model();
 		
-		inline material_map&  getMaterials()		{return m_materials;}
+		inline material_map&  get_materials()		{return m_materials;}
 		inline frames_vector&		 getFrames()		{return m_frames;}
-		inline meshes_vector&		 getMeshes()		{return m_meshes;}
-		inline contollers_vector&  getControllers()	{return m_controllers;}
+		inline meshes_vector&		 get_meshes()		{return m_meshes;}
+		inline contollers_vector&  get_controllers()	{return m_controllers;}
 
 		unsigned int get_num_verts()	const;
 		unsigned int getFaceNum()	const;
@@ -38,7 +38,7 @@ namespace render
 		void play();
 		void stop();
 		void pause();
-		void setLooped( bool );
+		void set_looped( bool );
 
 	protected:
 		model();

@@ -40,7 +40,7 @@ namespace math
 		void pause();
 		void start();
 
-		inline void setLooped( bool loop ) { m_bLooped = loop; }
+		inline void set_looped( bool loop ) { m_bLooped = loop; }
 
 		inline bool isPlaing() const { return m_bPlaying && !m_paused; }
 

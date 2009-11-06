@@ -205,11 +205,11 @@ typedef Coord<Vec4d, EulerAngleZYXd> Coord4dZYX;
 typedef Coord<Vec4d, EulerAngleZXYd> Coord4dZXY;
 
 /** 3 elt types */
-typedef Coord<vec3f, Quatf> Coord3fQuat;
+typedef Coord<vec3f, quatf> Coord3fQuat;
 typedef Coord<Vec3d, Quatd> Coord3dQuat;
 
 /** 4 elt types */
-typedef Coord<vec4f, Quatf> Coord4fQuat;
+typedef Coord<vec4f, quatf> Coord4fQuat;
 typedef Coord<Vec4d, Quatd> Coord4dQuat;
 
 

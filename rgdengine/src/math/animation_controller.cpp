@@ -109,7 +109,7 @@ namespace math
 		math::vec3f vec = m_RotationInterpolyator.getValue( m_fCurrentTime );
 		math::EulerAngleXYZf ang( vec[ 0 ], vec[ 1 ], vec[ 2 ] );
 
-		math::Quatf q;
+		math::quatf q;
 		math::set( q, ang );
 
 		//if (m_spFrame)

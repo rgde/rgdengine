@@ -31,19 +31,19 @@ namespace particles
 		virtual void render() = 0;
 		virtual void debug_draw() = 0;
 
-		virtual void setFade (bool bFade) = 0;
+		virtual void set_fade (bool bFade) = 0;
 
-		// Акксессоры получения
-		inline math::frame& getTransform() { return m_transform; }
-		inline Type getEmitterType() const { return m_type; }
+		// getters
+		inline math::frame_ptr get_transform() { return m_transform; }
+		inline Type get_type() const { return m_type; }
 
 	protected:
 		virtual void to_stream(io::write_stream& wf) const;
 		virtual void from_stream(io::read_stream& rf);
 
 	protected:
-		const Type		m_type;					// Тип эммитера
-		math::frame	m_transform;				// Трансформация
+		const Type		m_type;					// emitter type
+		math::frame_ptr	m_transform;			// emitter transform node
 	};
 
 }

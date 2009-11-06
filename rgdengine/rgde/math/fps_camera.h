@@ -15,31 +15,31 @@ namespace math
         static fps_camera_ptr create(camera_ptr camera);
 
         //положение
-        void set_position(const vec3f& vUp, const vec3f& eye, const vec3f& look_at);
-        void get_pos(vec3f& vUp, vec3f& eye, vec3f& look_at);
+        void set_position(const vec3f& up, const vec3f& eye, const vec3f& look_at);
+        void get_pos(vec3f& up, vec3f& eye, vec3f& look_at);
 
         //движение
-        void goForward(float delta);
-        void goBackward(float delta) {goForward(-delta);}
-        void goLeft(float delta);
-        void goRight(float delta) {goLeft(-delta);}
-        void goUp(float delta);
-        void goDown(float delta) {goUp(-delta);}
+        void move_forward(float delta);
+        void move_back(float delta) {move_forward(-delta);}
+        void move_left(float delta);
+        void move_right(float delta) {move_left(-delta);}
+        void move_up(float delta);
+        void move_down(float delta) {move_up(-delta);}
 
         //вращение
-        void rotateRight(float angle);
-        void rotateLeft(float angle) {rotateRight(-angle);}
+        void rotate_right(float angle);
+        void rotate_left(float angle) {rotate_right(-angle);}
         void rotate_up(float angle);
-        void rotateDown(float angle) {rotate_up(-angle);}
+        void rotate_down(float angle) {rotate_up(-angle);}
 
         void activate();
 
     private:
         void apply();
 
-        vec3f m_vUp;
-        vec3f m_vEyePt;
-        vec3f m_vLookatPt;
+        vec3f m_up;
+        vec3f m_eye_pos;
+        vec3f m_lookat_pt;
     };
 
 } //namespace math

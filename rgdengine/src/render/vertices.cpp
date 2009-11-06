@@ -12,7 +12,7 @@ namespace vertex
 	{
 	}
 
-	const VertexDecl position_colored::get_decl()
+	const vertex_decl position_colored::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -24,7 +24,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl PositionColoredTextured::get_decl()
+	const vertex_decl PositionColoredTextured::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -37,7 +37,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl PositionNormalColoredTexturedBinormalTangent::get_decl()
+	const vertex_decl PositionNormalColoredTexturedBinormalTangent::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -54,7 +54,7 @@ namespace vertex
 	}
 
 	//-----------------------------------------------------------------------------------
-	const VertexDecl PositionColoredTextured2::get_decl()
+	const vertex_decl PositionColoredTextured2::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -68,7 +68,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl PositionNormal::get_decl()
+	const vertex_decl PositionNormal::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -80,7 +80,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl PositionNormalColored::get_decl()
+	const vertex_decl PositionNormalColored::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -93,7 +93,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl PositionNormalColoredTextured::get_decl()
+	const vertex_decl PositionNormalColoredTextured::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -107,7 +107,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl PositionNormalColoredTextured2::get_decl()
+	const vertex_decl PositionNormalColoredTextured2::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -121,7 +121,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl Position::get_decl()
+	const vertex_decl Position::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -131,7 +131,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl PositionTextured::get_decl()
+	const vertex_decl PositionTextured::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -144,7 +144,7 @@ namespace vertex
 	}
 
 
-	const VertexDecl PositionTextured2::get_decl()
+	const vertex_decl PositionTextured2::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -156,7 +156,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl PositionTransformed::get_decl()
+	const vertex_decl PositionTransformed::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -178,7 +178,7 @@ namespace vertex
 	{
 	}
 
-	const VertexDecl position_transformed_colored::get_decl()
+	const vertex_decl position_transformed_colored::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -191,7 +191,7 @@ namespace vertex
 	}
 
 	//-----------------------------------------------------------------------------------
-	const VertexDecl PositionTransformedColoredTextured::get_decl()
+	const vertex_decl PositionTransformedColoredTextured::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -204,7 +204,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl PositionNormalTexturedTangentBinorm::get_decl()
+	const vertex_decl PositionNormalTexturedTangentBinorm::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -219,7 +219,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const VertexDecl PositionNormalTextured2TangentBinorm::get_decl()
+	const vertex_decl PositionNormalTextured2TangentBinorm::get_decl()
 	{
 		static VertexElement aDecl[]=
 		{
@@ -235,7 +235,7 @@ namespace vertex
 		return aDecl;
 	}
 
-	const vertex::VertexDecl PositionSkinnedNormalColoredTextured2TangentBinorm::get_decl()
+	const vertex::vertex_decl PositionSkinnedNormalColoredTextured2TangentBinorm::get_decl()
 	{
 		static vertex::VertexElement aDecl[] = {
 			{0,  0, vertex::TypeFloat3, vertex::MethodDefault, vertex::UsagePosition,	  0},

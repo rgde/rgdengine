@@ -21,7 +21,7 @@ private:
     void onPrimaryFire   (bool press);
     void onSecondaryFire (bool press);
 
-    input::KeyUp        m_keyupQuit;
+    input::KeyUp        m_key_quit;
     input::Button       m_btnLeft;
     input::Button       m_btnRight;
     input::Button       m_btnUp;

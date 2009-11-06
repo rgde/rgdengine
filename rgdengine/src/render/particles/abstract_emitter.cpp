@@ -23,7 +23,7 @@ namespace particles{
 			throw std::exception("base_emitter::addProcessor(): zero pointer!");
 
 		m_lProcessors.push_back(pp);
-		pp->setEmitter(this);
+		pp->set_emitter(this);
 	}
 	//-----------------------------------------------------------------------------------
 	void base_emitter::reset()
@@ -41,10 +41,10 @@ namespace particles{
 			(*pi)->reset();
 	}
 	//////////////////////////////////////////////////////////////////////////
-	void base_emitter::setFade(bool b)
+	void base_emitter::set_fade(bool b)
 	{
 		for (processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
-			(*it)->setFade(b);
+			(*it)->set_fade(b);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	void base_emitter::update(float dt)
@@ -73,7 +73,7 @@ namespace particles{
 		
 		m_fTimeNormalaized = m_fCurrentTime / m_fCycleTime;
 		{
-			//math::matrix44f m = getLTM();
+			//math::matrix44f m = get_local_tm();
 
 			//if (!m_bIsJustCreated)
 			//{
@@ -85,7 +85,7 @@ namespace particles{
 			//}
 		}
 		
-		math::matrix44f m = m_transform.get_full_tm();
+		math::matrix44f m = m_transform->get_full_tm();
 
 		math::invert( m );
 		m_vPAcceleration = m_PAcceleration.getValue(m_fTimeNormalaized);
@@ -247,7 +247,7 @@ namespace particles{
 
 	void base_emitter::debug_draw()
 	{
-		m_transform.debug_draw();
+		m_transform->debug_draw();
 
 		for( processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it )
 			(*it)->debug_draw();

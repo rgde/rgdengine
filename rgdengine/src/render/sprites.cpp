@@ -136,28 +136,28 @@ namespace render
 			// Top left
 			math::vec2f rotPos = rotatePos(-hsize[0], -hsize[1], sina, cosa) + pos;
 			v->position.set(rotPos[0], rotPos[1], 0, 0);
-			v->tex = rect.getTopLeft();
+			v->tex = rect.get_top_left();
 			v->color = color;
 			v++;
 
 			// Top right
 			rotPos = rotatePos(hsize[0], -hsize[1], sina, cosa) + pos;
 			v->position.set(rotPos[0], rotPos[1], 0, 0);
-			v->tex = rect.getTopRight();
+			v->tex = rect.get_top_right();
 			v->color = color;
 			v++;
 
 			// Bottom right
 			rotPos = rotatePos(hsize[0], hsize[1], sina, cosa) + pos;
 			v->position.set(rotPos[0], rotPos[1], 0, 0);
-			v->tex = rect.getBottomRight();
+			v->tex = rect.get_bottom_right();
 			v->color = color;
 			v++;
 
 			// Bottom left
 			rotPos = rotatePos(-hsize[0], hsize[1], sina, cosa) + pos;
 			v->position.set(rotPos[0], rotPos[1], 0, 0);
-			v->tex = rect.getBottomLeft();
+			v->tex = rect.get_bottom_left();
 			v->color = color;
 			v++;
 		}

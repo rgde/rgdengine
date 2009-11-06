@@ -120,7 +120,7 @@ namespace render
 	}
 
 	//--------------------------------------------------------------------------------------
-	float render_device::getFPS(float abs_time) const
+	float render_device::get_fps(float abs_time) const
 	{
 		static float framesPerSecond;
 		static float lastTime		= 0.0f;
@@ -140,7 +140,7 @@ namespace render
 		return framesPerSecond;
 	}
 
-	void render_device::showWiredFloorGrid(float size, unsigned num, const math::Color &color)
+	void render_device::draw_wired_floor(float size, unsigned num, const math::Color &color)
 	{
 		float hsize	= size / 2;
 		float step	= size / num;
@@ -149,16 +149,16 @@ namespace render
 		{
 			{
 				// X
-				float z			= i *step - hsize;
-				math::vec3f v1	(-hsize, z, 0);
-				math::vec3f v2(hsize, z, 0);
+				float z	= i *step - hsize;
+				math::vec3f v1	(-hsize, 0, z);
+				math::vec3f v2(hsize, 0, z);
 				get_lines3d().add_line(v1, v2, color);
 			}
 			{
 				// Y
 				float x	= i *step - hsize;
-				math::vec3f v1(x, -hsize, 0);
-				math::vec3f v2(x, hsize, 0);
+				math::vec3f v1(x, 0, -hsize);
+				math::vec3f v2(x, 0, hsize);
 				get_lines3d().add_line(v1, v2, color);
 			}
 		}
@@ -178,7 +178,7 @@ namespace render
 	void render_device::draw_fps(float abs_time, const font_ptr& font)
 	{
 		WCHAR szFPSString[64];
-		wsprintf(szFPSString, L"FPS: %d", (int)getFPS(abs_time));
+		wsprintf(szFPSString, L"FPS: %d", (int)get_fps(abs_time));
 		font->render(szFPSString, math::Rect(1, 1, 400, 400), 0xFFFFFFFF, true);
 	}
 

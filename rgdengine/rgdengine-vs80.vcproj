@@ -47,7 +47,6 @@
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;;&quot;$(SolutionDir)external/directx/include&quot;;&quot;$(SolutionDir)external/vorbis/include&quot;;&quot;$(SolutionDir)external/ogg/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;D3D_DEBUG_INFO;VC_EXTRALEAN;_CRT_SECURE_NO_DEPRECATE;TEST_NEW_BINDERS"
 				MinimalRebuild="true"
-				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"

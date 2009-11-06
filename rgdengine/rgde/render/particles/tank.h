@@ -19,21 +19,21 @@ namespace particles
 		};
 
 		/// Тип массива частиц
-		typedef std::vector< SParticle > ParticleArray;
-		typedef ParticleArray::iterator ParticleArrayIter;
+		typedef std::vector< SParticle > particles_vector;
+		typedef particles_vector::iterator ParticleArrayIter;
 
 		renderer();
 		virtual ~renderer();
 
 		void update();
-		void render(render::texture_ptr texture, math::frame& transform);
+		void render(render::texture_ptr texture, math::frame_ptr transform);
 
-		inline ParticleArray& getParticles() { return m_vParticleArray; }
+		inline particles_vector& getParticles() { return m_vParticleArray; }
 
 		void setTextureTiling(int nRows, int nColumnsTotal, int nRowsTotal);
 
 	protected:
-		ParticleArray		m_vParticleArray;///> Вектор частиц
+		particles_vector		m_vParticleArray;///> Вектор частиц
 		unsigned long		m_reserved_size; ///> Число частиц, для которого зарезервированы буферы
 
 	private:

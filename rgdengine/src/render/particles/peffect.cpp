@@ -18,7 +18,8 @@ namespace particles
 	: render::rendererable(9)
 	, old_time(0)
 	, m_is_fading(false)
-	, core::meta_class("ParticleEffect")
+	, m_transform(math::frame::create())
+	//, core::meta_class("ParticleEffect")
 	{	
 		m_renderInfo.render_func		= boost::bind( &effect::render, this );
 		m_renderInfo.debug_render_func	= boost::bind(&effect::debug_draw, this);
@@ -29,30 +30,32 @@ namespace particles
 	//-----------------------------------------------------------------------------------
 	effect::~effect()
 	{
-		for (tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
+		for (emitters_iter it = m_emitters.begin(); it != m_emitters.end(); ++it)
+		{
 			delete( *it );
-		m_Emitters.clear();
+		}
+		m_emitters.clear();
 	}
 	//-----------------------------------------------------------------------------------
 	void effect::reset()
 	{
 		m_is_fading = false;
-		setEmittersToFade(m_is_fading);
+		set_emitters_to_fade(m_is_fading);
 
-		for (tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
+		for (emitters_iter it = m_emitters.begin(); it != m_emitters.end(); ++it)
 			(*it)->reset();
 	}
 	//-----------------------------------------------------------------------------------
 	void effect::render()
 	{
-		for (tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
+		for (emitters_iter it = m_emitters.begin(); it != m_emitters.end(); ++it)
 			(*it)->render();
 	}
 	//-----------------------------------------------------------------------------------
-	void effect::setEmittersToFade(bool b)
+	void effect::set_emitters_to_fade(bool b)
 	{
-		for(tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
-			(*it)->setFade(b);
+		for(emitters_iter it = m_emitters.begin(); it != m_emitters.end(); ++it)
+			(*it)->set_fade(b);
 	}
 	//-----------------------------------------------------------------------------------
 	void effect::update(float fDeltaTime)
@@ -64,7 +67,7 @@ namespace particles
 			if (dt < 0.02f) return;
 		}
 		
-		for (tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it)
+		for (emitters_iter it = m_emitters.begin(); it != m_emitters.end(); ++it)
 			(*it)->update(dt);
 
 		dt = 0;
@@ -74,23 +77,23 @@ namespace particles
 	void effect::add(emitter* em)
 	{
 		assert(0 != em);
-		m_Emitters.push_back(em);
-		m_transform.add(&em->getTransform());
+		m_emitters.push_back(em);
+		m_transform->add(em->get_transform());
 	}
 	
 	//-----------------------------------------------------------------------------------
 	void effect::remove(emitter* em)
 	{
 		assert(0 != em);
-		m_transform.remove(&em->getTransform());		
-		m_Emitters.remove(em);
+		m_transform->remove(em->get_transform());		
+		m_emitters.remove(em);
 	}
 
 	//-----------------------------------------------------------------------------------
 	void effect::debug_draw()
 	{
-		m_transform.debug_draw();
-		for( tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); ++it )
+		m_transform->debug_draw();
+		for( emitters_iter it = m_emitters.begin(); it != m_emitters.end(); ++it )
 			(*it)->debug_draw();
 	}
 	//-----------------------------------------------------------------------------------
@@ -100,12 +103,12 @@ namespace particles
 		wf << m_transform;
 
 		// Сохраняем абстрактные эмитеры
-		wf << (unsigned)m_Emitters.size();
-		for( tEmittersIter it = m_Emitters.begin(); it != m_Emitters.end(); it++ )
+		wf << (unsigned)m_emitters.size();
+		for( emitters_iter it = m_emitters.begin(); it != m_emitters.end(); it++ )
 			wf << *(*it);
 	}
 	//----------------------------------------------------------------------------------
-	render::renderable_info& effect::getRenderableInfo()
+	render::renderable_info& effect::get_renderable_info()
 	{
 		return m_renderInfo;		
 	}
@@ -117,7 +120,7 @@ namespace particles
 		if (version != file_version)
 			throw std::exception("pfx::effect::from_stream(...): Unknown version !");
 		
-		rf >> m_transform;
+		rf >> *m_transform;
 
 		unsigned size;
 		rf >> size;

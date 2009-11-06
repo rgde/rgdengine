@@ -10,7 +10,8 @@ using math::Color;
 
 namespace render
 {
-	model::model() : m_is_visible(true)
+	model::model() 
+		: m_is_visible(true)
 	{
 	}
 
@@ -19,48 +20,39 @@ namespace render
 		clear();
 	}
 
-	void ReadNode(TiXmlElement *elem, math::frame &rootFrame, model &model);
-	mesh::PGeometry ReadGeometry(const std::string& fNm);
+	void read_node(TiXmlElement *elem, math::frame &root_frame, model &model);
+	mesh::PGeometry read_geometry(const std::string& fNm);
 
 	model_ptr model::create(const std::string& file_name)
 	{
-		//try
-		{
-			model_ptr pModel = new model();
-			pModel->load(file_name);
-            pModel->setLooped(true);
-			pModel->play();
-			pModel->update(0.0001f);			
-			return pModel;
-		}
-		//catch (...)
-		//{
-		//	base::lwrn << "Fail to load model: " << file_name;
-		//}
-
-		return 	model_ptr();
+		model_ptr m = new model();
+		m->load(file_name);
+        m->set_looped(true);
+		m->play();
+		m->update(0.0001f);			
+		return m;
 	}
 
-	void model::load(const std::string& strModelName)
+	void model::load(const std::string& model_name)
 	{
-		base::lmsg << "loading model: " << "\"" << strModelName << "\"";
+		base::lmsg << "loading model: " << "\"" << model_name << "\"";
 
 		io::CFileSystem &fs	= io::TheFileSystem::get();
 
-		io::path_add_scoped p	("Models/" + strModelName + "/");
-		io::readstream_ptr in	= fs.find(strModelName + ".xml");
+		io::path_add_scoped p	("Models/" + model_name + "/");
+		io::readstream_ptr in	= fs.find(model_name + ".xml");
 
 		if (!in)
 		{
 			std::string error	= "model::load: can't load file ";// + file_name;
-			base::lerr << "model::load: can't load file: " << strModelName << ".xml";
+			base::lerr << "model::load: can't load file: " << model_name << ".xml";
 			throw exception(error.c_str());
 		}
 
 		std::vector<byte> data;
 		io::stream_to_vector(data, in);
 
-		TiXmlDocument xml;//(std::string(strModelName.begin(), strModelName.end()));
+		TiXmlDocument xml;//(std::string(model_name.begin(), model_name.end()));
 		xml.Parse((const char*)&(data[0]));
 
 		clear();
@@ -85,18 +77,18 @@ namespace render
 			TiXmlNode *elem = mod_elem->FirstChild("node");
 
 			if (elem)
-				ReadNode(elem->ToElement(), *this, *this);
+				read_node(elem->ToElement(), *this, *this);
 		}
 
 		//Neonic: octree. Здесь обновляем дерево для всей модели.
 		update();
 	}
 
-	void ReadNode(TiXmlElement *elem, math::frame &rootFrame, model &model)
+	void read_node(TiXmlElement *elem, math::frame &root_frame, model &model)
 	{
 		if (elem->Attribute("name"))
 		{
-			rootFrame.set_name(elem->Attribute("name"));
+			root_frame.set_name(elem->Attribute("name"));
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -107,7 +99,7 @@ namespace render
 			{
 				math::vec3f v;
 				base::read(v, pNode);
-				rootFrame.set_position(v);
+				root_frame.set_position(v);
 			}
 
 			//rotation
@@ -119,10 +111,10 @@ namespace render
 				using math::Math::deg2Rad;				
 				math::EulerAngleXYZf ang(deg2Rad(v[0]), deg2Rad(v[1]), deg2Rad(v[2]));
 
-				math::Quatf q;
+				math::quatf q;
 				math::set(q, ang);
 
-				rootFrame.set_rot(q);
+				root_frame.set_rot(q);
 			}
 
 			//scale
@@ -130,7 +122,7 @@ namespace render
 			{
 				math::vec3f v;
 				base::read(v, pNode);
-				rootFrame.set_scale(v);
+				root_frame.set_scale(v);
 			}
 		}
 		//////////////////////////////////////////////////////////////////////////
@@ -138,18 +130,18 @@ namespace render
 		TiXmlElement *gm	= elem->FirstChildElement("animation");
 
 		//Neonic: octree
-		bool bDynamic = 0;
+		bool dynamic = 0;
 
 		if (gm)
 		{
 			math::frame_anim_controller control;
 			control.load(elem);
 
-			control.atach(&rootFrame);
-			model.getControllers().push_back(control);
+			control.atach(&root_frame);
+			model.get_controllers().push_back(control);
 
 			//Neonic: octree
-			bDynamic=1;
+			dynamic=1;
 		}
 
 		TiXmlElement *mt= elem->FirstChildElement("material");
@@ -163,22 +155,17 @@ namespace render
 
 		if (gm)
 		{
-			mesh_ptr pMesh(new mesh);
-			std::string strMeshFile	= std::string(gm->Attribute("name")) + ".xml";
+			mesh_ptr m(new mesh);
+			std::string mesh_file = std::string(gm->Attribute("name")) + ".xml";
 
-			pMesh->load(strMeshFile);
+			m->load(mesh_file);
 
 			if (m_id >= 0)
-				pMesh->getMaterials().push_back(model.getMaterials()[m_id]);
+				m->get_materials().push_back(model.get_materials()[m_id]);
 
-			model.getMeshes().push_back(pMesh);
+			model.get_meshes().push_back(m);
 
-			rootFrame.add(pMesh.get());
-			// читаем всех детей
-
-			//Neonic: octree
-			//if(bDynamic)
-			//	pMesh->makeDynamic();
+			root_frame.add(m.get());
 		}
 
 		//By PC
@@ -195,8 +182,8 @@ namespace render
 
 			if(strType == "point")
 			{
-				PointLight *pPointLight = new PointLight(rootFrame.get_name());
-				rootFrame.add(pPointLight);
+				PointLight *pPointLight = new PointLight(root_frame.get_name());
+				root_frame.add(pPointLight);
 
 				math::Color color;
 
@@ -238,14 +225,14 @@ namespace render
 		TiXmlNode *cd	= 0;
 		while (cd = elem->IterateChildren("node", cd))
 		{
-			math::frame_ptr child	= new math::frame;
-			ReadNode(cd->ToElement(), *(child.get()), model);
-			rootFrame.add(child);
+			math::frame_ptr child = math::frame::create();
+			read_node(cd->ToElement(), *(child.get()), model);
+			root_frame.add(child);
 			model.getFrames().push_back(child); // а это нафига??
 		};
 	}
 
-	mesh::PGeometry ReadGeometry(std::string fNm)
+	mesh::PGeometry read_geometry(std::string fNm)
 	{
 		return mesh::PGeometry();
 	}
@@ -315,11 +302,11 @@ namespace render
 			(*i).pause();
 	}
 
-	void model::setLooped(bool flag)
+	void model::set_looped(bool flag)
 	{
 		contollers_vector::iterator i;
 		for (i = m_controllers.begin(); i != m_controllers.end(); ++i)
-			(*i).setLooped(flag);
+			(*i).set_looped(flag);
 	}
 
 	bool model::isVisible() const

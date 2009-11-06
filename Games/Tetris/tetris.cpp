@@ -161,7 +161,7 @@ protected:
 		float abs_time = game::game_system::get().get_timer().get_absolute_time();
 		render::render_device::get().draw_fps(abs_time, m_font);
 		
-		render::render_device::get().showWiredFloorGrid(15.0f, 15, math::Color(60, 60, 60, 255));
+		render::render_device::get().draw_wired_floor(15.0f, 15, math::Color(60, 60, 60, 255));
 		renderMatr();
 		renderBlock();
 		switch(bl->m_ilastnum)
@@ -213,9 +213,9 @@ protected:
 	void renderStone(const stone& stone)
 	{
 		render::model_ptr& model = m_models[stone.model_index]; // следить что бы не было выхода за пределы вектора
-		render::mesh_ptr& mesh = model->getMeshes()[0]; // мы знаем что у нас только 1 меш в модели. но нет проблем так сделать и для других вариантов
+		render::mesh_ptr& mesh = model->get_meshes()[0]; // мы знаем что у нас только 1 меш в модели. но нет проблем так сделать и для других вариантов
 		render::mesh::PGeometry geom = mesh->getGeometry();
-		render::material_ptr& material = mesh->getMaterials()[0];		
+		render::material_ptr& material = mesh->get_materials()[0];		
 
 		//material->bind();
 	}

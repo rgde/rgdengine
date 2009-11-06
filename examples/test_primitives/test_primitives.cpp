@@ -41,8 +41,8 @@ public:
 		render::TheCameraManager::get().add_camera(m_camera);
 
 
-		m_spTargetCamera = math::target_camera::create(m_camera);
-		m_spTargetCamera->set_position(up_vec,eye,look_at);
+		m_target_camera = math::target_camera::create(m_camera);
+		m_target_camera->set_position(up_vec,eye,look_at);
 
         {
             using namespace input;
@@ -54,14 +54,14 @@ public:
             Input::get_device(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
 			Input::get_device(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
             m_esc  .attach(L"Quit");
-            m_cXAxis.attach(L"Horz");
-            m_cYAxis.attach(L"Vert");
+            m_mouse_x.attach(L"Horz");
+            m_mouse_y.attach(L"Vert");
             m_esc   += boost::bind(&SampleApp::onEsc,   this);
-            m_cXAxis += boost::bind(&SampleApp::onXAxis, this, _1);
-            m_cYAxis += boost::bind(&SampleApp::onYAxis, this, _1);
+            m_mouse_x += boost::bind(&SampleApp::onXAxis, this, _1);
+            m_mouse_y += boost::bind(&SampleApp::onYAxis, this, _1);
         }
 
-		m_spTargetCamera->activate();
+		m_target_camera->activate();
 
 		//render::TheLightManager::get().setAmbientColor(math::Color(50, 50, 50, 0));
 	
@@ -93,7 +93,7 @@ protected:
 		const float fast = 2*slow;
 		float angle = dx>accel ? dx*fast : dx*slow;
 
-		m_spTargetCamera->rotateLeft(-angle);
+		m_target_camera->rotate_left(-angle);
 	}
 
 	//ось Y
@@ -104,7 +104,7 @@ protected:
 		const float fast = 2*slow;
 		float angle = dy>accel ? dy*fast : dy*slow;
 
-		m_spTargetCamera->rotate_up(angle);
+		m_target_camera->rotate_up(angle);
 	}
 protected:
 	math::camera_ptr       m_camera;
@@ -115,12 +115,12 @@ protected:
 
 	//данные для ввода
 	input::key_down      m_esc;
-	input::RelativeAxis m_cXAxis;
-	input::RelativeAxis m_cYAxis;
+	input::RelativeAxis m_mouse_x;
+	input::RelativeAxis m_mouse_y;
 
 	//данные для камеры
 	//контроллер камеры "нацеленная камера"
-	math::target_camera_ptr  m_spTargetCamera;
+	math::target_camera_ptr  m_target_camera;
 };
 
 // The application's entry point

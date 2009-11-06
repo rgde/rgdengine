@@ -4,7 +4,7 @@
 
 TestInput::TestInput():
     m_space            (200),
-    m_keyupQuit        (L"Quit"),
+    m_key_quit        (L"Quit"),
     m_btnLeft          (L"Left"),
     m_btnRight         (L"Right"),
     m_btnUp            (L"Up"),
@@ -22,7 +22,7 @@ TestInput::TestInput():
     input::Input::LoadFromFile("TestInput/input.xml");
 
     //биндим функции для перехвата событий
-    m_keyupQuit        += boost::bind(&TestInput::onQuit,          this);
+    m_key_quit        += boost::bind(&TestInput::onQuit,          this);
     m_trigPause        += boost::bind(&TestInput::onPause,         this, _1);
     m_raxisHorz        += boost::bind(&TestInput::onHorz,          this, _1);
     m_raxisVert        += boost::bind(&TestInput::onVert,          this, _1);

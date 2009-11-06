@@ -108,7 +108,7 @@ namespace render
 		void			hide() {m_is_visible = false;}
 		void			show() {m_is_visible = true;}
 
-		virtual const renderable_info& getRenderableInfo() const {return m_renderInfo;}
+		virtual const renderable_info& get_renderable_info() const {return m_renderInfo;}
 		bool		isVisible()	const {return m_is_visible;}
 
 	protected:

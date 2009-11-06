@@ -44,7 +44,7 @@ namespace math
 /** Quat: Class to encapsulate quaternion behaviors.
  *
  * this Quaternion is ordered in memory: x,y,z,w.
- * @see Quatf 
+ * @see quatf 
  * @see Quatd
  *
  * Note: The code for most of these routines was built using the following
@@ -132,7 +132,7 @@ public:
     *
     * <h3> "Example (access raw data element in a Quat):" </h3>
     * \code
-    *    Quatf q;
+    *    quatf q;
     *    q[Xelt] = 0.001231176f;
     *    q[Yelt] = 0.1222f;
     *    q[Zelt] = 0.721f;
@@ -152,7 +152,7 @@ public:
     *
     * <h3> "Example (access raw data element in a Quat):" </h3>
     * \code
-    *    Quatf q;
+    *    quatf q;
     *    float rads = acos( q[Welt] ) / 2.0f;
     * \endcode
     *
@@ -181,7 +181,7 @@ const Quat<double> QUAT_MULT_IDENTITYD( 0.0, 0.0, 0.0, 1.0 );
 const Quat<double> QUAT_ADD_IDENTITYD( 0.0, 0.0, 0.0, 0.0 );
 const Quat<double> QUAT_IDENTITYD( QUAT_MULT_IDENTITYD );
 
-typedef Quat<float> Quatf;
+typedef Quat<float> quatf;
 typedef Quat<double> Quatd;
 
 } // end of namespace math

@@ -14,10 +14,10 @@ namespace math
         //ключ трека
         struct Key
         {
-		    vec3f m_vUp;
-		    vec3f m_vEyePt;
-		    vec3f m_vLookatPt;
-            float m_fSpeed;
+		    vec3f m_up;
+		    vec3f m_eye_pos;
+		    vec3f m_lookat_pt;
+            float m_speed;
         };
 
         //внешний массив с ключами трека

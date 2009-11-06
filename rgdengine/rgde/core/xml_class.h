@@ -7,10 +7,10 @@
 
 namespace core
 {
-	class meta_class :  public property_owner, 
-					  public functions_owner, 
-					  public virtual named_object, 
-					  public virtual base::refcounted
+	class meta_class :  public named_object, 
+						public base::refcounted
+						//public property_owner,
+						//public functions_owner,
 	{
 	public:
 		meta_class(const std::string& name) : named_object(name)

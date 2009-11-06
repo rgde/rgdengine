@@ -7,7 +7,7 @@ namespace math
 
     typedef boost::shared_ptr<class target_camera> target_camera_ptr;
 
-    //контроллер камеры аля "нацеленная камера"
+    // camera controller : "Target Camera"
     class target_camera: public base_camera_controller
     {
         target_camera(camera_ptr camera);
@@ -15,33 +15,33 @@ namespace math
     public:
         static target_camera_ptr create(camera_ptr camera);
 
-        //положение
-        void set_position(const vec3f& vUp, const vec3f& eye, const vec3f& look_at);
-        void get_pos(vec3f& vUp, vec3f& eye, vec3f& look_at);
+        //position
+        void set_position(const vec3f& up, const vec3f& eye, const vec3f& look_at);
+        void get_pos(vec3f& up, vec3f& eye, vec3f& look_at);
 
-        //движение
-        void goForward(float delta);
-        void goBackward(float delta) {goForward(-delta);}
+        //movement
+        void move_forward(float delta);
+        void move_back(float delta) {move_forward(-delta);}
 
-        //вращение
-        void rotateRight(float angle);
-        void rotateLeft(float angle) {rotateRight(-angle);}
+        //rotation
+        void rotate_right(float angle);
+        void rotate_left(float angle) {rotate_right(-angle);}
         void rotate_up(float angle);
-        void rotateDown(float angle) {rotate_up(-angle);}
+        void rotate_down(float angle) {rotate_up(-angle);}
 
-	    //наклон
-        void rotateCW(float);
-        void rotateCCW(float angle) {rotateCW(-angle);}
+	    //tilt
+        void rotate_cw(float);
+        void rotate_ccw(float angle) {rotate_cw(-angle);}
 
         void activate();
 
     private:
         void apply();
-        void doOrthoNormal();
+        void do_ortho_normal();
 
-        vec3f m_vUp;
-        vec3f m_vEyePt;
-        vec3f m_vLookatPt;
+        vec3f m_up;
+        vec3f m_eye_pos;
+        vec3f m_lookat_pt;
     };
 
 } //namespace math

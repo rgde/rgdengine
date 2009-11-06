@@ -24,13 +24,12 @@ namespace particles{
 	class renderer;
 
 
-	class  processor : public io::serialized_object, public core::meta_class
+	class  processor : public io::serialized_object
+					 , public core::meta_class
 	{
-		// need to manualy increment after each file format change (for code simplisity)
+		// need to manually increment after each file format change (for code simplisity)
 		static const unsigned file_version = 1004;
-	public:
-		inline void setEmitter(base_emitter* em) { m_parent_emitter = em; }
-		
+	public:		
 		processor(base_emitter* em = 0);
 		virtual ~processor();
 
@@ -41,10 +40,11 @@ namespace particles{
 		virtual void debug_draw();
 		void reset();
 
+		inline void set_emitter(base_emitter* em) { m_parent_emitter = em; }
 
-		const math::matrix44f& getLTM();
+		const math::matrix44f& get_local_tm();
 
-		void setTextureName(const std::string& texName);
+		void set_texture_name(const std::string& texture_name);
 
 		// interpolators
 		inline math::FloatInterp& particleRate()				{ return m_rate; }
@@ -64,8 +64,8 @@ namespace particles{
 		inline bool isGlobal() const { return m_is_global; }
 		inline void setGlobal(bool b) { m_is_global = b; }
 
-		inline bool isFading() const { return m_is_fading; }
-		inline void setFade(bool b) { m_is_fading = b; }
+		inline bool is_fading() const { return m_is_fading; }
+		inline void set_fade(bool b) { m_is_fading = b; }
 
 		inline unsigned getMaxParticles() const { return m_nMaxParticles; }
 		inline void setMaxParticles (unsigned num) { 

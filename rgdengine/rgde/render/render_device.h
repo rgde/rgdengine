@@ -41,9 +41,9 @@ namespace render
 
 		math::vec2f				getBackBufferSize();		
 
-		void					showWiredFloorGrid(float size, unsigned num = 20, const math::Color& color = math::Green);
+		void					draw_wired_floor(float size, unsigned num = 20, const math::Color& color = math::Green);
 
-		float                   getFPS(float abs_time) const;
+		float                   get_fps(float abs_time) const;
 		void                    draw_fps(float abs_time, const font_ptr& font);
 		void                    showStatistics(const font_ptr& font);
 

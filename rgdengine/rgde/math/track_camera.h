@@ -19,9 +19,9 @@ namespace math
         CTrack m_path;
 
         //управление
-        void  goTo(float position);
-        void  goForward(float delta);
-        void  goBackward(float delta) {goForward(-delta);}
+        void  move_to(float position);
+        void  move_forward(float delta);
+        void  move_back(float delta) {move_forward(-delta);}
         float get_pos() {return m_fPosition;}
 
         void activate();

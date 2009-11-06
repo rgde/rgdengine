@@ -23,10 +23,10 @@ namespace render
 		typedef core::com_ptr<IDirect3DVertexBuffer9>		SPDirect3DVertexBuffer9;
 
 	public:
-		geometry_impl(const vertex::VertexDecl decl, bool is_dynamic)
-			:m_spVB(0), m_spVertexDeclaration(0), m_bDynamic(is_dynamic), m_size(0)
+		geometry_impl(const vertex::vertex_decl decl, bool is_dynamic)
+			:m_vb(0), m_vertex_decl(0), m_dynamic(is_dynamic), m_size(0)
 		{
-			g_d3d->CreateVertexDeclaration((const D3DVERTEXELEMENT9*)decl, &m_spVertexDeclaration);
+			g_d3d->CreateVertexDeclaration((const D3DVERTEXELEMENT9*)decl, &m_vertex_decl);
 		}
 
 		virtual ~geometry_impl()
@@ -35,8 +35,8 @@ namespace render
 
 		virtual void onLostDevice()
 		{
-			//m_spVertexDeclaration->;
-			//m_spVB->OnLost();// Buffer to hold vertices
+			//m_vertex_decl->;
+			//m_vb->OnLost();// Buffer to hold vertices
 		}
 
 		virtual void onResetDevice()
@@ -47,13 +47,13 @@ namespace render
 		{
 			if (m_size < bytes)
 			{
-				if( m_spVB.get() != NULL )
-					m_spVB.get()->Release();
+				if( m_vb.get() != NULL )
+					m_vb.get()->Release();
 
-				if (!m_bDynamic)
-					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_spVB, NULL);
+				if (!m_dynamic)
+					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_vb, NULL);
 				else
-					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &m_spVB, NULL);
+					g_d3d->CreateVertexBuffer((UINT)bytes, D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &m_vb, NULL);
 
 				m_size = bytes;
 				m_used_size = m_size;
@@ -70,23 +70,23 @@ namespace render
 
 			recreateVB(bytes);
 
-			if (!m_spVB) return;
+			if (!m_vb) return;
 
 			// Fill the vertex buffer.
 			void* pVertices = 0;
 
-			m_spVB->Lock( 0, (UINT)bytes, (void**)&pVertices, m_bDynamic ? D3DLOCK_DISCARD : 0);
+			m_vb->Lock( 0, (UINT)bytes, (void**)&pVertices, m_dynamic ? D3DLOCK_DISCARD : 0);
 
 				memcpy( pVertices, pdata, bytes);
-			m_spVB->Unlock();
+			m_vb->Unlock();
 		}
 
 		virtual void render(primitive_type ePrimType, unsigned nPrimNum)
 		{
 			if (0 == nPrimNum) return;
 
-			g_d3d->SetStreamSource( 0, m_spVB.get(), 0, (UINT)m_nSizeOfVertex );
-			g_d3d->SetVertexDeclaration(m_spVertexDeclaration.get());
+			g_d3d->SetStreamSource( 0, m_vb.get(), 0, (UINT)m_nSizeOfVertex );
+			g_d3d->SetVertexDeclaration(m_vertex_decl.get());
 			D3DPRIMITIVETYPE dxPrimTypeEnum = (D3DPRIMITIVETYPE)ePrimType;
 			g_d3d->DrawPrimitive(dxPrimTypeEnum, 0, nPrimNum);
 
@@ -95,13 +95,13 @@ namespace render
 	private:
 		size_t							m_used_size;
 		size_t							m_size;
-		bool							m_bDynamic;
+		bool							m_dynamic;
 		size_t							m_nSizeOfVertex;
-		SPDirect3DVertexDeclaration9	m_spVertexDeclaration;
-		SPDirect3DVertexBuffer9			m_spVB;// Buffer to hold vertices
+		SPDirect3DVertexDeclaration9	m_vertex_decl;
+		SPDirect3DVertexBuffer9			m_vb;// Buffer to hold vertices
 	};
 
-	base_geometry* base_geometry::create(const vertex::VertexDecl decl, bool is_dynamic)
+	base_geometry* base_geometry::create(const vertex::vertex_decl decl, bool is_dynamic)
 	{
 		return new geometry_impl(decl, is_dynamic);
 	}
@@ -110,7 +110,7 @@ namespace render
 	class IndexedGeometryImpl : public IIndexedGeometry, public device_object
 	{
 	public:
-		IndexedGeometryImpl(const vertex::VertexDecl decl, bool bUse32bitIndixes, bool is_dynamic)
+		IndexedGeometryImpl(const vertex::vertex_decl decl, bool bUse32bitIndixes, bool is_dynamic)
 			: m_ib_size(0)
 			, m_ib_used_size(0)
 			, m_vb_size(0)
@@ -136,8 +136,8 @@ namespace render
 		
 		virtual void onLostDevice()
 		{
-			//m_spVertexDeclaration->;
-			//m_spVB->OnLost();// Buffer to hold vertices
+			//m_vertex_decl->;
+			//m_vb->OnLost();// Buffer to hold vertices
 		}
 
 		virtual void onResetDevice()
@@ -172,7 +172,7 @@ namespace render
 			if (0 == nBytes) return;
 
 			//g_d3d->CreateVertexBuffer( (UINT)bytes, D3DUSAGE_WRITEONLY, 0,
-			//	D3DPOOL_MANAGED, &m_spVB, NULL );
+			//	D3DPOOL_MANAGED, &m_vb, NULL );
 
 			recreateVB(nBytes);
 
@@ -231,7 +231,7 @@ namespace render
 			m_pIB->Unlock();
 		}
 
-		virtual void render(primitive_type ePrimType, unsigned nBaseVertexIndex, unsigned nMinIndex, unsigned nNumVertices, unsigned nStartIndex, unsigned nPrimitiveCount)
+		virtual void render(primitive_type ePrimType, unsigned nBaseVertexIndex, unsigned min_index, unsigned nNumVertices, unsigned nStartIndex, unsigned nPrimitiveCount)
 		{
 			if (0 == nPrimitiveCount)
 				return;
@@ -241,7 +241,7 @@ namespace render
 
 			g_d3d->SetVertexDeclaration(m_pVertexDeclaration);
 			D3DPRIMITIVETYPE dxPrimTypeEnum = (D3DPRIMITIVETYPE)ePrimType;
-			g_d3d->DrawIndexedPrimitive(dxPrimTypeEnum, nBaseVertexIndex, nMinIndex, nNumVertices, nStartIndex, nPrimitiveCount);
+			g_d3d->DrawIndexedPrimitive(dxPrimTypeEnum, nBaseVertexIndex, min_index, nNumVertices, nStartIndex, nPrimitiveCount);
 
 			render_device::get().add_statistics(nNumVertices, nPrimitiveCount);
 		}
@@ -262,7 +262,7 @@ namespace render
 		IDirect3DIndexBuffer9*			m_pIB;
 	};
 
-	IIndexedGeometry* IIndexedGeometry::create(const vertex::VertexDecl decl, bool bUse32bitIndixes, bool is_dynamic)
+	IIndexedGeometry* IIndexedGeometry::create(const vertex::vertex_decl decl, bool bUse32bitIndixes, bool is_dynamic)
 	{
 		return new IndexedGeometryImpl(decl, bUse32bitIndixes, is_dynamic);
 	}
