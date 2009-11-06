@@ -44,7 +44,7 @@ namespace particles
 		math::vec3f direction = m_Direction(m_fTimeNormalaized);
 		math::vec3f direction_rand = m_DirectionSpread(m_fTimeNormalaized);
 
-		math::matrix44f m = getTransform().get_full_tm();
+		math::matrix44f m = get_transform()->get_full_tm();
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 		line_manager.add_box( m, (math::vec3f)(size + size_rand), math::Color(0, 255, 0, 255) );
 		line_manager.add_box( m, (math::vec3f)(size - size_rand), math::Color(0, 255, 0, 255) );

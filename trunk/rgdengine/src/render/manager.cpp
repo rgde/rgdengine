@@ -253,7 +253,7 @@ namespace render
 			if ((NULL == r) || (r->isVisible() == false))
 				return;
 
-			const renderable_info  &ri = r->getRenderableInfo();
+			const renderable_info  &ri = r->get_renderable_info();
 
 			if (ri.frame)
 			{
@@ -350,7 +350,7 @@ namespace render
 				it != temp_copy.end(); ++it)
 			{
 				if ((*it)->isVisible())
-					r(&(*it)->getRenderableInfo());
+					r(&(*it)->get_renderable_info());
 			}
 		}
 

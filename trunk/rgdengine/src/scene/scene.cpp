@@ -6,7 +6,7 @@
 
 namespace scene
 {
-	Scene::Scene(): m_root( new math::frame )
+	Scene::Scene(): m_root( math::frame::create() )
 	{
 	}
 

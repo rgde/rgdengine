@@ -17,7 +17,7 @@ namespace math
     typedef TCatmulRomSpline<math::vec3f> Vec3fCatmulRomSpline;
     typedef TCatmulRomSpline<math::vec4f> Vec4fCatmulRomSpline;
 
-    typedef TCatmulRomSpline<math::Quatf> QuatfCatmulRomSpline;
+    typedef TCatmulRomSpline<math::quatf> QuatfCatmulRomSpline;
 
     //функторы для вычисления расстояния между различными видами
     //вершин сплайна (для расспространненных типов вершин)

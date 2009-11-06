@@ -45,8 +45,8 @@ namespace particles{
 
 		void reset();
 
-		inline bool isFading()		const	{return m_is_fading;}
-		inline void setFade(bool b)			{m_is_fading = b;}
+		inline bool is_fading()		const	{return m_is_fading;}
+		inline void set_fade(bool b)			{m_is_fading = b;}
 
 		inline int  getTimeShift()	const	{return m_time_shift;}
 		inline void setTimeShift(int t)		{m_time_shift = t;}		

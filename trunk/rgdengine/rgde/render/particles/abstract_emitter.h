@@ -43,7 +43,7 @@ public:
 	inline math::vec3f&	getSpeed() {return m_vCurSpeed;}
 
 	// Акксессоры задания
-	void setFade(bool b);
+	void set_fade(bool b);
 
 	// Акксессоры к интерполяторам
 	inline math::FloatInterp& particleMass()			{ return m_PMass; }

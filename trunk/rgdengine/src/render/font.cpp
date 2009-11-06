@@ -37,7 +37,7 @@ namespace render
 			texts.clear();
 		}		
 
-		renderable_info & getRenderableInfo()
+		renderable_info & get_renderable_info()
 		{
 			return m_renderInfo;
 		}

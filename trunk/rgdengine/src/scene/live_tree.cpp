@@ -316,7 +316,7 @@ namespace live_tree
 		return m_pParent;
 	};
 
-	void CTBranch::set_parrent( CTBranch* p )
+	void CTBranch::set_parent( CTBranch* p )
 	{
 		m_pParent = p;
 	};
@@ -333,7 +333,7 @@ namespace live_tree
 		if(!m_Branches[iIndex])
 		{
 			m_Branches[iIndex] = new CTBranch();
-			m_Branches[iIndex]->set_parrent(this);
+			m_Branches[iIndex]->set_parent(this);
 			m_iUsed++;
 		}
 		return m_Branches[iIndex];
@@ -345,7 +345,7 @@ namespace live_tree
 		{
 			if( m_Branches[i]==pBranch )
 			{
-				m_Branches[i]->set_parrent(0);			// deselect their parent
+				m_Branches[i]->set_parent(0);			// deselect their parent
 				delete m_Branches[i];					// destroy branch here after parenthesis removal
 				m_Branches[i] = 0;						// cleanup branch ptr
 				m_iUsed--;								// calc removal
@@ -378,7 +378,7 @@ namespace live_tree
 			{
 				if(m_Branches[i])
 				{
-					m_Branches[i]->set_parrent(0);
+					m_Branches[i]->set_parent(0);
 					delete m_Branches[i];
 					m_Branches[i] = 0;
 					m_iUsed--;

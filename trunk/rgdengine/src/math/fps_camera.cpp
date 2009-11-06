@@ -10,9 +10,9 @@ namespace math
         set_camera(camera);
 
         base::lmsg << "fps_camera::fps_camera()";
-        m_vUp       = vec3f(0.0f, 1.0f, 0.0f);
-        m_vEyePt    = vec3f(0.0f, 0.0f, 0.0f);
-        m_vLookatPt = vec3f(0.0f, 0.0f, 1.0f);
+        m_up       = vec3f(0.0f, 1.0f, 0.0f);
+        m_eye_pos    = vec3f(0.0f, 0.0f, 0.0f);
+        m_lookat_pt = vec3f(0.0f, 0.0f, 1.0f);
     }
 
     fps_camera_ptr fps_camera::create(camera_ptr camera)
@@ -20,94 +20,94 @@ namespace math
         return fps_camera_ptr(new fps_camera(camera));
     }
 
-    void fps_camera::set_position(const vec3f& vUp, const vec3f& eye, const vec3f& look_at)
+    void fps_camera::set_position(const vec3f& up, const vec3f& eye, const vec3f& look_at)
     {
-        m_vUp       = vUp;
-        m_vEyePt    = eye;
-        m_vLookatPt = look_at;
+        m_up       = up;
+        m_eye_pos    = eye;
+        m_lookat_pt = look_at;
         apply();
     }
 
-    void fps_camera::get_pos(vec3f& vUp, vec3f& eye, vec3f& look_at)
+    void fps_camera::get_pos(vec3f& up, vec3f& eye, vec3f& look_at)
     {
-        vUp       = m_vUp;
-        eye    = m_vEyePt;
-        look_at = m_vLookatPt;
+        up       = m_up;
+        eye    = m_eye_pos;
+        look_at = m_lookat_pt;
     }
 
-    void fps_camera::goForward(float delta)
+    void fps_camera::move_forward(float delta)
     {
-		vec3f vDir = m_vLookatPt-m_vEyePt;
+		vec3f vDir = m_lookat_pt-m_eye_pos;
 		normalize(vDir);
 		vDir*=delta;
-		m_vEyePt+=vDir;
-		m_vLookatPt+=vDir;
+		m_eye_pos+=vDir;
+		m_lookat_pt+=vDir;
 		apply();
     }
 
-    void fps_camera::goLeft(float delta)
+    void fps_camera::move_left(float delta)
     {
-		vec3f vDir = m_vLookatPt-m_vEyePt;
+		vec3f vDir = m_lookat_pt-m_eye_pos;
 		vec3f vRight;
-		cross(vRight,m_vUp,vDir);
+		cross(vRight,m_up,vDir);
 		normalize(vRight);
 		vRight*=delta;
-		m_vEyePt-=vRight;
-		m_vLookatPt-=vRight;
+		m_eye_pos-=vRight;
+		m_lookat_pt-=vRight;
 		apply();
     }
 
-    void fps_camera::goUp(float delta)
+    void fps_camera::move_up(float delta)
     {
-		vec3f vDir = m_vUp;
+		vec3f vDir = m_up;
 		normalize(vDir);
 		vDir*=delta;
-		m_vEyePt+=vDir;
-		m_vLookatPt+=vDir;
+		m_eye_pos+=vDir;
+		m_lookat_pt+=vDir;
 		apply();
     }
 
-    void fps_camera::rotateRight(float angle)
+    void fps_camera::rotate_right(float angle)
     {
- 		Quatf rot;
-        vec3f vAxis = m_vUp;
+ 		quatf rot;
+        vec3f vAxis = m_up;
 
 		normalize(vAxis);
         setRot(rot, AxisAnglef(angle, vAxis));
 
-        xform<float>(m_vLookatPt, rot, m_vLookatPt-m_vEyePt);
-        normalize(m_vLookatPt);
-        m_vLookatPt += m_vEyePt;
+        xform<float>(m_lookat_pt, rot, m_lookat_pt-m_eye_pos);
+        normalize(m_lookat_pt);
+        m_lookat_pt += m_eye_pos;
 
 		apply();
     }
 
     void fps_camera::rotate_up(float angle)
     {
-		Quatf rot;
+		quatf rot;
         vec3f vAxis;
-        vec3f vDir = m_vLookatPt-m_vEyePt;
+        vec3f vDir = m_lookat_pt-m_eye_pos;
 
         //боремся с гатством "взгляд вертикально вверх или вниз"
         const float fSmallAngle = 0.01f; //не позволяем приближать направление взгляда к вертикали ближе чем на этот угол
         normalize(vDir);
-        normalize(m_vUp);
-        float fCurrentAngle = Math::aCos(dot(vDir,m_vUp));
+        normalize(m_up);
+        float fCurrentAngle = Math::aCos(dot(vDir,m_up));
         if (fCurrentAngle + angle <= fSmallAngle)
             angle = -fCurrentAngle + fSmallAngle;
         if (fCurrentAngle + angle >= Math::PI - fSmallAngle)
             angle = Math::PI - fCurrentAngle - fSmallAngle;
 
-        cross(vAxis,m_vUp,vDir);
+        cross(vAxis,m_up,vDir);
 		normalize(vAxis);
 
         if (length(vAxis) < 0.1f) return; //иопт! направление взгляда совпало с направлением верха
 
         setRot(rot, AxisAnglef(angle, vAxis));
 
-        xform<float>(m_vLookatPt, rot, m_vLookatPt-m_vEyePt);
-        normalize(m_vLookatPt);
-        m_vLookatPt += m_vEyePt;
+        xform<float>(m_lookat_pt, rot, m_lookat_pt-m_eye_pos);
+        normalize(m_lookat_pt);
+        m_lookat_pt += m_eye_pos;
 
 		apply();
     }
@@ -122,7 +122,7 @@ namespace math
         if (m_camera)
         {
             try{
-                m_camera->look_at(m_vEyePt,m_vLookatPt,m_vUp);
+                m_camera->look_at(m_eye_pos,m_lookat_pt,m_up);
                 m_camera->activate();
             }
             catch(...){}

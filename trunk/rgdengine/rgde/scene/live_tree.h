@@ -144,7 +144,7 @@ namespace live_tree
 		// get parent branch
 		CTBranch*				get_parent( void );
 		// set parent branch
-		void					set_parrent( CTBranch* p );
+		void					set_parent( CTBranch* p );
 		// get branch pointer. test them for existance before use
 		CTBranch*				getBranch( unsigned iIndex );
 		// call branch. create branch if it not exist

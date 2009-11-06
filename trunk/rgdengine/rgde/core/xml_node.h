@@ -27,17 +27,17 @@ namespace core
 		void add(const node_ptr& node)
 		{
 			m_children.push_back(node); 
-			node->set_parrent((T*)this);
+			node->set_parent((T*)this);
 		}
 
 		void remove(const node_ptr& node)
 		{
 			m_children.remove(node); 
-			node->set_parrent(0);
+			node->set_parent(0);
 		}
 
-		const node_ptr& get_parent() const  {return m_parent;}
-		node_ptr		get_parent()		{return m_parent;}
+		const node*		get_parent() const  {return m_parent;}
+		node*			get_parent()		{return m_parent;}
 
 		//children_list& get_children() {return m_children;}
 		const children_list& get_children() const {return m_children;}
@@ -48,7 +48,7 @@ namespace core
 		virtual ~tree_node()
 		{
 			for (children_list::iterator it = m_children.begin(); it != m_children.end(); ++it)
-				(*it)->set_parrent(0);
+				(*it)->set_parent(0);
 
 			m_children.clear();
 
@@ -59,13 +59,14 @@ namespace core
 			}
 		}
 
-	protected:
-				void set_parrent(node* node){m_parent = node; on_parent_change();}
+		void set_parent(node* node)	{m_parent = node; on_parent_change();}
+
+	protected:				
 		virtual void on_parent_change(){}
 
 	protected:
 		children_list	m_children;
-		node_ptr		m_parent;
+		node*			m_parent;
 	};
 
 	template <class T>

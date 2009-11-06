@@ -17,7 +17,7 @@ public:
 
 		m_pTexture = render::texture::create("tiger.bmp");
 
-		m_spFrame = new math::frame();
+		m_spFrame = math::frame::create();
 		m_spFrame->add( m_pMesh );
 
 		TiXmlDocument xml( "media\\1111.XML" ) ;
@@ -29,7 +29,7 @@ public:
 		m_controller.atach( m_spFrame );
 		m_controller.start();
 		m_controller.set_rate( 1.0f );
-		m_controller.setLooped( true );
+		m_controller.set_looped( true );
 
 		math::vec3f eye( 0.0f, 40, -400 );
 		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
@@ -37,8 +37,8 @@ public:
 
 		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 
-		m_spTargetCamera = math::target_camera::create(m_camera);
-		m_spTargetCamera->set_position(up_vec,eye,look_at);
+		m_target_camera = math::target_camera::create(m_camera);
+		m_target_camera->set_position(up_vec,eye,look_at);
 
 		{//инициализация ввода
 			using namespace input;
@@ -48,13 +48,13 @@ public:
 			Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
 
 			m_esc  .attach(L"Quit");
-			m_cXAxis.attach(L"Horz");
-			m_cYAxis.attach(L"Vert");
+			m_mouse_x.attach(L"Horz");
+			m_mouse_y.attach(L"Vert");
 
 
 			m_esc += boost::bind(&AnimationTest::onEsc, this);
-			m_cYAxis += boost::bind(&AnimationTest::onYAxis, this, _1);
-			m_cXAxis += boost::bind(&AnimationTest::onXAxis, this, _1);
+			m_mouse_y += boost::bind(&AnimationTest::onYAxis, this, _1);
+			m_mouse_x += boost::bind(&AnimationTest::onXAxis, this, _1);
 		}
 
 		//m_controller.atach(0);
@@ -81,7 +81,7 @@ protected:
 		const float fast = 2*slow;
 		float angle = dx>accel ? dx*fast : dx*slow;
 
-		m_spTargetCamera->rotateLeft(-angle);
+		m_target_camera->rotate_left(-angle);
 	}
 
 	//ось Y
@@ -92,7 +92,7 @@ protected:
 		const float fast = 2*slow;
 		float angle = dy>accel ? dy*fast : dy*slow;
 
-		m_spTargetCamera->rotate_up(angle);
+		m_target_camera->rotate_up(angle);
 	}
 protected:
 	render::font_ptr			m_font;
@@ -105,11 +105,11 @@ protected:
 
 	//данные для ввода
 	input::Button       m_esc;
-	input::RelativeAxis m_cXAxis;
-	input::RelativeAxis m_cYAxis;
+	input::RelativeAxis m_mouse_x;
+	input::RelativeAxis m_mouse_y;
 
 	//данные для камеры
-	math::target_camera_ptr      m_spTargetCamera;      //контроллер камеры "нацеленная камера"
+	math::target_camera_ptr      m_target_camera;      //контроллер камеры "нацеленная камера"
 };
 
 

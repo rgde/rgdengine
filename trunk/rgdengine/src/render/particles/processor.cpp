@@ -10,7 +10,10 @@ namespace particles{
 
 	//-----------------------------------------------------------------------------------
 	processor::processor(base_emitter* em )   // конструктор
-	: m_is_visible(true), m_parent_emitter(em), m_is_geometric(false), core::meta_class("processor")
+	: m_is_visible(true)
+	, m_parent_emitter(em)
+	, m_is_geometric(false)
+	, core::meta_class("processor")
 	{
 		m_is_anim_texture_used = false; 		
 		m_is_anim_texture_cycled = false;		
@@ -181,7 +184,7 @@ namespace particles{
 
 		if (!m_is_geometric)
 		{
-			m_tank->render(m_texture, m_parent_emitter->getTransform());
+			m_tank->render(m_texture, m_parent_emitter->get_transform());
 		}
 		else
 			geomRender();
@@ -204,9 +207,9 @@ namespace particles{
 
 		m_fNormalizedTime = m_parent_emitter->getTime();
 
-		math::frame& rParentTransform = m_parent_emitter->getTransform();
+		math::frame_ptr rParentTransform = m_parent_emitter->get_transform();
 		//m_fScaling = (m_ParentTransform->getScaling()).x;
-		m_fScaling = rParentTransform.get_scale();
+		m_fScaling = rParentTransform->get_scale();
 
 		int m_acting_particles = 0;
 		// здесь происходит апдейт партиклов
@@ -286,7 +289,7 @@ namespace particles{
 						/(25.0f);
 		
 		if (m_is_global){
-			math::xform( p.initial_pos, getLTM(), p.initial_pos );
+			math::xform( p.initial_pos, get_local_tm(), p.initial_pos );
 			p.initial_vel = m_parent_emitter->getSpeed();// / 2.0f;
 		}
 
@@ -318,7 +321,7 @@ namespace particles{
 		if( !m_is_visible )
 			return;
 
-		math::matrix44f m = getLTM();
+		math::matrix44f m = get_local_tm();
 
 		if (m_is_global)
 			m = math::setTrans( m, math::vec3f(0,0,0) );
@@ -351,9 +354,9 @@ namespace particles{
 		if (m_is_geometric)
 			return;
 
-		const math::matrix44f& ltm = getLTM();
+		const math::matrix44f& ltm = get_local_tm();
 
-		renderer::ParticleArray& array = m_tank->getParticles();
+		renderer::particles_vector& array = m_tank->getParticles();
 		array.resize( m_Particles.size() );
 		int i = 0;
 
@@ -467,13 +470,13 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void processor::setTextureName( const std::string& texName )
+	void processor::set_texture_name( const std::string& texture_name )
 	{
 		m_is_texture_loaded = false;
 
-		if ( texName.length() != 0 )
+		if ( texture_name.length() != 0 )
 		{
-			m_texture_name = texName;	
+			m_texture_name = texture_name;	
 			loadTexture();
 			if( !m_tank )
 				return;
@@ -483,9 +486,9 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	const math::matrix44f& processor::getLTM()
+	const math::matrix44f& processor::get_local_tm()
 	{
-		return m_parent_emitter->getTransform().get_full_tm();
+		return m_parent_emitter->get_transform()->get_full_tm();
 	}
 
 	//-----------------------------------------------------------------------------------

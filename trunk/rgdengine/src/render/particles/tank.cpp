@@ -13,7 +13,7 @@ namespace particles
 
 		render::effect::params_map& params = m_effect->get_params();
 
-		m_paramUpVec			= params["m_vUp"];
+		m_paramUpVec			= params["m_up"];
 		m_paramRightVec			= params["m_vRight"];
 		m_paramParticleTexture	= params["ParticlesTexture"];
 		m_paramTransformMatrix	= params["m_mLVP"];
@@ -28,12 +28,12 @@ namespace particles
 	{
 	}
 	//-----------------------------------------------------------------------------------
-	void renderer::render(render::texture_ptr texture, math::frame& frame)
+	void renderer::render(render::texture_ptr texture, math::frame_ptr frame)
 	{
 		if( (m_reserved_size == 0) )
 			return;
 
-		const math::matrix44f& mLocal	= frame.get_full_tm();
+		const math::matrix44f& mLocal	= frame->get_full_tm();
 		math::camera_ptr camera		= render::render_device::get().get_camera();
 		const math::matrix44f& mProj	= camera->get_proj_matrix();
 		const math::matrix44f& mView	= camera->get_view_matrix();

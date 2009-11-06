@@ -72,7 +72,7 @@ namespace particles
 		float r_rand = m_RadiusSpread.getValue(m_fTimeNormalaized);
 		int angle = (int)(m_Angle.getValue(m_fTimeNormalaized));
 
-		math::matrix44f m = getTransform().get_full_tm();
+		math::matrix44f m = get_transform()->get_full_tm();
 
 		line_manager.add_sphere( m , rad, angle );
 		if( r_rand != 0 )

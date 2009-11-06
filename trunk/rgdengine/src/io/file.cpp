@@ -88,7 +88,7 @@ namespace io
 		return rf;
 	}
 	//-----------------------------------------------------------------------------------
-	read_stream & operator >>(read_stream &rf, math::Quatf &quat)
+	read_stream & operator >>(read_stream &rf, math::quatf &quat)
 	{
 		rf >> quat[0] >> quat[1] >> quat[2] >> quat[3];
 		return rf;
@@ -137,7 +137,7 @@ namespace io
 		return wf;
 	}
 	//-----------------------------------------------------------------------------------
-	write_stream & operator <<(write_stream &wf, const math::Quatf &quat)
+	write_stream & operator <<(write_stream &wf, const math::quatf &quat)
 	{
 		wf << quat[0] << quat[1] << quat[2] << quat[3];
 		return wf;

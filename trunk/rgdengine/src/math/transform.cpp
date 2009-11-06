@@ -10,7 +10,12 @@
 
 namespace math
 {
-	matrix44f frame::make_transform(const point3f& pos, const Quatf& rot, const vec3f& s)
+	frame_ptr frame::create()
+	{
+		return frame_ptr(new frame());
+	}
+
+	matrix44f frame::make_transform(const point3f& pos, const quatf& rot, const vec3f& s)
 	{
 		math::matrix44f rotation;
 		math::setRot(rotation, rot);		
@@ -26,53 +31,53 @@ namespace math
 
 	matrix44f frame::make_transform(const point3f& pos, const EulerAngleXYZf& rot, const vec3f& s)
 	{
-		math::Quatf quat = math::make<Quatf, EulerAngleXYZf>(rot);
+		math::quatf quat = math::make<quatf, EulerAngleXYZf>(rot);
 		return make_transform(pos, quat, s);
 	}
 
 	frame::frame()
-		: m_bIsNeedRecompute(false),
+		: m_need_recompute(false),
 		  core::meta_node<frame>("frame"),
-		  m_bNeedRecomputeGlobalMatrix(true),
+		  m_recompute_global_matrix(true),
 		  m_scale(1.0f,1.0f,1.0f)
 	{
 		//property_owner::addProperty(new property<math::vec3f>(m_scale, "Scale"));
 		//property_owner::addProperty(new property<point3f>(m_position, "Position", "Point"));
-		//property_owner::addProperty(new property<Quatf>(m_rotation, "Rotation", "Quaternion"));
+		//property_owner::addProperty(new property<quatf>(m_rotation, "Rotation", "Quaternion"));
 	}
 
 	frame::~frame()
 	{
 	}
 
-	void frame::findFrames(const std::string& strTemplate, std::vector<frame_ptr>& container)
+	void frame::findFrames(const std::string& str_template, std::vector<frame_ptr>& container)
 	{
-		const std::string &strFrameName = get_name();
+		const std::string &frame_name = get_name();
 
-		size_t pos = strFrameName.find_first_of("_");
+		size_t pos = frame_name.find_first_of("_");
 		if(pos != -1)
 		{
-			size_t nBegin = strFrameName.find_first_not_of(" ");
-			std::string name = strFrameName.substr(nBegin, pos - nBegin);
+			size_t nBegin = frame_name.find_first_not_of(" ");
+			std::string name = frame_name.substr(nBegin, pos - nBegin);
 
-			if(name == strTemplate)
+			if(name == str_template)
 				container.push_back(this);
 		}
 
 		for (math::frame::children_list::const_iterator it = get_children().begin(); it != get_children().end(); it++)
-			(*it)->findFrames(strTemplate, container);
+			(*it)->findFrames(str_template, container);
 	}
 
 	void frame::set_position(const point3f& pos)
 	{
 		m_position = pos;
-		m_bIsNeedRecompute = true;
+		m_need_recompute = true;
 	}
 
-	void frame::set_rot(const Quatf& quat)
+	void frame::set_rot(const quatf& quat)
 	{
 		m_rotation = quat;
-		m_bIsNeedRecompute = true;
+		m_need_recompute = true;
 	}
 
 	void frame::look_at(const vec3f& eye, const vec3f& look_at, const vec3f& up_vec)
@@ -91,13 +96,13 @@ namespace math
 			set(m_rotation, mat); 
 		}
 
-		m_bIsNeedRecompute = true;
+		m_need_recompute = true;
 	}
 
 	void frame::set_scale(const vec3f& s)
 	{
 		m_scale = s;
-		m_bIsNeedRecompute = true;
+		m_need_recompute = true;
 	}
 
 	const matrix44f & frame::get_local_tm() const
@@ -129,7 +134,7 @@ namespace math
 
 	void frame::computeLocalTransform() const
 	{
-		if (!m_bIsNeedRecompute)
+		if (!m_need_recompute)
 			return;
 
 		math::matrix44f rotation;
@@ -143,16 +148,16 @@ namespace math
 
 		m_local_tm = translate * rotation * scale;
 
-		m_bIsNeedRecompute = false;
-		m_bNeedRecomputeGlobalMatrix = true;
+		m_need_recompute = false;
+		m_recompute_global_matrix = true;
 	}
 
 	void frame::computeFullTransform() const 
 	{
-		if (m_bIsNeedRecompute)
+		if (m_need_recompute)
 			computeLocalTransform();
 
-		if (!m_bNeedRecomputeGlobalMatrix)
+		if (!m_recompute_global_matrix)
 			return;
 
 		computeLocalTransform();
@@ -162,12 +167,12 @@ namespace math
 		else
 			m_fullTransform = m_local_tm;
 
-		m_bNeedRecomputeGlobalMatrix = false;
+		m_recompute_global_matrix = false;
 	}
 
 	void frame::on_parent_change()
 	{
-		m_bIsNeedRecompute = true;
+		m_need_recompute = true;
 	}
 
 	point3f frame::get_world_pos() const 
@@ -248,7 +253,7 @@ namespace math
 			>> m_position
 			>> m_rotation;
 
-		m_bIsNeedRecompute = true;
+		m_need_recompute = true;
 		
 		//// Читаем дочерние трансформации
 		unsigned nChildren;

@@ -22,7 +22,7 @@ namespace rgde
 
 			sprite_example::sprite_example() : 
 				m_priorities (1),
-				m_num_sprites_per_priority (100),
+				m_num_sprites_per_priority (10),
 				m_enable_debug_log (false),
 				m_do_sort_before_log (true),
 				m_sprites_seed (math::vec2f (770, 570))
@@ -53,6 +53,9 @@ namespace rgde
 						float x = m_sprites_seed[0];
 						float y = m_sprites_seed[1];
 
+						x = 20 + sprite * 70;
+						
+
 						math::Rect rect(0, 0, 1, 1);
 
 						using math::unitRandom;
@@ -60,12 +63,15 @@ namespace rgde
 
 						for (uint i = 0; i < textures.size(); ++i)
 						{
-							math::vec2f size(rangeRandom(0,80),rangeRandom(0,80));
-							math::vec2f pos(rangeRandom(0, x), rangeRandom(0, y));
-							math::Color color;
-							color.set(unitRandom(),	unitRandom(), unitRandom(),	unitRandom());
+							y = 100 + i*90;
+							//math::vec2f size(rangeRandom(0,80),rangeRandom(0,80));
+							math::vec2f size(60, 80);//rangeRandom(0,80),rangeRandom(0,80));
+							//math::vec2f pos(rangeRandom(0, x), rangeRandom(0, y));
+							math::vec2f pos(x, y);
+							math::Color color = math::White;
+							//color.set(unitRandom(),	unitRandom(), unitRandom(),	unitRandom());
 
-							float spin = rangeRandom (0, math::TWO_PI);
+							float spin = 0;//rangeRandom (0, math::TWO_PI);
 
 							render::sprite sprite(pos, size, color, textures[i], spin, rect, priority);
 							m_sprites.push_back(sprite);

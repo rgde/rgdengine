@@ -22,7 +22,7 @@ namespace math
     typedef TLinearInterpolator<vec3f,double>  Vec3fLinearInterpolatord;
     typedef TLinearInterpolator<vec4f,double>  Vec4fLinearInterpolatord;
 
-    typedef TLinearInterpolator<Quatf,float>   QuatfLinearInterpolatorf;
-    typedef TLinearInterpolator<Quatf,double>  QuatfLinearInterpolatord;
+    typedef TLinearInterpolator<quatf,float>   QuatfLinearInterpolatorf;
+    typedef TLinearInterpolator<quatf,double>  QuatfLinearInterpolatord;
 
 }

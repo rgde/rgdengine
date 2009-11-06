@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="test_particles"
 	ProjectGUID="{BD3C5180-2B0C-48B9-B5CA-1EDA467570F5}"
 	RootNamespace="test_particles"
@@ -46,7 +46,6 @@
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\rgdengine&quot;;&quot;$(SolutionDir)external/&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"

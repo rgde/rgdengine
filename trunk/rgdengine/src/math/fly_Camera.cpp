@@ -10,10 +10,10 @@ namespace math
         set_camera(camera);
 
         base::lmsg << "free_camera::free_camera()";
-        m_vUp       = vec3f(0.0f, 1.0f, 0.0f);
-        m_vEyePt    = vec3f(0.0f, 0.0f, 0.0f);
-        m_vLookatPt = vec3f(0.0f, 0.0f, 1.0f);
-        doOrthoNormal();
+        m_up       = vec3f(0.0f, 1.0f, 0.0f);
+        m_eye_pos    = vec3f(0.0f, 0.0f, 0.0f);
+        m_lookat_pt = vec3f(0.0f, 0.0f, 1.0f);
+        do_ortho_normal();
     }
 
     free_camera_ptr free_camera::create(camera_ptr camera)
@@ -21,93 +21,93 @@ namespace math
         return free_camera_ptr(new free_camera(camera));
     }
 
-    void free_camera::set_position(const vec3f& vUp, const vec3f& eye, const vec3f& look_at)
+    void free_camera::set_position(const vec3f& up, const vec3f& eye, const vec3f& look_at)
     {
-        m_vUp       = vUp;
-        m_vEyePt    = eye;
-        m_vLookatPt = look_at;
+        m_up       = up;
+        m_eye_pos    = eye;
+        m_lookat_pt = look_at;
         apply();
     }
 
-    void free_camera::get_pos(vec3f& vUp, vec3f& eye, vec3f& look_at)
+    void free_camera::get_pos(vec3f& up, vec3f& eye, vec3f& look_at)
     {
-        vUp       = m_vUp;
-        eye    = m_vEyePt;
-        look_at = m_vLookatPt;
+        up       = m_up;
+        eye    = m_eye_pos;
+        look_at = m_lookat_pt;
     }
 
-    void free_camera::goForward(float delta)
+    void free_camera::move_forward(float delta)
     {
-        vec3f vDelta = m_vLookatPt-m_vEyePt;
+        vec3f vDelta = m_lookat_pt-m_eye_pos;
         normalize(vDelta);
         vDelta *= delta;
 
-        m_vEyePt    += vDelta;
-        m_vLookatPt += vDelta;
+        m_eye_pos    += vDelta;
+        m_lookat_pt += vDelta;
 
         apply();
     }
 
-    void free_camera::goLeft(float delta)
+    void free_camera::move_left(float delta)
     {
         vec3f vDelta;
-        cross(vDelta, m_vUp, vec3f(m_vLookatPt-m_vEyePt));
+        cross(vDelta, m_up, vec3f(m_lookat_pt-m_eye_pos));
         normalize(vDelta);
         vDelta *= delta;
 
-        m_vEyePt    -= vDelta;
-        m_vLookatPt -= vDelta;
+        m_eye_pos    -= vDelta;
+        m_lookat_pt -= vDelta;
 
         apply();
     }
 
-    void free_camera::goUp(float delta)
+    void free_camera::move_up(float delta)
     {
-        vec3f vDelta = m_vUp;
+        vec3f vDelta = m_up;
         normalize(vDelta);
         vDelta *= delta;
 
-        m_vEyePt    += vDelta;
-        m_vLookatPt += vDelta;
+        m_eye_pos    += vDelta;
+        m_lookat_pt += vDelta;
 
         apply();
     }
 
-    void free_camera::rotateRight(float angle)
+    void free_camera::rotate_right(float angle)
     {
-        Quatf rot;
-        vec3f vAxis = m_vUp;
+        quatf rot;
+        vec3f vAxis = m_up;
 
         normalize(vAxis);
         setRot(rot, AxisAnglef(angle, vAxis));
 
-        m_vLookatPt = xform<float>(m_vLookatPt, rot, m_vLookatPt-m_vEyePt) + m_vEyePt;
+        m_lookat_pt = xform<float>(m_lookat_pt, rot, m_lookat_pt-m_eye_pos) + m_eye_pos;
         apply();
     }
 
     void free_camera::rotate_up(float angle)
     {
-        Quatf rot;
+        quatf rot;
         vec3f vAxis;
 
-        cross(vAxis, m_vUp, vec3f(m_vLookatPt-m_vEyePt));
+        cross(vAxis, m_up, vec3f(m_lookat_pt-m_eye_pos));
         normalize(vAxis);
         setRot(rot, AxisAnglef(angle, vAxis));
 
-        m_vLookatPt = xform<float>(m_vLookatPt, rot, m_vLookatPt-m_vEyePt) + m_vEyePt;
-        m_vUp = xform<float>(m_vUp, rot, m_vUp);
+        m_lookat_pt = xform<float>(m_lookat_pt, rot, m_lookat_pt-m_eye_pos) + m_eye_pos;
+        m_up = xform<float>(m_up, rot, m_up);
         apply();
     }
 
-    void free_camera::rotateCW(float angle)
+    void free_camera::rotate_cw(float angle)
     {
-        Quatf rot;
-        vec3f vAxis = m_vLookatPt-m_vEyePt;
+        quatf rot;
+        vec3f vAxis = m_lookat_pt-m_eye_pos;
 
         normalize(vAxis);
         setRot(rot, AxisAnglef(angle, vAxis));
 
-        m_vUp = xform<float>(m_vUp, rot, m_vUp);
+        m_up = xform<float>(m_up, rot, m_up);
         apply();
     }
 
@@ -118,11 +118,11 @@ namespace math
 
     void free_camera::apply()
     {
-        doOrthoNormal();
+        do_ortho_normal();
         if (m_camera)
         {
             try{
-                m_camera->look_at(m_vEyePt,m_vLookatPt,m_vUp);
+                m_camera->look_at(m_eye_pos,m_lookat_pt,m_up);
                 m_camera->activate();
             }
             catch(...){}
@@ -130,20 +130,20 @@ namespace math
     }
 
     //гарантировать, что вектора "вперед" и "вверх" взаимно пенпедикул€рны и нормированы
-    void free_camera::doOrthoNormal()
+    void free_camera::do_ortho_normal()
     {
-        normalize(m_vUp);
+        normalize(m_up);
 
-        vec3f vForward = m_vLookatPt-m_vEyePt;
+        vec3f vForward = m_lookat_pt-m_eye_pos;
         normalize(vForward);
 
-        //m_vUp
+        //m_up
         vec3f vTmp;
-        cross(vTmp, m_vUp, vForward);
-        cross(m_vUp, vForward, vTmp);
+        cross(vTmp, m_up, vForward);
+        cross(m_up, vForward, vTmp);
 
-        //m_vLookatPt
-        m_vLookatPt = m_vEyePt + vForward;
+        //m_lookat_pt
+        m_lookat_pt = m_eye_pos + vForward;
     }
 
 } //namespace math

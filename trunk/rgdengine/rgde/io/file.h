@@ -97,7 +97,7 @@ namespace io
 	write_stream& operator << (write_stream& wf, const math::vec3f& vec);
 	write_stream& operator << (write_stream& wf, const math::vec4f& vec);
 	write_stream& operator << (write_stream& wf, const math::point3f& point);
-	write_stream& operator << (write_stream& wf, const math::Quatf& quat);
+	write_stream& operator << (write_stream& wf, const math::quatf& quat);
 	write_stream& operator << (write_stream& wf, const std::wstring& str);
 
 
@@ -157,7 +157,7 @@ namespace io
 	read_stream& operator >> (read_stream& rf, math::vec3f& vec);
 	read_stream& operator >> (read_stream& rf, math::vec4f& vec);
 	read_stream& operator >> (read_stream& rf, math::point3f& point);
-	read_stream& operator >> (read_stream& rf, math::Quatf& quat);
+	read_stream& operator >> (read_stream& rf, math::quatf& quat);
 	read_stream& operator >> (read_stream& rf, std::wstring& str);
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////

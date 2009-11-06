@@ -14,18 +14,19 @@ namespace math
 					public core::meta_node<frame>
 	{
 	public:
-		static matrix44f make_transform(const point3f& pos, const Quatf& rot, const vec3f& s);
+		static matrix44f make_transform(const point3f& pos, const quatf& rot, const vec3f& s);
 		static matrix44f make_transform(const point3f& pos, const EulerAngleXYZf& rot, const vec3f& s);
 
-							frame();
+		static frame_ptr	create();				
+
 		virtual				~frame();
 
 		const point3f&		get_pos()		const {return m_position;}
 		point3f				get_world_pos() const;
 		void				set_position(const point3f& pos);
     
-		const Quatf&		get_rot()		const {return m_rotation;}
-		void				set_rot(const Quatf& quat);
+		const quatf&		get_rot()		const {return m_rotation;}
+		void				set_rot(const quatf& quat);
 
 		void				look_at(const vec3f& eye, const vec3f& look_at, const vec3f& up_vec);
 
@@ -50,26 +51,28 @@ namespace math
 		//Neonic: octree
 		virtual void				update( bool NeedFullUpdate =0 );
 
-		//Finds frames with names wich contain substring strTemplate + "_"
-		void findFrames(const std::string& strTemplate, std::vector<frame_ptr>& container);
+		//Finds frames with names wich contain substring str_template + "_"
+		void findFrames(const std::string& str_template, std::vector<frame_ptr>& container);
 		
 	protected:
+		frame();
+
 		virtual void on_parent_change();
 		
 		void to_stream(io::write_stream& wf) const;
 		void from_stream(io::read_stream& rf);
 
-		bool isNeedRecompute()			const {return m_bIsNeedRecompute;}
+		bool isNeedRecompute()			const {return m_need_recompute;}
 		void computeLocalTransform()	const;
 		void computeFullTransform()		const;
 
 	protected:
 		vec3f					m_scale;
 		point3f					m_position;
-		Quatf					m_rotation;
+		quatf					m_rotation;
 
-		mutable bool			m_bIsNeedRecompute;
-		mutable bool			m_bNeedRecomputeGlobalMatrix;
+		mutable bool			m_need_recompute;
+		mutable bool			m_recompute_global_matrix;
 
 		mutable matrix44f		m_local_tm;
 		mutable matrix44f		m_fullTransform;

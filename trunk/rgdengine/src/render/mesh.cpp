@@ -27,25 +27,25 @@ namespace render
 
 		//return;
 		// надо вводить понятие SubSet у меша - набор верщин со своим материалом.
-		size_t numMaterials	= m_materials.size();
-		MaterialList &mlist	= m_materials;
+		size_t materials_num = m_materials.size();
+		materials_list &mats = m_materials;
 
-		if (0 == numMaterials)
+		if (0 == materials_num)
 		{
-			m_geometry->render(m_ePrimType, m_nNumPrimitives);
+			m_geometry->render(m_prim_type, m_prim_num);
 		}
-		else if (1 == numMaterials)
+		else if (1 == materials_num)
 		{
-			m_geometry->render(m_ePrimType, m_nNumPrimitives);
+			m_geometry->render(m_prim_type, m_prim_num);
 		}
 		else
 		{
 			for (sub_meshes::iterator it = m_sub_meshes.begin(); it != m_sub_meshes.end(); ++it)
 			{
 				IndexedSubMeshInfo &minfo	= *it;
-				material_ptr m					= mlist[minfo.nMaterialIndex];
+				material_ptr m = mats[minfo.material_index];
 
-				m_geometry->render(m_ePrimType, minfo.nBaseVertexIndex, minfo.nMinIndex, minfo.nNumVertices, minfo.nStartIndex, minfo.nPrimitiveCount);
+				m_geometry->render(m_prim_type, minfo.nBaseVertexIndex, minfo.min_index, minfo.nNumVertices, minfo.nStartIndex, minfo.nPrimitiveCount);
 			}
 		}
 	}
@@ -79,8 +79,8 @@ namespace render
 		m_geometry->lock_vb();
 		m_geometry->unlock_vb();
 
-		m_ePrimType = PrimTypeTriangleList;
-		m_nNumPrimitives = m_geometry->getIndexNum() / 3;
+		m_prim_type = PrimTypeTriangleList;
+		m_prim_num = m_geometry->getIndexNum() / 3;
 
 		m_renderInfo.bbox = m_geometry->getBBox();
 		m_renderInfo.bsphere = m_geometry->getBSphere();
@@ -138,14 +138,14 @@ namespace render
 	void mesh::setEffect(effect_ptr shader)
 	{
 		m_renderInfo.shader = shader;
-		MaterialList::iterator it;
+		materials_list::iterator it;
 		for (it = m_materials.begin(); it != m_materials.end(); ++it)
 		{
 			(*it)->setEffect(shader);
 		}
 	}
 
-	const renderable_info & mesh::getRenderableInfo() const
+	const renderable_info & mesh::get_renderable_info() const
 	{
 		if (m_materials.size() > 0)
 			m_renderInfo.material = *m_materials.begin();

@@ -174,7 +174,7 @@ namespace particles{
 				renderer_ptr spTank(new renderer);
 				psyst[i] = spTank;
 
-				renderer::ParticleArray& array = spTank->getParticles();
+				renderer::particles_vector& array = spTank->getParticles();
 
 				array.resize( m_spFrame.number_of_particles );
 				for ( unsigned int pn = 0; pn < m_spFrame.number_of_particles; ++pn )
@@ -220,7 +220,10 @@ namespace particles{
 	//----------------------------------------------------------------------------------------
 	void static_emitter::debug_draw()
 	{
-		m_transform.debug_draw();
+		if (ms_PFrames.empty())
+			return;
+
+		m_transform->debug_draw();
 
 		unsigned frame_num = (int)(m_fLastFrame - m_time_shift);
 		if (frame_num < 0) return;
@@ -230,12 +233,12 @@ namespace particles{
 		renderers& psyst = it->second;
 		assert( frame_num < psyst.size() );
 
-		math::matrix44f m = m_transform.get_full_tm();
+		const math::matrix44f& m = m_transform->get_full_tm();
 
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 
 		renderer_ptr spTank = psyst[frame_num];
-		renderer::ParticleArray& array = spTank->getParticles();
+		renderer::particles_vector& array = spTank->getParticles();
 
 		for ( renderer::ParticleArrayIter it = array.begin(); it != array.end(); ++it )
 		{

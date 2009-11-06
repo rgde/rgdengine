@@ -25,7 +25,7 @@ namespace game
 	
 	void Glass::initField(uint w, uint h)
 	{
-		math::vec2f c = m_rect.getBottomLeft();
+		math::vec2f c = m_rect.get_bottom_left();
 		float size = m_brickSize;
 
 		m_field.resize(w);
@@ -53,7 +53,7 @@ namespace game
 
 	math::Vec2i Glass::recalcPos(const Brick& b)
 	{
-		math::vec2f c = m_rect.getBottomLeft();
+		math::vec2f c = m_rect.get_bottom_left();
 		float size = m_brickSize;
 		uint x = (b.rect.position[0] - c[0])/size;
 		uint y = (c[1] - b.rect.position[1])/size;
@@ -64,14 +64,14 @@ namespace game
 	void Glass::fixPos(Brick& b)
 	{
 		math::Vec2i pos = recalcPos(b);
-		math::vec2f c = m_rect.getBottomLeft();
+		math::vec2f c = m_rect.get_bottom_left();
 		float size = m_brickSize;
 		b.rect.position = math::vec2f(c[0] + pos[0]*size, c[1]-pos[1]*size);
 	}
 
 	bool Glass::isCanMove(const Brick& b, MoveDirection dir)
 	{
-		math::vec2f c = m_rect.getBottomLeft();
+		math::vec2f c = m_rect.get_bottom_left();
 		uint x = (b.rect.position[0] - c[0])/m_brickSize;
 		uint y = (c[1] - b.rect.position[1])/m_brickSize;
 

@@ -19,7 +19,7 @@ namespace render
 	{
 	public:
 		virtual ~base_geometry(){}
-		static base_geometry* create(const vertex::VertexDecl decl, bool is_dynamic);
+		static base_geometry* create(const vertex::vertex_decl decl, bool is_dynamic);
 		virtual void update(const void* pdata, size_t bytes, size_t size_of_vertex) = 0;
 		virtual void render(primitive_type ePrimType, unsigned int nPrimNum) = 0;		
 	};
@@ -175,12 +175,12 @@ namespace render
 	{
 	public:
 		virtual ~IIndexedGeometry(){}
-		static IIndexedGeometry* create(const vertex::VertexDecl decl, bool bUse32bitIndixes, bool is_dynamic);
+		static IIndexedGeometry* create(const vertex::vertex_decl decl, bool bUse32bitIndixes, bool is_dynamic);
 
 		virtual void updateVB(const void* data, size_t nBytes, size_t size_of_vertex) = 0;
 		virtual void updateIB(const void* data, size_t nBytes) = 0;
 		virtual void render(primitive_type ePrimType, unsigned nBaseVertexIndex, 
-							unsigned nMinIndex, unsigned nNumVertices, 
+							unsigned min_index, unsigned nNumVertices, 
 							unsigned nStartIndex, unsigned nPrimitiveCount) = 0;
 	};
 
@@ -350,10 +350,10 @@ namespace render
 		}
 
 		void render(primitive_type ePrimType, unsigned nBaseVertexIndex, 
-			unsigned nMinIndex, unsigned nNumVertices, 
+			unsigned min_index, unsigned nNumVertices, 
 			unsigned nStartIndex, unsigned nPrimitiveCount)
 		{
-			m_spImpl->render(ePrimType, nBaseVertexIndex, nMinIndex, 
+			m_spImpl->render(ePrimType, nBaseVertexIndex, min_index, 
 				nNumVertices, nStartIndex, nPrimitiveCount); //TODO
 		}
 
@@ -455,10 +455,10 @@ namespace render
 		}
 
 		void render(primitive_type ePrimType, unsigned nBaseVertexIndex, 
-					unsigned nMinIndex, unsigned nNumVertices, 
+					unsigned min_index, unsigned nNumVertices, 
 					unsigned nStartIndex, unsigned nPrimitiveCount)
 		{
-			m_spImpl->render(ePrimType, nBaseVertexIndex, nMinIndex, 
+			m_spImpl->render(ePrimType, nBaseVertexIndex, min_index, 
 				nNumVertices, nStartIndex, nPrimitiveCount); //TODO
 		}
 

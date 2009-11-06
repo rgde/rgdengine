@@ -9,44 +9,45 @@
 
 namespace render
 {
-	flame_fx::flame_fx(const std::string &tex, const math::Color &color, const math::vec3f &pos, const math::vec2f &size, uint fps, const std::vector<math::frame_ptr> &vVector)
+	flame_fx::flame_fx(const std::string &tex, const math::Color &color, const math::vec3f &pos, const math::vec2f &size, 
+					   uint fps, const frames_vector &vector)
 		: rendererable(100000)
 	{
 		hide();
 
 		m_renderInfo.render_func = boost::bind(&flame_fx::render, this);
 		{
-			io::path_add_scoped p	("common/");
-			m_pParticleTexture = texture::create(tex);
+			io::path_add_scoped p("common/");
+			m_particle_texture = texture::create(tex);
 			std::string strTNFName	= io::helpers::get_shot_filename(tex) + ".tnf";;
-			readTNF(strTNFName);
+			read_tnf(strTNFName);
 		}
 
-		m_pTank = particles::renderer_ptr(new particles::renderer());
-		m_pTank->setTextureTiling(m_nRows, m_nTotalColumns, m_nTotalRows);
+		m_tank = particles::renderer_ptr(new particles::renderer());
+		m_tank->setTextureTiling(m_nRows, m_nTotalColumns, m_nTotalRows);
 
-		int nFramesNum								= (int)vVector.size();
-		float fFramesNum							= (float)nFramesNum;
+		int nFramesNum = (int)vector.size();
+		float fFramesNum = (float)nFramesNum;
 
-		particles::renderer::ParticleArray &vArray	= m_pTank->getParticles();
+		particles::renderer::particles_vector &particles = m_tank->getParticles();
 
-		std::vector<math::frame_ptr>::const_iterator it= vVector.begin();
+		std::vector<math::frame_ptr>::const_iterator it= vector.begin();
 
-		for (; it != vVector.end(); it++)
+		for (; it != vector.end(); it++)
 		{
 			particles::renderer::SParticle particle;
 			particle.pos = (*it)->get_world_pos() + pos;
 			particle.size = size;
 			particle.spin = 0.0f;
 			particle.color = color.color;
-			float fRandom	= math::Math::rangeRandom(0.0f, fFramesNum);
+			float fRandom = math::Math::rangeRandom(0.0f, fFramesNum);
 			particle.nTile = (int)fRandom;
-			vArray.push_back(particle);
+			particles.push_back(particle);
 		}
 
-		m_pTank->update();
+		m_tank->update();
 
-		m_fFPS = float(fps);
+		m_fps = float(fps);
 	}
 
 	void flame_fx::update(float dt)
@@ -54,15 +55,15 @@ namespace render
 		if (m_nFrames == 1)
 			return;
 
-		m_fFramesToAdd += dt * m_fFPS;
+		m_fFramesToAdd += dt * m_fps;
 
 		int nFramesToAdd= (int)m_fFramesToAdd;
 
 		if (nFramesToAdd != 0)
 		{
-			particles::renderer::ParticleArray &vParticles= m_pTank->getParticles();
+			particles::renderer::particles_vector &vParticles= m_tank->getParticles();
 
-			size_t nNumParticles						= vParticles.size();
+			size_t nNumParticles = vParticles.size();
 
 			for (size_t i = 0; i < nNumParticles; i++)
 			{
@@ -74,7 +75,7 @@ namespace render
 					nTile = nTile % (unsigned int)(m_nFrames - 1);
 			}
 
-			m_pTank->update();
+			m_tank->update();
 
 			m_fFramesToAdd -= nFramesToAdd;
 		}
@@ -82,27 +83,28 @@ namespace render
 
 	void flame_fx::render()
 	{
-		m_pTank->render(m_pParticleTexture, *scene::TheScene::get().get_root().get());
+		m_tank->render(m_particle_texture, scene::TheScene::get().get_root());
 	}
 
 
-	PFlameRenderer flame_fx::create(const std::string &tex, const math::Color &color, const math::vec3f &pos, const math::vec2f &size, uint fps, const std::vector<math::frame_ptr> &vVector)
+	flame_fx_ptr flame_fx::create(const std::string &tex, const math::Color &color, const math::vec3f &pos, 
+								  const math::vec2f &size, uint fps, const frames_vector &vector)
 	{
-		return PFlameRenderer(new flame_fx(tex, color, pos, size, fps, vVector));
+		return flame_fx_ptr(new flame_fx(tex, color, pos, size, fps, vector));
 	}
 
 
-	PFlameRenderer flame_fx::create(const std::string &file_name, const std::vector<math::frame_ptr> &vVector)
+	flame_fx_ptr flame_fx::create(const std::string &file_name, const frames_vector &vector)
 	{
 		//Load from XML
 		//TODO: Make function load_from_xml
 		TiXmlDocument flame;
 		{
-			io::path_add_scoped p	("Flames/");
+			io::path_add_scoped p("Flames/");
 			if (!base::load_xml(file_name, flame))
 			{
 				base::lerr << "Can't load flame \"" << file_name << "\".";
-				return PFlameRenderer();
+				return flame_fx_ptr();
 			}
 		}
 
@@ -112,10 +114,14 @@ namespace render
 
 		std::string strTextureName	= base::safe_read<std::string>(root, "texture_name", "");
 
-		float x						= base::safe_read_attr(root, "size", "x", 0.0f);
-		float y						= base::safe_read_attr(root, "size", "y", 0.0f);
+		float x = base::safe_read_attr(root, "size", "x", 0.0f);
+		float y = base::safe_read_attr(root, "size", "y", 0.0f);
 
-		math::vec3f pos				(base::safe_read_attr(root, "pos", "x", 0.0f), base::safe_read_attr(root, "pos", "y", 0.0f), base::safe_read_attr(root, "pos", "z", 0.0f));
+		math::vec3f pos(
+			base::safe_read_attr(root, "pos", "x", 0.0f), 
+			base::safe_read_attr(root, "pos", "y", 0.0f), 
+			base::safe_read_attr(root, "pos", "z", 0.0f)
+			);
 
 		math::vec2f size(x, y);
 
@@ -128,7 +134,7 @@ namespace render
 
 		float fps = base::safe_read(root, "fps", 0.0f);
 
-		return create(strTextureName, color, pos, size, (int)fps, vVector);
+		return create(strTextureName, color, pos, size, (int)fps, vector);
 	}
 
 	void readValue(int &value, io::readstream_ptr in)
@@ -138,14 +144,14 @@ namespace render
 		value = temp;
 	}
 
-	void flame_fx::readTNF(const std::string &file_name)
+	void flame_fx::read_tnf(const std::string &file_name)
 	{
 		m_nColumns = 1;
 		m_nRows = 1;
 		m_nFrames = 1;
 		m_nTotalColumns = 1;
 		m_nTotalRows = 1;
-		m_fFPS = 1.0f;
+		m_fps = 1.0f;
 		m_fFramesToAdd = 0.0f;
 
 		if (file_name.empty())

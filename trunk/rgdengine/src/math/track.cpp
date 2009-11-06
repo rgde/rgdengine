@@ -23,12 +23,12 @@ namespace math
         List::iterator i = m_values.begin();
         while (i != m_values.end())
         {
-            m_splineUp.m_values.push_back(i->m_vUp);
-            m_splineEyePt.m_values.push_back(i->m_vEyePt);
-            m_splineLookatPt.m_values.push_back(i->m_vLookatPt);
-            m_splineSpeed.m_values.push_back(i->m_fSpeed);
+            m_splineUp.m_values.push_back(i->m_up);
+            m_splineEyePt.m_values.push_back(i->m_eye_pos);
+            m_splineLookatPt.m_values.push_back(i->m_lookat_pt);
+            m_splineSpeed.m_values.push_back(i->m_speed);
 
-            spline.m_values.push_back(i->m_vEyePt);
+            spline.m_values.push_back(i->m_eye_pos);
 
             ++i;
         }
@@ -74,10 +74,10 @@ namespace math
         {
             Key key;
 
-            key.m_vUp       = *i_up;
-            key.m_vEyePt    = *i_eyept;
-            key.m_vLookatPt = *i_lookat;
-            key.m_fSpeed    = *i_speed;
+            key.m_up       = *i_up;
+            key.m_eye_pos    = *i_eyept;
+            key.m_lookat_pt = *i_lookat;
+            key.m_speed    = *i_speed;
 
             m_values.push_back(key);
 
@@ -130,35 +130,35 @@ namespace math
                 if (!tx)
                     break;
 
-				TiXmlElement *up = tx->FirstChild("up")->ToElement();
-				TiXmlElement *eye = tx->FirstChild("eye")->ToElement();
-				TiXmlElement *lookat = tx->FirstChild("lookat")->ToElement();
+				TiXmlElement *up_el = tx->FirstChild("up")->ToElement();
+				TiXmlElement *eye_el = tx->FirstChild("eye")->ToElement();
+				TiXmlElement *lookat_el = tx->FirstChild("lookat")->ToElement();
 
 				double t;
-				float fSpeed;
-				math::vec3f vUp;
-				math::vec3f vEye;
-				math::vec3f vLookAt;
+				float speed;
+				math::vec3f up;
+				math::vec3f eye;
+				math::vec3f look_at;
 
-				tx->Attribute("speed", &t); fSpeed = (float)t;
+				tx->Attribute("speed", &t); speed = (float)t;
 
-				up->Attribute("x", &t); vUp.mData[0] = (float)t;
-				up->Attribute("y", &t); vUp.mData[1] = (float)t;
-				up->Attribute("z", &t); vUp.mData[2] = (float)t;
+				up_el->Attribute("x", &t); up.mData[0] = (float)t;
+				up_el->Attribute("y", &t); up.mData[1] = (float)t;
+				up_el->Attribute("z", &t); up.mData[2] = (float)t;
 
-				eye->Attribute("x", &t); vEye.mData[0] = (float)t;
-				eye->Attribute("y", &t); vEye.mData[1] = (float)t;
-				eye->Attribute("z", &t); vEye.mData[2] = (float)t;
+				eye_el->Attribute("x", &t); eye.mData[0] = (float)t;
+				eye_el->Attribute("y", &t); eye.mData[1] = (float)t;
+				eye_el->Attribute("z", &t); eye.mData[2] = (float)t;
 
-				lookat->Attribute("x", &t); vLookAt.mData[0] = (float)t;
-				lookat->Attribute("y", &t); vLookAt.mData[1] = (float)t;
-				lookat->Attribute("z", &t); vLookAt.mData[2] = (float)t;
+				lookat_el->Attribute("x", &t); look_at.mData[0] = (float)t;
+				lookat_el->Attribute("y", &t); look_at.mData[1] = (float)t;
+				lookat_el->Attribute("z", &t); look_at.mData[2] = (float)t;
 
 				Key key;
-				key.m_vUp = vUp;
-				key.m_vEyePt = vEye;
-				key.m_vLookatPt = vLookAt;
-				key.m_fSpeed = fSpeed;
+				key.m_up = up;
+				key.m_eye_pos = eye;
+				key.m_lookat_pt = look_at;
+				key.m_speed = speed;
 				m_values.push_back(key);
 			}	                
         }
@@ -180,22 +180,22 @@ namespace math
 		while (i != this->m_values.end())
 		{
 			TiXmlElement *key = (TiXmlElement*)(keys->InsertEndChild(TiXmlElement("key")));
-			key->SetAttribute("speed", boost::lexical_cast<std::string>(i->m_fSpeed));
+			key->SetAttribute("speed", boost::lexical_cast<std::string>(i->m_speed));
 
 			TiXmlElement *up = (TiXmlElement*)(key->InsertEndChild(TiXmlElement("up")));
-			up->SetAttribute("x",boost::lexical_cast<std::string>(i->m_vUp[0]));
-			up->SetAttribute("y",boost::lexical_cast<std::string>(i->m_vUp[1]));
-			up->SetAttribute("z",boost::lexical_cast<std::string>(i->m_vUp[2]));
+			up->SetAttribute("x",boost::lexical_cast<std::string>(i->m_up[0]));
+			up->SetAttribute("y",boost::lexical_cast<std::string>(i->m_up[1]));
+			up->SetAttribute("z",boost::lexical_cast<std::string>(i->m_up[2]));
 
 			TiXmlElement *eye = (TiXmlElement*)(key->InsertEndChild(TiXmlElement("eye")));
-			eye->SetAttribute("x",boost::lexical_cast<std::string>(i->m_vEyePt[0]));
-			eye->SetAttribute("y",boost::lexical_cast<std::string>(i->m_vEyePt[1]));
-			eye->SetAttribute("z",boost::lexical_cast<std::string>(i->m_vEyePt[2]));
+			eye->SetAttribute("x",boost::lexical_cast<std::string>(i->m_eye_pos[0]));
+			eye->SetAttribute("y",boost::lexical_cast<std::string>(i->m_eye_pos[1]));
+			eye->SetAttribute("z",boost::lexical_cast<std::string>(i->m_eye_pos[2]));
 
 			TiXmlElement *lookat = (TiXmlElement*)(key->InsertEndChild(TiXmlElement("lookat")));
-			lookat->SetAttribute("x",boost::lexical_cast<std::string>(i->m_vLookatPt[0]));
-			lookat->SetAttribute("y",boost::lexical_cast<std::string>(i->m_vLookatPt[1]));
-			lookat->SetAttribute("z",boost::lexical_cast<std::string>(i->m_vLookatPt[2]));
+			lookat->SetAttribute("x",boost::lexical_cast<std::string>(i->m_lookat_pt[0]));
+			lookat->SetAttribute("y",boost::lexical_cast<std::string>(i->m_lookat_pt[1]));
+			lookat->SetAttribute("z",boost::lexical_cast<std::string>(i->m_lookat_pt[2]));
 
 			++i;
 		}
@@ -223,10 +223,10 @@ namespace math
 
         float u = m_time2parameter(t);
 
-        key.m_vUp       = m_splineUp(u);
-        key.m_vEyePt    = m_splineEyePt(u);
-        key.m_vLookatPt = m_splineLookatPt(u);
-        key.m_fSpeed    = m_splineSpeed(u);
+        key.m_up       = m_splineUp(u);
+        key.m_eye_pos    = m_splineEyePt(u);
+        key.m_lookat_pt = m_splineLookatPt(u);
+        key.m_speed    = m_splineSpeed(u);
 
         return key;
     }

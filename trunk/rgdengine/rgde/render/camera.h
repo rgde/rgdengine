@@ -27,8 +27,8 @@ namespace render
 		void setDepthStencilTarget(const render_texture_ptr& pTarget, float clearDepth);
 		void setColorTarget(const render_texture_ptr& pTarget, const math::Color& clearColor);
 		
-		static camera_ptr render_camera::create();
-		static camera_ptr render_camera::create(uint priority, const viewport& viewport);
+		static camera_ptr create();
+		static camera_ptr create(uint priority, const viewport& viewport);
 
 		void	 set_priority(uint priority);
 		uint get_priority() const;

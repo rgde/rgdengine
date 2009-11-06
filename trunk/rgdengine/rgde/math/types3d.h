@@ -34,6 +34,9 @@ namespace math
 	const Color Blue	(0,		0,		255,	255);
 	const Color White	(255,	255,	255,	255);
 	const Color Black	(0,		0,		0,		255);
+	const Color Grey	(150, 150, 150, 255);
+	const Color	DarkGrey(60, 60, 60, 255);
+
 
 	Color operator*( const Color& color, float factor );
 	Color operator+( const Color& c1, const Color& c2 );
@@ -51,14 +54,14 @@ namespace math
 
 		Rect(const vec2f& pos, const vec2f& s);
 
-		const vec2f& getTopLeft()		const	{ return position; }
-		const vec2f& get_size()			const	{ return size;}
+		const vec2f& get_top_left()	const	{ return position; }
+		const vec2f& get_size()		const	{ return size;}
 		const vec2f& get_pos()		const	{ return position;}
-		vec2f getTopRight()		const	{ return vec2f (x+w, y); }
-		vec2f getBottomLeft()	const	{ return vec2f (x, y+h); }
-		vec2f getBottomRight()	const	{ return vec2f (x+w, y+h); }
+		vec2f get_top_right()		const	{ return vec2f (x+w, y); }
+		vec2f get_bottom_left()		const	{ return vec2f (x, y+h); }
+		vec2f get_bottom_right()	const	{ return vec2f (x+w, y+h); }
 
-		bool isPointInside(const math::vec2f& point) const
+		bool is_inside(const math::vec2f& point) const
 		{
 			if (position[0] > point[0] || position[1] > point[1]) 
 				return false;
@@ -66,8 +69,8 @@ namespace math
 				return false;
 			else if (point[1] > position[1] + size[1]) 
 				return false;
-			else
-				return true;
+
+			return true;
 		}
 
 		union
