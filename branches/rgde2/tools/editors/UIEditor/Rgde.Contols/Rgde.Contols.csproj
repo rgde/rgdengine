@@ -103,6 +103,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\external\devil\projects\DotNet\DevIL.NET.vcproj">
+      <Project>{30D94686-D452-4A73-B59D-178288807EE5}</Project>
+      <Name>DevIL.NET</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
