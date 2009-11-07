@@ -61,10 +61,6 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevIL.NET2, Version=1.1.2619.31671, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\external\DevIL.NET2.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -108,6 +104,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\external\devil\projects\DotNet\DevIL.NET.vcproj">
+      <Project>{30D94686-D452-4A73-B59D-178288807EE5}</Project>
+      <Name>DevIL.NET</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Rgde.Contols\Rgde.Contols.csproj">
       <Project>{71680AB5-49A2-41D1-A544-60BEBB700EAD}</Project>
       <Name>Rgde.Contols</Name>
