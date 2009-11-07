@@ -35,7 +35,7 @@ namespace Rgde.Contols.UI
 
         string group_name = "Root";
         string name;
-        Rectangle rect;
+        RectangleF rect;
         bool visible = true;
         Object tag = null;
 
@@ -65,25 +65,10 @@ namespace Rgde.Contols.UI
             set {tag = value;}
         }
 
-        public Rectangle Rectangle
+        public RectangleF Rectangle
         {
             get { return rect; }
             set { rect = value; }
-        }
-
-        public Rectangle GetRect(float scale)
-        {
-            return GetRect(0, 0, scale);
-        }
-
-        public Rectangle GetRect(float x, float y, float scale)
-        {
-            int pos_x = (int)((rect.X - x) * scale);
-            int pos_y = (int)((rect.Y - y) * scale);
-            int width = (int)(rect.Width * scale);
-            int height = (int)(rect.Height * scale);
-            Rectangle frect = new Rectangle(pos_x, pos_y, width, height);
-            return frect;
         }
 
         public enum DrawMode
@@ -93,17 +78,17 @@ namespace Rgde.Contols.UI
             Selected
         };
 
+        private void DrawRectangle(System.Drawing.Graphics g, Pen pen)
+        {
+            g.DrawRectangle(pen, rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
         public void Draw(System.Drawing.Graphics g, DrawMode mode, Image image)
         {
             if (!Visible)
-                return;
+                return;         
 
-            GraphicsState old_state = g.Save();
-
-            Rectangle frect = rect;
-
-            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            RectangleF frect = rect;
 
             int pen_width = mode == DrawMode.Hovered ? 2 : 1;
 
@@ -113,15 +98,13 @@ namespace Rgde.Contols.UI
                 g.FillRectangle(new SolidBrush(Color.FromArgb(60, Color.Red)), frect);
 
                 g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-                g.DrawRectangle(new Pen(Color.Red, pen_width), frect);                
+                DrawRectangle(g, new Pen(Color.Red, pen_width));
             }
             else
             {
                 Color color = Color.RoyalBlue;
-                g.DrawRectangle(new Pen(color, pen_width), frect);
-            }
-
-            g.Restore(old_state);
+                DrawRectangle(g, new Pen(color, pen_width));
+            }            
         }
 
         public void Draw(System.Drawing.Graphics g, float scale, DrawMode mode, Image image)
@@ -129,28 +112,22 @@ namespace Rgde.Contols.UI
             Draw(g, mode, image);
         }
 
-        public bool IsMouseOver()
+        public static RectangleF[] GetSelectionRectangles(RectangleF r)
         {
-            int x = Cursor.Position.X;
-            return false;
-        }
+            float pos_x = r.X;
+            float pos_y = r.Y;
+            float width = r.Width;
+            float height = r.Height;
 
-        public static Rectangle[] GetSelectionRectangles(Rectangle r)
-        {
-            int pos_x = r.X;
-            int pos_y = r.Y;
-            int width = r.Width;
-            int height = r.Height;
+            const float half_size = 5.0f;
+            const float full_size = half_size * 2;
 
-            const int half_size = 5;
-            const int full_size = half_size * 2;
+            RectangleF r1 = new RectangleF(pos_x - half_size, pos_y - half_size, full_size, full_size);
+            RectangleF r2 = new RectangleF(pos_x - half_size + width, pos_y - half_size, full_size, full_size);
+            RectangleF r3 = new RectangleF(pos_x - half_size + width, pos_y + height - half_size, full_size, full_size);
+            RectangleF r4 = new RectangleF(pos_x - half_size, pos_y + height - half_size, full_size, full_size);
 
-            Rectangle r1 = new Rectangle(pos_x - half_size, pos_y - half_size, full_size, full_size);
-            Rectangle r2 = new Rectangle(pos_x - half_size + width, pos_y - half_size, full_size, full_size);
-            Rectangle r3 = new Rectangle(pos_x - half_size + width, pos_y + height - half_size, full_size, full_size);
-            Rectangle r4 = new Rectangle(pos_x - half_size, pos_y + height - half_size, full_size, full_size);
-
-            Rectangle[] rectangles = new Rectangle[4];
+            RectangleF[] rectangles = new RectangleF[4];
             rectangles[0] = r1;
             rectangles[1] = r2;
             rectangles[2] = r3;
