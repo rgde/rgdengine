@@ -260,6 +260,8 @@ namespace Rgde.Contols
         #region Parent control override
         protected override void OnMouseMove(MouseEventArgs e)
         {
+            base.OnMouseMove(e);
+
             float fdx = (e.X - old_x) / m_scale;
             float fdy = (e.Y - old_y) / m_scale;
 
@@ -277,13 +279,8 @@ namespace Rgde.Contols
                 need_to_redraw = true;
             }
 
-            base.OnMouseMove(e);
-
-            int mouse_x = e.X;
-            int mouse_y = e.Y;
-
-            float x = m_visible_rect.X;
-            float y = m_visible_rect.Y;
+            float local_mouse_x = e.X / m_scale - m_visible_rect.X;
+            float local_mouse_y = e.Y / m_scale - m_visible_rect.Y;
 
             if (e.Button == MouseButtons.None)
             {
@@ -291,7 +288,8 @@ namespace Rgde.Contols
 
                 foreach (UI.TextureRegion r in regions)
                 {
-                    if (r.GetRect(x, y, m_scale).Contains(new Point(mouse_x, mouse_y)))
+                    //if (r.GetRect(x, y, m_scale).Contains(new Point(mouse_x, mouse_y)))
+                    if (r.Rectangle.Contains((int)local_mouse_x, (int)local_mouse_y))                    
                     {
                         hovered_regions.Add(r);
                     }
@@ -300,7 +298,7 @@ namespace Rgde.Contols
                 if (hovered_regions.Count > 0)
                     need_to_redraw = true;
 
-                SetCursor(mouse_x, mouse_y);
+                SetCursor(local_mouse_x, local_mouse_y);
             }
 
             if (m_state.action != AppState.Action.None)
@@ -379,14 +377,17 @@ namespace Rgde.Contols
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
-            return;
+
             bool need_to_redraw = selected_regions.Count > 0;
 
-            int mouse_x = e.X;
-            int mouse_y = e.Y;
+            //int mouse_x = e.X;
+            //int mouse_y = e.Y;
 
-            float x = m_visible_rect.X;
-            float y = m_visible_rect.Y;
+            //float x = m_visible_rect.X;
+            //float y = m_visible_rect.Y;
+
+            float local_mouse_x = e.X / m_scale - m_visible_rect.X;
+            float local_mouse_y = e.Y / m_scale - m_visible_rect.Y;
 
             if (e.Button == MouseButtons.Right)
             {
@@ -400,7 +401,7 @@ namespace Rgde.Contols
                 {
                     foreach (UI.TextureRegion r in regions)
                     {
-                        if (r.GetRect(x, y, m_scale).Contains(new Point(mouse_x, mouse_y)))
+                        if (r.Rectangle.Contains((int)local_mouse_x, (int)local_mouse_y))
                         {
                             UI.TextureRegion r1 = new UI.TextureRegion(r);
                             r1.Name += "Copy";
@@ -415,7 +416,7 @@ namespace Rgde.Contols
                 if (control_key)
                 {
                     UI.TextureRegion r1 = new UI.TextureRegion();
-                    r1.Rectangle = new Rectangle(mouse_x, mouse_y, 4, 4);
+                    r1.Rectangle = new RectangleF(local_mouse_x, local_mouse_y, 4.0f, 4.0f);
                     r1.Name = "New Region";
                     AddTextureRegion(r1, true);
                     m_state.action = AppState.Action.Resizing;
@@ -427,7 +428,7 @@ namespace Rgde.Contols
                 {
                     need_to_redraw = true;
 
-                    RectParts p = TestMouseHover(r, e.X, e.Y);
+                    RectParts p = TestMouseHover(r, local_mouse_x, local_mouse_y);
 
                     m_state.rect_part = p;
 
@@ -452,7 +453,7 @@ namespace Rgde.Contols
                     AddToSelection(r);
                     need_to_redraw = true;
 
-                    RectParts p = TestMouseHover(r, e.X, e.Y);
+                    RectParts p = TestMouseHover(r, local_mouse_x, local_mouse_y);
 
                     m_state.rect_part = p;
 
@@ -575,24 +576,19 @@ namespace Rgde.Contols
        
         protected override void OnPaint(PaintEventArgs e)
         {
-            //RecalcVisibleRect();
-            
-            //HorizontalScroll.Value = m_visible_rect.X;
-            //VerticalScroll.Value = m_visible_rect.Y;
             Graphics g = e.Graphics;
 
-            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
             g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
             g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
             g.ScaleTransform(m_scale, m_scale);
             g.TranslateTransform(m_visible_rect.X, m_visible_rect.Y);
 
             if (m_image != null)
             {
-                //e.Graphics.DrawImage(m_image, ClientRectangle, m_visible_rect, GraphicsUnit.Pixel);
                 g.DrawImage(m_image, 0, 0);
             }
 
@@ -601,19 +597,16 @@ namespace Rgde.Contols
         #endregion
 
         #region Private methods
-        private void SetCursor(int x, int y)
+        private void SetCursor(float x, float y)
         {
             try
             {
-                float ox = m_visible_rect.X;
-                float oy = m_visible_rect.Y;
-
                 foreach (UI.TextureRegion r in selected_regions)
                 {
-                    Rectangle rect = r.GetRect(ox, oy, m_scale);
-                    Rectangle[] rects = UI.TextureRegion.GetSelectionRectangles(rect);
+                    RectangleF rect = r.Rectangle;
+                    RectangleF[] rects = UI.TextureRegion.GetSelectionRectangles(rect);
 
-                    Point mouse_pos = new Point(x, y);
+                    PointF mouse_pos = new PointF(x, y);
 
                     if (rects[0].Contains(mouse_pos))
                     {
@@ -646,6 +639,11 @@ namespace Rgde.Contols
 
         private void DrawBoxes(System.Drawing.Graphics g)
         {
+            GraphicsState old_state = g.Save();
+
+            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
             foreach (UI.TextureRegion r in regions)
             {
                 r.Draw(g, UI.TextureRegion.DrawMode.Normal, m_image);
@@ -660,44 +658,9 @@ namespace Rgde.Contols
             {
                 r.Draw(g, UI.TextureRegion.DrawMode.Selected, m_image);
             }
+
+            g.Restore(old_state);
         }
-
-        //private void UpdateScroolBarsVisibility()
-        //{
-        //    if (m_image == null)
-        //    {
-        //        this.VerticalScroll.Visible = false;
-        //        this.HorizontalScroll.Visible = false;
-        //    }
-        //    else
-        //    {
-        //        if (m_visible_rect.Width < m_image.Width)
-        //        {
-        //            HorizontalScroll.Visible = true;
-        //            HorizontalScroll.Minimum = 0;
-
-        //            HorizontalScroll.LargeChange = m_visible_rect.Width;
-        //            HorizontalScroll.Maximum = m_image.Width;
-        //            HorizontalScroll.SmallChange = 1;
-        //            HorizontalScroll.Value = m_visible_rect.Left;
-        //        }
-        //        else
-        //            HorizontalScroll.Visible = false;
-
-        //        if (m_visible_rect.Height < m_image.Height)
-        //        {
-        //            VerticalScroll.Visible = true;
-        //            VerticalScroll.Minimum = 0;
-        //            VerticalScroll.SmallChange = 1;
-
-        //            VerticalScroll.LargeChange = m_visible_rect.Height;
-        //            VerticalScroll.Maximum = m_image.Height;
-        //            VerticalScroll.Value = m_visible_rect.Top;
-        //        }
-        //        else
-        //            VerticalScroll.Visible = false;
-        //    }
-        //}
 
         private void UpdateRegion(float dx, float dy, float dwidth, float dheight)
         {
@@ -707,38 +670,31 @@ namespace Rgde.Contols
 
                 if (MouseButtons == MouseButtons.Left)
                 {
-                    Rectangle rect = r.Rectangle;
+                    RectangleF rect = r.Rectangle;
 
                     if (rect.X + dx < rect.X + rect.Width + dwidth)
                     {
-                        rect.X = (int)(rect.X + (int)dx);
-                        rect.Width = (int)(rect.Width + (int)dwidth);
+                        rect.X = rect.X + dx;
+                        rect.Width = rect.Width + dwidth;
                     }
 
                     if (rect.Y + dy < rect.Y + rect.Height + dheight)
                     {
-                        rect.Y = (int)(rect.Y + (int)dy);
-                        rect.Height = (int)(rect.Height + (int)dheight);
+                        rect.Y = rect.Y + dy;
+                        rect.Height = rect.Height + dheight;
                     }
-                    
-                    //rect.Width = rect.Width > 1 ? rect.Width : 1;
-                    //rect.Height = rect.Height > 1 ? rect.Height : 1;
 
                     r.Rectangle = rect;
                 }
             }
         }
 
-        private RectParts TestMouseHover(UI.TextureRegion r, int x, int y)
+        private RectParts TestMouseHover(UI.TextureRegion r, float x, float y)
         {
+            RectangleF rect = r.Rectangle;
+            RectangleF[] rects = UI.TextureRegion.GetSelectionRectangles(rect);
 
-            float ox = m_visible_rect.X;
-            float oy = m_visible_rect.Y;
-
-            Rectangle rect = r.GetRect(ox, oy, m_scale);
-            Rectangle[] rects = UI.TextureRegion.GetSelectionRectangles(rect);
-
-            Point mouse_pos = new Point(x, y);
+            PointF mouse_pos = new PointF(x, y);
 
             if (rects[0].Contains(mouse_pos))
             {
@@ -763,11 +719,7 @@ namespace Rgde.Contols
             else
                 return RectParts.None;
         }
-        private void RecalcVisibleRect()
-        {
-            m_visible_rect.Height = (int)(ClientRectangle.Height / m_scale);
-            m_visible_rect.Width = (int)(ClientRectangle.Width / m_scale);
-        }
+
         #endregion
 
         private void LayoutEditor_MouseLeave(object sender, EventArgs e)
