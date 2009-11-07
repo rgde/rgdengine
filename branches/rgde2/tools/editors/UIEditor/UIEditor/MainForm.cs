@@ -14,31 +14,6 @@ namespace UIEditor
 {
     public partial class MainForm : Form
     {
-        enum RectParts
-        {
-            Body,
-            LeftTopSizer,
-            RightTopSizer,
-            RightDownSizer,
-            LeftDownSizer,
-            None
-        };
-
-        class AppState
-        {
-            public enum Action
-            {
-                None,
-                Moving,
-                Resizing
-            };
-
-            public Action action = Action.None;
-            public RectParts rect_part = RectParts.None;
-        };
-
-        AppState m_state = new AppState();
-
         Bitmap bitmap = null;
         LayoutEditor layout_editor = null;
 
@@ -159,12 +134,20 @@ namespace UIEditor
                     {
                         string imagefile_copy = imagefile.Replace(".tga", ".dds");
                         
-                        Image image = DevIL.DevIL.LoadBitmap(imagefile);
-                        
-                        if (null != image)
+                        using(Bitmap image = DevIL.DevIL.LoadBitmap(imagefile))
                         {
-                            imagefile = imagefile_copy;
-                            layout_editor.Image = image;
+                            if (null != image)
+                            {
+                                Bitmap converted_image = image.Clone(
+                                    new Rectangle(0, 0, image.Width, image.Height),
+                                    System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+
+                                if (null != converted_image)
+                                {
+                                    imagefile = imagefile_copy;
+                                    layout_editor.Image = converted_image;
+                                }
+                            }
                         }
                     }
 

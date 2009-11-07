@@ -41,7 +41,7 @@ namespace Rgde.Contols
 
         private AppState m_state = new AppState();
         private Image m_image = null;
-        private Rectangle m_visible_rect = new Rectangle();
+        private RectangleF m_visible_rect = new RectangleF();
         private float m_scale = 1.0f;
         private int old_x = 0;
         private int old_y = 0;
@@ -117,23 +117,23 @@ namespace Rgde.Contols
 
         void LayoutEditor_Load(object sender, EventArgs e)
         {
-            //UI.TextureRegion r1 = new UI.TextureRegion();
-            //r1.Rectangle = new Rectangle(10, 10, 30, 30);
-            //r1.Name = "Button.Bkg";
+            UI.TextureRegion r1 = new UI.TextureRegion();
+            r1.Rectangle = new Rectangle(10, 10, 30, 30);
+            r1.Name = "Button.Bkg";
 
 
-            //UI.TextureRegion r2 = new UI.TextureRegion();
-            //r2.Rectangle = new Rectangle(50, 10, 30, 30);
-            //r2.Name = "Button.Pressed";
+            UI.TextureRegion r2 = new UI.TextureRegion();
+            r2.Rectangle = new Rectangle(50, 10, 30, 30);
+            r2.Name = "Button.Pressed";
 
 
-            //UI.TextureRegion r3 = new UI.TextureRegion();
-            //r3.Rectangle = new Rectangle(50, 50, 80, 30);
-            //r3.Name = "Button.Hover";
+            UI.TextureRegion r3 = new UI.TextureRegion();
+            r3.Rectangle = new Rectangle(50, 50, 80, 30);
+            r3.Name = "Button.Hover";
 
-            //AddTextureRegion(r1);
-            //AddTextureRegion(r2);
-            //AddTextureRegion(r3);
+            AddTextureRegion(r1);
+            AddTextureRegion(r2);
+            AddTextureRegion(r3);
 
             ClearUndoRedo();
         }
@@ -184,7 +184,6 @@ namespace Rgde.Contols
             {
                 m_image = value;
                 m_visible_rect = ClientRectangle;
-                UpdateScroolBarsVisibility();
             }
         }
 
@@ -264,26 +263,17 @@ namespace Rgde.Contols
             float fdx = (e.X - old_x) / m_scale;
             float fdy = (e.Y - old_y) / m_scale;
 
-            int dx = (int)fdx;
-            int dy = (int)fdy;
-
-            int delta_x = e.X - old_x;
-            int delta_y = e.Y - old_y;
-
             old_x = e.X;
             old_y = e.Y;
 
             bool need_to_redraw = hovered_regions.Count > 0;
             hovered_regions.Clear();
 
-            if (e.Button == MouseButtons.Right && null != m_image)
+            if (e.Button == MouseButtons.Right)
             {
-                m_visible_rect.X -= dx;
-                m_visible_rect.Y -= dy;
+                m_visible_rect.X += fdx;
+                m_visible_rect.Y += fdy;
 
-                ClampRect();
-
-                UpdateScroolBarsVisibility();
                 need_to_redraw = true;
             }
 
@@ -292,8 +282,8 @@ namespace Rgde.Contols
             int mouse_x = e.X;
             int mouse_y = e.Y;
 
-            float x = (float)m_visible_rect.X;
-            float y = (float)m_visible_rect.Y;
+            float x = m_visible_rect.X;
+            float y = m_visible_rect.Y;
 
             if (e.Button == MouseButtons.None)
             {
@@ -389,14 +379,14 @@ namespace Rgde.Contols
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
-
+            return;
             bool need_to_redraw = selected_regions.Count > 0;
 
             int mouse_x = e.X;
             int mouse_y = e.Y;
 
-            float x = (float)m_visible_rect.X;
-            float y = (float)m_visible_rect.Y;
+            float x = m_visible_rect.X;
+            float y = m_visible_rect.Y;
 
             if (e.Button == MouseButtons.Right)
             {
@@ -488,6 +478,7 @@ namespace Rgde.Contols
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
+            return;
             Cursor = Cursors.Arrow;
             old_x = 0;
             old_y = 0;
@@ -497,92 +488,115 @@ namespace Rgde.Contols
         {
             base.OnMouseWheel(e);
 
-            if (null == m_image)
-                return;
+            //if (null == m_image)
+            //    return;
 
-            m_scale += e.Delta / 2000.0f;
-            if( m_scale < 0.05f )
-            {
-                m_scale = 0.05f; //min scale
-                RecalcVisibleRect();
-            }
+            float delta_scale = m_scale * 0.1f * e.Delta / 120.0f;
 
-            RecalcVisibleRect();
+            float dp_scale = 1.0f / (m_scale + delta_scale) - 1.0f / m_scale;
 
-            ClampRect();
+            m_scale += delta_scale;
 
-            UpdateScroolBarsVisibility();
+            float dx = e.Location.X * dp_scale;
+            float dy = e.Location.Y * dp_scale;
+
+            m_visible_rect.X += dx;
+            m_visible_rect.Y += dy;
+
+            //m_scale += e.Delta / 2000.0f;
+            //if( m_scale < 0.05f )
+            //{
+            //    m_scale = 0.05f; //min scale
+            //    RecalcVisibleRect();
+            //}
+
+            //RecalcVisibleRect();
+
+            //ClampRect();
+
+            //UpdateScroolBarsVisibility();
             Invalidate();
         }
 
-        protected override void OnScroll(ScrollEventArgs se)
-        {
-            bool horiz = se.ScrollOrientation == ScrollOrientation.HorizontalScroll;
+        //protected override void OnScroll(ScrollEventArgs se)
+        //{
+        //    return;
+        //    //bool horiz = se.ScrollOrientation == ScrollOrientation.HorizontalScroll;
 
-            int cur_value = horiz ? m_visible_rect.X : m_visible_rect.Y;
+        //    //int cur_value = horiz ? m_visible_rect.X : m_visible_rect.Y;
 
-            switch(se.Type)
-            {
-                case ScrollEventType.SmallDecrement:
-                case ScrollEventType.SmallIncrement:
-                case ScrollEventType.LargeDecrement:
-                case ScrollEventType.LargeIncrement:
-                    cur_value += se.NewValue;
-                    break;
+        //    //switch(se.Type)
+        //    //{
+        //    //    case ScrollEventType.SmallDecrement:
+        //    //    case ScrollEventType.SmallIncrement:
+        //    //    case ScrollEventType.LargeDecrement:
+        //    //    case ScrollEventType.LargeIncrement:
+        //    //        cur_value += se.NewValue;
+        //    //        break;
 
-                case ScrollEventType.ThumbPosition:
-                case ScrollEventType.ThumbTrack:
-                    cur_value = se.NewValue;
-                    break;
+        //    //    case ScrollEventType.ThumbPosition:
+        //    //    case ScrollEventType.ThumbTrack:
+        //    //        cur_value = se.NewValue;
+        //    //        break;
 
-                case ScrollEventType.First:
-                    cur_value = 0;
-                    break;
+        //    //    case ScrollEventType.First:
+        //    //        cur_value = 0;
+        //    //        break;
 
-                case ScrollEventType.Last:
-                    cur_value = horiz ? m_image.Width - m_visible_rect.Width : m_image.Height - m_visible_rect.Height;
-                    break;
-            }
+        //    //    case ScrollEventType.Last:
+        //    //        cur_value = horiz ? m_image.Width - m_visible_rect.Width : m_image.Height - m_visible_rect.Height;
+        //    //        break;
+        //    //}
 
-            if (horiz)
-            {
-                m_visible_rect.X = cur_value;
-            }
-            else
-            {
-                m_visible_rect.Y = cur_value;
-            }
+        //    //if (horiz)
+        //    //{
+        //    //    m_visible_rect.X = cur_value;
+        //    //}
+        //    //else
+        //    //{
+        //    //    m_visible_rect.Y = cur_value;
+        //    //}
 
-            ClampRect();
-            HorizontalScroll.Value = m_visible_rect.X;
-            VerticalScroll.Value = m_visible_rect.Y;
-            Invalidate();
-        }
+        //    //ClampRect();
+        //    //HorizontalScroll.Value = m_visible_rect.X;
+        //    //VerticalScroll.Value = m_visible_rect.Y;
+        //    //Invalidate();
+        //}
 
-        protected override void AdjustFormScrollbars(bool displayScrollbars)
-        {
-            try
-            {
-                HorizontalScroll.Value = m_visible_rect.X;
-                VerticalScroll.Value = m_visible_rect.Y;
-            }
-            catch { }
-        }
+        //protected override void AdjustFormScrollbars(bool displayScrollbars)
+        //{
+        //    try
+        //    {
+        //        HorizontalScroll.Value = m_visible_rect.X;
+        //        VerticalScroll.Value = m_visible_rect.Y;
+        //    }
+        //    catch { }
+        //}
        
         protected override void OnPaint(PaintEventArgs e)
         {
-            RecalcVisibleRect();
+            //RecalcVisibleRect();
             
-            HorizontalScroll.Value = m_visible_rect.X;
-            VerticalScroll.Value = m_visible_rect.Y;
+            //HorizontalScroll.Value = m_visible_rect.X;
+            //VerticalScroll.Value = m_visible_rect.Y;
+            Graphics g = e.Graphics;
+
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
+            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+
+            g.ScaleTransform(m_scale, m_scale);
+            g.TranslateTransform(m_visible_rect.X, m_visible_rect.Y);
 
             if (m_image != null)
             {
-                e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;//.
-                e.Graphics.DrawImage(m_image, ClientRectangle, m_visible_rect, GraphicsUnit.Pixel);
+                //e.Graphics.DrawImage(m_image, ClientRectangle, m_visible_rect, GraphicsUnit.Pixel);
+                g.DrawImage(m_image, 0, 0);
             }
 
-            DrawBoxes(e.Graphics);
+            DrawBoxes(g);
         }
         #endregion
 
@@ -591,8 +605,8 @@ namespace Rgde.Contols
         {
             try
             {
-                float ox = (float)m_visible_rect.X;
-                float oy = (float)m_visible_rect.Y;
+                float ox = m_visible_rect.X;
+                float oy = m_visible_rect.Y;
 
                 foreach (UI.TextureRegion r in selected_regions)
                 {
@@ -632,61 +646,58 @@ namespace Rgde.Contols
 
         private void DrawBoxes(System.Drawing.Graphics g)
         {
-            float x = (float)m_visible_rect.X;
-            float y = (float)m_visible_rect.Y;
-
             foreach (UI.TextureRegion r in regions)
             {
-                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Normal, m_image);
+                r.Draw(g, UI.TextureRegion.DrawMode.Normal, m_image);
             }
 
             foreach (UI.TextureRegion r in hovered_regions)
             {
-                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Hovered, m_image);
+                r.Draw(g, UI.TextureRegion.DrawMode.Hovered, m_image);
             }
 
             foreach (UI.TextureRegion r in selected_regions)
             {
-                r.Draw(g, Scale, x, y, UI.TextureRegion.DrawMode.Selected, m_image);
+                r.Draw(g, UI.TextureRegion.DrawMode.Selected, m_image);
             }
         }
 
-        private void UpdateScroolBarsVisibility()
-        {
-            if (m_image == null)
-            {
-                this.VerticalScroll.Visible = false;
-                this.HorizontalScroll.Visible = false;
-            }
-            else
-            {
-                if (m_visible_rect.Width < m_image.Width)
-                {
-                    HorizontalScroll.Visible = true;
-                    HorizontalScroll.Minimum = 0;
+        //private void UpdateScroolBarsVisibility()
+        //{
+        //    if (m_image == null)
+        //    {
+        //        this.VerticalScroll.Visible = false;
+        //        this.HorizontalScroll.Visible = false;
+        //    }
+        //    else
+        //    {
+        //        if (m_visible_rect.Width < m_image.Width)
+        //        {
+        //            HorizontalScroll.Visible = true;
+        //            HorizontalScroll.Minimum = 0;
 
-                    HorizontalScroll.LargeChange = m_visible_rect.Width;
-                    HorizontalScroll.Maximum = m_image.Width;
-                    HorizontalScroll.SmallChange = 1;
-                    HorizontalScroll.Value = m_visible_rect.Left;
-                }
-                else
-                    HorizontalScroll.Visible = false;
+        //            HorizontalScroll.LargeChange = m_visible_rect.Width;
+        //            HorizontalScroll.Maximum = m_image.Width;
+        //            HorizontalScroll.SmallChange = 1;
+        //            HorizontalScroll.Value = m_visible_rect.Left;
+        //        }
+        //        else
+        //            HorizontalScroll.Visible = false;
 
-                if (m_visible_rect.Height < m_image.Height)
-                {
-                    VerticalScroll.Visible = true;
-                    VerticalScroll.Minimum = 0;
-                    VerticalScroll.SmallChange = 1;
+        //        if (m_visible_rect.Height < m_image.Height)
+        //        {
+        //            VerticalScroll.Visible = true;
+        //            VerticalScroll.Minimum = 0;
+        //            VerticalScroll.SmallChange = 1;
 
-                    VerticalScroll.LargeChange = m_visible_rect.Height;
-                    VerticalScroll.Maximum = m_image.Height;
-                    VerticalScroll.Value = m_visible_rect.Top;
-                }
-                else
-                    VerticalScroll.Visible = false;
-            }
-        }
+        //            VerticalScroll.LargeChange = m_visible_rect.Height;
+        //            VerticalScroll.Maximum = m_image.Height;
+        //            VerticalScroll.Value = m_visible_rect.Top;
+        //        }
+        //        else
+        //            VerticalScroll.Visible = false;
+        //    }
+        //}
 
         private void UpdateRegion(float dx, float dy, float dwidth, float dheight)
         {
@@ -721,8 +732,8 @@ namespace Rgde.Contols
         private RectParts TestMouseHover(UI.TextureRegion r, int x, int y)
         {
 
-            float ox = (float)m_visible_rect.X;
-            float oy = (float)m_visible_rect.Y;
+            float ox = m_visible_rect.X;
+            float oy = m_visible_rect.Y;
 
             Rectangle rect = r.GetRect(ox, oy, m_scale);
             Rectangle[] rects = UI.TextureRegion.GetSelectionRectangles(rect);
@@ -752,22 +763,6 @@ namespace Rgde.Contols
             else
                 return RectParts.None;
         }
-
-        private void ClampRect()
-        {
-            m_visible_rect.X = m_visible_rect.X < 0 ? 0 : m_visible_rect.X;
-            m_visible_rect.Y = m_visible_rect.Y < 0 ? 0 : m_visible_rect.Y;
-
-            m_visible_rect.Width = m_visible_rect.Width > m_image.Width ? m_image.Width : m_visible_rect.Width;
-            m_visible_rect.Height = m_visible_rect.Height > m_image.Height ? m_image.Height : m_visible_rect.Height;
-
-            int max_x = m_visible_rect.X + m_visible_rect.Width;
-            m_visible_rect.X = max_x > m_image.Width ? m_image.Width - m_visible_rect.Width : m_visible_rect.X;
-
-            int max_y = m_visible_rect.Y + m_visible_rect.Height;
-            m_visible_rect.Y = max_y > m_image.Height ? m_image.Height - m_visible_rect.Height : m_visible_rect.Y;
-        }
-
         private void RecalcVisibleRect()
         {
             m_visible_rect.Height = (int)(ClientRectangle.Height / m_scale);
