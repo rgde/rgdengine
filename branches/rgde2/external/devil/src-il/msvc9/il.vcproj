@@ -49,7 +49,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../projects/msvc/extlibs/,../include,../../include,H:\My Documents\Downloads\DevIL-1.7.8\devil-1.7.8\externals\include"
+				AdditionalIncludeDirectories="../../projects/msvc/extlibs/;../include;../../include;../../externals\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_USRDLL;_WINDOWS;IL_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -126,7 +126,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../projects/msvc/extlibs/,../include,../../include,H:\My Documents\Downloads\DevIL-1.7.8\devil-1.7.8\externals\include"
+				AdditionalIncludeDirectories="../../projects/msvc/extlibs/;../include;../../include;../../externals\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_WINDOWS;"
 				RuntimeLibrary="2"
 				WarningLevel="3"
