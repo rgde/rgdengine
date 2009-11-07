@@ -93,18 +93,14 @@ namespace Rgde.Contols.UI
             Selected
         };
 
-        public void Draw(System.Drawing.Graphics g, float scale, float x, float y,
-                        DrawMode mode, Image image)
+        public void Draw(System.Drawing.Graphics g, DrawMode mode, Image image)
         {
             if (!Visible)
                 return;
 
             GraphicsState old_state = g.Save();
 
-            g.ScaleTransform(scale, scale);
-            g.TranslateTransform(x, y);
-
-            Rectangle frect = rect;// GetRect(x, y, scale);
+            Rectangle frect = rect;
 
             g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -126,13 +122,11 @@ namespace Rgde.Contols.UI
             }
 
             g.Restore(old_state);
-
-            //GraphicsState old_state = g.Save();
         }
 
         public void Draw(System.Drawing.Graphics g, float scale, DrawMode mode, Image image)
         {
-            Draw(g, scale, 0, 0, mode, image);
+            Draw(g, mode, image);
         }
 
         public bool IsMouseOver()
