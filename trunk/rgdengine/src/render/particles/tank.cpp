@@ -71,7 +71,7 @@ namespace particles
 		for(size_t pass = 0; pass < passes.size(); ++pass)
 		{
 			passes[pass]->begin();
-			m_geometry.render( render::PrimTypeTriangleList, 2*(unsigned)m_vParticleArray.size() );
+			m_geometry.render( render::TriangleList, 2*(unsigned)m_vParticleArray.size() );
 			passes[pass]->end();
 		}
 

@@ -5,14 +5,15 @@
 namespace render
 {
 	// Primitives supported by draw-primitive API
-	enum primitive_type{
-		PrimTypePointList             = 1,
-		PrimTypeLineList              = 2,
-		PrimTypeLineStrip             = 3,
-		PrimTypeTriangleList          = 4,
-		PrimTypeTriangleStrip         = 5,
-		PrimTypeTriangleFan           = 6,
-		PrimTypeFORCE_DWORD           = 0x7fffffff, /* force 32-bit size enum */
+	enum primitive_type
+	{
+		PointList             = 1,
+		LineList              = 2,
+		LineStrip             = 3,
+		TriangleList          = 4,
+		TriangleStrip         = 5,
+		TriangleFan           = 6,
+		PT_FORCE_DWORD           = 0x7fffffff, /* force 32-bit size enum */
 	};
 
 	class base_geometry
@@ -39,17 +40,17 @@ namespace render
 
 		bool is_dynamic() const {return m_bIsDynamic;}
 
-		void render(primitive_type ePrimType = PrimTypeTriangleList)
+		void render(primitive_type prim_type = TriangleList)
 		{
 			unsigned nNumVertices = static_cast<unsigned>(m_vVertexes.size());
 			unsigned nPrimNum = nNumVertices;
-			switch( ePrimType )
+			switch( prim_type )
 			{
-			case PrimTypeTriangleList:
+			case TriangleList:
 				nPrimNum /= 3;
 				break;
 
-			case PrimTypeLineList:
+			case LineList:
 				nPrimNum /= 2;
 				break;
 
@@ -58,7 +59,7 @@ namespace render
 				//assert(false); //VS8 issue
 			}
 
-			m_spImpl->render(ePrimType, nPrimNum);
+			m_spImpl->render(prim_type, nPrimNum);
 		}
 
 		void load( const std::string& filename )
@@ -144,7 +145,7 @@ namespace render
 			return m_AABB;
 		}
 
-		const math::Spheref& getBSphere()
+		const math::spheref& getBSphere()
 		{
 			if ( m_bChanged )
 			{
@@ -166,7 +167,7 @@ namespace render
 		vertexies					m_vVertexes;
 		std::auto_ptr<base_geometry>	m_spImpl;
 		math::aaboxf				m_AABB;
-		math::Spheref				m_Sphere;
+		math::spheref				m_Sphere;
 		bool						m_bChanged;
 	};
 
@@ -406,7 +407,7 @@ namespace render
 		int get_num_verts() const				{ return (int)m_vVertexes.size(); }
 
 		const math::aaboxf& getBBox() const		{ return m_AABB; }
-		const math::Spheref& getBSphere() const { return m_Sphere; }
+		const math::spheref& getBSphere() const { return m_Sphere; }
 
 		void updateBVolumes()
 		{
@@ -435,7 +436,7 @@ namespace render
 		std::auto_ptr<IIndexedGeometry>	m_spImpl;
 		indexies							m_vIndexes;
 		math::aaboxf					m_AABB;
-		math::Spheref					m_Sphere;
+		math::spheref					m_Sphere;
 		bool							m_bChanged;
 	};
 
@@ -560,7 +561,7 @@ namespace render
 		int get_num_verts() const				{ return (int)m_vVertexes.size(); }
 
 		const math::aaboxf& getBBox() const		{ return m_AABB; }
-		const math::Spheref& getBSphere() const { return m_Sphere; }
+		const math::spheref& getBSphere() const { return m_Sphere; }
 
 		void updateBVolumes()
 		{
@@ -591,9 +592,9 @@ namespace render
 	private:
 		vertexies						m_vVertexes;
 		std::auto_ptr<IIndexedGeometry>	m_spImpl;
-		indexies							m_vIndexes;
+		indexies						m_vIndexes;
 		math::aaboxf					m_AABB;
-		math::Spheref					m_Sphere;
+		math::spheref					m_Sphere;
 		bool							m_bChanged;
 	};
 }

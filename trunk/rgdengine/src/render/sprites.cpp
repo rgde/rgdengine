@@ -210,7 +210,7 @@ namespace render
 					{
 						textureShaderParam->set(cur_tex);
 						m_effect->commit_changes();
-						m_geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, num_sprites * 4, 6 * start_sprite, num_sprites * 2);
+						m_geometry.render(TriangleList, 0, 4 * start_sprite, num_sprites * 4, 6 * start_sprite, num_sprites * 2);
 						nSpritesRendered += num_sprites;
 					}
 					cur_tex = sprite.texture;
@@ -225,7 +225,7 @@ namespace render
 					{
 						textureShaderParam->set(cur_tex);
 						m_effect->commit_changes();
-						m_geometry.render(PrimTypeTriangleList, 0, 4 * start_sprite, num_sprites * 4, 6 * start_sprite, num_sprites * 2);
+						m_geometry.render(TriangleList, 0, 4 * start_sprite, num_sprites * 4, 6 * start_sprite, num_sprites * 2);
 						nSpritesRendered += num_sprites;
 					}
 				}

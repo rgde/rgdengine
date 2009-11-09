@@ -52,7 +52,7 @@ namespace render
 		for (unsigned iPass = 0; iPass < cPasses; ++iPass)
 		{
 			pTechnique->get_passes()[iPass]->begin();
-			m_geometry.render(PrimTypeLineList);
+			m_geometry.render(LineList);
 			pTechnique->get_passes()[iPass]->end();
 		}
 

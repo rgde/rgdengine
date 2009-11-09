@@ -65,7 +65,7 @@ namespace render
 	void mesh::load(const std::string& file_name)
 	{
 		m_file_name = file_name;
-		m_geometry = PGeometry(new geometry());
+		m_geometry = geometry_ptr(new geometry());
 
 		io::CFileSystem &fs	= io::TheFileSystem::get();
 		io::path_add_scoped p	("meshes_vector/");
@@ -79,7 +79,7 @@ namespace render
 		m_geometry->lock_vb();
 		m_geometry->unlock_vb();
 
-		m_prim_type = PrimTypeTriangleList;
+		m_prim_type = TriangleList;
 		m_prim_num = m_geometry->getIndexNum() / 3;
 
 		m_renderInfo.bbox = m_geometry->getBBox();

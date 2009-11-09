@@ -132,7 +132,7 @@ public:
 };
 
 // --- helper types --- //
-typedef Sphere<float>   Spheref;
+typedef Sphere<float>   spheref;
 typedef Sphere<double>  Sphered;
 
 };
