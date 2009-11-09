@@ -50,6 +50,8 @@ namespace render
 		texture_ptr& getWhiteTexture();
 		texture_ptr& getDefaultNormalMap();
 
+		material_ptr get_default_material();
+
 		void setCurrentFog(const Fog& fog);
 		const Fog& getCurrentFog() const	{return m_current_fog;}
 
@@ -76,6 +78,8 @@ namespace render
 		texture_ptr       m_flat_normal_texture;
 
 		Fog               m_current_fog;
+
+		material_ptr	  m_default_material;
 
 		static_binder_ptr     m_static_binder;
 	};

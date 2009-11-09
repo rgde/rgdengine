@@ -33,14 +33,14 @@ namespace render
 	}
 
 	render_manager::render_manager()
-		: 	m_lighting_enabled(true),
-			m_fill_mode(Solid),
-			m_volumes(true),
-			m_white_texture(safeLoadDefaultTexture("White.jpg")),
-			m_flat_normal_texture(safeLoadDefaultTexture("DefaultNormalMap.jpg")),
-			m_black_texture(safeLoadDefaultTexture("Black.jpg")),
-			m_default_sffect(effect::create("Default.fx")),
-			m_default_font(font::create(11,  L"Arial", render::font::Heavy))			
+		: 	m_lighting_enabled(true)
+		, m_fill_mode(Solid)
+		, m_volumes(true)
+		, m_white_texture(safeLoadDefaultTexture("White.jpg"))
+		, m_flat_normal_texture(safeLoadDefaultTexture("DefaultNormalMap.jpg"))
+		, m_black_texture(safeLoadDefaultTexture("Black.jpg"))
+		, m_default_sffect(effect::create("Default.fx"))
+		, m_default_font(font::create(11,  L"Arial", render::font::Heavy))
 	{
 
 		m_default_fog.load_from_xml("Default.xml");
@@ -128,8 +128,10 @@ namespace render
 		struct SDefaultRender
 		{
 			effect_ptr& defaultEffect;
-			SDefaultRender() 
+			render_manager* m_manager;
+			SDefaultRender(render_manager* manager)
 				: defaultEffect(TheRenderManager::get().getDefaultEffect())
+				, m_manager(manager)
 			{
 			}
 
@@ -143,12 +145,10 @@ namespace render
 			{
 				if(info.frame)
 				{
-					static material_ptr pDefaultMaterial = material::create();
-
 					//const material_ptr& pMaterial = info.material ? info.material : pDefaultMaterial;
 					//const effect_ptr&	 effect	= info.shader ? info.shader : defaultEffect;
 
-					const material_ptr& pMaterial = pDefaultMaterial;
+					const material_ptr pMaterial = m_manager->get_default_material();
 					const effect_ptr&	 effect	= defaultEffect;
 
 
@@ -329,7 +329,7 @@ namespace render
 					}
 
 
-					functors::SDefaultRender r;
+					functors::SDefaultRender r(this);
 					std::for_each(vSolid.begin(),			vSolid.end(),			r);
 					std::for_each(vTransparet.begin(),		vTransparet.end(),		r);
 					std::for_each(vPostTransparet.begin(),	vPostTransparet.end(),	r);
@@ -342,7 +342,7 @@ namespace render
 				createBinder();
 			m_static_binder->setupParameters(0);
 
-			functors::SDefaultRender r;
+			functors::SDefaultRender r(this);
 
 			Renderables temp_copy = m_lRenderables;
 
@@ -362,6 +362,14 @@ namespace render
 	void render_manager::createBinder()
 	{
 		m_static_binder = createStaticBinder(m_default_sffect);
+	}
+
+	material_ptr render_manager::get_default_material() 
+	{
+		if (!m_default_material)
+			m_default_material = material::create();
+
+		return m_default_material;
 	}
 
 	rendererable::rendererable(unsigned priority)
