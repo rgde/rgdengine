@@ -388,7 +388,7 @@ namespace UIEditor
         private void newToolStripButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Image Files|*.dds; *.tga; *.png";
+            ofd.Filter = "Image Files|*.dds; *.tga; *.png; *.jpg";
 
             if (DialogResult.OK == ofd.ShowDialog(this))
             {
@@ -410,7 +410,7 @@ namespace UIEditor
             }
         }
 
-        void ResizeSelectedRegion(int dw, int dh, bool is_shift_pressed)
+        void ResizeSelectedRegion(float dw, float dh, bool is_shift_pressed)
         {
             TextureRegion reg = layout_editor.SelectedRegion;
 
@@ -423,7 +423,7 @@ namespace UIEditor
                 dh *= 10;
             }
 
-            Rectangle rect = reg.Rectangle;
+            RectangleF rect = reg.Rectangle;
             rect.Width += dw;
             rect.Height += dh;
 
@@ -433,7 +433,7 @@ namespace UIEditor
             propertyGrid.SelectedObject = reg;
         }
 
-        void MoveSelectedRegion(int dx, int dy, bool is_shift_pressed)
+        void MoveSelectedRegion(float dx, float dy, bool is_shift_pressed)
         {
             TextureRegion reg = layout_editor.SelectedRegion;
 
@@ -446,7 +446,7 @@ namespace UIEditor
                 dy *= 10;
             }
 
-            Rectangle rect = reg.Rectangle;
+            RectangleF rect = reg.Rectangle;
             rect.X += dx;
             rect.Y += dy;
 
