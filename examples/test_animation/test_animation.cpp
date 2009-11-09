@@ -13,7 +13,11 @@ public:
 		m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
 		m_pMesh = render::mesh_ptr(new render::mesh);
-		m_pMesh->load( "media\\meshes\\Box01.xml" );
+		{
+			io::path_add_scoped p("models/test_scene/");
+			m_pMesh->load( "Box01.xml" );
+		}
+		
 
 		m_pTexture = render::texture::create("tiger.bmp");
 
@@ -22,10 +26,11 @@ public:
 
 		TiXmlDocument xml( "media\\1111.XML" ) ;
 
-		if ( !xml.LoadFile() )
-			return ;
+		if ( xml.LoadFile() )
+		{
+			m_controller.load( xml.FirstChild( "model" )->FirstChild( "node" )->FirstChild( "node" ) );
+		}
 		
-		m_controller.load( xml.FirstChild( "model" )->FirstChild( "node" )->FirstChild( "node" ) );
 		m_controller.atach( m_spFrame );
 		m_controller.start();
 		m_controller.set_rate( 1.0f );
@@ -40,8 +45,13 @@ public:
 		m_target_camera = math::target_camera::create(m_camera);
 		m_target_camera->set_position(up_vec,eye,look_at);
 
-		{//инициализация ввода
+
+		{//input init
 			using namespace input;
+
+			Input::add_command(L"Quit");
+			Input::add_command(L"Horz");
+			Input::add_command(L"Vert");
 
 			Input::get_device(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
 			Input::get_device(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
@@ -50,7 +60,6 @@ public:
 			m_esc  .attach(L"Quit");
 			m_mouse_x.attach(L"Horz");
 			m_mouse_y.attach(L"Vert");
-
 
 			m_esc += boost::bind(&AnimationTest::onEsc, this);
 			m_mouse_y += boost::bind(&AnimationTest::onYAxis, this, _1);

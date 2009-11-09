@@ -2,6 +2,7 @@
 
 #include <rgde/render/camera.h>
 #include <rgde/render/render_target.h>
+#include <rgde/render/camera_manager.h>
 
 #include <d3dx9.h>
 
@@ -20,13 +21,12 @@ namespace render
 		  m_clear_color(0),
 		  m_clear_depth(1.0f)
 	{
-		//TheCameraManager::get().add_camera(this);
+		TheCameraManager::get().add_camera(this);
 	}
 
 	render_camera::~render_camera()
 	{
-		int i = 5;
-		//TheCameraManager::get().removeCamera(this);
+		TheCameraManager::get().removeCamera(this);
 	}
 
 	void render_camera::activate()

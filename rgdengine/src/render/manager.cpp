@@ -321,7 +321,7 @@ namespace render
 				}
 			}
 		}
-		else // на случай если нам надо рисовать что-то в экранных координатах и только
+		else // if we have no any cameras
 		{
 			if(!m_static_binder) 
 				createBinder();
