@@ -37,7 +37,7 @@ namespace input
         bind (m_device.get_impl().getCommand(command_name));
     }
 
-    //удалить наблюдателя
+    // remove observer
     void Control::unbind (command_ptr pCommand)
     {
         commands_iter pos = std::find
@@ -58,7 +58,7 @@ namespace input
         unbind(m_device.get_impl().getCommand(command_name));
     }
 
-    //добавлен ли такой наблюдатель
+    // check is that observer already added
     bool Control::is_bind (command_ptr pCommand)
     {
         commands_iter pos = std::find
@@ -79,14 +79,21 @@ namespace input
         return is_bind(m_device.get_impl().getCommand(command_name));
     }
 
-    //уведомить наблюдателей о своем изменении
+    // notify observers about control state change
     void Control::notify_all ()
     {
+		if (m_commands.empty())
+			return;
+
         commands_iter i = m_commands.begin();
 
         while (i != m_commands.end())
         {
-            (*i)->notify_all(*this);
+			command_ptr command = *i;
+			if (command)
+			{
+				command->notify_all(*this);
+			}
             ++i;
         }
     }

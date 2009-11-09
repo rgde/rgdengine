@@ -30,9 +30,10 @@ namespace render
 	math::matrix44f makeWorldViewProjMatrix(const math::frame_ptr& frame)
 	{
 		const math::camera_ptr& camera = get_camera();
-		const math::matrix44f& mView = camera->get_view_matrix();
-		const math::matrix44f& mProj = camera->get_proj_matrix();
-		return mProj*(mView*frame->get_full_tm());
+		assert(camera && "ERROR: render::makeWorldViewProjMatrix camera is NULL !");
+		const math::matrix44f& view = camera->get_view_matrix();
+		const math::matrix44f& proj = camera->get_proj_matrix();
+		return proj*(view*frame->get_full_tm());
 	}
 
 	math::matrix44f makeWorldViewMatrix(const math::frame_ptr& frame)
