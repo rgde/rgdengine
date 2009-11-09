@@ -23,6 +23,9 @@ SceneHelper::SceneHelper(geometry_type pGeometry)
 
 void SceneHelper::render()
 {
+	render::render_device::get().draw_wired_floor(100.0f, 20, math::Color(150, 150, 150, 255));
+	render::render_device::get().draw_wired_floor(100.0f, 2, math::Color(60, 60, 60, 255));
+
 	m_pGeometry->render(render::PrimTypeTriangleList, (int) (m_pGeometry->getIndexNum()/3));
 }
 
@@ -79,6 +82,7 @@ public:
 		m_pMySuper->set_position(math::vec3f(0,0,-5));
 	}
 protected:
+
 	//выход из программы
 	void onEsc()
 	{
