@@ -21,7 +21,7 @@ namespace render
 		};
 
 		typedef indexed_geometry<vertex::MeshVertex, false> geometry;
-		typedef boost::shared_ptr<geometry>					PGeometry;
+		typedef boost::shared_ptr<geometry>					geometry_ptr;
 		typedef std::vector<material_ptr>					materials_list;
 		typedef std::vector<IndexedSubMeshInfo>			sub_meshes;
 
@@ -33,7 +33,7 @@ namespace render
 		//Neonic: octree
 		void			update( bool NeedFullUpdate =0 );
 
-		PGeometry	  getGeometry()				{return m_geometry;}
+		geometry_ptr	  getGeometry()				{return m_geometry;}
 		materials_list& get_materials()			{return m_materials;}
 
 		primitive_type getPrimitiveType() const	{return m_prim_type;}
@@ -50,7 +50,7 @@ namespace render
 		std::string		m_file_name;
 		materials_list	m_materials;
 		sub_meshes		m_sub_meshes;
-		PGeometry		m_geometry;
+		geometry_ptr		m_geometry;
 		unsigned int	m_vertex_num;
 
 		unsigned int	m_prim_num;

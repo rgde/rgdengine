@@ -29,7 +29,7 @@ namespace render
 		{
 			effect::technique::pass *pPass	= pTechnique->get_passes()[iPass];
 			pPass->begin();
-			m_geometry.render(PrimTypeLineList);
+			m_geometry.render(LineList);
 			pPass->end();
 		}
 		pTechnique->end();

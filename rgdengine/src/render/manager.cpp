@@ -18,34 +18,31 @@ extern LPDIRECT3DDEVICE9 g_d3d;
 
 namespace render
 {
-	texture_ptr safeLoadDefaultTexture(const std::string &texture_name)
+	namespace
 	{
-		io::path_add_scoped p	("Common/");
-		texture_ptr tex	= texture::create(texture_name);
-
-		if (!tex)
+		texture_ptr load_default_texture(const std::string &texture_name)
 		{
-			base::lerr << "Can't load default texture \"" << texture_name << "\"";
-			core::application::get()->close();
-		}
+			io::path_add_scoped p	("Common/");
+			texture_ptr tex	= texture::create(texture_name);
 
-		return tex;
+			if (!tex)
+			{
+				base::lerr << "Can't load default texture \"" << texture_name << "\"";
+				core::application::get()->close();
+			}
+
+			return tex;
+		}
 	}
 
 	render_manager::render_manager()
-		: 	m_lighting_enabled(true)
-		, m_fill_mode(Solid)
-		, m_volumes(true)
-		, m_white_texture(safeLoadDefaultTexture("White.jpg"))
-		, m_flat_normal_texture(safeLoadDefaultTexture("DefaultNormalMap.jpg"))
-		, m_black_texture(safeLoadDefaultTexture("Black.jpg"))
+		: m_volumes(true)
+		, m_white_texture(load_default_texture("White.jpg"))
+		, m_flat_normal_texture(load_default_texture("DefaultNormalMap.jpg"))
+		, m_black_texture(load_default_texture("Black.jpg"))
 		, m_default_sffect(effect::create("Default.fx"))
 		, m_default_font(font::create(11,  L"Arial", render::font::Heavy))
 	{
-
-		m_default_fog.load_from_xml("Default.xml");
-		m_current_fog = m_default_fog;
-
 
 		if (!m_default_sffect)
 		{
@@ -89,11 +86,6 @@ namespace render
 		return m_flat_normal_texture;
 	}
 
-	void render_manager::setCurrentFog(const Fog &pFog)
-	{
-		m_current_fog = pFog;
-	}
-
 	void render_manager::add(rendererable *r)
 	{
 		m_lRenderables.push_back(r);
@@ -126,12 +118,11 @@ namespace render
 		//}
 
 		struct SDefaultRender
-		{
-			effect_ptr& defaultEffect;
-			render_manager* m_manager;
+		{			
+			render_manager& m_manager;
+
 			SDefaultRender(render_manager* manager)
-				: defaultEffect(TheRenderManager::get().getDefaultEffect())
-				, m_manager(manager)
+				: m_manager(*manager)
 			{
 			}
 
@@ -148,15 +139,12 @@ namespace render
 					//const material_ptr& pMaterial = info.material ? info.material : pDefaultMaterial;
 					//const effect_ptr&	 effect	= info.shader ? info.shader : defaultEffect;
 
-					const material_ptr pMaterial = m_manager->get_default_material();
-					const effect_ptr&	 effect	= defaultEffect;
-
-
-					//m_default_sffect
-					
-					pMaterial->getDynamicBinder()->setupParameters(info.frame);
+					const material_ptr mat = m_manager.get_default_material();
+					const effect_ptr&  effect	= m_manager.getDefaultEffect();
+				
+					mat->getDynamicBinder()->setupParameters(info.frame);
 									
-					effect::technique *pTechnique = pMaterial->getTechnique();
+					effect::technique *pTechnique = mat->getTechnique();
 
 					if(NULL != pTechnique)
 					{	
@@ -178,12 +166,9 @@ namespace render
 					}
 					else
 					{
-						//info.frame->get_full_tm()
-						//return mProj*(mView*frame->get_full_tm());
-						g_d3d->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&info.frame->get_full_tm()[0]);
-						//g_d3d->Set
+						//info.frame->get_full_tm()						
+						g_d3d->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&info.frame->get_full_tm()[0]);						
 						info.render_func();
-						//base::lmsg << "Invalid binder or technique";
 					}
 				}
 				else

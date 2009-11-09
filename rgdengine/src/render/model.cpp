@@ -21,7 +21,7 @@ namespace render
 	}
 
 	void read_node(TiXmlElement *elem, math::frame &root_frame, model &model);
-	mesh::PGeometry read_geometry(const std::string& fNm);
+	mesh::geometry_ptr read_geometry(const std::string& fNm);
 
 	model_ptr model::create(const std::string& file_name)
 	{
@@ -232,9 +232,9 @@ namespace render
 		};
 	}
 
-	mesh::PGeometry read_geometry(std::string fNm)
+	mesh::geometry_ptr read_geometry(std::string fNm)
 	{
-		return mesh::PGeometry();
+		return mesh::geometry_ptr();
 	}
 
 	unsigned int model::getFaceNum() const

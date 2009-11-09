@@ -69,10 +69,6 @@ public:
 
 		m_target_camera->activate();
 
-		render::TheRenderManager::get().enableLighting(true);
-
-		//render::TheLightManager::get().setAmbientColor(math::Color(20, 20, 20, 255));
-		
 		render::PointLight *pLight = new render::PointLight("point1");
 		scene::TheScene::get().get_root()->add(pLight);		
 
@@ -214,7 +210,7 @@ protected:
 	{
 		render::model_ptr& model = m_models[stone.model_index]; // следить что бы не было выхода за пределы вектора
 		render::mesh_ptr& mesh = model->get_meshes()[0]; // мы знаем что у нас только 1 меш в модели. но нет проблем так сделать и для других вариантов
-		render::mesh::PGeometry geom = mesh->getGeometry();
+		render::mesh::geometry_ptr geom = mesh->getGeometry();
 		render::material_ptr& material = mesh->get_materials()[0];		
 
 		//material->bind();

@@ -2,21 +2,31 @@
 
 #include <boost/scoped_ptr.hpp>
 
+// game has levels
+// level has scene
+// scene has worlds
+// word knows about it's resources
+// level knows about it's resources
+// etc.
+
+//or not? if we change level - we may not want to change currently rendering scene!
+// to be or not to be.... ghm.
+
 class SceneHelper : public render::rendererable, public math::frame
 {
 public:
-	typedef render::Generator<vertex::PositionNormalColored>::PGeometry geometry_type;
+	typedef render::Generator<vertex::PositionNormalColored>::geometry_ptr geometry_ptr;
 
-	SceneHelper(geometry_type pGeometry);
+	SceneHelper(geometry_ptr m_geometry);
 	void render();
 
 private:
-	geometry_type m_pGeometry;
+	geometry_ptr m_geometry;
 };
 
-SceneHelper::SceneHelper(geometry_type pGeometry)
+SceneHelper::SceneHelper(geometry_ptr geometry)
 {
-	m_pGeometry = pGeometry;
+	m_geometry = geometry;
 	m_renderInfo.frame = this;
 	m_renderInfo.render_func = boost::bind( &SceneHelper::render, this );
 }
@@ -26,7 +36,8 @@ void SceneHelper::render()
 	render::render_device::get().draw_wired_floor(100.0f, 20, math::Color(150, 150, 150, 255));
 	render::render_device::get().draw_wired_floor(100.0f, 2, math::Color(60, 60, 60, 255));
 
-	m_pGeometry->render(render::PrimTypeTriangleList, (int) (m_pGeometry->getIndexNum()/3));
+	const int num_primitives = (int)m_geometry->getIndexNum()/3;
+	m_geometry->render(render::TriangleList,  num_primitives);
 }
 
 
@@ -66,15 +77,6 @@ public:
 
 		m_target_camera->activate();
 
-		//render::TheLightManager::get().setAmbientColor(math::Color(50, 50, 50, 0));
-	
-		//render::CPointLight *pLight = new render::CPointLight("point1");
-		//scene::TheScene::get().get_root()->add(pLight);
-		//pLight->set_position(math::vec3f(0,0,5));
-
-		//pLight->setDiffuse(math::Color(230, 170, 170, 0));
-		//pLight->setRange(100);
-
 		m_pGeometry = render::Generator<vertex::PositionNormalColored>::CreateBox();
 
 		m_pMySuper = boost::intrusive_ptr<SceneHelper>(new SceneHelper(m_pGeometry));
@@ -113,7 +115,7 @@ protected:
 protected:
 	math::camera_ptr       m_camera;
 
-	render::Generator<vertex::PositionNormalColored>::PGeometry m_pGeometry;
+	render::Generator<vertex::PositionNormalColored>::geometry_ptr m_pGeometry;
 
 	boost::intrusive_ptr<SceneHelper> m_pMySuper;
 

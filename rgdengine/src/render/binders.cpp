@@ -180,14 +180,14 @@ namespace render
 		GetIntFunction          getIntFunction;
 		ParamTypeGetFogFunction getFogFunction;
 
-		getIntFunction = bind(&render_manager::getFillMode,
-							  &TheRenderManager::get());
-		binder->addParameter<int>(getIntFunction,
-								  FillModeParamName);
-		getFogFunction = bind(&render_manager::getCurrentFog,
-							  &TheRenderManager::get());
-		binder->addParameter<Fog>(getFogFunction,
-								   FogParamName);
+		//getIntFunction = bind(&render_manager::getFillMode,
+		//					  &TheRenderManager::get());
+		//binder->addParameter<int>(getIntFunction,
+		//						  FillModeParamName);
+		//getFogFunction = bind(&render_manager::getCurrentFog,
+		//					  &TheRenderManager::get());
+		//binder->addParameter<Fog>(getFogFunction,
+		//						   FogParamName);
 	}
 
 	void addLightingParameters(const static_binder_ptr& binder)

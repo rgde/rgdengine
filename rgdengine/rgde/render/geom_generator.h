@@ -9,9 +9,9 @@ namespace render
 	{
 	public:
 		typedef indexed_geometry<Vertex, Use32Indexes> geometry;
-		typedef boost::shared_ptr<geometry> PGeometry;
+		typedef boost::shared_ptr<geometry> geometry_ptr;
 		
-		static void GenerateGrid(PGeometry pGeometry, int nXResolution, int nZResolution,
+		static void GenerateGrid(geometry_ptr pGeometry, int nXResolution, int nZResolution,
 									float fXScale = 1.0f, float fZScale = 1.0f,
 									const math::vec3f& CenterPos = math::vec3f(0.0f, 0.0f, 0.0f))
 		{
@@ -43,7 +43,7 @@ namespace render
 			pGeometry->getBBox();
 		}
 
-		static void GenerateCylinder(PGeometry pGeometry, int nRadialSegments = 16, int nHeightSegments = 16, float fRadius = 1.0f, float fHeight = 1.0f,
+		static void GenerateCylinder(geometry_ptr pGeometry, int nRadialSegments = 16, int nHeightSegments = 16, float fRadius = 1.0f, float fHeight = 1.0f,
 										const math::vec3f& CenterPosition = math::vec3f(0.0f, 0.0f, 0.0f))
 		{
 			GenerateGrid(pGeometry, nRadialSegments + 1, 3 + nHeightSegments);
@@ -79,9 +79,9 @@ namespace render
 			pGeometry->getBBox();
 		}
 
-		static PGeometry CreateBox(const math::vec3f& Size = math::vec3f(1.0f, 1.0f, 1.0f), const math::vec3f& CenterPos = math::vec3f(0, 0, 0))
+		static geometry_ptr CreateBox(const math::vec3f& Size = math::vec3f(1.0f, 1.0f, 1.0f), const math::vec3f& CenterPos = math::vec3f(0, 0, 0))
 		{
-			PGeometry pResult(new geometry);
+			geometry_ptr pResult(new geometry);
 
 			math::vec3f HalfOfSize = Size/2.0f;
 			math::vec3f Normal     = math::vec3f(0.5774f, 0.5774f, 0.5774f);
@@ -130,30 +130,30 @@ namespace render
 			return pResult;
 		}
 		
-		static PGeometry CreateGrid(int nXResolution, int nZResolution,
+		static geometry_ptr CreateGrid(int nXResolution, int nZResolution,
 									float fXScale = 1.0f, float fZScale = 1.0f,
 									const math::vec3f& CenterPos = math::vec3f(0.0f, 0.0f, 0.0f))
 		{
-			PGeometry pResult(new geometry);
+			geometry_ptr pResult(new geometry);
 
 			GenerateGrid(pResult, nXResolution, nZResolution, fXScale, fZScale, CenterPos);
 
 			return pResult;
 		}
 		
-		static PGeometry CreateCylinder(int nRadialSegments = 16, int nHeightSegments = 16, float fRadius = 1.0f, float fHeight = 1.0f,
+		static geometry_ptr CreateCylinder(int nRadialSegments = 16, int nHeightSegments = 16, float fRadius = 1.0f, float fHeight = 1.0f,
 										const math::vec3f& CenterPosition = math::vec3f(0.0f, 0.0f, 0.0f))
 		{
-			PGeometry pResult = CreateGrid(nRadialSegments + 1, 3 + nHeightSegments);
+			geometry_ptr pResult = CreateGrid(nRadialSegments + 1, 3 + nHeightSegments);
 
 			GenerateCylinder(pResult, nRadialSegments, nHeightSegments, fRadius, fHeight, CenterPosition);
 
 			return pResult;
 		}
 		
-		static PGeometry CreateCone(int nStep)
+		static geometry_ptr CreateCone(int nStep)
 		{
-			PGeometry pResult = CreateGrid(nStep + 1, 3);
+			geometry_ptr pResult = CreateGrid(nStep + 1, 3);
 
 			geometry::vertexies& vertices = pResult->lock_vb();
 			geometry::indexies&  indices  = pResult->lock_ib();
@@ -174,9 +174,9 @@ namespace render
 			return pResult;
 		}
 
-		static PGeometry CreateSphere(int nStepLng, int nStepLat)
+		static geometry_ptr CreateSphere(int nStepLng, int nStepLat)
 		{
-			PGeometry pResult = CreateGrid(nStepLng + 1, (nStepLat/2) + 1);
+			geometry_ptr pResult = CreateGrid(nStepLng + 1, (nStepLat/2) + 1);
 
 			geometry::vertexies& vertices = pResult->lock_vb();
 			geometry::indexies&  indices  = pResult->lock_ib();
@@ -195,9 +195,9 @@ namespace render
 			return pResult;
 		}
 
-		static PGeometry CreateHemis(int nStepLng, int nStepLat)
+		static geometry_ptr CreateHemis(int nStepLng, int nStepLat)
 		{
-			PGeometry pResult = CreateGrid(nStepLng + 1, (nStepLat/4) + 2);
+			geometry_ptr pResult = CreateGrid(nStepLng + 1, (nStepLat/4) + 2);
 
 			geometry::vertexies& vertices = pResult->lock_vb();
 			geometry::indexies&  indices  = pResult->lock_ib();
@@ -220,9 +220,9 @@ namespace render
 			return pResult;
 		}
 
-		static PGeometry CreateTorus(float fRadMajor, float fRadMinor, int nStepMajor, int nStepMinor)
+		static geometry_ptr CreateTorus(float fRadMajor, float fRadMinor, int nStepMajor, int nStepMinor)
 		{
-			PGeometry pResult = CreateGrid(nStepMajor + 1, nStepMinor + 1);
+			geometry_ptr pResult = CreateGrid(nStepMajor + 1, nStepMinor + 1);
 
 			geometry::vertexies& vertices = pResult->lock_vb();
 			geometry::indexies&  indices  = pResult->lock_ib();
@@ -244,9 +244,9 @@ namespace render
 			return pResult;
 		}
 
-		static PGeometry CreateOcta()
+		static geometry_ptr CreateOcta()
 		{
-			PGeometry pResult(new geometry);
+			geometry_ptr pResult(new geometry);
 
 			geometry::vertexies& vertices = pResult->lock_vb();
 			geometry::indexies&  indices  = pResult->lock_ib();
@@ -277,9 +277,9 @@ namespace render
 			return pResult;
 		}
 
-		static PGeometry CreateTetra()
+		static geometry_ptr CreateTetra()
 		{
-			PGeometry pResult(new geometry);
+			geometry_ptr pResult(new geometry);
 
 			geometry::vertexies& vertices = pResult->lock_vb();
 			geometry::indexies&  indices  = pResult->lock_ib();

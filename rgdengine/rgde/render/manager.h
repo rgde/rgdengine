@@ -36,15 +36,8 @@ namespace render
 		void enableVolumes( bool flag )		{ m_volumes = flag; }
 		bool isVolumeDrawing() const		{ return m_volumes; }
 
-		void enableLighting(bool bLightingEnabled)  { m_lighting_enabled = bLightingEnabled; }
-		bool isLightingEnabled() const		{ return m_lighting_enabled; }
-
-		void setFillMode(FillMode mode)		{ m_fill_mode = mode; }
-		FillMode  getFillMode() const			{ return m_fill_mode; }
-
 		effect_ptr& getDefaultEffect();
 		font_ptr&   getDefaultFont();
-		const Fog&    getDefaultFog()	const {return m_default_fog;}
 
 		texture_ptr& getBlackTexture();
 		texture_ptr& getWhiteTexture();
@@ -52,8 +45,6 @@ namespace render
 
 		material_ptr get_default_material();
 
-		void setCurrentFog(const Fog& fog);
-		const Fog& getCurrentFog() const	{return m_current_fog;}
 
 	private:
 		void add(rendererable* r);
@@ -66,20 +57,14 @@ namespace render
 		Renderables m_lRenderables;
 
 		bool			  m_volumes;
-		bool              m_lighting_enabled;
-		FillMode          m_fill_mode;
 
 		effect_ptr        m_default_sffect;
 		font_ptr          m_default_font;
-		Fog               m_default_fog;
+		material_ptr	  m_default_material;
 
 		texture_ptr       m_black_texture;
 		texture_ptr       m_white_texture;
-		texture_ptr       m_flat_normal_texture;
-
-		Fog               m_current_fog;
-
-		material_ptr	  m_default_material;
+		texture_ptr       m_flat_normal_texture;				
 
 		static_binder_ptr     m_static_binder;
 	};
@@ -97,7 +82,7 @@ namespace render
 		render::effect_ptr			 shader;
 		bool						 has_volumes;
 		math::aaboxf				 bbox;
-		math::Spheref				 bsphere;
+		math::spheref				 bsphere;
 	};
 
 	class rendererable
