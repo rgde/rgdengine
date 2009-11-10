@@ -107,7 +107,8 @@ namespace UIEditor
             if (DialogResult.OK == ofd.ShowDialog(this))
             {
                 layout_editor.ClearUndoRedo();
-
+                propertyGrid.SelectedObject = null;
+                propertyGrid.SelectedObjects = null;
                 layout_editor.Clear();
                 treeView1.Nodes.Clear();
                 imageset_filename = ofd.FileName;
@@ -121,12 +122,11 @@ namespace UIEditor
                     doc.Load(fs);                    
                     XmlNode imageset_node = doc["Imageset"];
 
-                    //<Imageset Name="Abilities" Imagefile="Abilities.tga" 
                     imageset_name = imageset_node.Attributes["Name"].Value;
                     imagefile = imageset_node.Attributes["Imagefile"].Value;
 
-                    imagefile = System.IO.Path.GetDirectoryName(ofd.FileName) + "\\" + imagefile;
-                    imagefile = imagefile.ToLower();
+                    imagefile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(ofd.FileName), imagefile);
+                    imagefile = imagefile.ToLower();                    
 
                     layout_editor.Image = DevIL.DevIL.LoadBitmap(imagefile);
 
@@ -181,12 +181,12 @@ namespace UIEditor
 
                         //<Image Name="TestAbility_2" YPos="0" XPos="40" Width="40" Height="40" />
                         t.Name = node.Attributes["Name"].Value;
-                        int x = System.Convert.ToInt32(node.Attributes["XPos"].Value);
-                        int y = System.Convert.ToInt32(node.Attributes["YPos"].Value);
-                        int w = System.Convert.ToInt32(node.Attributes["Width"].Value);
-                        int h = System.Convert.ToInt32(node.Attributes["Height"].Value);
+                        float x = (float)System.Convert.ToDouble(node.Attributes["XPos"].Value);
+                        float y = (float)System.Convert.ToDouble(node.Attributes["YPos"].Value);
+                        float w = (float)System.Convert.ToDouble(node.Attributes["Width"].Value);
+                        float h = (float)System.Convert.ToDouble(node.Attributes["Height"].Value);
 
-                        Rectangle r = new Rectangle(x, y, w, h);
+                        RectangleF r = new RectangleF(x, y, w, h);
                         t.Rectangle = r;
 
                         layout_editor.AddTextureRegion(t, false);
@@ -213,10 +213,21 @@ namespace UIEditor
 
             layout_editor.ClearUndoRedo();
 
+            string imagefile_path = imagefile.ToLower();
+
+            string image_dir = System.IO.Path.GetDirectoryName(imagefile_path);
+            string imageset_dir = System.IO.Path.GetDirectoryName(imageset_filename.ToLower());
+                        
+
+            if (image_dir == imageset_dir)
+            {
+                imagefile_path = System.IO.Path.GetFileName(imagefile_path);
+            }
+
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
             XmlElement imageset_el = doc.CreateElement("Imageset");
             imageset_el.SetAttribute("Name", imageset_name);
-            imageset_el.SetAttribute("Imagefile", imagefile);
+            imageset_el.SetAttribute("Imagefile", imagefile_path);
 
             imageset_el.SetAttribute("NativeHorzRes", NativeHorzRes.ToString());
             imageset_el.SetAttribute("NativeVertRes", NativeVertRes.ToString());
@@ -229,10 +240,10 @@ namespace UIEditor
                 XmlElement el = doc.CreateElement("Image");
                 el.SetAttribute("Name", reg.Name);
 
-                el.SetAttribute("XPos", reg.Rectangle.X.ToString());
-                el.SetAttribute("YPos", reg.Rectangle.Y.ToString());
-                el.SetAttribute("Width", reg.Rectangle.Width.ToString());
-                el.SetAttribute("Height", reg.Rectangle.Height.ToString());
+                el.SetAttribute("XPos", reg.Rectangle.X.ToString("F1"));
+                el.SetAttribute("YPos", reg.Rectangle.Y.ToString("F1"));
+                el.SetAttribute("Width", reg.Rectangle.Width.ToString("F1"));
+                el.SetAttribute("Height", reg.Rectangle.Height.ToString("F1"));
                 imageset_el.AppendChild(el);
             }
 
@@ -393,6 +404,11 @@ namespace UIEditor
             if (DialogResult.OK == ofd.ShowDialog(this))
             {
                 layout_editor.ClearUndoRedo();
+                layout_editor.ClearUndoRedo();
+                propertyGrid.SelectedObject = null;
+                propertyGrid.SelectedObjects = null;
+                layout_editor.Clear();
+                treeView1.Nodes.Clear();
 
                 imageset_name = "";
                 imageset_filename = "";

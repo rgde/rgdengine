@@ -49,6 +49,7 @@ namespace UIEditor
             // 
             // toolStrip1
             // 
+            this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlDark;
             this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newToolStripButton,
@@ -99,6 +100,10 @@ namespace UIEditor
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ControlDark;
             this.splitContainer1.Size = new System.Drawing.Size(763, 441);
             this.splitContainer1.SplitterDistance = 167;
             this.splitContainer1.TabIndex = 2;
@@ -123,6 +128,7 @@ namespace UIEditor
             // 
             // treeView1
             // 
+            this.treeView1.BackColor = System.Drawing.SystemColors.ControlDark;
             this.treeView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.treeView1.CausesValidation = false;
             this.treeView1.CheckBoxes = true;
@@ -147,12 +153,15 @@ namespace UIEditor
             // propertyGrid
             // 
             this.propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid.HelpBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.propertyGrid.HelpVisible = false;
+            this.propertyGrid.LineColor = System.Drawing.SystemColors.InactiveCaption;
             this.propertyGrid.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid.Name = "propertyGrid";
             this.propertyGrid.Size = new System.Drawing.Size(167, 145);
             this.propertyGrid.TabIndex = 0;
             this.propertyGrid.ToolbarVisible = false;
+            this.propertyGrid.ViewBackColor = System.Drawing.SystemColors.ControlDark;
             // 
             // treeViewImageList
             // 
@@ -169,6 +178,7 @@ namespace UIEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(763, 466);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
