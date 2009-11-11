@@ -54,11 +54,11 @@ namespace particles{
 		inline bool isVisible()		const	{return m_is_visible;}
 		inline void	setVisible(bool b)		{m_is_visible = b;}
 		
-		inline bool	isCycling()		const	{return m_bCycling;}
-		inline void	setCycling(bool b)		{m_bCycling = b;}
+		inline bool	isCycling()		const	{return m_cycling;}
+		inline void	setCycling(bool b)		{m_cycling = b;}
 		
 		void		setIntense(bool intense);
-		inline bool	getIntense()	const	{return m_bIntense;}
+		inline bool	getIntense()	const	{return m_intense;}
 
 		inline std::string getTextureName() const {return m_texture_name;}
 		void set_texture(std::string tex);
@@ -75,7 +75,7 @@ namespace particles{
 		render::texture_ptr	m_texture;
 		renderers*			m_rames;
 		
-		static frames_map ms_PFrames;
+		static frames_map ms_frames;
 		static std::map<std::string, maya_structs::animation> ms_frame_seq;
 
 		// state flags
@@ -83,7 +83,7 @@ namespace particles{
 		bool		m_is_texture_loaded;
 
 		bool		m_is_visible;						// виден ли эффект
-		bool		m_bCycling;						// цикличен ли он 
+		bool		m_cycling;						// цикличен ли он 
 
 		float		m_fScale;
 		
@@ -102,7 +102,7 @@ namespace particles{
 		float			m_fLastTime;				// время когда был отрисован последний кадр
 		float			m_fLastFrame;				// последний отрисованный кадр
 		int				m_time_shift;				// смещение в кадрах от начального кадра проигрывания
-		bool			m_bIntense;
+		bool			m_intense;
 		bool			m_is_fading;
 	};
 }

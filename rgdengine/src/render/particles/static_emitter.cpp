@@ -9,7 +9,7 @@ using namespace particles::maya_structs;
 namespace particles{
 
 	std::map< std::string, maya_structs::animation> static_emitter::ms_frame_seq;
-	static_emitter::frames_map static_emitter::ms_PFrames;
+	static_emitter::frames_map static_emitter::ms_frames;
 
 	static std::wstring ms_base_folder;
 
@@ -18,7 +18,7 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void static_emitter::clear_cached_data()
 	{
-		ms_PFrames.clear();
+		ms_frames.clear();
 		ms_frame_seq.clear();
 
 		em_num = 0;			// zero emitters counter
@@ -28,7 +28,7 @@ namespace particles{
 		: m_fScale(1.0f)
 		, emitter(emitter::Static)
 	{
-		m_bIntense				= false;
+		m_intense				= false;
 
 		m_is_seq_loaded			= false;
 		m_is_texture_loaded			= false;
@@ -36,7 +36,7 @@ namespace particles{
 		m_is_fading				= false;
 
 		m_is_visible				= false;
-		m_bCycling				= false;
+		m_cycling				= false;
 
 		m_time_shift			= 0;
 
@@ -83,7 +83,7 @@ namespace particles{
 
 		if (!(m_fLastFrame < m_time_shift + m_rames->size()))
 		{
-			if (m_bCycling) 
+			if (m_cycling) 
 			{
 				m_fLastFrame  = 0;
 				m_fLastTime = dt;
@@ -129,18 +129,18 @@ namespace particles{
 					just_reload = true;
 			}
 
-			frames_iter it = ms_PFrames.find(file_name);
+			frames_iter it = ms_frames.find(file_name);
 			m_Name = file_name;
 		
-			if (it != ms_PFrames.end())
+			if (it != ms_frames.end())
 				if (!just_reload)
 				{
 					m_is_seq_loaded = true;
-					m_rames = &(ms_PFrames[m_Name]);
+					m_rames = &(ms_frames[m_Name]);
 					return;
 				}
 				else 
-					ms_PFrames.erase(file_name);
+					ms_frames.erase(file_name);
 		}
 
 		{
@@ -164,22 +164,22 @@ namespace particles{
 				}
 			}
 
-			renderers& psyst = ms_PFrames[m_Name];
+			renderers& psyst = ms_frames[m_Name];
 			psyst.resize(fseq.frames.size());
 			
 
 			for (unsigned int i = 0; i < fseq.frames.size(); ++i)
 			{
-				anim_frame& m_spFrame = fseq.frames[i];
+				anim_frame& m_frame = fseq.frames[i];
 				renderer_ptr spTank(new renderer);
 				psyst[i] = spTank;
 
 				renderer::particles_vector& array = spTank->getParticles();
 
-				array.resize( m_spFrame.number_of_particles );
-				for ( unsigned int pn = 0; pn < m_spFrame.number_of_particles; ++pn )
+				array.resize( m_frame.number_of_particles );
+				for ( unsigned int pn = 0; pn < m_frame.number_of_particles; ++pn )
 				{
-					static_particle& p = m_spFrame.particles[pn];
+					static_particle& p = m_frame.particles[pn];
 					array[pn].pos = math::vec3f(p.x, p.y, p.z);
 					array[pn].size = math::vec2f(p.scale, p.scale);
 					array[pn].spin = p.spin * 3.1415926f/180.0f;
@@ -198,7 +198,7 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void static_emitter::setIntense(bool intense)
 	{
-		m_bIntense = intense;
+		m_intense = intense;
 	}
 	//-----------------------------------------------------------------------------------
 	void static_emitter::set_texture(std::string tex)
@@ -220,7 +220,7 @@ namespace particles{
 	//----------------------------------------------------------------------------------------
 	void static_emitter::debug_draw()
 	{
-		if (ms_PFrames.empty())
+		if (ms_frames.empty())
 			return;
 
 		m_transform->debug_draw();
@@ -228,8 +228,8 @@ namespace particles{
 		unsigned frame_num = (int)(m_fLastFrame - m_time_shift);
 		if (frame_num < 0) return;
 
-		frames_iter& it = ms_PFrames.find(m_Name);
-		assert( it != ms_PFrames.end() );
+		frames_iter& it = ms_frames.find(m_Name);
+		assert( it != ms_frames.end() );
 		renderers& psyst = it->second;
 		assert( frame_num < psyst.size() );
 
@@ -264,16 +264,16 @@ namespace particles{
 		rf	>> seqName
 			>> m_texture_name
 			>> m_time_shift
-			>> m_bIntense
+			>> m_intense
 			>> m_is_visible
-			>> m_bCycling
+			>> m_cycling
 			>> m_texture_fps;
 		
 		loadTexture();
 		loadFrames(seqName);
 
-		setIntense(m_bIntense);
-		setCycling( m_bCycling );
+		setIntense(m_intense);
+		setCycling( m_cycling );
 		setVisible( m_is_visible );
 	}
 	//-----------------------------------------------------------------------------------
@@ -285,9 +285,9 @@ namespace particles{
 			<< m_Name
 			<< m_texture_name
 			<< m_time_shift
-			<< m_bIntense
+			<< m_intense
 			<< m_is_visible
-			<< m_bCycling
+			<< m_cycling
 			<< m_texture_fps;
 	}
 }

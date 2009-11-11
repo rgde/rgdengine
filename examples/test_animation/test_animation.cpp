@@ -1,9 +1,6 @@
 //RGDE
 #include <rgde/engine.h>
 
-//WIN
-//#include <windows.h> //для HWND и SendMessage
-//#include <sstream> 
 
 class AnimationTest : public game::dynamic_object
 {
@@ -12,17 +9,17 @@ public:
 	{
 		m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
-		m_pMesh = render::mesh_ptr(new render::mesh);
+		m_mesh = render::mesh_ptr(new render::mesh);
 		{
 			io::path_add_scoped p("models/test_scene/");
-			m_pMesh->load( "Box01.xml" );
+			m_mesh->load( "Box01.xml" );
 		}
 		
 
 		m_pTexture = render::texture::create("tiger.bmp");
 
-		m_spFrame = math::frame::create();
-		m_spFrame->add( m_pMesh );
+		m_frame = math::frame::create();
+		m_frame->add( m_mesh );
 
 		TiXmlDocument xml( "media\\1111.XML" ) ;
 
@@ -31,7 +28,7 @@ public:
 			m_controller.load( xml.FirstChild( "model" )->FirstChild( "node" )->FirstChild( "node" ) );
 		}
 		
-		m_controller.atach( m_spFrame );
+		m_controller.atach( m_frame );
 		m_controller.start();
 		m_controller.set_rate( 1.0f );
 		m_controller.set_looped( true );
@@ -65,8 +62,6 @@ public:
 			m_mouse_y += boost::bind(&AnimationTest::onYAxis, this, _1);
 			m_mouse_x += boost::bind(&AnimationTest::onXAxis, this, _1);
 		}
-
-		//m_controller.atach(0);
 	}
 
 protected:
@@ -76,13 +71,13 @@ protected:
 		m_controller.update( dt );
 	}
 
-	//выход из программы
+	//application exit
 	void onEsc()
 	{
 		core::application::get()->close();
 	}
 
-	//ось X
+	//mouse X
 	void onXAxis(int dx)
 	{
 		const int accel = 5;
@@ -93,7 +88,7 @@ protected:
 		m_target_camera->rotate_left(-angle);
 	}
 
-	//ось Y
+	//mouse Y
 	void onYAxis(int dy)
 	{
 		const int accel = 5;
@@ -104,21 +99,22 @@ protected:
 		m_target_camera->rotate_up(angle);
 	}
 protected:
-	render::font_ptr			m_font;
-	math::camera_ptr			m_camera;            //указатель на камеру
+	render::font_ptr			m_font;	
 	render::texture_ptr			m_pTexture;
 
 	math::frame_anim_controller	m_controller;
-	math::frame_ptr				m_spFrame;
-	render::mesh_ptr				m_pMesh;
+	math::frame_ptr				m_frame;
+	render::mesh_ptr			m_mesh;
 
-	//данные для ввода
+	//input handlers
 	input::Button       m_esc;
 	input::RelativeAxis m_mouse_x;
 	input::RelativeAxis m_mouse_y;
 
-	//данные для камеры
-	math::target_camera_ptr      m_target_camera;      //контроллер камеры "нацеленная камера"
+	//camera:
+	math::camera_ptr m_camera;
+	//camera controller "targeted camera"
+	math::target_camera_ptr      m_target_camera;
 };
 
 

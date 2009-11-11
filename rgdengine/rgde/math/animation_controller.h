@@ -21,8 +21,8 @@ namespace math
 		float get_weight() const;
 		void  set_weight(float fWeight);
 
-		void atach( frame_ptr frame ) { m_spFrame = frame; }
-		frame_ptr& get_frame() {return m_spFrame;} 
+		void atach( frame_ptr frame ) { m_frame = frame; }
+		frame_ptr& get_frame() {return m_frame;} 
 
 		inline void set_rate( float rate ) { m_fAnimationRate = rate; }
 		inline float get_rate() const { return m_fAnimationRate; }
@@ -57,7 +57,7 @@ namespace math
 		float m_fAnimationRate;
 		float m_fWeight;
 
-		math::frame_ptr m_spFrame;
+		math::frame_ptr m_frame;
 
 		bool m_paused;
 		bool m_bPlaying;
