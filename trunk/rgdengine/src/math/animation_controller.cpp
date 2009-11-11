@@ -16,7 +16,7 @@ namespace math
 			load( pXmlNode );
 		}
 
-		m_spFrame = frame;
+		m_frame = frame;
 		m_fAnimationRate = 1.0f;
 		m_fAnimationTime = 1;
 		m_fCurrentTime = 0.0f;
@@ -112,11 +112,11 @@ namespace math
 		math::quatf q;
 		math::set( q, ang );
 
-		//if (m_spFrame)
+		//if (m_frame)
 		//{
 		//
-		//	m_spFrame->set_rot( q );
-		//	m_spFrame->set_position( m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime ) );
+		//	m_frame->set_rot( q );
+		//	m_frame->set_position( m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime ) );
 		//}
 
 		vec = m_ScaleInterpolyator.getValue( m_fCurrentTime );
@@ -125,24 +125,24 @@ namespace math
 			int sdf = 0;
 		}
 
-		if (m_spFrame)
+		if (m_frame)
 		{
 			if(m_fWeight == 1.0f)
 			{
-				m_spFrame->set_scale( vec );
-				m_spFrame->set_rot( q );
-				m_spFrame->set_position( m_PosInterpolyator.getValue( m_fCurrentTime ) );
+				m_frame->set_scale( vec );
+				m_frame->set_rot( q );
+				m_frame->set_position( m_PosInterpolyator.getValue( m_fCurrentTime ) );
 			}
 			else
 			{
 				float fInverseWeight = 1.0f - m_fWeight;
-				m_spFrame->set_scale(m_spFrame->get_scale()*fInverseWeight + vec*m_fWeight );
-				m_spFrame->set_rot(m_spFrame->get_rot()*fInverseWeight + q*m_fWeight  );
-				m_spFrame->set_position(m_spFrame->get_pos()*fInverseWeight +  m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime )*m_fWeight );
+				m_frame->set_scale(m_frame->get_scale()*fInverseWeight + vec*m_fWeight );
+				m_frame->set_rot(m_frame->get_rot()*fInverseWeight + q*m_fWeight  );
+				m_frame->set_position(m_frame->get_pos()*fInverseWeight +  m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime )*m_fWeight );
 			}
 
 			//Neonic: octree. 1 ставится, если было использовано вращение или увеличение/уменьшение. Иначе ставим 0.
-			m_spFrame->update(1);
+			m_frame->update(1);
 		}
 	}
 

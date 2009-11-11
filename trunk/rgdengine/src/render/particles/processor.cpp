@@ -51,16 +51,16 @@ namespace particles{
 		//addProperty(new property<bool>(m_is_global, "IsGlobal", "bool"));
 
 		//addProperty(new property<math::FloatInterp>(m_rate, "PRate", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_PResistance, "PResistance", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_PSpin, "PSpin", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_PSpinSpread, "PSpinSpread", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_resistance, "PResistance", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_spin, "PSpin", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_spin_spread, "PSpinSpread", "FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_life, "PLife", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_PLifeSpread, "PLifeSpread", "FloatInterp"));
+		//addProperty(new property<math::FloatInterp>(m_life_spread, "PLifeSpread", "FloatInterp"));
 		//addProperty(new property<math::FloatInterp>(m_size, "PSize", "FloatInterp"));
 		//addProperty(new property<math::ColorInterp>(m_color_alpha, "PColorAlpha", "ColorInterp"));
-		//addProperty(new property<math::Vec3Interp>(m_PActingForce, "PActingForce", "Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_acting_force, "PActingForce", "Vec3Interp"));
 		//addProperty(new property<math::Vec3Interp>(m_velocity, "PVelocity", "Vec3Interp"));
-		//addProperty(new property<math::Vec3Interp>(m_PInitialVelSpread, "PInitialVelSpread", "Vec3Interp"));
+		//addProperty(new property<math::Vec3Interp>(m_initial_vel_spread, "PInitialVelSpread", "Vec3Interp"));
 		//addProperty(new property<math::FloatInterp>(m_vel_spread_amp, "PVelSpreadAmplifier", "FloatInterp"));
 	
 		// public properties:
@@ -113,7 +113,7 @@ namespace particles{
 		
 		// setGlobal acceleration
 		//const math::vec3f &acceleration = m_parent_emitter->getAcceleration(m_is_global);
-		const math::vec3f force = m_PActingForce(m_fNormalizedTime);
+		const math::vec3f force = m_acting_force(m_normalized_time);
 
 		p.vel += dt * (/*acceleration + */force * 0.5f / p.mass);
 		
@@ -123,18 +123,18 @@ namespace particles{
 		// setGlobal velocity
 		// velocity += m_parent_emitter->getGlobalVelocity(m_is_global);
 
-		float resistance = math::length(m_fScaling) * math::length(m_fScaling) * (m_PResistance(t) + 1.0f);
+		float resistance = math::length(m_scaling) * math::length(m_scaling) * (m_resistance(t) + 1.0f);
 		float vel_spread_amp = m_vel_spread_amp(t);
 
-		velocity = math::length(m_fScaling) * math::length(m_fScaling) * (p.vel_spread * vel_spread_amp + velocity ) / resistance;
+		velocity = math::length(m_scaling) * math::length(m_scaling) * (p.vel_spread * vel_spread_amp + velocity ) / resistance;
 			
 		p.sum_vel = velocity * dt;
 
 		p.pos += p.sum_vel;
 		        
-		p.size = math::length(m_fScaling)*math::length(m_fScaling) * m_size(t);
+		p.size = math::length(m_scaling)*math::length(m_scaling) * m_size(t);
 
-		p.rot_speed = m_PSpin(t);
+		p.rot_speed = m_spin(t);
 		p.rotation += p.rot_speed + p.initial_spin;
 
 		// save current update time
@@ -148,8 +148,8 @@ namespace particles{
 	{
 		m_is_fading = false;
 
-		unsigned size = static_cast<unsigned>(m_Particles.size());
-		particle* pp = &(m_Particles[0]);//[i]
+		unsigned size = static_cast<unsigned>(m_particles.size());
+		particle* pp = &(m_particles[0]);//[i]
 
 		for (unsigned i = 0; i < size; ++i)
 		{
@@ -163,13 +163,13 @@ namespace particles{
 	{
 		m_is_anim_texture_used		= false;
 		m_is_global				= true;
-		m_bModifiersLoaded		= false;
-		m_bIsPtankInited		= false;
+		m_modifiers_loaded		= false;
+		m_ptank_inited		= false;
 		m_is_visible			= true;
-		m_bIntense				= false;
+		m_intense				= false;
 		
-		m_nMaxParticles			= 0;
-		m_fNormalizedTime		= 0;
+		m_max_particles			= 0;
+		m_normalized_time		= 0;
 		
 		//m_texture_name = clx::cstr("p_default.bmp");
 	}
@@ -205,15 +205,15 @@ namespace particles{
 
 		m_dt += dt;
 
-		m_fNormalizedTime = m_parent_emitter->getTime();
+		m_normalized_time = m_parent_emitter->getTime();
 
 		math::frame_ptr rParentTransform = m_parent_emitter->get_transform();
-		//m_fScaling = (m_ParentTransform->getScaling()).x;
-		m_fScaling = rParentTransform->get_scale();
+		//m_scaling = (m_ParentTransform->getScaling()).x;
+		m_scaling = rParentTransform->get_scale();
 
 		int m_acting_particles = 0;
 		// здесь происходит апдейт партиклов
-		//for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
+		//for (particles_iter it = m_particles.begin(); it != m_particles.end(); ++it)
 		//	if (!(it->dead) && m_is_global)
 		//	{
 		//		it->pos += m_ngkx * m_parent_emitter->m_vCurDisplacement * (1.0f - (it->time / it->ttl));
@@ -222,7 +222,7 @@ namespace particles{
 		if (m_dt > 0.01f)
 		{
 			// здесь происходит апдейт партиклов
-			for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
+			for (particles_iter it = m_particles.begin(); it != m_particles.end(); ++it)
 				if (!(it->dead))// && m_is_global)
 				{
 					++m_acting_particles;
@@ -234,7 +234,7 @@ namespace particles{
 			// добавить новые партиклы если есть(если есть место в танке)
 			// куда и если оно надо (опр-ся Rate)
 			if (!m_is_fading)
-				addNewParticles(m_nMaxParticles - m_acting_particles);
+				addNewParticles(m_max_particles - m_acting_particles);
 		}
 	}
 
@@ -246,7 +246,7 @@ namespace particles{
 			return;
 
 		// скорость появления партиклов кол=во\за секунду
-		float rate = m_rate.getValue(m_fNormalizedTime) / 25.0f;
+		float rate = m_rate.getValue(m_normalized_time) / 25.0f;
 		m_rate_accum += rate;
 
 		int to_add  = (int)m_rate_accum;
@@ -256,9 +256,9 @@ namespace particles{
 		
 		int added_num = 0;
 
-		for(int i = 0; i < m_nMaxParticles; ++i)
-			if (m_Particles[i].dead && to_add > 0){
-				createParticle(m_Particles[i]);
+		for(int i = 0; i < m_max_particles; ++i)
+			if (m_particles[i].dead && to_add > 0){
+				createParticle(m_particles[i]);
 				to_add--;
 				added_num++;
 			}
@@ -273,19 +273,19 @@ namespace particles{
 		m_parent_emitter->get_particle(p);
 		p.dead = false;
 		
-		p.ttl = (m_life.getValue(m_fNormalizedTime)
-			+ rnd()* m_PLifeSpread.getValue(m_fNormalizedTime));// * 10.0f; // debug
+		p.ttl = (m_life.getValue(m_normalized_time)
+			+ rnd()* m_life_spread.getValue(m_normalized_time));// * 10.0f; // debug
 
 		if (!p.ttl)
 			p.dead = true;
 
-		math::vec3f ivs = m_PInitialVelSpread.getValue(m_fNormalizedTime);
+		math::vec3f ivs = m_initial_vel_spread.getValue(m_normalized_time);
 
 		p.vel_spread = math::vec3f(ivs[0] * (rnd()*2.0f - 1.0f),
 							ivs[1] * (rnd()*2.0f - 1.0f),
 							ivs[2] * (rnd()*2.0f - 1.0f));
 
-		p.initial_spin = (rnd() * m_PSpinSpread.getValue(m_fNormalizedTime))
+		p.initial_spin = (rnd() * m_spin_spread.getValue(m_normalized_time))
 						/(25.0f);
 		
 		if (m_is_global){
@@ -328,7 +328,7 @@ namespace particles{
 
 		math::vec3f center, vel;
 		render::lines3d& line_manager = render::render_device::get().get_lines3d(); 
-		for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
+		for (particles_iter it = m_particles.begin(); it != m_particles.end(); ++it)
 		{
 			if ((*it).dead)
 				continue;
@@ -357,10 +357,10 @@ namespace particles{
 		const math::matrix44f& ltm = get_local_tm();
 
 		renderer::particles_vector& array = m_tank->getParticles();
-		array.resize( m_Particles.size() );
+		array.resize( m_particles.size() );
 		int i = 0;
 
-		for (particles_iter it = m_Particles.begin(); it != m_Particles.end(); ++it)
+		for (particles_iter it = m_particles.begin(); it != m_particles.end(); ++it)
 		{
 			particle &p = *it;
 
@@ -496,13 +496,13 @@ namespace particles{
 	{
 		reset();
 		initPTank();
-		setIntenseMode(m_bIntense);
+		setIntenseMode(m_intense);
 	}
 
 	//-----------------------------------------------------------------------------------
 	void processor::initPTank()
 	{
-		if (!m_nMaxParticles) return;
+		if (!m_max_particles) return;
 
 		if( m_tank ) 	delete m_tank;
 
@@ -514,9 +514,9 @@ namespace particles{
 			if( !(m_texture /*&& m_texture->isLoaded()*/ ) )
 				loadTexture();
 
-		setIntenseMode(m_bIntense);
+		setIntenseMode(m_intense);
 
-		m_bIsPtankInited = true;
+		m_ptank_inited = true;
 
 		return;
 	}
@@ -524,17 +524,17 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void processor::assignChilds()
 	{
-		m_bModifiersLoaded = true;
+		m_modifiers_loaded = true;
 	}
 
 	//-----------------------------------------------------------------------------------
 	void processor::to_stream(io::write_stream& wf) const
 	{
 		wf  << file_version
-			<< m_bIntense
-			<< m_fScaling
+			<< m_intense
+			<< m_scaling
 			<< m_is_global
-			<< m_nMaxParticles
+			<< m_max_particles
 			<< m_texture_name
 			<< m_is_sparks
 			//<< m_DffName
@@ -543,16 +543,16 @@ namespace particles{
 			<< m_texture_fps
 			<< (m_is_anim_texture_cycled)
 			<< (m_rate)
-			<< (m_PResistance)
-			<< (m_PSpin)
-			<< (m_PSpinSpread)
+			<< (m_resistance)
+			<< (m_spin)
+			<< (m_spin_spread)
 			<< (m_life)
-			<< (m_PLifeSpread)
+			<< (m_life_spread)
 			<< (m_size)
 			<< (m_color_alpha)
-			<< (m_PActingForce)
+			<< (m_acting_force)
 			<< (m_velocity)
-			<< (m_PInitialVelSpread)
+			<< (m_initial_vel_spread)
 			<< (m_vel_spread_amp)
 			<< m_rnd_frame
 			<< m_is_play_tex_anim;
@@ -565,10 +565,10 @@ namespace particles{
 		if( version != file_version )
 			assert(false);
 
-		rf	>> m_bIntense
-			>> m_fScaling
+		rf	>> m_intense
+			>> m_scaling
 			>> m_is_global
-			>> m_nMaxParticles
+			>> m_max_particles
 			>> m_texture_name
 			>> m_is_sparks
 			//>> m_DffName
@@ -577,21 +577,21 @@ namespace particles{
 			>> m_texture_fps
 			>> (m_is_anim_texture_cycled)
 			>> (m_rate)
-			>> (m_PResistance)
-			>> (m_PSpin)
-			>> (m_PSpinSpread)
+			>> (m_resistance)
+			>> (m_spin)
+			>> (m_spin_spread)
 			>> (m_life)
-			>> (m_PLifeSpread)
+			>> (m_life_spread)
 			>> (m_size)
 			>> (m_color_alpha)
-			>> (m_PActingForce)
+			>> (m_acting_force)
 			>> (m_velocity)
-			>> (m_PInitialVelSpread)
+			>> (m_initial_vel_spread)
 			>> (m_vel_spread_amp)
 			>> m_rnd_frame
 			>> m_is_play_tex_anim;
 
-		setMaxParticles( m_nMaxParticles );
+		setMaxParticles( m_max_particles );
 	}
 
 }

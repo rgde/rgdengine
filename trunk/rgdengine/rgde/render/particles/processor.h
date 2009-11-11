@@ -48,16 +48,16 @@ namespace particles{
 
 		// interpolators
 		inline math::FloatInterp& particleRate()				{ return m_rate; }
-		inline math::FloatInterp& particleResistance()			{ return m_PResistance; }
-		inline math::FloatInterp& particleSpin()				{ return m_PSpin; }
-		inline math::FloatInterp& particleSpinSpread()			{ return m_PSpinSpread; }
+		inline math::FloatInterp& particleResistance()			{ return m_resistance; }
+		inline math::FloatInterp& particleSpin()				{ return m_spin; }
+		inline math::FloatInterp& particleSpinSpread()			{ return m_spin_spread; }
 		inline math::FloatInterp& particleLife()				{ return m_life; }
-		inline math::FloatInterp& particleLifeSpread()			{ return m_PLifeSpread; }
+		inline math::FloatInterp& particleLifeSpread()			{ return m_life_spread; }
 		inline math::FloatInterp& particleSize()				{ return m_size; }
 		inline math::ColorInterp& particleColorAlpha()			{ return m_color_alpha; }
-		inline math::Vec3Interp& particleActingForce()			{ return m_PActingForce; }
+		inline math::Vec3Interp& particleActingForce()			{ return m_acting_force; }
 		inline math::Vec3Interp& particleVelocity()				{ return m_velocity; }
-		inline math::Vec3Interp& particleInitialVelSpread()		{ return m_PInitialVelSpread; }
+		inline math::Vec3Interp& particleInitialVelSpread()		{ return m_initial_vel_spread; }
 		inline math::FloatInterp& particleVelSpreadAmplifier()	{ return m_vel_spread_amp; }
 
 		// getters/setters
@@ -67,20 +67,20 @@ namespace particles{
 		inline bool is_fading() const { return m_is_fading; }
 		inline void set_fade(bool b) { m_is_fading = b; }
 
-		inline unsigned getMaxParticles() const { return m_nMaxParticles; }
+		inline unsigned getMaxParticles() const { return m_max_particles; }
 		inline void setMaxParticles (unsigned num) { 
-			m_nMaxParticles = num; 
-			m_Particles.resize(m_nMaxParticles);
+			m_max_particles = num; 
+			m_particles.resize(m_max_particles);
 		}
 
-		inline int getSeed() const { return m_nMaxParticles; }
+		inline int getSeed() const { return m_max_particles; }
 		inline void set_seed(int seed) { m_rnd_seed = seed; }
 
 		inline bool isVisible() const { return m_is_visible; }
 		inline void setVisible(bool visible) { m_is_visible = visible; }
 
-		inline bool getIntenseMode() const { return m_bIntense; }
-		inline void setIntenseMode(bool intense) { m_bIntense = intense; }
+		inline bool getIntenseMode() const { return m_intense; }
+		inline void setIntenseMode(bool intense) { m_intense = intense; }
 
 		inline bool getSparkMode() { return m_is_sparks; }
 		inline void setSparkMode(bool sm) { m_is_sparks = sm; }
@@ -139,43 +139,40 @@ namespace particles{
 		int m_rnd_seed;
 
 		math::FloatInterp m_rate;						// Число излучаемых частиц в единицу времени
-		math::FloatInterp m_PResistance;				// Трение (торможение)
-		math::FloatInterp m_PSpin;						// Вращение
-		math::FloatInterp m_PSpinSpread;
+		math::FloatInterp m_resistance;				// Трение (торможение)
+		math::FloatInterp m_spin;						// Вращение
+		math::FloatInterp m_spin_spread;
 		math::FloatInterp m_life;						// Время жизни (Time to live, TTL)
-		math::FloatInterp m_PLifeSpread;
+		math::FloatInterp m_life_spread;
 		math::FloatInterp m_size;						// Размер 
 		math::ColorInterp m_color_alpha;				// Цвет и альфа, 2 в 1
-		math::Vec3Interp m_PActingForce;
+		math::Vec3Interp m_acting_force;
 		math::Vec3Interp m_velocity;					// Скорость (XYZ)
-		math::Vec3Interp m_PInitialVelSpread;
+		math::Vec3Interp m_initial_vel_spread;
 		math::FloatInterp m_vel_spread_amp;		// Усилитель начального рандома скорости
 
-		//std::string name; // для будущего использования
 		std::string m_texture_name;
 
 		bool m_is_fading;								// Затухает ли процессор (затухающий процессор не излучает новых частиц)
 		bool m_is_global;								// Является ли процессор глобальным (т.е. не имеющим родительских трансформаций)
 
-		bool m_bIntense;								// Меняет режим блендинга
-		math::vec3f m_fScaling;								// Масштабирование родительского эмитера
-		int m_nMaxParticles;							// Максимальное число частиц в процессоре
+		bool m_intense;								// Меняет режим блендинга
+		math::vec3f m_scaling;								// Масштабирование родительского эмитера
+		int m_max_particles;							// Максимальное число частиц в процессоре
 
 		float m_ngkx;
 		
 		bool m_is_sparks;
 		bool m_is_geometric;
-		//std::string m_DffName;
-		//agl::PAtomic m_spGeom;
 
-		particles_vector m_Particles;
+		particles_vector m_particles;
 
-		bool m_bModifiersLoaded;
+		bool m_modifiers_loaded;
 		bool m_is_visible;
 		bool m_is_texture_loaded;
-		bool m_bIsPtankInited;
+		bool m_ptank_inited;
 
-		float m_fNormalizedTime;		// нормированное от 0 до 1
+		float m_normalized_time;		// нормированное от 0 до 1
 		float m_rate_accum;				// собирает нецелые части от rate от кадра к кадру
 		float m_dt;
 	};
