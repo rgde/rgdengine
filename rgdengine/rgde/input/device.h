@@ -5,11 +5,11 @@
 namespace input
 {
     //input device
-    class device_dx9
+    class device
     {
     public:
-		device_dx9(types::device name, int index, input_impl &input_system);
-        virtual ~device_dx9();
+		device(types::device name, int index, input_impl &input_system);
+        virtual ~device();
 
 		//get device name
         types::device get_name () const {return m_name;}

@@ -36,7 +36,7 @@ namespace io
 		bool		is_exist	(const std::string& file_path) const;
 
 	public:
-		typedef std::list<PFileSource> Sources;
+		typedef std::vector<PFileSource> Sources;
 		Sources m_sources;
 		Path	m_rootPath;
 	};

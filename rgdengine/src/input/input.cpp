@@ -76,19 +76,19 @@ namespace input
         get().m_pImpl->Save(sXml);
     }
 
-    device_dx9* Input::get_device (types::device eDeviceName, int indx)
+    device* Input::get_device (types::device eDeviceName, int indx)
     {
         return get().m_pImpl->get_device(eDeviceName, indx);
     }
 
-    device_dx9* Input::get_device (const std::wstring &sDeviceName, int indx)
+    device* Input::get_device (const std::wstring &sDeviceName, int indx)
     {
         return get().m_pImpl->get_device(sDeviceName, indx);
     }
 
-	Control* Input::GetControl(types::device device, int dev_index, types::control control)
+	Control* Input::GetControl(types::device device_type, int dev_index, types::control control)
 	{
-		if (device_dx9* dev = get_device(device, dev_index))
+		if (device* dev = get_device(device_type, dev_index))
 			return dev->get_control(control);
 
 		return NULL;

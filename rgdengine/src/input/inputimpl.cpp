@@ -43,10 +43,10 @@ namespace input
         doneDXInput();
 
         //выполнить подключение к устройствам ввода с новыми настройками
-        if (!init_dx_input(m_hWnd,exclusive,foreground))
+        if (!init_input(m_hWnd,exclusive,foreground))
         {
             //если не удалось, то подключится со старыми настройками
-            init_dx_input(m_hWnd,m_exclusive,m_foreground);
+            init_input(m_hWnd,m_exclusive,m_foreground);
             return false;
         }
 
@@ -60,13 +60,13 @@ namespace input
             Done();
 
         //инициализируем DXInput
-        m_bInit = init_dx_input (hWnd,exclusive,foreground);
+        m_bInit = init_input (hWnd,exclusive,foreground);
         if (!m_bInit)
             return false;
 
         //заполним массив m_devices
-        m_devices.push_back (new device_dx9(types::Keyboard, 0, *this));
-        m_devices.push_back (new device_dx9(types::Mouse,    0, *this));
+        m_devices.push_back (new device(types::Keyboard, 0, *this));
+        m_devices.push_back (new device(types::Mouse,    0, *this));
 
         //заполним список контролов
         keyboard = *(m_devices.begin());
@@ -246,7 +246,7 @@ namespace input
 						{
 							std::string sDevice(ctrl->Attribute("device"));
 							std::string sControl(ctrl->Attribute("name"));
-							device_dx9 *d = get_device(String2Device(std::wstring(sDevice.begin(), sDevice.end())));
+							device *d = get_device(String2Device(std::wstring(sDevice.begin(), sDevice.end())));
 							if (d)
 							{
 								Control *c = d->get_control(String2Control(std::wstring(sControl.begin(), sControl.end())));
@@ -343,10 +343,10 @@ namespace input
             std::string command_name(sCommandNameW.begin(), sCommandNameW.end());
             command->SetAttribute("name", command_name.c_str());
 
-            std::list<device_dx9*>::iterator j = m_devices.begin();
+            std::list<device*>::iterator j = m_devices.begin();
             while (j != m_devices.end())
             {
-                device_dx9 *pDevice = *j;
+                device *pDevice = *j;
 
                 std::wstring sDeviseNameW = Device2String(pDevice->get_name());
                 std::string sDeviceName(sDeviseNameW.begin(), sDeviseNameW.end());
@@ -397,17 +397,12 @@ namespace input
         m_bInit = false;
     }
  
-    ////////////////////////////////
-    // доступ к устройствам ввода //
-    ////////////////////////////////
-
-    //получить устройство
-    device_dx9* input_impl::get_device (types::device eDeviceName, int indx/*=0*/)
+    device* input_impl::get_device (types::device eDeviceName, int indx/*=0*/)
     {
         if (!m_bInit)
             return 0;
 
-        std::list<device_dx9*>::iterator i = m_devices.begin();
+        std::list<device*>::iterator i = m_devices.begin();
         while (i != m_devices.end())
         {
             if ((*i)->get_name() == eDeviceName && (*i)->get_device_index() == indx)
@@ -418,7 +413,7 @@ namespace input
         return 0;
     }
 
-    device_dx9* input_impl::get_device (const std::wstring &sDeviceName, int indx/*=0*/)
+    device* input_impl::get_device (const std::wstring &sDeviceName, int indx/*=0*/)
     {
         return get_device(String2Device(sDeviceName), indx);
     }
@@ -429,7 +424,7 @@ namespace input
         if (!m_bInit)
             return false;
 
-        std::list<device_dx9*>::const_iterator i = m_devices.begin();
+        std::list<device*>::const_iterator i = m_devices.begin();
         while (i != m_devices.end())
         {
             if ((*i)->get_name() == eDeviceName && (*i)->get_device_index() == indx)
@@ -502,7 +497,7 @@ namespace input
         if (!m_bInit)
             return;
 
-        std::list<device_dx9*>::iterator i = m_devices.begin();
+        std::list<device*>::iterator i = m_devices.begin();
 
         while (i != m_devices.end())
         {
@@ -512,7 +507,7 @@ namespace input
     }
 
     //инициализация DXInput
-    bool input_impl::init_dx_input (HWND hWnd, bool exclusive, bool foreground)
+    bool input_impl::init_input (HWND hWnd, bool exclusive, bool foreground)
     {
         //получаем окно верхнего уровня
         {

@@ -15,7 +15,7 @@ namespace input
             Axis
         };
 
-        Control(types::control name, type type, device_dx9 &device);
+        Control(types::control name, type type, device &device);
 
         types::control get_name () const {return m_name;}
 		type    get_type () const {return m_type;}
@@ -42,7 +42,7 @@ namespace input
         int  m_delta;
 
     private:
-        device_dx9          &m_device; //устройство, которому принадлежит контрол
+        device          &m_device; //устройство, которому принадлежит контрол
         type            m_type;   //тип контрола
         types::control  m_name;   //'имя' контрола
 
