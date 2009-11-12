@@ -30,8 +30,8 @@ namespace input
         void Done();
 
         //получить устройство
-        device_dx9* get_device(types::device      eDeviceName, int indx=0);
-        device_dx9* get_device(const std::wstring &sDeviceName, int indx=0);
+        device* get_device(types::device      eDeviceName, int indx=0);
+        device* get_device(const std::wstring &sDeviceName, int indx=0);
 
         //есть ли такое устройство
         bool is_present(types::device      eDeviceName, int indx=0) const;
@@ -52,7 +52,7 @@ namespace input
 		input_impl (const input_impl&);
 		input_impl& operator= (const input_impl&);
 
-		bool init_dx_input(HWND hWnd, bool exclusive, bool foreground);
+		bool init_input(HWND hWnd, bool exclusive, bool foreground);
 		void doneDXInput();
 
 		//обработка клавиатурных событий
@@ -61,12 +61,12 @@ namespace input
 		void mProcess (DIDEVICEOBJECTDATA data);
 
     private:
-        std::list<device_dx9*> m_devices;
+        std::list<device*> m_devices;
         std::list<command_ptr> m_commands;
 		
 		//вспомогательные переменные для более быстрого доступа
-        device_dx9*            keyboard; 
-        device_dx9*            mouse;    
+        device* keyboard; 
+        device* mouse;    
 
         bool m_bInit;
 

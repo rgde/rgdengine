@@ -3,7 +3,7 @@
 namespace input
 {
     class input_impl; //система ввода
-    class device_dx9;    //устройство ввода
+    class device;    //устройство ввода
     class Control;   //элемент (кнопка или ось) ввода
     class Command;   //команда ввода
 

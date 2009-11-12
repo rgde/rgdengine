@@ -7,13 +7,13 @@
 
 namespace input
 {
-    Control::Control(types::control name, type eType, device_dx9 &device):
-        m_device (device),
-        m_type   (eType),
-        m_time   (0),
-        m_press  (false),
-        m_delta  (0),
-        m_name   (name)
+    Control::Control(types::control name, type eType, device &device)
+		: m_device(device)
+        , m_type(eType)
+        , m_time(0)
+        , m_press(false)
+        , m_delta(0)
+        , m_name(name)
     {
     }
 

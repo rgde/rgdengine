@@ -24,8 +24,8 @@ namespace input
 
         // доступ к устройствам ввода
         //получить устройство
-        static device_dx9* get_device (types::device eDeviceName, int indx=0);
-        static device_dx9* get_device (const std::wstring &sDeviceName, int indx=0);
+        static device* get_device (types::device eDeviceName, int indx=0);
+        static device* get_device (const std::wstring &sDeviceName, int indx=0);
         //есть ли такое устройство
         static bool is_present (types::device eDeviceName, int indx=0);
         static bool is_present (const std::wstring &sDeviceName, int indx=0);

@@ -3,6 +3,14 @@
 #include <rgde/io/file_system.h>
 #include <rgde/io/file.h>
 
+namespace
+{
+	bool operator<(const io::PFileSource& s1, const io::PFileSource& s2)
+	{
+		return s1->get_priority() < s2->get_priority();
+	}
+}
+
 namespace io
 {
 	class directory_source : public base_file_souce
@@ -61,21 +69,10 @@ namespace io
 		m_rootPath = path;
 	}
 
-	namespace functors
-	{
-		struct PrioritySorter
-		{
-			bool operator()(const PFileSource &s1, const PFileSource &s2)
-			{
-				return s1->get_priority() < s2->get_priority();
-			}
-		};
-	}	
-
 	void CFileSystem::addFileSource(const PFileSource& spFileSource)
 	{
 		m_sources.push_back(spFileSource);
-		//std::sort(m_sources.begin(), m_sources.end(), functors::PrioritySorter());
+		std::sort(m_sources.begin(), m_sources.end());
 	}
 
 	readstream_ptr CFileSystem::find(const std::string& file_path) const
