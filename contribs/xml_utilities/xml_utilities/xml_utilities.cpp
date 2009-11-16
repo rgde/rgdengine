@@ -152,7 +152,7 @@ namespace details
 			catch (boost::bad_lexical_cast& ex)
 			{
 				
-				std::cerr << "Invalid pram types!" << std::endl
+				std::cerr << "Invalid param types!" << std::endl
 						<< ex.what() << std::endl;
 				return result_type();				
 			}			
@@ -167,12 +167,11 @@ namespace details
 		{
 			if (c.args.size() != FunctionType::args)
 			{
-				std::cerr << "Invalid number of argiments!" << std::endl;
+				std::cerr << "Invalid number of arguments!" << std::endl;
 				std::cerr << "Number of args is " << FunctionType::args << std::endl;
 				return FunctionType::result_type();
 			}
 			return call_helper::call(c, func);
-			//return FunctionType::result_type();
 		}
 	};
 
@@ -196,11 +195,53 @@ struct command_processor
 	{
 		std::string name;
 		funcs_helpers::func_ptr func;
-		boost::any execute(const command& c) {return func ? func->execute(c) : boost::any();}
+		boost::any execute(const command& c) const
+		{
+			return func ? func->execute(c) : boost::any();
+		}
 	};
 
 	typedef std::map<std::string, command_info> Commands;
 	Commands commands;
+
+	//////////////////////////////////////////////////////////////////////////
+
+	template<typename ret_type>
+	void bind(const std::string& command_name, ret_type (* mem_func_ptr)())
+	{
+		boost::function<ret_type()> f = boost::bind(mem_func_ptr);
+		bind(command_name, f);
+	}
+
+	template<typename ret_type, typename P1>
+	void bind(const std::string& command_name, ret_type (* mem_func_ptr)(P1))
+	{
+		boost::function<ret_type(P1)> f = boost::bind(mem_func_ptr, _1);
+		bind(command_name, f);
+	}
+
+	template<typename ret_type, typename P1, typename P2>
+	void bind(const std::string& command_name, ret_type (* mem_func_ptr)(P1, P2))
+	{		
+		boost::function<ret_type(P1, P2)> f = boost::bind(mem_func_ptr, _1, _2);
+		bind(command_name, f);
+	}
+
+	template<typename ret_type, typename P1, typename P2, typename P3>
+	void bind(const std::string& command_name, ret_type (* mem_func_ptr)(P1, P2, P3))
+	{
+		boost::function<ret_type(P1, P2, P3)> f = boost::bind(mem_func_ptr, _1, _2, _3);
+		bind(command_name, f);
+	}
+
+	template<typename ret_type, typename P1, typename P2, typename P3, typename P4>
+	void bind(const std::string& command_name, ret_type (* mem_func_ptr)(P1, P2, P3, P4))
+	{
+		boost::function<ret_type(P1, P2, P3, P4)> f = boost::bind(mem_func_ptr, _1, _2, _3, _4);
+		bind(command_name, f);
+	}
+
+	//////////////////////////////////////////////////////////////////////////
 
 	template<class FunctionType>
 	void bind(const std::string& command_name, FunctionType func)//, ...)
@@ -259,10 +300,6 @@ std::ostream& operator <<(std::ostream& out, const boost::any& value)
 	{
 		out << boost::any_cast<float>(value);
 	}
-	//else if ()
-	//{
-
-	//}
 
 	return out;
 }
@@ -274,17 +311,11 @@ void print_help()
 
 void init_command_processor(command_processor& processor)
 {
-	using boost::function_traits;
-	using boost::bind;
-
-	boost::function<float(float, float)> f = bind(&math::rand, _1, _2);
-	processor.bind("rand", f);
-	
-	boost::function<void()> f1 = bind(&print_help);
-	processor.bind("help", f1); 
-
-	// для такой записи надо сделать перегруженную ф-ию bind для boost::function
-	//processor.bind("help", &print_help); 
+	processor.bind("help", &print_help);
+	processor.bind("rand", &math::rand);
+	//OR using boost bind
+	//boost::function<float(float, float)> f = boost::bind(&math::rand, _1, _2);
+	//processor.bind("rand", f);
 }
 
 void execute_commands(std::vector<std::string>& commands, const command_processor& processor)
