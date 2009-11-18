@@ -7,10 +7,10 @@ namespace core
 	class base_task
 	{
 	public:
-		base_task(const application& app, int nPriority = 0);
+		base_task(const application& app, int priority = 0);
 		virtual ~base_task();
 
-		int get_priority() const {return m_nPriority;}
+		int get_priority() const {return m_priority;}
 
 		void start();
 		void stop();
@@ -18,14 +18,15 @@ namespace core
 		void execute();
 
 		const application& get_application() const {return m_application;}
+		application& get_application() {return m_application;}
 
 	protected:
 		virtual void run() = 0;
 
 	private:
-		bool m_bIsPaused;
-		bool m_bIsStarted;
-		int m_nPriority;
+		bool m_is_paused;
+		bool m_is_started;
+		int m_priority;
 		const application& m_application;
 	};
 

@@ -73,7 +73,7 @@ namespace core
 		
 		typedef std::list<task_ptr> TaskList;
 		TaskList m_tasks;
-		bool	m_bIsPaused;
+		bool	m_is_paused;
 		bool	m_bIsClosing;
 		RECT	m_rcClientOld;
 	};
@@ -105,7 +105,7 @@ namespace core
 						// пока здесь паузятся все таски, но потом 
 						// обработчики надо разнести и паузить только
 						// апдейты, т.е. здесь надо отсылать эвент
-						m_bIsPaused = !m_bIsPaused;
+						m_is_paused = !m_is_paused;
 						break; 
 					}
 			};
@@ -170,7 +170,7 @@ namespace core
 
 		if( SIZE_MINIMIZED == wParam )
 		{
-			m_bIsPaused = true;
+			m_is_paused = true;
 		}
 		else
 		{
@@ -186,7 +186,7 @@ namespace core
 			}
 			else if( SIZE_MAXIMIZED == wParam )
 			{
-				m_bIsPaused = false;
+				m_is_paused = false;
 				CheckForWindowSizeChange();
 			}
 			else if( SIZE_RESTORED == wParam )
@@ -198,12 +198,12 @@ namespace core
 	//------------------------------------------------------------------
 	void application_impl::OnEnterSizeMove(forms::Message &msg)
 	{
-		m_bIsPaused = true;
+		m_is_paused = true;
 	}
 	//------------------------------------------------------------------
 	void application_impl::OnExitSizeMove(forms::Message &msg)
 	{
-		m_bIsPaused = false;
+		m_is_paused = false;
 		CheckForWindowSizeChange();
 	}
 	//------------------------------------------------------------------
@@ -221,14 +221,14 @@ namespace core
 		if( rcClientOld.right - rcClientOld.left != rcWindowClient.right - rcWindowClient.left ||
 			rcClientOld.bottom - rcClientOld.top != rcWindowClient.bottom - rcWindowClient.top )
 		{
-			m_bIsPaused = true;
+			m_is_paused = true;
 
 			// TODO: Send event with new sizes
 			int width = rcWindowClient.right - rcWindowClient.left;
 			int height = rcWindowClient.bottom - rcWindowClient.top;
 			this->send_event<window_resize>(window_resize(width, height));
 
-			m_bIsPaused = false;
+			m_is_paused = false;
 		}
 
 		// TODO: !!!!!!!
@@ -317,7 +317,7 @@ namespace core
 		return pApp;
 	}
 
-	application_impl::application_impl() : m_bIsPaused(false), m_bIsClosing(false)
+	application_impl::application_impl() : m_is_paused(false), m_bIsClosing(false)
 	{
 		gs_pApplication = this;
 		base::log::init();
@@ -536,7 +536,7 @@ namespace core
 				//}
 				//else
 				{
-					if (!m_bIsPaused)
+					if (!m_is_paused)
 						for (TaskList::iterator it = m_tasks.begin(); it != m_tasks.end(); ++it)
 						{							
 							(*it)->execute();							
