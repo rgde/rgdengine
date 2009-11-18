@@ -157,7 +157,7 @@ namespace render
 		if (file_name.empty())
 			return;
 
-		io::file_system &fs		= io::TheFileSystem::get();
+		io::file_system &fs		= io::file_system::get();
 		io::scope_path p	("./Media/Common/Textures/");
 		io::readstream_ptr in		= fs.find(file_name);
 
