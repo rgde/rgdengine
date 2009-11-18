@@ -8,6 +8,7 @@
 
 #include "details.h"
 #include "type_info.h"
+#include "storage.h"
 
 
 struct test_base 

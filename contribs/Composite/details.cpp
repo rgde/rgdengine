@@ -6,6 +6,42 @@ namespace meta
 {
 	namespace details
 	{
+		abstract_property::abstract_property(const string& _name, const type_info& owner, const type_info& type)
+			: value_type(type)
+			, owner_type(owner)
+			, name(_name)
+		{
+		}
+
+		abstract_property::~abstract_property() 
+		{
+		}
+
+		bool abstract_property::operator==(const abstract_property& p) const 
+		{
+			return name == p.name;
+		}
+
+		bool abstract_property::operator!=(const abstract_property& p) const 
+		{
+			return !((*this)==p);
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+
+		bool operator==(const property_ptr& p1, const property_ptr& p2)
+		{
+			return *p1 == *p2;
+		}
+
+		bool operator!=(const property_ptr& p1, const property_ptr& p2)
+		{
+			return *p1 != *p2;
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+
+
 		void factory::register_type(type_information& ti)
 		{
 			types[ti.type_name] = &ti;

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "type_info.h"
+#include "object.h"
+#include "concrete_type_info.h"
 
 namespace meta
 {

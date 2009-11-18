@@ -1,5 +1,6 @@
 #pragma once
 
+#include "details.h"
 
 namespace meta
 {
