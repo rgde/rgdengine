@@ -1,5 +1,7 @@
 #pragma once
 
+#include "module.h"
+
 namespace meta
 {
 	struct storage
