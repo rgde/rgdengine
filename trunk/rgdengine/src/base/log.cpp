@@ -86,8 +86,8 @@ void log::destroy()
 	}
 }
 //-------------------------------------------------------------------------------------------------
-// начало новой строки
-log& log::beginLine(byte r, byte g, byte b)
+// begin of new line
+log& log::beginLine(uchar r, uchar g, uchar b)
 {
 #ifdef _DEBUG
 	if ( !isLineEnded )
@@ -110,7 +110,7 @@ log& log::beginLine(byte r, byte g, byte b)
 	return *this;
 }
 //-------------------------------------------------------------------------------------------------
-// начало новой строки
+// begin of new line
 log& log::beginLine(int col, int style)
 {
 	if ( !isLineEnded )
@@ -316,8 +316,7 @@ log& efont( log& l )
 log& change_font(log& l, int col, int style)
 {
 	if (l.initialized)
-	{
-		
+	{		
 		l << "<font color = \"#";
 		l.logFile.setf(std::ios_base::hex, std::ios_base::basefield);
 
@@ -325,13 +324,13 @@ log& change_font(log& l, int col, int style)
 		l << col << "\">";
 		l.logFile.setf(std::ios_base::dec, std::ios_base::basefield);
 
-		if ( style & LS_BOLD )
+		if ( style & log::bold )
 		{
 			l << "<b>";
 			bold = true;
 		}
 
-		if ( style & LS_ITALIC )
+		if ( style & log::italic )
 		{
 			l << "<i>";
 			italic = true;
@@ -339,6 +338,70 @@ log& change_font(log& l, int col, int style)
 	}
 	return l;
 }
+
+log& log::get()
+{
+	if ( 0 == instance )
+		new log();
+
+	return *instance;
+}
+
+log& log::operator << ( log& (*manip)(log&) )
+{
+	return (*manip)(*this);
+}
+
+// работа с манипуляторами, получающими в качестве параметра int (hex)
+log& log::operator << ( int_manip &manip )
+{
+	return manip.func(*this, manip.i);
+}
+
+// работа с манипулятором стиля
+log& log::operator << ( font_manip &manip )
+{
+	return manip.func(*this, manip.col, manip.style);
+}
+
+log& print_hex(log& l, int i)
+{
+	l.logFile.setf(std::ios_base::hex, std::ios_base::basefield);
+	l.logFile.setf(std::ios_base::uppercase);
+	l << "0x" << i;
+	l.logFile.setf(std::ios_base::dec, std::ios_base::basefield);
+	return l;
+}
+
+int_manip hex(int i)
+{
+	return int_manip(print_hex, i);
+}
+
+log& operator << ( log& l, math::vec3f& v )
+{
+	l << "(" << v[0] << "," << v[1] << "," << v[2] << ")\n";
+	return l;
+}
+
+log& operator << ( log& l, math::vec2f& v )
+{
+	l << "(" << v[0] << "," << v[1] << ")\n";
+	return l;
+}
+
+log& operator << ( log& l, math::vec4f& v )
+{
+	l << "(" << v[0] << "," << v[1] << "," << v[2] << "," << v[3] << ")\n";
+	return l;
+}
+
+log& operator << (log& l, math::Rect& r)
+{
+	l << "(" << r.x << "," << r.y << "," << r.w << "," << r.h << ")";
+	return l;
+}
+
 
 font_manip font(int col, int style)
 {

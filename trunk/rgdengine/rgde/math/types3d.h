@@ -49,7 +49,8 @@ namespace math
 	{
 		Rect() {}
 		Rect(float x, float y, float w, float h)
-			: position(x,y) , size(w,h)
+			: position(x,y)
+			, size(w,h)
 		{}
 
 		Rect(const vec2f& pos, const vec2f& s);
