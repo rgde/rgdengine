@@ -5,7 +5,7 @@
 
 namespace
 {
-	bool operator<(const io::PFileSource& s1, const io::PFileSource& s2)
+	bool operator<(const io::file_source_ptr& s1, const io::file_source_ptr& s2)
 	{
 		return s1->get_priority() < s2->get_priority();
 	}
@@ -47,38 +47,38 @@ namespace io
 		Path	m_path;
 	};
 
-	PFileSource base_file_souce::CreateDirectorySource(const Path &path)
+	file_source_ptr base_file_souce::create_source(const Path &path)
 	{
-		return PFileSource(new directory_source(path));
+		return file_source_ptr(new directory_source(path));
 	}
 
 
-	CFileSystem::CFileSystem()
-		: m_rootPath("./Media/")
+	file_system::file_system()
+		: m_root_path("./Media/")
 	{
-		addFileSource(PFileSource(new directory_source(Path(""))));
+		add_file_source(file_source_ptr(new directory_source(Path(""))));
 	}
 
-	const Path& CFileSystem::getRootDir() const
+	const Path& file_system::get_root_dir() const
 	{
-		return m_rootPath;
+		return m_root_path;
 	}
 
-	void CFileSystem::setRootDir(const Path &path)
+	void file_system::set_root_dir(const Path &path)
 	{
-		m_rootPath = path;
+		m_root_path = path;
 	}
 
-	void CFileSystem::addFileSource(const PFileSource& spFileSource)
+	void file_system::add_file_source(const file_source_ptr& spFileSource)
 	{
 		m_sources.push_back(spFileSource);
 		std::sort(m_sources.begin(), m_sources.end());
 	}
 
-	readstream_ptr CFileSystem::find(const std::string& file_path) const
+	readstream_ptr file_system::find(const std::string& file_path) const
 	{
 		readstream_ptr s;
-		std::string total_path	= m_rootPath.string();
+		std::string total_path	= m_root_path.string();
 		if(total_path != "")
 		{
 			char last = total_path[total_path.size() - 1];
@@ -88,7 +88,7 @@ namespace io
 		}
 		total_path += file_path;
 
-		for (Sources::const_iterator it = m_sources.begin(); it != m_sources.end(); ++it)
+		for (sources_vector::const_iterator it = m_sources.begin(); it != m_sources.end(); ++it)
 		{
 			s = (*it)->find(total_path);
 			if (s)
@@ -98,12 +98,12 @@ namespace io
 		return s;
 	}
 
-	bool CFileSystem::is_exist(const std::string& file_path) const
+	bool file_system::is_exist(const std::string& file_path) const
 	{
 		bool result	= false;
-		std::string total_path	= m_rootPath.string() + "/" + file_path;
+		std::string total_path	= m_root_path.string() + "/" + file_path;
 
-		for (Sources::const_iterator it = m_sources.begin(); it != m_sources.end(); ++it)
+		for (sources_vector::const_iterator it = m_sources.begin(); it != m_sources.end(); ++it)
 		{
 			result = (*it)->is_exist(total_path);
 			if (result)
@@ -113,27 +113,27 @@ namespace io
 		return result;
 	}
 
-	ScopePathChange::ScopePathChange(const std::string& strNewPath)
-		: m_oldPath(TheFileSystem::get().getRootDir())
+	scope_path::scope_path(const std::string& new_path)
+		: m_old_path(TheFileSystem::get().get_root_dir())
 	{
-		TheFileSystem::get().setRootDir(Path(strNewPath));
+		TheFileSystem::get().set_root_dir(Path(new_path));
 	}
 
-	ScopePathChange::~ScopePathChange()
+	scope_path::~scope_path()
 	{
-		TheFileSystem::get().setRootDir(m_oldPath);
+		TheFileSystem::get().set_root_dir(m_old_path);
 	}
 
 
-	path_add_scoped::path_add_scoped(const std::string& strNewPath)
-		: m_oldPath(TheFileSystem::get().getRootDir())
+	path_add_scoped::path_add_scoped(const std::string& new_path)
+		: m_old_path(TheFileSystem::get().get_root_dir())
 	{
-		std::string total_path	= m_oldPath.string() + "/" + strNewPath;
-		TheFileSystem::get().setRootDir(Path(total_path));
+		std::string total_path	= m_old_path.string() + "/" + new_path;
+		TheFileSystem::get().set_root_dir(Path(total_path));
 	}
 
 	path_add_scoped::~path_add_scoped()
 	{
-		TheFileSystem::get().setRootDir(m_oldPath);
+		TheFileSystem::get().set_root_dir(m_old_path);
 	}
 }

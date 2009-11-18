@@ -92,7 +92,7 @@ namespace math
 	void CTrack::load(const std::string& strTrackFileName)
     {
 		//base::lmsg << "loading track: " << "\"" << strTrackFileName << "\"";
-		io::CFileSystem& fs = io::TheFileSystem::get();
+		io::file_system& fs = io::TheFileSystem::get();
 		io::readstream_ptr in = fs.find(strTrackFileName);
 
 		if (!in)

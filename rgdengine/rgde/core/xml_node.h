@@ -8,11 +8,13 @@ namespace core
 	{
 		struct node_not_found : public std::exception
 		{
-			node_not_found(const std::string& node_name) : 
-			  std::exception(std::string("node <" + node_name + "> not found!").c_str())
-			  {
-			  }
+			explicit node_not_found(const std::string& node_name);
 		};
+
+		inline node_not_found::node_not_found(const std::string& node_name)
+			: std::exception(std::string("node <" + node_name + "> not found!").c_str())
+		{
+		}
 	}
 
 	template <class T>
@@ -39,10 +41,10 @@ namespace core
 		const node*		get_parent() const  {return m_parent;}
 		node*			get_parent()		{return m_parent;}
 
-		//children_list& get_children() {return m_children;}
 		const children_list& get_children() const {return m_children;}
 
-		tree_node() : m_parent(0)
+		tree_node() 
+			: m_parent(0)
 		{}
 
 		virtual ~tree_node()
@@ -69,20 +71,28 @@ namespace core
 		node*			m_parent;
 	};
 
-	template <class T>
-	class meta_node : public meta_class, public tree_node<T>
+	template <class node_type>
+	class meta_node : public meta_class, public tree_node<node_type>
 	{
 	public: 
-		typedef boost::intrusive_ptr<T> _PT;
+		typedef boost::intrusive_ptr<node_type> node_type_ptr;
 
 		struct _searcher
-		{
+		{			
+			explicit _searcher(const std::string& name) 
+				: m_name(name)
+			{}
+
+			bool operator()(const node_type_ptr& obj) const 
+			{
+				return obj->get_name() == m_name;
+			}
+
 			const std::string& m_name;
-			_searcher(const std::string& name) : m_name(name){}
-			bool operator()(const _PT& obj) const {return obj->get_name() == m_name;}
 		};
 
-		meta_node(const std::string& name) : meta_class(name)
+		meta_node(const std::string& name) 
+			: meta_class(name)
 		{
 		}
 
@@ -90,9 +100,10 @@ namespace core
 		{
 		}
 
-		_PT find_node(const std::string& node_name)
+		node_type_ptr find_node(const std::string& node_name)
 		{
-			try{
+			try
+			{
 				return find_node(base::tokenize<char>(".", node_name));		
 			}
 			catch(exceptions::node_not_found&)
@@ -101,9 +112,10 @@ namespace core
 			}		
 		}
 
-		_PT find_node(const std::list<std::string>& nodes_names)
+		node_type_ptr find_node(const std::list<std::string>& nodes_names)
 		{
-			_PT node = find_child(*nodes_names.begin());
+			node_type_ptr node = find_child(*nodes_names.begin());
+
 			if (nodes_names.size() == 1)
 				return node;
 			else 
@@ -115,7 +127,7 @@ namespace core
 			}
 		}
 
-		_PT find_child(const std::string& name)
+		node_type_ptr find_child(const std::string& name)
 		{
 			children_list::iterator it = std::find_if(m_children.begin(), m_children.end(), _searcher(name));
 

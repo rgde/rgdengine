@@ -59,7 +59,7 @@ namespace input
     {
         std::vector<char> data;
 
-        io::CFileSystem &fs    = io::TheFileSystem::get();
+        io::file_system &fs    = io::TheFileSystem::get();
         io::readstream_ptr stream = fs.find(sFileName);
         io::stream_to_vector<char>(data, stream);
 

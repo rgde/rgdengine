@@ -37,7 +37,7 @@ namespace render
 	{
 		base::lmsg << "loading model: " << "\"" << model_name << "\"";
 
-		io::CFileSystem &fs	= io::TheFileSystem::get();
+		io::file_system &fs	= io::TheFileSystem::get();
 
 		io::path_add_scoped p	("Models/" + model_name + "/");
 		io::readstream_ptr in	= fs.find(model_name + ".xml");

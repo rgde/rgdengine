@@ -11,8 +11,6 @@ namespace io
 	{
 		std::string get_file_ext(const std::string& file_name);
 		std::string get_shot_filename(const std::string& file_name);
-		//std::string createFullFilePath(const std::string& path);
-		//std::string createFullFilePathA (const std::string& path);
 		std::string wstr_to_str (const std::wstring& wstr);
 		std::wstring str_to_wstr (const std::string& str);
 	}
@@ -47,7 +45,6 @@ namespace io
 		virtual ~write_stream(){}
     };
 	//////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////
 #define SUPPORT_SAVING_SIMPLE_TYPE(type) inline write_stream& operator << (write_stream& wf, type var) \
 										 {\
 										 	 wf.write((const byte*)&var, sizeof(type));\
@@ -62,7 +59,6 @@ namespace io
 	SUPPORT_SAVING_SIMPLE_TYPE(char)
 	SUPPORT_SAVING_SIMPLE_TYPE(unsigned char)
 	SUPPORT_SAVING_SIMPLE_TYPE(unsigned long)
-//	SUPPORT_SAVING_SIMPLE_TYPE(size_t)
 
 	template<typename T>
 	inline write_stream& operator << (write_stream& wf, const std::vector<T>& container)
@@ -118,7 +114,6 @@ namespace io
 	SUPPORT_READING_SIMPLE_TYPE(char)
 	SUPPORT_READING_SIMPLE_TYPE(unsigned char)
 	SUPPORT_READING_SIMPLE_TYPE(unsigned long)
-	//	SUPPORT_SAVING_SIMPLE_TYPE(size_t)
 
 	template<typename T>
 	inline read_stream& operator >> (read_stream& rf, std::vector<T>& container)
@@ -167,9 +162,9 @@ namespace io
 	class base_file
 	{
 	public:
-		bool is_open()					const {return m_isOpened;}
-		bool is_valid()					const {return m_isValid;}
-		bool has_errors()				const {return m_isError;}
+		bool is_open()					const {return m_is_opened;}
+		bool is_valid()					const {return m_is_valid;}
+		bool has_errors()				const {return m_is_error;}
 		const Path& get_path()			const {return m_path;}
 		const std::string& get_name()	const {return m_name;}
 
@@ -181,9 +176,9 @@ namespace io
 		virtual bool do_open_file(const std::string& name, const Path& path) = 0;
 
 	protected:
-		bool		m_isOpened;
-		bool		m_isValid;
-		bool		m_isError;
+		bool		m_is_opened;
+		bool		m_is_valid;
+		bool		m_is_error;
 
 		std::string m_name;
 		Path		m_path;		
@@ -204,7 +199,7 @@ namespace io
 		virtual bool do_open_file(const std::string& file_name, const Path& path);
 
 	protected:
-		std::ofstream m_fileStream;
+		std::ofstream m_file_stream;
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -230,7 +225,7 @@ namespace io
 
 	protected:
 		unsigned long m_size;
-		std::ifstream m_fileStream;
+		std::ifstream m_file_stream;
 	};
 	//////////////////////////////////////////////////////////////////////////
 }
