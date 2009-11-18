@@ -5,11 +5,11 @@
 
 namespace core
 {
-	base_task::base_task(const application& app, int nPriority)
-		: m_nPriority(nPriority), m_application(app)
+	base_task::base_task(const application& app, int priority)
+		: m_priority(priority), m_application(app)
 	{
-		m_bIsStarted = true;
-		m_bIsPaused = false;
+		m_is_started = true;
+		m_is_paused = false;
 	}
 
 	base_task::~base_task()
@@ -19,25 +19,25 @@ namespace core
 
 	void base_task::start()
 	{
-		m_bIsStarted = true;
-		m_bIsPaused = false;
+		m_is_started = true;
+		m_is_paused = false;
 	}
 	void base_task::stop()
 	{
-		m_bIsStarted = false;
-		m_bIsPaused = false;		
+		m_is_started = false;
+		m_is_paused = false;		
 	}
 
 	void base_task::pause()
 	{
-		if (m_bIsStarted)
-			m_bIsPaused = !m_bIsPaused;	
+		if (m_is_started)
+			m_is_paused = !m_is_paused;	
 	}
 
 	void base_task::execute()
 	{
 		//guard(base_task::execute())
-		if (m_bIsStarted && !m_bIsPaused)
+		if (m_is_started && !m_is_paused)
 			run();
 		//unguard
 	}
