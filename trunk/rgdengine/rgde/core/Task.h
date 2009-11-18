@@ -18,7 +18,6 @@ namespace core
 		void execute();
 
 		const application& get_application() const {return m_application;}
-		application& get_application() {return m_application;}
 
 	protected:
 		virtual void run() = 0;

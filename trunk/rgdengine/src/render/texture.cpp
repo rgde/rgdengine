@@ -54,7 +54,7 @@ namespace render
 
 	io::readstream_ptr open_texture_file(const std::string& file_name)
 	{
-		io::CFileSystem &fs	= io::TheFileSystem::get();
+		io::file_system &fs	= io::TheFileSystem::get();
 		if (io::readstream_ptr in	= fs.find(file_name))
 			return in;
 
@@ -71,7 +71,7 @@ namespace render
 		}
 
 		{
-			io::ScopePathChange p	("Media/Common/Textures/");
+			io::scope_path p	("Media/Common/Textures/");
 			if (io::readstream_ptr in = fs.find(file_name))
 				return in;
 		}

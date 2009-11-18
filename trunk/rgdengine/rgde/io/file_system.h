@@ -5,7 +5,7 @@
 
 namespace io
 {
-	typedef boost::shared_ptr<class base_file_souce> PFileSource;
+	typedef boost::shared_ptr<class base_file_souce> file_source_ptr;
 	typedef boost::shared_ptr<class read_stream> readstream_ptr;
 
 	class base_file_souce
@@ -17,55 +17,53 @@ namespace io
 		virtual readstream_ptr find(const std::string& file_path) const = 0;
 		virtual bool		is_exist	(const std::string& file_path) const = 0;
 
-		static PFileSource  CreateDirectorySource(const Path& path);
-		//static PFileSource CreateZipSource(const Path& path);
+		static file_source_ptr  create_source(const Path& path);
 	};
 
-	class CFileSystem
+	class file_system
 	{
 	protected:
-		CFileSystem();
+		file_system();
 
-	public:
-		
-		const Path&	getRootDir() const;
-		void		setRootDir(const Path& path);
+	public:		
+		const Path&	get_root_dir() const;
+		void		set_root_dir(const Path& path);
 
-		void		addFileSource(const PFileSource& spFileSource);
+		void		add_file_source(const file_source_ptr& spFileSource);
 		readstream_ptr find(const std::string& file_path) const;
 		bool		is_exist	(const std::string& file_path) const;
 
 	public:
-		typedef std::vector<PFileSource> Sources;
-		Sources m_sources;
-		Path	m_rootPath;
+		typedef std::vector<file_source_ptr> sources_vector;
+		sources_vector m_sources;
+		Path	m_root_path;
 	};
 
-	typedef base::singelton<CFileSystem> TheFileSystem;
+	typedef base::singelton<file_system> TheFileSystem;
 
-	class ScopePathChange
+	class scope_path
 	{
 	public:
-		ScopePathChange(const std::string& strNewPath);
-		~ScopePathChange();
+		scope_path(const std::string& new_path);
+		~scope_path();
 
 	private:
-		Path m_oldPath;
+		Path m_old_path;
 	};
 
 	class path_add_scoped
 	{
 	public:
-		path_add_scoped(const std::string& strNewPath);
+		path_add_scoped(const std::string& new_path);
 		~path_add_scoped();
 
 	private:
-		Path m_oldPath;
+		Path m_old_path;
 	};
 
 
 	template<typename DataType>
-	void stream_to_vector(std::vector<DataType>& v, readstream_ptr& s, bool from_current_pos = false)
+	void stream_to_vector(std::vector<DataType>& v, readstream_ptr s, bool from_current_pos = false)
 	{
 		if (!s) 
 		{

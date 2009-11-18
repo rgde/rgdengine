@@ -67,7 +67,7 @@ namespace render
 		m_file_name = file_name;
 		m_geometry = geometry_ptr(new geometry());
 
-		io::CFileSystem &fs	= io::TheFileSystem::get();
+		io::file_system &fs	= io::TheFileSystem::get();
 		io::path_add_scoped p	("meshes/");
 
 		m_geometry->load(file_name);

@@ -20,7 +20,7 @@ namespace
 		{
 			__asm nop;
 
-			io::CFileSystem& fs = io::TheFileSystem::get();
+			io::file_system& fs = io::TheFileSystem::get();
 			// already set in effect::load
 			//io::path_add_scoped p("Common/shaders/");
 			io::readstream_ptr in = fs.find(pFileName);
@@ -598,7 +598,7 @@ namespace render
 			ID3DXBuffer* pErrors;
 
 			try{
-				io::CFileSystem& fs = io::TheFileSystem::get();
+				io::file_system& fs = io::TheFileSystem::get();
 				io::path_add_scoped p("Common/shaders/");
 				io::readstream_ptr in = fs.find(m_name);
 

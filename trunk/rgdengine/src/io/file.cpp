@@ -154,94 +154,94 @@ namespace io
 	//////////////////////////////////////////////////////////////////////////
 	write_file::write_file()
 	{
-		m_isOpened = false;
-		m_isValid = false;
-		m_isError = false;
+		m_is_opened = false;
+		m_is_valid = false;
+		m_is_error = false;
 	}
 	//-----------------------------------------------------------------------------------
 	write_file::write_file(const std::string& file_name)
 	{
-		m_isOpened = open(file_name);
-		m_isError = !m_isOpened;
-		m_isValid = m_isOpened;
+		m_is_opened = open(file_name);
+		m_is_error = !m_is_opened;
+		m_is_valid = m_is_opened;
 	}
 	//-----------------------------------------------------------------------------------
 	write_file::~write_file()
 	{
-		m_fileStream.flush();
-		m_fileStream.close();
+		m_file_stream.flush();
+		m_file_stream.close();
 	}
 	//--------------------------------------------------------------------------------------
 	bool write_file::do_open_file(const std::string& fullname, const Path& path)
 	{
 		//std::string fullname = file_name;// + (std::string)path;
-		if (m_isOpened)
-			m_fileStream.close();
-		if (m_isError)
-			m_fileStream.clear();
-		m_fileStream.open(fullname.c_str(), std::ios_base::binary);
+		if (m_is_opened)
+			m_file_stream.close();
+		if (m_is_error)
+			m_file_stream.clear();
+		m_file_stream.open(fullname.c_str(), std::ios_base::binary);
 
-		m_isOpened = m_fileStream.is_open();
-		m_isError = !m_fileStream.good();
-		m_isValid = m_isOpened;
+		m_is_opened = m_file_stream.is_open();
+		m_is_error = !m_file_stream.good();
+		m_is_valid = m_is_opened;
 
-		return m_isOpened;
+		return m_is_opened;
 	}
 	//--------------------------------------------------------------------------------------
 	void write_file::write(const byte *buff, unsigned size)
 	{
-		m_fileStream.write((const char*)buff, size);
+		m_file_stream.write((const char*)buff, size);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	read_file::read_file()
 		: m_size(0)
 	{
-		m_isOpened = false;
-		m_isValid = false;
-		m_isError = false;
+		m_is_opened = false;
+		m_is_valid = false;
+		m_is_error = false;
 	}
 	//-----------------------------------------------------------------------------------
 	read_file::read_file(const std::string& file_name)
 		: m_size(0)
 	{
-		m_isOpened = false;
-		m_isError = false;
-		m_isOpened = open(file_name);
-		m_isError = !m_isOpened;
-		m_isValid = m_isOpened;
+		m_is_opened = false;
+		m_is_error = false;
+		m_is_opened = open(file_name);
+		m_is_error = !m_is_opened;
+		m_is_valid = m_is_opened;
 	}
 	//-----------------------------------------------------------------------------------
 	read_file::~read_file()
 	{
-		m_fileStream.close();
+		m_file_stream.close();
 	}
 	//-----------------------------------------------------------------------------------
 	void read_file::read(byte *buff, unsigned size)
 	{
-		m_fileStream.read((char*)buff, size);
+		m_file_stream.read((char*)buff, size);
 	}
 	//-----------------------------------------------------------------------------------
 	bool read_file::do_open_file(const std::string& fullname, const Path& path)
 	{
 		//std::string fullname= file_name;// + (std::string)path;
-		if (m_isOpened)
-			m_fileStream.close();
-		if (m_isError)
-			m_fileStream.clear();
-		m_fileStream.open(fullname.c_str(), std::ios_base::binary);
+		if (m_is_opened)
+			m_file_stream.close();
+		if (m_is_error)
+			m_file_stream.clear();
+		m_file_stream.open(fullname.c_str(), std::ios_base::binary);
 
-		m_isOpened = m_fileStream.is_open();
-		m_isError = !m_fileStream.good();
-		m_isValid = m_isOpened;
+		m_is_opened = m_file_stream.is_open();
+		m_is_error = !m_file_stream.good();
+		m_is_valid = m_is_opened;
 
-		if (m_isValid)
+		if (m_is_valid)
 		{
-			m_fileStream.seekg(0, std::ios_base::end);
-			m_size = m_fileStream.tellg();
-			m_fileStream.seekg(0, std::ios_base::beg);
+			m_file_stream.seekg(0, std::ios_base::end);
+			m_size = m_file_stream.tellg();
+			m_file_stream.seekg(0, std::ios_base::beg);
 		}
 
-		return m_isOpened;
+		return m_is_opened;
 	}
 	//-----------------------------------------------------------------------------------
 	unsigned long read_file::get_size() const
@@ -251,12 +251,12 @@ namespace io
 	//-----------------------------------------------------------------------------------
 	unsigned long read_file::get_pos()
 	{
-		return m_fileStream.tellg();;
+		return m_file_stream.tellg();;
 	}
 	//-----------------------------------------------------------------------------------
 	void read_file::set_pos(unsigned long pos)
 	{
-		m_fileStream.seekg(pos, std::ios_base::beg);
+		m_file_stream.seekg(pos, std::ios_base::beg);
 	}
 	//-----------------------------------------------------------------------------------
 	//-----------------------------------------------------------------------------------

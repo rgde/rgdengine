@@ -65,7 +65,7 @@ namespace render
 		void load( const std::string& filename )
 		{
 			//std::vector<byte> data;
-			//io::CFileSystem& fs = io::TheFileSystem::get();
+			//io::file_system& fs = io::TheFileSystem::get();
 
 			////first try to find binary file
 			//std::wstring bin_filename = filename + L".mesh";
@@ -320,7 +320,7 @@ namespace render
 				)
 	{
 		std::vector<byte> data;
-		io::CFileSystem& fs = io::TheFileSystem::get();
+		io::file_system& fs = io::TheFileSystem::get();
 		io::readstream_ptr in = fs.find(xml_filename);
 		if (in && in->get_size() > 0)
 		{
@@ -488,7 +488,7 @@ namespace render
 		void load( const std::string& filename )
 		{
 			std::vector<byte> data;
-			io::CFileSystem& fs = io::TheFileSystem::get();
+			io::file_system& fs = io::TheFileSystem::get();
 
 			bool use_binary = false;
 
