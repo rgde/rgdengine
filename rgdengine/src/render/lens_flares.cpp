@@ -29,10 +29,10 @@ namespace render
 
 	void lens_flares::add_flare(const flare &f, const std::string &strTextureName)
 	{
-		flare temp_flare	= f;
+		flare temp_flare = f;
 		if ((temp_flare.texture == NULL) && (!strTextureName.empty()))
 		{
-			io::path_add_scoped p	("common/");
+			io::path_add_scoped p("common/");
 			temp_flare.texture = render::texture::create(strTextureName);
 		}
 		m_flares.push_back(temp_flare);

@@ -13,7 +13,7 @@
 #include "../base/exception.h"
 
 #include <rgde/render/manager.h>
-
+#include <rgde/io/file_system.h>
 #include <boost/filesystem/operations.hpp>
 
 
@@ -48,41 +48,43 @@ namespace core
 
 		virtual void close()
 		{
-			m_bIsClosing = true;
+			m_is_closing = true;
 		}
 
 		bool CheckForWindowSizeChange();
 
 		void setupHandlers();
 
-		RECT get_rect() const {return m_rcClientOld;}
+		RECT get_rect() const {return m_client_rect_old;}
 
 	public:
 		application_impl();
 
 		virtual ~application_impl();
 
-		void init(window_handle hParent);
+		void init(window_handle parent_handle);
 		void init(std::wstring Name, int Width, int Height, bool Fullscreen, bool resize_enable);
 
 		virtual void run();
 		virtual bool update();
 		virtual window_handle get_handle() const;
-		virtual void add(task_ptr pTask);
+		virtual void add(task_ptr t);
+
 	private:
-		
-		typedef std::list<task_ptr> TaskList;
-		TaskList m_tasks;
+		typedef std::list<task_ptr> task_list;
+		task_list m_tasks;
 		bool	m_is_paused;
-		bool	m_bIsClosing;
-		RECT	m_rcClientOld;
+		bool	m_is_closing;
+		RECT	m_client_rect_old;
+
+		io::file_system m_file_system;
 	};
 
     //////////////////////////////////////////////////////////////////////////
 
-	void application_impl::add(task_ptr pTask)
+	void application_impl::add(task_ptr t)
 	{
-		m_tasks.push_back(pTask);
+		m_tasks.push_back(t);
 		m_tasks.sort();
 	}
 
@@ -210,12 +212,12 @@ namespace core
 	bool application_impl::CheckForWindowSizeChange()
 	{
 		//if (inFullScreenMode) return false;
-		RECT rcClientOld = m_rcClientOld;
+		RECT rcClientOld = m_client_rect_old;
 
 		// update window properties
 		RECT rcWindowClient;
 		GetClientRect( Handle(), &rcWindowClient );
-		m_rcClientOld = rcWindowClient;
+		m_client_rect_old = rcWindowClient;
 
 		// Check if the window client rect has changed
 		if( rcClientOld.right - rcClientOld.left != rcWindowClient.right - rcWindowClient.left ||
@@ -317,7 +319,7 @@ namespace core
 		return pApp;
 	}
 
-	application_impl::application_impl() : m_is_paused(false), m_bIsClosing(false)
+	application_impl::application_impl() : m_is_paused(false), m_is_closing(false)
 	{
 		gs_pApplication = this;
 		base::log::init();
@@ -338,7 +340,7 @@ namespace core
 	{
 		if (msg.wParam == WA_ACTIVE)
 		{
-			GetClientRect(Handle(), &m_rcClientOld);
+			GetClientRect(Handle(), &m_client_rect_old);
 			m_active = true;
 
 			//RECT rcWindowClient;
@@ -355,7 +357,7 @@ namespace core
 
 	void application_impl::on_close(forms::Message &msg)
 	{
-		m_bIsClosing = true;
+		m_is_closing = true;
 	}
 
 	void application_impl::setupHandlers()
@@ -396,7 +398,7 @@ namespace core
 		SetMessageEvent(WM_EXITSIZEMOVE,	boost::bind(&application_impl::OnExitSizeMove, this, _1));
 	}
 
-	void application_impl::init(window_handle hParent)
+	void application_impl::init(window_handle parent_handle)
 	{
 		// Styles and position
 		dword Style;
@@ -406,7 +408,7 @@ namespace core
 
 		// Window rectangle
 		forms::Drawing::Rectangle Rect;
-		GetWindowRect((HWND)hParent, &Rect);
+		GetWindowRect((HWND)parent_handle, &Rect);
 
 		{
 			//WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | TVS_SHOWSELALWAYS
@@ -425,7 +427,7 @@ namespace core
 		// create window
 		{
 			forms::Drawing::Rectangle _rect(0, 0, Rect.GetWidth(), Rect.GetHeight());
-			CreateWnd((HWND)hParent, Name.c_str(), Name.c_str(), Style, ExStyle, 0, _rect);
+			CreateWnd((HWND)parent_handle, Name.c_str(), Name.c_str(), Style, ExStyle, 0, _rect);
 		}
 
 		setupHandlers();
@@ -537,7 +539,7 @@ namespace core
 				//else
 				{
 					if (!m_is_paused)
-						for (TaskList::iterator it = m_tasks.begin(); it != m_tasks.end(); ++it)
+						for (task_list::iterator it = m_tasks.begin(); it != m_tasks.end(); ++it)
 						{							
 							(*it)->execute();							
 						}
@@ -549,7 +551,7 @@ namespace core
 
 	void application_impl::run()
 	{
-		while (update() && !m_bIsClosing)
+		while (update() && !m_is_closing)
 		{
 		}
 

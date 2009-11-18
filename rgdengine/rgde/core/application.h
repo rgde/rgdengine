@@ -59,7 +59,7 @@ namespace core
 
     public:
 		virtual ~application() {}
-        virtual void			add(task_ptr pTask) = 0;
+        virtual void			add(task_ptr t) = 0;
         virtual void			run() = 0;
         virtual bool			update() = 0;
         virtual void			close() = 0;

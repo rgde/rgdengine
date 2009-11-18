@@ -22,10 +22,10 @@ namespace io
 
 	class file_system
 	{
-	protected:
+	public:
 		file_system();
-
-	public:		
+		~file_system();
+	
 		const Path&	get_root_dir() const;
 		void		set_root_dir(const Path& path);
 
@@ -33,13 +33,15 @@ namespace io
 		readstream_ptr find(const std::string& file_path) const;
 		bool		is_exist	(const std::string& file_path) const;
 
+		static file_system& get();
+
 	public:
 		typedef std::vector<file_source_ptr> sources_vector;
 		sources_vector m_sources;
 		Path	m_root_path;
-	};
 
-	typedef base::singelton<file_system> TheFileSystem;
+		static file_system* ms_instance;
+	};
 
 	class scope_path
 	{

@@ -10,7 +10,7 @@ namespace base
 	{
 		std::vector<byte> data;
 		{
-			io::readstream_ptr in = io::TheFileSystem::get().find(file_name);
+			io::readstream_ptr in = io::file_system::get().find(file_name);
 
 			if(!in)
 				return false;

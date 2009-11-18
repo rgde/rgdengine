@@ -47,16 +47,35 @@ namespace io
 		Path	m_path;
 	};
 
+	//////////////////////////////////////////////////////////////////////////
+
 	file_source_ptr base_file_souce::create_source(const Path &path)
 	{
 		return file_source_ptr(new directory_source(path));
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+
+	file_system* file_system::ms_instance = 0;
+
+	file_system& file_system::get()
+	{
+		assert(ms_instance && "file_system::get() still not inited!");
+		return *ms_instance;
+	}
 
 	file_system::file_system()
 		: m_root_path("./Media/")
 	{
+		assert(ms_instance == 0 && "Only one instance of file_system is allowed!");
+		ms_instance = this;
+
 		add_file_source(file_source_ptr(new directory_source(Path(""))));
+	}
+
+	file_system::~file_system()
+	{
+		ms_instance = 0;
 	}
 
 	const Path& file_system::get_root_dir() const
@@ -113,27 +132,30 @@ namespace io
 		return result;
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+
 	scope_path::scope_path(const std::string& new_path)
-		: m_old_path(TheFileSystem::get().get_root_dir())
+		: m_old_path(file_system::get().get_root_dir())
 	{
-		TheFileSystem::get().set_root_dir(Path(new_path));
+		file_system::get().set_root_dir(Path(new_path));
 	}
 
 	scope_path::~scope_path()
 	{
-		TheFileSystem::get().set_root_dir(m_old_path);
+		file_system::get().set_root_dir(m_old_path);
 	}
-
+	
+	//////////////////////////////////////////////////////////////////////////
 
 	path_add_scoped::path_add_scoped(const std::string& new_path)
-		: m_old_path(TheFileSystem::get().get_root_dir())
+		: m_old_path(file_system::get().get_root_dir())
 	{
 		std::string total_path	= m_old_path.string() + "/" + new_path;
-		TheFileSystem::get().set_root_dir(Path(total_path));
+		file_system::get().set_root_dir(Path(total_path));
 	}
 
 	path_add_scoped::~path_add_scoped()
 	{
-		TheFileSystem::get().set_root_dir(m_old_path);
+		file_system::get().set_root_dir(m_old_path);
 	}
 }
