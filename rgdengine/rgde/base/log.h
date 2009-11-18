@@ -4,171 +4,107 @@
 
 namespace base
 {
-
-	typedef unsigned char byte;
+	typedef unsigned char uchar;
 
 	class log;
 	struct int_manip
 	{
-		int_manip(log& (*in_func)(log&, int), int in_i) : func(in_func), i(in_i) {}
+		typedef log& (*log_func)(log&, int);
 
+		int_manip(log_func in_func, int in_i) 
+			: func(in_func)
+			, i(in_i)
+		{}
 
-		log& (*func)(log&, int);
+		log_func func;
 		int i;
-	};
-
-	enum log_style
-	{
-		LS_BOLD		= 1 << 0,
-		LS_ITALIC	= 1 << 1,
 	};
 
 	struct font_manip
 	{
-		font_manip(log& (*in_func)(log&, int, int), int in_col, int in_style) 
-			: func(in_func), col(in_col), style(in_style) {}
+		typedef log& (*log_func)(log&, int, int);
 
+		font_manip(log_func in_func, int in_col, int in_style) 
+			: func(in_func)
+			, col(in_col)
+			, style(in_style) 
+		{}
 
-			log& (*func)(log&, int, int);
-			int col, style;
+		log_func func;
+		int col, style;
 	};
 
 	class log
 	{
 	public:
+		enum style
+		{
+			bold	= 1 << 0,
+			italic	= 1 << 1,
+		};
+
 		static bool init();
 		static void destroy();
+		static log& get();
 
-		// получение экземпляра класса лог
-		static log& get()
-		{
-			if ( 0 == instance )
-				new log();
-
-			return *instance;
-		}
-
-		// начало новой строки
-		log& beginLine(byte r, byte g, byte b);
-
-		// начало новой строки
+		log& beginLine(uchar r, uchar g, uchar b);
 		log& beginLine(int col, int style = 0);
 
-		// инициализирован лог или нет
-		bool isInit() const		{ return initialized; }
+		bool isInited() const { return initialized; }
 
-		// запись булевого значения в лог
 		log& operator << ( bool b );
-
-		// запись символа в лог
 		log& operator << ( char ch );  
-
-		// запись int в лог
 		log& operator << ( int i );  
-
-		// запись size_t в лог
-		log& operator << ( size_t s );  
-
-		// запись float в лог
-		log& operator << ( float ch );  
-
-		// запись double в лог
-		log& operator << ( double ch );  
-
-		// запись строки в лог
+		log& operator << ( size_t s ); 
+		log& operator << ( float ch );
+		log& operator << ( double ch );
 		log& operator << ( const char *str );
-
-
-		// запись строки в лог
 		log& operator << ( char *str );
-
-		// запись строки в лог
 		log& operator << ( std::string str );
-
-
-		log& operator << ( wchar_t ch );  
+		log& operator << ( wchar_t ch );
 		log& operator << ( const wchar_t *str );
 		log& operator << ( const std::wstring& str );
-
-		log& operator<< (unsigned long l);
-
-		// работа с манипуляторами (перевод строки, табуляция итд)
-		log& operator << ( log& (*manip)(log&) )
-		{
-			return (*manip)(*this);
-		}
-
-		// работа с манипуляторами, получающими в качестве параметра int (hex)
-		log& operator << ( int_manip &manip )
-		{
-			return manip.func(*this, manip.i);
-		}
-
-		// работа с манипулятором стиля
-		log& operator << ( font_manip &manip )
-		{
-			return manip.func(*this, manip.col, manip.style);
-		}
+		log& operator << (unsigned long l);
+		log& operator << ( log& (*manip)(log&) );
+		log& operator << ( int_manip &manip );
+		log& operator << ( font_manip &manip );
 
 		friend log& endl( log& );
 		friend log& date( log& );
 		friend log& time( log& );
 
-		friend log& print_hex(log& l, int i)
-		{
-			l.logFile.setf(std::ios_base::hex, std::ios_base::basefield);
-			l.logFile.setf(std::ios_base::uppercase);
-			l << "0x" << i;
-			l.logFile.setf(std::ios_base::dec, std::ios_base::basefield);
-			return l;
-		}
-		friend log& change_font(log& l, int col, int style);
-
 	protected:
 		log();
 		~log();
 
-	protected:
+		friend log& print_hex(log& l, int i);
+		friend log& change_font(log& l, int col, int style);
 
-		// экземпляр класса
+	protected:
+		// class instance
 		static log *instance;
 
-		// файл
+		// log file stream
 		std::ofstream logFile;
 
-		// успешно ли прошла инициализация
+		// is init was done?
 		bool initialized;
-		// была ли закончена строка
+		// is line ended?
 		bool isLineEnded;
 	};
-
 
 	log& tab( log& );
 	log& efont( log& );
 
-
-	inline int_manip hex(int i)
-	{
-		return int_manip(print_hex, i);
-	}
-
+	int_manip hex(int i);
 	font_manip font(int col, int style = 0);
 
 	//-----------------------------------------------------------------------------------
-	inline log& operator << ( log& l, math::vec3f& v )
-	{
-		l << "(" << v[0] << "," << v[1] << "," << v[2] << ")\n";
-		return l;
-	}
+	log& operator << ( log& l, math::vec3f& v );
+	log& operator << ( log& l, math::vec2f& v );
+	log& operator << ( log& l, math::vec4f& v );
+	log& operator << (log& l, math::Rect& r);
 
-	//-----------------------------------------------------------------------------------
-	inline log& operator << ( log& l, math::vec2f& v )
-	{
-		l << "(" << v[0] << "," << v[1] << ")\n";
-		return l;
-	}
-
-	//-----------------------------------------------------------------------------------
 	template <class T> 
 	log& operator << ( log& l, std::vector<T>& v )
 	{
@@ -181,9 +117,9 @@ namespace base
 		}
 
 		l << ", elements: ";
-		// Neonic: 'unsigned i' moved from cycle scopes
-		unsigned i;
-		for ( i = 0; i < size-1; ++i)
+		
+		unsigned i = 0;
+		for (; i < size-1; ++i)
 		{
 			l << "v[" << i << "] = " << v[i] << ", ";
 		}
@@ -191,20 +127,8 @@ namespace base
 		l << "v[" << i << "] = " << v[i] << ")";
 		return l;
 	}
-
 	//-----------------------------------------------------------------------------------
-	inline log& operator << ( log& l, math::vec4f& v )
-	{
-		l << "(" << v[0] << "," << v[1] << "," << v[2] << "," << v[3] << ")\n";
-		return l;
-	}
 
-	//-----------------------------------------------------------------------------------
-	inline log& operator << (log& l, math::Rect& r)
-	{
-		l << "(" << r.x << "," << r.y << "," << r.w << "," << r.h << ")";
-		return l;
-	}
 }
 
 #include "log_helper.h"

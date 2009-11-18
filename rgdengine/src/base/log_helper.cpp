@@ -30,9 +30,9 @@ namespace base
 		}
 	}
 
-	log_internal::log_helper lmsg(0x81c9aa, LS_ITALIC);
-	log_internal::log_helper lnote(0x00FF00, LS_ITALIC, "Note: ");
-	log_internal::log_helper lwrn(0xFF00FF, LS_ITALIC, "Warning: ");
-	log_internal::log_helper lerr(0xFF0000, LS_ITALIC, "Error: ");
-	log_internal::log_helper fatal_error(0xFF0000, LS_ITALIC|LS_BOLD, "Crash: ");
+	log_internal::log_helper lmsg(0x81c9aa, log::italic);
+	log_internal::log_helper lnote(0x00FF00, log::italic, "Note: ");
+	log_internal::log_helper lwrn(0xFF00FF, log::italic, "Warning: ");
+	log_internal::log_helper lerr(0xFF0000, log::italic, "Error: ");
+	log_internal::log_helper fatal_error(0xFF0000, log::italic|log::bold, "Crash: ");
 }

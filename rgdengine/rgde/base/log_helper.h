@@ -13,42 +13,45 @@ namespace log_internal
 		~log_helper();
 
 		template<class T> 
-		log& operator << ( T &data )
-		{
-#ifdef _DEBUG
-			log::get().beginLine(col, style);
-			if ( !print_time )
-			{
-				print_time = true;
-			}
-			else
-			{
-				log::get() << font(0x336699, LS_BOLD|LS_ITALIC) << "[" << time << "]:: " << efont;
-			}
+		log& operator << ( T &data );
 
-			if ( prefix )
-			{
-				log::get() << prefix;
-			}
-
-			return log::get() << data;
-#else
-			return log::get();
-#endif
-		}
-
-		// работа с манипуляторами (время)
 		log_helper& operator << ( log_helper& (*manip)(log_helper&) );
 
 		friend log_helper& time_off( log_helper& );
 
 	protected:
-		// надо ли выводить текущее время
+		// need to out current time
 		bool print_time;
-		// цвет и стиль
+
 		int col, style;
 		const char* prefix;
 	};
+
+	template<class T> 
+	log& log_helper::operator << ( T &data )
+	{
+#ifdef _DEBUG
+		log::get().beginLine(col, style);
+
+		if ( print_time )
+		{
+			log::get() << font(0x336699, log::bold|log::italic) << "[" << time << "]:: " << efont;
+		}
+		else
+		{
+			print_time = true;
+		}
+
+		if ( prefix )
+		{
+			log::get() << prefix;
+		}
+
+		return log::get() << data;
+#else
+		return log::get();
+#endif
+	}
 }
 
 extern log_internal::log_helper lmsg;
