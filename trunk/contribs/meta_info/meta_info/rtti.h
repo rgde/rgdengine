@@ -117,12 +117,28 @@ namespace meta
 	typedef boost::shared_ptr<struct object> object_ptr;
 
 	struct property_holder
-	{
-		property_holder() {}
-
-		property_holder(struct object* obj, property_ptr property)
+	{	
+		property_holder(object& obj, property_ptr property)
+			: m_obj(obj)
+			, m_property(property)
 		{
 		}
+
+		operator bool() const {return m_property ? true : false;}
+
+		boost::any get()
+		{
+			return boost::any();
+		}
+
+		bool set(boost::any value)
+		{
+			return false;
+		}
+
+	private:
+		object& m_obj;
+		property_ptr m_property;
 	};
 
 	struct object
@@ -130,18 +146,18 @@ namespace meta
 		virtual ~object() {}
 		virtual type_information_ptr get_type_info(const class types_info_storage& storage) = 0;
 
-		//virtual property_holder get_property(const string& name)
-		//{
+		virtual property_holder get_property(const string& name)
+		{
 		//	//get_type_info();
-		//	property_ptr p = m_type_info->find_property(name);
+			property_ptr p = m_type_info->find_property(name);
 
-		//	if (p)
-		//	{
+			if (p)
+			{
 
-		//	}
+			}
 
-		//	return 
-		//}
+			return property_holder(*this, p);
+		}
 
 	protected:
 		// to speed up request, we will cash it here.
