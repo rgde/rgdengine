@@ -96,6 +96,20 @@ namespace meta
 		//}
 	};
 
+	template<class OwnerType, class ValueType>
+	struct property_instance
+	{
+		typedef boost::shared_ptr<OwnerType> owner_ptr;
+		
+
+	};
+
+	template<class OwnerType, class ValueType>
+	property<OwnerType, ValueType>* cast(OwnerType* owner, property_ptr ptr)
+	{
+		return 0;
+	}
+
 	struct property_storage
 	{
 		typedef std::list<property_ptr> property_list;
