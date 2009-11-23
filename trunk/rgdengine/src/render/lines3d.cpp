@@ -18,7 +18,7 @@ namespace render
 	{
 		//base::lmsg << "lines3d::lines3d()";
 		m_vertices = &(m_geometry.lock());
-		m_renderInfo.render_func = boost::bind(&lines3d::render, this);
+		m_render_info.render_func = boost::bind(&lines3d::render, this);
 	}
 
 	//-----------------------------------------------------------------------------------

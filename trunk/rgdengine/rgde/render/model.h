@@ -32,7 +32,7 @@ namespace render
 		unsigned int get_num_verts()	const;
 		unsigned int getFaceNum()	const;
 
-		bool isVisible() const;
+		bool is_visible() const;
 		void setVisible(bool bVisible);
 
 		void play();

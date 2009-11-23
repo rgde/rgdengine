@@ -25,7 +25,7 @@ namespace forms
 		Window();
 		virtual ~Window();
 
-		HWND Handle() const {return m_hWnd;}
+		HWND Handle() const {return m_hwnd;}
 
 		void RegisterCls(const std::wstring ClassName, UINT Style, HICON hIcon, HCURSOR hCursor, HBRUSH hbrBackground, const std::wstring MenuName = std::wstring(), HICON hIconSmall = NULL);
 		void CreateWnd(HWND Parent, const std::wstring ClassName, const std::wstring Name, DWORD Style, DWORD ExStyle, UINT ID, const Drawing::Rectangle &Rect);
@@ -47,7 +47,7 @@ namespace forms
 	private:
 		static std::map<HWND, Window*> ms_windows;
 
-		HWND m_hWnd;
+		HWND m_hwnd;
 		WNDPROC m_SuperWindowProc;
 		typedef std::map<UINT, MessageEvent> MessageEventMap;
 		MessageEventMap m_MessageEventMap;

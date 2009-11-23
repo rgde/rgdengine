@@ -34,7 +34,7 @@ namespace input
 
     void Control::bind (const std::wstring &command_name)
     {
-        bind (m_device.get_impl().getCommand(command_name));
+        bind (m_device.get_impl().get_command(command_name));
     }
 
     // remove observer
@@ -55,7 +55,7 @@ namespace input
 
     void Control::unbind (const std::wstring &command_name)
     {
-        unbind(m_device.get_impl().getCommand(command_name));
+        unbind(m_device.get_impl().get_command(command_name));
     }
 
     // check is that observer already added
@@ -76,7 +76,7 @@ namespace input
 
     bool Control::is_bind (const std::wstring &command_name)
     {
-        return is_bind(m_device.get_impl().getCommand(command_name));
+        return is_bind(m_device.get_impl().get_command(command_name));
     }
 
     // notify observers about control state change

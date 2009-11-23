@@ -91,20 +91,20 @@ namespace render
 		rendererable(unsigned priority = 1);
 		virtual ~rendererable();
 
-		void			set_priority(unsigned priority) {m_nRenderPriority = priority;}
-		unsigned		get_priority() const {return m_nRenderPriority;}
+		void			set_priority(unsigned priority) {m_render_priority = priority;}
+		unsigned		get_priority() const {return m_render_priority;}
 
 		void			hide() {m_is_visible = false;}
 		void			show() {m_is_visible = true;}
 
-		virtual const renderable_info& get_renderable_info() const {return m_renderInfo;}
-		bool		isVisible()	const {return m_is_visible;}
+		virtual const renderable_info& get_renderable_info() const {return m_render_info;}
+		bool		is_visible()	const {return m_is_visible;}
 
 	protected:
-		mutable renderable_info	m_renderInfo;
+		mutable renderable_info	m_render_info;
 		
 	private:
 		bool	 m_is_visible;
-		unsigned m_nRenderPriority;
+		unsigned m_render_priority;
 	};
 }

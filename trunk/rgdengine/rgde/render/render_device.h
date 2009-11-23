@@ -48,8 +48,8 @@ namespace render
 		void                    showStatistics(const font_ptr& font);
 
         //->
-        void                    setClearColor (math::Color color) {m_clear_color = color;}
-        const math::Color&      getClearColor () const {return m_clear_color;}
+        void                    set_clear_color (math::Color color) {m_clear_color = color;}
+        const math::Color&      get_clear_color () const {return m_clear_color;}
         //-<
 
 		lines3d&				get_lines3d();

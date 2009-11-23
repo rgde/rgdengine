@@ -14,7 +14,7 @@ namespace render
 	protected:
 		font_manager() : rendererable(10002)
 		{
-			m_renderInfo.render_func = boost::bind(&font_manager::renderAll, this);
+			m_render_info.render_func = boost::bind(&font_manager::renderAll, this);
 		}
 
 	public:
@@ -39,7 +39,7 @@ namespace render
 
 		renderable_info & get_renderable_info()
 		{
-			return m_renderInfo;
+			return m_render_info;
 		}
 	};	
 

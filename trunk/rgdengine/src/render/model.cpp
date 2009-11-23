@@ -309,7 +309,7 @@ namespace render
 			(*i).set_looped(flag);
 	}
 
-	bool model::isVisible() const
+	bool model::is_visible() const
 	{
 		return m_is_visible;
 	}

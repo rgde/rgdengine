@@ -76,7 +76,7 @@ namespace particles{
 		inline int getSeed() const { return m_max_particles; }
 		inline void set_seed(int seed) { m_rnd_seed = seed; }
 
-		inline bool isVisible() const { return m_is_visible; }
+		inline bool is_visible() const { return m_is_visible; }
 		inline void setVisible(bool visible) { m_is_visible = visible; }
 
 		inline bool getIntenseMode() const { return m_intense; }

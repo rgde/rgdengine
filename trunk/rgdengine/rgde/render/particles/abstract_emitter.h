@@ -61,7 +61,7 @@ public:
 	inline bool isCycling() const { return m_bIsCycling; }
 	inline void setCycling(bool b) { m_bIsCycling = b; }
 
-	inline bool	isVisible() const {return m_is_visible;}
+	inline bool	is_visible() const {return m_is_visible;}
 	inline void	hide() { m_is_visible = false; }
 	inline void	show() { m_is_visible = true; }
 

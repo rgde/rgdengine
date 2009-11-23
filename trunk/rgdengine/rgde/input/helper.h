@@ -9,7 +9,7 @@ namespace input
 	//Helper
 
 	//параметр для Helper::Handler
-	struct HelperEvent
+	struct helper_event
 	{
 		enum type
 		{
@@ -27,7 +27,7 @@ namespace input
 	class Helper
 	{
 	public:
-		typedef boost::function<void(const HelperEvent&)> Handler;
+		typedef boost::function<void(const helper_event&)> Handler;
 
 		Helper ();
 		Helper (const std::wstring &commandName);
@@ -38,7 +38,7 @@ namespace input
 
 		void operator += (Handler handler);
 
-		command_ptr getCommand() const {return m_command;}
+		command_ptr get_command() const {return m_command;}
 
 	protected:
 		friend class Command;

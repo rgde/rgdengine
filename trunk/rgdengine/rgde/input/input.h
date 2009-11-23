@@ -6,7 +6,6 @@ namespace input
 {
 	class input_impl;
 
-	// основной класс системы ввода
 	class Input: boost::noncopyable
 	{
 	public:
@@ -15,38 +14,34 @@ namespace input
 
 		void init (input_impl*);
 
-        // функции самой системы ввода
-        static bool set_mode (bool exclusive=false, bool foreground=true); //изменить режим работы устройств ввода
-        static void LoadFromString (const std::string &sXml);      //загрузить раскладку
-        static void LoadFromFile   (const std::string &sFileName); //загрузить раскладку
-        static void update  ();                        //считать из буфера все событи€ от устройств ввода
-        static void Save    (std::string &sXml);       //сохранить раскладку
+        static bool set_mode (bool exclusive=false, bool foreground=true);
+        static void load_xml (const std::string &xml);
+        static void load (const std::string &file_name);
+        static void update();
+        static void save_xml(std::string &xml);
 
-        // доступ к устройствам ввода
-        //получить устройство
         static device* get_device (types::device eDeviceName, int indx=0);
         static device* get_device (const std::wstring &sDeviceName, int indx=0);
-        //есть ли такое устройство
+
         static bool is_present (types::device eDeviceName, int indx=0);
         static bool is_present (const std::wstring &sDeviceName, int indx=0);
 
-		static Control* GetControl(types::device device, int dev_index, types::control control);
-		static Control* GetControl(types::device device, types::control control)
+		static Control* get_control(types::device device, int dev_index, types::control control);
+		static Control* get_control(types::device device, types::control control)
 		{
-			return GetControl(device, 0, control);
+			return get_control(device, 0, control);
 		}
 
-        // доступ к командам системы ввода
-        static void      add_command       (const std::wstring &command_name); //добавить команду
-        static command_ptr  getCommand       (const std::wstring &command_name); //получить команду
-        static bool      isCommandPresent (const std::wstring &command_name); //есть ли така€ команда
-        static void      detach_command    (command_ptr pCommand);                //отв€зать команду ото всех контролов
+        static void			add_command       (const std::wstring &command_name);
+        static command_ptr  get_command       (const std::wstring &command_name);
+        static bool			is_command_present(const std::wstring &command_name);
+        static void			detach_command    (command_ptr pCommand);
 
 	private:
 		Input();
 		~Input();
 
-		static Input            *ms_instance; //указатель на едиственный экземпл€р System
-		std::auto_ptr<input_impl> m_pImpl;      //конкретна€ реализаци€ системы ввода
+		static Input            *ms_instance;
+		std::auto_ptr<input_impl> m_impl;
 	};
 }

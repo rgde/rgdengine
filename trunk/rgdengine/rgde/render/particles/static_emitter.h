@@ -51,7 +51,7 @@ namespace particles{
 		inline int  getTimeShift()	const	{return m_time_shift;}
 		inline void setTimeShift(int t)		{m_time_shift = t;}		
 
-		inline bool isVisible()		const	{return m_is_visible;}
+		inline bool is_visible()		const	{return m_is_visible;}
 		inline void	setVisible(bool b)		{m_is_visible = b;}
 		
 		inline bool	isCycling()		const	{return m_cycling;}

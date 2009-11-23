@@ -40,12 +40,12 @@ namespace core
 
 device_info::device_info()
 {
-	m_bWindowed = true;
-	m_DepthStencilFormat = D3DFMT_D24S8;
-	m_BackBufferFormat = D3DFMT_X8R8G8B8;
-	m_nRefreshRate = 0;
+	m_windowed = true;
+	m_depth_buffer_format = D3DFMT_D24S8;
+	m_back_buffer_format = D3DFMT_X8R8G8B8;
+	m_refresh_rate = 0;
 	m_VertexProcessingMode = 0;
-	VSync = false;
+	m_sync = false;
 
 	m_clear_color = math::Color(100,100,100,255);
 
@@ -57,29 +57,29 @@ device_info::device_info(bool bWindowed, D3DFORMAT DepthStencilFormat,
 	const DWORD& VertexProcessingMode,
 	const math::Color& ClearColor, bool vsync)
 {
-	m_bWindowed            = bWindowed;
-	m_DepthStencilFormat   = DepthStencilFormat;
-	m_BackBufferFormat     = BackBufferFormat;
-	m_nRefreshRate         = nRefreshRate;
+	m_windowed            = bWindowed;
+	m_depth_buffer_format   = DepthStencilFormat;
+	m_back_buffer_format     = BackBufferFormat;
+	m_refresh_rate         = nRefreshRate;
 	m_VertexProcessingMode = VertexProcessingMode;
 	m_clear_color           = ClearColor;
-	VSync = vsync;
+	m_sync = vsync;
 }
 
 
 
-CDXRenderDevice::CDXRenderDevice(HWND hwnd)
+render_device_impl::render_device_impl(HWND hwnd)
 : m_pD3D(NULL),
 m_pd3dDevice(NULL),
-m_hWnd(hwnd),
+m_hwnd(hwnd),
 m_is_first_frame(true)
 {
-	subscribe<window_resize>(&CDXRenderDevice::onWindowResizeEvent);
+	subscribe<window_resize>(&render_device_impl::onWindowResizeEvent);
 	init(hwnd);
 }
 
 // Releases all previously initialized objects
-CDXRenderDevice::~CDXRenderDevice()
+render_device_impl::~render_device_impl()
 {
 	m_lines2d.reset();
 	m_lines3d.reset();
@@ -94,7 +94,7 @@ CDXRenderDevice::~CDXRenderDevice()
 	SAFE_RELEASE(m_pD3D);
 }
 
-void CDXRenderDevice::onWindowResizeEvent(window_resize e) 
+void render_device_impl::onWindowResizeEvent(window_resize e) 
 {
 	return;
 	render::render_device::on_lost();
@@ -123,14 +123,14 @@ void CDXRenderDevice::onWindowResizeEvent(window_resize e)
 	render::render_device::on_reset();
 }
 
-void CDXRenderDevice::save_screen(const std::wstring& file_name)
+void render_device_impl::save_screen(const std::wstring& file_name)
 {
 	D3DDISPLAYMODE display;
 	m_pd3dDevice->GetDisplayMode(0, &display);
 
 	LPDIRECT3DSURFACE9 ScreenShotSurface = NULL;
 
-	// Save the back buffer to the surface.  Then save the file. 
+	// save the back buffer to the surface.  Then save the file. 
 	m_pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &ScreenShotSurface);
 	D3DXSaveSurfaceToFile((file_name + L".png").c_str(), D3DXIFF_PNG, ScreenShotSurface, NULL, NULL);
 
@@ -139,7 +139,7 @@ void CDXRenderDevice::save_screen(const std::wstring& file_name)
 
 
 // Draws the scene
-void CDXRenderDevice::update() const
+void render_device_impl::update() const
 {
 	if( NULL == m_pd3dDevice )
 		return;
@@ -154,7 +154,7 @@ void CDXRenderDevice::update() const
 	m_is_first_frame = false;
 
 	// Clear the backbuffer
-	math::Color color = render::render_device::getClearColor();
+	math::Color color = render::render_device::get_clear_color();
 	V(m_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(color.a, color.r, color.g, color.b), 1.0f, 0 ));
 
 	// Begin the scene
@@ -167,7 +167,7 @@ void CDXRenderDevice::update() const
 	}
 }
 
-D3DFORMAT CDXRenderDevice::getBackBufferFormat(const std::string& strColorBufferFormat)
+D3DFORMAT render_device_impl::getBackBufferFormat(const std::string& strColorBufferFormat)
 {
 	if(strColorBufferFormat == "A2R10G10B10")
 		return D3DFMT_A2R10G10B10;
@@ -191,7 +191,7 @@ D3DFORMAT CDXRenderDevice::getBackBufferFormat(const std::string& strColorBuffer
 	return D3DFMT_UNKNOWN;
 }
 
-D3DFORMAT CDXRenderDevice::getDepthStencilFormat(int nDepthBits, int nStencilBits)
+D3DFORMAT render_device_impl::getDepthStencilFormat(int nDepthBits, int nStencilBits)
 {
 	if(nDepthBits == 24 && nStencilBits == 8)
 		return D3DFMT_D24S8;
@@ -212,7 +212,7 @@ D3DFORMAT CDXRenderDevice::getDepthStencilFormat(int nDepthBits, int nStencilBit
 	return D3DFMT_UNKNOWN;
 }
 
-DWORD CDXRenderDevice::getVertexProcessingMode(const std::string& strVertexProcessingMode)
+DWORD render_device_impl::getVertexProcessingMode(const std::string& strVertexProcessingMode)
 {
 	std::string strVertexProcessingModeUpper = strVertexProcessingMode;
 	base::upper_case(strVertexProcessingModeUpper);
@@ -230,7 +230,7 @@ DWORD CDXRenderDevice::getVertexProcessingMode(const std::string& strVertexProce
 	return -1;
 }
 
-device_info CDXRenderDevice::readRenderDeviceInfo(const std::string strConfigName)
+device_info render_device_impl::readRenderDeviceInfo(const std::string strConfigName)
 {
 	device_info deviceInfo;
 
@@ -250,14 +250,14 @@ device_info CDXRenderDevice::readRenderDeviceInfo(const std::string strConfigNam
 	//deviceInfo.width = base::safe_read<int>(WindowNode, "width", 640);
 	//deviceInfo.height = base::safe_read<int>(WindowNode, "height", 480);
 
-	deviceInfo.m_nRefreshRate = base::safe_read<int>(WindowNode, "RefreshRate", 85);
-	deviceInfo.m_bWindowed = !base::safe_read<int>(WindowNode, "Fullscreen", 0);
-	deviceInfo.VSync = 1 == base::safe_read<int>(RenderDeviceNode, "VSync", 0);
+	deviceInfo.m_refresh_rate = base::safe_read<int>(WindowNode, "RefreshRate", 85);
+	deviceInfo.m_windowed = !base::safe_read<int>(WindowNode, "Fullscreen", 0);
+	deviceInfo.m_sync = 1 == base::safe_read<int>(RenderDeviceNode, "m_sync", 0);
 
-	if(deviceInfo.m_bWindowed && deviceInfo.m_nRefreshRate != 0)
+	if(deviceInfo.m_windowed && deviceInfo.m_refresh_rate != 0)
 	{
 		base::lwrn<<"readRenderDeviceInfo(): RefreshRate isn't 0 for windowed mode. Setting up to 0";
-		deviceInfo.m_nRefreshRate = 0;
+		deviceInfo.m_refresh_rate = 0;
 	}
 
 	deviceInfo.m_clear_color.r = base::safe_read_attr<int>(RenderDeviceNode, "BackColor", "r", 100);
@@ -266,17 +266,17 @@ device_info CDXRenderDevice::readRenderDeviceInfo(const std::string strConfigNam
 	deviceInfo.m_clear_color.a = base::safe_read_attr<int>(RenderDeviceNode, "BackColor", "a", 255);
 	//->
 	math::Color color = deviceInfo.m_clear_color;
-	render::render_device::setClearColor(color);
+	render::render_device::set_clear_color(color);
 	//-<
 
 	std::string strColorBufferFormat = base::safe_read<std::string>(RenderDeviceNode, "ColorFormat", "A8R8G8B8");
 
-	deviceInfo.m_BackBufferFormat = getBackBufferFormat(strColorBufferFormat);
+	deviceInfo.m_back_buffer_format = getBackBufferFormat(strColorBufferFormat);
 
 	int nDepthBits = base::safe_read_attr<int>(RenderDeviceNode, "DepthStencilFormat", "DepthBpp", 24);
 	int nStencilBits = base::safe_read_attr<int>(RenderDeviceNode, "DepthStencilFormat", "StencilBpp", 8);
 
-	deviceInfo.m_DepthStencilFormat = getDepthStencilFormat(nDepthBits, nStencilBits);
+	deviceInfo.m_depth_buffer_format = getDepthStencilFormat(nDepthBits, nStencilBits);
 
 	std::string strVertexProcessingMode = base::safe_read<std::string>(RenderDeviceNode, "VertexProcessingMethod", "SOFTWARE");
 
@@ -286,9 +286,9 @@ device_info CDXRenderDevice::readRenderDeviceInfo(const std::string strConfigNam
 }
 
 // Initializes Direct3D
-void CDXRenderDevice::init( void* hHostWindow )
+void render_device_impl::init( void* hHostWindow )
 {
-	m_hWnd = (HWND)hHostWindow;
+	m_hwnd = (HWND)hHostWindow;
 	// create the D3D object, which is needed to create the D3DDevice.
 	if( NULL == ( m_pD3D = Direct3DCreate9( D3D_SDK_VERSION ) ) )
 	{
@@ -302,7 +302,7 @@ void CDXRenderDevice::init( void* hHostWindow )
 
 	if(!initDevice(deviceInfo))
 	{
-		base::lerr<<"CDXRenderDevice::initDevice(): Can't init D3D render_device";
+		base::lerr<<"render_device_impl::initDevice(): Can't init D3D render_device";
 		exit(1);//is it right?
 	}
 
@@ -328,7 +328,7 @@ void CDXRenderDevice::init( void* hHostWindow )
 	return;// S_OK;
 }
 
-bool CDXRenderDevice::initDevice(const device_info& DeviceInfo)
+bool render_device_impl::initDevice(const device_info& DeviceInfo)
 {
 	// This object will allow us to set the display mode of the screen.
 	D3DDISPLAYMODE DisplayMode;
@@ -339,7 +339,7 @@ bool CDXRenderDevice::initDevice(const device_info& DeviceInfo)
 	}
 
 	RECT rc;
-	GetClientRect(m_hWnd, &rc);
+	GetClientRect(m_hwnd, &rc);
 	unsigned int width = rc.right - rc.left;
 	unsigned int height = rc.bottom - rc.top;
 
@@ -354,7 +354,7 @@ bool CDXRenderDevice::initDevice(const device_info& DeviceInfo)
 		D3DMULTISAMPLE_4_SAMPLES/*D3DMULTISAMPLE_NONE*/,	// No Multi Sample Type
 		0,				// No Multi Sample Quality
 		D3DSWAPEFFECT_DISCARD,	// Swap effect (Fast)
-		(HWND)m_hWnd,	// The Window Handle
+		(HWND)m_hwnd,	// The Window Handle
 		TRUE,		// Windowed or Fullscreen
 		TRUE,			// Enable Auto Depth Stencil  
 		D3DFMT_D24S8,	// 16Bit Z-Buffer (Depth Buffer)
@@ -383,7 +383,7 @@ bool CDXRenderDevice::initDevice(const device_info& DeviceInfo)
 
 	m_pd3dDevice = NULL;
 
-	if(FAILED(m_pD3D->CreateDevice( AdapterToUse, DeviceType, m_hWnd,
+	if(FAILED(m_pD3D->CreateDevice( AdapterToUse, DeviceType, m_hwnd,
 		DeviceInfo.m_VertexProcessingMode, //TODO:
 		&d3dpp, &m_pd3dDevice ) ) )
 	{
