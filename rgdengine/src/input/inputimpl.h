@@ -21,31 +21,24 @@ namespace input
         bool init    (HWND hWnd, bool exclusive=false, bool foreground=true);
 
 		//загрузить/сохранить раскладку
-        void Load(const std::string &sXml);                               
-		void Save(std::string &sXml);
+        void load(const std::string &xml);                               
+		void save(std::string &xml);
 
 		//считать из буфера все события от устройств ввода
         void update();
 		//завершить работу системы ввода
         void Done();
 
-        //получить устройство
         device* get_device(types::device      eDeviceName, int indx=0);
         device* get_device(const std::wstring &sDeviceName, int indx=0);
 
-        //есть ли такое устройство
         bool is_present(types::device      eDeviceName, int indx=0) const;
         bool is_present(const std::wstring &sDeviceName, int indx=0) const;
 
 
-        // доступ к командам системы ввода
-		//добавить команду
         command_ptr add_command(const std::wstring &command_name);
-		//получить команду
-        command_ptr getCommand(const std::wstring &command_name);
-		//есть ли такая команда
-        bool isCommandPresent(const std::wstring &command_name) const;
-		//отвязать команду ото всех контролов
+        command_ptr get_command(const std::wstring &command_name);
+        bool is_command_present(const std::wstring &command_name) const;
         void detach_command(command_ptr pCommand);
 
 	private:
@@ -61,21 +54,26 @@ namespace input
 		void mProcess (DIDEVICEOBJECTDATA data);
 
     private:
-        std::list<device*> m_devices;
-        std::list<command_ptr> m_commands;
+		typedef std::list<device*> devices_list;
+        devices_list m_devices;
+
+		typedef std::list<command_ptr> commands_list;
+		typedef commands_list::const_iterator commands_iter;
+
+        commands_list m_commands;
 		
-		//вспомогательные переменные для более быстрого доступа
+		// for fast acsess
         device* keyboard; 
         device* mouse;    
 
-        bool m_bInit;
+        bool m_inited;
 
-        HWND m_hWnd;
+        HWND m_hwnd;
         bool m_exclusive;
         bool m_foreground;
 
-		LPDIRECTINPUT8       m_pDI;       //устройство DInput
-		LPDIRECTINPUTDEVICE8 m_pKeyboard; //устройство ввода "клавиатура"
-		LPDIRECTINPUTDEVICE8 m_pMouse;    //устройство ввода "мышь"
+		LPDIRECTINPUT8       m_dxinput;       //устройство DInput
+		LPDIRECTINPUTDEVICE8 m_keyboard; //устройство ввода "клавиатура"
+		LPDIRECTINPUTDEVICE8 m_mouse;    //устройство ввода "мышь"
     };
 }

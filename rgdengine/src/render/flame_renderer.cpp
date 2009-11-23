@@ -15,7 +15,7 @@ namespace render
 	{
 		hide();
 
-		m_renderInfo.render_func = boost::bind(&flame_fx::render, this);
+		m_render_info.render_func = boost::bind(&flame_fx::render, this);
 		{
 			io::path_add_scoped p("common/");
 			m_particle_texture = texture::create(tex);

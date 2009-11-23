@@ -21,8 +21,8 @@ namespace particles
 	, m_transform(math::frame::create())
 	//, core::meta_class("ParticleEffect")
 	{	
-		m_renderInfo.render_func		= boost::bind( &effect::render, this );
-		m_renderInfo.debug_render_func	= boost::bind(&effect::debug_draw, this);
+		m_render_info.render_func		= boost::bind( &effect::render, this );
+		m_render_info.debug_render_func	= boost::bind(&effect::debug_draw, this);
 		
 		// public properties:
 		//REGISTER_PROPERTY(Transform, math::frame)
@@ -110,7 +110,7 @@ namespace particles
 	//----------------------------------------------------------------------------------
 	render::renderable_info& effect::get_renderable_info()
 	{
-		return m_renderInfo;		
+		return m_render_info;		
 	}
 	//-----------------------------------------------------------------------------------
 	void effect::from_stream(io::read_stream& rf)

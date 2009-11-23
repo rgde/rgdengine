@@ -9,12 +9,40 @@
 
 namespace core
 {
+	render_system::render_system(const application& app, render_device_impl_ptr device)
+		: m_app(app)
+		, m_render_device(device)
+	{
+
+	}
+
 	render_system::~render_system()
 	{
 	}
 
+	void render_system::save_screen(const std::wstring& file_name)
+	{
+		m_render_device->save_screen(file_name);
+	}
+
+	void render_system::update() const
+	{
+		m_render_device->update();
+	}
+
+	render::render_device& render_system::get_device()
+	{
+		return *m_render_device;
+	}
+
+	const render::render_device& render_system::get_device() const
+	{
+		return *m_render_device;
+	}
+
 	render_system_ptr render_system::create(const application& app)
 	{
-		return render_system_ptr(new CDXRenderDevice((HWND)app.get_handle()));
+		render_device_impl_ptr device(new render_device_impl((HWND)app.get_handle()));
+		return render_system_ptr(new render_system(app, device));
 	}
 }

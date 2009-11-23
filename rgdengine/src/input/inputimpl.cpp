@@ -14,10 +14,10 @@
 namespace input
 {
     input_impl::input_impl ():
-        m_bInit     (false), //считаем, что система ввода не инициализированна
-        m_pDI       (NULL),  //устройство DInput
-        m_pKeyboard (NULL),  //устройство ввода "клавиатура"
-        m_pMouse    (NULL),  //устройство ввода "мышь"
+        m_inited     (false), //считаем, что система ввода не инициализированна
+        m_dxinput       (NULL),  //устройство DInput
+        m_keyboard (NULL),  //устройство ввода "клавиатура"
+        m_mouse    (NULL),  //устройство ввода "мышь"
         keyboard    (NULL),
         mouse       (NULL)
     {
@@ -25,7 +25,7 @@ namespace input
 
     input_impl::~input_impl ()
     {
-        if (m_bInit)
+        if (m_inited)
             Done();
     }
  
@@ -36,17 +36,17 @@ namespace input
     //изменить режим работы устройств ввода
     bool input_impl::set_mode (bool exclusive/*=false*/, bool foreground/*=true*/)
     {
-        if (!m_bInit)
+        if (!m_inited)
             return false;
 
         //убить старое подключение к устройствам ввода
         doneDXInput();
 
         //выполнить подключение к устройствам ввода с новыми настройками
-        if (!init_input(m_hWnd,exclusive,foreground))
+        if (!init_input(m_hwnd,exclusive,foreground))
         {
             //если не удалось, то подключится со старыми настройками
-            init_input(m_hWnd,m_exclusive,m_foreground);
+            init_input(m_hwnd,m_exclusive,m_foreground);
             return false;
         }
 
@@ -56,12 +56,12 @@ namespace input
     //проинициализировать систему ввода
     bool input_impl::init (HWND hWnd, bool exclusive/*=false*/, bool foreground/*=true*/)
     {
-        if (m_bInit)
+        if (m_inited)
             Done();
 
         //инициализируем DXInput
-        m_bInit = init_input (hWnd,exclusive,foreground);
-        if (!m_bInit)
+        m_inited = init_input (hWnd,exclusive,foreground);
+        if (!m_inited)
             return false;
 
         //заполним массив m_devices
@@ -217,14 +217,13 @@ namespace input
         return true;
     }
 
-    //загрузить раскладку
-    void input_impl::Load (const std::string &sXml)
+    void input_impl::load (const std::string &xml)
     {
-        if (!m_bInit)
+        if (!m_inited)
             return;
 
 		TiXmlDocument doc;
-		doc.Parse(sXml.c_str());
+		doc.Parse(xml.c_str());
 		
 		TiXmlNode *root = doc.FirstChild("input");
 		if (root)
@@ -251,7 +250,7 @@ namespace input
 							{
 								Control *c = d->get_control(String2Control(std::wstring(sControl.begin(), sControl.end())));
 								if (c)
-									c->bind(getCommand(std::wstring(command_name.begin(), command_name.end())));
+									c->bind(get_command(std::wstring(command_name.begin(), command_name.end())));
 							}
 						}
 
@@ -267,7 +266,7 @@ namespace input
     //считать из буфера все события от устройств ввода
     void input_impl::update ()
     {
-        if (!m_bInit)
+        if (!m_inited)
             return;
 
         static DIDEVICEOBJECTDATA kbuf [KEYBOARD_BUFFER_SIZE]; //буфер для клавиатурных событий
@@ -278,30 +277,30 @@ namespace input
 
         //получим сообщения от клавиатуры
         kElements = KEYBOARD_BUFFER_SIZE;
-        hr = m_pKeyboard->GetDeviceData (sizeof(DIDEVICEOBJECTDATA), kbuf, &kElements, 0);
+        hr = m_keyboard->GetDeviceData (sizeof(DIDEVICEOBJECTDATA), kbuf, &kElements, 0);
         if (hr != DI_OK) 
         {
             if (hr == DI_BUFFEROVERFLOW)
                 ; //... keyboard buffer overflow
             else
                 kElements = 0;
-            hr = m_pKeyboard->Acquire();
+            hr = m_keyboard->Acquire();
             while (hr == DIERR_INPUTLOST) 
-                hr = m_pKeyboard->Acquire();
+                hr = m_keyboard->Acquire();
         }
 
         //получим сообщения от мыши
         mElements = MOUSE_BUFFER_SIZE;
-        hr = m_pMouse->GetDeviceData (sizeof(DIDEVICEOBJECTDATA), mbuf, &mElements, 0);
+        hr = m_mouse->GetDeviceData (sizeof(DIDEVICEOBJECTDATA), mbuf, &mElements, 0);
         if (hr != DI_OK) 
         {
             if (hr == DI_BUFFEROVERFLOW)
                 ; //... mouse buffer overflow
             else
                 mElements = 0;
-            hr = m_pMouse->Acquire();
+            hr = m_mouse->Acquire();
             while (hr == DIERR_INPUTLOST) 
-                hr = m_pMouse->Acquire();
+                hr = m_mouse->Acquire();
         }
 
         //обработаем сообщения от устройств ввода в порядке их возникновения
@@ -325,9 +324,9 @@ namespace input
     }
 
     //сохранить раскладку
-    void input_impl::Save (std::string &sXml)
+    void input_impl::save (std::string &sXml)
     {
-        if (!m_bInit)
+        if (!m_inited)
             return;
 
         TiXmlDocument doc;
@@ -379,7 +378,7 @@ namespace input
     //завершить работу системы ввода
     void input_impl::Done ()
     {
-        if (!m_bInit)
+        if (!m_inited)
             return;
 
         doneDXInput ();
@@ -394,12 +393,12 @@ namespace input
         keyboard = NULL;
         mouse    = NULL;
 
-        m_bInit = false;
+        m_inited = false;
     }
  
     device* input_impl::get_device (types::device eDeviceName, int indx/*=0*/)
     {
-        if (!m_bInit)
+        if (!m_inited)
             return 0;
 
         std::list<device*>::iterator i = m_devices.begin();
@@ -418,10 +417,9 @@ namespace input
         return get_device(String2Device(sDeviceName), indx);
     }
 
-    //есть ли такое устройство
     bool input_impl::is_present (types::device eDeviceName, int indx/*=0*/) const
     {
-        if (!m_bInit)
+        if (!m_inited)
             return false;
 
         std::list<device*>::const_iterator i = m_devices.begin();
@@ -439,15 +437,12 @@ namespace input
     {
         return is_present(String2Device(sDeviceName), indx);
     }
- 
-    /////////////////////////////////////
-    // доступ к командам системы ввода //
-    /////////////////////////////////////
 
-    //добавить команду
+	//////////////////////////////////////////////////////////////////////////
+
     command_ptr input_impl::add_command (const std::wstring &command_name)
     {
-        if (m_bInit && !isCommandPresent(command_name))
+        if (m_inited && !is_command_present(command_name))
         {
             command_ptr command(new Command(command_name, *this));
             m_commands.push_back(command);
@@ -457,10 +452,9 @@ namespace input
 		return command_ptr();
     }
 
-    //получить команду
-    command_ptr input_impl::getCommand (const std::wstring &command_name)
+    command_ptr input_impl::get_command (const std::wstring &command_name)
     {
-        if (!m_bInit)
+        if (!m_inited)
             return command_ptr();
 
         std::list<command_ptr>::iterator i = m_commands.begin();
@@ -474,10 +468,9 @@ namespace input
         return command_ptr();
     }
 
-    //есть ли такая команда
-    bool input_impl::isCommandPresent (const std::wstring &command_name) const
+    bool input_impl::is_command_present (const std::wstring &command_name) const
     {
-        if (!m_bInit)
+        if (!m_inited)
             return false;
 
         std::list<command_ptr>::const_iterator i = m_commands.begin();
@@ -494,7 +487,7 @@ namespace input
     //отвязать команду ото всех контролов
     void input_impl::detach_command (command_ptr pCommand)
     {
-        if (!m_bInit)
+        if (!m_inited)
             return;
 
         std::list<device*>::iterator i = m_devices.begin();
@@ -533,9 +526,9 @@ namespace input
         HRESULT     hr;     //результат успеха/ошибки
         DIPROPDWORD dipdw;  //для задания буферизованного ввода клавиатуры и мыши
 
-        m_pDI       = NULL; //устройство DInput
-        m_pKeyboard = NULL; //устройство ввода "клавиатура"
-        m_pMouse    = NULL; //устройство ввода "мышь"
+        m_dxinput       = NULL; //устройство DInput
+        m_keyboard = NULL; //устройство ввода "клавиатура"
+        m_mouse    = NULL; //устройство ввода "мышь"
 
         ///////////////////////////
         // создаем обьект DInput //
@@ -549,7 +542,7 @@ namespace input
                     GetModuleHandle(NULL),
                     DIRECTINPUT_VERSION,
                     IID_IDirectInput8,
-                    (VOID**)&m_pDI,
+                    (VOID**)&m_dxinput,
                     NULL
                 )
             )
@@ -562,21 +555,21 @@ namespace input
         ///////////////////////////////////////////
         // создаем устройство ввода "клавиатура" //
         ///////////////////////////////////////////
-        if (FAILED (hr = m_pDI->CreateDevice (GUID_SysKeyboard, &m_pKeyboard, NULL)))
+        if (FAILED (hr = m_dxinput->CreateDevice (GUID_SysKeyboard, &m_keyboard, NULL)))
         {
             doneDXInput(); //assert(0);
             return false; //... can't create keyboard device
         }
 
         //устанавливаем формат данных для устройства ввода "клавиатура"
-        if (FAILED (hr = m_pKeyboard->SetDataFormat (&c_dfDIKeyboard)))
+        if (FAILED (hr = m_keyboard->SetDataFormat (&c_dfDIKeyboard)))
         {
             doneDXInput(); //assert(0);
             return false; //... can't set data format for keyboard device
         }
 
         //устанавливаем способ доступа к клавиатуре
-        if (FAILED (hr = m_pKeyboard->SetCooperativeLevel (hWnd, flags)))
+        if (FAILED (hr = m_keyboard->SetCooperativeLevel (hWnd, flags)))
         {
             doneDXInput(); //assert(0);
             return false; //... can't set cooperative level for keyboard device
@@ -589,33 +582,33 @@ namespace input
         dipdw.diph.dwHow        = DIPH_DEVICE;
         dipdw.dwData            = KEYBOARD_BUFFER_SIZE;
 
-        if (FAILED (hr = m_pKeyboard->SetProperty (DIPROP_BUFFERSIZE, &dipdw.diph)))
+        if (FAILED (hr = m_keyboard->SetProperty (DIPROP_BUFFERSIZE, &dipdw.diph)))
         {
             doneDXInput(); //assert(0);
             return false; //... can't set buffered device data for keyboard device
         }
 
         //захватываем клавиатуру
-        m_pKeyboard->Acquire();
+        m_keyboard->Acquire();
 
         /////////////////////////////////////
         // создаем устройство ввода "мышь" //
         /////////////////////////////////////
-        if (FAILED (hr = m_pDI->CreateDevice (GUID_SysMouse, &m_pMouse, NULL)))
+        if (FAILED (hr = m_dxinput->CreateDevice (GUID_SysMouse, &m_mouse, NULL)))
         {
             doneDXInput(); //assert(0);
             return false; //... can't create mouse device
         }
 
         //устанавливаем формат данных для устройства ввода "мышь"
-        if (FAILED (hr = m_pMouse->SetDataFormat (&c_dfDIMouse2)))
+        if (FAILED (hr = m_mouse->SetDataFormat (&c_dfDIMouse2)))
         {
             doneDXInput(); //assert(0);
             return false; //... can't set data format for mouse device
         }
 
         //устанавливаем способ доступа к мыши
-        if (FAILED (hr = m_pMouse->SetCooperativeLevel (hWnd,flags)))
+        if (FAILED (hr = m_mouse->SetCooperativeLevel (hWnd,flags)))
         {
             doneDXInput(); //assert(0);
             return false; //... can't set cooperative level for mouse device
@@ -628,17 +621,17 @@ namespace input
         dipdw.diph.dwHow        = DIPH_DEVICE;
         dipdw.dwData            = MOUSE_BUFFER_SIZE;
 
-        if (FAILED (hr = m_pMouse->SetProperty (DIPROP_BUFFERSIZE, &dipdw.diph)))
+        if (FAILED (hr = m_mouse->SetProperty (DIPROP_BUFFERSIZE, &dipdw.diph)))
         {
             doneDXInput(); //assert(0);
             return false; //... can't set buffered device data for mouse device
         }
 
         //захватываем мышь
-        m_pMouse->Acquire();
+        m_mouse->Acquire();
 
         //запомним параметры инициализации
-        m_hWnd = hWnd;
+        m_hwnd = hWnd;
         m_exclusive = exclusive;
         m_foreground = foreground;
 
@@ -648,16 +641,16 @@ namespace input
     //ДЕинициализация DXInput
     void input_impl::doneDXInput()
     {
-        if (m_pMouse)    m_pMouse   ->Unacquire();
-        if (m_pKeyboard) m_pKeyboard->Unacquire();
+        if (m_mouse)    m_mouse   ->Unacquire();
+        if (m_keyboard) m_keyboard->Unacquire();
 
-        if (m_pMouse)    m_pMouse   ->Release();
-        if (m_pKeyboard) m_pKeyboard->Release();
-        if (m_pDI)       m_pDI      ->Release();
+        if (m_mouse)    m_mouse   ->Release();
+        if (m_keyboard) m_keyboard->Release();
+        if (m_dxinput)       m_dxinput      ->Release();
 
-        m_pMouse    = NULL; //устройство ввода "мышь"
-        m_pKeyboard = NULL; //устройство ввода "клавиатура"
-        m_pDI       = NULL; //устройство DInput
+        m_mouse    = NULL; //устройство ввода "мышь"
+        m_keyboard = NULL; //устройство ввода "клавиатура"
+        m_dxinput       = NULL; //устройство DInput
     }
 
     //обработка клавиатурных событий

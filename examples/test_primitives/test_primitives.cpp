@@ -27,8 +27,8 @@ private:
 SceneHelper::SceneHelper(geometry_ptr geometry)
 {
 	m_geometry = geometry;
-	m_renderInfo.frame = this;
-	m_renderInfo.render_func = boost::bind( &SceneHelper::render, this );
+	m_render_info.frame = this;
+	m_render_info.render_func = boost::bind( &SceneHelper::render, this );
 }
 
 void SceneHelper::render()

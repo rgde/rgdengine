@@ -24,7 +24,7 @@ struct static_particle
 		scale *= _scale;
 	}
 
-	void Save(io::write_stream& out, float _scale = 1.0f)
+	void save(io::write_stream& out, float _scale = 1.0f)
 	{
 		out << x * _scale << y * _scale << z * _scale
 			<< r << g << b << a 
@@ -33,7 +33,7 @@ struct static_particle
 			<< tex_num;
 	}
 
-	void Load(io::read_stream& in)
+	void load(io::read_stream& in)
 	{
 		in	>> x >> y >> z
 			>> r >> g >> b >> a 
@@ -56,16 +56,16 @@ struct anim_frame
 			particles[i].ReScale(scale);
 	}
 
-	void Save(io::write_stream& out, float scale = 1.0f)
+	void save(io::write_stream& out, float scale = 1.0f)
 	{
 		out << frame_number
 			<< number_of_particles;
 
 		for(unsigned int i = 0; i < number_of_particles; ++i)
-			particles[i].Save(out, scale);
+			particles[i].save(out, scale);
 	}
 
-	void Load(io::read_stream& in)
+	void load(io::read_stream& in)
 	{
 		in  >> frame_number
 			>> number_of_particles;
@@ -73,7 +73,7 @@ struct anim_frame
 		for(unsigned int i = 0; i < number_of_particles; ++i)
 		{
 			static_particle p; 
-			p.Load(in);
+			p.load(in);
 			particles.push_back(p);
 		}
 	}
@@ -100,7 +100,7 @@ struct animation
 			frames[i].ReScale(scale);
 	}
 
-	void Save(io::write_stream& out, float scale = 1.0f)
+	void save(io::write_stream& out, float scale = 1.0f)
 	{
 		char ver = 1; // версия
 
@@ -116,10 +116,10 @@ struct animation
 			<< (unsigned int)frames.size();
 
 		for (unsigned int i = 0; i < frames.size(); ++i)
-			frames[i].Save(out, scale);
+			frames[i].save(out, scale);
 	}
 
-	bool Load(io::read_stream& in)
+	bool load(io::read_stream& in)
 	{
 		try{
 			char ver;
@@ -137,7 +137,7 @@ struct animation
 			for (unsigned int i = 0; i < frame_num; ++i)
 			{
 				anim_frame f; 
-				f.Load(in);
+				f.load(in);
 				frames.push_back(f);
 			}
 			return true;

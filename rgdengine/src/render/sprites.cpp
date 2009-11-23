@@ -41,7 +41,7 @@ namespace render
 		m_scale = vFrontBufferSize / m_screen_size;
 
 		m_effect = effect::create("SpriteManager.fx");
-		m_renderInfo.render_func = boost::bind(&sprite_manager::render, this);
+		m_render_info.render_func = boost::bind(&sprite_manager::render, this);
 	}
 
 	sprite_manager::~sprite_manager()

@@ -22,8 +22,8 @@ namespace render
 	lens_flares::lens_flares(math::frame_ptr frame)
 		: m_frame(frame)
 	{
-		m_renderInfo.frame = m_frame.get();
-		m_renderInfo.render_func = boost::bind(&lens_flares::render, this);
+		m_render_info.frame = m_frame.get();
+		m_render_info.render_func = boost::bind(&lens_flares::render, this);
 		TheSpriteManager2::get().set_blending(true);
 	}
 

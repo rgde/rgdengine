@@ -151,7 +151,7 @@ namespace particles{
 				io::read_file pfxFile(str);
 				if(pfxFile.is_open())
 				{
-					if (!fseq.Load(pfxFile))
+					if (!fseq.load(pfxFile))
 					{
 						m_is_seq_loaded = false;
 						return;

@@ -30,12 +30,12 @@ namespace input
 	void Helper::attach (const std::wstring &command_name)
 	{
 		detach();
-		m_command = Input::getCommand(command_name);
+		m_command = Input::get_command(command_name);
 		//->
 		if (!m_command)
 		{
 			Input::add_command(command_name);
-			m_command = Input::getCommand(command_name);
+			m_command = Input::get_command(command_name);
 		}
 		//-<
 		if (m_command)
@@ -59,18 +59,18 @@ namespace input
 
 	void Helper::notify (const Control &c)
 	{
-		HelperEvent ev;
+		helper_event ev;
 
 		switch (c.get_type())
 		{
 			case Control::Axis:
-				ev.m_type = HelperEvent::Axis; 
+				ev.m_type = helper_event::Axis; 
 				break;
 			case Control::Button:
-				ev.m_type = HelperEvent::Button; 
+				ev.m_type = helper_event::Button; 
 				break;
 			default:
-				ev.m_type = HelperEvent::Button;
+				ev.m_type = helper_event::Button;
 		}
 
 		ev.m_press = c.m_press;

@@ -235,7 +235,7 @@ namespace render
 
 		void operator()(rendererable const * r)
 		{
-			if ((NULL == r) || (r->isVisible() == false))
+			if ((NULL == r) || (r->is_visible() == false))
 				return;
 
 			const renderable_info  &ri = r->get_renderable_info();
@@ -334,7 +334,7 @@ namespace render
 			for (Renderables::iterator it = temp_copy.begin();
 				it != temp_copy.end(); ++it)
 			{
-				if ((*it)->isVisible())
+				if ((*it)->is_visible())
 					r(&(*it)->get_renderable_info());
 			}
 		}
@@ -358,7 +358,7 @@ namespace render
 	}
 
 	rendererable::rendererable(unsigned priority)
-		: m_nRenderPriority(priority),
+		: m_render_priority(priority),
 		  m_is_visible(true)
 	{
 		TheRenderManager::get().add(this);

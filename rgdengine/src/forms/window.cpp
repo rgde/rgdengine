@@ -104,7 +104,7 @@ namespace forms
 		}
 		else
 		{
-			msg.lResult = ::CallWindowProc(m_SuperWindowProc, m_hWnd, msg.uMsg, msg.wParam, msg.lParam);
+			msg.lResult = ::CallWindowProc(m_SuperWindowProc, m_hwnd, msg.uMsg, msg.wParam, msg.lParam);
 		}
 	}
 
@@ -119,17 +119,17 @@ namespace forms
 	}
 
 	Window::Window()
-		: m_hWnd(NULL),
+		: m_hwnd(NULL),
 		m_SuperWindowProc(::DefWindowProc)
 	{
 	}
 
 	Window::~Window()
 	{
-		if (m_hWnd)
+		if (m_hwnd)
 		{
-			ms_windows.erase(m_hWnd);
-			::DestroyWindow(m_hWnd);
+			ms_windows.erase(m_hwnd);
+			::DestroyWindow(m_hwnd);
 		}
 	}
 
@@ -148,15 +148,15 @@ namespace forms
 		int y = Rect.top;
 		int width = Rect.GetWidth();
 		int height = Rect.GetHeight();
-		m_hWnd = ::CreateWindowExW(ExStyle, ClassName.c_str(), Name.c_str(), Style, Rect.left, Rect.top, width, height, Parent, (HMENU)ID, ::GetModuleHandle(NULL), this);
-		ms_windows[m_hWnd]	= this;
+		m_hwnd = ::CreateWindowExW(ExStyle, ClassName.c_str(), Name.c_str(), Style, Rect.left, Rect.top, width, height, Parent, (HMENU)ID, ::GetModuleHandle(NULL), this);
+		ms_windows[m_hwnd]	= this;
 	}
 
 	//void Window::Subclass(Window *wnd)
 	//{
-	//	SetWndLong<void*>(wnd->m_hWnd, GWL_USERDATA, wnd);
-	//	wnd->m_SuperWindowProc = GetWndLong<WNDPROC>(wnd->m_hWnd, GWL_WNDPROC);
-	//	SetWndLong<WNDPROC>(wnd->m_hWnd, GWL_WNDPROC, SubWindowProc);
+	//	SetWndLong<void*>(wnd->m_hwnd, GWL_USERDATA, wnd);
+	//	wnd->m_SuperWindowProc = GetWndLong<WNDPROC>(wnd->m_hwnd, GWL_WNDPROC);
+	//	SetWndLong<WNDPROC>(wnd->m_hwnd, GWL_WNDPROC, SubWindowProc);
 	//}
 
 	void Window::SetMessageEvent(UINT uMsg, const MessageEvent &Event)

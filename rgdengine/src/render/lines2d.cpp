@@ -16,7 +16,7 @@ namespace render
 		m_vertices = &(m_geometry.lock());
 		m_priority = priority;
 		m_effect = effect::create("Line3dManager.fx");
-		m_renderInfo.render_func = boost::bind(&lines2d::render, this);
+		m_render_info.render_func = boost::bind(&lines2d::render, this);
 	}
 	//-----------------------------------------------------------------------------------
 	void lines2d::render()

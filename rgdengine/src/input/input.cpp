@@ -31,7 +31,6 @@ namespace input
         return *ms_instance;
     }
 
-    //удалить синглтон системы ввода
     void Input::destroy ()
     {
         if (ms_instance)
@@ -39,54 +38,55 @@ namespace input
         ms_instance = 0;
     }
 
-    //инициализировать систему ввода
     void Input::init (input_impl *pImpl)
     {
-        m_pImpl.reset(pImpl);
+        m_impl.reset(pImpl);
     }
 
     bool Input::set_mode (bool exclusive, bool foreground)
     {
-        return get().m_pImpl->set_mode(exclusive,foreground);
+        return get().m_impl->set_mode(exclusive,foreground);
     }
 
-    void Input::LoadFromString (const std::string &sXml)
+    void Input::load_xml (const std::string &xml)
     {
-        get().m_pImpl->Load(sXml);
+        get().m_impl->load(xml);
     }
 
-    void Input::LoadFromFile (const std::string &sFileName)
+    void Input::load (const std::string &file_name)
     {
         std::vector<char> data;
 
         io::file_system &fs    = io::file_system::get();
-        io::readstream_ptr stream = fs.find(sFileName);
+        io::readstream_ptr stream = fs.find(file_name);
         io::stream_to_vector<char>(data, stream);
 
-        get().m_pImpl->Load(std::string(data.begin(), data.end()));
+		std::string str( data.begin(), data.end());
+
+        get().m_impl->load(str);
     }
 
     void Input::update ()
     {
-        get().m_pImpl->update();
+        get().m_impl->update();
     }
 
-    void Input::Save (std::string &sXml)
+    void Input::save_xml (std::string &xml)
     {
-        get().m_pImpl->Save(sXml);
+        get().m_impl->save(xml);
     }
 
     device* Input::get_device (types::device eDeviceName, int indx)
     {
-        return get().m_pImpl->get_device(eDeviceName, indx);
+        return get().m_impl->get_device(eDeviceName, indx);
     }
 
     device* Input::get_device (const std::wstring &sDeviceName, int indx)
     {
-        return get().m_pImpl->get_device(sDeviceName, indx);
+        return get().m_impl->get_device(sDeviceName, indx);
     }
 
-	Control* Input::GetControl(types::device device_type, int dev_index, types::control control)
+	Control* Input::get_control(types::device device_type, int dev_index, types::control control)
 	{
 		if (device* dev = get_device(device_type, dev_index))
 			return dev->get_control(control);
@@ -97,36 +97,36 @@ namespace input
     //есть ли такое устройство
     bool Input::is_present (types::device eDeviceName, int indx)
     {
-        return get().m_pImpl->is_present(eDeviceName,indx);
+        return get().m_impl->is_present(eDeviceName,indx);
     }
 
     //есть ли такое устройство
     bool Input::is_present (const std::wstring &sDeviceName, int indx)
     {
-        return get().m_pImpl->is_present(sDeviceName, indx);
+        return get().m_impl->is_present(sDeviceName, indx);
     }
 
     //добавить команду
     void Input::add_command (const std::wstring &command_name)
     {
-        get().m_pImpl->add_command(command_name);
+        get().m_impl->add_command(command_name);
     }
 
     //получить команду
-    command_ptr Input::getCommand (const std::wstring &command_name)
+    command_ptr Input::get_command (const std::wstring &command_name)
     {
-        return get().m_pImpl->getCommand(command_name);
+        return get().m_impl->get_command(command_name);
     }
 
     //есть ли такая команда
-    bool Input::isCommandPresent (const std::wstring &command_name)
+    bool Input::is_command_present (const std::wstring &command_name)
     {
-        return get().m_pImpl->isCommandPresent(command_name);
+        return get().m_impl->is_command_present(command_name);
     }
 
     //отвязать команду ото всех контролов
     void Input::detach_command (command_ptr pCommand)
     {
-        get().m_pImpl->detach_command(pCommand);
+        get().m_impl->detach_command(pCommand);
     }
 }

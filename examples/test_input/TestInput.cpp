@@ -17,9 +17,9 @@ TestInput::TestInput():
     m_btnPrimaryFire   (L"PrimaryFire"),
     m_btnSecondaryFire (L"SecondaryFire")
 {
-    render::render_device::get().setClearColor(math::Color(0,0,0,255));
+    render::render_device::get().set_clear_color(math::Color(0,0,0,255));
 
-    input::Input::LoadFromFile("TestInput/input.xml");
+    input::Input::load("TestInput/input.xml");
 
     //биндим функции для перехвата событий
     m_key_quit        += boost::bind(&TestInput::onQuit,          this);

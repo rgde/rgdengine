@@ -135,7 +135,7 @@ void TestMusic::init_input()
 	m_cSpace += boost::bind(&TestMusic::NextMusic, this);
 
 	m_esc.attach(L"Quit");
-	Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(m_esc.getCommand());
+	Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(m_esc.get_command());
 	m_esc += boost::bind(&TestMusic::onEsc, this);
 }
 

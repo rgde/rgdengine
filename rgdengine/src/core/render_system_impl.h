@@ -20,23 +20,22 @@ struct device_info
 		const DWORD& VertexProcessingMode,
 		const math::Color& ClearColor, bool vsync);
 
-	bool m_bWindowed;
-	D3DFORMAT m_DepthStencilFormat;
-	D3DFORMAT m_BackBufferFormat;
-	int m_nRefreshRate;
+	bool m_windowed;
+	D3DFORMAT m_depth_buffer_format;
+	D3DFORMAT m_back_buffer_format;
+	int m_refresh_rate;
 	DWORD m_VertexProcessingMode;
 	math::Color m_clear_color;
-	bool VSync;
+	bool m_sync;
 };
 
 
-class CDXRenderDevice : public render_system,
-						public event::sender, 
-						public render::render_device
+class render_device_impl : public event::sender, 
+						   public render::render_device
 {	
 public:
-	CDXRenderDevice(HWND hwnd);
-	~CDXRenderDevice();
+	render_device_impl(HWND hwnd);
+	~render_device_impl();
 
 	void onWindowResizeEvent(window_resize e);
 	void save_screen(const std::wstring& file_name);
@@ -61,7 +60,7 @@ private:
 
 private:
 	D3DPRESENT_PARAMETERS	m_d3dpp;
-	HWND					m_hWnd;
+	HWND					m_hwnd;
 	LPDIRECT3D9             m_pD3D;			// Used to create the D3DDevice
 	LPDIRECT3DDEVICE9       m_pd3dDevice;	// Our rendering device
 	math::Color             m_clear_color;   // Back Buffer clear color
