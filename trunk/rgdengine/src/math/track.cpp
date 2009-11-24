@@ -17,7 +17,7 @@ namespace math
         m_splineEyePt.m_values.swap(catm_rom_spline_v3f::List());
         m_splineLookatPt.m_values.swap(catm_rom_spline_v3f::List());
         m_splineSpeed.m_values.swap(catm_rom_splinef::List());
-        m_time2parameter.m_values.swap(FloatLinearInterpolatorf::Map());
+        m_time2parameter.m_values.swap(FloatLinearInterpolatorf::keys_map());
 
         //заполняем
         List::iterator i = m_values.begin();
@@ -43,7 +43,7 @@ namespace math
         //ключевой момент - заполнение массива соотвествия "время" <-> "параметр по умолчанию"
         float t = 0;
         float u = 0;
-        m_time2parameter.addValue(t,u);
+        m_time2parameter.add_value(t,u);
 
         const float step = spline.length() / (m_values.size()*20.f);
         for (float position=0; position<spline.length(); position+=step)
@@ -53,7 +53,7 @@ namespace math
 
             t += step/speed; 
 
-            m_time2parameter.addValue(t,u);
+            m_time2parameter.add_value(t,u);
         }
     }
 

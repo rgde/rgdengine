@@ -5,7 +5,7 @@
 //			LerpFloat lf;												//
 //			lf.add_key(0, 0.0f);										//	
 //			lf.add_key(1, 5.0f);										//
-//			float result = lf.getValue(0.5f);							//
+//			float result = lf.get_value(0.5f);							//
 //																		//
 //		result:															//
 //			2.5															//
@@ -32,14 +32,14 @@ namespace math
 	class interpolator : public io::serialized_object
 	{
 	public:
-		struct Key : public io::serialized_object
+		struct key : public io::serialized_object
 		{
 		public:
-			Key(){}
-			Key(const T& v, float p) : value(v), position(p){}
+			key(){}
+			key(const T& v, float p) : value(v), position(p){}
 			T value;
 			float position;
-			bool operator<(const Key& k) {return position < k.position;}
+			bool operator<(const key& k) {return position < k.position;}
 
 		protected:
 			void to_stream(io::write_stream& wf) const
@@ -54,35 +54,30 @@ namespace math
 			}
 		};
 
-		typedef std::vector<Key> Keys;
+		typedef std::vector<key> keys_vector;
 
-	public:
-		interpolator():m_sorted(false) {}
+		interpolator() : m_sorted(false) {}
 
 		T operator()(float t)
 		{
-			return getValue(t);
+			return get_value(t);
 		}
 
-		T getValue(float t)
+		T get_value(float t)
 		{
 			if (!m_sorted)
-				sortVector();
+				sort_keys();
 
-			//if (t > 1 || t < 0)
-			//{
-			//	throw(std::exception("effect_param_impl out of range !"));
-			//}
 			if (t > 1) t = 1.0f;
 			else if (t < 0) t = 0;
 
-			if (0 == m_vKeys.size())
+			if (0 == m_keys.size())
 			{
 				return T();
 			}
 
-			Key* less_eq	= getLessOrEqualKey(t);
-			Key* gr_eq		= getGreaterOrEqualKey(t);
+			key* less_eq	= getLessOrEqualKey(t);
+			key* gr_eq		= getGreaterOrEqualKey(t);
 
 			if (less_eq == gr_eq)
 			{
@@ -108,49 +103,44 @@ namespace math
 		void add_key(float pos, const T& value)
 		{
 			m_sorted = false;
-			m_vKeys.push_back(Key(value, pos));
+			m_keys.push_back(key(value, pos));
 		}
 
-		Keys& getKeys()
-		{
-            return m_vKeys;
-		}
+		keys_vector& get_keys()	{ return m_keys; }
+		const keys_vector& get_keys() const	{ return m_keys; }
 
-		const Keys& getKeys() const
-		{
-			return m_vKeys;
-		}
-
-		void sortVector(bool forceSort = false)
+		void sort_keys(bool forceSort = false)
 		{
 			if (m_sorted && !forceSort) return;
-			std::sort(m_vKeys.begin(), m_vKeys.end());
+			std::sort(m_keys.begin(), m_keys.end());
 			m_sorted = true;
 		}
 
-		Key* getLessOrEqualKey(float t) 
+		/// get less or equal key
+		key* getLessOrEqualKey(float t) 
 		{
-			Key* pk = 0;
-			int size = (int)m_vKeys.size();
+			key* pk = 0;
+			int size = (int)m_keys.size();
 			for (int i = 0; i < size; ++i)
 			{
-				Key& k = m_vKeys[i];
+				key& k = m_keys[i];
 				if (k.position > t) return pk;
-				pk = &(m_vKeys[i]);
+				pk = &(m_keys[i]);
 			}
 			return pk;
 		}
 
-		Key* getGreaterOrEqualKey(float t) 
+		/// get greater or equal key
+		key* getGreaterOrEqualKey(float t) 
 		{
-			Key* pk = 0;
-			int size = (int)m_vKeys.size();
+			key* pk = 0;
+			int size = (int)m_keys.size();
 
 			for (int i = size - 1; i >= 0 ; --i)
 			{
-				Key& k = m_vKeys[i];
+				key& k = m_keys[i];
 				if (k.position < t) return pk;
-				pk = &(m_vKeys[i]);
+				pk = &(m_keys[i]);
 			}
 			return pk;
 		}
@@ -158,12 +148,9 @@ namespace math
 	protected:
 		virtual void to_stream(io::write_stream& wf) const
 		{
-			//sortVector();		//save only sorted data
-			// ^^^ - now we perform sorting on load
+			wf << (unsigned)m_keys.size();
 
-			wf << (unsigned)m_vKeys.size();
-
-			for( Keys::const_iterator it = m_vKeys.begin(); it != m_vKeys.end(); it++ )
+			for( keys_vector::const_iterator it = m_keys.begin(); it != m_keys.end(); it++ )
 				wf << (*it);
 		}
 
@@ -173,45 +160,45 @@ namespace math
 			rf >> nKeys;
 			for( unsigned i = 0; i < nKeys; i++ )
 			{
-				Key key;
-				rf >> key;
-				m_vKeys.push_back( key );
+				key k;
+				rf >> k;
+				m_keys.push_back( k );
 			}
 
 			m_sorted = false;
 
-			sortVector(); // to be sure
+			sort_keys(); // to be sure :)
 		}
 
 	private:
 		bool m_sorted;
-		mutable Keys m_vKeys;
+		mutable keys_vector m_keys;
 	};
 
-	typedef interpolator<int>		IntInterp;
-	typedef interpolator<float>	FloatInterp;
-	typedef interpolator<double>	DoubleInterp;
+	typedef interpolator<int>		interpolatori;
+	typedef interpolator<float>		interpolatorf;
+	typedef interpolator<double>	interpolatord;
 
 
 	template<class T = float, int Size = 3>
-	class TVectorInterpolator : public io::serialized_object
+	class interpolator_vec : public io::serialized_object
 	{
 	public:
 		typedef math::Vec<T, Size> Vec;
 
-		TVectorInterpolator() : m_vComponents(Size){}
+		interpolator_vec() : m_components(Size){}
 		
 		Vec operator()(float t)
 		{
-			return getValue(t);
+			return get_value(t);
 		}
 
-		Vec getValue(float t)
+		Vec get_value(float t)
 		{
 			Vec out;
 
 			for (int i = 0; i < Size; ++i)
-				out[i] =  m_vComponents[i](t);
+				out[i] =  m_components[i](t);
 
 			return out;
 		}
@@ -219,17 +206,17 @@ namespace math
 		void add_key(float pos, const Vec& v)
 		{
 			for (int i = 0; i < Size; ++i)
-				m_vComponents[i].add_key(pos, v[i]);
+				m_components[i].add_key(pos, v[i]);
 		}
 
-		interpolator<T>&  getComponent(int component)
+		interpolator<T>&  get_component(int component)
 		{
-            return m_vComponents[component];
+            return m_components[component];
 		}
 
-		const interpolator<T>&  getComponent(int component) const
+		const interpolator<T>&  get_component(int component) const
 		{
-			return m_vComponents[component];
+			return m_components[component];
 		}
 
 	protected:
@@ -238,7 +225,7 @@ namespace math
 			wf << Size;
 
 			for (int i = 0; i < Size; ++i)
-				wf << m_vComponents[i];
+				wf << m_components[i];
 		}
 
 		virtual void from_stream(io::read_stream& rf)
@@ -251,68 +238,71 @@ namespace math
 			}
 
 			for (int i = 0; i < Size; ++i)
-				rf >> m_vComponents[i];
+				rf >> m_components[i];
 		}
 
 	private:
-		std::vector<interpolator<T> > m_vComponents;
+		std::vector<interpolator<T> > m_components;
 	};
 
-	typedef TVectorInterpolator<float, 3>	Vec3Interp;
-	typedef TVectorInterpolator<float, 4>	Vec4Interp;
+	typedef interpolator_vec<float, 3>	interpolator_v3f;
+	typedef interpolator_vec<float, 4>	interpolator_v4f;
 
 
 	//--------------------------------------------------------------------------------------
-	// Интерполятор цвета
-	class ColorInterp : public io::serialized_object
+	/// color interpolator
+	class interpolator_col : public io::serialized_object
 	{
 	public:
 		Color operator()(float t)
 		{
-			return getValue(t);
+			return get_value(t);
 		}
 
-		Color getValue(float t)
+		Color get_value(float t)
 		{
-			vec3f vColor = m_vColor(t);
+			vec3f vColor = m_color(t);
 			Color out( static_cast<unsigned char>(vColor[0]), static_cast<unsigned char>(vColor[1]),
-				static_cast<unsigned char>(vColor[2]), static_cast<unsigned char>(m_Alpha(t)) );
+				static_cast<unsigned char>(vColor[2]), static_cast<unsigned char>(m_alpha(t)) );
 			return out;
 		}
 
 		void add_key(float pos, const Color& v)
 		{
-			m_vColor.add_key (pos, vec3f(v.r, v.g, v.b));
-			m_Alpha.add_key (pos, v.a);
+			m_color.add_key (pos, vec3f(v.r, v.g, v.b));
+			m_alpha.add_key (pos, v.a);
 		}
 
-		Vec3Interp&  getColor() { return m_vColor; }
-		FloatInterp& getAlpha() { return m_Alpha; }
+		interpolator_v3f&  get_color() { return m_color; }
+		interpolatorf& get_alpha() { return m_alpha; }
 
-		const Vec3Interp&  getColor() const { return m_vColor; }
-		const FloatInterp& getAlpha() const { return m_Alpha; }
+		const interpolator_v3f&  get_color() const { return m_color; }
+		const interpolatorf& get_alpha() const { return m_alpha; }
 
 	protected:
 		virtual void to_stream(io::write_stream& wf) const
 		{
-			wf << m_vColor << m_Alpha;
+			wf << m_color << m_alpha;
 		}
 
 		virtual void from_stream(io::read_stream& rf)
 		{
-			rf >> m_vColor >> m_Alpha;
+			rf >> m_color >> m_alpha;
 		}
 
 	private:
-		Vec3Interp m_vColor;
-		FloatInterp m_Alpha;
+		interpolator_v3f m_color;
+		interpolatorf m_alpha;
 	};
 
 	//template<class T>
-	inline std::ostream& operator<<(std::ostream& out, const FloatInterp& interp)
+	inline std::ostream& operator<<(std::ostream& out, const interpolatorf& interp)
 	{
-		const FloatInterp::Keys& keys = interp.getKeys();
-		for(FloatInterp::Keys::const_iterator iter = keys.begin(); iter != keys.end(); ++iter)
+		const interpolatorf::keys_vector& keys = interp.get_keys();
+		
+		typedef interpolatorf::keys_vector::const_iterator const_iterator;
+
+		for(const_iterator iter = keys.begin(); iter != keys.end(); ++iter)
 		{
 			out << base::lexical_cast<std::string, float>((*iter).position)	<< ","
 				<< base::lexical_cast<std::string, float>((*iter).value)	<< ";";
@@ -320,17 +310,17 @@ namespace math
 		return out;
 	}
 	
-	inline std::ostream& operator<<(std::ostream& out, const Vec3Interp& interp)
+	inline std::ostream& operator<<(std::ostream& out, const interpolator_v3f& interp)
 	{
-		out << interp.getComponent(0) << ";"
-			<< interp.getComponent(1) << ";"
-			<< interp.getComponent(2) << ";";
+		out << interp.get_component(0) << ";"
+			<< interp.get_component(1) << ";"
+			<< interp.get_component(2) << ";";
 		return out;
 	}
 
 	typedef std::list<std::basic_string<char> > CharTokenList;
 
-	inline std::istream& operator>>(std::istream& in, FloatInterp& interp)
+	inline std::istream& operator>>(std::istream& in, interpolatorf& interp)
 	{
 		std::string data;
 		in >> data;
@@ -348,7 +338,7 @@ namespace math
 		return in;
 	}
 
-	inline std::istream& operator>>(std::istream& in, Vec3Interp& interp)
+	inline std::istream& operator>>(std::istream& in, interpolator_v3f& interp)
 	{
 		int component = 0;
 		std::string data;
@@ -359,7 +349,7 @@ namespace math
 			std::stringstream stream;
 			stream << *iter;
 			if(component < 3)
-				stream >> interp.getComponent(component++);
+				stream >> interp.get_component(component++);
 			else
 				break;
 		}
@@ -367,14 +357,14 @@ namespace math
 		return in;
 	}
 
-	inline std::ostream& operator<<(std::ostream& out, const ColorInterp& interp)
+	inline std::ostream& operator<<(std::ostream& out, const interpolator_col& interp)
 	{
-		out << interp.getColor() << ";"
-			<< interp.getAlpha() << ";";
+		out << interp.get_color() << ";"
+			<< interp.get_alpha() << ";";
 		return out;
 	}
 
-	inline std::istream& operator>>(std::istream& in, ColorInterp& interp)
+	inline std::istream& operator>>(std::istream& in, interpolator_col& interp)
 	{
 		std::string data;
 		in >> data;
@@ -383,7 +373,7 @@ namespace math
 		
 		std::stringstream stream;
 		stream << *iter << *(++iter);
-		stream >> interp.getColor() >> interp.getAlpha();
+		stream >> interp.get_color() >> interp.get_alpha();
 
 		return in;
 	}

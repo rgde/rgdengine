@@ -17,14 +17,14 @@ namespace particles
 		m_Radius.add_key(0, 0);
 		m_Radius.add_key(1.0f, 9.0f);	
 
-		//addProperty(new property<math::FloatInterp>(m_Radius,			"Radius",	"FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_RadiusSpread,	"RadiusSpread",	"FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_Angle,			"Angle",	"FloatInterp"));
+		//addProperty(new property<math::interpolatorf>(m_Radius,			"Radius",	"interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_RadiusSpread,	"RadiusSpread",	"interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_Angle,			"Angle",	"interpolatorf"));
 
 		// public properties:
-		//REGISTER_PROPERTY(Radius,		math::FloatInterp)
-		//REGISTER_PROPERTY(RadiusSpread,	math::FloatInterp)
-		//REGISTER_PROPERTY(Angle,		math::FloatInterp)
+		//REGISTER_PROPERTY(Radius,		math::interpolatorf)
+		//REGISTER_PROPERTY(RadiusSpread,	math::interpolatorf)
+		//REGISTER_PROPERTY(Angle,		math::interpolatorf)
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -37,12 +37,12 @@ namespace particles
 	{
 		base_emitter::get_particle(p);
 
-		float radius = m_Radius.getValue(m_fTimeNormalaized)
-			+ (m_Rand()* 2.0f - 1.0f) * m_RadiusSpread.getValue(m_fTimeNormalaized);
-		float velocity = m_velocity.getValue(m_fTimeNormalaized) 
-			+ m_Rand() * m_PVelSpread.getValue(m_fTimeNormalaized);
+		float radius = m_Radius.get_value(m_fTimeNormalaized)
+			+ (m_Rand()* 2.0f - 1.0f) * m_RadiusSpread.get_value(m_fTimeNormalaized);
+		float velocity = m_velocity.get_value(m_fTimeNormalaized) 
+			+ m_Rand() * m_PVelSpread.get_value(m_fTimeNormalaized);
 
-		float angle = m_Angle.getValue(m_fTimeNormalaized);
+		float angle = m_Angle.get_value(m_fTimeNormalaized);
 
 		float a = 90 - math::Math::unitRandom()/*m_Rand()*/* angle;
 		float b = math::Math::unitRandom()/*m_Rand()*/* 360;
@@ -68,9 +68,9 @@ namespace particles
 
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 
-		float rad = m_Radius.getValue(m_fTimeNormalaized);// + 
-		float r_rand = m_RadiusSpread.getValue(m_fTimeNormalaized);
-		int angle = (int)(m_Angle.getValue(m_fTimeNormalaized));
+		float rad = m_Radius.get_value(m_fTimeNormalaized);// + 
+		float r_rand = m_RadiusSpread.get_value(m_fTimeNormalaized);
+		int angle = (int)(m_Angle.get_value(m_fTimeNormalaized));
 
 		math::matrix44f m = get_transform()->get_full_tm();
 

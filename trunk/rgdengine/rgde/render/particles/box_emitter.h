@@ -21,16 +21,16 @@ namespace particles
 
 	// Акксессоры
 	public:
-		inline math::Vec3Interp& getBoxSizeInterp()			{ return m_box_size; }
-		inline math::Vec3Interp& getBoxSizeSpreadInterp()	{ return m_BoxSizeSpread; }
-		inline math::Vec3Interp& getDirectionInterp()		{ return m_Direction; }
-		inline math::Vec3Interp& getDirectionSpreadInterp()	{ return m_DirectionSpread; }
+		inline math::interpolator_v3f& getBoxSizeInterp()			{ return m_box_size; }
+		inline math::interpolator_v3f& getBoxSizeSpreadInterp()	{ return m_BoxSizeSpread; }
+		inline math::interpolator_v3f& getDirectionInterp()		{ return m_Direction; }
+		inline math::interpolator_v3f& getDirectionSpreadInterp()	{ return m_DirectionSpread; }
 
 
 	protected:
-		math::Vec3Interp m_box_size;
-		math::Vec3Interp m_BoxSizeSpread;
-		math::Vec3Interp m_Direction;
-		math::Vec3Interp m_DirectionSpread;
+		math::interpolator_v3f m_box_size;
+		math::interpolator_v3f m_BoxSizeSpread;
+		math::interpolator_v3f m_Direction;
+		math::interpolator_v3f m_DirectionSpread;
 	};
 }

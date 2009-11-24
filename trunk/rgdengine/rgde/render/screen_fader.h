@@ -26,7 +26,7 @@ namespace render
 		fader(const std::string& file_name);
 
 		void               setColor(const math::Color& color);
-		const math::Color& getColor() const {return m_color;}
+		const math::Color& get_color() const {return m_color;}
 
 		void  setFadingTime(float fFadingTime);
 		float getFadingTime() const {return m_fFadingTime;}

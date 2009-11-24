@@ -17,15 +17,15 @@ namespace particles
 		m_box_size.add_key(1, math::vec3f(3, 3, 3) );
 
 		// public properties:
-		//REGISTER_PROPERTY(BoxSize, math::Vec3Interp)
-		//REGISTER_PROPERTY(BoxSizeSpread, math::Vec3Interp)
-		//REGISTER_PROPERTY(Direction, math::Vec3Interp)
-		//REGISTER_PROPERTY(DirectionSpread, math::Vec3Interp)
+		//REGISTER_PROPERTY(BoxSize, math::interpolator_v3f)
+		//REGISTER_PROPERTY(BoxSizeSpread, math::interpolator_v3f)
+		//REGISTER_PROPERTY(Direction, math::interpolator_v3f)
+		//REGISTER_PROPERTY(DirectionSpread, math::interpolator_v3f)
 
-		//addProperty(new property<math::Vec3Interp>(m_box_size,			"BoxSize",			"Vec3Interp"));
-		//addProperty(new property<math::Vec3Interp>(m_BoxSizeSpread,	"BoxSizeSpread",	"Vec3Interp"));
-		//addProperty(new property<math::Vec3Interp>(m_Direction,		"Direction",		"Vec3Interp"));
-		//addProperty(new property<math::Vec3Interp>(m_DirectionSpread,	"DirectionSpread",	"Vec3Interp"));
+		//addProperty(new property<math::interpolator_v3f>(m_box_size,			"BoxSize",			"interpolator_v3f"));
+		//addProperty(new property<math::interpolator_v3f>(m_BoxSizeSpread,	"BoxSizeSpread",	"interpolator_v3f"));
+		//addProperty(new property<math::interpolator_v3f>(m_Direction,		"Direction",		"interpolator_v3f"));
+		//addProperty(new property<math::interpolator_v3f>(m_DirectionSpread,	"DirectionSpread",	"interpolator_v3f"));
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -59,15 +59,15 @@ namespace particles
 	{
 		base_emitter::get_particle(p);
 
-		math::vec3f dir = m_Direction.getValue(m_fTimeNormalaized)
-			+ (m_Rand()* 2.0f - 1.0f) * m_DirectionSpread.getValue(m_fTimeNormalaized);
+		math::vec3f dir = m_Direction.get_value(m_fTimeNormalaized)
+			+ (m_Rand()* 2.0f - 1.0f) * m_DirectionSpread.get_value(m_fTimeNormalaized);
 
-		float velocity = m_velocity.getValue(m_fTimeNormalaized) 
-			+ m_Rand() * m_PVelSpread.getValue(m_fTimeNormalaized);
+		float velocity = m_velocity.get_value(m_fTimeNormalaized) 
+			+ m_Rand() * m_PVelSpread.get_value(m_fTimeNormalaized);
 
 
-		math::vec3f size = m_box_size.getValue(m_fTimeNormalaized)
-			+ (m_Rand()* 2.0f - 1.0f) * m_BoxSizeSpread.getValue(m_fTimeNormalaized);
+		math::vec3f size = m_box_size.get_value(m_fTimeNormalaized)
+			+ (m_Rand()* 2.0f - 1.0f) * m_BoxSizeSpread.get_value(m_fTimeNormalaized);
 
 		float x = (m_Rand()* 2.0f - 1.0f) * size[0];
 		float y = (m_Rand()* 2.0f - 1.0f) * size[1];

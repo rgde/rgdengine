@@ -11,10 +11,10 @@ namespace particles{
 	{
 		p = particle();
 
-		p.mass = m_PMass.getValue(m_fTimeNormalaized)
-			+ (m_Rand() * 2.0f - 1.0f) * m_PMassSpread.getValue(m_fTimeNormalaized);
+		p.mass = m_PMass.get_value(m_fTimeNormalaized)
+			+ (m_Rand() * 2.0f - 1.0f) * m_PMassSpread.get_value(m_fTimeNormalaized);
 
-		p.rotation = m_Rand() * m_PRotationSpread.getValue(m_fTimeNormalaized);
+		p.rotation = m_Rand() * m_PRotationSpread.get_value(m_fTimeNormalaized);
 	}
 	//-----------------------------------------------------------------------------------
 	void base_emitter::addProcessor(processor* pp)
@@ -88,10 +88,10 @@ namespace particles{
 		math::matrix44f m = m_transform->get_full_tm();
 
 		math::invert( m );
-		m_vPAcceleration = m_PAcceleration.getValue(m_fTimeNormalaized);
+		m_vPAcceleration = m_PAcceleration.get_value(m_fTimeNormalaized);
 		//m_vAccelerationPrecomputed = m.transformVector(m_vPAcceleration);
 		math::xform( m_vAccelerationPrecomputed, m, m_vPAcceleration );
-		m_vGlobalVel = m_GlobalVelocity.getValue(m_fTimeNormalaized);
+		m_vGlobalVel = m_GlobalVelocity.get_value(m_fTimeNormalaized);
 		//m_vGlobalVelPrecomputed = m.transformVector(m_vGlobalVel);
 		math::xform( m_vGlobalVelPrecomputed, m, m_vGlobalVel );
 		//m_vCurSpeedTransformed = m.transformVector(m_vCurSpeed);
@@ -141,13 +141,13 @@ namespace particles{
 		//addProperty(new property<bool>(m_is_visible,			"IsVisible",	"bool"));
 		//addProperty(new property<float>(m_time_shift,			"fTimeShift",	"float"));
 		//
-		//addProperty(new property<math::FloatInterp>(m_PMass,		"PMass",	"FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_PMassSpread,	"PMassSpread",	"FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_PRotationSpread,	"PRotationSpread",	"FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_velocity,	"PVelocity",	"FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_PVelSpread,	"PVelSpread",	"FloatInterp"));
-		//addProperty(new property<math::Vec3Interp>(m_PAcceleration,	"PAcceleration",	"Vec3Interp"));
-		//addProperty(new property<math::Vec3Interp>(m_GlobalVelocity,	"GlobalVelocity",	"Vec3Interp"));
+		//addProperty(new property<math::interpolatorf>(m_PMass,		"PMass",	"interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_PMassSpread,	"PMassSpread",	"interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_PRotationSpread,	"PRotationSpread",	"interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_velocity,	"PVelocity",	"interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_PVelSpread,	"PVelSpread",	"interpolatorf"));
+		//addProperty(new property<math::interpolator_v3f>(m_PAcceleration,	"PAcceleration",	"interpolator_v3f"));
+		//addProperty(new property<math::interpolator_v3f>(m_GlobalVelocity,	"GlobalVelocity",	"interpolator_v3f"));
 		
 		// public properties:
 		//REGISTER_PROPERTY(fCycleTime,		float)
@@ -155,13 +155,13 @@ namespace particles{
 		//REGISTER_PROPERTY(bIsVisible,		bool)
 		//REGISTER_PROPERTY(fTimeShift,		float)
 		//
-		//REGISTER_PROPERTY(PMass,			math::FloatInterp)
-		//REGISTER_PROPERTY(PMassSpread,		math::FloatInterp)
-		//REGISTER_PROPERTY(PRotationSpread,	math::FloatInterp)
-		//REGISTER_PROPERTY(PVelocity,		math::FloatInterp)
-		//REGISTER_PROPERTY(PVelSpread,		math::FloatInterp)
-		//REGISTER_PROPERTY(PAcceleration,	math::Vec3Interp)
-		//REGISTER_PROPERTY(GlobalVelocity,	math::Vec3Interp)
+		//REGISTER_PROPERTY(PMass,			math::interpolatorf)
+		//REGISTER_PROPERTY(PMassSpread,		math::interpolatorf)
+		//REGISTER_PROPERTY(PRotationSpread,	math::interpolatorf)
+		//REGISTER_PROPERTY(PVelocity,		math::interpolatorf)
+		//REGISTER_PROPERTY(PVelSpread,		math::interpolatorf)
+		//REGISTER_PROPERTY(PAcceleration,	math::interpolator_v3f)
+		//REGISTER_PROPERTY(GlobalVelocity,	math::interpolator_v3f)
 	}
 
 	base_emitter::~base_emitter()
