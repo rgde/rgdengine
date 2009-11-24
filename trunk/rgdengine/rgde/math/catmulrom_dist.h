@@ -7,17 +7,16 @@
 
 namespace math
 {
-
     //модификаци€ сплайна  этмула-–ома
     //отличаетс€ тем, что при помощи функции DIST можно задать
     //рассто€ние между двум€ VALUE, что используетс€ дл€ равномерного
     //интерполировани€ по сплайну (иными словами, DIST нужен дл€
     //параметризации длинной сплайна)
     template <typename VALUE, typename DIST>
-    class TCatmulRomDistSpline: public TSpline<VALUE>
+    class catm_rom_spline_dist: public spline<VALUE>
     {
     public:
-        TCatmulRomDistSpline(): m_length(0) {}
+        catm_rom_spline_dist(): m_length(0) {}
 
         VALUE interpolate(float position) const
         {
@@ -41,15 +40,15 @@ namespace math
 
         void apply()
         {
-            m_spline.m_values.swap(TCatmulRomSpline<VALUE>::List(m_values));
+            m_spline.m_values.swap(catm_rom_spline<VALUE>::List(m_values));
             m_position2parameter.m_values.swap(FloatLinearInterpolatorf::Map());
             m_length = 0;
 
             if (m_spline.m_values.size() < 1)
                 return;
 
-            TCatmulRomSpline<VALUE>::const_iterator i    =   m_spline.m_values.begin();
-            TCatmulRomSpline<VALUE>::const_iterator last = --m_spline.m_values.end();
+            catm_rom_spline<VALUE>::const_iterator i    =   m_spline.m_values.begin();
+            catm_rom_spline<VALUE>::const_iterator last = --m_spline.m_values.end();
             const float step = 1.f/100.f;
             float t = 0;
 
@@ -70,7 +69,7 @@ namespace math
             }
         }
 
-        float getParameter (float position)
+        float get_param (float position)
         {
             return m_position2parameter(position);
         }
@@ -80,7 +79,7 @@ namespace math
         {
             ws << uint(m_spline.m_values.size());
 
-            for(TCatmulRomSpline<VALUE>::const_iterator it = m_spline.m_values.begin(); it != m_spline.m_values.end(); ++it)
+            for(catm_rom_spline<VALUE>::const_iterator it = m_spline.m_values.begin(); it != m_spline.m_values.end(); ++it)
                 ws << (*it);
         }
 
@@ -102,7 +101,7 @@ namespace math
 
     private:
         float                    m_length;             //длинна сплайна
-        TCatmulRomSpline<VALUE>  m_spline;             //сплайн интерполируемых величин
+        catm_rom_spline<VALUE>  m_spline;             //сплайн интерполируемых величин
         FloatLinearInterpolatorf m_position2parameter; //переход от параметризации длинной к параметризации по умолчанию
     };
 

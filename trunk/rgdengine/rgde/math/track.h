@@ -39,10 +39,10 @@ namespace math
         Key getKey(float t);
 
     private:
-        Vec3fCatmulRomSpline     m_splineUp;
-        Vec3fCatmulRomSpline     m_splineEyePt;
-        Vec3fCatmulRomSpline     m_splineLookatPt;
-        FloatCatmulRomSpline     m_splineSpeed;
+        catm_rom_spline_v3f     m_splineUp;
+        catm_rom_spline_v3f     m_splineEyePt;
+        catm_rom_spline_v3f     m_splineLookatPt;
+        catm_rom_splinef     m_splineSpeed;
         FloatLinearInterpolatorf m_time2parameter;
 
         CTrack(const CTrack&);

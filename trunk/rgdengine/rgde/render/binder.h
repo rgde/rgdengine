@@ -122,7 +122,7 @@ namespace render
 		bool addParameter(typename Types<PType>::ParamType val,
 						  const std::string& name)
 		{
-			effect::parameter* param = getParameter(name);
+			effect::parameter* param = get_param(name);
 
 			if(NULL == param)
 				return false;
@@ -136,7 +136,7 @@ namespace render
 		bool addParameter(const typename Types<PType>::getter& f,
 						  const std::string& name)
 		{
-			effect::parameter* param = getParameter(name);
+			effect::parameter* param = get_param(name);
 
 			if(NULL == param)
 				return false;
@@ -150,7 +150,7 @@ namespace render
 		bool addParameter(const typename Types<PType>::ParamTypeGetFunction& f,
 						  const std::string& name)
 		{
-			effect::parameter* param = getParameter(name);
+			effect::parameter* param = get_param(name);
 
 			if(NULL == param)
 				return false;
@@ -195,7 +195,7 @@ namespace render
 			return (typename Types<PType>::EffectSetFunction) &effect::parameter::set;
 		}
 
-		effect::parameter* getParameter(const std::string& name) const
+		effect::parameter* get_param(const std::string& name) const
 		{
 			const effect::params_map& params = m_effect->get_params();
 			effect::params_map::const_iterator it = params.find(name);

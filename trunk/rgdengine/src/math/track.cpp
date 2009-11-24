@@ -10,13 +10,13 @@ namespace math
     void CTrack::apply()
     {
         //вспомогательный сплайн для вычисления расстояния на сплайне
-        Vec3fCatmulRomDistSpline spline;
+        catm_rom_spline_dist_v3f spline;
 
         //чистим
-        m_splineUp.m_values.swap(Vec3fCatmulRomSpline::List());
-        m_splineEyePt.m_values.swap(Vec3fCatmulRomSpline::List());
-        m_splineLookatPt.m_values.swap(Vec3fCatmulRomSpline::List());
-        m_splineSpeed.m_values.swap(FloatCatmulRomSpline::List());
+        m_splineUp.m_values.swap(catm_rom_spline_v3f::List());
+        m_splineEyePt.m_values.swap(catm_rom_spline_v3f::List());
+        m_splineLookatPt.m_values.swap(catm_rom_spline_v3f::List());
+        m_splineSpeed.m_values.swap(catm_rom_splinef::List());
         m_time2parameter.m_values.swap(FloatLinearInterpolatorf::Map());
 
         //заполняем
@@ -48,7 +48,7 @@ namespace math
         const float step = spline.length() / (m_values.size()*20.f);
         for (float position=0; position<spline.length(); position+=step)
         {
-            u = spline.getParameter(position);
+            u = spline.get_param(position);
             float speed = m_splineSpeed(u);
 
             t += step/speed; 
@@ -62,10 +62,10 @@ namespace math
     {
         m_values.swap(List());
 
-        Vec3fCatmulRomSpline::iterator i_up     = m_splineUp.m_values.begin();
-        Vec3fCatmulRomSpline::iterator i_eyept  = m_splineEyePt.m_values.begin();
-        Vec3fCatmulRomSpline::iterator i_lookat = m_splineLookatPt.m_values.begin();
-        FloatCatmulRomSpline::iterator i_speed  = m_splineSpeed.m_values.begin();
+        catm_rom_spline_v3f::iterator i_up     = m_splineUp.m_values.begin();
+        catm_rom_spline_v3f::iterator i_eyept  = m_splineEyePt.m_values.begin();
+        catm_rom_spline_v3f::iterator i_lookat = m_splineLookatPt.m_values.begin();
+        catm_rom_splinef::iterator i_speed  = m_splineSpeed.m_values.begin();
 
         //все сплайны должны иметь одинаковый размер,
         //поэтому можно отлавливать выход из цикла

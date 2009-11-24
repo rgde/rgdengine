@@ -1,14 +1,14 @@
 #include "precompiled.h"
 
 #include <rgde/math/fps_camera.h>
+#include <rgde/math/camera.h>
 
 namespace math
 {
 
     fps_camera::fps_camera(camera_ptr camera)
+		: base_camera_controller(camera)
     {
-        set_camera(camera);
-
         base::lmsg << "fps_camera::fps_camera()";
         m_up       = vec3f(0.0f, 1.0f, 0.0f);
         m_eye_pos    = vec3f(0.0f, 0.0f, 0.0f);
@@ -37,19 +37,19 @@ namespace math
 
     void fps_camera::move_forward(float delta)
     {
-		vec3f vDir = m_lookat_pt-m_eye_pos;
-		normalize(vDir);
-		vDir*=delta;
-		m_eye_pos+=vDir;
-		m_lookat_pt+=vDir;
+		vec3f dir = m_lookat_pt-m_eye_pos;
+		normalize(dir);
+		dir*=delta;
+		m_eye_pos+=dir;
+		m_lookat_pt+=dir;
 		apply();
     }
 
     void fps_camera::move_left(float delta)
     {
-		vec3f vDir = m_lookat_pt-m_eye_pos;
+		vec3f dir = m_lookat_pt-m_eye_pos;
 		vec3f vRight;
-		cross(vRight,m_up,vDir);
+		cross(vRight,m_up,dir);
 		normalize(vRight);
 		vRight*=delta;
 		m_eye_pos-=vRight;
@@ -59,21 +59,21 @@ namespace math
 
     void fps_camera::move_up(float delta)
     {
-		vec3f vDir = m_up;
-		normalize(vDir);
-		vDir*=delta;
-		m_eye_pos+=vDir;
-		m_lookat_pt+=vDir;
+		vec3f dir = m_up;
+		normalize(dir);
+		dir*=delta;
+		m_eye_pos+=dir;
+		m_lookat_pt+=dir;
 		apply();
     }
 
     void fps_camera::rotate_right(float angle)
     {
  		quatf rot;
-        vec3f vAxis = m_up;
+        vec3f axis = m_up;
 
-		normalize(vAxis);
-        setRot(rot, AxisAnglef(angle, vAxis));
+		normalize(axis);
+        setRot(rot, AxisAnglef(angle, axis));
 
         xform<float>(m_lookat_pt, rot, m_lookat_pt-m_eye_pos);
         normalize(m_lookat_pt);
@@ -85,25 +85,25 @@ namespace math
     void fps_camera::rotate_up(float angle)
     {
 		quatf rot;
-        vec3f vAxis;
-        vec3f vDir = m_lookat_pt-m_eye_pos;
+        vec3f axis;
+        vec3f dir = m_lookat_pt-m_eye_pos;
 
         //боремся с гатством "взгляд вертикально вверх или вниз"
         const float fSmallAngle = 0.01f; //не позволяем приближать направление взгляда к вертикали ближе чем на этот угол
-        normalize(vDir);
+        normalize(dir);
         normalize(m_up);
-        float fCurrentAngle = Math::aCos(dot(vDir,m_up));
+        float fCurrentAngle = Math::aCos(dot(dir,m_up));
         if (fCurrentAngle + angle <= fSmallAngle)
             angle = -fCurrentAngle + fSmallAngle;
         if (fCurrentAngle + angle >= Math::PI - fSmallAngle)
             angle = Math::PI - fCurrentAngle - fSmallAngle;
 
-        cross(vAxis,m_up,vDir);
-		normalize(vAxis);
+        cross(axis,m_up,dir);
+		normalize(axis);
 
-        if (length(vAxis) < 0.1f) return; //иопт! направление взгляда совпало с направлением верха
+        if (length(axis) < 0.1f) return; //иопт! направление взгляда совпало с направлением верха
 
-        setRot(rot, AxisAnglef(angle, vAxis));
+        setRot(rot, AxisAnglef(angle, axis));
 
         xform<float>(m_lookat_pt, rot, m_lookat_pt-m_eye_pos);
         normalize(m_lookat_pt);

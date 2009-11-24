@@ -7,23 +7,22 @@
 
 namespace math
 {
-
     //сплайны Кэтмула-Рома с параметризацией по умолчанию
-    typedef TCatmulRomSpline<double>      DoubleCatmulRomSpline;
-    typedef TCatmulRomSpline<float>       FloatCatmulRomSpline;
-    typedef TCatmulRomSpline<int>         IntCatmulRomSpline;
+    typedef catm_rom_spline<double>      catm_rom_splined;
+    typedef catm_rom_spline<float>       catm_rom_splinef;
+    typedef catm_rom_spline<int>         catm_rom_splinei;
 
-    typedef TCatmulRomSpline<math::vec2f> Vec2fCatmulRomSpline;
-    typedef TCatmulRomSpline<math::vec3f> Vec3fCatmulRomSpline;
-    typedef TCatmulRomSpline<math::vec4f> Vec4fCatmulRomSpline;
+    typedef catm_rom_spline<math::vec2f> catm_rom_spline_v2f;
+    typedef catm_rom_spline<math::vec3f> catm_rom_spline_v3f;
+    typedef catm_rom_spline<math::vec4f> catm_rom_spline_v4f;
 
-    typedef TCatmulRomSpline<math::quatf> QuatfCatmulRomSpline;
+    typedef catm_rom_spline<math::quatf> catm_rom_spline_q;
 
     //функторы для вычисления расстояния между различными видами
     //вершин сплайна (для расспространненных типов вершин)
 
     //для типа float
-    struct FloatDistance
+    struct distancef
     {
         float operator()(const float &k1, const float &k2)
         {
@@ -32,7 +31,7 @@ namespace math
     };
 
     //для типа vec3f
-    struct Vec3fDistance
+    struct distance_vec
     {
         float operator()(const vec3f &k1, const vec3f &k2)
         {
@@ -41,7 +40,7 @@ namespace math
     };
 
     //сплайны Кэтмула-Рома с параметризацией длинной сплайна
-    typedef TCatmulRomDistSpline<float, FloatDistance> FloatCatmulRomDistSpline;
-    typedef TCatmulRomDistSpline<vec3f, Vec3fDistance> Vec3fCatmulRomDistSpline;
+    typedef catm_rom_spline_dist<float, distancef> catm_rom_spline_distf;
+    typedef catm_rom_spline_dist<vec3f, distance_vec> catm_rom_spline_dist_v3f;
 
 } //namespace math
