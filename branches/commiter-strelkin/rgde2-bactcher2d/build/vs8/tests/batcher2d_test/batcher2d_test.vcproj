@@ -144,7 +144,7 @@
 				Name="VCLinkerTool"
 				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86;$(SolutionDir)..\..\external\boost\lib\"
+				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86;$(SolutionDir)..\..\external\boost\lib\; $(SolutionDir)..\..\libs\Release\"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"

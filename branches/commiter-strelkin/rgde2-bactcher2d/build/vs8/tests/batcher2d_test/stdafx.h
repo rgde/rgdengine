@@ -52,8 +52,8 @@
 #include <engine/core/core.h>
 #include <engine/core/xml/xml.h>
 #include <engine/render/render.h>
-//#include <renderer2d/src/renderer_2d.h>
-//#include <renderer2d/src/primitives.h>
+#include <renderer2d/src/primitives.h>
+#include <renderer2d/src/renderer_2d.h>
 
 #include <windows.h>
 #define ASSERT _ASSERTE

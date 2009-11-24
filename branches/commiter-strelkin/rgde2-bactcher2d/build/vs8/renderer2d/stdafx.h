@@ -40,3 +40,4 @@
 #include <engine/core/core.h>
 #include <engine/core/types.h>
 #include <engine/render/render.h>
+#include <renderer2d/src/primitives.h>
