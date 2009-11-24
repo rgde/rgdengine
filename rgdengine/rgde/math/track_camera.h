@@ -8,7 +8,7 @@ namespace math
 {
     typedef boost::shared_ptr<class path_camera> path_camera_ptr;
 
-    //контроллер камеры аля "камера летающая по некоторой траектории"
+    // spline path camera controller
     class path_camera: public base_camera_controller
     {
         path_camera(camera_ptr camera);
@@ -18,17 +18,16 @@ namespace math
 
         CTrack m_path;
 
-        //управление
         void  move_to(float position);
         void  move_forward(float delta);
         void  move_back(float delta) {move_forward(-delta);}
-        float get_pos() {return m_fPosition;}
+        float get_pos() {return m_position;}
 
         void activate();
 
     private:
         void apply();
 
-        float m_fPosition;
+        float m_position;
     };
 }

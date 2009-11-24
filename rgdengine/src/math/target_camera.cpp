@@ -1,14 +1,14 @@
 #include "precompiled.h"
 
 #include <rgde/math/target_camera.h>
+#include <rgde/math/camera.h>
 
 namespace math
 {
 
     target_camera::target_camera(camera_ptr camera)
+		: base_camera_controller(camera)
     {
-        set_camera(camera);
-
         base::lmsg << "target_camera::target_camera()";
         m_up       = vec3f(0.0f, 1.0f, 0.0f);
         m_eye_pos    = vec3f(0.0f, 0.0f, 0.0f);
@@ -23,41 +23,41 @@ namespace math
 
     void target_camera::set_position(const vec3f& up, const vec3f& eye, const vec3f& look_at)
     {
-        m_up       = up;
-        m_eye_pos    = eye;
+        m_up = up;
+        m_eye_pos = eye;
         m_lookat_pt = look_at;
         apply();
     }
 
     void target_camera::get_pos(vec3f& up, vec3f& eye, vec3f& look_at)
     {
-        up       = m_up;
-        eye    = m_eye_pos;
+        up = m_up;
+        eye = m_eye_pos;
         look_at = m_lookat_pt;
     }
 
-    void target_camera::move_forward(float delta)
+    void target_camera::move_forward(float d)
     {
-		vec3f vDir = m_lookat_pt-m_eye_pos;
-		vec3f vDelta = vDir;
-		normalize(vDelta);
-		vDelta *= delta;
+		vec3f dir = m_lookat_pt-m_eye_pos;
+		vec3f delta = dir;
+		normalize(delta);
+		delta *= d;
 
-		if (length(vDelta)>length(vDir) && delta>0)
+		if (length(delta)>length(dir) && d>0)
 			return;
 
-        vDir -= vDelta;
-		m_eye_pos = m_lookat_pt-vDir;
+        dir -= delta;
+		m_eye_pos = m_lookat_pt-dir;
         apply();
     }
 
     void target_camera::rotate_right(float angle)
     {
 		quatf rot;
-        vec3f vAxis = m_up;
+        vec3f axis = m_up;
 
-        normalize(vAxis);
-        setRot(rot, AxisAnglef(angle, vAxis));
+        normalize(axis);
+        setRot(rot, AxisAnglef(angle, axis));
 
         m_eye_pos = m_lookat_pt - xform<float>(m_eye_pos, rot, m_lookat_pt-m_eye_pos);
 		apply();
@@ -66,12 +66,12 @@ namespace math
     void target_camera::rotate_up(float angle)
     {
 		quatf rot;
-        vec3f vAxis;
-        vec3f vDir = m_lookat_pt-m_eye_pos;
+        vec3f axis;
+        vec3f dir = m_lookat_pt-m_eye_pos;
 
-        cross(vAxis,m_up,vDir);
-		normalize(vAxis);
-        setRot(rot, AxisAnglef(angle, vAxis));
+        cross(axis,m_up,dir);
+		normalize(axis);
+        setRot(rot, AxisAnglef(angle, axis));
 
         m_eye_pos = m_lookat_pt - xform<float>(m_eye_pos, rot, m_lookat_pt-m_eye_pos);
         xform<float>(m_up, rot, m_up);
@@ -81,10 +81,10 @@ namespace math
     void target_camera::rotate_cw(float angle)
     {
 		quatf rot;
-        vec3f vAxis = m_lookat_pt-m_eye_pos;
+        vec3f axis = m_lookat_pt-m_eye_pos;
 
-		normalize(vAxis);
-        setRot(rot, AxisAnglef(angle, vAxis));
+		normalize(axis);
+        setRot(rot, AxisAnglef(angle, axis));
 
         xform<float>(m_up, rot, m_up);
 		apply();
@@ -112,13 +112,13 @@ namespace math
     {
         normalize(m_up);
 
-        vec3f vForward = m_lookat_pt-m_eye_pos;
-        normalize(vForward);
+        vec3f fwd = m_lookat_pt-m_eye_pos;
+        normalize(fwd);
 
         //m_up
-        vec3f vTmp;
-        cross(vTmp, m_up, vForward);
-        cross(m_up, vForward, vTmp);
+        vec3f tmp;
+        cross(tmp, m_up, fwd);
+        cross(m_up, fwd, tmp);
     }
 
 } //namespace math

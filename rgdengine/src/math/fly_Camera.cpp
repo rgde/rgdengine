@@ -1,14 +1,13 @@
 #include "precompiled.h"
 
 #include <rgde/math/fly_camera.h>
+#include <rgde/math/camera.h>
 
 namespace math
 {
-
     free_camera::free_camera(camera_ptr camera)
+		: base_camera_controller(camera)
     {
-        set_camera(camera);
-
         base::lmsg << "free_camera::free_camera()";
         m_up       = vec3f(0.0f, 1.0f, 0.0f);
         m_eye_pos    = vec3f(0.0f, 0.0f, 0.0f);
@@ -36,39 +35,39 @@ namespace math
         look_at = m_lookat_pt;
     }
 
-    void free_camera::move_forward(float delta)
+    void free_camera::move_forward(float d)
     {
-        vec3f vDelta = m_lookat_pt-m_eye_pos;
-        normalize(vDelta);
-        vDelta *= delta;
+        vec3f delta = m_lookat_pt-m_eye_pos;
+        normalize(delta);
+        delta *= d;
 
-        m_eye_pos    += vDelta;
-        m_lookat_pt += vDelta;
+        m_eye_pos    += delta;
+        m_lookat_pt += delta;
 
         apply();
     }
 
-    void free_camera::move_left(float delta)
+    void free_camera::move_left(float d)
     {
-        vec3f vDelta;
-        cross(vDelta, m_up, vec3f(m_lookat_pt-m_eye_pos));
-        normalize(vDelta);
-        vDelta *= delta;
+        vec3f delta;
+        cross(delta, m_up, vec3f(m_lookat_pt-m_eye_pos));
+        normalize(delta);
+        delta *= d;
 
-        m_eye_pos    -= vDelta;
-        m_lookat_pt -= vDelta;
+        m_eye_pos    -= delta;
+        m_lookat_pt -= delta;
 
         apply();
     }
 
-    void free_camera::move_up(float delta)
+    void free_camera::move_up(float d)
     {
-        vec3f vDelta = m_up;
-        normalize(vDelta);
-        vDelta *= delta;
+        vec3f delta = m_up;
+        normalize(delta);
+        delta *= d;
 
-        m_eye_pos    += vDelta;
-        m_lookat_pt += vDelta;
+        m_eye_pos    += delta;
+        m_lookat_pt += delta;
 
         apply();
     }
@@ -76,10 +75,10 @@ namespace math
     void free_camera::rotate_right(float angle)
     {
         quatf rot;
-        vec3f vAxis = m_up;
+        vec3f axis = m_up;
 
-        normalize(vAxis);
-        setRot(rot, AxisAnglef(angle, vAxis));
+        normalize(axis);
+        setRot(rot, AxisAnglef(angle, axis));
 
         m_lookat_pt = xform<float>(m_lookat_pt, rot, m_lookat_pt-m_eye_pos) + m_eye_pos;
         apply();
@@ -88,11 +87,11 @@ namespace math
     void free_camera::rotate_up(float angle)
     {
         quatf rot;
-        vec3f vAxis;
+        vec3f axis;
 
-        cross(vAxis, m_up, vec3f(m_lookat_pt-m_eye_pos));
-        normalize(vAxis);
-        setRot(rot, AxisAnglef(angle, vAxis));
+        cross(axis, m_up, vec3f(m_lookat_pt-m_eye_pos));
+        normalize(axis);
+        setRot(rot, AxisAnglef(angle, axis));
 
         m_lookat_pt = xform<float>(m_lookat_pt, rot, m_lookat_pt-m_eye_pos) + m_eye_pos;
         m_up = xform<float>(m_up, rot, m_up);
@@ -102,10 +101,10 @@ namespace math
     void free_camera::rotate_cw(float angle)
     {
         quatf rot;
-        vec3f vAxis = m_lookat_pt-m_eye_pos;
+        vec3f axis = m_lookat_pt-m_eye_pos;
 
-        normalize(vAxis);
-        setRot(rot, AxisAnglef(angle, vAxis));
+        normalize(axis);
+        setRot(rot, AxisAnglef(angle, axis));
 
         m_up = xform<float>(m_up, rot, m_up);
         apply();
@@ -134,16 +133,16 @@ namespace math
     {
         normalize(m_up);
 
-        vec3f vForward = m_lookat_pt-m_eye_pos;
-        normalize(vForward);
+        vec3f fwd = m_lookat_pt-m_eye_pos;
+        normalize(fwd);
 
         //m_up
         vec3f vTmp;
-        cross(vTmp, m_up, vForward);
-        cross(m_up, vForward, vTmp);
+        cross(vTmp, m_up, fwd);
+        cross(m_up, fwd, vTmp);
 
         //m_lookat_pt
-        m_lookat_pt = m_eye_pos + vForward;
+        m_lookat_pt = m_eye_pos + fwd;
     }
 
 } //namespace math
