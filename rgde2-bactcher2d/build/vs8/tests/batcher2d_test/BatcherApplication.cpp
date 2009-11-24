@@ -6,10 +6,12 @@
 namespace rgde
 {
 	BatcherApplication::BatcherApplication(int x, int y, int w, int h, const std::wstring& title)
-		:m_active(true),
+		:m_active(true), m_clear_color(127, 127, 127, 0),
 		window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU),
 		m_device(get_handle())
 	{
+		show();
+		update();
 	}
 
 	BatcherApplication::~BatcherApplication()
@@ -22,6 +24,11 @@ namespace rgde
 		{
 			if( !do_events() && m_active)
 			{
+				m_device.frame_begin();
+				m_device.clear(m_clear_color);
+
+				m_device.frame_end();
+				m_device.present();
 			}
 		}
 	}

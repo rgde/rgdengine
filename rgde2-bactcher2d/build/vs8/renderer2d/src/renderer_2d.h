@@ -21,7 +21,6 @@ namespace rgde
 			void add_line(const primitives_2d::line_desc& line);
 			void add_line(/* param*/);
 
-
 			void add_sprite(const primitives_2d::sprite_desc& sprite);
 			void add_sprite(const math::vec2f& pos_, const math::vec2f& size_,
 						    const math::rect tex_coord_, const float spin_, 

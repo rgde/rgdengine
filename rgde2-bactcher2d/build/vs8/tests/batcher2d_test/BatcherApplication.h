@@ -14,6 +14,7 @@ namespace rgde
 		bool do_events();
 	private:
 		bool m_active;
+		math::color m_clear_color;
 		render::device m_device;
 	};
 }

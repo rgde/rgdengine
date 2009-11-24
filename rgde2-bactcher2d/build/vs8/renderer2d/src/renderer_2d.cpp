@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "primitives.h"
 #include "renderer_2d.h"
 
 namespace rgde
@@ -22,17 +21,7 @@ namespace rgde
 		}
 
 		renderer_2d::~renderer_2d()
-		{/*
-			for(lines_iter it = m_lines.begin(); it != m_lines.end(); ++it)
-			{
-				 delete it;
-			}
-
-			for(sprites_iter it = m_sprites.begin(); it != m_sprites.end(); ++it)
-			{
-				primitives_2d::sprite_desc *s = it;
-				delete s;
-			}*/
+		{
 		}
 
 		void renderer_2d::init_device()
