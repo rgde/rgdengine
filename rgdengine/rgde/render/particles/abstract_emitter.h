@@ -46,13 +46,13 @@ public:
 	void set_fade(bool b);
 
 	// Акксессоры к интерполяторам
-	inline math::FloatInterp& particleMass()			{ return m_PMass; }
-	inline math::FloatInterp& particleMassSpread()		{ return m_PMassSpread; }
-	inline math::FloatInterp& particleRotationSpread()	{ return m_PRotationSpread; }
-	inline math::FloatInterp& particleVelocity()		{ return m_velocity; }
-	inline math::FloatInterp& particleVelocitySpread()	{ return m_PVelSpread; }
-	inline math::Vec3Interp& particleAcceleration()		{ return m_PAcceleration; }
-	inline math::Vec3Interp& getGlobalVelocityInterp()	{ return m_GlobalVelocity; }
+	inline math::interpolatorf& particleMass()			{ return m_PMass; }
+	inline math::interpolatorf& particleMassSpread()		{ return m_PMassSpread; }
+	inline math::interpolatorf& particleRotationSpread()	{ return m_PRotationSpread; }
+	inline math::interpolatorf& particleVelocity()		{ return m_velocity; }
+	inline math::interpolatorf& particleVelocitySpread()	{ return m_PVelSpread; }
+	inline math::interpolator_v3f& particleAcceleration()		{ return m_PAcceleration; }
+	inline math::interpolator_v3f& getGlobalVelocityInterp()	{ return m_GlobalVelocity; }
 
 	// Акксессоры получения / задания свойств
 	inline float getCycleTime() const { return m_fCycleTime; }
@@ -81,13 +81,13 @@ protected:
 	std::string		m_name;					// для будущего использования
 
 	// common for all emmiters types modifiers
-	math::FloatInterp	m_PMass;				// Масса частицы
-	math::FloatInterp	m_PMassSpread;			// Произвольный разброс по массе частиц
-	math::FloatInterp	m_PRotationSpread;		// разброс поворота
-	math::FloatInterp	m_velocity;			// скорость вылета
-	math::FloatInterp	m_PVelSpread;			// разброс скорости
-	math::Vec3Interp	m_PAcceleration;		// ускорение частицы
-	math::Vec3Interp	m_GlobalVelocity;		// глобальная скорость эмиттера
+	math::interpolatorf	m_PMass;				// Масса частицы
+	math::interpolatorf	m_PMassSpread;			// Произвольный разброс по массе частиц
+	math::interpolatorf	m_PRotationSpread;		// разброс поворота
+	math::interpolatorf	m_velocity;			// скорость вылета
+	math::interpolatorf	m_PVelSpread;			// разброс скорости
+	math::interpolator_v3f	m_PAcceleration;		// ускорение частицы
+	math::interpolator_v3f	m_GlobalVelocity;		// глобальная скорость эмиттера
 	
 	// temporary computing values
 	float			m_fTimeNormalaized;			// От 0 до 1 - текущее нормализованное время

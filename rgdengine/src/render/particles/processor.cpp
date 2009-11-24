@@ -50,18 +50,18 @@ namespace particles{
 		//addProperty(new property<bool>(m_is_geometric, "IsGeometric", "bool"));
 		//addProperty(new property<bool>(m_is_global, "IsGlobal", "bool"));
 
-		//addProperty(new property<math::FloatInterp>(m_rate, "PRate", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_resistance, "PResistance", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_spin, "PSpin", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_spin_spread, "PSpinSpread", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_life, "PLife", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_life_spread, "PLifeSpread", "FloatInterp"));
-		//addProperty(new property<math::FloatInterp>(m_size, "PSize", "FloatInterp"));
-		//addProperty(new property<math::ColorInterp>(m_color_alpha, "PColorAlpha", "ColorInterp"));
-		//addProperty(new property<math::Vec3Interp>(m_acting_force, "PActingForce", "Vec3Interp"));
-		//addProperty(new property<math::Vec3Interp>(m_velocity, "PVelocity", "Vec3Interp"));
-		//addProperty(new property<math::Vec3Interp>(m_initial_vel_spread, "PInitialVelSpread", "Vec3Interp"));
-		//addProperty(new property<math::FloatInterp>(m_vel_spread_amp, "PVelSpreadAmplifier", "FloatInterp"));
+		//addProperty(new property<math::interpolatorf>(m_rate, "PRate", "interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_resistance, "PResistance", "interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_spin, "PSpin", "interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_spin_spread, "PSpinSpread", "interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_life, "PLife", "interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_life_spread, "PLifeSpread", "interpolatorf"));
+		//addProperty(new property<math::interpolatorf>(m_size, "PSize", "interpolatorf"));
+		//addProperty(new property<math::interpolator_col>(m_color_alpha, "PColorAlpha", "interpolator_col"));
+		//addProperty(new property<math::interpolator_v3f>(m_acting_force, "PActingForce", "interpolator_v3f"));
+		//addProperty(new property<math::interpolator_v3f>(m_velocity, "PVelocity", "interpolator_v3f"));
+		//addProperty(new property<math::interpolator_v3f>(m_initial_vel_spread, "PInitialVelSpread", "interpolator_v3f"));
+		//addProperty(new property<math::interpolatorf>(m_vel_spread_amp, "PVelSpreadAmplifier", "interpolatorf"));
 	
 		// public properties:
 		//REGISTER_PROPERTY(bIsAnimTextureUsed,	bool)
@@ -72,18 +72,18 @@ namespace particles{
 		//REGISTER_PROPERTY(bIsGeometric,			bool)
 		//REGISTER_PROPERTY(bIsGlobal,			bool)
 
-		//REGISTER_PROPERTY(PRate,				math::FloatInterp)
-		//REGISTER_PROPERTY(PResistance,			math::FloatInterp)
-		//REGISTER_PROPERTY(PSpin,				math::FloatInterp)
-		//REGISTER_PROPERTY(PSpinSpread,			math::FloatInterp)
-		//REGISTER_PROPERTY(PLife,				math::FloatInterp)
-		//REGISTER_PROPERTY(PLifeSpread,			math::FloatInterp)
-		//REGISTER_PROPERTY(PSize,				math::FloatInterp)
-		//REGISTER_PROPERTY(PColorAlpha,			math::ColorInterp)
-		//REGISTER_PROPERTY(PActingForce,			math::Vec3Interp)
-		//REGISTER_PROPERTY(PVelocity,			math::Vec3Interp)
-		//REGISTER_PROPERTY(PInitialVelSpread,	math::Vec3Interp)
-		//REGISTER_PROPERTY(PVelSpreadAmplifier,	math::FloatInterp)
+		//REGISTER_PROPERTY(PRate,				math::interpolatorf)
+		//REGISTER_PROPERTY(PResistance,			math::interpolatorf)
+		//REGISTER_PROPERTY(PSpin,				math::interpolatorf)
+		//REGISTER_PROPERTY(PSpinSpread,			math::interpolatorf)
+		//REGISTER_PROPERTY(PLife,				math::interpolatorf)
+		//REGISTER_PROPERTY(PLifeSpread,			math::interpolatorf)
+		//REGISTER_PROPERTY(PSize,				math::interpolatorf)
+		//REGISTER_PROPERTY(PColorAlpha,			math::interpolator_col)
+		//REGISTER_PROPERTY(PActingForce,			math::interpolator_v3f)
+		//REGISTER_PROPERTY(PVelocity,			math::interpolator_v3f)
+		//REGISTER_PROPERTY(PInitialVelSpread,	math::interpolator_v3f)
+		//REGISTER_PROPERTY(PVelSpreadAmplifier,	math::interpolatorf)
 		//REGISTER_PROPERTY(TexName,				std::string)
 	}
 
@@ -246,7 +246,7 @@ namespace particles{
 			return;
 
 		// скорость появления партиклов кол=во\за секунду
-		float rate = m_rate.getValue(m_normalized_time) / 25.0f;
+		float rate = m_rate.get_value(m_normalized_time) / 25.0f;
 		m_rate_accum += rate;
 
 		int to_add  = (int)m_rate_accum;
@@ -273,19 +273,19 @@ namespace particles{
 		m_parent_emitter->get_particle(p);
 		p.dead = false;
 		
-		p.ttl = (m_life.getValue(m_normalized_time)
-			+ rnd()* m_life_spread.getValue(m_normalized_time));// * 10.0f; // debug
+		p.ttl = (m_life.get_value(m_normalized_time)
+			+ rnd()* m_life_spread.get_value(m_normalized_time));// * 10.0f; // debug
 
 		if (!p.ttl)
 			p.dead = true;
 
-		math::vec3f ivs = m_initial_vel_spread.getValue(m_normalized_time);
+		math::vec3f ivs = m_initial_vel_spread.get_value(m_normalized_time);
 
 		p.vel_spread = math::vec3f(ivs[0] * (rnd()*2.0f - 1.0f),
 							ivs[1] * (rnd()*2.0f - 1.0f),
 							ivs[2] * (rnd()*2.0f - 1.0f));
 
-		p.initial_spin = (rnd() * m_spin_spread.getValue(m_normalized_time))
+		p.initial_spin = (rnd() * m_spin_spread.get_value(m_normalized_time))
 						/(25.0f);
 		
 		if (m_is_global){

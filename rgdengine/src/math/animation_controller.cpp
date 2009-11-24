@@ -106,7 +106,7 @@ namespace math
 
 	void frame_anim_controller::updateMatrix()
 	{
-		math::vec3f vec = m_RotationInterpolyator.getValue( m_fCurrentTime );
+		math::vec3f vec = m_RotationInterpolyator.get_value( m_fCurrentTime );
 		math::EulerAngleXYZf ang( vec[ 0 ], vec[ 1 ], vec[ 2 ] );
 
 		math::quatf q;
@@ -116,10 +116,10 @@ namespace math
 		//{
 		//
 		//	m_frame->set_rot( q );
-		//	m_frame->set_position( m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime ) );
+		//	m_frame->set_position( m_PosInterpolyator.get_value( m_fCurrentTime/m_fAnimationTime ) );
 		//}
 
-		vec = m_ScaleInterpolyator.getValue( m_fCurrentTime );
+		vec = m_ScaleInterpolyator.get_value( m_fCurrentTime );
 		if ( vec[ 0 ] > 1.5f )
 		{
 			int sdf = 0;
@@ -131,14 +131,14 @@ namespace math
 			{
 				m_frame->set_scale( vec );
 				m_frame->set_rot( q );
-				m_frame->set_position( m_PosInterpolyator.getValue( m_fCurrentTime ) );
+				m_frame->set_position( m_PosInterpolyator.get_value( m_fCurrentTime ) );
 			}
 			else
 			{
 				float fInverseWeight = 1.0f - m_fWeight;
 				m_frame->set_scale(m_frame->get_scale()*fInverseWeight + vec*m_fWeight );
 				m_frame->set_rot(m_frame->get_rot()*fInverseWeight + q*m_fWeight  );
-				m_frame->set_position(m_frame->get_pos()*fInverseWeight +  m_PosInterpolyator.getValue( m_fCurrentTime/m_fAnimationTime )*m_fWeight );
+				m_frame->set_position(m_frame->get_pos()*fInverseWeight +  m_PosInterpolyator.get_value( m_fCurrentTime/m_fAnimationTime )*m_fWeight );
 			}
 
 			//Neonic: octree. 1 ставится, если было использовано вращение или увеличение/уменьшение. Иначе ставим 0.

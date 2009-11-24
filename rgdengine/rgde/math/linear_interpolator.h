@@ -8,7 +8,7 @@ namespace math
 
     //линейный интерполятор
     template <typename VALUE, typename POSITION>
-    class TLinearInterpolator: public TInterpolatorEx<VALUE, POSITION>
+    class TLinearInterpolator: public interpolator_ex<VALUE, POSITION>
     {
     public:
         VALUE interpolate(POSITION position) const

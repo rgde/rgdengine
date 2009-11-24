@@ -41,7 +41,7 @@ namespace math
         void apply()
         {
             m_spline.m_values.swap(catm_rom_spline<VALUE>::List(m_values));
-            m_position2parameter.m_values.swap(FloatLinearInterpolatorf::Map());
+            m_position2parameter.m_values.swap(FloatLinearInterpolatorf::keys_map());
             m_length = 0;
 
             if (m_spline.m_values.size() < 1)
@@ -52,7 +52,7 @@ namespace math
             const float step = 1.f/100.f;
             float t = 0;
 
-            m_position2parameter.addValue(0,0);
+            m_position2parameter.add_value(0,0);
             while (i != last)
             {
                 for (float k=0; k<=1; k+=step)
@@ -63,7 +63,7 @@ namespace math
 
                     DIST Dist;
                     m_length += Dist(v1,v2);
-                    m_position2parameter.addValue(m_length,t);
+                    m_position2parameter.add_value(m_length,t);
                 }
                 ++i;
             }

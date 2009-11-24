@@ -3,23 +3,22 @@
 
 namespace math
 {
-
     //добавляя значение (VALUE), сразу указываем ее положение (POSITION) относительно других значений
     template <typename VALUE, typename POSITION>
-    class TInterpolatorEx: public io::serialized_object
+    class interpolator_ex : public io::serialized_object
     {
     public:
-        typedef std::map<POSITION, VALUE> Map;
-        typedef typename Map::value_type value_type;
-        typedef typename Map::iterator iterator;
-        typedef typename Map::const_iterator const_iterator;
+        typedef std::map<POSITION, VALUE> keys_map;
+        typedef typename keys_map::value_type value_type;
+        typedef typename keys_map::iterator iterator;
+        typedef typename keys_map::const_iterator const_iterator;
 
-        TInterpolatorEx() {}
-        virtual ~TInterpolatorEx() {}
+        interpolator_ex() {}
+        virtual ~interpolator_ex() {}
 
-        Map m_values;
+        keys_map m_values;
 
-        void addValue(POSITION position, VALUE value);
+        void add_value(POSITION position, VALUE value);
         void scale(POSITION begin, POSITION end);
         const_iterator getLessOrEqualIterator(POSITION position) const;
         const_iterator getGreaterOrEqualIterator(POSITION position) const;
@@ -32,18 +31,18 @@ namespace math
         void from_stream(io::read_stream& rs);
 
     private:
-        TInterpolatorEx(const TInterpolatorEx&);
-        TInterpolatorEx& operator=(const TInterpolatorEx&);
+        interpolator_ex(const interpolator_ex&);
+        interpolator_ex& operator=(const interpolator_ex&);
     };
 
     template <typename VALUE, typename POSITION>
-    void TInterpolatorEx<VALUE, POSITION>::addValue(POSITION position, VALUE value)
+    void interpolator_ex<VALUE, POSITION>::add_value(POSITION position, VALUE value)
     {
         m_values.insert(value_type(position,value));
     }
 
     template <typename VALUE, typename POSITION>
-    void TInterpolatorEx<VALUE, POSITION>::scale(POSITION begin, POSITION end)
+    void interpolator_ex<VALUE, POSITION>::scale(POSITION begin, POSITION end)
     {
         if (m_values.size() < 2)
             return;
@@ -51,14 +50,17 @@ namespace math
         POSITION min = m_values.begin()->first;
         POSITION max = m_values.rbegin()->first;
 
-        Map tmp;
+        keys_map tmp;
         for (iterator it = m_values.begin(); it != m_values.end(); ++it)
-            tmp.insert(value_type((it->first-min)/(max-min) * (end-begib) + begin, it->second))
+		{
+            tmp.insert(value_type((it->first-min)/(max-min) * (end-begin) + begin, it->second))
+		}
+
         m_values.swap(tmp);
     }
 
     template <typename VALUE, typename POSITION>
-    typename TInterpolatorEx<VALUE, POSITION>::const_iterator TInterpolatorEx<VALUE, POSITION>::getLessOrEqualIterator(POSITION position) const
+    typename interpolator_ex<VALUE, POSITION>::const_iterator interpolator_ex<VALUE, POSITION>::getLessOrEqualIterator(POSITION position) const
     {
         const_iterator result = m_values.end();
 
@@ -73,7 +75,7 @@ namespace math
     }
 
     template <typename VALUE, typename POSITION>
-    typename TInterpolatorEx<VALUE, POSITION>::const_iterator TInterpolatorEx<VALUE, POSITION>::getGreaterOrEqualIterator(POSITION position) const
+    typename interpolator_ex<VALUE, POSITION>::const_iterator interpolator_ex<VALUE, POSITION>::getGreaterOrEqualIterator(POSITION position) const
     {
         for(const_iterator it = m_values.begin(); it != m_values.end(); ++it)
             if(it->first >= position)
@@ -82,7 +84,7 @@ namespace math
     }
 
     template <typename VALUE, typename POSITION>
-    void TInterpolatorEx<VALUE, POSITION>::to_stream(io::write_stream& ws) const
+    void interpolator_ex<VALUE, POSITION>::to_stream(io::write_stream& ws) const
     {
         ws << uint(m_values.size());
 
@@ -94,9 +96,9 @@ namespace math
     }
 
     template <typename VALUE, typename POSITION>
-    void TInterpolatorEx<VALUE, POSITION>::from_stream(io::read_stream& rs)
+    void interpolator_ex<VALUE, POSITION>::from_stream(io::read_stream& rs)
     {
-        m_values.swap(Map());
+        m_values.swap(keys_map());
 
         uint num;
         rs >> num;
@@ -106,7 +108,7 @@ namespace math
             VALUE value;
             rs >> position;
             rs >> value;
-            addValue(position, value);
+            add_value(position, value);
         }
     }
 

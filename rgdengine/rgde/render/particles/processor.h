@@ -47,18 +47,18 @@ namespace particles{
 		void set_texture_name(const std::string& texture_name);
 
 		// interpolators
-		inline math::FloatInterp& particleRate()				{ return m_rate; }
-		inline math::FloatInterp& particleResistance()			{ return m_resistance; }
-		inline math::FloatInterp& particleSpin()				{ return m_spin; }
-		inline math::FloatInterp& particleSpinSpread()			{ return m_spin_spread; }
-		inline math::FloatInterp& particleLife()				{ return m_life; }
-		inline math::FloatInterp& particleLifeSpread()			{ return m_life_spread; }
-		inline math::FloatInterp& particleSize()				{ return m_size; }
-		inline math::ColorInterp& particleColorAlpha()			{ return m_color_alpha; }
-		inline math::Vec3Interp& particleActingForce()			{ return m_acting_force; }
-		inline math::Vec3Interp& particleVelocity()				{ return m_velocity; }
-		inline math::Vec3Interp& particleInitialVelSpread()		{ return m_initial_vel_spread; }
-		inline math::FloatInterp& particleVelSpreadAmplifier()	{ return m_vel_spread_amp; }
+		inline math::interpolatorf& particleRate()				{ return m_rate; }
+		inline math::interpolatorf& particleResistance()			{ return m_resistance; }
+		inline math::interpolatorf& particleSpin()				{ return m_spin; }
+		inline math::interpolatorf& particleSpinSpread()			{ return m_spin_spread; }
+		inline math::interpolatorf& particleLife()				{ return m_life; }
+		inline math::interpolatorf& particleLifeSpread()			{ return m_life_spread; }
+		inline math::interpolatorf& particleSize()				{ return m_size; }
+		inline math::interpolator_col& particleColorAlpha()			{ return m_color_alpha; }
+		inline math::interpolator_v3f& particleActingForce()			{ return m_acting_force; }
+		inline math::interpolator_v3f& particleVelocity()				{ return m_velocity; }
+		inline math::interpolator_v3f& particleInitialVelSpread()		{ return m_initial_vel_spread; }
+		inline math::interpolatorf& particleVelSpreadAmplifier()	{ return m_vel_spread_amp; }
 
 		// getters/setters
 		inline bool isGlobal() const { return m_is_global; }
@@ -138,18 +138,18 @@ namespace particles{
 
 		int m_rnd_seed;
 
-		math::FloatInterp m_rate;						// Число излучаемых частиц в единицу времени
-		math::FloatInterp m_resistance;				// Трение (торможение)
-		math::FloatInterp m_spin;						// Вращение
-		math::FloatInterp m_spin_spread;
-		math::FloatInterp m_life;						// Время жизни (Time to live, TTL)
-		math::FloatInterp m_life_spread;
-		math::FloatInterp m_size;						// Размер 
-		math::ColorInterp m_color_alpha;				// Цвет и альфа, 2 в 1
-		math::Vec3Interp m_acting_force;
-		math::Vec3Interp m_velocity;					// Скорость (XYZ)
-		math::Vec3Interp m_initial_vel_spread;
-		math::FloatInterp m_vel_spread_amp;		// Усилитель начального рандома скорости
+		math::interpolatorf m_rate;						// Число излучаемых частиц в единицу времени
+		math::interpolatorf m_resistance;				// Трение (торможение)
+		math::interpolatorf m_spin;						// Вращение
+		math::interpolatorf m_spin_spread;
+		math::interpolatorf m_life;						// Время жизни (Time to live, TTL)
+		math::interpolatorf m_life_spread;
+		math::interpolatorf m_size;						// Размер 
+		math::interpolator_col m_color_alpha;				// Цвет и альфа, 2 в 1
+		math::interpolator_v3f m_acting_force;
+		math::interpolator_v3f m_velocity;					// Скорость (XYZ)
+		math::interpolator_v3f m_initial_vel_spread;
+		math::interpolatorf m_vel_spread_amp;		// Усилитель начального рандома скорости
 
 		std::string m_texture_name;
 

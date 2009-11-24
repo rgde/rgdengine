@@ -15,7 +15,7 @@
 // struct SSome
 // {
 //    SSome() {}
-//    const math::Color& getColor() const { return m_color; }
+//    const math::Color& get_color() const { return m_color; }
 //
 //    math::Color m_color;
 // }
@@ -35,13 +35,13 @@
 //    SSome some;
 //
 //    //Another functor parameter. binder calls taken ParamTypeGetFunction 
-//    //without parameters (in this example only, becose SSome::getColor
+//    //without parameters (in this example only, becose SSome::get_color
 //    //doesn't need any parameters) and setups result to effect. Difference
 //    //is that ParamTypeGetFunction sometimes generates warning "Returning
 //    //address of local variable" so in this case use getter returns
 //    //copy for all types.
 //    CBinder::Types<math::Color>::ParamTypeGetFunction getFunc = 
-//                             boost::bind(&SSome::getColor, &some);
+//                             boost::bind(&SSome::get_color, &some);
 //    binder->addParameter<math::Color>(getFunc, "COLOR_PARAMETER");
 //
 //
@@ -49,7 +49,7 @@
 //
 //    binder->setupParameter(2);//i.e.:
 //    //effect->get_params()["TEXTURE_PARAMETER"]->set(get_texture(2));
-//    //effect->get_params()["COLOR_PARAMETER"]->set(some.getColor());
+//    //effect->get_params()["COLOR_PARAMETER"]->set(some.get_color());
 //    //effect->get_params()["NUM_LIGHTS"]->set(1);
 //    //Biner has a number of advantages. It's more stable.
 //    //If there's no parameter with given name, it doesn't call
