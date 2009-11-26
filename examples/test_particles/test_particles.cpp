@@ -14,7 +14,7 @@ class CParticleTest : public game::dynamic_object
 {
 public:
 	CParticleTest() 
-		: m_debug_draw (false)
+		: m_debug_draw (true)
 	{
 		m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
