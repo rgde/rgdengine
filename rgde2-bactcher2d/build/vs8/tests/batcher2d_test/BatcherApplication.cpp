@@ -6,16 +6,19 @@
 namespace rgde
 {
 	BatcherApplication::BatcherApplication(int x, int y, int w, int h, const std::wstring& title)
-		:m_active(true), m_clear_color(127, 127, 127, 0),
+		:m_active(true),
 		window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU),
-		m_device(get_handle())
+		m_device(get_handle()), m_batcher(0)
 	{
 		show();
 		update();
+		m_batcher = new render::renderer_2d(m_device);
 	}
 
 	BatcherApplication::~BatcherApplication()
 	{
+		if(m_batcher)
+			delete m_batcher;
 	}
 
 	void BatcherApplication::run()
@@ -24,13 +27,22 @@ namespace rgde
 		{
 			if( !do_events() && m_active)
 			{
-				m_device.frame_begin();
-				m_device.clear(m_clear_color);
-
-				m_device.frame_end();
-				m_device.present();
+				m_batcher->render_all();
 			}
 		}
+	}
+
+	void BatcherApplication::render_frame()
+	{
+	}
+
+	void BatcherApplication::add_sprite(rgde::render::primitives_2d::sprite_desc &sprite)
+	{
+		m_batcher->add_sprite(sprite);
+	}
+
+	void BatcherApplication::init_render_data()
+	{
 	}
 
 	core::windows::result BatcherApplication::wnd_proc(ushort message, uint wparam, long lparam )

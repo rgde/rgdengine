@@ -33,15 +33,6 @@ namespace rgde
 				ulong color;
 				math::vec2f	tex;			
 			};
-
-			// декларация вершины 2d-примитива
-			vertex_element prim_vertex_desc[] = 
-			{
-				{0, 0,  vertex_element::float4, vertex_element::default_method, vertex_element::positiont, 0},
-				{0, 16, vertex_element::color4ub, vertex_element::default_method, vertex_element::color, 0},
-				{0, 20, vertex_element::float2,	vertex_element::default_method, vertex_element::texcoord, 0},
-				vertex_element::end_element
-			};
 		}
 	}
 }
