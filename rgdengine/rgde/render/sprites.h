@@ -77,6 +77,10 @@ namespace render
 		math::vec2f m_scale;						// Коэффиценты масштабирования разрешений взаимодействия с внешним миром на реальные экранные координаты
 		math::vec2f m_origin;
 
+		effect::technique *m_additive_tech;
+		effect::technique *m_modulate_tech;
+		effect::parameter *m_texture_param;
+
 		/// Эти переменные используются только для хранения внутренних расчётов
 		std::vector<unsigned> m_equal_priorities_num;	/// Число спрайтов в группах с одинаковыми приоритетами
 	};

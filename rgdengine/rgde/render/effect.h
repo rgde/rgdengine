@@ -103,8 +103,10 @@ namespace render
 				virtual annotations_vector& get_annotations() = 0;
 			};
 
+			typedef std::vector <pass*> passes;
+
 			virtual ~technique(){}
-			virtual std::vector <pass*>& get_passes() = 0;
+			virtual passes& get_passes() = 0;
 			virtual const std::string& get_name() const = 0;
 			virtual annotations_vector& get_annotations() = 0;
 			

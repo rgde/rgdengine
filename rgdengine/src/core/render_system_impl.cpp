@@ -154,7 +154,7 @@ void render_device_impl::update() const
 	m_is_first_frame = false;
 
 	// Clear the backbuffer
-	math::Color color = render::render_device::get_clear_color();
+	const math::Color& color = render::render_device::get_clear_color();
 	V(m_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(color.a, color.r, color.g, color.b), 1.0f, 0 ));
 
 	// Begin the scene
