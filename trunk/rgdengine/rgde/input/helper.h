@@ -30,7 +30,7 @@ namespace input
 		typedef boost::function<void(const helper_event&)> Handler;
 
 		Helper ();
-		Helper (const std::wstring &commandName);
+		explicit Helper (const std::wstring &commandName);
 		virtual ~Helper();
 
 		void attach (const std::wstring &commandName);
@@ -55,7 +55,7 @@ namespace input
 	public:
 		typedef boost::function<void(bool)> ButtonHandler;
 		Button ();
-		Button (const std::wstring &commandName);
+		explicit Button (const std::wstring &commandName);
 
 		void operator += (ButtonHandler handler);
 		operator bool () const {return m_press > 0;}
@@ -75,7 +75,7 @@ namespace input
 	public:
 		typedef boost::function<void(bool)> TriggerHandler;
 		Trigger ();
-		Trigger (const std::wstring &commandName);
+		explicit Trigger (const std::wstring &commandName);
 
 		void operator += (TriggerHandler handler);
 		operator bool () const {return m_is_active;}
@@ -91,13 +91,13 @@ namespace input
 		std::list<TriggerHandler> m_triggerHandlers;
 	};
 
-	// KeyUp, обьект-посредник "ќ“жатие клавиши"
-	class KeyUp: public Helper
+	// key_up, обьект-посредник "ќ“жатие клавиши"
+	class key_up : public Helper
 	{
 	public:
 		typedef boost::function<void()> KeyUpHandler;
-		KeyUp ();
-		KeyUp (const std::wstring &commandName);
+		key_up ();
+		explicit key_up (const std::wstring &commandName);
 
 		void operator += (KeyUpHandler handler);
 
@@ -116,7 +116,7 @@ namespace input
 	public:
 		typedef boost::function<void()> KeyDownHandler;
 		key_down ();
-		key_down (const std::wstring &commandName);
+		explicit key_down (const std::wstring &commandName);
 
 		void operator += (KeyDownHandler handler);
 
@@ -135,7 +135,7 @@ namespace input
 	public:
 		typedef boost::function<void(int)> RelativeAxisHandler;
 		RelativeAxis ();
-		RelativeAxis (const std::wstring &commandName);
+		explicit RelativeAxis (const std::wstring &commandName);
 
 		void operator += (RelativeAxisHandler handler);
 
@@ -155,7 +155,7 @@ namespace input
 		typedef boost::function<void(int)> AbsoluteAxisHandler;
 
 		AbsoluteAxis ();
-		AbsoluteAxis (const std::wstring &commandName);
+		explicit AbsoluteAxis (const std::wstring &commandName);
 
 		void operator += (AbsoluteAxisHandler handler);
 		operator int () const {return m_pos;}
@@ -208,9 +208,9 @@ namespace input
 		std::list<CursorHandler> m_cursorHandlers;
 	};
 
-    // Mouse
+    // mouse
 	//обьект-посредник "мышь"
-    class Mouse: public Cursor
+    class mouse: public Cursor
     {
     public:
         enum action_type
@@ -223,7 +223,7 @@ namespace input
 		typedef boost::function<void(int)>       WhellHandler;
 		typedef boost::function<void(action_type)> ButtonHandler;
 
-        Mouse ();
+        mouse();
 
         void setMoveHandler         (CursorHandler handler);
 		void setWhellHandler        (WhellHandler  handler);

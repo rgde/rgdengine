@@ -171,20 +171,20 @@ namespace input
 
 //////////////////////////////////////////////////////////////////////////
 
-	KeyUp::KeyUp() 
+	key_up::key_up() 
 	{
 	}
 
-	KeyUp::KeyUp(const std::wstring &commandName): Helper(commandName) 
+	key_up::key_up(const std::wstring &commandName): Helper(commandName) 
 	{
 	}
 
-	void KeyUp::operator += (KeyUp::KeyUpHandler handler)
+	void key_up::operator += (key_up::KeyUpHandler handler)
 	{
 		m_keyupHandlers.push_back(handler);
 	}
 
-	void KeyUp::notify (const Control &c)
+	void key_up::notify (const Control &c)
 	{
         Helper::notify(c);
 
@@ -194,7 +194,7 @@ namespace input
 		if (c.m_press)
 			return;
 
-		std::list<KeyUp::KeyUpHandler>::iterator i = m_keyupHandlers.begin();
+		std::list<key_up::KeyUpHandler>::iterator i = m_keyupHandlers.begin();
 		while (i != m_keyupHandlers.end())
 		{
 			(*i)();
@@ -411,40 +411,40 @@ namespace input
 
 //////////////////////////////////////////////////////////////////////////
 
-    Mouse::Mouse (): m_left(false), m_middle(false), m_right(false)
+    mouse::mouse (): m_left(false), m_middle(false), m_right(false)
     {
-        subscribe<mouse_whell>  (&Mouse::onWhell);
-        subscribe<mouse_button> (&Mouse::onButton);
+        subscribe<mouse_whell>  (&mouse::onWhell);
+        subscribe<mouse_button> (&mouse::onButton);
     }
 
-    void Mouse::setMoveHandler (CursorHandler handler)
+    void mouse::setMoveHandler (CursorHandler handler)
     {
 		*this += handler;
     }
 
-	void Mouse::setWhellHandler (WhellHandler handler)
+	void mouse::setWhellHandler (WhellHandler handler)
     {
 		m_whellHandlers.push_back(handler);
     }
 
-    void Mouse::setLeftButtonHandler (ButtonHandler handler)
+    void mouse::setLeftButtonHandler (ButtonHandler handler)
     {
 		m_leftButtonHandlers.push_back(handler);
     }
 
-    void Mouse::setMiddleButtonHandler (ButtonHandler handler)
+    void mouse::setMiddleButtonHandler (ButtonHandler handler)
     {
 		m_middleButtonHandlers.push_back(handler);
     }
 
-    void Mouse::setRightButtonHandler (ButtonHandler handler)
+    void mouse::setRightButtonHandler (ButtonHandler handler)
     {
 		m_rightButtonHandlers.push_back(handler);
     }
 
-    void Mouse::onWhell (mouse_whell e)
+    void mouse::onWhell (mouse_whell e)
     {
-		std::list<Mouse::WhellHandler>::iterator i = m_whellHandlers.begin();
+		std::list<mouse::WhellHandler>::iterator i = m_whellHandlers.begin();
 		while (i != m_whellHandlers.end())
 		{
 			(*i)(e.delta);
@@ -452,13 +452,13 @@ namespace input
 		}
     }
 
-    void Mouse::onButton (mouse_button e)
+    void mouse::onButton (mouse_button e)
     {
         //определим тип нажатия
         action_type click;
-        if (e.click == mouse_button::Down)        click = Mouse::Down;
-        if (e.click == mouse_button::Up)          click = Mouse::Up;
-        if (e.click == mouse_button::DoubleClick) click = Mouse::DoubleClick;
+        if (e.click == mouse_button::Down)        click = mouse::Down;
+        if (e.click == mouse_button::Up)          click = mouse::Up;
+        if (e.click == mouse_button::DoubleClick) click = mouse::DoubleClick;
 
         switch (e.button)
         {
@@ -469,7 +469,7 @@ namespace input
                 if (e.click == mouse_button::Up)   m_left = false;
 
                 //вызовем обработчики
-                std::list<Mouse::ButtonHandler>::iterator i = m_leftButtonHandlers.begin();
+                std::list<mouse::ButtonHandler>::iterator i = m_leftButtonHandlers.begin();
 		        while (i != m_leftButtonHandlers.end())
 		        {
                     (*i)(click);
@@ -485,7 +485,7 @@ namespace input
                 if (e.click == mouse_button::Up)   m_middle = false;
 
                 //вызовем обработчики
-                std::list<Mouse::ButtonHandler>::iterator i = m_middleButtonHandlers.begin();
+                std::list<mouse::ButtonHandler>::iterator i = m_middleButtonHandlers.begin();
 		        while (i != m_middleButtonHandlers.end())
 		        {
                     (*i)(click);
@@ -500,7 +500,7 @@ namespace input
                 if (e.click == mouse_button::Up)   m_right = false;
 
                 //вызовем обработчики
-                std::list<Mouse::ButtonHandler>::iterator i = m_rightButtonHandlers.begin();
+                std::list<mouse::ButtonHandler>::iterator i = m_rightButtonHandlers.begin();
 		        while (i != m_rightButtonHandlers.end())
 		        {
                     (*i)(click);

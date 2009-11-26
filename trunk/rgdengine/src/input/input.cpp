@@ -76,7 +76,7 @@ namespace input
         get().m_impl->save(xml);
     }
 
-    device* Input::get_device (types::device eDeviceName, int indx)
+    device* Input::get_device (devices eDeviceName, int indx)
     {
         return get().m_impl->get_device(eDeviceName, indx);
     }
@@ -86,16 +86,16 @@ namespace input
         return get().m_impl->get_device(sDeviceName, indx);
     }
 
-	Control* Input::get_control(types::device device_type, int dev_index, types::control control)
+	Control* Input::get_control(devices devices, int dev_index, controls control)
 	{
-		if (device* dev = get_device(device_type, dev_index))
+		if (device* dev = get_device(devices, dev_index))
 			return dev->get_control(control);
 
 		return NULL;
 	}
 
     //есть ли такое устройство
-    bool Input::is_present (types::device eDeviceName, int indx)
+    bool Input::is_present (devices eDeviceName, int indx)
     {
         return get().m_impl->is_present(eDeviceName,indx);
     }

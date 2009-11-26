@@ -46,10 +46,10 @@ public:
 		Input::add_command(L"Scroll");
 
 		//связываем команды с контролами
-		Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
-		Input::get_device(types::Mouse   )->get_control(types::AxisX    )->bind(L"LookHoriz");
-		Input::get_device(types::Mouse   )->get_control(types::AxisY    )->bind(L"LookVert");
-		Input::get_device(types::Mouse   )->get_control(types::AxisWheel)->bind(L"Scroll");
+		Input::get_control(Keyboard, KeyEscape)->bind(L"Quit");
+		Input::get_control(Mouse, AxisX )->bind(L"LookHoriz");
+		Input::get_control(Mouse, AxisY )->bind(L"LookVert");
+		Input::get_control(Mouse, AxisWheel)->bind(L"Scroll");
 		
 
 		//биндим хелперы с командами		
@@ -165,10 +165,10 @@ protected:
 
 protected:
 	//данные для ввода
-	input::KeyUp        m_key_quit;
+	input::key_up       m_key_quit;
 	input::RelativeAxis m_mouse_x;
 	input::RelativeAxis m_mouse_y;
-	input::KeyUp        m_esc;
+	input::key_up       m_esc;
 	input::RelativeAxis m_mouse_wheel;
 
 	math::camera_ptr		m_camera;

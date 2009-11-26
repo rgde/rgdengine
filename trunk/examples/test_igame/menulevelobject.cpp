@@ -3,27 +3,27 @@
 #include <iostream>
 #include <rgde/engine.h>
 
-MenuLevelObject::MenuLevelObject(): m_active_menu_item(0)
+MenuLevelObject::MenuLevelObject()
+: m_active_menu_item(0)
+, m_up(L"Up")
+, m_down(L"Down")
+, m_cSpace(L"Space")
+, m_esc(L"Escape")
 {
 	std::cout << "2: MenuLevelObject created. (SPACE - play, ESC - exit)" << std::endl;
 
     {
         using namespace input;
 
-		m_up    .attach(L"Up");
-		m_down  .attach(L"Down");
-		m_cSpace.attach(L"Space");
-		m_esc  .attach(L"Escape");
-
-		Input::get_device(types::Keyboard)->get_control(types::KeyUp    )->bind(L"Up");
-        Input::get_device(types::Keyboard)->get_control(types::key_down  )->bind(L"Down");
-        Input::get_device(types::Keyboard)->get_control(types::KeySpace )->bind(L"Space");
-        Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Escape");
+		Input::get_control(Keyboard, KeyUp    )->bind(L"Up");
+        Input::get_control(Keyboard, KeyDown  )->bind(L"Down");
+        Input::get_control(Keyboard, KeySpace )->bind(L"Space");
+        Input::get_control(Keyboard, KeyEscape)->bind(L"Escape");
 
         m_up     += boost::bind(&MenuLevelObject::onUpKey,   this);
         m_down   += boost::bind(&MenuLevelObject::onDownKey, this);
         m_cSpace += boost::bind(&MenuLevelObject::onSpace,   this);
-        m_esc   += boost::bind(&MenuLevelObject::onEsc,     this);
+        m_esc    += boost::bind(&MenuLevelObject::onEsc,     this);
     }
 
 	using render::font;

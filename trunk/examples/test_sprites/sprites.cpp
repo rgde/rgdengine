@@ -15,24 +15,22 @@ namespace rgde
 	{
 		namespace sprites
 		{
-
-			sprite_example::sprite_example() : 
-				m_priorities (1),
-				m_num_sprites_per_priority (1000),
-				m_enable_debug_log (false),
-				m_do_sort_before_log (true),
-				m_sprites_seed (math::vec2f (770, 570))
+			sprite_example::sprite_example()
+				: m_priorities (1)
+				, m_num_sprites_per_priority (1000)
+				, m_enable_debug_log (false)
+				, m_do_sort_before_log (true)
+				, m_sprites_seed (math::vec2f (770, 570))
+				, m_esc(L"Quit")
 			{
 				{
 					using namespace input;
 
-					m_esc.attach(L"Quit");
-					Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");            
+					Input::get_control(Keyboard, KeyEscape)->bind(L"Quit");
 					m_esc += boost::bind(&sprite_example::onEsc, this);
 				}
 
 				m_font = render::font::create(12, L"Arial", render::font::Heavy);
-
 
 				using render::texture;
 

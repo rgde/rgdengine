@@ -15,9 +15,9 @@ namespace input
             Axis
         };
 
-        Control(types::control name, type type, device &device);
+        Control(controls name, type type, device &device);
 
-        types::control get_name () const {return m_name;}
+        controls get_name () const {return m_name;}
 		type    get_type () const {return m_type;}
 
         //добавить наблюдателя
@@ -44,7 +44,7 @@ namespace input
     private:
         device          &m_device; //устройство, которому принадлежит контрол
         type            m_type;   //тип контрола
-        types::control  m_name;   //'имя' контрола
+        controls  m_name;   //'имя' контрола
 
 		typedef std::list<command_ptr> CommandsList;
 		typedef CommandsList::iterator commands_iter;

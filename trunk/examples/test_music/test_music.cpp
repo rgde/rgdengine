@@ -34,7 +34,7 @@ protected:
 	input::key_down		m_cSpace;
 	audio::system		m_sound_system;
 
-	input::Mouse           m_mouse;
+	input::mouse           m_mouse;
 	std::vector<TextQuad> quads;
 };
 
@@ -131,11 +131,11 @@ void TestMusic::init_input()
 	using namespace input;
 
 	m_cSpace.attach(L"NextMusic");
-	Input::get_device(types::Keyboard)->get_control(types::KeySpace)->bind(L"NextMusic");
+	Input::get_device(Keyboard)->get_control(KeySpace)->bind(L"NextMusic");
 	m_cSpace += boost::bind(&TestMusic::NextMusic, this);
 
 	m_esc.attach(L"Quit");
-	Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(m_esc.get_command());
+	Input::get_device(Keyboard)->get_control(KeyEscape)->bind(m_esc.get_command());
 	m_esc += boost::bind(&TestMusic::onEsc, this);
 }
 
