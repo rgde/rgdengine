@@ -1,8 +1,6 @@
 #include "precompiled.h"
 
-#include <rgde/input/device.h>
-#include <rgde/input/control.h>
-#include <rgde/input/command.h>
+#include <rgde/input/input.h>
 #include "inputimpl.h"
 
 #define KEYBOARD_BUFFER_SIZE 1024
@@ -64,13 +62,16 @@ namespace input
         if (!m_inited)
             return false;
 
+		keyboard = new device(device::keyboard, 0, *this);
+		mouse = new device(device::mouse, 0, *this);
+
         //заполним массив m_devices
-        m_devices.push_back (new device(Keyboard, 0, *this));
-        m_devices.push_back (new device(Mouse,    0, *this));
+		m_devices[device::keyboard].push_back(keyboard);
+		m_devices[device::mouse].push_back(mouse);
 
         //заполним список контролов
-        keyboard = *(m_devices.begin());
-        mouse    = *(++m_devices.begin());
+        keyboard = m_devices[device::keyboard].front();
+        mouse    = m_devices[device::mouse].front();
 
         //keyboard
         keyboard->add_button(KeyEscape);
@@ -235,7 +236,7 @@ namespace input
 				if (cmd)
 				{
 					std::string command_name(cmd->Attribute("name"));
-					add_command(std::wstring(command_name.begin(), command_name.end()));
+					add_command(command_name);
 
 					TiXmlNode *control = command->FirstChild("control");
 					while (control)
@@ -250,7 +251,7 @@ namespace input
 							{
 								Control *c = d->get_control(String2Control(std::wstring(sControl.begin(), sControl.end())));
 								if (c)
-									c->bind(get_command(std::wstring(command_name.begin(), command_name.end())));
+									c->bind(get_command(command_name));
 							}
 						}
 
@@ -338,34 +339,39 @@ namespace input
             command_ptr pCommand = *i;
 
             TiXmlElement *command = (TiXmlElement*)(input->InsertEndChild(TiXmlElement("command")));
-            std::wstring sCommandNameW = pCommand->get_name();
-            std::string command_name(sCommandNameW.begin(), sCommandNameW.end());
+            std::string command_name = pCommand->get_name();
+
             command->SetAttribute("name", command_name.c_str());
 
-            std::list<device*>::iterator j = m_devices.begin();
-            while (j != m_devices.end())
+			for(size_t device_type = 0; device_type < device::total_number; ++device_type)
             {
-                device *pDevice = *j;
+				devices_vector& devices = m_devices[device_type];
+				devices_vector::iterator j = devices.begin();
+				
+				while (j != devices.end())
+				{
+					device *pDevice = *j;
 
-                std::wstring sDeviseNameW = Device2String(pDevice->get_type());
-                std::string sDeviceName(sDeviseNameW.begin(), sDeviseNameW.end());
+					std::wstring sDeviseNameW = Device2String(pDevice->get_type());
+					std::string sDeviceName(sDeviseNameW.begin(), sDeviseNameW.end());
 
-				std::map<controls, Control*>::iterator k = pDevice->m_controls.begin();
-                while (k != pDevice->m_controls.end())
-                {
-                    Control *pControl = k->second;
-                    if (pControl->is_bind(pCommand))
-                    {
-                        std::wstring sControlNameW = Control2String(pControl->get_name());
-                        std::string contol_name(sControlNameW.begin(), sControlNameW.end());
+					std::map<controls, Control*>::iterator k = pDevice->m_controls.begin();
+					while (k != pDevice->m_controls.end())
+					{
+						Control *pControl = k->second;
+						if (pControl->is_bind(pCommand))
+						{
+							std::wstring sControlNameW = Control2String(pControl->get_name());
+							std::string contol_name(sControlNameW.begin(), sControlNameW.end());
 
-                        TiXmlElement *control = (TiXmlElement*)(command->InsertEndChild(TiXmlElement("control")));
-                        control->SetAttribute("device", sDeviceName.c_str());
-                        control->SetAttribute("name", contol_name.c_str());
-                    }
-                    ++k;
-                }
-                ++j;
+							TiXmlElement *control = (TiXmlElement*)(command->InsertEndChild(TiXmlElement("control")));
+							control->SetAttribute("device", sDeviceName.c_str());
+							control->SetAttribute("name", contol_name.c_str());
+						}
+						++k;
+					}
+					++j;
+				}
             }
             ++i;
         }
@@ -384,53 +390,44 @@ namespace input
         doneDXInput ();
         m_commands.clear();
 
-        while (!m_devices.empty())
-        {
-            delete *(m_devices.begin());
-            m_devices.erase(m_devices.begin());
-        }
+		keyboard = NULL;
+		mouse    = NULL;
 
-        keyboard = NULL;
-        mouse    = NULL;
+		for(size_t device_type = 0; device_type < device::total_number; ++device_type)
+		{
+			devices_vector& devices = m_devices[device_type];
+			while (!devices.empty())
+			{
+				delete *(devices.begin());
+				devices.erase(devices.begin());
+			}
+		}
 
         m_inited = false;
     }
  
-    device* input_impl::get_device (devices eDeviceName, int indx/*=0*/)
+    device* input_impl::get_device (device::type type, int indx/*=0*/) const
     {
-        if (!m_inited)
-            return 0;
+		if (!m_inited)
+			return 0;
 
-        std::list<device*>::iterator i = m_devices.begin();
-        while (i != m_devices.end())
-        {
-            if ((*i)->get_type() == eDeviceName && (*i)->get_device_index() == indx)
-                return *i;
-            ++i;
-        }
+		if (type >= device::total_number)
+			return 0;
 
-        return 0;
+		if (m_devices[type].empty() || indx >= m_devices[type].size())
+			return 0;
+		
+		return m_devices[type][indx];
     }
 
-    device* input_impl::get_device (const std::wstring &sDeviceName, int indx/*=0*/)
+    device* input_impl::get_device (const std::wstring &sDeviceName, int indx/*=0*/) const
     {
         return get_device(String2Device(sDeviceName), indx);
     }
 
-    bool input_impl::is_present (devices eDeviceName, int indx/*=0*/) const
+    bool input_impl::is_present (device::type type, int indx/*=0*/) const
     {
-        if (!m_inited)
-            return false;
-
-        std::list<device*>::const_iterator i = m_devices.begin();
-        while (i != m_devices.end())
-        {
-            if ((*i)->get_type() == eDeviceName && (*i)->get_device_index() == indx)
-                return true;
-            ++i;
-        }
-
-        return false;
+		return get_device(type, indx) ? true : false;
     }
 
     bool input_impl::is_present (const std::wstring &sDeviceName, int indx/*=0*/) const
@@ -440,7 +437,7 @@ namespace input
 
 	//////////////////////////////////////////////////////////////////////////
 
-    command_ptr input_impl::add_command (const std::wstring &command_name)
+    command_ptr input_impl::add_command (const std::string &command_name)
     {
         if (m_inited && !is_command_present(command_name))
         {
@@ -452,7 +449,7 @@ namespace input
 		return command_ptr();
     }
 
-    command_ptr input_impl::get_command (const std::wstring &command_name)
+    command_ptr input_impl::get_command (const std::string &command_name)
     {
         if (!m_inited)
             return command_ptr();
@@ -468,7 +465,7 @@ namespace input
         return command_ptr();
     }
 
-    bool input_impl::is_command_present (const std::wstring &command_name) const
+    bool input_impl::is_command_present (const std::string &command_name) const
     {
         if (!m_inited)
             return false;
@@ -490,13 +487,15 @@ namespace input
         if (!m_inited)
             return;
 
-        std::list<device*>::iterator i = m_devices.begin();
+		for(size_t device_type = 0; device_type < device::total_number; ++device_type)
+		{
+			devices_vector& devices = m_devices[device_type];
+			for(size_t i = 0; i < devices.size(); ++i)
+			{
+				devices[i]->detach_command(pCommand);
 
-        while (i != m_devices.end())
-        {
-            (*i)->detach_command(pCommand);
-            ++i;
-        }
+			}
+		}
     }
 
     //инициализация DXInput

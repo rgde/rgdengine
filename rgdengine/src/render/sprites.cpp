@@ -197,16 +197,15 @@ namespace render
 			uint start_sprite = 0;
 			sprite* sp = &m_sprites.front();
 			texture_ptr cur_tex = sp->texture;
-			for (uint i = 0, size = m_sprites.size(); i < size; ++i)
+			for (uint i = 0, size = (uint)m_sprites.size(); i < size; ++i)
 			{
 				sprite &sprite = sp[i];
 
-				// если = то отрисовать
 				if (cur_tex != sprite.texture)
 				{
 					int cur_sprite = i - 1;
 					int num_sprites = cur_sprite - start_sprite + 1;
-					//i == m_sprites.size()-1
+
 					if (num_sprites > 0)
 					{
 						m_texture_param->set(cur_tex);

@@ -532,26 +532,6 @@
 				Name="input"
 				>
 				<File
-					RelativePath=".\rgde\input\base.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\input\command.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\input\control.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\input\device.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\input\helper.h"
-					>
-				</File>
-				<File
 					RelativePath=".\rgde\input\input.h"
 					>
 				</File>

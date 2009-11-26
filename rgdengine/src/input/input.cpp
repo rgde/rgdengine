@@ -2,7 +2,6 @@
 
 #include <rgde/io/io.h>
 #include <rgde/input/input.h>
-#include <rgde/input/device.h>
 
 
 #include "inputimpl.h"
@@ -76,7 +75,7 @@ namespace input
         get().m_impl->save(xml);
     }
 
-    device* Input::get_device (devices eDeviceName, int indx)
+    device* Input::get_device (device::type eDeviceName, int indx)
     {
         return get().m_impl->get_device(eDeviceName, indx);
     }
@@ -86,18 +85,18 @@ namespace input
         return get().m_impl->get_device(sDeviceName, indx);
     }
 
-	Control* Input::get_control(devices devices, int dev_index, controls control)
+	Control* Input::get_control(device::type type, int dev_index, controls control)
 	{
-		if (device* dev = get_device(devices, dev_index))
+		if (device* dev = get_device(type, dev_index))
 			return dev->get_control(control);
 
 		return NULL;
 	}
 
     //есть ли такое устройство
-    bool Input::is_present (devices eDeviceName, int indx)
+    bool Input::is_present (device::type type, int indx)
     {
-        return get().m_impl->is_present(eDeviceName,indx);
+        return get().m_impl->is_present(type, indx);
     }
 
     //есть ли такое устройство
@@ -107,19 +106,19 @@ namespace input
     }
 
     //добавить команду
-    void Input::add_command (const std::wstring &command_name)
+    void Input::add_command (const std::string &command_name)
     {
         get().m_impl->add_command(command_name);
     }
 
     //получить команду
-    command_ptr Input::get_command (const std::wstring &command_name)
+    command_ptr Input::get_command (const std::string &command_name)
     {
         return get().m_impl->get_command(command_name);
     }
 
     //есть ли такая команда
-    bool Input::is_command_present (const std::wstring &command_name)
+    bool Input::is_command_present (const std::string &command_name)
     {
         return get().m_impl->is_command_present(command_name);
     }

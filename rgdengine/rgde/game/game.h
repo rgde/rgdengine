@@ -32,9 +32,12 @@ namespace game
 	}
 
 
-	class game_system: public event::listener
+	class game_system : public event::listener
 	{
 	public:
+		typedef std::list<dynamic_object*> dynamic_objects;
+		typedef dynamic_objects::iterator objects_iter;
+
 		game_system();
 		~game_system();
 
@@ -73,9 +76,7 @@ namespace game
 		std::string                m_next_level_name;	// next level name
 		std::list<level*>          m_levels;			// levels list
 		
-		std::list<dynamic_object*> m_objects;			// dynamic objects list
-		typedef std::list<dynamic_object*> dynamic_objects;
-		typedef dynamic_objects::iterator objects_iter;
+		dynamic_objects m_objects;			// dynamic objects list
 
 		bool        m_change_level;
 

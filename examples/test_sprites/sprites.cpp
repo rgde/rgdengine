@@ -21,12 +21,12 @@ namespace rgde
 				, m_enable_debug_log (false)
 				, m_do_sort_before_log (true)
 				, m_sprites_seed (math::vec2f (770, 570))
-				, m_esc(L"Quit")
+				, m_esc("Quit")
 			{
 				{
 					using namespace input;
 
-					Input::get_control(Keyboard, KeyEscape)->bind(L"Quit");
+					Input::get_control(device::keyboard, KeyEscape)->bind("Quit");
 					m_esc += boost::bind(&sprite_example::onEsc, this);
 				}
 

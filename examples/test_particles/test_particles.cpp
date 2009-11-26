@@ -40,23 +40,23 @@ public:
 	{
 		using namespace input;
 
-		Input::add_command(L"Quit");
-		Input::add_command(L"LookHoriz");
-		Input::add_command(L"LookVert");
-		Input::add_command(L"Scroll");
+		Input::add_command("Quit");
+		Input::add_command("LookHoriz");
+		Input::add_command("LookVert");
+		Input::add_command("Scroll");
 
 		//связываем команды с контролами
-		Input::get_control(Keyboard, KeyEscape)->bind(L"Quit");
-		Input::get_control(Mouse, AxisX )->bind(L"LookHoriz");
-		Input::get_control(Mouse, AxisY )->bind(L"LookVert");
-		Input::get_control(Mouse, AxisWheel)->bind(L"Scroll");
+		Input::get_control(device::keyboard, KeyEscape)->bind("Quit");
+		Input::get_control(device::mouse, AxisX )->bind("LookHoriz");
+		Input::get_control(device::mouse, AxisY )->bind("LookVert");
+		Input::get_control(device::mouse, AxisWheel)->bind("Scroll");
 		
 
 		//биндим хелперы с командами		
-		m_key_quit.attach(L"Quit");
-		m_mouse_x.attach(L"LookHoriz");
-		m_mouse_y.attach(L"LookVert");
-		m_mouse_wheel.attach(L"Scroll");
+		m_key_quit.attach("Quit");
+		m_mouse_x.attach("LookHoriz");
+		m_mouse_y.attach("LookVert");
+		m_mouse_wheel.attach("Scroll");
 
 		//задаем для команд функции-обработчики		
 		m_key_quit += boost::bind(&CParticleTest::onQuit, this);

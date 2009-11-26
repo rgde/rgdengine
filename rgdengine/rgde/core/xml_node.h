@@ -61,7 +61,7 @@ namespace core
 			}
 		}
 
-		void set_parent(node* node)	{m_parent = node; on_parent_change();}
+		void set_parent(node* parent)	{m_parent = parent; on_parent_change();}
 
 	protected:				
 		virtual void on_parent_change(){}
@@ -72,7 +72,8 @@ namespace core
 	};
 
 	template <class node_type>
-	class meta_node : public meta_class, public tree_node<node_type>
+	class meta_node : public meta_class
+					, public tree_node<node_type>
 	{
 	public: 
 		typedef boost::intrusive_ptr<node_type> node_type_ptr;
