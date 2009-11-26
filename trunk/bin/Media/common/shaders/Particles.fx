@@ -1,4 +1,6 @@
-//#include "base\shared.fx"
+#define DISABLE_FOG  \
+FogEnable = false;   \
+FogTableMode = None;
 
 float4x4 m_mLVP;
 float4   m_vRight;
@@ -31,14 +33,16 @@ VS_OUTPUT ParticlesVS(  float4 InPos: POSITION,
 
 technique PartilesRenderModulate
 {
-    pass p0
+    pass p0    
     {
+		DISABLE_FOG
+    
 		Lighting	 = false;
 		ZWriteEnable	 = false;
 		CullMode = CCW;
 
         // enable alpha blending
-        AlphaBlendEnable = TRUE;
+        AlphaBlendEnable = true;
         SrcBlend         = SrcAlpha;
         DestBlend        = InvSrcAlpha;
 

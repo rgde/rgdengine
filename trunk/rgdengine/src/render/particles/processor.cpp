@@ -377,57 +377,9 @@ namespace particles{
 			array[i].size = math::vec2f( p.size, p.size );
 			array[i].spin = p.rotation * 3.1415926f/180.0f;
 			array[i].color = p.color.color;
+			array[i].nTile = 0; // TODO: implement animated texture
 
-			//if (m_is_anim_texture_used)
-			//{
-			//	agl::AglTexCoords uv1, uv2;
-
-			//	unsigned char frame = 0;
-
-			//	if (m_is_play_tex_anim)
-			//	{
-			//		if (!m_is_anim_texture_cycled)
-			//			frame = (unsigned char)((m_ucTexFrames - 1) * (p.time / p.ttl));
-			//		else 
-			//			frame = (unsigned char)(p.time * m_texture_fps);
-			//	}
-
-			//	frame += (unsigned char)p.cur_tex_frame;
-
-			//	if (frame > m_ucTexFrames)
-			//	{
-			//		if (!m_is_anim_texture_cycled)
-			//			frame = m_ucTexFrames;
-			//		else
-			//			frame = frame % m_ucTexFrames;
-			//	}
-
-			//	int x = (frame - 1) / m_ucCol;
-			//	int y = frame - m_ucCol * x;
-			//	x += 1;
-			//	if (y == 0) y = 1;
-
-			//	// proskakivaet posledniy ryad - ya tormoz
-
-			//	uv1.tu = (x - 1) * 1.0f / m_ucTrow;//m_ucRow;
-			//	uv1.tv = (y - 1) * 1.0f / m_ucTcol;//m_ucCol;
-
-			//	uv2.tu = x * 1.0f / m_ucTrow;//m_ucRow;
-			//	uv2.tv = y * 1.0f / m_ucTcol;//m_ucCol;
-
-			//	//uv1.tv = (x - 1) * 1.0f / m_ucTcol; uv1.tu = (y - 1) * 1.0f / m_ucTrow;
-			//	//uv2.tv = x * 1.0f / m_ucTcol; uv2.tu = y * 1.0f / m_ucTrow;
-
-			//	(*uvs).v[0] = uv1;
-			//	(*uvs).v[1] = uv2;
-			//}
-			//else 
-			//{
-			//	static agl::AglTexCoords suv[2] = {{0,0},{1,1}};
-			//	(*uvs).v[0] = suv[0];
-			//	(*uvs).v[1] = suv[1];
-			//}				
-				i++;
+			i++;
 		}
 		m_tank->update();
 	}
@@ -435,37 +387,7 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void processor::loadTexture()
 	{
-		//try{
-		//	agl::LocalImgPathSync p(pfx::tex_path.c_str());//"Effects\\tx\\");
-		//	
-		//	m_texture.load(m_texture_name);
-
-		//	std::string ext_path = std::string::Concat(
-		//		pfx::tex_path.c_str(), pfx::tex_path.length(),
-		//		 m_texture_name.c_str(), m_texture_name.length() - 3);
-		//	ext_path += "tnf";
-
-		//	if (base::ResourceMaster::get()->isResourceExist(ext_path))
-		//	{
-		//		clx::rstream in(base::ResourceMaster::get()->getResource(ext_path));//ResourseMaster
-		//		//m_texture.load(clx::cstr("anim_explode.png"));
-		//		m_is_anim_texture_used = true;
-		//		in  >> m_ucRow			// = 4;
-		//			>> m_ucCol			// = 4;
-		//			>> m_ucTexFrames		// = 16;
-		//			>> m_ucTrow
-		//			>> m_ucTcol;
-		//	}
-		//	else 
-		//		m_is_anim_texture_used = false;
-
-		//	m_texture.setFilterMode(agl::filter_Linear);
-		//}
-		//catch (...){
-		//	m_texture_name.clear();
-		//	return;
-		//}
-		m_texture = render::texture::create(m_texture_name);//std::wstring(m_texture_name.begin(), m_texture_name.end()) );
+		m_texture = render::texture::create(m_texture_name);
 		return;
 	}
 
@@ -474,7 +396,7 @@ namespace particles{
 	{
 		m_is_texture_loaded = false;
 
-		if ( texture_name.length() != 0 )
+		if ( !texture_name.empty() )
 		{
 			m_texture_name = texture_name;	
 			loadTexture();

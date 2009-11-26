@@ -35,10 +35,13 @@ namespace rgde
 				using render::texture;
 
 				std::vector<render::texture_ptr> textures;
-				textures.push_back(texture::create( "Sprites/test01.jpg" ));
-				textures.push_back(texture::create( "Sprites/test02.jpg" ));
-				textures.push_back(texture::create( "Sprites/test03.jpg" ));
-				textures.push_back(texture::create( "Sprites/test04.jpg" ));
+				//textures.push_back(texture::create( "Sprites/test01.jpg" ));
+				//textures.push_back(texture::create( "Sprites/test02.jpg" ));
+				//textures.push_back(texture::create( "Sprites/test03.jpg" ));
+				//textures.push_back(texture::create( "Sprites/test04.jpg" ));
+
+				textures.push_back(texture::create( "particles/Shot_Smoke.png"));
+				//Media\particles\Shot_Smoke - Copy.png
 
 				const math::Rect rect(0, 0, 1, 1);
 

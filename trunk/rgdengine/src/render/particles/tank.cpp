@@ -13,7 +13,7 @@ namespace particles
 
 		render::effect::params_map& params = m_effect->get_params();
 
-		m_paramUpVec			= params["m_up"];
+		m_paramUpVec			= params["m_vUp"];
 		m_paramRightVec			= params["m_vRight"];
 		m_paramParticleTexture	= params["ParticlesTexture"];
 		m_paramTransformMatrix	= params["m_mLVP"];
@@ -41,27 +41,32 @@ namespace particles
 		math::matrix44f mSystem = mView * mLocal;
 		math::matrix44f mLVP = mProj * mSystem;
 
-		bool useGlobalUp = true;
+		bool useGlobalUp = false;
 
-		math::vec4f right(mSystem.mData[0], mSystem.mData[4], mSystem.mData[8], 0.0f);
+		//math::vec4f right(mSystem.mData[0], mSystem.mData[4], mSystem.mData[8], 0.0f);
+		//math::vec4f up(mSystem.mData[1], mSystem.mData[5], mSystem.mData[9], 0);
+
+		math::vec4f right(mView.mData[0], mView.mData[4], mView.mData[8], 0.0f);
+		math::vec4f up(mView.mData[1], mView.mData[5], mView.mData[9], 0);
+
+		//math::vec4f right(mSystem.mData[0], mSystem.mData[8], mSystem.mData[4], 0.0f);
+		//math::vec4f up(mSystem.mData[1], mSystem.mData[9], mSystem.mData[5], 0);
+
 		//math::normalize(right);
-		math::vec4f up(mSystem.mData[1], mSystem.mData[5], mSystem.mData[9], 0);
 		//math::normalize(up);
 	
 
 		if (useGlobalUp)
 		{
-			right[2] = 0;
+			right[1] = 0;
 			math::normalize(right);
-			up = math::vec4f(0, 0, 1, 0);
+			up = math::vec4f(0, 1, 0, 0);
 		}
-
 
 		m_paramParticleTexture->set(texture);
 		m_paramTransformMatrix->set(mLVP);
 		m_paramRightVec->set(right);
 		m_paramUpVec->set(up);
-
 		
 		std::vector<render::effect::technique::pass*>& passes = m_pRenderTechnique->get_passes();
 

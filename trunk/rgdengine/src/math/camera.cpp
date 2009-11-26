@@ -6,6 +6,17 @@
 
 namespace math
 {
+	base_camera::base_camera()
+	{
+
+	}
+
+	base_camera::~base_camera()
+	{
+
+	}
+
+
 	const matrix44f  base_camera::get_view_matrix()	const 
 	{
 		matrix44f m = frame::get_full_tm();

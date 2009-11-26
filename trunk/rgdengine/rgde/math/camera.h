@@ -8,8 +8,8 @@ namespace math
 	class base_camera : public frame
 	{
 	public:
-		base_camera() {}
-		virtual ~base_camera(){}
+		base_camera();
+		~base_camera();
 
 		virtual void	set_projection(float fovy, float aspect, float z_near, float z_far);
 		virtual void	activate();
