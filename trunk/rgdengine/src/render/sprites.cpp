@@ -33,7 +33,7 @@ namespace render
 		, m_updated(true)
 		, rendererable(priority)
 		, m_origin(0, 0)
-		, m_geometry(false)
+		, m_geometry(true) // true - for dynamic
 		, m_aditive(false)
 		, m_additive_tech(0)
 		, m_modulate_tech(0)
