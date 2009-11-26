@@ -48,11 +48,11 @@ public:
 			Input::add_command(L"Down");
 			Input::add_command(L"Drop");
 
-			Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
-			Input::get_device(types::Keyboard)->get_control(types::KeyLeft)->bind(L"Left");
-			Input::get_device(types::Keyboard)->get_control(types::KeyRight)->bind(L"Right");
-			Input::get_device(types::Keyboard)->get_control(types::key_down)->bind(L"Down");
-			Input::get_device(types::Keyboard)->get_control(types::KeySpace)->bind(L"Drop");
+			Input::get_device(Keyboard)->get_control(KeyEscape)->bind(L"Quit");
+			Input::get_device(Keyboard)->get_control(KeyLeft)->bind(L"Left");
+			Input::get_device(Keyboard)->get_control(KeyRight)->bind(L"Right");
+			Input::get_device(Keyboard)->get_control(KeyDown)->bind(L"Down");
+			Input::get_device(Keyboard)->get_control(KeySpace)->bind(L"Drop");
 			
 			m_esc  .attach(L"Quit");
 			m_cLeft.attach(L"Left");

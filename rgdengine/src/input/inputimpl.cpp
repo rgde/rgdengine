@@ -65,154 +65,154 @@ namespace input
             return false;
 
         //заполним массив m_devices
-        m_devices.push_back (new device(types::Keyboard, 0, *this));
-        m_devices.push_back (new device(types::Mouse,    0, *this));
+        m_devices.push_back (new device(Keyboard, 0, *this));
+        m_devices.push_back (new device(Mouse,    0, *this));
 
         //заполним список контролов
         keyboard = *(m_devices.begin());
         mouse    = *(++m_devices.begin());
 
         //keyboard
-        keyboard->add_button(types::KeyEscape);
-        keyboard->add_button(types::Key1);
-        keyboard->add_button(types::Key2);
-        keyboard->add_button(types::Key3);
-        keyboard->add_button(types::Key4);
-        keyboard->add_button(types::Key5);
-        keyboard->add_button(types::Key6);
-        keyboard->add_button(types::Key7);
-        keyboard->add_button(types::Key8);
-        keyboard->add_button(types::Key9);
-        keyboard->add_button(types::Key0);
-        keyboard->add_button(types::KeyMinus);
-        keyboard->add_button(types::KeyEquals);
-        keyboard->add_button(types::KeyBack);
-        keyboard->add_button(types::KeyTab);
-        keyboard->add_button(types::KeyQ);
-        keyboard->add_button(types::KeyW);
-        keyboard->add_button(types::KeyE);
-        keyboard->add_button(types::KeyR);
-        keyboard->add_button(types::KeyT);
-        keyboard->add_button(types::KeyY);
-        keyboard->add_button(types::KeyU);
-        keyboard->add_button(types::KeyI);
-        keyboard->add_button(types::KeyO);
-        keyboard->add_button(types::KeyP);
-        keyboard->add_button(types::KeyLBracket);
-        keyboard->add_button(types::KeyRBracket);
-        keyboard->add_button(types::KeyReturn);
-        keyboard->add_button(types::KeyLControl);
-        keyboard->add_button(types::KeyA);
-        keyboard->add_button(types::KeyS);
-        keyboard->add_button(types::KeyD);
-        keyboard->add_button(types::KeyF);
-        keyboard->add_button(types::KeyG);
-        keyboard->add_button(types::KeyH);
-        keyboard->add_button(types::KeyJ);
-        keyboard->add_button(types::KeyK);
-        keyboard->add_button(types::KeyL);
-        keyboard->add_button(types::KeySemicolon);
-        keyboard->add_button(types::KeyApostrophe);
-        keyboard->add_button(types::KeyGrave);
-        keyboard->add_button(types::KeyLShift);
-        keyboard->add_button(types::KeyBackSlash);
-        keyboard->add_button(types::KeyZ);
-        keyboard->add_button(types::KeyX);
-        keyboard->add_button(types::KeyC);
-        keyboard->add_button(types::KeyV);
-        keyboard->add_button(types::KeyB);
-        keyboard->add_button(types::KeyN);
-        keyboard->add_button(types::KeyM);
-        keyboard->add_button(types::KeyComma);
-        keyboard->add_button(types::KeyPeriod);
-        keyboard->add_button(types::KeySlash);
-        keyboard->add_button(types::KeyRShift);
-        keyboard->add_button(types::KeyMultiply);
-        keyboard->add_button(types::KeyLMenu);
-        keyboard->add_button(types::KeySpace);
-        keyboard->add_button(types::KeyCapital);
-        keyboard->add_button(types::KeyF1);
-        keyboard->add_button(types::KeyF2);
-        keyboard->add_button(types::KeyF3);
-        keyboard->add_button(types::KeyF4);
-        keyboard->add_button(types::KeyF5);
-        keyboard->add_button(types::KeyF6);
-        keyboard->add_button(types::KeyF7);
-        keyboard->add_button(types::KeyF8);
-        keyboard->add_button(types::KeyF9);
-        keyboard->add_button(types::KeyF10);
-        keyboard->add_button(types::KeyNumLock);
-        keyboard->add_button(types::KeyScroll);
-        keyboard->add_button(types::KeyNumPad7);
-        keyboard->add_button(types::KeyNumPad8);
-        keyboard->add_button(types::KeyNumPad9);
-        keyboard->add_button(types::KeySubtract);
-        keyboard->add_button(types::KeyNumPad4);
-        keyboard->add_button(types::KeyNumPad5);
-        keyboard->add_button(types::KeyNumPad6);
-        keyboard->add_button(types::KeyAdd);
-        keyboard->add_button(types::KeyNumPad1);
-        keyboard->add_button(types::KeyNumPad2);
-        keyboard->add_button(types::KeyNumPad3);
-        keyboard->add_button(types::KeyNumPad0);
-        keyboard->add_button(types::KeyDecimal);
-        keyboard->add_button(types::KeyOEM_102);
-        keyboard->add_button(types::KeyF11);
-        keyboard->add_button(types::KeyF12);
-        keyboard->add_button(types::KeyF13);
-        keyboard->add_button(types::KeyF14);
-        keyboard->add_button(types::KeyF15);
-        keyboard->add_button(types::KeyKana);
-        keyboard->add_button(types::KeyABNT_C1);
-        keyboard->add_button(types::KeyConvert);
-        keyboard->add_button(types::KeyNoConvert);
-        keyboard->add_button(types::KeyYen);
-        keyboard->add_button(types::KeyABNT_C2);
-        keyboard->add_button(types::KeyNumPadEquals);
-        keyboard->add_button(types::KeyPrevTrack);
-        keyboard->add_button(types::KeyAt);
-        keyboard->add_button(types::KeyColon);
-        keyboard->add_button(types::KeyUnderLine);
-        keyboard->add_button(types::KeyKANJI);
-        keyboard->add_button(types::KeyStop);
-        keyboard->add_button(types::KeyAx);
-        keyboard->add_button(types::KeyUnlabeled);
-        keyboard->add_button(types::KeyNextTrack);
-        keyboard->add_button(types::KeyNumPadEnter);
-        keyboard->add_button(types::KeyRControl);
-        keyboard->add_button(types::KeyMute);
-        keyboard->add_button(types::KeyCalculator);
-        keyboard->add_button(types::KeyPlayPause);
-        keyboard->add_button(types::KeyMediaStop);
-        keyboard->add_button(types::KeyVolumeDown);
-        keyboard->add_button(types::KeyVolumeUp);
-        keyboard->add_button(types::KeyWebHome);
-        keyboard->add_button(types::KeyNumPadComma);
-        keyboard->add_button(types::KeyDivide);
-        keyboard->add_button(types::KeySysRQ);
-        keyboard->add_button(types::KeyRMenu);
-        keyboard->add_button(types::KeyPause);
-        keyboard->add_button(types::KeyHome);
-        keyboard->add_button(types::KeyUp);
-        keyboard->add_button(types::KeyPrior);
-        keyboard->add_button(types::KeyLeft);
-        keyboard->add_button(types::KeyRight);
-        keyboard->add_button(types::KeyEnd);
-        keyboard->add_button(types::key_down);
-        keyboard->add_button(types::KeyNext);
-        keyboard->add_button(types::KeyInsert);
-        keyboard->add_button(types::KeyDelete);
-        keyboard->add_button(types::KeyLWin);
-        keyboard->add_button(types::KeyRWin);
-        keyboard->add_button(types::KeyApps);
+        keyboard->add_button(KeyEscape);
+        keyboard->add_button(Key1);
+        keyboard->add_button(Key2);
+        keyboard->add_button(Key3);
+        keyboard->add_button(Key4);
+        keyboard->add_button(Key5);
+        keyboard->add_button(Key6);
+        keyboard->add_button(Key7);
+        keyboard->add_button(Key8);
+        keyboard->add_button(Key9);
+        keyboard->add_button(Key0);
+        keyboard->add_button(KeyMinus);
+        keyboard->add_button(KeyEquals);
+        keyboard->add_button(KeyBack);
+        keyboard->add_button(KeyTab);
+        keyboard->add_button(KeyQ);
+        keyboard->add_button(KeyW);
+        keyboard->add_button(KeyE);
+        keyboard->add_button(KeyR);
+        keyboard->add_button(KeyT);
+        keyboard->add_button(KeyY);
+        keyboard->add_button(KeyU);
+        keyboard->add_button(KeyI);
+        keyboard->add_button(KeyO);
+        keyboard->add_button(KeyP);
+        keyboard->add_button(KeyLBracket);
+        keyboard->add_button(KeyRBracket);
+        keyboard->add_button(KeyReturn);
+        keyboard->add_button(KeyLControl);
+        keyboard->add_button(KeyA);
+        keyboard->add_button(KeyS);
+        keyboard->add_button(KeyD);
+        keyboard->add_button(KeyF);
+        keyboard->add_button(KeyG);
+        keyboard->add_button(KeyH);
+        keyboard->add_button(KeyJ);
+        keyboard->add_button(KeyK);
+        keyboard->add_button(KeyL);
+        keyboard->add_button(KeySemicolon);
+        keyboard->add_button(KeyApostrophe);
+        keyboard->add_button(KeyGrave);
+        keyboard->add_button(KeyLShift);
+        keyboard->add_button(KeyBackSlash);
+        keyboard->add_button(KeyZ);
+        keyboard->add_button(KeyX);
+        keyboard->add_button(KeyC);
+        keyboard->add_button(KeyV);
+        keyboard->add_button(KeyB);
+        keyboard->add_button(KeyN);
+        keyboard->add_button(KeyM);
+        keyboard->add_button(KeyComma);
+        keyboard->add_button(KeyPeriod);
+        keyboard->add_button(KeySlash);
+        keyboard->add_button(KeyRShift);
+        keyboard->add_button(KeyMultiply);
+        keyboard->add_button(KeyLMenu);
+        keyboard->add_button(KeySpace);
+        keyboard->add_button(KeyCapital);
+        keyboard->add_button(KeyF1);
+        keyboard->add_button(KeyF2);
+        keyboard->add_button(KeyF3);
+        keyboard->add_button(KeyF4);
+        keyboard->add_button(KeyF5);
+        keyboard->add_button(KeyF6);
+        keyboard->add_button(KeyF7);
+        keyboard->add_button(KeyF8);
+        keyboard->add_button(KeyF9);
+        keyboard->add_button(KeyF10);
+        keyboard->add_button(KeyNumLock);
+        keyboard->add_button(KeyScroll);
+        keyboard->add_button(KeyNumPad7);
+        keyboard->add_button(KeyNumPad8);
+        keyboard->add_button(KeyNumPad9);
+        keyboard->add_button(KeySubtract);
+        keyboard->add_button(KeyNumPad4);
+        keyboard->add_button(KeyNumPad5);
+        keyboard->add_button(KeyNumPad6);
+        keyboard->add_button(KeyAdd);
+        keyboard->add_button(KeyNumPad1);
+        keyboard->add_button(KeyNumPad2);
+        keyboard->add_button(KeyNumPad3);
+        keyboard->add_button(KeyNumPad0);
+        keyboard->add_button(KeyDecimal);
+        keyboard->add_button(KeyOEM_102);
+        keyboard->add_button(KeyF11);
+        keyboard->add_button(KeyF12);
+        keyboard->add_button(KeyF13);
+        keyboard->add_button(KeyF14);
+        keyboard->add_button(KeyF15);
+        keyboard->add_button(KeyKana);
+        keyboard->add_button(KeyABNT_C1);
+        keyboard->add_button(KeyConvert);
+        keyboard->add_button(KeyNoConvert);
+        keyboard->add_button(KeyYen);
+        keyboard->add_button(KeyABNT_C2);
+        keyboard->add_button(KeyNumPadEquals);
+        keyboard->add_button(KeyPrevTrack);
+        keyboard->add_button(KeyAt);
+        keyboard->add_button(KeyColon);
+        keyboard->add_button(KeyUnderLine);
+        keyboard->add_button(KeyKANJI);
+        keyboard->add_button(KeyStop);
+        keyboard->add_button(KeyAx);
+        keyboard->add_button(KeyUnlabeled);
+        keyboard->add_button(KeyNextTrack);
+        keyboard->add_button(KeyNumPadEnter);
+        keyboard->add_button(KeyRControl);
+        keyboard->add_button(KeyMute);
+        keyboard->add_button(KeyCalculator);
+        keyboard->add_button(KeyPlayPause);
+        keyboard->add_button(KeyMediaStop);
+        keyboard->add_button(KeyVolumeDown);
+        keyboard->add_button(KeyVolumeUp);
+        keyboard->add_button(KeyWebHome);
+        keyboard->add_button(KeyNumPadComma);
+        keyboard->add_button(KeyDivide);
+        keyboard->add_button(KeySysRQ);
+        keyboard->add_button(KeyRMenu);
+        keyboard->add_button(KeyPause);
+        keyboard->add_button(KeyHome);
+        keyboard->add_button(KeyUp);
+        keyboard->add_button(KeyPrior);
+        keyboard->add_button(KeyLeft);
+        keyboard->add_button(KeyRight);
+        keyboard->add_button(KeyEnd);
+        keyboard->add_button(KeyDown);
+        keyboard->add_button(KeyNext);
+        keyboard->add_button(KeyInsert);
+        keyboard->add_button(KeyDelete);
+        keyboard->add_button(KeyLWin);
+        keyboard->add_button(KeyRWin);
+        keyboard->add_button(KeyApps);
 							
         //mouse
-        mouse->add_button (types::ButtonLeft);
-        mouse->add_button (types::ButtonMid);
-        mouse->add_button (types::ButtonRight);
-        mouse->add_axis   (types::AxisX);
-        mouse->add_axis   (types::AxisY);
-        mouse->add_axis   (types::AxisWheel);
+        mouse->add_button (ButtonLeft);
+        mouse->add_button (ButtonMid);
+        mouse->add_button (ButtonRight);
+        mouse->add_axis   (AxisX);
+        mouse->add_axis   (AxisY);
+        mouse->add_axis   (AxisWheel);
 
         return true;
     }
@@ -347,10 +347,10 @@ namespace input
             {
                 device *pDevice = *j;
 
-                std::wstring sDeviseNameW = Device2String(pDevice->get_name());
+                std::wstring sDeviseNameW = Device2String(pDevice->get_type());
                 std::string sDeviceName(sDeviseNameW.begin(), sDeviseNameW.end());
 
-				std::map<types::control, Control*>::iterator k = pDevice->m_controls.begin();
+				std::map<controls, Control*>::iterator k = pDevice->m_controls.begin();
                 while (k != pDevice->m_controls.end())
                 {
                     Control *pControl = k->second;
@@ -396,7 +396,7 @@ namespace input
         m_inited = false;
     }
  
-    device* input_impl::get_device (types::device eDeviceName, int indx/*=0*/)
+    device* input_impl::get_device (devices eDeviceName, int indx/*=0*/)
     {
         if (!m_inited)
             return 0;
@@ -404,7 +404,7 @@ namespace input
         std::list<device*>::iterator i = m_devices.begin();
         while (i != m_devices.end())
         {
-            if ((*i)->get_name() == eDeviceName && (*i)->get_device_index() == indx)
+            if ((*i)->get_type() == eDeviceName && (*i)->get_device_index() == indx)
                 return *i;
             ++i;
         }
@@ -417,7 +417,7 @@ namespace input
         return get_device(String2Device(sDeviceName), indx);
     }
 
-    bool input_impl::is_present (types::device eDeviceName, int indx/*=0*/) const
+    bool input_impl::is_present (devices eDeviceName, int indx/*=0*/) const
     {
         if (!m_inited)
             return false;
@@ -425,7 +425,7 @@ namespace input
         std::list<device*>::const_iterator i = m_devices.begin();
         while (i != m_devices.end())
         {
-            if ((*i)->get_name() == eDeviceName && (*i)->get_device_index() == indx)
+            if ((*i)->get_type() == eDeviceName && (*i)->get_device_index() == indx)
                 return true;
             ++i;
         }
@@ -657,144 +657,144 @@ namespace input
     void input_impl::kProcess (DIDEVICEOBJECTDATA dod)
     {
 		//определим, от какого контрола пришло сообщение
-		types::control eControl = types::InvalidControl;
+		controls eControl = InvalidControl;
 		switch (dod.dwOfs)
 		{
-		    case DIK_ESCAPE       : eControl = types::KeyEscape	; break;
-		    case DIK_1            : eControl = types::Key1		; break;
-		    case DIK_2            : eControl = types::Key2		; break;
-		    case DIK_3            : eControl = types::Key3		; break;
-		    case DIK_4            : eControl = types::Key4		; break;
-		    case DIK_5            : eControl = types::Key5		; break;
-		    case DIK_6            : eControl = types::Key6            ; break;
-		    case DIK_7            : eControl = types::Key7            ; break;
-		    case DIK_8            : eControl = types::Key8            ; break;
-		    case DIK_9            : eControl = types::Key9            ; break;
-		    case DIK_0            : eControl = types::Key0            ; break;
-		    case DIK_MINUS        : eControl = types::KeyMinus        ; break;
-		    case DIK_EQUALS       : eControl = types::KeyEquals       ; break;
-		    case DIK_BACK         : eControl = types::KeyBack         ; break;
-		    case DIK_TAB          : eControl = types::KeyTab          ; break;
-		    case DIK_Q            : eControl = types::KeyQ            ; break;
-		    case DIK_W            : eControl = types::KeyW            ; break;
-		    case DIK_E            : eControl = types::KeyE            ; break;
-		    case DIK_R            : eControl = types::KeyR            ; break;
-		    case DIK_T            : eControl = types::KeyT            ; break;
-		    case DIK_Y            : eControl = types::KeyY            ; break;
-		    case DIK_U            : eControl = types::KeyU            ; break;
-		    case DIK_I            : eControl = types::KeyI            ; break;
-		    case DIK_O            : eControl = types::KeyO            ; break;
-		    case DIK_P            : eControl = types::KeyP            ; break;
-		    case DIK_LBRACKET     : eControl = types::KeyLBracket     ; break;
-		    case DIK_RBRACKET     : eControl = types::KeyRBracket     ; break;
-		    case DIK_RETURN       : eControl = types::KeyReturn       ; break;
-		    case DIK_LCONTROL     : eControl = types::KeyLControl     ; break;
-		    case DIK_A            : eControl = types::KeyA            ; break;
-		    case DIK_S            : eControl = types::KeyS            ; break;
-		    case DIK_D            : eControl = types::KeyD            ; break;
-		    case DIK_F            : eControl = types::KeyF            ; break;
-		    case DIK_G            : eControl = types::KeyG            ; break;
-		    case DIK_H            : eControl = types::KeyH            ; break;
-		    case DIK_J            : eControl = types::KeyJ            ; break;
-		    case DIK_K            : eControl = types::KeyK            ; break;
-		    case DIK_L            : eControl = types::KeyL            ; break;
-		    case DIK_SEMICOLON    : eControl = types::KeySemicolon    ; break;
-		    case DIK_APOSTROPHE   : eControl = types::KeyApostrophe   ; break;
-		    case DIK_GRAVE        : eControl = types::KeyGrave        ; break;
-		    case DIK_LSHIFT       : eControl = types::KeyLShift       ; break;
-		    case DIK_BACKSLASH    : eControl = types::KeyBackSlash    ; break;
-		    case DIK_Z            : eControl = types::KeyZ            ; break;
-		    case DIK_X            : eControl = types::KeyX            ; break;
-		    case DIK_C            : eControl = types::KeyC            ; break;
-		    case DIK_V            : eControl = types::KeyV            ; break;
-		    case DIK_B            : eControl = types::KeyB            ; break;
-		    case DIK_N            : eControl = types::KeyN            ; break;
-		    case DIK_M            : eControl = types::KeyM            ; break;
-		    case DIK_COMMA        : eControl = types::KeyComma        ; break;
-		    case DIK_PERIOD       : eControl = types::KeyPeriod       ; break;
-		    case DIK_SLASH        : eControl = types::KeySlash        ; break;
-		    case DIK_RSHIFT       : eControl = types::KeyRShift       ; break;
-		    case DIK_MULTIPLY     : eControl = types::KeyMultiply     ; break;
-		    case DIK_LMENU        : eControl = types::KeyLMenu        ; break;
-		    case DIK_SPACE        : eControl = types::KeySpace        ; break;
-		    case DIK_CAPITAL      : eControl = types::KeyCapital      ; break;
-		    case DIK_F1           : eControl = types::KeyF1           ; break;
-		    case DIK_F2           : eControl = types::KeyF2           ; break;
-		    case DIK_F3           : eControl = types::KeyF3           ; break;
-		    case DIK_F4           : eControl = types::KeyF4           ; break;
-		    case DIK_F5           : eControl = types::KeyF5           ; break;
-		    case DIK_F6           : eControl = types::KeyF6           ; break;
-		    case DIK_F7           : eControl = types::KeyF7           ; break;
-		    case DIK_F8           : eControl = types::KeyF8           ; break;
-		    case DIK_F9           : eControl = types::KeyF9           ; break;
-		    case DIK_F10          : eControl = types::KeyF10          ; break;
-		    case DIK_NUMLOCK      : eControl = types::KeyNumLock      ; break;
-		    case DIK_SCROLL       : eControl = types::KeyScroll       ; break;
-		    case DIK_NUMPAD7      : eControl = types::KeyNumPad7      ; break;
-		    case DIK_NUMPAD8      : eControl = types::KeyNumPad8      ; break;
-		    case DIK_NUMPAD9      : eControl = types::KeyNumPad9      ; break;
-		    case DIK_SUBTRACT     : eControl = types::KeySubtract     ; break;
-		    case DIK_NUMPAD4      : eControl = types::KeyNumPad4      ; break;
-		    case DIK_NUMPAD5      : eControl = types::KeyNumPad5      ; break;
-		    case DIK_NUMPAD6      : eControl = types::KeyNumPad6      ; break;
-		    case DIK_ADD          : eControl = types::KeyAdd          ; break;
-		    case DIK_NUMPAD1      : eControl = types::KeyNumPad1      ; break;
-		    case DIK_NUMPAD2      : eControl = types::KeyNumPad2      ; break;
-		    case DIK_NUMPAD3      : eControl = types::KeyNumPad3      ; break;
-		    case DIK_NUMPAD0      : eControl = types::KeyNumPad0      ; break;
-		    case DIK_DECIMAL      : eControl = types::KeyDecimal      ; break;
-		    case DIK_OEM_102      : eControl = types::KeyOEM_102      ; break;
-		    case DIK_F11          : eControl = types::KeyF11          ; break;
-		    case DIK_F12          : eControl = types::KeyF12          ; break;
-		    case DIK_F13          : eControl = types::KeyF13          ; break;
-		    case DIK_F14          : eControl = types::KeyF14          ; break;
-		    case DIK_F15          : eControl = types::KeyF15          ; break;
-		    case DIK_KANA         : eControl = types::KeyKana         ; break;
-		    case DIK_ABNT_C1      : eControl = types::KeyABNT_C1      ; break;
-		    case DIK_CONVERT      : eControl = types::KeyConvert      ; break;
-		    case DIK_NOCONVERT    : eControl = types::KeyNoConvert    ; break;
-		    case DIK_YEN          : eControl = types::KeyYen          ; break;
-		    case DIK_ABNT_C2      : eControl = types::KeyABNT_C2      ; break;
-		    case DIK_NUMPADEQUALS : eControl = types::KeyNumPadEquals ; break;
-		    case DIK_PREVTRACK    : eControl = types::KeyPrevTrack    ; break;
-		    case DIK_AT           : eControl = types::KeyAt           ; break;
-		    case DIK_COLON        : eControl = types::KeyColon        ; break;
-		    case DIK_UNDERLINE    : eControl = types::KeyUnderLine    ; break;
-		    case DIK_KANJI        : eControl = types::KeyKANJI        ; break;
-		    case DIK_STOP         : eControl = types::KeyStop         ; break;
-		    case DIK_AX           : eControl = types::KeyAx           ; break;
-		    case DIK_UNLABELED    : eControl = types::KeyUnlabeled    ; break;
-		    case DIK_NEXTTRACK    : eControl = types::KeyNextTrack    ; break;
-		    case DIK_NUMPADENTER  : eControl = types::KeyNumPadEnter  ; break;
-		    case DIK_RCONTROL     : eControl = types::KeyRControl     ; break;
-		    case DIK_MUTE         : eControl = types::KeyMute         ; break;
-		    case DIK_CALCULATOR   : eControl = types::KeyCalculator   ; break;
-		    case DIK_PLAYPAUSE    : eControl = types::KeyPlayPause    ; break;
-		    case DIK_MEDIASTOP    : eControl = types::KeyMediaStop    ; break;
-		    case DIK_VOLUMEDOWN   : eControl = types::KeyVolumeDown   ; break;
-		    case DIK_VOLUMEUP     : eControl = types::KeyVolumeUp     ; break;
-		    case DIK_WEBHOME      : eControl = types::KeyWebHome      ; break;
-		    case DIK_NUMPADCOMMA  : eControl = types::KeyNumPadComma  ; break;
-		    case DIK_DIVIDE       : eControl = types::KeyDivide       ; break;
-		    case DIK_SYSRQ        : eControl = types::KeySysRQ        ; break;
-		    case DIK_RMENU        : eControl = types::KeyRMenu        ; break;
-		    case DIK_PAUSE        : eControl = types::KeyPause        ; break;
-		    case DIK_HOME         : eControl = types::KeyHome         ; break;
-		    case DIK_UP           : eControl = types::KeyUp           ; break;
-		    case DIK_PRIOR        : eControl = types::KeyPrior        ; break;
-		    case DIK_LEFT         : eControl = types::KeyLeft         ; break;
-		    case DIK_RIGHT        : eControl = types::KeyRight        ; break;
-		    case DIK_END          : eControl = types::KeyEnd          ; break;
-		    case DIK_DOWN         : eControl = types::key_down         ; break;
-		    case DIK_NEXT         : eControl = types::KeyNext         ; break;
-		    case DIK_INSERT       : eControl = types::KeyInsert       ; break;
-		    case DIK_DELETE       : eControl = types::KeyDelete       ; break;
-		    case DIK_LWIN         : eControl = types::KeyLWin         ; break;
-		    case DIK_RWIN         : eControl = types::KeyRWin         ; break;
-		    case DIK_APPS         : eControl = types::KeyApps         ; break;
+		    case DIK_ESCAPE       : eControl = KeyEscape	; break;
+		    case DIK_1            : eControl = Key1		; break;
+		    case DIK_2            : eControl = Key2		; break;
+		    case DIK_3            : eControl = Key3		; break;
+		    case DIK_4            : eControl = Key4		; break;
+		    case DIK_5            : eControl = Key5		; break;
+		    case DIK_6            : eControl = Key6            ; break;
+		    case DIK_7            : eControl = Key7            ; break;
+		    case DIK_8            : eControl = Key8            ; break;
+		    case DIK_9            : eControl = Key9            ; break;
+		    case DIK_0            : eControl = Key0            ; break;
+		    case DIK_MINUS        : eControl = KeyMinus        ; break;
+		    case DIK_EQUALS       : eControl = KeyEquals       ; break;
+		    case DIK_BACK         : eControl = KeyBack         ; break;
+		    case DIK_TAB          : eControl = KeyTab          ; break;
+		    case DIK_Q            : eControl = KeyQ            ; break;
+		    case DIK_W            : eControl = KeyW            ; break;
+		    case DIK_E            : eControl = KeyE            ; break;
+		    case DIK_R            : eControl = KeyR            ; break;
+		    case DIK_T            : eControl = KeyT            ; break;
+		    case DIK_Y            : eControl = KeyY            ; break;
+		    case DIK_U            : eControl = KeyU            ; break;
+		    case DIK_I            : eControl = KeyI            ; break;
+		    case DIK_O            : eControl = KeyO            ; break;
+		    case DIK_P            : eControl = KeyP            ; break;
+		    case DIK_LBRACKET     : eControl = KeyLBracket     ; break;
+		    case DIK_RBRACKET     : eControl = KeyRBracket     ; break;
+		    case DIK_RETURN       : eControl = KeyReturn       ; break;
+		    case DIK_LCONTROL     : eControl = KeyLControl     ; break;
+		    case DIK_A            : eControl = KeyA            ; break;
+		    case DIK_S            : eControl = KeyS            ; break;
+		    case DIK_D            : eControl = KeyD            ; break;
+		    case DIK_F            : eControl = KeyF            ; break;
+		    case DIK_G            : eControl = KeyG            ; break;
+		    case DIK_H            : eControl = KeyH            ; break;
+		    case DIK_J            : eControl = KeyJ            ; break;
+		    case DIK_K            : eControl = KeyK            ; break;
+		    case DIK_L            : eControl = KeyL            ; break;
+		    case DIK_SEMICOLON    : eControl = KeySemicolon    ; break;
+		    case DIK_APOSTROPHE   : eControl = KeyApostrophe   ; break;
+		    case DIK_GRAVE        : eControl = KeyGrave        ; break;
+		    case DIK_LSHIFT       : eControl = KeyLShift       ; break;
+		    case DIK_BACKSLASH    : eControl = KeyBackSlash    ; break;
+		    case DIK_Z            : eControl = KeyZ            ; break;
+		    case DIK_X            : eControl = KeyX            ; break;
+		    case DIK_C            : eControl = KeyC            ; break;
+		    case DIK_V            : eControl = KeyV            ; break;
+		    case DIK_B            : eControl = KeyB            ; break;
+		    case DIK_N            : eControl = KeyN            ; break;
+		    case DIK_M            : eControl = KeyM            ; break;
+		    case DIK_COMMA        : eControl = KeyComma        ; break;
+		    case DIK_PERIOD       : eControl = KeyPeriod       ; break;
+		    case DIK_SLASH        : eControl = KeySlash        ; break;
+		    case DIK_RSHIFT       : eControl = KeyRShift       ; break;
+		    case DIK_MULTIPLY     : eControl = KeyMultiply     ; break;
+		    case DIK_LMENU        : eControl = KeyLMenu        ; break;
+		    case DIK_SPACE        : eControl = KeySpace        ; break;
+		    case DIK_CAPITAL      : eControl = KeyCapital      ; break;
+		    case DIK_F1           : eControl = KeyF1           ; break;
+		    case DIK_F2           : eControl = KeyF2           ; break;
+		    case DIK_F3           : eControl = KeyF3           ; break;
+		    case DIK_F4           : eControl = KeyF4           ; break;
+		    case DIK_F5           : eControl = KeyF5           ; break;
+		    case DIK_F6           : eControl = KeyF6           ; break;
+		    case DIK_F7           : eControl = KeyF7           ; break;
+		    case DIK_F8           : eControl = KeyF8           ; break;
+		    case DIK_F9           : eControl = KeyF9           ; break;
+		    case DIK_F10          : eControl = KeyF10          ; break;
+		    case DIK_NUMLOCK      : eControl = KeyNumLock      ; break;
+		    case DIK_SCROLL       : eControl = KeyScroll       ; break;
+		    case DIK_NUMPAD7      : eControl = KeyNumPad7      ; break;
+		    case DIK_NUMPAD8      : eControl = KeyNumPad8      ; break;
+		    case DIK_NUMPAD9      : eControl = KeyNumPad9      ; break;
+		    case DIK_SUBTRACT     : eControl = KeySubtract     ; break;
+		    case DIK_NUMPAD4      : eControl = KeyNumPad4      ; break;
+		    case DIK_NUMPAD5      : eControl = KeyNumPad5      ; break;
+		    case DIK_NUMPAD6      : eControl = KeyNumPad6      ; break;
+		    case DIK_ADD          : eControl = KeyAdd          ; break;
+		    case DIK_NUMPAD1      : eControl = KeyNumPad1      ; break;
+		    case DIK_NUMPAD2      : eControl = KeyNumPad2      ; break;
+		    case DIK_NUMPAD3      : eControl = KeyNumPad3      ; break;
+		    case DIK_NUMPAD0      : eControl = KeyNumPad0      ; break;
+		    case DIK_DECIMAL      : eControl = KeyDecimal      ; break;
+		    case DIK_OEM_102      : eControl = KeyOEM_102      ; break;
+		    case DIK_F11          : eControl = KeyF11          ; break;
+		    case DIK_F12          : eControl = KeyF12          ; break;
+		    case DIK_F13          : eControl = KeyF13          ; break;
+		    case DIK_F14          : eControl = KeyF14          ; break;
+		    case DIK_F15          : eControl = KeyF15          ; break;
+		    case DIK_KANA         : eControl = KeyKana         ; break;
+		    case DIK_ABNT_C1      : eControl = KeyABNT_C1      ; break;
+		    case DIK_CONVERT      : eControl = KeyConvert      ; break;
+		    case DIK_NOCONVERT    : eControl = KeyNoConvert    ; break;
+		    case DIK_YEN          : eControl = KeyYen          ; break;
+		    case DIK_ABNT_C2      : eControl = KeyABNT_C2      ; break;
+		    case DIK_NUMPADEQUALS : eControl = KeyNumPadEquals ; break;
+		    case DIK_PREVTRACK    : eControl = KeyPrevTrack    ; break;
+		    case DIK_AT           : eControl = KeyAt           ; break;
+		    case DIK_COLON        : eControl = KeyColon        ; break;
+		    case DIK_UNDERLINE    : eControl = KeyUnderLine    ; break;
+		    case DIK_KANJI        : eControl = KeyKANJI        ; break;
+		    case DIK_STOP         : eControl = KeyStop         ; break;
+		    case DIK_AX           : eControl = KeyAx           ; break;
+		    case DIK_UNLABELED    : eControl = KeyUnlabeled    ; break;
+		    case DIK_NEXTTRACK    : eControl = KeyNextTrack    ; break;
+		    case DIK_NUMPADENTER  : eControl = KeyNumPadEnter  ; break;
+		    case DIK_RCONTROL     : eControl = KeyRControl     ; break;
+		    case DIK_MUTE         : eControl = KeyMute         ; break;
+		    case DIK_CALCULATOR   : eControl = KeyCalculator   ; break;
+		    case DIK_PLAYPAUSE    : eControl = KeyPlayPause    ; break;
+		    case DIK_MEDIASTOP    : eControl = KeyMediaStop    ; break;
+		    case DIK_VOLUMEDOWN   : eControl = KeyVolumeDown   ; break;
+		    case DIK_VOLUMEUP     : eControl = KeyVolumeUp     ; break;
+		    case DIK_WEBHOME      : eControl = KeyWebHome      ; break;
+		    case DIK_NUMPADCOMMA  : eControl = KeyNumPadComma  ; break;
+		    case DIK_DIVIDE       : eControl = KeyDivide       ; break;
+		    case DIK_SYSRQ        : eControl = KeySysRQ        ; break;
+		    case DIK_RMENU        : eControl = KeyRMenu        ; break;
+		    case DIK_PAUSE        : eControl = KeyPause        ; break;
+		    case DIK_HOME         : eControl = KeyHome         ; break;
+		    case DIK_UP           : eControl = KeyUp           ; break;
+		    case DIK_PRIOR        : eControl = KeyPrior        ; break;
+		    case DIK_LEFT         : eControl = KeyLeft         ; break;
+		    case DIK_RIGHT        : eControl = KeyRight        ; break;
+		    case DIK_END          : eControl = KeyEnd          ; break;
+		    case DIK_DOWN         : eControl = KeyDown         ; break;
+		    case DIK_NEXT         : eControl = KeyNext         ; break;
+		    case DIK_INSERT       : eControl = KeyInsert       ; break;
+		    case DIK_DELETE       : eControl = KeyDelete       ; break;
+		    case DIK_LWIN         : eControl = KeyLWin         ; break;
+		    case DIK_RWIN         : eControl = KeyRWin         ; break;
+		    case DIK_APPS         : eControl = KeyApps         ; break;
 		}
 
-		if (eControl == types::InvalidControl)
+		if (eControl == InvalidControl)
 			return; //... такой контрол не поддерживается
 
         Control *pControl = keyboard->get_control(eControl);
@@ -812,18 +812,18 @@ namespace input
     void input_impl::mProcess (DIDEVICEOBJECTDATA dod)
     {
         //определим, от какого контрола пришло сообщение
-        types::control eControl = types::InvalidControl;
+        controls eControl = InvalidControl;
         switch (dod.dwOfs)
         {
-            case DIMOFS_BUTTON0: eControl = types::ButtonLeft  ; break;
-            case DIMOFS_BUTTON1: eControl = types::ButtonRight ; break;
-            case DIMOFS_BUTTON2: eControl = types::ButtonMid   ; break;
-            case DIMOFS_X:       eControl = types::AxisX       ; break;
-            case DIMOFS_Y:       eControl = types::AxisY       ; break;
-            case DIMOFS_Z:       eControl = types::AxisWheel   ; break;
+            case DIMOFS_BUTTON0: eControl = ButtonLeft  ; break;
+            case DIMOFS_BUTTON1: eControl = ButtonRight ; break;
+            case DIMOFS_BUTTON2: eControl = ButtonMid   ; break;
+            case DIMOFS_X:       eControl = AxisX       ; break;
+            case DIMOFS_Y:       eControl = AxisY       ; break;
+            case DIMOFS_Z:       eControl = AxisWheel   ; break;
         }
 
-		if (eControl == types::InvalidControl)
+		if (eControl == InvalidControl)
 			return; //... такой контрол не поддерживается
 
         Control *pControl = mouse->get_control(eControl);

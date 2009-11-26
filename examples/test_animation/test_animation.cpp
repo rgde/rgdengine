@@ -50,9 +50,9 @@ public:
 			Input::add_command(L"Horz");
 			Input::add_command(L"Vert");
 
-			Input::get_device(types::Mouse   )->get_control(types::AxisX    )->bind(L"Horz");
-			Input::get_device(types::Mouse   )->get_control(types::AxisY    )->bind(L"Vert");
-			Input::get_device(types::Keyboard)->get_control(types::KeyEscape)->bind(L"Quit");
+			Input::get_control(Mouse, AxisX)->bind(L"Horz");
+			Input::get_control(Mouse, AxisY)->bind(L"Vert");
+			Input::get_control(Keyboard, KeyEscape)->bind(L"Quit");
 
 			m_esc  .attach(L"Quit");
 			m_mouse_x.attach(L"Horz");
