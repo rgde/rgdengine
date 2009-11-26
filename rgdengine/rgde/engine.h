@@ -25,7 +25,6 @@
 
 namespace math
 {
-	//using namespace math;
 	using namespace Math;
 }
 
