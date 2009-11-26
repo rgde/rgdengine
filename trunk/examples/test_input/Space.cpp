@@ -23,7 +23,7 @@ void Space::ParticleSprite::initParticle()
 {
 	using namespace math;
 	float s = rangeRandom(2.0f, 4.0f);
-	priority = s;
+	priority = (unsigned long)s;
 	size = vec2f(s, s*2);
 	uint c = (uint)(255*s/4.0f);
 	color = Color(105, 105, 105, c);
@@ -38,11 +38,12 @@ void Space::ParticleSprite::initStar()
 {
 	using namespace math;
 
-	float c = rangeRandom(1.0f, 5.0f) / 4.0f;
+	float c = rangeRandom(.4f, 1.1f);
+	uchar br = (uchar)(255*c);
 
 	priority = 0;
 	size = vec2f(128.f, 128.f);
-	color = Color(255*c, 255*c, 255*c, 255);
+	color = Color(br, br, br, 255);
 	rect = Rect(0, 0, 1, 1);
 	pos = vec2f(rangeRandom(0.f,800.f), rangeRandom(-128.f*2,600.0f+128.f));
 	spin = rangeRandom(0.f,360.f);
@@ -162,7 +163,7 @@ void Space::update (float dt)
         float x = int(m_x) - .5f;
         float y = int(m_y) - 34.5f;
 
-        float h = m_textureLazer->get_height();
+        int h = m_textureLazer->get_height();
         for (; y>-h/2; y -= h)
         {
             m_spriteLazer.rect = math::Rect(0, math::rangeRandom(0,.2f), 1, 1-math::rangeRandom(0,.2f));
@@ -259,7 +260,7 @@ void Space::updateAlien(ParticleSprite& s, float dt)
                 s.damage = 0;
                 s.hide = 1.f;
             }
-            s.color = math::Color(255.f, 255.f*s.damage, 255.f*s.damage, 255.f);
+            s.color = math::Color(255, 255*s.damage, 255*s.damage, 255);
             s.pos[0] += math::rangeRandom(-5.f, 5.f)*(1-s.damage);
             s.spin += math::rangeRandom(-.1f,.1f);
         }
@@ -274,7 +275,7 @@ void Space::updateAlien(ParticleSprite& s, float dt)
             initAlien(s);
             return;
         }
-        s.color = math::Color(255.f, 0, 0, 255.f*s.hide);
+        s.color = math::Color(255, 0, 0, 255*s.hide);
         s.pos[0] += math::rangeRandom(-5.f, 5.f);
         s.spin += math::rangeRandom(-.1f,.1f);
     }
@@ -287,7 +288,7 @@ void Space::updateAlien(ParticleSprite& s, float dt)
             s.damage += .5f*dt;
             if (s.damage > 1.f)
                 s.damage = 1.f;
-            s.color = math::Color(255.f, 255.f*s.damage, 255.f*s.damage, 255.f);
+            s.color = math::Color(255, 255*s.damage, 255*s.damage, 255.f);
 
             s.pos[0] += math::rangeRandom(-5.f, 5.f)*(1-s.damage);
             s.spin += math::rangeRandom(-.04f,.04f);

@@ -604,10 +604,6 @@
 				Name="scene"
 				>
 				<File
-					RelativePath=".\rgde\scene\live_tree.h"
-					>
-				</File>
-				<File
 					RelativePath=".\rgde\scene\manager.h"
 					>
 				</File>
@@ -887,10 +883,6 @@
 			<Filter
 				Name="scene"
 				>
-				<File
-					RelativePath=".\src\scene\live_tree.cpp"
-					>
-				</File>
 				<File
 					RelativePath=".\src\scene\scene.cpp"
 					>

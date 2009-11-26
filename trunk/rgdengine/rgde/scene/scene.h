@@ -3,9 +3,6 @@
 #include <rgde/io/io.h>
 #include <rgde/base/singelton.h>
 
-//Neonic: octree
-#include <rgde/scene/live_tree.h>
-
 namespace math
 {
 	typedef boost::intrusive_ptr<class frame> frame_ptr;
@@ -16,8 +13,7 @@ namespace scene
 	class ISceneManager;
 	typedef boost::shared_ptr<ISceneManager> scene_manager_ptr;
 
-	class Scene : public io::serialized_object				
-				//, public live_tree::CDynamicTreeRoot //Neonic: octree
+	class Scene : public io::serialized_object
 	{
 	protected:
 		Scene();
