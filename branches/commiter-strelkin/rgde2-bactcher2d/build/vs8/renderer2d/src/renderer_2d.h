@@ -1,5 +1,7 @@
 #pragma once
 
+#include "primitives.h"
+
 namespace rgde
 {
 	namespace render
