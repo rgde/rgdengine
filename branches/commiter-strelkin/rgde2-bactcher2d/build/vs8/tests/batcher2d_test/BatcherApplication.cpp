@@ -6,19 +6,41 @@
 namespace rgde
 {
 	BatcherApplication::BatcherApplication(int x, int y, int w, int h, const std::wstring& title)
-		:m_active(true),
-		window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU),
-		m_device(get_handle()), m_batcher(0)
+		: m_active(true)
+		, window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU)
+		, m_device(get_handle())
+		, m_batcher(m_device)
 	{
 		show();
 		update();
-		m_batcher = new render::renderer_2d(m_device);
+
+		init_render_data();		
+	}
+
+	void BatcherApplication::init_render_data()
+	{
+		using namespace math;
+
+		sprite_desc sprite;
+		sprite.size = vec2f(20, 20);
+
+		sprite_desc sprite2;
+		sprite2.pos = vec2f(50, 50);
+		sprite2.size = vec2f(20, 20);
+		sprite2.color = color::Blue;
+
+		sprite_desc sprite3;
+		sprite3.pos = vec2f(80, 80);
+		sprite3.size = vec2f(20, 20);
+		sprite3.color = color::Red;
+
+		add_sprite(sprite);
+		add_sprite(sprite2);
+		add_sprite(sprite3);
 	}
 
 	BatcherApplication::~BatcherApplication()
 	{
-		if(m_batcher)
-			delete m_batcher;
 	}
 
 	void BatcherApplication::run()
@@ -27,22 +49,19 @@ namespace rgde
 		{
 			if( !do_events() && m_active)
 			{
-				m_batcher->render_all();
+				render_frame();
 			}
 		}
 	}
 
 	void BatcherApplication::render_frame()
 	{
+		m_batcher.render_all();
 	}
 
-	void BatcherApplication::add_sprite(rgde::render::primitives_2d::sprite_desc &sprite)
+	void BatcherApplication::add_sprite(const sprite_desc &sprite)
 	{
-		m_batcher->add_sprite(sprite);
-	}
-
-	void BatcherApplication::init_render_data()
-	{
+		m_batcher.add_sprite(sprite);
 	}
 
 	core::windows::result BatcherApplication::wnd_proc(ushort message, uint wparam, long lparam )
@@ -50,24 +69,12 @@ namespace rgde
 		switch (message)
 		{
 		case WM_ACTIVATE:	// Watch For Window Activate Message
-			{
-				if (!HIWORD(wparam))// Check Minimization State
-					m_active = true;
-				else
-					m_active = false;
+			m_active = !HIWORD(wparam);// Check Minimization State
+			return 0;
 
-				return 0;
-			}
 		case WM_KEYDOWN:
-			{
-				return 0;
-			}
-			break;
 		case WM_SIZE:
-			{
-				return 0;
-			}
-			break;
+			return 0;
 
 		case WM_MOUSEMOVE:
 			break;
