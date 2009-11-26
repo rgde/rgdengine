@@ -218,9 +218,9 @@ namespace game
 		}
 	}
 
-	//зарегестрировать динамический (т.е. с методом update) объект
 	void game_system::register_object(dynamic_object *obj)
 	{
+		assert(obj);
 #ifdef _DEBUG		
 		std::list<dynamic_object*>::iterator i = find
 			(
@@ -234,12 +234,13 @@ namespace game
 			throw std::exception("List of DynamicObjects in game_system corrupted!");
 
 #endif
-		m_objects.push_back(obj);
+		obj->m_handle = m_objects.insert(m_objects.end(), obj);
 	}
 
-	//РАЗрегестрировать динамический объект	
+
 	void game_system::unregister_object(dynamic_object *obj)
 	{
+		assert(obj);
 #ifdef _DEBUG
 		std::list<dynamic_object*>::iterator i = find
 			(
@@ -251,7 +252,7 @@ namespace game
 		if (i == m_objects.end())
 			throw std::exception("List of DynamicObjects in game_system corrupted!");
 #endif
-		m_objects.remove(obj);
+		m_objects.erase(obj->m_handle);
 	}
 
 	level* game_system::get_level(const std::string& name)

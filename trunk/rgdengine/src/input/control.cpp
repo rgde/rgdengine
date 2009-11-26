@@ -1,8 +1,6 @@
 #include "precompiled.h"
 
-#include <rgde/input/control.h>
-#include <rgde/input/device.h>
-#include <rgde/input/command.h>
+#include <rgde/input/input.h>
 #include "inputimpl.h"
 
 namespace input
@@ -32,7 +30,7 @@ namespace input
         m_commands.push_back(pCommand);
     }
 
-    void Control::bind (const std::wstring &command_name)
+    void Control::bind (const std::string &command_name)
     {
         bind (m_device.get_impl().get_command(command_name));
     }
@@ -53,7 +51,7 @@ namespace input
         m_commands.erase(pos);
     }
 
-    void Control::unbind (const std::wstring &command_name)
+    void Control::unbind (const std::string &command_name)
     {
         unbind(m_device.get_impl().get_command(command_name));
     }
@@ -74,7 +72,7 @@ namespace input
         return true;
     }
 
-    bool Control::is_bind (const std::wstring &command_name)
+    bool Control::is_bind (const std::string &command_name)
     {
         return is_bind(m_device.get_impl().get_command(command_name));
     }

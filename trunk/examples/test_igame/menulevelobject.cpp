@@ -5,20 +5,20 @@
 
 MenuLevelObject::MenuLevelObject()
 : m_active_menu_item(0)
-, m_up(L"Up")
-, m_down(L"Down")
-, m_cSpace(L"Space")
-, m_esc(L"Escape")
+, m_up("Up")
+, m_down("Down")
+, m_cSpace("Space")
+, m_esc("Escape")
 {
 	std::cout << "2: MenuLevelObject created. (SPACE - play, ESC - exit)" << std::endl;
 
     {
         using namespace input;
 
-		Input::get_control(Keyboard, KeyUp    )->bind(L"Up");
-        Input::get_control(Keyboard, KeyDown  )->bind(L"Down");
-        Input::get_control(Keyboard, KeySpace )->bind(L"Space");
-        Input::get_control(Keyboard, KeyEscape)->bind(L"Escape");
+		Input::get_control(device::keyboard, KeyUp    )->bind("Up");
+        Input::get_control(device::keyboard, KeyDown  )->bind("Down");
+        Input::get_control(device::keyboard, KeySpace )->bind("Space");
+        Input::get_control(device::keyboard, KeyEscape)->bind("Escape");
 
         m_up     += boost::bind(&MenuLevelObject::onUpKey,   this);
         m_down   += boost::bind(&MenuLevelObject::onDownKey, this);

@@ -1,5 +1,4 @@
 #pragma once
-#include <rgde/input/base.h>
 
 #define DIRECTINPUT_VERSION 0x0800
 #define WIN32_LEAN_AND_MEAN
@@ -29,16 +28,16 @@ namespace input
 		//завершить работу системы ввода
         void Done();
 
-        device* get_device(devices      eDeviceName, int indx=0);
-        device* get_device(const std::wstring &sDeviceName, int indx=0);
+        device* get_device(device::type      eDeviceName, int indx=0) const;
+        device* get_device(const std::wstring &sDeviceName, int indx=0) const;
 
-        bool is_present(devices      eDeviceName, int indx=0) const;
+        bool is_present(device::type      eDeviceName, int indx=0) const;
         bool is_present(const std::wstring &sDeviceName, int indx=0) const;
 
 
-        command_ptr add_command(const std::wstring &command_name);
-        command_ptr get_command(const std::wstring &command_name);
-        bool is_command_present(const std::wstring &command_name) const;
+        command_ptr add_command(const std::string &command_name);
+        command_ptr get_command(const std::string &command_name);
+        bool is_command_present(const std::string &command_name) const;
         void detach_command(command_ptr pCommand);
 
 	private:
@@ -54,8 +53,8 @@ namespace input
 		void mProcess (DIDEVICEOBJECTDATA data);
 
     private:
-		typedef std::list<device*> devices_list;
-        devices_list m_devices;
+		typedef std::vector<device*> devices_vector; // by index
+		devices_vector m_devices[device::total_number];
 
 		typedef std::list<command_ptr> commands_list;
 		typedef commands_list::const_iterator commands_iter;

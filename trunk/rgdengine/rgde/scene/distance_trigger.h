@@ -26,7 +26,7 @@ namespace scene
 
 		//TODO: make get/set interface
 	private:
-		float         m_distance;
+		float m_distance;
 		math::frame_ptr  m_frame;
 	};
 }

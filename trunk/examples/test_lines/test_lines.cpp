@@ -25,8 +25,8 @@ public:
         {
             using namespace input;
 
-            m_esc.attach(L"Quit");
-			Input::get_device(Keyboard)->get_control(KeyEscape)->bind(L"Quit");
+            m_esc.attach("Quit");
+			Input::get_control(device::keyboard, KeyEscape)->bind("Quit");
             
             m_esc += boost::bind(&HelloMessage::onEsc, this);
         }

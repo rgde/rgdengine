@@ -1,11 +1,10 @@
 #include "precompiled.h"
 
-#include <rgde/input/device.h>
-#include <rgde/input/control.h>
+#include <rgde/input/input.h>
 
 namespace input
 {
-	device::device(devices type, int index, input_impl &input):
+	device::device(type type, int index, input_impl &input):
 		m_index  (index),
 		m_type  (type),
 		m_input (input)

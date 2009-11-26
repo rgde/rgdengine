@@ -5,7 +5,8 @@
 class AnimationTest : public game::dynamic_object
 {
 public:
-	AnimationTest() : m_camera(render::render_camera::create())
+	AnimationTest() 
+		: m_camera(render::render_camera::create())
 	{
 		m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
@@ -15,13 +16,12 @@ public:
 			m_mesh->load( "Box01.xml" );
 		}
 		
-
-		m_pTexture = render::texture::create("tiger.bmp");
+		m_texture = render::texture::create("tiger.bmp");
 
 		m_frame = math::frame::create();
 		m_frame->add( m_mesh );
 
-		TiXmlDocument xml( "media\\1111.XML" ) ;
+		TiXmlDocument xml( "media\\1111.XML" );
 
 		if ( xml.LoadFile() )
 		{
@@ -46,17 +46,17 @@ public:
 		{//input init
 			using namespace input;
 
-			Input::add_command(L"Quit");
-			Input::add_command(L"Horz");
-			Input::add_command(L"Vert");
+			Input::add_command("Quit");
+			Input::add_command("Horz");
+			Input::add_command("Vert");
 
-			Input::get_control(Mouse, AxisX)->bind(L"Horz");
-			Input::get_control(Mouse, AxisY)->bind(L"Vert");
-			Input::get_control(Keyboard, KeyEscape)->bind(L"Quit");
+			Input::get_control(device::mouse, AxisX)->bind("Horz");
+			Input::get_control(device::mouse, AxisY)->bind("Vert");
+			Input::get_control(device::keyboard, KeyEscape)->bind("Quit");
 
-			m_esc  .attach(L"Quit");
-			m_mouse_x.attach(L"Horz");
-			m_mouse_y.attach(L"Vert");
+			m_esc  .attach("Quit");
+			m_mouse_x.attach("Horz");
+			m_mouse_y.attach("Vert");
 
 			m_esc += boost::bind(&AnimationTest::onEsc, this);
 			m_mouse_y += boost::bind(&AnimationTest::onYAxis, this, _1);
@@ -100,7 +100,7 @@ protected:
 	}
 protected:
 	render::font_ptr			m_font;	
-	render::texture_ptr			m_pTexture;
+	render::texture_ptr			m_texture;
 
 	math::frame_anim_controller	m_controller;
 	math::frame_ptr				m_frame;

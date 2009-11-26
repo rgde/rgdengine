@@ -1,15 +1,13 @@
 #include "precompiled.h"
 
-#include <rgde/input/command.h>
-#include <rgde/input/control.h>
-#include <rgde/input/helper.h>
+#include <rgde/input/input.h>
 
 namespace input
 {
-	Command::Command(const std::wstring &name, input_impl &input):
-		m_input  (input),
-		m_name   (name),
-		m_is_locked (false)
+	Command::Command(const std::string &name, input_impl &input)
+		: m_input(input)
+		, m_name(name)
+		, m_is_locked(false)
 	{
 	}
 

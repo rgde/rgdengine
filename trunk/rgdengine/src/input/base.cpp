@@ -1,19 +1,19 @@
 //base.cpp
 #include "precompiled.h"
 
-#include <rgde/input/base.h>
+#include <rgde/input/input.h>
 
 namespace input
 {
 	struct InputMap
 	{
-		std::map<std::wstring, devices>  m_mapString2Device;
+		std::map<std::wstring, device::type>  m_mapString2Device;
 		std::map<std::wstring, controls> m_mapString2Control;
 
 		InputMap()
 		{
-			m_mapString2Device[L"Keyboard"] = Keyboard;
-			m_mapString2Device[L"Mouse"]    = Mouse;
+			m_mapString2Device[L"Keyboard"] = device::keyboard;
+			m_mapString2Device[L"Mouse"]    = device::mouse;
 
 			m_mapString2Control[L"KeyEscape"]       = KeyEscape;
 			m_mapString2Control[L"Key1"]            = Key1;
@@ -158,9 +158,9 @@ namespace input
 	static InputMap s_map;
 
     //получение строки, соответствующей enum-значению
-	std::wstring Device2String (devices name)
+	std::wstring Device2String (device::type name)
     {
-		std::map<std::wstring, devices>::iterator i = s_map.m_mapString2Device.begin();
+		std::map<std::wstring, device::type>::iterator i = s_map.m_mapString2Device.begin();
 		while (i != s_map.m_mapString2Device.end())
 		{
 			if (i->second == name)
@@ -172,13 +172,13 @@ namespace input
     }
 
     //получение enum-значения, соответствующего строке
-    devices String2Device (const std::wstring &str)
+    device::type String2Device (const std::wstring &str)
     {
-		std::map<std::wstring, devices>::iterator i = s_map.m_mapString2Device.find(str);
+		std::map<std::wstring, device::type>::iterator i = s_map.m_mapString2Device.find(str);
 		if (i != s_map.m_mapString2Device.end())
 			return i->second;
 
-        return InvalidDevice;
+		return device::invalid;
     }
 
     //получение строки, соответствующей enum-значению

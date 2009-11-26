@@ -1,10 +1,7 @@
 #include "precompiled.h"
 
 #include <rgde/core/application.h>
-#include <rgde/input/helper.h>
 #include <rgde/input/input.h>
-#include <rgde/input/control.h>
-#include <rgde/input/command.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -17,7 +14,7 @@ namespace input
 	{
 	}
 
-	Helper::Helper(const std::wstring &command_name)
+	Helper::Helper(const std::string &command_name)
 	{
 		attach(command_name);
 	}
@@ -27,7 +24,7 @@ namespace input
 		detach();
 	}
 
-	void Helper::attach (const std::wstring &command_name)
+	void Helper::attach (const std::string &command_name)
 	{
 		detach();
 		m_command = Input::get_command(command_name);
@@ -73,9 +70,9 @@ namespace input
 				ev.m_type = helper_event::Button;
 		}
 
-		ev.m_press = c.m_press;
-		ev.m_delta = c.m_delta;
-		ev.m_time  = c.m_time;
+		ev.m_press = c.get_press();
+		ev.m_delta = c.get_delta();
+		ev.m_time  = c.get_time();
 
 		std::list<Helper::Handler>::iterator i = m_handlers.begin();
 		while (i != m_handlers.end())
@@ -92,7 +89,7 @@ namespace input
 	{
 	}
 
-	Button::Button(const std::wstring &commandName): 
+	Button::Button(const std::string &commandName): 
 		Helper(commandName), m_press(0) 
 	{
 	}
@@ -109,7 +106,7 @@ namespace input
 		if (c.get_type() != Control::Button)
 			return;
 
-		if (c.m_press)
+		if (c.get_press())
 			++m_press;
 		else
 			--m_press;
@@ -120,7 +117,7 @@ namespace input
 		std::list<Button::ButtonHandler>::iterator i = m_buttonHandlers.begin();
 		while (i != m_buttonHandlers.end())
 		{
-			(*i)(c.m_press);
+			(*i)(c.get_press());
 			++i;
 		}
 	}
@@ -133,7 +130,7 @@ namespace input
 	{
 	}
 
-	Trigger::Trigger(const std::wstring &commandName): 
+	Trigger::Trigger(const std::string &commandName): 
 		Helper(commandName), 
 		m_is_active(false) 
 	{
@@ -156,7 +153,7 @@ namespace input
         if (c.get_type() != Control::Button)
 			return;
 
-		if (!c.m_press)
+		if (!c.get_press())
 			return;
 
 		m_is_active = !m_is_active;
@@ -175,7 +172,8 @@ namespace input
 	{
 	}
 
-	key_up::key_up(const std::wstring &commandName): Helper(commandName) 
+	key_up::key_up(const std::string &commandName)
+		: Helper(commandName) 
 	{
 	}
 
@@ -191,7 +189,7 @@ namespace input
 		if (c.get_type() != Control::Button)
 			return;
 
-		if (c.m_press)
+		if (c.get_press())
 			return;
 
 		std::list<key_up::KeyUpHandler>::iterator i = m_keyupHandlers.begin();
@@ -208,8 +206,8 @@ namespace input
 	{
 	}
 
-	key_down::key_down (const std::wstring &commandName): 
-		Helper(commandName) 
+	key_down::key_down (const std::string &commandName)
+		: Helper(commandName) 
 	{
 	}
 
@@ -225,7 +223,7 @@ namespace input
 		if (c.get_type() != Control::Button)
 			return;
 
-		if (!c.m_press)
+		if (!c.get_press())
 			return;
 
 		std::list<key_down::KeyDownHandler>::iterator i = m_keydownHandlers.begin();
@@ -242,8 +240,8 @@ namespace input
 	{
 	}
 
-	RelativeAxis::RelativeAxis(const std::wstring &commandName) : 
-		Helper(commandName) 
+	RelativeAxis::RelativeAxis(const std::string &commandName)
+		: Helper(commandName) 
 	{
 	}
 
@@ -262,7 +260,7 @@ namespace input
 		std::list<RelativeAxis::RelativeAxisHandler>::iterator i = m_raxisHandlers.begin();
 		while (i != m_raxisHandlers.end())
 		{
-			(*i)(c.m_delta);
+			(*i)(c.get_delta());
 			++i;
 		}
 	}
@@ -276,11 +274,11 @@ namespace input
 	{
 	}
 
-	AbsoluteAxis::AbsoluteAxis (const std::wstring &commandName):
-		Helper(commandName),
-		m_min (0),
-		m_max (100),
-		m_pos (0)
+	AbsoluteAxis::AbsoluteAxis (const std::string &commandName)
+		: Helper(commandName)
+		, m_min (0)
+		, m_max (100)
+		, m_pos (0)
 	{
 	}
 
@@ -319,7 +317,7 @@ namespace input
 		if (c.get_type() != Control::Axis)
 			return;
 
-		set_pos(m_pos + c.m_delta);
+		set_pos(m_pos + c.get_delta());
 
 		std::list<AbsoluteAxis::AbsoluteAxisHandler>::iterator i = m_aaxisHandlers.begin();
 		while (i != m_aaxisHandlers.end())
@@ -331,7 +329,9 @@ namespace input
 
 //////////////////////////////////////////////////////////////////////////
 
-    Cursor::Cursor (): m_x(0), m_y(0)
+    Cursor::Cursor ()
+		: m_x(0)
+		, m_y(0)
     {
         subscribe<mouse_move>(&Cursor::onCursorMove);
     }
@@ -374,16 +374,17 @@ namespace input
 
 	void Cursor::notify (const Control &c)
     {
-        //должно быть пусто
+        //default implementation
     }
 
     void Cursor::adjustPosToWindow(float &x, float &y)
-    {
-        RECT client;
-        RECT window;
+    {   
         HWND hwnd = (HWND)core::application::get()->get_handle();
 
+		RECT client;
         GetClientRect(hwnd, &client);
+
+		RECT window;
         GetWindowRect(hwnd, &window);
 
         if (EqualRect(&client, &window))

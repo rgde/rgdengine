@@ -4,18 +4,18 @@
 
 TestInput::TestInput():
     m_space            (200),
-    m_key_quit        (L"Quit"),
-    m_btnLeft          (L"Left"),
-    m_btnRight         (L"Right"),
-    m_btnUp            (L"Up"),
-    m_btnDown          (L"Down"),
-    m_btnSpeedUp       (L"SpeedUp"),
-    m_btnSpeedDown     (L"SpeedDown"),
-    m_trigPause        (L"Pause"),
-    m_raxisHorz        (L"Horz"),
-    m_raxisVert        (L"Vert"),
-    m_btnPrimaryFire   (L"PrimaryFire"),
-    m_btnSecondaryFire (L"SecondaryFire")
+    m_key_quit        ("Quit"),
+    m_btnLeft          ("Left"),
+    m_btnRight         ("Right"),
+    m_btnUp            ("Up"),
+    m_btnDown          ("Down"),
+    m_btnSpeedUp       ("SpeedUp"),
+    m_btnSpeedDown     ("SpeedDown"),
+    m_trigPause        ("Pause"),
+    m_raxisHorz        ("Horz"),
+    m_raxisVert        ("Vert"),
+    m_btnPrimaryFire   ("PrimaryFire"),
+    m_btnSecondaryFire ("SecondaryFire")
 {
     render::render_device::get().set_clear_color(math::Color(0,0,0,255));
 
