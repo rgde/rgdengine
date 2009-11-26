@@ -21,7 +21,7 @@ private:
     void onPrimaryFire   (bool press);
     void onSecondaryFire (bool press);
 
-    input::KeyUp        m_key_quit;
+    input::key_up       m_key_quit;
     input::Button       m_btnLeft;
     input::Button       m_btnRight;
     input::Button       m_btnUp;
@@ -40,7 +40,7 @@ private:
     Space m_space;
 
     //->
-    input::Mouse           m_mouse;
+    input::mouse           m_mouse;
     render::sprite        m_cursor;
 	render::sprite_manager m_sprite_renderer;
     //-<
