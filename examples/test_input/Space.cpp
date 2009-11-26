@@ -23,7 +23,7 @@ void Space::ParticleSprite::initParticle()
 {
 	using namespace math;
 	float s = rangeRandom(2.0f, 4.0f);
-	priority = (uint)s;
+	priority = s;
 	size = vec2f(s, s*2);
 	uint c = (uint)(255*s/4.0f);
 	color = Color(105, 105, 105, c);
@@ -40,7 +40,7 @@ void Space::ParticleSprite::initStar()
 
 	float c = rangeRandom(1.0f, 5.0f) / 4.0f;
 
-	priority = (uint).1f;
+	priority = 0;
 	size = vec2f(128.f, 128.f);
 	color = Color(255*c, 255*c, 255*c, 255);
 	rect = Rect(0, 0, 1, 1);
@@ -56,7 +56,7 @@ void Space::ParticleSprite::initAlien()
 
 	float c = rangeRandom(1.0f, 5.0f) / 4.0f;
 
-	priority = (uint).11f;
+	priority = 10;
 
 	float sx = rangeRandom(46.0f, 87.0f);
 	float sy = rangeRandom(46.0f, 87.0f);
@@ -89,6 +89,7 @@ Space::Space (int nStars)
     m_spriteShip.pos = math::vec2f(m_x,m_y);
     m_spriteShip.rect = math::Rect(0, 0, 1, 1);
     m_spriteShip.color = math::Color(255, 255, 255, 255);
+	m_spriteShip.priority = 1000;
     m_spriteShip.spin = 0;
 
     //пыль
@@ -120,6 +121,7 @@ Space::Space (int nStars)
     m_spriteLazer.pos = math::vec2f(m_x,m_y);
     m_spriteLazer.rect = math::Rect(0, 0, 1, 1);
     m_spriteLazer.color = math::Color(255, 255, 255, 255);
+	m_spriteLazer.priority = 500;
     m_spriteLazer.spin = 0;
 }
 
