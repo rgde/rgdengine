@@ -138,7 +138,3 @@ typedef unsigned int  uint;
 #include "scene\\manager.h"
 #include "scene\\base_trigger.h"
 #include "scene\\distance_trigger.h"
-
-#include "ui/ui.h"
-
-#include "audio/audio.h"
