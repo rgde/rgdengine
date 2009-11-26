@@ -6,6 +6,6 @@ if not defined VS90COMNTOOLS (
 )
 
 call "%VS90COMNTOOLS%\vsvars32.bat" || exit /b 1
-devenv.com build.sln /build release
-devenv.com build.sln /build debug
+devenv.com build.sln /rebuild release
+devenv.com build.sln /rebuild debug
 pause
