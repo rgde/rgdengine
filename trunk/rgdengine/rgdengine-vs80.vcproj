@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="Enginelib"
 	ProjectGUID="{3A68081D-E8F9-4523-9436-530DE9E5530A}"
 	RootNamespace="rgde"
@@ -636,14 +636,6 @@
 					</File>
 				</Filter>
 			</Filter>
-			<Filter
-				Name="audio"
-				>
-				<File
-					RelativePath=".\rgde\audio\audio.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="sources"
@@ -1058,86 +1050,6 @@
 				</File>
 				<File
 					RelativePath=".\src\precompiled.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="audio"
-				>
-				<File
-					RelativePath=".\src\audio\Audio.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\AudioManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\AudioManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\AudioTag.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\AudioTag.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\base_audio.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\Music.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\MusicOggVorbis.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\MusicOggVorbis.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\OggVorbisFile.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\OggVorbisFile.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\Sound.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\Sound.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\Sound3D.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\Sound3D.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\WaveFile.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\WaveFile.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\WaveFileFactory.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\audio\WaveFileFactory.h"
 					>
 				</File>
 			</Filter>
