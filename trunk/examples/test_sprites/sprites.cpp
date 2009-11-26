@@ -8,10 +8,6 @@ Created:	8 june 2005
 //RGDE
 #include "sprites.h"
 
-namespace math
-{
-	using namespace Math;
-}
 
 namespace rgde
 {
