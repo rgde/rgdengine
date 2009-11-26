@@ -33,14 +33,24 @@ namespace render
 		, m_updated(true)
 		, rendererable(priority)
 		, m_origin(0, 0)
-		, m_geometry(true)
+		, m_geometry(false)
 		, m_aditive(false)
+		, m_additive_tech(0)
+		, m_modulate_tech(0)
+		, m_texture_param(0)
 	{
 		//base::lmsg << "sprite_manager::sprite_manager()";
 		math::vec2f vFrontBufferSize= render::render_device::get().getBackBufferSize();
 		m_scale = vFrontBufferSize / m_screen_size;
 
 		m_effect = effect::create("SpriteManager.fx");
+
+		m_additive_tech = m_effect->find_technique("aditive");
+		m_modulate_tech = m_effect->find_technique("alpha");
+
+		m_texture_param = m_effect->get_params()["spriteTexture"];
+		assert(0 != m_texture_param && "m_effect->get_params()[\"spriteTexture\"] == NULL !");
+
 		m_render_info.render_func = boost::bind(&sprite_manager::render, this);
 	}
 
@@ -115,8 +125,6 @@ namespace render
 		if (vertexies.size() < num_sprites * 4)
 			vertexies.resize(num_sprites * 4);
 
-		//unsigned i	= 0;
-
 		geometry::vertex_type* v = &(*vertexies.begin());
 
 		for (sprites_iter it = m_sprites.begin(); it != m_sprites.end(); ++it)
@@ -173,25 +181,18 @@ namespace render
 
 		update();
 
-		render::effect::technique *pTech = NULL;
+		effect::technique *tech = m_aditive ? m_additive_tech : m_modulate_tech;
 
-		if (m_aditive)
-			pTech = m_effect->find_technique("aditive");
-		else
-			pTech = m_effect->find_technique("alpha");
+		const effect::technique::passes& passes = tech->get_passes();
 
-		assert(0 != pTech && "sprite_manager::render(): Can't find effect technique!");
-		pTech->begin();
+		tech->begin();
 
-		for (unsigned iPass = 0; iPass < pTech->get_passes().size(); iPass++)
+		for (unsigned iPass = 0; iPass < passes.size(); iPass++)
 		{
-			effect::technique::pass& pass = *pTech->get_passes()[iPass];
+			effect::technique::pass& pass = *passes.front();
 			pass.begin();
 
-			unsigned nSpritesRendered = 0;
-			effect::parameter *textureShaderParam	= m_effect->get_params()["spriteTexture"];
-
-			assert(0 != textureShaderParam && "m_effect->get_params()[\"spriteTexture\"] == NULL !");
+			unsigned nSpritesRendered = 0;			
 
 			uint start_sprite = 0;
 			sprite* sp = &m_sprites.front();
@@ -208,7 +209,7 @@ namespace render
 					//i == m_sprites.size()-1
 					if (num_sprites > 0)
 					{
-						textureShaderParam->set(cur_tex);
+						m_texture_param->set(cur_tex);
 						m_effect->commit_changes();
 						m_geometry.render(TriangleList, 0, 4 * start_sprite, num_sprites * 4, 6 * start_sprite, num_sprites * 2);
 						nSpritesRendered += num_sprites;
@@ -217,49 +218,24 @@ namespace render
 					start_sprite = i;
 				}
 
-				if (i == m_sprites.size()-1)
+				if (i == size - 1)
 				{
 					int cur_sprite = i;
 					int num_sprites = i - start_sprite + 1;
 					if (num_sprites > 0)
 					{
-						textureShaderParam->set(cur_tex);
+						m_texture_param->set(cur_tex);
 						m_effect->commit_changes();
 						m_geometry.render(TriangleList, 0, 4 * start_sprite, num_sprites * 4, 6 * start_sprite, num_sprites * 2);
 						nSpritesRendered += num_sprites;
 					}
 				}
 			}
-			
-			//sprites_iter it = m_sprites.begin();
-			//sprites_iter start_sprite = it;
-			//texture_ptr cur_tex = it->texture;
-			//for (; it != m_sprites.end(); ++it)
-			//{
-			//	sprite &sprite = *it;
-
-			//	// если = то отрисовать
-			//	if (cur_tex != sprite.texture)
-			//	{
-			//		int num_sprites = it - start_sprite;
-			//		
-			//		if (num_sprites > 0)
-			//		{
-			//			int start_index = start_sprite - m_sprites.begin();
-			//			textureShaderParam->set(cur_tex);
-			//			m_effect->commit_changes();
-			//			m_geometry.render(PrimTypeTriangleList, 0, 4 * start_index, num_sprites * 4, 6 * start_index, num_sprites * 2);
-			//			nSpritesRendered += num_sprites;
-			//		}
-			//		cur_tex = sprite.texture;
-			//		start_sprite = it;
-			//	}
-			//}
 			m_sprites_rendered = nSpritesRendered;
 
 			pass.end();
 		}
-		pTech->end();
+		tech->end();
 
 		m_sprites.resize(0);
 	}
