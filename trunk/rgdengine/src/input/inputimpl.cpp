@@ -406,7 +406,7 @@ namespace input
         m_inited = false;
     }
  
-    device* input_impl::get_device (device::type type, int indx/*=0*/) const
+    device* input_impl::get_device (device::type type, size_t indx/*=0*/) const
     {
 		if (!m_inited)
 			return 0;
@@ -420,17 +420,17 @@ namespace input
 		return m_devices[type][indx];
     }
 
-    device* input_impl::get_device (const std::wstring &sDeviceName, int indx/*=0*/) const
+    device* input_impl::get_device (const std::wstring &sDeviceName, size_t indx/*=0*/) const
     {
         return get_device(String2Device(sDeviceName), indx);
     }
 
-    bool input_impl::is_present (device::type type, int indx/*=0*/) const
+    bool input_impl::is_present (device::type type, size_t indx/*=0*/) const
     {
 		return get_device(type, indx) ? true : false;
     }
 
-    bool input_impl::is_present (const std::wstring &sDeviceName, int indx/*=0*/) const
+    bool input_impl::is_present (const std::wstring &sDeviceName, size_t indx/*=0*/) const
     {
         return is_present(String2Device(sDeviceName), indx);
     }

@@ -119,5 +119,7 @@ namespace render
 		virtual int			  get_width()  const = 0;
 		virtual texture_type  get_type()	  const = 0;
 		virtual	bool		  has_alpha()  const = 0;
+
+		virtual const std::string& get_filename() const = 0;
 	};
 }

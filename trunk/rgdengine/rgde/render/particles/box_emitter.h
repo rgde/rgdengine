@@ -22,15 +22,15 @@ namespace particles
 	// Акксессоры
 	public:
 		inline math::interpolator_v3f& getBoxSizeInterp()			{ return m_box_size; }
-		inline math::interpolator_v3f& getBoxSizeSpreadInterp()	{ return m_BoxSizeSpread; }
-		inline math::interpolator_v3f& getDirectionInterp()		{ return m_Direction; }
-		inline math::interpolator_v3f& getDirectionSpreadInterp()	{ return m_DirectionSpread; }
+		inline math::interpolator_v3f& getBoxSizeSpreadInterp()	{ return m_box_size_spread; }
+		inline math::interpolator_v3f& getDirectionInterp()		{ return m_direction; }
+		inline math::interpolator_v3f& getDirectionSpreadInterp()	{ return m_direction_spread; }
 
 
 	protected:
 		math::interpolator_v3f m_box_size;
-		math::interpolator_v3f m_BoxSizeSpread;
-		math::interpolator_v3f m_Direction;
-		math::interpolator_v3f m_DirectionSpread;
+		math::interpolator_v3f m_box_size_spread;
+		math::interpolator_v3f m_direction;
+		math::interpolator_v3f m_direction_spread;
 	};
 }

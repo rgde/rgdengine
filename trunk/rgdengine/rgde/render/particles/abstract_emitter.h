@@ -1,6 +1,5 @@
 #pragma once
 
-#include <rgde/render/particles/emitter.h>
 #include <rgde/math/random.h>
 #include <rgde/math/interpolyator.h>
 
@@ -11,17 +10,20 @@ namespace particles
 class processor;
 struct particle;
 
-
-class  base_emitter : public emitter
+class  base_emitter : public math::frame
 {
 public:
+	enum type {	spherical, box };
+
 	typedef std::list<processor*> processors_list;
 	typedef processors_list::iterator processors_iter;
-
-	base_emitter(emitter::Type);
+	
 	virtual ~base_emitter();
 
 	virtual void		get_particle(particle& p);
+
+	inline math::frame_ptr get_transform() { return this; }
+	inline type get_type() const { return m_type; }
 
 	void				reset();
 	void				update(float dt);
@@ -29,17 +31,11 @@ public:
 	virtual void		debug_draw() = 0;
 
 	void				addProcessor(processor*	 proc);	
-	void				deleteProcessor(processor* proc);	
-	
-protected:
-	virtual void to_stream(io::write_stream& wf) const;
-	virtual void from_stream(io::read_stream& rf);
+	void				deleteProcessor(processor* proc);
 
-// Акксессоры
-public:
 	inline processors_list& getProcessors() { return m_lProcessors; }
 
-	inline float getTime() { return m_fTimeNormalaized; }
+	inline float getTime() { return m_normalized_time; }
 	inline math::vec3f&	getSpeed() {return m_vCurSpeed;}
 
 	// Акксессоры задания
@@ -49,7 +45,7 @@ public:
 	inline math::interpolatorf& particleMass()			{ return m_PMass; }
 	inline math::interpolatorf& particleMassSpread()		{ return m_PMassSpread; }
 	inline math::interpolatorf& particleRotationSpread()	{ return m_PRotationSpread; }
-	inline math::interpolatorf& particleVelocity()		{ return m_velocity; }
+	inline math::interpolatorf& particle_velocity()		{ return m_velocity; }
 	inline math::interpolatorf& particleVelocitySpread()	{ return m_PVelSpread; }
 	inline math::interpolator_v3f& particleAcceleration()		{ return m_PAcceleration; }
 	inline math::interpolator_v3f& getGlobalVelocityInterp()	{ return m_GlobalVelocity; }
@@ -68,6 +64,12 @@ public:
 	inline float getTimeShift() const { return m_time_shift; }
 	inline void setTimeShift(float t) { m_time_shift = t; }
 
+protected:
+	explicit base_emitter(type);
+
+	virtual void to_stream(io::write_stream& wf) const;
+	virtual void from_stream(io::read_stream& rf);
+
 
 protected:
 	math::unit_rand_2k	m_Rand;
@@ -78,7 +80,7 @@ protected:
 	bool			m_bIsCycling;
 	bool			m_is_visible;
 	float			m_time_shift;				// смещение в секундах от начала проигрывания эффекта
-	std::string		m_name;					// для будущего использования
+	std::string		m_name;						// для будущего использования
 
 	// common for all emmiters types modifiers
 	math::interpolatorf	m_PMass;				// Масса частицы
@@ -90,7 +92,7 @@ protected:
 	math::interpolator_v3f	m_GlobalVelocity;		// глобальная скорость эмиттера
 	
 	// temporary computing values
-	float			m_fTimeNormalaized;			// От 0 до 1 - текущее нормализованное время
+	float			m_normalized_time;			// От 0 до 1 - текущее нормализованное время
 	float			m_fCurrentTime;				// текущее время (меньше времени повтора)
 	bool			m_bIsEnded;					// флаг: емиттер отработал
 
@@ -103,6 +105,8 @@ protected:
 	math::vec3f		m_vPAcceleration;
 	math::vec3f		m_vGlobalVelPrecomputed;
 	math::vec3f		m_vGlobalVel;
+
+	const type		m_type;					// emitter type
 };
 
 }

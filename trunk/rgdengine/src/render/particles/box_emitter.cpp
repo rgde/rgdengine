@@ -1,7 +1,6 @@
 #include "precompiled.h"
 
 #include <rgde/render/particles/main.h>
-#include <rgde/render/particles/emitter.h>
 #include <rgde/render/particles/box_emitter.h>
 #include <rgde/render/particles/particle.h>
 
@@ -10,22 +9,11 @@ namespace particles
 {
 
 	//-----------------------------------------------------------------------------------
-	box_emitter::box_emitter() : base_emitter(emitter::Box)
+	box_emitter::box_emitter() 
+		: base_emitter(base_emitter::box)		
 	{
 		m_name = "box_emitter";
-
 		m_box_size.add_key(1, math::vec3f(3, 3, 3) );
-
-		// public properties:
-		//REGISTER_PROPERTY(BoxSize, math::interpolator_v3f)
-		//REGISTER_PROPERTY(BoxSizeSpread, math::interpolator_v3f)
-		//REGISTER_PROPERTY(Direction, math::interpolator_v3f)
-		//REGISTER_PROPERTY(DirectionSpread, math::interpolator_v3f)
-
-		//addProperty(new property<math::interpolator_v3f>(m_box_size,			"BoxSize",			"interpolator_v3f"));
-		//addProperty(new property<math::interpolator_v3f>(m_BoxSizeSpread,	"BoxSizeSpread",	"interpolator_v3f"));
-		//addProperty(new property<math::interpolator_v3f>(m_Direction,		"Direction",		"interpolator_v3f"));
-		//addProperty(new property<math::interpolator_v3f>(m_DirectionSpread,	"DirectionSpread",	"interpolator_v3f"));
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -38,11 +26,11 @@ namespace particles
 	{
 		base_emitter::debug_draw();
 
-		math::vec3f size = m_box_size(m_fTimeNormalaized);
-		math::vec3f size_rand = m_BoxSizeSpread(m_fTimeNormalaized);
+		math::vec3f size = m_box_size(m_normalized_time);
+		math::vec3f size_rand = m_box_size_spread(m_normalized_time);
 
-		math::vec3f direction = m_Direction(m_fTimeNormalaized);
-		math::vec3f direction_rand = m_DirectionSpread(m_fTimeNormalaized);
+		math::vec3f direction = m_direction(m_normalized_time);
+		math::vec3f direction_rand = m_direction_spread(m_normalized_time);
 
 		math::matrix44f m = get_transform()->get_full_tm();
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
@@ -59,15 +47,15 @@ namespace particles
 	{
 		base_emitter::get_particle(p);
 
-		math::vec3f dir = m_Direction.get_value(m_fTimeNormalaized)
-			+ (m_Rand()* 2.0f - 1.0f) * m_DirectionSpread.get_value(m_fTimeNormalaized);
+		math::vec3f dir = m_direction.get_value(m_normalized_time)
+			+ (m_Rand()* 2.0f - 1.0f) * m_direction_spread.get_value(m_normalized_time);
 
-		float velocity = m_velocity.get_value(m_fTimeNormalaized) 
-			+ m_Rand() * m_PVelSpread.get_value(m_fTimeNormalaized);
+		float velocity = m_velocity.get_value(m_normalized_time) 
+			+ m_Rand() * m_PVelSpread.get_value(m_normalized_time);
 
 
-		math::vec3f size = m_box_size.get_value(m_fTimeNormalaized)
-			+ (m_Rand()* 2.0f - 1.0f) * m_BoxSizeSpread.get_value(m_fTimeNormalaized);
+		math::vec3f size = m_box_size.get_value(m_normalized_time)
+			+ (m_Rand()* 2.0f - 1.0f) * m_box_size_spread.get_value(m_normalized_time);
 
 		float x = (m_Rand()* 2.0f - 1.0f) * size[0];
 		float y = (m_Rand()* 2.0f - 1.0f) * size[1];
@@ -88,9 +76,9 @@ namespace particles
 		base_emitter::to_stream(wf);
 
 		wf	<< (m_box_size)
-			<< (m_BoxSizeSpread)
-			<< (m_Direction)
-			<< (m_DirectionSpread);
+			<< (m_box_size_spread)
+			<< (m_direction)
+			<< (m_direction_spread);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -99,9 +87,9 @@ namespace particles
 		base_emitter::from_stream(rf);
 
 		rf  >> (m_box_size)
-			>> (m_BoxSizeSpread)
-			>> (m_Direction)
-			>> (m_DirectionSpread);
+			>> (m_box_size_spread)
+			>> (m_direction)
+			>> (m_direction_spread);
 	}
 
 }

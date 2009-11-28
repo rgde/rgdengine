@@ -35,18 +35,15 @@ namespace rgde
 				using render::texture;
 
 				std::vector<render::texture_ptr> textures;
-				//textures.push_back(texture::create( "Sprites/test01.jpg" ));
-				//textures.push_back(texture::create( "Sprites/test02.jpg" ));
-				//textures.push_back(texture::create( "Sprites/test03.jpg" ));
-				//textures.push_back(texture::create( "Sprites/test04.jpg" ));
-
-				textures.push_back(texture::create( "particles/Shot_Smoke.png"));
-				//Media\particles\Shot_Smoke - Copy.png
+				textures.push_back(texture::create( "Sprites/test01.jpg" ));
+				textures.push_back(texture::create( "Sprites/test02.jpg" ));
+				textures.push_back(texture::create( "Sprites/test03.jpg" ));
+				textures.push_back(texture::create( "Sprites/test04.jpg" ));
 
 				const math::Rect rect(0, 0, 1, 1);
 
 				// creating sprites in order of worst texture distribution
-				// note: total num of sprites = m_priorities * textures.size()
+				// note: total number of sprites = m_priorities * textures.size()
 				for( unsigned priority = m_priorities; priority > 0; --priority )
 					for( unsigned sprite = m_num_sprites_per_priority; sprite > 0; --sprite )
 					{

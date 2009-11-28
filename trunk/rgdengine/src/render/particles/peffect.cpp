@@ -3,8 +3,6 @@
 #include <rgde/render/particles/main.h>
 #include <rgde/render/particles/effect.h>
 
-// Майя эмиттер
-#include <rgde/render/particles/static_emitter.h>
 #include <rgde/render/particles/tank.h>
 
 // Абстрактные эмиттеры
@@ -19,21 +17,13 @@ namespace particles
 	, old_time(0)
 	, m_is_fading(false)
 	, m_transform(math::frame::create())
-	//, core::meta_class("ParticleEffect")
 	{	
 		m_render_info.render_func		= boost::bind( &effect::render, this );
 		m_render_info.debug_render_func	= boost::bind(&effect::debug_draw, this);
-		
-		// public properties:
-		//REGISTER_PROPERTY(Transform, math::frame)
 	}
 	//-----------------------------------------------------------------------------------
 	effect::~effect()
 	{
-		for (emitters_iter it = m_emitters.begin(); it != m_emitters.end(); ++it)
-		{
-			delete( *it );
-		}
 		m_emitters.clear();
 	}
 	//-----------------------------------------------------------------------------------
@@ -74,18 +64,18 @@ namespace particles
 	}
 
 	//-----------------------------------------------------------------------------------
-	void effect::add(emitter* em)
+	void effect::add(emitter_ptr em)
 	{
-		assert(0 != em);
+		assert(em);
 		m_emitters.push_back(em);
-		m_transform->add(em->get_transform());
+		m_transform->add(em);
 	}
 	
 	//-----------------------------------------------------------------------------------
-	void effect::remove(emitter* em)
+	void effect::remove(emitter_ptr em)
 	{
-		assert(0 != em);
-		m_transform->remove(em->get_transform());		
+		assert(em);
+		m_transform->remove(em/*->get_transform()*/);
 		m_emitters.remove(em);
 	}
 
@@ -128,14 +118,13 @@ namespace particles
 		{
 			unsigned em_type = 0;
 			rf >> em_type;
-			emitter::Type type = static_cast<emitter::Type> (em_type);
+			base_emitter::type type = static_cast<base_emitter::type> (em_type);
 		
-			emitter* em;
+			emitter_ptr em;
 			switch(type)
 			{
-				case emitter::Static:		em = new static_emitter;	break;
-				case emitter::Spherical:	em = new spherical_emitter;	break;
-				case emitter::Box:			em = new box_emitter;		break;
+				case base_emitter::spherical:	em = new spherical_emitter;	break;
+				case base_emitter::box:			em = new box_emitter;		break;
 			}
 			rf >> (*em);
 			add(em);

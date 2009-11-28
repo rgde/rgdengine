@@ -11,10 +11,10 @@ namespace particles{
 	{
 		p = particle();
 
-		p.mass = m_PMass.get_value(m_fTimeNormalaized)
-			+ (m_Rand() * 2.0f - 1.0f) * m_PMassSpread.get_value(m_fTimeNormalaized);
+		p.mass = m_PMass.get_value(m_normalized_time)
+			+ (m_Rand() * 2.0f - 1.0f) * m_PMassSpread.get_value(m_normalized_time);
 
-		p.rotation = m_Rand() * m_PRotationSpread.get_value(m_fTimeNormalaized);
+		p.rotation = m_Rand() * m_PRotationSpread.get_value(m_normalized_time);
 	}
 	//-----------------------------------------------------------------------------------
 	void base_emitter::addProcessor(processor* pp)
@@ -34,7 +34,7 @@ namespace particles{
 
 		m_fCurrentTime = 0;
 		m_bIsEnded = false;
-		m_fTimeNormalaized = 0;
+		m_normalized_time = 0;
 		m_is_visible = true;
 
 		for(processors_iter pi = m_lProcessors.begin(); pi != m_lProcessors.end(); ++pi)
@@ -71,7 +71,7 @@ namespace particles{
 			m_fCurrentTime = m_fCurrentTime - m_fCycleTime * i;
 		}
 		
-		m_fTimeNormalaized = m_fCurrentTime / m_fCycleTime;
+		m_normalized_time = m_fCurrentTime / m_fCycleTime;
 		{
 			//math::matrix44f m = get_local_tm();
 
@@ -85,13 +85,13 @@ namespace particles{
 			//}
 		}
 		
-		math::matrix44f m = m_transform->get_full_tm();
+		math::matrix44f m = get_full_tm();
 
 		math::invert( m );
-		m_vPAcceleration = m_PAcceleration.get_value(m_fTimeNormalaized);
+		m_vPAcceleration = m_PAcceleration.get_value(m_normalized_time);
 		//m_vAccelerationPrecomputed = m.transformVector(m_vPAcceleration);
 		math::xform( m_vAccelerationPrecomputed, m, m_vPAcceleration );
-		m_vGlobalVel = m_GlobalVelocity.get_value(m_fTimeNormalaized);
+		m_vGlobalVel = m_GlobalVelocity.get_value(m_normalized_time);
 		//m_vGlobalVelPrecomputed = m.transformVector(m_vGlobalVel);
 		math::xform( m_vGlobalVelPrecomputed, m, m_vGlobalVel );
 		//m_vCurSpeedTransformed = m.transformVector(m_vCurSpeed);
@@ -118,50 +118,16 @@ namespace particles{
 	}
 
 
-	base_emitter::base_emitter(emitter::Type eType) : emitter(eType)
+	base_emitter::base_emitter(type type) 
+		: m_type(type)
+		, m_fCurrentTime(0)
+		, m_time_shift(0)
+		, m_fCycleTime(5)
+		, m_bIsCycling(true)
+		, m_is_visible(true)
+		, m_normalized_time(0)
 	{
-		//m_bIsJustCreated = true;
-		m_fCycleTime = 5.0f;
-		m_bIsCycling = true;
-		m_time_shift = 0.0f;
-
-		m_fCurrentTime = 0.0f;
-		m_is_visible = true; 
-
 		m_PMass.add_key(1, 1.0f);
-
-		m_fTimeNormalaized = 0;
-		//if (!ms_Rand.isInited())
-		//{
-		//	ms_Rand.init(0.0f, 1.0f);
-		//}
-
-		//addProperty(new property<float>(m_fCycleTime,			"CycleTime",	"float"));
-		//addProperty(new property<bool>(m_bIsCycling,			"IsCycling",	"bool"));
-		//addProperty(new property<bool>(m_is_visible,			"IsVisible",	"bool"));
-		//addProperty(new property<float>(m_time_shift,			"fTimeShift",	"float"));
-		//
-		//addProperty(new property<math::interpolatorf>(m_PMass,		"PMass",	"interpolatorf"));
-		//addProperty(new property<math::interpolatorf>(m_PMassSpread,	"PMassSpread",	"interpolatorf"));
-		//addProperty(new property<math::interpolatorf>(m_PRotationSpread,	"PRotationSpread",	"interpolatorf"));
-		//addProperty(new property<math::interpolatorf>(m_velocity,	"PVelocity",	"interpolatorf"));
-		//addProperty(new property<math::interpolatorf>(m_PVelSpread,	"PVelSpread",	"interpolatorf"));
-		//addProperty(new property<math::interpolator_v3f>(m_PAcceleration,	"PAcceleration",	"interpolator_v3f"));
-		//addProperty(new property<math::interpolator_v3f>(m_GlobalVelocity,	"GlobalVelocity",	"interpolator_v3f"));
-		
-		// public properties:
-		//REGISTER_PROPERTY(fCycleTime,		float)
-		//REGISTER_PROPERTY(bIsCycling,		bool)
-		//REGISTER_PROPERTY(bIsVisible,		bool)
-		//REGISTER_PROPERTY(fTimeShift,		float)
-		//
-		//REGISTER_PROPERTY(PMass,			math::interpolatorf)
-		//REGISTER_PROPERTY(PMassSpread,		math::interpolatorf)
-		//REGISTER_PROPERTY(PRotationSpread,	math::interpolatorf)
-		//REGISTER_PROPERTY(PVelocity,		math::interpolatorf)
-		//REGISTER_PROPERTY(PVelSpread,		math::interpolatorf)
-		//REGISTER_PROPERTY(PAcceleration,	math::interpolator_v3f)
-		//REGISTER_PROPERTY(GlobalVelocity,	math::interpolator_v3f)
 	}
 
 	base_emitter::~base_emitter()
@@ -170,23 +136,6 @@ namespace particles{
 			delete(*it);
 		m_lProcessors.clear();
 	}
-
-	//
-	//math::vec3f base_emitter::getGlobalVelocity(bool global)
-	//{
-	//	if (!global)
-	//		return m_vGlobalVelPrecomputed;
-	//	else
-	//		return m_vGlobalVel;
-	//}
-	//
-	//math::vec3f base_emitter::getAcceleration(bool global)
-	//{
-	//	if (!global)
-	//		return m_vAccelerationPrecomputed;
-	//	else
-	//		return m_vPAcceleration;
-	//}
 	
 	void base_emitter::deleteProcessor(processor* p)
 	{
@@ -195,9 +144,10 @@ namespace particles{
 
 	void base_emitter::to_stream(io::write_stream& wf) const
 	{
-		emitter::to_stream (wf);
+		math::frame::to_stream (wf);
 
-		wf	<< m_fCycleTime
+		wf	/*<< (int)m_type*/
+			<< m_fCycleTime
 			<< m_bIsCycling
 			<< m_is_visible
 			<< m_time_shift
@@ -218,7 +168,13 @@ namespace particles{
 
 	void base_emitter::from_stream(io::read_stream& rf)
 	{
-		emitter::from_stream (rf);
+		math::frame::from_stream (rf);
+
+		//{
+		//	type t;
+		//	rf	>> (int)t;
+		//	assert(m_type == t);
+		//}
 
 		rf	>> m_fCycleTime
 			>> m_bIsCycling
@@ -247,7 +203,7 @@ namespace particles{
 
 	void base_emitter::debug_draw()
 	{
-		m_transform->debug_draw();
+		math::frame::debug_draw();
 
 		for( processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it )
 			(*it)->debug_draw();
