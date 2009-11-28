@@ -2,7 +2,6 @@
 
 #include "BatcherApplication.h"
 
-
 namespace rgde
 {
 	BatcherApplication::BatcherApplication(int x, int y, int w, int h, const std::wstring& title)
@@ -25,11 +24,12 @@ namespace rgde
 
 		using namespace math;
 
-		render::texture_ptr tex = render::base_texture::create(m_device, L"Alien.png");
+		tex = render::base_texture::create(m_device, L"sprites/test1.jpg");
 
-		for (int i = 1; i < 200000; i++)
+		for (int i = 1; i < 200; i++)
 		{
 			sprite_desc sprite;
+			sprite.texture = tex;
 			sprite.size = vec2f(20, 20);
 			sprite.pos = vec2f(i, i);
 			add_sprite(sprite);

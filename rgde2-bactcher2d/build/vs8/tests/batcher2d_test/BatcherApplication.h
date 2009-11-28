@@ -24,6 +24,7 @@ namespace rgde
 		bool m_active;
 		render::device m_device;
 		render::renderer_2d m_batcher;
+		render::texture_ptr tex;
 		
 		// not used:
 		//std::vector<render::primitives_2d::sprite_desc*> sprites; 
