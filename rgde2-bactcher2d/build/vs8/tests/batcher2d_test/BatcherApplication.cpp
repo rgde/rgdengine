@@ -25,6 +25,8 @@ namespace rgde
 
 		using namespace math;
 
+		render::texture_ptr tex = render::base_texture::create(m_device, L"Alien.png");
+
 		for (int i = 1; i < 200000; i++)
 		{
 			sprite_desc sprite;
