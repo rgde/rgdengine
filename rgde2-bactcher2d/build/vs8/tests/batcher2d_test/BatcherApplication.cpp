@@ -19,27 +19,13 @@ namespace rgde
 
 	void BatcherApplication::init_render_data()
 	{
+		m_device.set_lighting(false);
+		m_device.set_alpha_blend(false);
+		m_device.set_alpha_test(false);
+
 		using namespace math;
-/*
-		sprite_desc sprite;
-		sprite.size = vec2f(20, 20);
 
-		sprite_desc sprite2;
-		sprite2.pos = vec2f(50, 50);
-		sprite2.size = vec2f(20, 20);
-		sprite2.color = color::Blue;
-
-		sprite_desc sprite3;
-		sprite3.pos = vec2f(80, 80);
-		sprite3.size = vec2f(20, 20);
-		sprite3.color = color::Red;
-
-		add_sprite(sprite);
-		add_sprite(sprite2);
-		add_sprite(sprite3);
-		*/
-
-		for (int i = 1; i < 1000000; i++)
+		for (int i = 1; i < 1000; i++)
 		{
 			sprite_desc sprite;
 			sprite.size = vec2f(20, 20);
@@ -65,7 +51,13 @@ namespace rgde
 
 	void BatcherApplication::render_frame()
 	{
-		m_batcher.render_all();
+		m_device.clear(math::color::Black);
+		m_device.frame_begin();
+
+			m_batcher.render_all();
+
+		m_device.frame_end();
+		m_device.present();
 	}
 
 	void BatcherApplication::add_sprite(const sprite_desc &sprite)
