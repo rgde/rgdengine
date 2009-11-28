@@ -28,11 +28,11 @@ namespace input
 		//завершить работу системы ввода
         void Done();
 
-        device* get_device(device::type      eDeviceName, int indx=0) const;
-        device* get_device(const std::wstring &sDeviceName, int indx=0) const;
+        device* get_device(device::type      eDeviceName, size_t indx=0) const;
+        device* get_device(const std::wstring &sDeviceName, size_t indx=0) const;
 
-        bool is_present(device::type      eDeviceName, int indx=0) const;
-        bool is_present(const std::wstring &sDeviceName, int indx=0) const;
+        bool is_present(device::type      eDeviceName, size_t indx=0) const;
+        bool is_present(const std::wstring &sDeviceName, size_t indx=0) const;
 
 
         command_ptr add_command(const std::string &command_name);

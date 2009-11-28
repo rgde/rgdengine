@@ -51,10 +51,8 @@
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="precompiled.h"
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/$(ProjectName).pdb"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 				EnablePREfast="false"
 			/>
 			<Tool
@@ -475,19 +473,11 @@
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\render\particles\anim_structs.h"
-						>
-					</File>
-					<File
 						RelativePath=".\rgde\render\particles\box_emitter.h"
 						>
 					</File>
 					<File
 						RelativePath=".\rgde\render\particles\effect.h"
-						>
-					</File>
-					<File
-						RelativePath=".\rgde\render\particles\emitter.h"
 						>
 					</File>
 					<File
@@ -508,10 +498,6 @@
 					</File>
 					<File
 						RelativePath=".\rgde\render\particles\spherical_emitter.h"
-						>
-					</File>
-					<File
-						RelativePath=".\rgde\render\particles\static_emitter.h"
 						>
 					</File>
 					<File
@@ -759,10 +745,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\src\render\particles\emitter.cpp"
-						>
-					</File>
-					<File
 						RelativePath=".\src\render\particles\peffect.cpp"
 						>
 					</File>
@@ -772,10 +754,6 @@
 					</File>
 					<File
 						RelativePath=".\src\render\particles\spherical_emitter.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\render\particles\static_emitter.cpp"
 						>
 					</File>
 					<File

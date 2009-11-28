@@ -16,6 +16,7 @@ Modified for RGDE:	march-april 2005 (Zlobnik)
 
 #include <rgde/render/particles/particle.h>
 #include <rgde/math/random.h>
+#include <rgde/render/particles/tank.h>
 
 
 namespace particles{
@@ -25,7 +26,6 @@ namespace particles{
 
 
 	class  processor : public io::serialized_object
-					 , public core::meta_class
 	{
 		// need to manually increment after each file format change (for code simplisity)
 		static const unsigned file_version = 1004;
@@ -44,31 +44,29 @@ namespace particles{
 
 		const math::matrix44f& get_local_tm();
 
-		void set_texture_name(const std::string& texture_name);
+		void set_texture(render::texture_ptr texture);
 
 		// interpolators
-		inline math::interpolatorf& particleRate()				{ return m_rate; }
-		inline math::interpolatorf& particleResistance()			{ return m_resistance; }
-		inline math::interpolatorf& particleSpin()				{ return m_spin; }
-		inline math::interpolatorf& particleSpinSpread()			{ return m_spin_spread; }
-		inline math::interpolatorf& particleLife()				{ return m_life; }
-		inline math::interpolatorf& particleLifeSpread()			{ return m_life_spread; }
-		inline math::interpolatorf& particleSize()				{ return m_size; }
-		inline math::interpolator_col& particleColorAlpha()			{ return m_color_alpha; }
-		inline math::interpolator_v3f& particleActingForce()			{ return m_acting_force; }
-		inline math::interpolator_v3f& particleVelocity()				{ return m_velocity; }
-		inline math::interpolator_v3f& particleInitialVelSpread()		{ return m_initial_vel_spread; }
-		inline math::interpolatorf& particleVelSpreadAmplifier()	{ return m_vel_spread_amp; }
+		inline math::interpolatorf& rate()							{ return m_rate; }
+		inline math::interpolatorf& resistance()					{ return m_resistance; }
+		inline math::interpolatorf& spin()							{ return m_spin; }
+		inline math::interpolatorf& spin_spread()					{ return m_spin_spread; }
+		inline math::interpolatorf& particle_life()					{ return m_life; }
+		inline math::interpolatorf& particle_life_spread()			{ return m_life_spread; }
+		inline math::interpolatorf& particle_size()					{ return m_size; }
+		inline math::interpolator_col& particle_color()				{ return m_color_alpha; }
+		inline math::interpolator_v3f& particle_force()				{ return m_acting_force; }
+		inline math::interpolator_v3f& particle_velocity()			{ return m_velocity; }
+		inline math::interpolator_v3f& particle_initial_vel_spread(){ return m_initial_vel_spread; }
+		inline math::interpolatorf& particle_vel_spread_amplifier()	{ return m_vel_spread_amp; }
 
 		// getters/setters
-		inline bool isGlobal() const { return m_is_global; }
-		inline void setGlobal(bool b) { m_is_global = b; }
-
 		inline bool is_fading() const { return m_is_fading; }
 		inline void set_fade(bool b) { m_is_fading = b; }
 
 		inline unsigned getMaxParticles() const { return m_max_particles; }
-		inline void setMaxParticles (unsigned num) { 
+		inline void setMaxParticles (unsigned num) 
+		{ 
 			m_max_particles = num; 
 			m_particles.resize(m_max_particles);
 		}
@@ -86,22 +84,19 @@ namespace particles{
 		inline void setSparkMode(bool sm) { m_is_sparks = sm; }
 
 	protected:
-		void loadTexture();
-		void initPTank();
 		inline void assignChilds();
 		inline void createParticle(particle& p);
 
-		virtual void geomRender();
 		void first_time_init();
 		void updateParticle(particle& p);
 		void formTank();
-		void addNewParticles(int num2add);
+		void add_new_particles(int num2add);
 
 		virtual void to_stream(io::write_stream& wf) const;
 		virtual void from_stream(io::read_stream& rf);
 
 	protected:
-		renderer* m_tank;
+		renderer m_tank;
 		render::texture_ptr m_texture;
 
 		//////////////////////////////////////////////////////////////////////////
@@ -151,10 +146,7 @@ namespace particles{
 		math::interpolator_v3f m_initial_vel_spread;
 		math::interpolatorf m_vel_spread_amp;		// Усилитель начального рандома скорости
 
-		std::string m_texture_name;
-
 		bool m_is_fading;								// Затухает ли процессор (затухающий процессор не излучает новых частиц)
-		bool m_is_global;								// Является ли процессор глобальным (т.е. не имеющим родительских трансформаций)
 
 		bool m_intense;								// Меняет режим блендинга
 		math::vec3f m_scaling;								// Масштабирование родительского эмитера
@@ -163,18 +155,15 @@ namespace particles{
 		float m_ngkx;
 		
 		bool m_is_sparks;
-		bool m_is_geometric;
 
 		particles_vector m_particles;
 
 		bool m_modifiers_loaded;
 		bool m_is_visible;
-		bool m_is_texture_loaded;
 		bool m_ptank_inited;
 
 		float m_normalized_time;		// нормированное от 0 до 1
 		float m_rate_accum;				// собирает нецелые части от rate от кадра к кадру
 		float m_dt;
 	};
-
 }

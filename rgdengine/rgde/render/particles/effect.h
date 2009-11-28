@@ -8,15 +8,15 @@
 
 namespace particles
 {
-	class emitter;
+	class base_emitter;
+	typedef boost::intrusive_ptr<base_emitter> emitter_ptr;
 
 	class  effect : public render::rendererable
 				  ,	public game::dynamic_object
-				  //, public core::meta_class
-				  //, public io::serialized_object,
 	{
+		static const unsigned file_version = 1001;
 	public:
-		typedef std::list<emitter*> emitters_list;
+		typedef std::list<emitter_ptr> emitters_list;
 		typedef emitters_list::iterator	 emitters_iter;
 
 		effect();
@@ -24,8 +24,8 @@ namespace particles
 		
 		inline const math::frame_ptr get_transform() const { return m_transform; }
 		
-		void add(emitter* em);
-		void remove(emitter* em);
+		void add(emitter_ptr);
+		void remove(emitter_ptr);
 
 		const emitters_list& get_emitters() const {return m_emitters;}
 		emitters_list&		 get_emitters()		  {return m_emitters;}
@@ -49,11 +49,8 @@ namespace particles
 
 	protected:
 		math::frame_ptr	m_transform;
-		emitters_list	m_emitters;						// emitters
+		emitters_list	m_emitters;
 		bool			m_is_fading;
 		float			old_time;
-
-	private:
-		static const unsigned file_version = 1001;
 	};
 }

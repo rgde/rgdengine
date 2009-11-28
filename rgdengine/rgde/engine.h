@@ -128,6 +128,12 @@ typedef unsigned int  uint;
 #include "render\\lens_flares.h"
 #include "render\\screen_fader.h"
 
+#include "render\\particles\\main.h"
+#include "render\\particles\\box_emitter.h"
+#include "render\\particles\\spherical_emitter.h"
+#include "render\\particles\\processor.h"
+#include "render\\particles\\effect.h"
+
 #include "scene\\tree.h"
 #include "scene\\scene.h"
 #include "scene\\manager.h"

@@ -34,14 +34,14 @@ namespace particles{
 
 	// Акксессоры
 	public:
-		inline math::interpolatorf& getRadiusInterp()			{ return m_Radius; }
+		inline math::interpolatorf& getRadiusInterp()		{ return m_Radius; }
 		inline math::interpolatorf& getRadiusSpreadInterp()	{ return m_RadiusSpread; }
-		inline math::interpolatorf& getAngleInterp()			{ return m_Angle; }
+		inline math::interpolatorf& getAngleInterp()		{ return m_Angle; }
 
 
 	protected:
-		math::interpolatorf m_Radius;				// радиус
+		math::interpolatorf m_Radius;			// радиус
 		math::interpolatorf m_RadiusSpread;		// разброс радиуса
-		math::interpolatorf m_Angle;				// угол 
+		math::interpolatorf m_Angle;			// угол 
 	};
 }

@@ -24,7 +24,7 @@ namespace render
 		int					get_width()		const { return m_nWidth;  }
 		texture_type		get_type()		const { return m_type;   }
 
-		const std::string& getFileName() const {return m_strFileName;}
+		const std::string& get_filename() const {return m_strFileName;}
 
 		bool				has_alpha()		const
 		{

@@ -292,7 +292,7 @@ namespace render
 			if (texture)
 			{
 				texture_d3d9 *pTexImpl = static_cast<texture_d3d9*>(texture.get());
-				//base::lmsg << "bind texture: " << pTexImpl->getFileName();
+				//base::lmsg << "bind texture: " << pTexImpl->get_filename();
 				IDirect3DTexture9* pDxTex = pTexImpl->get_dx_texture();
 				if (FAILED(m_effect->SetTexture(m_Handle, pDxTex)))
 				{

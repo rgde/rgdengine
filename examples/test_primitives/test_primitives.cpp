@@ -61,17 +61,14 @@ public:
         {
             using namespace input;
 
-            Input::add_command("Quit");
-            Input::add_command("Horz");
-            Input::add_command("Vert");
+			m_esc  .attach("Quit");
+			m_mouse_x.attach("Horz");
+			m_mouse_y.attach("Vert");
 
 			Input::get_control(device::keyboard, KeyEscape)->bind("Quit");
             Input::get_control(device::mouse, AxisX )->bind("Horz");
 			Input::get_control(device::mouse, AxisY )->bind("Vert");
 
-            m_esc  .attach("Quit");
-            m_mouse_x.attach("Horz");
-            m_mouse_y.attach("Vert");
             m_esc   += boost::bind(&SampleApp::onEsc,   this);
             m_mouse_x += boost::bind(&SampleApp::onXAxis, this, _1);
             m_mouse_y += boost::bind(&SampleApp::onYAxis, this, _1);

@@ -20,6 +20,12 @@ namespace render
 		texture_type  get_type()	  const {return texture_d3d9::get_type();}
 		bool		  has_alpha()  const {return texture_d3d9::has_alpha();}
 
+		virtual const std::string& get_filename() const 
+		{
+			static std::string empty_string;
+			return empty_string;
+		}
+
 		render_texture_d3d9(const render_target_info& params)
 		{
 			create_render_texture(params.size, params.format);
@@ -35,9 +41,11 @@ namespace render
 
 			V(m_texture->GetSurfaceLevel(0, &pSurfaceLevel));
 
-			if (DepthStencil == texture_d3d9::get_usage()){
+			if (DepthStencil == texture_d3d9::get_usage())
+			{
 				V(g_d3d->SetDepthStencilSurface(pSurfaceLevel));
-			} else {
+			} else 
+			{
 				V(g_d3d->SetRenderTarget(0, pSurfaceLevel));
 			}
 		}

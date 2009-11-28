@@ -1,14 +1,6 @@
 //RGDE
 #include <rgde/engine.h>
 
-#include <rgde/render/particles/main.h>
-#include <rgde/render/particles/box_emitter.h>
-#include <rgde/render/particles/static_emitter.h>
-#include <rgde/render/particles/spherical_emitter.h>
-#include <rgde/render/particles/processor.h>
-#include <rgde/render/particles/effect.h>
-
-
 
 class CParticleTest : public game::dynamic_object
 {
@@ -40,23 +32,17 @@ public:
 	{
 		using namespace input;
 
-		Input::add_command("Quit");
-		Input::add_command("LookHoriz");
-		Input::add_command("LookVert");
-		Input::add_command("Scroll");
+		//биндим хелперы с командами		
+		m_key_quit.attach("Quit");
+		m_mouse_x.attach("LookHoriz");
+		m_mouse_y.attach("LookVert");
+		m_mouse_wheel.attach("Scroll");
 
 		//связываем команды с контролами
 		Input::get_control(device::keyboard, KeyEscape)->bind("Quit");
 		Input::get_control(device::mouse, AxisX )->bind("LookHoriz");
 		Input::get_control(device::mouse, AxisY )->bind("LookVert");
 		Input::get_control(device::mouse, AxisWheel)->bind("Scroll");
-		
-
-		//биндим хелперы с командами		
-		m_key_quit.attach("Quit");
-		m_mouse_x.attach("LookHoriz");
-		m_mouse_y.attach("LookVert");
-		m_mouse_wheel.attach("Scroll");
 
 		//задаем для команд функции-обработчики		
 		m_key_quit += boost::bind(&CParticleTest::onQuit, this);
@@ -111,15 +97,16 @@ public:
 		render::render_device::get().draw_wired_floor(100.0f, 20, math::Color(150, 150, 150, 255));
 		render::render_device::get().draw_wired_floor(100.0f, 2, math::Color(60, 60, 60, 255));
 
-		if (m_debug_draw)
-			m_effect->debug_draw();
+		//if (m_debug_draw)
+		//	m_effect->debug_draw();
 	}
 protected:
 	//-----------------------------------------------------------------------------------
 	void initParticles()
 	{
-		// Создаём эффект
 		m_effect = new particles::effect();
+
+		render::texture_ptr particle_texture = render::texture::create("particles/Shot_Smoke.png");
 
 		// create emitters
 		for( int i = 0; i < 3; i++ )
@@ -129,10 +116,9 @@ protected:
 			particles::spherical_emitter* sph_emitter = new particles::spherical_emitter();
 			m_effect->add(sph_emitter);
 
-			particles::processor* proc = new particles::processor();
-			proc->set_texture_name( "particles/Shot_Smoke.png" );
+			particles::processor* proc = new particles::processor();			
+			proc->set_texture( particle_texture );
 			proc->setMaxParticles( 100 );
-			proc->setGlobal( false );
 			sph_emitter->addProcessor(proc);
 			proc->load();
 
@@ -145,9 +131,8 @@ protected:
 
 			proc = new particles::processor();
 			box_emitter->addProcessor(proc);
-			proc->set_texture_name( "particles/Shot_Smoke.png" );
+			proc->set_texture( particle_texture );
 			proc->setMaxParticles( 100 );
-			proc->setGlobal( false );
 			proc->load();
 
 			math::point3f box_pos( -dist, 0, -dist/1.732f);
@@ -159,7 +144,6 @@ protected:
 	void deleteParticles()
 	{
 		delete m_effect;
-		particles::static_emitter::clear_cached_data();
 		render::effect::clear_all();
 	}
 
