@@ -1,35 +1,16 @@
 #include "stdafx.h"
 
-//#include <d3dx9.h>
-
-//using namespace rgde;
-//using core::windows::window;
-//using render::device;
-//using render::font;
-//using namespace math;
-
 #include "Application.h"
 
 
-//int _tmain(int argc, wchar_t* argv[])
 int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 {
-
-	SetCurrentDirectoryW(L"../data/");
-
-	std::wstring buf;
-	buf.resize(256);
-	GetModuleFileNameW(NULL, &buf[0], 256);
-
-	std::wstring module_path;
-	module_path.resize(256);
-	GetFullPathNameW(&buf[0], 256, &module_path[0], NULL);
-
-	//using boost::filesystem::path;
-	//boost::filesystem::wpath p(buffer);
-	//std::wstring path = p.branch_path().string();
-	//SetCurrentDirectoryW(path.c_str());
-
+	wchar_t buf[512];
+	GetModuleFileNameW(NULL, &buf[0], 512);
+	
+	boost::filesystem::wpath p(buf);
+	std::wstring path = p.branch_path().string() + L"/../data/";
+	SetCurrentDirectoryW(path.c_str());
 
 	xml::document config;
 	bool res = config.load_file("config.xml");

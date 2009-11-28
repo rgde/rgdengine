@@ -40,8 +40,7 @@ namespace rgde
 				(UINT)size,
 				&m_info);
 
-			hr =
-				D3DXCreateTextureFromFileInMemory(
+			hr = D3DXCreateTextureFromFileInMemory(
 				dx_dev,
 				(LPCVOID)data,
 				(UINT)size,
@@ -53,13 +52,11 @@ namespace rgde
 		{
 			IDirect3DDevice9* dx_dev = m_device.get_impl().get_dx_device();
 
-			HRESULT hr = 
-				D3DXGetImageInfoFromFileW(
+			HRESULT hr = D3DXGetImageInfoFromFileW(
 				file_name.c_str(),
 				&m_info);
 
-			hr =
-				D3DXCreateTextureFromFileW(
+			hr = D3DXCreateTextureFromFileW(
 				dx_dev,
 				file_name.c_str(),
 				&m_dx_texture);
