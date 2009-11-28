@@ -3,6 +3,8 @@
 #include "texture.h"
 #include "device.h"
 
+#include <fstream>
+
 namespace rgde
 {
 	namespace render
@@ -34,8 +36,7 @@ namespace rgde
 		{
 			IDirect3DDevice9* dx_dev = m_device.get_impl().get_dx_device();
 
-			HRESULT hr = 
-				D3DXGetImageInfoFromFileInMemory(
+			HRESULT hr = D3DXGetImageInfoFromFileInMemory(
 				(LPCVOID)data,
 				(UINT)size,
 				&m_info);
@@ -52,14 +53,9 @@ namespace rgde
 		{
 			IDirect3DDevice9* dx_dev = m_device.get_impl().get_dx_device();
 
-			HRESULT hr = D3DXGetImageInfoFromFileW(
-				file_name.c_str(),
-				&m_info);
+			HRESULT hr = D3DXGetImageInfoFromFileW(file_name.c_str(), &m_info);
 
-			hr = D3DXCreateTextureFromFileW(
-				dx_dev,
-				file_name.c_str(),
-				&m_dx_texture);
+			hr = D3DXCreateTextureFromFileW(dx_dev, file_name.c_str(), &m_dx_texture);
 		}
 	}
 }
