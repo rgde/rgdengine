@@ -17,7 +17,6 @@ namespace rgde
 			renderer_2d(device& dev, const uint buff_size = 2097152, const uint butch_size = 524288);
 			~renderer_2d();
 
-			void init_device();
 			void init_primitives_data();
 
 			void add_line(const primitives_2d::line_desc& line);
