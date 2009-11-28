@@ -34,8 +34,8 @@ namespace rgde
 			static texture_ptr create(device& dev, void* data, size_t size);
 			static texture_ptr create(device& dev, const std::wstring& file_name);
 
-			impl_ptr get_pimpl() {return pimpl;}
-			const impl_ptr& get_pimpl() const {return pimpl;}
+			impl_ptr get_impl() {return pimpl;}
+			const impl_ptr& get_impl() const {return pimpl;}
 		};
 	}
 }

@@ -120,6 +120,12 @@ namespace rgde
 			get_impl().get_dx_device()->SetTransform(ttype, d3d_matrix);
 		}
 
+		void device::set_texture(texture_ptr texture, size_t index)
+		{
+			IDirect3DTexture9* dx_texture = texture->get_impl()->get_dx_texture();
+			get_impl().get_dx_device()->SetTexture(index, dx_texture);
+		}
+
 		D3DPRIMITIVETYPE convert(primitive_type type)
 		{
 			D3DPRIMITIVETYPE dx_type = D3DPT_LINELIST;
