@@ -12,11 +12,28 @@ namespace rgde
 		, m_batcher(m_device)
 	{
 		show();
-		update();	
+		update();
+
+		m_device.set_lighting(false);
+		m_device.set_alpha_blend(false);
+		m_device.set_alpha_test(false);
 	}
 
 	GameApplication::~GameApplication()
 	{
+	}
+
+	void GameApplication::update_frame()
+	{
+	}
+
+	void GameApplication::render_frame()
+	{
+		m_device.clear(math::color::Black);
+		m_device.frame_begin();
+
+		m_device.frame_end();
+		m_device.present();
 	}
 
 	void GameApplication::run()
@@ -25,6 +42,8 @@ namespace rgde
 		{
 			if( !do_events() && m_active)
 			{
+				update_frame();
+				render_frame();
 			}
 		}
 	}

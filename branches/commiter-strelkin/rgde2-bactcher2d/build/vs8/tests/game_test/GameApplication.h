@@ -13,6 +13,9 @@ namespace rgde
 		bool do_events();
 		core::windows::result wnd_proc(ushort message, uint wparam, long lparam );
 	private:
+		void update_frame();
+		void render_frame();
+
 		bool m_active;
 		render::device m_device;
 		render::renderer_2d m_batcher;
