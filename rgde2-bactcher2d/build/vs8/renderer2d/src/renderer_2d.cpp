@@ -133,13 +133,13 @@ namespace rgde
 				// вершины примитивов
 				primitives_2d::prim_vertex* vertices;
 
-				if (m_need_update)
-				{
+				//if (m_need_update)
+				//{
 					vertices = (primitives_2d::prim_vertex*)m_vb->lock(m_buffer_offset * sizeof(primitives_2d::prim_vertex), 
 																				m_batch_size * sizeof(primitives_2d::prim_vertex), 
 																				m_buffer_offset ? buffer::nooverwrite : buffer::discard);
 					m_need_update = false;
-				}
+				//}
 
 				// текущий размер данных
 				ulong current_data_size = 0;
