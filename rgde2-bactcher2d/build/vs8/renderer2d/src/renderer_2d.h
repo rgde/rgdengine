@@ -38,6 +38,8 @@ namespace rgde
 			void drawButch(primitives_2d::prim_vertex* vert);
 
 		private:
+			void draw_batch(primitives_2d::prim_vertex* vert);
+
 			lines_vector m_lines;
 			sprites_vector m_sprites;
 
@@ -55,7 +57,9 @@ namespace rgde
 			// размер буфера
 			uint m_buffer_size;
 			// размер батча буфера
-			uint m_butch_size;
+			uint m_batch_size;
+			// флаг апдейта буфера
+			bool m_need_update;
 		};
 	}
 }

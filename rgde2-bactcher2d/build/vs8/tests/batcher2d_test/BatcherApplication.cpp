@@ -25,7 +25,7 @@ namespace rgde
 
 		using namespace math;
 
-		for (int i = 1; i < 1000; i++)
+		for (int i = 1; i < 200000; i++)
 		{
 			sprite_desc sprite;
 			sprite.size = vec2f(20, 20);
