@@ -161,7 +161,7 @@ namespace rgde
 					if(current_data_size == m_butch_size)
 					{
 						current_data_size = 0;
-						drawButch(*vertices);
+						drawButch(vertices);
 					}
 
 					// Top right
@@ -175,7 +175,7 @@ namespace rgde
 					if(current_data_size == m_butch_size)
 					{
 						current_data_size = 0;
-						drawButch(*vertices);
+						drawButch(vertices);
 					}
 
 					// Bottom right
@@ -189,7 +189,7 @@ namespace rgde
 					if(current_data_size == m_butch_size)
 					{
 						current_data_size = 0;
-						drawButch(*vertices);
+						drawButch(vertices);
 					}
 
 					// Bottom left
@@ -203,7 +203,7 @@ namespace rgde
 					if(current_data_size == m_butch_size)
 					{
 						current_data_size = 0;
-						drawButch(*vertices);
+						drawButch(vertices);
 					}
 				}
 
@@ -219,7 +219,7 @@ namespace rgde
 			}
 		}
 
-		void renderer_2d::drawButch(primitives_2d::prim_vertex& vert)
+		void renderer_2d::drawButch(primitives_2d::prim_vertex* vert)
 		{
 			// рисуем батч буфера, который был залит последним
 			m_vb->unlock();
