@@ -58,6 +58,7 @@ namespace rgde
 			void set_alpha_test(bool enable);
 			void set_alpha_blend(bool enable);
 			void set_transform(transform_type type, const math::mat44f& m);
+			void set_texture(texture_ptr texture, size_t index);
 
 			void draw(primitive_type type, uint start_vertex, uint primitive_count);
 			void draw(primitive_type type, int base_vertex_index, uint min_vertex_index,
