@@ -53,6 +53,7 @@
 #include <engine/core/core.h>
 #include <engine/core/xml/xml.h>
 #include <engine/render/render.h>
+#include <engine/render/surface.h>
 #include <engine/input/input.h>
 #include <renderer2d/src/primitives.h>
 #include <renderer2d/src/renderer_2d.h>

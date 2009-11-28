@@ -17,6 +17,8 @@ namespace rgde
 		m_device.set_lighting(false);
 		m_device.set_alpha_blend(false);
 		m_device.set_alpha_test(false);
+
+		m_debug_info = render::font::create(m_device, 12, L"Arial");
 	}
 
 	GameApplication::~GameApplication()
@@ -25,6 +27,12 @@ namespace rgde
 
 	void GameApplication::update_frame()
 	{
+	}
+
+	void GameApplication::init_game_data()
+	{
+		m_ship_texture = render::base_texture::create(m_device, L"TestInput/SpaceShip.png");
+		m_alien_texture = render::base_texture::create(m_device, L"TestInput/Alien.png");
 	}
 
 	void GameApplication::render_frame()

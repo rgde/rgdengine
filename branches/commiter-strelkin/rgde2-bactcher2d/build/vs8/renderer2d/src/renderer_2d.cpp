@@ -187,6 +187,8 @@ namespace rgde
 					vertices[i].color       = color;
 					++i;
 
+					m_device.set_texture(s.texture, 0);
+
 					current_data_size += sizeof(primitives_2d::prim_vertex)*4;
 					if(current_data_size == m_batch_size)
 					{
