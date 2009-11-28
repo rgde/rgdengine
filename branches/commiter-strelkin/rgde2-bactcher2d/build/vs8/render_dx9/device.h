@@ -47,8 +47,8 @@ namespace rgde
 					D3DFMT_D24S8,	// 16Bit Z-Buffer (Depth Buffer)
 					0,				// No Flags
 					D3DPRESENT_RATE_DEFAULT,   // Default Refresh Rate
-					//D3DPRESENT_INTERVAL_IMMEDIATE
-					D3DPRESENT_INTERVAL_DEFAULT	// Presentation Interval (vertical sync)
+					D3DPRESENT_INTERVAL_IMMEDIATE
+					//D3DPRESENT_INTERVAL_DEFAULT	// Presentation Interval (vertical sync)
 				};
 
 				// Check The Wanted Surface Format
@@ -61,7 +61,7 @@ namespace rgde
 
 				// Create The DirectX 3D Device 
 				if(FAILED( m_d3d->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hwnd,
-					D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+					D3DCREATE_HARDWARE_VERTEXPROCESSING,
 					&d3dpp, &m_device ) ) )
 				{
 					MessageBox(m_hwnd, L"Can't Create DirectX 3D Device.", L"ERROR",MB_OK|MB_ICONEXCLAMATION);
