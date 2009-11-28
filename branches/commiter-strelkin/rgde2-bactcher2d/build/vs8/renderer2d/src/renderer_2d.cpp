@@ -22,8 +22,9 @@ namespace rgde
 			vertex_element::end_element
 		};
 
-		renderer_2d::renderer_2d(device& dev, const uint buff_size, const uint butch_size) : m_device(dev),
-											m_buffer_offset(0), m_buffer_size(buff_size), m_butch_size(butch_size)
+		renderer_2d::renderer_2d(device& dev, const uint buff_size, const uint batch_size) : m_device(dev),
+											m_buffer_offset(0), m_buffer_size(buff_size), m_batch_size(batch_size),
+											m_need_update(false)
 		{
 			init_primitives_data();
 		}
@@ -85,6 +86,7 @@ namespace rgde
 		void renderer_2d::add_sprite(const primitives_2d::sprite_desc& sprite)
 		{
 			m_sprites.push_back(sprite);
+			m_need_update = true;
 		}
 
 		void renderer_2d::add_sprite(const math::vec2f& pos_, const math::vec2f& size_,
@@ -101,6 +103,7 @@ namespace rgde
 			sprite.texture   = texture_;
 
 			m_sprites.push_back(sprite);
+			m_need_update = true;
 		}
 
 		void renderer_2d::clear_sprites()
@@ -128,9 +131,15 @@ namespace rgde
 					m_buffer_offset = 0;
 
 				// вершины примитивов
-				primitives_2d::prim_vertex* vertices = (primitives_2d::prim_vertex*)m_vb->lock(m_buffer_offset * sizeof(primitives_2d::prim_vertex), 
-																			m_butch_size * sizeof(primitives_2d::prim_vertex), 
-																			m_buffer_offset ? buffer::nooverwrite : buffer::discard);
+				primitives_2d::prim_vertex* vertices;
+
+				if (m_need_update)
+				{
+					vertices = (primitives_2d::prim_vertex*)m_vb->lock(m_buffer_offset * sizeof(primitives_2d::prim_vertex), 
+																				m_batch_size * sizeof(primitives_2d::prim_vertex), 
+																				m_buffer_offset ? buffer::nooverwrite : buffer::discard);
+					m_need_update = false;
+				}
 
 				// текущий размер данных
 				ulong current_data_size = 0;
@@ -157,26 +166,12 @@ namespace rgde
 					vertices[i].color       = color;
 					++i;
 
-					current_data_size += sizeof(primitives_2d::prim_vertex);
-					if(current_data_size == m_butch_size)
-					{
-						current_data_size = 0;
-						drawButch(vertices);
-					}
-
 					// Top right
 					rotPos      = rotate_pos(hsize[0], -hsize[1], sina, cosa) + pos;
 					vertices[i].pos			= math::Vec4f(rotPos[0], rotPos[1], 0, 0);
 					vertices[i].tex         = tex_coord.get_top_right();
 					vertices[i].color       = color;
 					++i;
-
-					current_data_size += sizeof(primitives_2d::prim_vertex);
-					if(current_data_size == m_butch_size)
-					{
-						current_data_size = 0;
-						drawButch(vertices);
-					}
 
 					// Bottom right
 					rotPos      = rotate_pos(hsize[0], hsize[1], sina, cosa) + pos;
@@ -185,13 +180,6 @@ namespace rgde
 					vertices[i].color       = color;
 					++i;
 
-					current_data_size += sizeof(primitives_2d::prim_vertex);
-					if(current_data_size == m_butch_size)
-					{
-						current_data_size = 0;
-						drawButch(vertices);
-					}
-
 					// Bottom left
 					rotPos      = rotate_pos(-hsize[0], hsize[1], sina, cosa) + pos;
 					vertices[i].pos   = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
@@ -199,11 +187,11 @@ namespace rgde
 					vertices[i].color       = color;
 					++i;
 
-					current_data_size += sizeof(primitives_2d::prim_vertex);
-					if(current_data_size == m_butch_size)
+					current_data_size += sizeof(primitives_2d::prim_vertex)*4;
+					if(current_data_size == m_batch_size)
 					{
 						current_data_size = 0;
-						drawButch(vertices);
+						draw_batch(vertices);
 					}
 				}
 
@@ -215,24 +203,24 @@ namespace rgde
 					m_device.draw(render::triangle_list, 0, 0, m_buffer_offset, 0, current_data_size/sizeof(primitives_2d::prim_vertex));
 				}
 
-				m_buffer_offset += m_butch_size;
+				m_buffer_offset += m_batch_size;
 			}
 		}
 
-		void renderer_2d::drawButch(primitives_2d::prim_vertex* vert)
+		void renderer_2d::draw_batch(primitives_2d::prim_vertex* vert)
 		{
 			// рисуем батч буфера, который был залит последним
 			m_vb->unlock();
 			m_device.set_stream_source( 0, m_vb, sizeof(primitives_2d::prim_vertex) );
-			m_device.draw(render::triangle_list, 0, 0, m_buffer_offset, 0, m_butch_size);
+			m_device.draw(render::triangle_list, 0, 0, m_buffer_offset, 0, m_batch_size);
 
 			// пока текущий батч рисуется, заполняем следующий
-			m_buffer_offset += m_butch_size;
+			m_buffer_offset += m_batch_size;
 			// если достигнут конец буфера, возвращаемся в начало
 			if(m_buffer_offset >= m_buffer_size)
 				m_buffer_offset = 0;
 
-			vert = (primitives_2d::prim_vertex*)m_vb->lock(m_buffer_offset * sizeof(primitives_2d::prim_vertex), m_butch_size * sizeof(primitives_2d::prim_vertex), 
+			vert = (primitives_2d::prim_vertex*)m_vb->lock(m_buffer_offset * sizeof(primitives_2d::prim_vertex), m_batch_size * sizeof(primitives_2d::prim_vertex), 
 				m_buffer_offset ? buffer::nooverwrite : buffer::discard);
 		}
 	}
