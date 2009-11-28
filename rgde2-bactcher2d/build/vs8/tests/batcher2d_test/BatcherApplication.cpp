@@ -18,18 +18,19 @@ namespace rgde
 
 	void BatcherApplication::init_render_data()
 	{
+		m_device.set_lighting(false);
+		m_device.set_alpha_blend(false);
+		m_device.set_alpha_test(false);
+
 		using namespace math;
 
-		tex = render::base_texture::create(m_device, L"sprites/Test02.jpg");
-
-		for (int i = 1; i < 2; i++)
-		{
-			sprite_desc sprite;
-			sprite.texture = tex;
-			sprite.size = vec2f(200, 200);
-			sprite.pos = vec2f(i, i);
-			add_sprite(sprite);
-		}
+		tex = render::base_texture::create(m_device, L"Alien.png");
+		
+		sprite_desc sprite;
+		sprite.texture = tex;
+		sprite.size = vec2f(64, 256);
+		sprite.pos = vec2f(50, 50);
+		add_sprite(sprite);
 	}
 
 	BatcherApplication::~BatcherApplication()
@@ -48,16 +49,10 @@ namespace rgde
 	}
 
 	void BatcherApplication::render_frame()
-	{		
+	{
+		m_device.clear(math::color::Black);
 		m_device.frame_begin();
 
-		m_device.clear(math::color::Black);
-
-		m_device.set_lighting(false);
-		m_device.set_alpha_blend(false);
-		m_device.set_alpha_test(false);
-
-		m_device.set_texture(tex, 0);
 			m_batcher.render_all();
 
 		m_device.frame_end();
