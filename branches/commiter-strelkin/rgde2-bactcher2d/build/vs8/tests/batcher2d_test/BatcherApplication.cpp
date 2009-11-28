@@ -20,7 +20,7 @@ namespace rgde
 	void BatcherApplication::init_render_data()
 	{
 		using namespace math;
-
+/*
 		sprite_desc sprite;
 		sprite.size = vec2f(20, 20);
 
@@ -37,6 +37,15 @@ namespace rgde
 		add_sprite(sprite);
 		add_sprite(sprite2);
 		add_sprite(sprite3);
+		*/
+
+		for (int i = 1; i < 1000000; i++)
+		{
+			sprite_desc sprite;
+			sprite.size = vec2f(20, 20);
+			sprite.pos = vec2f(i, i);
+			add_sprite(sprite);
+		}
 	}
 
 	BatcherApplication::~BatcherApplication()
