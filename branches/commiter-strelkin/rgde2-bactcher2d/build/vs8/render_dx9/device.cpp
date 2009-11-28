@@ -249,7 +249,7 @@ namespace rgde
 						fvf |= D3DFVF_TEXCOORDSIZE1(el.usage_index);
 						break;
 					case vertex_element::float2:
-						fvf |= D3DFVF_TEXCOORDSIZE2(el.usage_index);
+						fvf |= D3DFVF_TEX1;//D3DFVF_TEXCOORDSIZE2(el.usage_index);
 						break;
 					case vertex_element::float3:
 						fvf |= D3DFVF_TEXCOORDSIZE3(el.usage_index);

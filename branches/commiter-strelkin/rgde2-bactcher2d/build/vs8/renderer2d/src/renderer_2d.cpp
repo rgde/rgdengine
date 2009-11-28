@@ -36,7 +36,6 @@ namespace rgde
 		void renderer_2d::init_primitives_data()
 		{
 			vertex_decl = vertex_declaration::create(m_device, prim_vertex_desc, 4);
-			//default_texture = base_texture::create(m_device, "");
 
 			m_vb = vertex_buffer::create
 			(
@@ -124,7 +123,9 @@ namespace rgde
 
 		void renderer_2d::render_all()
 		{
-			if (!m_sprites.empty())
+			if (m_sprites.empty())
+				return;
+
 			{
 				 // если достигнут конец буфера, возвращаемся в начало
 				if(m_buffer_offset >= m_buffer_size)
@@ -144,7 +145,7 @@ namespace rgde
 				// текущий размер данных
 				ulong current_data_size = 0;
 				// счётчик вершин
-				uint i = 0;
+				//uint i = 0;
 			
 				// батчинг примитивов	
 				for(sprites_iter it = m_sprites.begin(); it != m_sprites.end(); ++it)
@@ -161,31 +162,31 @@ namespace rgde
 
 					// Top left
 					math::vec2f rotPos		= rotate_pos(-hsize[0], -hsize[1], sina, cosa) + pos;
-					vertices[i].pos         = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-					vertices[i].tex   = tex_coord.get_top_left();
-					vertices[i].color       = color;
-					++i;
+					vertices->pos   = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+					vertices->tex   = tex_coord.get_top_left();
+					vertices->color = color;
+					++vertices;
 
 					// Top right
-					rotPos      = rotate_pos(hsize[0], -hsize[1], sina, cosa) + pos;
-					vertices[i].pos			= math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-					vertices[i].tex         = tex_coord.get_top_right();
-					vertices[i].color       = color;
-					++i;
+					rotPos			= rotate_pos(hsize[0], -hsize[1], sina, cosa) + pos;
+					vertices->pos	= math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+					vertices->tex   = tex_coord.get_top_right();
+					vertices->color = color;
+					++vertices;
 
 					// Bottom right
-					rotPos      = rotate_pos(hsize[0], hsize[1], sina, cosa) + pos;
-					vertices[i].pos			= math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-					vertices[i].tex         = tex_coord.get_bottom_right();
-					vertices[i].color       = color;
-					++i;
+					rotPos			= rotate_pos(hsize[0], hsize[1], sina, cosa) + pos;
+					vertices->pos	= math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+					vertices->tex   = tex_coord.get_bottom_right();
+					vertices->color = color;
+					++vertices;
 
 					// Bottom left
-					rotPos      = rotate_pos(-hsize[0], hsize[1], sina, cosa) + pos;
-					vertices[i].pos   = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-					vertices[i].tex         = tex_coord.get_bottom_left();
-					vertices[i].color       = color;
-					++i;
+					rotPos			= rotate_pos(-hsize[0], hsize[1], sina, cosa) + pos;
+					vertices->pos   = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+					vertices->tex   = tex_coord.get_bottom_left();
+					vertices->color = color;
+					++vertices;
 
 					m_device.set_texture(s.texture, 0);
 
