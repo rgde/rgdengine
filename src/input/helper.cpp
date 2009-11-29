@@ -28,12 +28,12 @@ namespace input
 	void helper::attach (const std::wstring &command_name)
 	{
 		detach();
-		m_command = Input::get_command(command_name);
+		m_command = system::get_command(command_name);
 		//->
 		if (!m_command)
 		{
-			Input::add_command(command_name);
-			m_command = Input::get_command(command_name);
+			system::add_command(command_name);
+			m_command = system::get_command(command_name);
 		}
 		//-<
 		if (m_command)

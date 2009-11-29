@@ -247,40 +247,4 @@ namespace input
  //   	std::list<button_handler_type> m_middleButtonHandlers;
  //   	std::list<button_handler_type> m_rightButtonHandlers;
  //   };
-
-	// char_stream
-
-	//параметр для char_stream::char_stream_handler_type
-	struct char_stream_event
-	{
-		enum EType
-		{
-			key_up,
-			KeyDown,
-			KeyDownAuto,
-			Char
-		};
-
-		EType m_type;
-		bool m_press;
-		int  m_key_code;
-		int  m_char;
-	};
-
-	//обьект-посредник "поток символов"
-	class char_stream: public helper
-	{
-	public:
-		typedef boost::function<void(const char_stream_event&)> char_stream_handler_type;
-		char_stream () {}
-
-		void operator += (char_stream_handler_type handler);
-
-	protected:
-		friend class command;
-		virtual void notify (const control &control);
-
-	private:
-		std::list<char_stream_handler_type> m_char_stream_handlers;
-	};
 }

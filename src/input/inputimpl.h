@@ -21,8 +21,8 @@ namespace input
         bool Init    (HWND hWnd, bool exclusive=false, bool foreground=true);
 
 		//загрузить/сохранить раскладку
-        void load(const std::string &sXml);                               
-		void save(std::string &sXml);
+        void load(const std::string &xml_str);                               
+		void save(std::string &xml_str);
 
 		//считать из буфера все события от устройств ввода
         void update();
@@ -30,11 +30,11 @@ namespace input
         void done();
 
         //получить устройство
-        device* get_device(types::EDevice      eDeviceName, int indx=0);
+        device* get_device(types::EDevice      device_type, int indx=0);
         device* get_device(const std::wstring &device_name, int indx=0);
 
         //есть ли такое устройство
-        bool is_device_present(types::EDevice      eDeviceName, int indx=0) const;
+        bool is_device_present(types::EDevice      device_type, int indx=0) const;
         bool is_device_present(const std::wstring &device_name, int indx=0) const;
 
 
@@ -44,9 +44,9 @@ namespace input
 		//получить команду
         command_ptr get_command(const std::wstring &command_name);
 		//есть ли такая команда
-        bool isCommandPresent(const std::wstring &command_name) const;
+        bool is_command_present(const std::wstring &command_name) const;
 		//отвязать команду ото всех контролов
-        void detach_command(command_ptr pCommand);
+        void detach_command(command_ptr command);
 
 	private:
 		input_impl (const input_impl&);
