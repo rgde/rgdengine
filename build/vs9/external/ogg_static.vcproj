@@ -44,7 +44,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\include"
+				AdditionalIncludeDirectories="..\..\..\external\ogg\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="true"
 				ExceptionHandling="2"
@@ -79,7 +79,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Static_Release/ogg_static.bsc"
+				OutputFile="$(IntDir)\ogg_static.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -116,7 +116,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\include"
+				AdditionalIncludeDirectories="..\..\..\external\ogg\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -150,7 +150,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Static_Debug/ogg_static.bsc"
+				OutputFile="$(IntDir)\ogg_static.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -168,7 +168,7 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="..\src\bitwise.c"
+				RelativePath="..\..\..\external\ogg\src\bitwise.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -190,7 +190,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\framing.c"
+				RelativePath="..\..\..\external\ogg\src\framing.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -217,11 +217,11 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath="..\include\ogg\ogg.h"
+				RelativePath="..\..\..\external\ogg\include\ogg\ogg.h"
 				>
 			</File>
 			<File
-				RelativePath="..\include\ogg\os_types.h"
+				RelativePath="..\..\..\external\ogg\include\ogg\os_types.h"
 				>
 			</File>
 		</Filter>
