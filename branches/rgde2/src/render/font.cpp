@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
-#include <engine/render/device.h>
-#include <engine/render/font.h>
+#include <rgde/render/device.h>
+#include <rgde/render/font.h>
 
-#include <engine/core/math.h>
+#include <rgde/core/math.h>
 
 namespace rgde
 {

@@ -152,36 +152,28 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\buffer.cpp"
+				RelativePath="..\..\..\src\render\buffer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\device.cpp"
+				RelativePath="..\..\..\src\render\device.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\device_object.cpp"
+				RelativePath="..\..\..\src\render\device_object.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\font.cpp"
+				RelativePath="..\..\..\src\render\font.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\resource.cpp"
+				RelativePath="..\..\..\src\render\resource.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="..\..\..\src\render\stdafx.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
 					>
@@ -192,7 +184,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\surface.cpp"
+				RelativePath="..\..\..\src\render\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\render\surface.cpp"
 				>
 			</File>
 		</Filter>
@@ -202,54 +198,42 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\buffer.h"
+				RelativePath="..\..\..\include\rgde\render\buffer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\device.h"
+				RelativePath="..\..\..\include\rgde\render\device.h"
 				>
 			</File>
 			<File
-				RelativePath=".\device_object.h"
+				RelativePath="..\..\..\include\rgde\render\device_object.h"
 				>
 			</File>
 			<File
-				RelativePath=".\font.h"
+				RelativePath="..\..\..\include\rgde\render\font.h"
 				>
 			</File>
 			<File
-				RelativePath=".\render.h"
+				RelativePath="..\..\..\include\rgde\render\lines_renderer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\render_forward.h"
+				RelativePath="..\..\..\include\rgde\render\render.h"
 				>
 			</File>
 			<File
-				RelativePath=".\resource.h"
+				RelativePath="..\..\..\include\rgde\render\render_forward.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="..\..\..\include\rgde\render\resource.h"
 				>
 			</File>
 			<File
-				RelativePath=".\surface.h"
+				RelativePath="..\..\..\include\rgde\render\surface.h"
 				>
 			</File>
-			<Filter
-				Name="aux"
-				>
-				<File
-					RelativePath=".\lines_renderer.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

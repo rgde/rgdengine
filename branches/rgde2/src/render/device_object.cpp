@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include <engine/render/device_object.h>
+#include <rgde/render/device_object.h>
 
 namespace rgde
 {

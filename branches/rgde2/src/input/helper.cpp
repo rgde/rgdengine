@@ -1,8 +1,9 @@
 #include "stdafx.h"
-#include "helper.h"
-#include "input.h"
-#include "control.h"
-#include "command.h"
+
+#include <rgde/input/helper.h>
+#include <rgde/input/input.h>
+#include <rgde/input/control.h>
+#include <rgde/input/command.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

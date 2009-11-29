@@ -55,9 +55,9 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 
-#include <engine/core/core.h>
-#include <engine/core/xml/xml.h>
-#include <engine/render/render.h>
+#include <rgde/core/core.h>
+#include <rgde/core/xml/xml.h>
+#include <rgde/render/render.h>
 
 #include <windows.h>
 #define ASSERT _ASSERTE

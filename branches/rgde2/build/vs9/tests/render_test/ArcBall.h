@@ -1,6 +1,6 @@
 #pragma once
 
-#include <engine/core/math.h>
+#include <rgde/core/math.h>
 
 namespace rgde
 {

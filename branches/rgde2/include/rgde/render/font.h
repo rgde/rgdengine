@@ -1,8 +1,8 @@
 #pragma once
 
-#include <engine/core/math/forward.h>
+#include <rgde/core/math/forward.h>
 
-#include <engine/render/device_object.h>
+#include <rgde/render/device_object.h>
 
 #include <string>
 
