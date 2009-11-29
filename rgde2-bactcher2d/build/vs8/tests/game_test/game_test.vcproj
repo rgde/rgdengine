@@ -61,7 +61,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="core.lib render_win32_dx9.lib render.lib input.lib"
+				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName).exe"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86;$(SolutionDir)..\..\external\boost\lib\; $(SolutionDir)..\..\libs\Release\"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
