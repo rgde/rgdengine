@@ -36,9 +36,9 @@ namespace rgde
 
 		render::primitives_2d::sprite_desc sprite;
 		sprite.texture = m_alien_texture;
-		sprite.size = vec2f(64, 256);
+		sprite.size = vec2f(256, 256);
 		sprite.pos = vec2f(50, 50);
-		sprite.color = math::color::Green;
+		sprite.color = math::color::White;
 		m_batcher.add_sprite(sprite);
 	}
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="game_test"
 	ProjectGUID="{B54CF76B-0B33-4151-AAF8-5FD81768C7D6}"
 	RootNamespace="game_test"
@@ -61,12 +61,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core.lib render_win32_dx9.lib render.lib input.lib"
 				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName).exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86;$(SolutionDir)..\..\external\boost\lib\; $(SolutionDir)..\..\libs\Release\"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\external\dxsdk\Lib\x86&quot;;&quot;$(SolutionDir)..\..\external\boost\lib\&quot;"
 				GenerateDebugInformation="true"
-				SubSystem="1"
+				SubSystem="2"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -140,10 +139,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="core.lib render_win32_dx9.lib render.lib input.lib"
 				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86;$(SolutionDir)..\..\external\boost\lib\; $(SolutionDir)..\..\libs\Release\"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\external\dxsdk\Lib\x86&quot;;&quot;$(SolutionDir)..\..\external\boost\lib\&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
