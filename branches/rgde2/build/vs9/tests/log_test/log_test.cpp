@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <engine/log/log.h>
+#include <rgde/log/log.h>
 
 int _tmain(int argc, _TCHAR* argv[])
 {

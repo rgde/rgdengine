@@ -23,4 +23,16 @@
 #define _SCL_SECURE_NO_WARNINGS
 
 #include <tchar.h>
-//...
+#include <stdio.h>
+
+#include <string>
+#include <iostream>
+#include <fstream>
+
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/categories.hpp>
+#include <boost/iostreams/categories.hpp>
+#include <boost/iostreams/pipeline.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/smart_ptr.hpp>
