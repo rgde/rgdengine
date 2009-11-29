@@ -27,7 +27,7 @@ namespace input
     input_impl::~input_impl ()
     {
         if (m_bInit)
-            Done();
+            done();
     }
  
     /////////////////////////////////////////////////
@@ -35,7 +35,7 @@ namespace input
     /////////////////////////////////////////////////
 
     //изменить режим работы устройств ввода
-    bool input_impl::SetMode (bool exclusive/*=false*/, bool foreground/*=true*/)
+    bool input_impl::set_mode (bool exclusive/*=false*/, bool foreground/*=true*/)
     {
         if (!m_bInit)
             return false;
@@ -58,7 +58,7 @@ namespace input
     bool input_impl::Init (HWND hWnd, bool exclusive/*=false*/, bool foreground/*=true*/)
     {
         if (m_bInit)
-            Done();
+            done();
 
         //инициализируем DXInput
         m_bInit = initDXInput (hWnd,exclusive,foreground);
@@ -66,160 +66,160 @@ namespace input
             return false;
 
         //заполним массив m_devices
-        m_devices.push_back (new Device(types::Keyboard, 0, *this));
-        m_devices.push_back (new Device(types::Mouse,    0, *this));
+        m_devices.push_back (new device(types::Keyboard, 0, *this));
+        m_devices.push_back (new device(types::Mouse,    0, *this));
 
         //заполним список контролов
         keyboard = *(m_devices.begin());
         mouse    = *(++m_devices.begin());
 
         //keyboard
-        keyboard->addButton(types::KeyEscape);
-        keyboard->addButton(types::Key1);
-        keyboard->addButton(types::Key2);
-        keyboard->addButton(types::Key3);
-        keyboard->addButton(types::Key4);
-        keyboard->addButton(types::Key5);
-        keyboard->addButton(types::Key6);
-        keyboard->addButton(types::Key7);
-        keyboard->addButton(types::Key8);
-        keyboard->addButton(types::Key9);
-        keyboard->addButton(types::Key0);
-        keyboard->addButton(types::KeyMinus);
-        keyboard->addButton(types::KeyEquals);
-        keyboard->addButton(types::KeyBack);
-        keyboard->addButton(types::KeyTab);
-        keyboard->addButton(types::KeyQ);
-        keyboard->addButton(types::KeyW);
-        keyboard->addButton(types::KeyE);
-        keyboard->addButton(types::KeyR);
-        keyboard->addButton(types::KeyT);
-        keyboard->addButton(types::KeyY);
-        keyboard->addButton(types::KeyU);
-        keyboard->addButton(types::KeyI);
-        keyboard->addButton(types::KeyO);
-        keyboard->addButton(types::KeyP);
-        keyboard->addButton(types::KeyLBracket);
-        keyboard->addButton(types::KeyRBracket);
-        keyboard->addButton(types::KeyReturn);
-        keyboard->addButton(types::KeyLControl);
-        keyboard->addButton(types::KeyA);
-        keyboard->addButton(types::KeyS);
-        keyboard->addButton(types::KeyD);
-        keyboard->addButton(types::KeyF);
-        keyboard->addButton(types::KeyG);
-        keyboard->addButton(types::KeyH);
-        keyboard->addButton(types::KeyJ);
-        keyboard->addButton(types::KeyK);
-        keyboard->addButton(types::KeyL);
-        keyboard->addButton(types::KeySemicolon);
-        keyboard->addButton(types::KeyApostrophe);
-        keyboard->addButton(types::KeyGrave);
-        keyboard->addButton(types::KeyLShift);
-        keyboard->addButton(types::KeyBackSlash);
-        keyboard->addButton(types::KeyZ);
-        keyboard->addButton(types::KeyX);
-        keyboard->addButton(types::KeyC);
-        keyboard->addButton(types::KeyV);
-        keyboard->addButton(types::KeyB);
-        keyboard->addButton(types::KeyN);
-        keyboard->addButton(types::KeyM);
-        keyboard->addButton(types::KeyComma);
-        keyboard->addButton(types::KeyPeriod);
-        keyboard->addButton(types::KeySlash);
-        keyboard->addButton(types::KeyRShift);
-        keyboard->addButton(types::KeyMultiply);
-        keyboard->addButton(types::KeyLMenu);
-        keyboard->addButton(types::KeySpace);
-        keyboard->addButton(types::KeyCapital);
-        keyboard->addButton(types::KeyF1);
-        keyboard->addButton(types::KeyF2);
-        keyboard->addButton(types::KeyF3);
-        keyboard->addButton(types::KeyF4);
-        keyboard->addButton(types::KeyF5);
-        keyboard->addButton(types::KeyF6);
-        keyboard->addButton(types::KeyF7);
-        keyboard->addButton(types::KeyF8);
-        keyboard->addButton(types::KeyF9);
-        keyboard->addButton(types::KeyF10);
-        keyboard->addButton(types::KeyNumLock);
-        keyboard->addButton(types::KeyScroll);
-        keyboard->addButton(types::KeyNumPad7);
-        keyboard->addButton(types::KeyNumPad8);
-        keyboard->addButton(types::KeyNumPad9);
-        keyboard->addButton(types::KeySubtract);
-        keyboard->addButton(types::KeyNumPad4);
-        keyboard->addButton(types::KeyNumPad5);
-        keyboard->addButton(types::KeyNumPad6);
-        keyboard->addButton(types::KeyAdd);
-        keyboard->addButton(types::KeyNumPad1);
-        keyboard->addButton(types::KeyNumPad2);
-        keyboard->addButton(types::KeyNumPad3);
-        keyboard->addButton(types::KeyNumPad0);
-        keyboard->addButton(types::KeyDecimal);
-        keyboard->addButton(types::KeyOEM_102);
-        keyboard->addButton(types::KeyF11);
-        keyboard->addButton(types::KeyF12);
-        keyboard->addButton(types::KeyF13);
-        keyboard->addButton(types::KeyF14);
-        keyboard->addButton(types::KeyF15);
-        keyboard->addButton(types::KeyKana);
-        keyboard->addButton(types::KeyABNT_C1);
-        keyboard->addButton(types::KeyConvert);
-        keyboard->addButton(types::KeyNoConvert);
-        keyboard->addButton(types::KeyYen);
-        keyboard->addButton(types::KeyABNT_C2);
-        keyboard->addButton(types::KeyNumPadEquals);
-        keyboard->addButton(types::KeyPrevTrack);
-        keyboard->addButton(types::KeyAt);
-        keyboard->addButton(types::KeyColon);
-        keyboard->addButton(types::KeyUnderLine);
-        keyboard->addButton(types::KeyKANJI);
-        keyboard->addButton(types::KeyStop);
-        keyboard->addButton(types::KeyAx);
-        keyboard->addButton(types::KeyUnlabeled);
-        keyboard->addButton(types::KeyNextTrack);
-        keyboard->addButton(types::KeyNumPadEnter);
-        keyboard->addButton(types::KeyRControl);
-        keyboard->addButton(types::KeyMute);
-        keyboard->addButton(types::KeyCalculator);
-        keyboard->addButton(types::KeyPlayPause);
-        keyboard->addButton(types::KeyMediaStop);
-        keyboard->addButton(types::KeyVolumeDown);
-        keyboard->addButton(types::KeyVolumeUp);
-        keyboard->addButton(types::KeyWebHome);
-        keyboard->addButton(types::KeyNumPadComma);
-        keyboard->addButton(types::KeyDivide);
-        keyboard->addButton(types::KeySysRQ);
-        keyboard->addButton(types::KeyRMenu);
-        keyboard->addButton(types::KeyPause);
-        keyboard->addButton(types::KeyHome);
-        keyboard->addButton(types::KeyUp);
-        keyboard->addButton(types::KeyPrior);
-        keyboard->addButton(types::KeyLeft);
-        keyboard->addButton(types::KeyRight);
-        keyboard->addButton(types::KeyEnd);
-        keyboard->addButton(types::KeyDown);
-        keyboard->addButton(types::KeyNext);
-        keyboard->addButton(types::KeyInsert);
-        keyboard->addButton(types::KeyDelete);
-        keyboard->addButton(types::KeyLWin);
-        keyboard->addButton(types::KeyRWin);
-        keyboard->addButton(types::KeyApps);
+        keyboard->add_button(types::KeyEscape);
+        keyboard->add_button(types::Key1);
+        keyboard->add_button(types::Key2);
+        keyboard->add_button(types::Key3);
+        keyboard->add_button(types::Key4);
+        keyboard->add_button(types::Key5);
+        keyboard->add_button(types::Key6);
+        keyboard->add_button(types::Key7);
+        keyboard->add_button(types::Key8);
+        keyboard->add_button(types::Key9);
+        keyboard->add_button(types::Key0);
+        keyboard->add_button(types::KeyMinus);
+        keyboard->add_button(types::KeyEquals);
+        keyboard->add_button(types::KeyBack);
+        keyboard->add_button(types::KeyTab);
+        keyboard->add_button(types::KeyQ);
+        keyboard->add_button(types::KeyW);
+        keyboard->add_button(types::KeyE);
+        keyboard->add_button(types::KeyR);
+        keyboard->add_button(types::KeyT);
+        keyboard->add_button(types::KeyY);
+        keyboard->add_button(types::KeyU);
+        keyboard->add_button(types::KeyI);
+        keyboard->add_button(types::KeyO);
+        keyboard->add_button(types::KeyP);
+        keyboard->add_button(types::KeyLBracket);
+        keyboard->add_button(types::KeyRBracket);
+        keyboard->add_button(types::KeyReturn);
+        keyboard->add_button(types::KeyLControl);
+        keyboard->add_button(types::KeyA);
+        keyboard->add_button(types::KeyS);
+        keyboard->add_button(types::KeyD);
+        keyboard->add_button(types::KeyF);
+        keyboard->add_button(types::KeyG);
+        keyboard->add_button(types::KeyH);
+        keyboard->add_button(types::KeyJ);
+        keyboard->add_button(types::KeyK);
+        keyboard->add_button(types::KeyL);
+        keyboard->add_button(types::KeySemicolon);
+        keyboard->add_button(types::KeyApostrophe);
+        keyboard->add_button(types::KeyGrave);
+        keyboard->add_button(types::KeyLShift);
+        keyboard->add_button(types::KeyBackSlash);
+        keyboard->add_button(types::KeyZ);
+        keyboard->add_button(types::KeyX);
+        keyboard->add_button(types::KeyC);
+        keyboard->add_button(types::KeyV);
+        keyboard->add_button(types::KeyB);
+        keyboard->add_button(types::KeyN);
+        keyboard->add_button(types::KeyM);
+        keyboard->add_button(types::KeyComma);
+        keyboard->add_button(types::KeyPeriod);
+        keyboard->add_button(types::KeySlash);
+        keyboard->add_button(types::KeyRShift);
+        keyboard->add_button(types::KeyMultiply);
+        keyboard->add_button(types::KeyLMenu);
+        keyboard->add_button(types::KeySpace);
+        keyboard->add_button(types::KeyCapital);
+        keyboard->add_button(types::KeyF1);
+        keyboard->add_button(types::KeyF2);
+        keyboard->add_button(types::KeyF3);
+        keyboard->add_button(types::KeyF4);
+        keyboard->add_button(types::KeyF5);
+        keyboard->add_button(types::KeyF6);
+        keyboard->add_button(types::KeyF7);
+        keyboard->add_button(types::KeyF8);
+        keyboard->add_button(types::KeyF9);
+        keyboard->add_button(types::KeyF10);
+        keyboard->add_button(types::KeyNumLock);
+        keyboard->add_button(types::KeyScroll);
+        keyboard->add_button(types::KeyNumPad7);
+        keyboard->add_button(types::KeyNumPad8);
+        keyboard->add_button(types::KeyNumPad9);
+        keyboard->add_button(types::KeySubtract);
+        keyboard->add_button(types::KeyNumPad4);
+        keyboard->add_button(types::KeyNumPad5);
+        keyboard->add_button(types::KeyNumPad6);
+        keyboard->add_button(types::KeyAdd);
+        keyboard->add_button(types::KeyNumPad1);
+        keyboard->add_button(types::KeyNumPad2);
+        keyboard->add_button(types::KeyNumPad3);
+        keyboard->add_button(types::KeyNumPad0);
+        keyboard->add_button(types::KeyDecimal);
+        keyboard->add_button(types::KeyOEM_102);
+        keyboard->add_button(types::KeyF11);
+        keyboard->add_button(types::KeyF12);
+        keyboard->add_button(types::KeyF13);
+        keyboard->add_button(types::KeyF14);
+        keyboard->add_button(types::KeyF15);
+        keyboard->add_button(types::KeyKana);
+        keyboard->add_button(types::KeyABNT_C1);
+        keyboard->add_button(types::KeyConvert);
+        keyboard->add_button(types::KeyNoConvert);
+        keyboard->add_button(types::KeyYen);
+        keyboard->add_button(types::KeyABNT_C2);
+        keyboard->add_button(types::KeyNumPadEquals);
+        keyboard->add_button(types::KeyPrevTrack);
+        keyboard->add_button(types::KeyAt);
+        keyboard->add_button(types::KeyColon);
+        keyboard->add_button(types::KeyUnderLine);
+        keyboard->add_button(types::KeyKANJI);
+        keyboard->add_button(types::KeyStop);
+        keyboard->add_button(types::KeyAx);
+        keyboard->add_button(types::KeyUnlabeled);
+        keyboard->add_button(types::KeyNextTrack);
+        keyboard->add_button(types::KeyNumPadEnter);
+        keyboard->add_button(types::KeyRControl);
+        keyboard->add_button(types::KeyMute);
+        keyboard->add_button(types::KeyCalculator);
+        keyboard->add_button(types::KeyPlayPause);
+        keyboard->add_button(types::KeyMediaStop);
+        keyboard->add_button(types::KeyVolumeDown);
+        keyboard->add_button(types::KeyVolumeUp);
+        keyboard->add_button(types::KeyWebHome);
+        keyboard->add_button(types::KeyNumPadComma);
+        keyboard->add_button(types::KeyDivide);
+        keyboard->add_button(types::KeySysRQ);
+        keyboard->add_button(types::KeyRMenu);
+        keyboard->add_button(types::KeyPause);
+        keyboard->add_button(types::KeyHome);
+        keyboard->add_button(types::KeyUp);
+        keyboard->add_button(types::KeyPrior);
+        keyboard->add_button(types::KeyLeft);
+        keyboard->add_button(types::KeyRight);
+        keyboard->add_button(types::KeyEnd);
+        keyboard->add_button(types::KeyDown);
+        keyboard->add_button(types::KeyNext);
+        keyboard->add_button(types::KeyInsert);
+        keyboard->add_button(types::KeyDelete);
+        keyboard->add_button(types::KeyLWin);
+        keyboard->add_button(types::KeyRWin);
+        keyboard->add_button(types::KeyApps);
 							
         //mouse
-        mouse->addButton (types::ButtonLeft);
-        mouse->addButton (types::ButtonMid);
-        mouse->addButton (types::ButtonRight);
-        mouse->addAxis   (types::AxisX);
-        mouse->addAxis   (types::AxisY);
-        mouse->addAxis   (types::AxisWheel);
+        mouse->add_button (types::ButtonLeft);
+        mouse->add_button (types::ButtonMid);
+        mouse->add_button (types::ButtonRight);
+        mouse->add_axis   (types::AxisX);
+        mouse->add_axis   (types::AxisY);
+        mouse->add_axis   (types::AxisWheel);
 
         return true;
     }
 
     //загрузить раскладку
-    void input_impl::Load (const std::string &sXml)
+    void input_impl::load (const std::string &sXml)
     {
         if (!m_bInit)
             return;
@@ -236,8 +236,8 @@ namespace input
 		//		TiXmlElement *cmd = command->ToElement();
 		//		if (cmd)
 		//		{
-		//			std::string sCommandName(cmd->Attribute("name"));
-		//			addCommand(std::wstring(sCommandName.begin(), sCommandName.end()));
+		//			std::string command_name(cmd->Attribute("name"));
+		//			add_command(std::wstring(command_name.begin(), command_name.end()));
 
 		//			TiXmlNode *control = command->FirstChild("control");
 		//			while (control)
@@ -247,12 +247,12 @@ namespace input
 		//				{
 		//					std::string sDevice(ctrl->Attribute("device"));
 		//					std::string sControl(ctrl->Attribute("name"));
-		//					Device *d = getDevice(String2Device(std::wstring(sDevice.begin(), sDevice.end())));
+		//					device *d = get_device(string_to_device(std::wstring(sDevice.begin(), sDevice.end())));
 		//					if (d)
 		//					{
-		//						Control *c = d->get_control(String2Control(std::wstring(sControl.begin(), sControl.end())));
+		//						control *c = d->get_control(String2Control(std::wstring(sControl.begin(), sControl.end())));
 		//						if (c)
-		//							c->bind(getCommand(std::wstring(sCommandName.begin(), sCommandName.end())));
+		//							c->bind(get_command(std::wstring(command_name.begin(), command_name.end())));
 		//					}
 		//				}
 
@@ -326,7 +326,7 @@ namespace input
     }
 
     //сохранить раскладку
-    void input_impl::Save (std::string &sXml)
+    void input_impl::save (std::string &sXml)
     {
         if (!m_bInit)
             return;
@@ -334,36 +334,36 @@ namespace input
     //    TiXmlDocument doc;
     //    TiXmlElement *input = (TiXmlElement*)(doc.InsertEndChild(TiXmlElement("input")));
 
-    //    std::list<CommandPtr>::iterator i = m_commands.begin();
+    //    std::list<command_ptr>::iterator i = m_commands.begin();
     //    while (i != m_commands.end())
     //    {
-    //        CommandPtr pCommand = *i;
+    //        command_ptr pCommand = *i;
 
     //        TiXmlElement *command = (TiXmlElement*)(input->InsertEndChild(TiXmlElement("command")));
-    //        std::wstring sCommandNameW = pCommand->getName();
-    //        std::string sCommandName(sCommandNameW.begin(), sCommandNameW.end());
-    //        command->SetAttribute("name", sCommandName.c_str());
+    //        std::wstring sCommandNameW = pCommand->get_name();
+    //        std::string command_name(sCommandNameW.begin(), sCommandNameW.end());
+    //        command->SetAttribute("name", command_name.c_str());
 
-    //        std::list<Device*>::iterator j = m_devices.begin();
+    //        std::list<device*>::iterator j = m_devices.begin();
     //        while (j != m_devices.end())
     //        {
-    //            Device *pDevice = *j;
+    //            device *pDevice = *j;
 
-    //            std::wstring sDeviseNameW = Device2String(pDevice->getName());
-    //            std::string sDeviceName(sDeviseNameW.begin(), sDeviseNameW.end());
+    //            std::wstring sDeviseNameW = device_to_string(pDevice->get_name());
+    //            std::string device_name(sDeviseNameW.begin(), sDeviseNameW.end());
 
-				//std::map<types::EControl, Control*>::iterator k = pDevice->m_controls.begin();
+				//std::map<types::EControl, control*>::iterator k = pDevice->m_controls.begin();
     //            while (k != pDevice->m_controls.end())
     //            {
-    //                Control *pControl = k->second;
-    //                if (pControl->isbind(pCommand))
+    //                control *pControl = k->second;
+    //                if (pControl->is_bind(pCommand))
     //                {
-    //                    std::wstring sControlNameW = Control2String(pControl->getName());
-    //                    std::string sControlName(sControlNameW.begin(), sControlNameW.end());
+    //                    std::wstring sControlNameW = Control2String(pControl->get_name());
+    //                    std::string control_name(sControlNameW.begin(), sControlNameW.end());
 
     //                    TiXmlElement *control = (TiXmlElement*)(command->InsertEndChild(TiXmlElement("control")));
-    //                    control->SetAttribute("device", sDeviceName.c_str());
-    //                    control->SetAttribute("name", sControlName.c_str());
+    //                    control->SetAttribute("device", device_name.c_str());
+    //                    control->SetAttribute("name", control_name.c_str());
     //                }
     //                ++k;
     //            }
@@ -378,7 +378,7 @@ namespace input
     }
 
     //завершить работу системы ввода
-    void input_impl::Done ()
+    void input_impl::done ()
     {
         if (!m_bInit)
             return;
@@ -403,15 +403,15 @@ namespace input
     ////////////////////////////////
 
     //получить устройство
-    Device* input_impl::getDevice (types::EDevice eDeviceName, int indx/*=0*/)
+    device* input_impl::get_device (types::EDevice eDeviceName, int indx/*=0*/)
     {
         if (!m_bInit)
             return 0;
 
-        std::list<Device*>::iterator i = m_devices.begin();
+        std::list<device*>::iterator i = m_devices.begin();
         while (i != m_devices.end())
         {
-            if ((*i)->getName() == eDeviceName && (*i)->getIndx() == indx)
+            if ((*i)->get_name() == eDeviceName && (*i)->get_index() == indx)
                 return *i;
             ++i;
         }
@@ -419,21 +419,21 @@ namespace input
         return 0;
     }
 
-    Device* input_impl::getDevice (const std::wstring &sDeviceName, int indx/*=0*/)
+    device* input_impl::get_device (const std::wstring &device_name, int indx/*=0*/)
     {
-        return getDevice(String2Device(sDeviceName), indx);
+		return get_device(string_to_type::device(device_name), indx);
     }
 
     //есть ли такое устройство
-    bool input_impl::isDevicePresent (types::EDevice eDeviceName, int indx/*=0*/) const
+    bool input_impl::is_device_present (types::EDevice eDeviceName, int indx/*=0*/) const
     {
         if (!m_bInit)
             return false;
 
-        std::list<Device*>::const_iterator i = m_devices.begin();
+        std::list<device*>::const_iterator i = m_devices.begin();
         while (i != m_devices.end())
         {
-            if ((*i)->getName() == eDeviceName && (*i)->getIndx() == indx)
+            if ((*i)->get_name() == eDeviceName && (*i)->get_index() == indx)
                 return true;
             ++i;
         }
@@ -441,9 +441,9 @@ namespace input
         return false;
     }
 
-    bool input_impl::isDevicePresent (const std::wstring &sDeviceName, int indx/*=0*/) const
+    bool input_impl::is_device_present (const std::wstring &device_name, int indx/*=0*/) const
     {
-        return isDevicePresent(String2Device(sDeviceName), indx);
+		return is_device_present(string_to_type::device(device_name), indx);
     }
  
     /////////////////////////////////////
@@ -451,45 +451,45 @@ namespace input
     /////////////////////////////////////
 
     //добавить команду
-    CommandPtr input_impl::addCommand (const std::wstring &command_name)
+    command_ptr input_impl::add_command (const std::wstring &command_name)
     {
         if (m_bInit && !isCommandPresent(command_name))
         {
-            CommandPtr command(new Command(command_name, *this));
+            command_ptr command(new command(command_name, *this));
             m_commands.push_back(command);
 			return command;
         }
 
-		return CommandPtr();
+		return command_ptr();
     }
 
     //получить команду
-    CommandPtr input_impl::getCommand (const std::wstring &sCommandName)
+    command_ptr input_impl::get_command (const std::wstring &command_name)
     {
         if (!m_bInit)
-            return CommandPtr();
+            return command_ptr();
 
-        std::list<CommandPtr>::iterator i = m_commands.begin();
+        std::list<command_ptr>::iterator i = m_commands.begin();
         while (i != m_commands.end())
         {
-            if ((*i)->getName() == sCommandName)
+            if ((*i)->get_name() == command_name)
                 return (*i);
             ++i;
         }
 
-        return CommandPtr();
+        return command_ptr();
     }
 
     //есть ли такая команда
-    bool input_impl::isCommandPresent (const std::wstring &sCommandName) const
+    bool input_impl::isCommandPresent (const std::wstring &command_name) const
     {
         if (!m_bInit)
             return false;
 
-        std::list<CommandPtr>::const_iterator i = m_commands.begin();
+        std::list<command_ptr>::const_iterator i = m_commands.begin();
         while (i != m_commands.end())
         {
-            if ((*i)->getName() == sCommandName)
+            if ((*i)->get_name() == command_name)
                 return true;
             ++i;
         }
@@ -498,16 +498,16 @@ namespace input
     }
 
     //отвязать команду ото всех контролов
-    void input_impl::detachCommand (CommandPtr pCommand)
+    void input_impl::detach_command (command_ptr pCommand)
     {
         if (!m_bInit)
             return;
 
-        std::list<Device*>::iterator i = m_devices.begin();
+        std::list<device*>::iterator i = m_devices.begin();
 
         while (i != m_devices.end())
         {
-            (*i)->detachCommand(pCommand);
+            (*i)->detach_command(pCommand);
             ++i;
         }
     }
@@ -810,7 +810,7 @@ namespace input
 		if (eControl == types::InvalidControl)
 			return; //... такой контрол не поддерживается
 
-        Control *pControl = keyboard->get_control(eControl);
+        control *pControl = keyboard->get_control(eControl);
 		if (!pControl)
 			return; //... такой контрол для клавиатуры не предусмотрен 
 
@@ -818,7 +818,7 @@ namespace input
 		pControl->m_press = (dod.dwData & 0x80) ? true : false;
 		pControl->m_delta = 0;
 
-		pControl->notifyAllObservers();
+		pControl->notify_all();
     }
 
     //обработка мышиных событий
@@ -839,23 +839,23 @@ namespace input
 		if (eControl == types::InvalidControl)
 			return; //... такой контрол не поддерживается
 
-        Control *pControl = mouse->get_control(eControl);
+        control *pControl = mouse->get_control(eControl);
 		if (!pControl)
 			return; //... такой контрол для мыши не предусмотрен 
 
         pControl->m_time = dod.dwTimeStamp;
 
-        if (pControl->getType() == Control::Axis)
+        if (pControl->get_type() == control::Axis)
         {
             pControl->m_press = false;
             pControl->m_delta = dod.dwData;
         }
-        else if (pControl->getType() == Control::Button)
+        else if (pControl->get_type() == control::button)
         {
             pControl->m_press = (dod.dwData & 0x80) ? true : false;
             pControl->m_delta = 0;
         }
 
-        pControl->notifyAllObservers();
+        pControl->notify_all();
     }
 }

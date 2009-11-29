@@ -5,38 +5,40 @@
 namespace input
 {
     //устройство ввода
-    class Device
+    class device
     {
-    public:
-		Device(types::EDevice name, int index, input_impl &input_system);
-        virtual ~Device();
+    public:		
+        virtual ~device();
 
 		//получить 'имя' устройства
-        types::EDevice getName () const {return m_eName;}
+        types::EDevice get_name () const {return m_device_type;}
 		//получить порядковый номер устройства
-        int		getIndx () const {return m_nIndx;}
+        int		get_index () const {return m_index;}
 		//получить устройство ввода
-        input_impl& getInput()       {return m_rInput;}
+        input_impl& get_input()     {return m_input;}
+		const input_impl& get_input() const {return m_input;}
 
 		//получить контрол
-        Control* get_control       (types::EControl	eControlName);
-        Control* get_control       (const std::wstring &sControlName);
+        control* get_control       (types::EControl	contol_type);
+        control* get_control       (const std::wstring &control_name);
 
 		//есть ли такой контрол
-        bool isControlPresent (types::EControl	eControlName) const;
-        bool isControlPresent (const std::wstring &sControlName) const;
+        bool is_control_present (types::EControl	contol_type) const;
+        bool is_control_present (const std::wstring &control_name) const;
 
     protected:
+		device(types::EDevice name, int index, input_impl &input_system);
+
         friend class input_impl;
-        void addButton (types::EControl controlName); //добавить кнопку
-        void addAxis   (types::EControl controlName); //добавить ось
-        void detachCommand (CommandPtr command); //отвязать команду ото всех контролов
+        void add_button (types::EControl contol_type); //добавить кнопку
+        void add_axis   (types::EControl contol_type); //добавить ось
+        void detach_command (command_ptr command); //отвязать команду ото всех контролов
 
     private:
-        int         m_nIndx;
-        types::EDevice m_eName;
-        input_impl &m_rInput;
+        int         m_index;
+        types::EDevice m_device_type;
+        input_impl &m_input;
 
-        std::map<types::EControl, Control*> m_controls; //контролы, которые есть у устройства
+        std::map<types::EControl, control*> m_controls; //контролы, которые есть у устройства
     };
 }

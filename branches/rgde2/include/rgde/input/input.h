@@ -11,36 +11,36 @@ namespace input
 	{
 	public:
 		static Input& get  ();
-		static void Destroy ();
+		static void destroy ();
 
 		void init (input_impl*);
 
         // функции самой системы ввода
-        static bool SetMode (bool exclusive=false, bool foreground=true); //изменить режим работы устройств ввода
+        static bool set_mode (bool exclusive=false, bool foreground=true); //изменить режим работы устройств ввода
         static void LoadFromString (const std::string &sXml);      //загрузить раскладку
         static void LoadFromFile   (const std::string &sFileName); //загрузить раскладку
         static void update  ();                        //считать из буфера все события от устройств ввода
-        static void Save    (std::string &sXml);       //сохранить раскладку
+        static void save    (std::string &sXml);       //сохранить раскладку
 
         // доступ к устройствам ввода
         //получить устройство
-        static Device* getDevice (types::EDevice eDeviceName, int indx=0);
-        static Device* getDevice (const std::wstring &sDeviceName, int indx=0);
+        static device* get_device (types::EDevice eDeviceName, int indx=0);
+        static device* get_device (const std::wstring &device_name, int indx=0);
         //есть ли такое устройство
-        static bool isDevicePresent (types::EDevice eDeviceName, int indx=0);
-        static bool isDevicePresent (const std::wstring &sDeviceName, int indx=0);
+        static bool is_device_present (types::EDevice eDeviceName, int indx=0);
+        static bool is_device_present (const std::wstring &device_name, int indx=0);
 
-		static Control* GetControl(types::EDevice device, int dev_index, types::EControl control);
-		static Control* GetControl(types::EDevice device, types::EControl control)
+		static control* GetControl(types::EDevice device, int dev_index, types::EControl control);
+		static control* GetControl(types::EDevice device, types::EControl control)
 		{
 			return GetControl(device, 0, control);
 		}
 
         // доступ к командам системы ввода
-        static void      addCommand       (const std::wstring &sCommandName); //добавить команду
-        static CommandPtr  getCommand       (const std::wstring &sCommandName); //получить команду
-        static bool      isCommandPresent (const std::wstring &sCommandName); //есть ли такая команда
-        static void      detachCommand    (CommandPtr pCommand);                //отвязать команду ото всех контролов
+        static void      add_command       (const std::wstring &command_name); //добавить команду
+        static command_ptr  get_command       (const std::wstring &command_name); //получить команду
+        static bool      isCommandPresent (const std::wstring &command_name); //есть ли такая команда
+        static void      detach_command    (command_ptr pCommand);                //отвязать команду ото всех контролов
 
 	private:
 		Input();

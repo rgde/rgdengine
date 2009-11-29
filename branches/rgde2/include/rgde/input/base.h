@@ -2,21 +2,21 @@
 
 namespace input
 {
-    class input_impl; //система ввода
-    class Device;    //устройство ввода
-    class Control;   //элемент (кнопка или ось) ввода
-    class Command;   //команда ввода
+    class input_impl;
+    class device;
+    class control;
+    class command;
 
-    typedef boost::shared_ptr<Command> CommandPtr;
+    typedef boost::shared_ptr<command> command_ptr;
 
-	class Helper;       //базовый класс обьекта-посредника для получения информации о событиях ввода
-	class Button;       //кнопка (нажатие и отжатие клавиш)
-	class Trigger;      //триггер (переключение состояния при каждом НАжатии клавиш)
-	class KeyUp;        //ОТжатие клавиши
-	class KeyDown;      //НАжатие на клавишу
-	class RelativeAxis; //относительная ось (сдвиг оси)
-	class AbsoluteAxis; //абсолютная ось (координата оси)
-	class KeyStream;
+	class helper;       //базовый класс обьекта-посредника для получения информации о событиях ввода
+	class button;       //кнопка (нажатие и отжатие клавиш)
+	class trigger;      //триггер (переключение состояния при каждом НАжатии клавиш)
+	class key_up;        //ОТжатие клавиши
+	class key_down;      //НАжатие на клавишу
+	class relative_axis; //относительная ось (сдвиг оси)
+	class absolute_axis; //абсолютная ось (координата оси)
+	class char_stream;
 
 	namespace types
 	{
@@ -178,15 +178,15 @@ namespace input
 		};
 	}
 
-	//получение строки, соответствующей enum-значению
-	std::wstring Device2String (types::EDevice eName);
+	struct type_to_string
+	{
+		static std::wstring device(types::EDevice type);
+		static std::wstring control(types::EControl type);
+	};
 
-	//получение enum-значения, соответствующего строке
-    types::EDevice String2Device (const std::wstring &str); 
-
-	//получение строки, соответствующей enum-значению
-    std::wstring Control2String (types::EControl eName);
-
-	//получение enum-значения, соответствующего строке
-    types::EControl String2Control (const std::wstring &str); 
+	struct string_to_type
+	{
+		static types::EDevice device(const std::wstring& type_name);
+		static types::EControl control(const std::wstring& type_name);
+	};
 }
