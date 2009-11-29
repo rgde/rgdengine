@@ -9,6 +9,7 @@ namespace rgde
 		D3DPOOL convert(resource::pool pool);
 		DWORD convert_lock_flags(uint lock_flags);
 		DWORD convert_to_fvf(const vertex_elements_vector& elements); // to FVF
+		DWORD convert_blend_mode(blend_mode mode);
 
 		class device::device_impl
 		{

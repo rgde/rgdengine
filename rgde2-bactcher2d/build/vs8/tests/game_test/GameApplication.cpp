@@ -40,6 +40,8 @@ namespace rgde
 		m_device.clear(math::color::Black);
 		m_device.frame_begin();
 
+			m_batcher.render_all();
+
 		m_device.frame_end();
 		m_device.present();
 	}

@@ -39,6 +39,21 @@ namespace rgde
 			triangle_fan
 		};
 
+		enum blend_mode
+		{
+			blend_one,
+			blend_zero,
+			blend_srccolor,
+			blend_invsrccolor,
+			blend_srcalpha,
+			blend_invsrcalpha,
+			blend_destalpha,
+			blend_invdestalpha,
+			blend_destcolor,
+			blend_invdestcolor,
+			blend_srcalphasat
+		};
+
 		class device : boost::noncopyable
 		{
 			friend class device_object;
@@ -59,6 +74,7 @@ namespace rgde
 			void set_alpha_blend(bool enable);
 			void set_transform(transform_type type, const math::mat44f& m);
 			void set_texture(texture_ptr texture, size_t index);
+			void set_blend_mode(blend_mode src, blend_mode dest);
 
 			void draw(primitive_type type, uint start_vertex, uint primitive_count);
 			void draw(primitive_type type, int base_vertex_index, uint min_vertex_index,
