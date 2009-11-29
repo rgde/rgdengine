@@ -1,5 +1,5 @@
 #pragma once
-#include "base.h"
+#include <rgde/input/base.h>
 
 #define DIRECTINPUT_VERSION 0x0800
 #define WIN32_LEAN_AND_MEAN

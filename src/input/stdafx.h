@@ -18,5 +18,5 @@
 #include <boost/function.hpp>
 #include <boost/noncopyable.hpp>
 
-#include <engine/core/event/Events.h>
+#include <rgde/core/event/events.h>
 // TODO: reference additional headers your program requires here

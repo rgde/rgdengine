@@ -40,13 +40,13 @@ void safe_release(T*& p)
 }
 
 
-#include <engine/core/types.h>
-#include <engine/core/math.h>
+#include <rgde/core/types.h>
+#include <rgde/core/math.h>
 
-#include <engine/render/device.h>
-#include <engine/render/font.h>
-#include <engine/render/resource.h>
-#include <engine/render/buffer.h>
-#include <engine/render/surface.h>
+#include <rgde/render/device.h>
+#include <rgde/render/font.h>
+#include <rgde/render/resource.h>
+#include <rgde/render/buffer.h>
+#include <rgde/render/surface.h>
 
 #include <d3dx9.h>

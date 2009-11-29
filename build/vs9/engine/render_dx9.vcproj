@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\external\boost&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\include\&quot;;&quot;$(SolutionDir)..\..\external\boost&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -106,7 +106,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\external\boost&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\include\&quot;;&quot;$(SolutionDir)..\..\external\boost&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -153,28 +153,20 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\buffer.cpp"
+				RelativePath="..\..\..\src\render_dx9\buffer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\device.cpp"
+				RelativePath="..\..\..\src\render_dx9\device.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\font.cpp"
+				RelativePath="..\..\..\src\render_dx9\font.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="..\..\..\src\render_dx9\stdafx.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
 					>
@@ -185,7 +177,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\texture.cpp"
+				RelativePath="..\..\..\src\render_dx9\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\render_dx9\texture.cpp"
 				>
 			</File>
 		</Filter>
@@ -195,23 +191,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\buffer.h"
+				RelativePath="..\..\..\src\render_dx9\buffer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\device.h"
+				RelativePath="..\..\..\src\render_dx9\device.h"
 				>
 			</File>
 			<File
-				RelativePath=".\font.h"
+				RelativePath="..\..\..\src\render_dx9\font.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\texture.h"
+				RelativePath="..\..\..\src\render_dx9\texture.h"
 				>
 			</File>
 		</Filter>

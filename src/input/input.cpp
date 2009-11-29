@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
 
-#include "input.h"
-#include "device.h"
+#include <rgde/input/input.h>
+#include <rgde/input/device.h>
 
 
 #include "inputimpl.h"

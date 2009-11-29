@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
-#include "control.h"
-#include "device.h"
-#include "command.h"
+#include <rgde/input/control.h>
+#include <rgde/input/device.h>
+#include <rgde/input/command.h>
 #include "inputimpl.h"
 
 namespace input

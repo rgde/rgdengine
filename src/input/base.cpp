@@ -1,7 +1,7 @@
 //base.cpp
 #include "stdafx.h"
 
-#include "base.h"
+#include <rgde/input/base.h>
 
 namespace input
 {

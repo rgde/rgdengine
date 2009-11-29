@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 //#include <rgde/input/base.h>
-#include "command.h"
-#include "control.h"
-#include "helper.h"
+#include <rgde/input/command.h>
+#include <rgde/input/control.h>
+#include <rgde/input/helper.h>
 
 namespace input
 {

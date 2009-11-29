@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
-#include <engine/render/device.h>
-#include <engine/render/resource.h>
-#include <engine/render/buffer.h>
+#include <rgde/render/device.h>
+#include <rgde/render/resource.h>
+#include <rgde/render/buffer.h>
 
 namespace rgde
 {

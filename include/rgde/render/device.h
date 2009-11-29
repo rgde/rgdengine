@@ -1,8 +1,8 @@
 #pragma once
 
-#include <engine/core/types.h>
-#include <engine/core/windows_forward.h>
-#include <engine/render/render_forward.h>
+#include <rgde/core/types.h>
+#include <rgde/core/windows_forward.h>
+#include <rgde/render/render_forward.h>
 
 #include <boost/noncopyable.hpp>
 #include <list>

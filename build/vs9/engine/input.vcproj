@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\external\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\external\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\external\dxsdk\Include&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -150,72 +150,68 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\base.cpp"
+				RelativePath="..\..\..\include\rgde\input\base.h"
 				>
 			</File>
 			<File
-				RelativePath="..\base.h"
+				RelativePath="..\..\..\include\rgde\input\command.h"
 				>
 			</File>
 			<File
-				RelativePath="..\command.cpp"
+				RelativePath="..\..\..\include\rgde\input\control.h"
 				>
 			</File>
 			<File
-				RelativePath="..\command.h"
+				RelativePath="..\..\..\include\rgde\input\device.h"
 				>
 			</File>
 			<File
-				RelativePath="..\control.cpp"
+				RelativePath="..\..\..\include\rgde\input\helper.h"
 				>
 			</File>
 			<File
-				RelativePath="..\control.h"
+				RelativePath="..\..\..\include\rgde\input\input.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Source Files"
+			>
+			<File
+				RelativePath="..\..\..\src\input\base.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\device.cpp"
+				RelativePath="..\..\..\src\input\command.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\device.h"
+				RelativePath="..\..\..\src\input\control.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\helper.cpp"
+				RelativePath="..\..\..\src\input\device.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\helper.h"
+				RelativePath="..\..\..\src\input\helper.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\input.cpp"
+				RelativePath="..\..\..\src\input\input.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\input.h"
+				RelativePath="..\..\..\src\input\inputimpl.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\inputimpl.cpp"
+				RelativePath="..\..\..\src\input\inputimpl.h"
 				>
 			</File>
 			<File
-				RelativePath="..\inputimpl.h"
+				RelativePath="..\..\..\src\input\stdafx.cpp"
 				>
-			</File>
-			<File
-				RelativePath=".\stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32"
 					>
@@ -226,7 +222,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="..\..\..\src\input\stdafx.h"
 				>
 			</File>
 		</Filter>

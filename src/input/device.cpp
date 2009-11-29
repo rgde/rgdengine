@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
-#include "device.h"
-#include "control.h"
+#include <rgde/input/device.h>
+#include <rgde/input/control.h>
 
 namespace input
 {

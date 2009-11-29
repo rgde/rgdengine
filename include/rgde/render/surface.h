@@ -1,6 +1,6 @@
 #pragma once
 
-#include <engine/render/resource.h>
+#include <rgde/render/resource.h>
 #include <string>
 
 namespace rgde

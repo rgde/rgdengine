@@ -1,8 +1,9 @@
 #include "stdafx.h"
 
-#include "device.h"
-#include "control.h"
-#include "command.h"
+#include <rgde/input/device.h>
+#include <rgde/input/control.h>
+#include <rgde/input/command.h>
+
 #include "inputimpl.h"
 
 #define KEYBOARD_BUFFER_SIZE 1024

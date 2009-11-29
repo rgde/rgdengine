@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
-#include <engine/core/core.h>
-#include <engine/core/options/options.h>
+#include <rgde/core/core.h>
+#include <rgde/core/options/options.h>
 
 #include <iterator>
 
