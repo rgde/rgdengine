@@ -19,8 +19,9 @@ namespace rgde
 	void BatcherApplication::init_render_data()
 	{
 		m_device.set_lighting(false);
-		m_device.set_alpha_blend(false);
-		m_device.set_alpha_test(false);
+		m_device.set_alpha_blend(true);
+		m_device.set_alpha_test(true);
+	//	m_device.set_blend_mode(render::blend_srcalpha, render::blend_one);
 
 		using namespace math;
 

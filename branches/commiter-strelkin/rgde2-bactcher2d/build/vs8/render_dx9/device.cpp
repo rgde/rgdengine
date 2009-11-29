@@ -126,6 +126,59 @@ namespace rgde
 			get_impl().get_dx_device()->SetTexture((DWORD)index, dx_texture);
 		}
 
+		DWORD convert_blend_mode(blend_mode mode)
+		{
+			DWORD dx_blend_mode;
+
+			switch(mode)
+			{
+			case blend_one:
+				dx_blend_mode = D3DBLEND_ZERO;
+				break;
+			case blend_zero:
+				dx_blend_mode = D3DBLEND_ONE;
+				break;
+			case blend_srccolor:
+				dx_blend_mode = D3DBLEND_SRCCOLOR;
+				break;
+			case blend_invsrccolor:
+				dx_blend_mode = D3DBLEND_INVSRCCOLOR;
+				break;
+			case blend_srcalpha:
+				dx_blend_mode = D3DBLEND_SRCALPHA;
+				break;
+			case blend_invsrcalpha:
+				dx_blend_mode = D3DBLEND_INVSRCALPHA;
+				break;
+			case blend_destalpha:
+				dx_blend_mode = D3DBLEND_DESTALPHA;
+				break;
+			case blend_invdestalpha:
+				dx_blend_mode = D3DBLEND_INVDESTALPHA;
+				break;
+			case blend_destcolor:
+				dx_blend_mode = D3DBLEND_DESTCOLOR;
+				break;
+			case blend_invdestcolor:
+				dx_blend_mode = D3DBLEND_INVDESTCOLOR;
+				break;
+			case blend_srcalphasat:
+				dx_blend_mode = D3DBLEND_SRCALPHASAT;
+				break;
+			}
+
+			return dx_blend_mode;
+		}
+
+		void device::set_blend_mode(blend_mode src, blend_mode dest)
+		{
+			DWORD src_mode = convert_blend_mode(src);
+			DWORD dest_mode = convert_blend_mode(dest);
+
+			HRESULT hr = get_impl().get_dx_device()->SetRenderState(D3DRS_SRCBLEND, src_mode);
+			HRESULT hr2 = get_impl().get_dx_device()->SetRenderState(D3DRS_DESTBLEND, dest_mode);
+		}
+
 		D3DPRIMITIVETYPE convert(primitive_type type)
 		{
 			D3DPRIMITIVETYPE dx_type = D3DPT_LINELIST;
