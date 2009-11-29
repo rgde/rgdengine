@@ -21,7 +21,22 @@ namespace rgde
 
 		bool device::frame_begin()
 		{
-			return m_pimpl->frame_begin();
+			bool res = m_pimpl->frame_begin();
+
+			IDirect3DDevice9* dev = get_impl().get_dx_device();
+
+			// Set default states
+
+			// Set the base texture operation and args.
+			dev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+			dev->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+			dev->SetTextureStageState(0,D3DTSS_COLORARG2, D3DTA_DIFFUSE );
+
+			dev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+			dev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+			dev->SetTextureStageState(0,D3DTSS_ALPHAARG2, D3DTA_DIFFUSE );
+
+			return res;
 		}
 
 		bool device::frame_end()
@@ -147,17 +162,17 @@ namespace rgde
 			get_impl().get_dx_device()->SetTexture((DWORD)index, dx_texture);
 		}
 
-		DWORD convert_blend_mode(blend_mode mode)
+		D3DBLEND convert_blend_mode(blend_mode mode)
 		{
-			DWORD dx_blend_mode;
+			D3DBLEND dx_blend_mode = D3DBLEND_ZERO;
 
 			switch(mode)
 			{
 			case blend_one:
-				dx_blend_mode = D3DBLEND_ZERO;
+				dx_blend_mode = D3DBLEND_ONE;
 				break;
 			case blend_zero:
-				dx_blend_mode = D3DBLEND_ONE;
+				dx_blend_mode = D3DBLEND_ZERO;
 				break;
 			case blend_srccolor:
 				dx_blend_mode = D3DBLEND_SRCCOLOR;
@@ -193,11 +208,13 @@ namespace rgde
 
 		void device::set_blend_mode(blend_mode src, blend_mode dest)
 		{
-			DWORD src_mode = convert_blend_mode(src);
-			DWORD dest_mode = convert_blend_mode(dest);
+			D3DBLEND src_mode = convert_blend_mode(src);
+			D3DBLEND dest_mode = convert_blend_mode(dest);
 
 			HRESULT hr = get_impl().get_dx_device()->SetRenderState(D3DRS_SRCBLEND, src_mode);
 			HRESULT hr2 = get_impl().get_dx_device()->SetRenderState(D3DRS_DESTBLEND, dest_mode);
+
+			__asm nop;
 		}
 
 		D3DPRIMITIVETYPE convert(primitive_type type)

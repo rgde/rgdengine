@@ -126,6 +126,11 @@ namespace rgde
 			if (m_sprites.empty())
 				return;
 
+			m_device.set_lighting(false);
+			m_device.set_alpha_blend(true);
+			m_device.set_alpha_test(true);
+			m_device.set_blend_mode(render::blend_srcalpha, render::blend_invsrcalpha);
+
 			{
 				 // если достигнут конец буфера, возвращаемся в начало
 				if(m_buffer_offset >= m_buffer_size)

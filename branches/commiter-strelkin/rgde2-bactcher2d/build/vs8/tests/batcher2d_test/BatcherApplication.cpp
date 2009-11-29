@@ -18,19 +18,19 @@ namespace rgde
 
 	void BatcherApplication::init_render_data()
 	{
-		m_device.set_lighting(false);
-		m_device.set_alpha_blend(true);
-		m_device.set_alpha_test(true);
-		m_device.set_blend_mode(render::blend_srcalpha, render::blend_invsrcalpha);
-
 		using namespace math;
 
-		tex = render::base_texture::create(m_device, L"Alien.png");
+		tex = render::base_texture::create(m_device, L"sprites/test01.jpg");
 		
 		sprite_desc sprite;
 		sprite.texture = tex;
-		sprite.size = vec2f(64, 256);
+		sprite.size = vec2f(200, 256);
 		sprite.pos = vec2f(50, 50);
+		sprite.color = math::color::Green;
+		add_sprite(sprite);
+
+		sprite.pos[0] += sprite.pos[0] + sprite.size[0];
+		sprite.color.a = 128;
 		add_sprite(sprite);
 	}
 
