@@ -1,7 +1,6 @@
 #pragma once
 
-#include <engine/log/device.h>
-#include <boost/iostreams/stream.hpp>
+#include <rgde/log/device.h>
 
 namespace rgde
 {

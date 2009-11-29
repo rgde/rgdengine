@@ -1,8 +1,7 @@
 #include "stdafx.h"
 
-#include <engine/log/log.h>
-#include <engine/log/filter.h>
-#include <boost/iostreams/filtering_stream.hpp>
+#include <rgde/log/log.h>
+#include <rgde/log/filter.h>
 
 #include "log_helper.h"
 

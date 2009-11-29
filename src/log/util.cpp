@@ -3,8 +3,6 @@
 #include <windows.h>
 #include <time.h>
 
-#include <boost/lexical_cast.hpp>
-
 namespace rgde
 {
     namespace log

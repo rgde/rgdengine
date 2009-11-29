@@ -1,11 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include <fstream>
-
-#include <boost/iostreams/categories.hpp>
-#include <boost/smart_ptr.hpp>
-
 namespace rgde
 {
     namespace log

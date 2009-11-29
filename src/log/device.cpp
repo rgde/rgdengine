@@ -1,7 +1,8 @@
 #include "stdafx.h"
 
+#include <rgde/log/device.h>
+
 #include <Windows.h>
-#include <engine/log/device.h>
 
 namespace rgde
 {
