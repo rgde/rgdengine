@@ -2,7 +2,7 @@
 
 #include <boost/noncopyable.hpp>
 
-#include <engine/core/types.h>
+#include <rgde/core/types.h>
 
 namespace rgde
 {

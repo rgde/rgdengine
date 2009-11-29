@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "convert.h"
+#include <rgde/core/convert.h>
 
 namespace rgde
 {

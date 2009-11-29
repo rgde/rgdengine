@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include&quot;;&quot;$(SolutionDir)..\..\src\core&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(SolutionDir)..\..\libs\$(ConfigurationName)\$(ProjectName).lib"
+				OutputFile="$(SolutionDir)lib\$(ConfigurationName)\$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -82,8 +82,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -105,7 +105,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include&quot;;&quot;$(SolutionDir)..\..\src\core&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -124,7 +124,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(SolutionDir)..\..\libs\$(ConfigurationName)\$(ProjectName).lib"
+				OutputFile="$(SolutionDir)lib\$(ConfigurationName)\$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -152,7 +152,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="$(SolutionDir)..\..\src\core\stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -175,7 +175,7 @@
 				Name="errors"
 				>
 				<File
-					RelativePath=".\errors.cpp"
+					RelativePath="$(SolutionDir)..\..\src\core\errors.cpp"
 					>
 				</File>
 			</Filter>
@@ -183,7 +183,7 @@
 				Name="windows"
 				>
 				<File
-					RelativePath=".\windows.cpp"
+					RelativePath="$(SolutionDir)..\..\src\core\windows.cpp"
 					>
 				</File>
 			</Filter>
@@ -191,15 +191,15 @@
 				Name="utils"
 				>
 				<File
-					RelativePath=".\convert.cpp"
+					RelativePath="$(SolutionDir)..\..\src\core\convert.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\memory.cpp"
+					RelativePath="$(SolutionDir)..\..\src\core\memory.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\timer.cpp"
+					RelativePath="$(SolutionDir)..\..\src\core\timer.cpp"
 					>
 				</File>
 			</Filter>
@@ -207,7 +207,7 @@
 				Name="log"
 				>
 				<File
-					RelativePath=".\log.cpp"
+					RelativePath="$(SolutionDir)..\..\src\core\log.cpp"
 					>
 				</File>
 			</Filter>
@@ -215,7 +215,7 @@
 				Name="vfs"
 				>
 				<File
-					RelativePath=".\file_system.cpp"
+					RelativePath="$(SolutionDir)..\..\src\core\file_system.cpp"
 					>
 				</File>
 			</Filter>
@@ -223,11 +223,11 @@
 				Name="math"
 				>
 				<File
-					RelativePath=".\math\color.cpp"
+					RelativePath="$(SolutionDir)..\..\src\core\math\color.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\math\rect.cpp"
+					RelativePath="$(SolutionDir)..\..\src\core\math\rect.cpp"
 					>
 				</File>
 			</Filter>
@@ -235,7 +235,15 @@
 				Name="events"
 				>
 				<File
-					RelativePath=".\event\Events.cpp"
+					RelativePath="$(SolutionDir)..\..\src\core\event\Events.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="xml"
+				>
+				<File
+					RelativePath="$(SolutionDir)..\..\src\core\xml\xml.cpp"
 					>
 				</File>
 			</Filter>
@@ -246,30 +254,30 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\core.h"
+				RelativePath="$(SolutionDir)..\..\include\rgde\core\core.h"
 				>
 			</File>
 			<File
-				RelativePath=".\forward.h"
+				RelativePath="$(SolutionDir)..\..\include\rgde\core\forward.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="$(SolutionDir)..\..\src\core\stdafx.h"
 				>
 			</File>
 			<File
-				RelativePath=".\types.h"
+				RelativePath="$(SolutionDir)..\..\include\rgde\core\types.h"
 				>
 			</File>
 			<Filter
 				Name="vfs"
 				>
 				<File
-					RelativePath=".\file_system.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\file_system.h"
 					>
 				</File>
 				<File
-					RelativePath=".\file_system_forward.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\file_system_forward.h"
 					>
 				</File>
 			</Filter>
@@ -277,7 +285,7 @@
 				Name="log"
 				>
 				<File
-					RelativePath=".\log.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\log.h"
 					>
 				</File>
 			</Filter>
@@ -285,23 +293,19 @@
 				Name="xml"
 				>
 				<File
-					RelativePath=".\xml\xml.cpp"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\xml\xml.h"
 					>
 				</File>
 				<File
-					RelativePath=".\xml\xml.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\xml\xml.inl"
 					>
 				</File>
 				<File
-					RelativePath=".\xml\xml.inl"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\xml\xml_forward.h"
 					>
 				</File>
 				<File
-					RelativePath=".\xml\xml_forward.h"
-					>
-				</File>
-				<File
-					RelativePath=".\xml\xml_options.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\xml\xml_options.h"
 					>
 				</File>
 			</Filter>
@@ -309,11 +313,11 @@
 				Name="windows"
 				>
 				<File
-					RelativePath=".\windows.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\windows.h"
 					>
 				</File>
 				<File
-					RelativePath=".\windows_forward.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\windows_forward.h"
 					>
 				</File>
 			</Filter>
@@ -321,19 +325,19 @@
 				Name="utils"
 				>
 				<File
-					RelativePath=".\convert.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\convert.h"
 					>
 				</File>
 				<File
-					RelativePath=".\memory.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\memory.h"
 					>
 				</File>
 				<File
-					RelativePath=".\resource_manager.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\resource_manager.h"
 					>
 				</File>
 				<File
-					RelativePath=".\timer.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\timer.h"
 					>
 				</File>
 			</Filter>
@@ -341,11 +345,11 @@
 				Name="errors"
 				>
 				<File
-					RelativePath=".\errors.h"
+					RelativePath="..\..\..\include\rgde\core\errors.h"
 					>
 				</File>
 				<File
-					RelativePath=".\errors_forward.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\errors_forward.h"
 					>
 				</File>
 			</Filter>
@@ -353,19 +357,19 @@
 				Name="math"
 				>
 				<File
-					RelativePath=".\math\color.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\math\color.h"
 					>
 				</File>
 				<File
-					RelativePath=".\math\forward.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\math\forward.h"
 					>
 				</File>
 				<File
-					RelativePath=".\math.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\math.h"
 					>
 				</File>
 				<File
-					RelativePath=".\math\rect.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\math\rect.h"
 					>
 				</File>
 			</Filter>
@@ -373,7 +377,7 @@
 				Name="options"
 				>
 				<File
-					RelativePath=".\options\options.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\options\options.h"
 					>
 				</File>
 			</Filter>
@@ -381,15 +385,11 @@
 				Name="events"
 				>
 				<File
-					RelativePath=".\event\Events.h"
+					RelativePath="$(SolutionDir)..\..\include\rgde\core\event\events.h"
 					>
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

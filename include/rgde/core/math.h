@@ -1,10 +1,10 @@
 #pragma once
 
-#include <engine/core/math/forward.h>
+#include <rgde/core/math/forward.h>
 #include <gmtl/gmtl.h>
 
-#include <engine/core/math/rect.h>
-#include <engine/core/math/color.h>
+#include <rgde/core/math/rect.h>
+#include <rgde/core/math/color.h>
 
 namespace rgde
 {
