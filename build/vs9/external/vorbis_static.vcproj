@@ -45,14 +45,14 @@
 				AdditionalOptions="/O3 /QaxK /Qsox- /Qip "
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\include,..\..\ogg\include"
+				AdditionalIncludeDirectories="..\..\..\external\vorbis\include,..\..\..\external\ogg\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
 				EnableFunctionLevelLinking="false"
-				PrecompiledHeaderFile=".\Vorbis_Static_Release/vorbis_static.pch"
+				PrecompiledHeaderFile="$(IntDir)\vorbis_static.pch"
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
@@ -82,7 +82,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Vorbis_Static_Release/vorbis_static.bsc"
+				OutputFile="$(IntDir)\vorbis_static.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -119,12 +119,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\include,..\..\ogg\include"
+				AdditionalIncludeDirectories="..\..\..\external\vorbis\include,..\..\..\external\ogg\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\Vorbis_Static_Debug/vorbis_static.pch"
+				PrecompiledHeaderFile="$(IntDir)\vorbis_static.pch"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
@@ -154,7 +154,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Vorbis_Static_Debug/vorbis_static.bsc"
+				OutputFile="$(IntDir)\vorbis_static.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -172,7 +172,7 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath="..\lib\analysis.c"
+				RelativePath="..\..\..\external\vorbis\lib\analysis.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -194,7 +194,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\bitrate.c"
+				RelativePath="..\..\..\external\vorbis\lib\bitrate.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -216,7 +216,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\block.c"
+				RelativePath="..\..\..\external\vorbis\lib\block.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -238,7 +238,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\codebook.c"
+				RelativePath="..\..\..\external\vorbis\lib\codebook.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -260,7 +260,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\envelope.c"
+				RelativePath="..\..\..\external\vorbis\lib\envelope.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -282,7 +282,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\floor0.c"
+				RelativePath="..\..\..\external\vorbis\lib\floor0.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -304,7 +304,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\floor1.c"
+				RelativePath="..\..\..\external\vorbis\lib\floor1.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -326,7 +326,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\info.c"
+				RelativePath="..\..\..\external\vorbis\lib\info.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -348,7 +348,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\lookup.c"
+				RelativePath="..\..\..\external\vorbis\lib\lookup.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -370,7 +370,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\lpc.c"
+				RelativePath="..\..\..\external\vorbis\lib\lpc.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -392,7 +392,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\lsp.c"
+				RelativePath="..\..\..\external\vorbis\lib\lsp.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -414,7 +414,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\mapping0.c"
+				RelativePath="..\..\..\external\vorbis\lib\mapping0.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -436,7 +436,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\mdct.c"
+				RelativePath="..\..\..\external\vorbis\lib\mdct.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -458,7 +458,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\psy.c"
+				RelativePath="..\..\..\external\vorbis\lib\psy.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -480,7 +480,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\registry.c"
+				RelativePath="..\..\..\external\vorbis\lib\registry.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -502,7 +502,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\res0.c"
+				RelativePath="..\..\..\external\vorbis\lib\res0.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -524,7 +524,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\sharedbook.c"
+				RelativePath="..\..\..\external\vorbis\lib\sharedbook.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -546,7 +546,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\smallft.c"
+				RelativePath="..\..\..\external\vorbis\lib\smallft.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -568,7 +568,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\synthesis.c"
+				RelativePath="..\..\..\external\vorbis\lib\synthesis.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -590,7 +590,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\lib\window.c"
+				RelativePath="..\..\..\external\vorbis\lib\window.c"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -617,87 +617,87 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath="..\include\vorbis\backends.h"
+				RelativePath="..\..\..\external\vorbis\include\vorbis\backends.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\bitbuffer.h"
+				RelativePath="..\..\..\external\vorbis\lib\bitbuffer.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\bitrate.h"
+				RelativePath="..\..\..\external\vorbis\lib\bitrate.h"
 				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\codebook.h"
+				RelativePath="..\..\..\external\vorbis\include\vorbis\codebook.h"
 				>
 			</File>
 			<File
-				RelativePath="..\include\vorbis\codec.h"
+				RelativePath="..\..\..\external\vorbis\include\vorbis\codec.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\codec_internal.h"
+				RelativePath="..\..\..\external\vorbis\lib\codec_internal.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\envelope.h"
+				RelativePath="..\..\..\external\vorbis\lib\envelope.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\highlevel.h"
+				RelativePath="..\..\..\external\vorbis\lib\highlevel.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\lookup.h"
+				RelativePath="..\..\..\external\vorbis\lib\lookup.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\lookup_data.h"
+				RelativePath="..\..\..\external\vorbis\lib\lookup_data.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\lpc.h"
+				RelativePath="..\..\..\external\vorbis\lib\lpc.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\lsp.h"
+				RelativePath="..\..\..\external\vorbis\lib\lsp.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\masking.h"
+				RelativePath="..\..\..\external\vorbis\lib\masking.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\mdct.h"
+				RelativePath="..\..\..\external\vorbis\lib\mdct.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\misc.h"
+				RelativePath="..\..\..\external\vorbis\lib\misc.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\os.h"
+				RelativePath="..\..\..\external\vorbis\lib\os.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\psy.h"
+				RelativePath="..\..\..\external\vorbis\lib\psy.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\registry.h"
+				RelativePath="..\..\..\external\vorbis\lib\registry.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\scales.h"
+				RelativePath="..\..\..\external\vorbis\lib\scales.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\smallft.h"
+				RelativePath="..\..\..\external\vorbis\lib\smallft.h"
 				>
 			</File>
 			<File
-				RelativePath="..\lib\window.h"
+				RelativePath="..\..\..\external\vorbis\lib\window.h"
 				>
 			</File>
 		</Filter>
