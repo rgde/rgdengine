@@ -4,56 +4,57 @@
 namespace input
 {
 	class input_impl;
-	class Helper;
+	class helper;
 
     //команда системы ввода
-    class Command
+    class command
     {
     public:
-        Command(const std::wstring &sName, input_impl &rInput);
+        command(const std::wstring &name, input_impl &input);
 
-        const std::wstring& getName() const;
+        const std::wstring& get_name() const;
         void lock();
         void unlock();
-        bool islocked() const;
+        bool is_locked() const;
 
     protected:
-        friend class Control;
-        void notifyAllObservers (const Control &rControl);
+        friend class control;
+		// notify all observers
+        void notify_all (const control &control);
 
     protected:
-		friend class Helper;
-        void attachObserver (Helper *pHelper);
-        void detachObserver (Helper *pHelper);
+		friend class helper;
+        void attach (helper *helper);
+        void detach (helper *helper);
 
     private:
-        bool          m_bLocked;
-        input_impl     &m_rInput;
-        std::wstring  m_sName;
+        bool          m_locked;
+        input_impl&	  m_input;
+        std::wstring  m_name;
 
-		typedef std::list<Helper*> HelpersList;
-		typedef HelpersList::iterator HelpersIt;
+		typedef std::list<helper*> helpers_list;
+		typedef helpers_list::iterator helpers_iter;
 
-        HelpersList m_helpers;
+        helpers_list m_helpers;
     };
 
-	inline const std::wstring& Command::getName() const 
+	inline const std::wstring& command::get_name() const 
 	{
-		return m_sName;
+		return m_name;
 	}
 
-	inline void Command::lock() 
+	inline void command::lock() 
 	{
-		m_bLocked = true;
+		m_locked = true;
 	}
 
-	inline void Command::unlock() 
+	inline void command::unlock() 
 	{
-		m_bLocked = false;
+		m_locked = false;
 	}
 
-	inline bool Command::islocked() const 
+	inline bool command::is_locked() const 
 	{
-		return m_bLocked;
+		return m_locked;
 	}
 }

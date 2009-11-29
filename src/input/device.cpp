@@ -5,14 +5,14 @@
 
 namespace input
 {
-	Device::Device(types::EDevice eName, int nIndx, input_impl &rInput):
-		m_nIndx  (nIndx),
-		m_eName  (eName),
-		m_rInput (rInput)
+	device::device(types::EDevice eName, int nIndx, input_impl &input):
+		m_index  (nIndx),
+		m_device_type  (eName),
+		m_input (input)
 	{
 	}
 
-    Device::~Device()
+    device::~device()
     {
         while (!m_controls.empty())
         {
@@ -22,9 +22,9 @@ namespace input
     }
 
     //получить контрол
-    Control* Device::get_control(types::EControl eControlName)
+    control* device::get_control(types::EControl contol_type)
     {
-        std::map<types::EControl,Control*>::iterator pos = m_controls.find(eControlName);
+        std::map<types::EControl,control*>::iterator pos = m_controls.find(contol_type);
 
         if (pos == m_controls.end())
           return 0;
@@ -32,40 +32,40 @@ namespace input
         return pos->second;
     }
 
-    Control* Device::get_control(const std::wstring &sControlName)
+    control* device::get_control(const std::wstring &control_name)
     {
-        return get_control(String2Control(sControlName));
+		return get_control(string_to_type::control(control_name));
     }
 
     //есть ли такой контрол
-    bool Device::isControlPresent(types::EControl eControlName) const
+    bool device::is_control_present(types::EControl contol_type) const
     {
-        return m_controls.find(eControlName) != m_controls.end();
+        return m_controls.find(contol_type) != m_controls.end();
     }
 
-    bool Device::isControlPresent (const std::wstring &sControlName) const
+    bool device::is_control_present (const std::wstring &control_name) const
     {
-        return isControlPresent(String2Control(sControlName));
+        return is_control_present(string_to_type::control(control_name));
     }
 
     //добавить кнопку
-    void Device::addButton (types::EControl eControlName)
+    void device::add_button (types::EControl contol_type)
     {
-        Control *pControl = new Control(eControlName, Control::Button, *this);
-        m_controls[pControl->getName()] = pControl;
+        control *pControl = new control(contol_type, control::button, *this);
+        m_controls[pControl->get_name()] = pControl;
     }
 
     //добавить ось
-    void Device::addAxis (types::EControl eControlName)
+    void device::add_axis (types::EControl contol_type)
     {
-        Control *pControl = new Control(eControlName, Control::Axis, *this);
-        m_controls[pControl->getName()] = pControl;
+        control *pControl = new control(contol_type, control::Axis, *this);
+        m_controls[pControl->get_name()] = pControl;
     }
 
     //отвязать команду ото всех контролов
-    void Device::detachCommand (CommandPtr pCommand)
+    void device::detach_command (command_ptr pCommand)
     {
-        std::map<types::EControl, Control*>::iterator i = m_controls.begin();
+        std::map<types::EControl, control*>::iterator i = m_controls.begin();
 
         while (i != m_controls.end())
             i->second->unbind(pCommand);

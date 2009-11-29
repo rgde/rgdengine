@@ -4,52 +4,46 @@
 
 namespace input
 {
-    //элемент (кнопка, ось и т.п.) устройства ввода
-    class Control
+    class control
     {
     public:        
-        //виды контролов
         enum EType
         {
-            Button,
+            button,
             Axis
         };
 
-        Control(types::EControl name, EType type, Device &device);
+        control(types::EControl name, EType type, device &device);
 
-        types::EControl getName () const {return m_name;}
-		EType    getType () const {return m_type;}
-
-        //добавить наблюдателя
-        void bind (CommandPtr command);
+        types::EControl get_name () const {return m_name;}
+		EType			get_type () const {return m_type;}
+        
+        void bind (command_ptr command);
         void bind (const std::wstring &command_name);
 
-        //удалить наблюдателя
-        void unbind (CommandPtr command);
+        void unbind (command_ptr command);
         void unbind (const std::wstring &command_name);
 
-        //добавлен ли такой наблюдатель
-        bool isbind (CommandPtr command);
-        bool isbind (const std::wstring &command_name);
+        bool is_bind (command_ptr command);
+        bool is_bind (const std::wstring &command_name);
 
-        //уведомить наблюдателей о своем изменении
-        void notifyAllObservers (); 
+        void notify_all (); 
 
-		bool getPress() const {return m_press;}
+		bool is_pressed() const {return m_press;}
 
         int  m_time;
         bool m_press;
         int  m_delta;
 
     private:
-        Device          &m_device; //устройство, которому принадлежит контрол
+        device          &m_device; //устройство, которому принадлежит контрол
         EType            m_type;   //тип контрола
         types::EControl  m_name;   //'имя' контрола
 
-		typedef std::list<CommandPtr> CommandsList;
-		typedef CommandsList::iterator CommandsIter;
+		typedef std::list<command_ptr> commands_list;
+		typedef commands_list::iterator commands_iter;
 
 		//команды, к которой привязан контрол
-        CommandsList m_commands;
+        commands_list m_commands;
     };
 }

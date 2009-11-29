@@ -158,7 +158,7 @@ namespace input
 	static InputMap s_map;
 
     //получение строки, соответствующей enum-значению
-	std::wstring Device2String (types::EDevice eName)
+	std::wstring type_to_string::device(types::EDevice eName)
     {
 		std::map<std::wstring, types::EDevice>::iterator i = s_map.m_mapString2Device.begin();
 		while (i != s_map.m_mapString2Device.end())
@@ -171,8 +171,8 @@ namespace input
         return L"InvalidDevice";
     }
 
-    //получение enum-значения, соответствующего строке
-    types::EDevice String2Device (const std::wstring &str)
+	//получение enum-значения, соответствующего строке
+	types::EDevice string_to_type::device(const std::wstring &str)
     {
 		std::map<std::wstring, types::EDevice>::iterator i = s_map.m_mapString2Device.find(str);
 		if (i != s_map.m_mapString2Device.end())
@@ -182,7 +182,7 @@ namespace input
     }
 
     //получение строки, соответствующей enum-значению
-    std::wstring Control2String (types::EControl eName)
+    std::wstring type_to_string::control(types::EControl eName)
     {
 		std::map<std::wstring, types::EControl>::iterator i = s_map.m_mapString2Control.begin();
 		while (i != s_map.m_mapString2Control.end())
@@ -196,7 +196,7 @@ namespace input
     }
 
     //получение enu m-значения, соответствующего строке
-    types::EControl String2Control (const std::wstring &str)
+	types::EControl string_to_type::control(const std::wstring &str)
     {
 		std::map<std::wstring, types::EControl>::iterator i = s_map.m_mapString2Control.find(str);
 		if (i != s_map.m_mapString2Control.end())

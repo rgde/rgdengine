@@ -15,38 +15,38 @@ namespace input
        ~input_impl();
 
 	    //изменить режим работы устройств ввода
-        bool SetMode (bool exclusive=false, bool foreground=true);
+        bool set_mode (bool exclusive=false, bool foreground=true);
 
 		//проинициализировать систему ввода
         bool Init    (HWND hWnd, bool exclusive=false, bool foreground=true);
 
 		//загрузить/сохранить раскладку
-        void Load(const std::string &sXml);                               
-		void Save(std::string &sXml);
+        void load(const std::string &sXml);                               
+		void save(std::string &sXml);
 
 		//считать из буфера все события от устройств ввода
         void update();
 		//завершить работу системы ввода
-        void Done();
+        void done();
 
         //получить устройство
-        Device* getDevice(types::EDevice      eDeviceName, int indx=0);
-        Device* getDevice(const std::wstring &sDeviceName, int indx=0);
+        device* get_device(types::EDevice      eDeviceName, int indx=0);
+        device* get_device(const std::wstring &device_name, int indx=0);
 
         //есть ли такое устройство
-        bool isDevicePresent(types::EDevice      eDeviceName, int indx=0) const;
-        bool isDevicePresent(const std::wstring &sDeviceName, int indx=0) const;
+        bool is_device_present(types::EDevice      eDeviceName, int indx=0) const;
+        bool is_device_present(const std::wstring &device_name, int indx=0) const;
 
 
         // доступ к командам системы ввода
 		//добавить команду
-        CommandPtr addCommand(const std::wstring &sCommandName);
+        command_ptr add_command(const std::wstring &command_name);
 		//получить команду
-        CommandPtr getCommand(const std::wstring &sCommandName);
+        command_ptr get_command(const std::wstring &command_name);
 		//есть ли такая команда
-        bool isCommandPresent(const std::wstring &sCommandName) const;
+        bool isCommandPresent(const std::wstring &command_name) const;
 		//отвязать команду ото всех контролов
-        void detachCommand(CommandPtr pCommand);
+        void detach_command(command_ptr pCommand);
 
 	private:
 		input_impl (const input_impl&);
@@ -61,12 +61,12 @@ namespace input
 		void mProcess (DIDEVICEOBJECTDATA data);
 
     private:
-        std::list<Device*> m_devices;
-        std::list<CommandPtr> m_commands;
+        std::list<device*> m_devices;
+        std::list<command_ptr> m_commands;
 		
 		//вспомогательные переменные для более быстрого доступа
-        Device*            keyboard; 
-        Device*            mouse;    
+        device*            keyboard; 
+        device*            mouse;    
 
         bool m_bInit;
 
