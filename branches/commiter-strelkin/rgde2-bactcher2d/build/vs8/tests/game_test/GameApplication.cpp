@@ -14,9 +14,7 @@ namespace rgde
 		show();
 		update();
 
-		m_device.set_lighting(false);
-		m_device.set_alpha_blend(false);
-		m_device.set_alpha_test(false);
+		init_game_data();
 
 		m_debug_info = render::font::create(m_device, 12, L"Arial");
 	}
@@ -31,8 +29,17 @@ namespace rgde
 
 	void GameApplication::init_game_data()
 	{
+		using namespace math;
+
 		m_ship_texture = render::base_texture::create(m_device, L"TestInput/SpaceShip.png");
 		m_alien_texture = render::base_texture::create(m_device, L"TestInput/Alien.png");
+
+		render::primitives_2d::sprite_desc sprite;
+		sprite.texture = m_alien_texture;
+		sprite.size = vec2f(64, 256);
+		sprite.pos = vec2f(50, 50);
+		sprite.color = math::color::Green;
+		m_batcher.add_sprite(sprite);
 	}
 
 	void GameApplication::render_frame()
