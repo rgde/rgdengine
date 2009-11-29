@@ -21,7 +21,7 @@ namespace rgde
 		m_device.set_lighting(false);
 		m_device.set_alpha_blend(true);
 		m_device.set_alpha_test(true);
-	//	m_device.set_blend_mode(render::blend_srcalpha, render::blend_one);
+		m_device.set_blend_mode(render::blend_srcalpha, render::blend_invsrcalpha);
 
 		using namespace math;
 
