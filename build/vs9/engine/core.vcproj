@@ -105,7 +105,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include&quot;;&quot;$(SolutionDir)..\..\src\core&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "localization.h"
+#include <rgde/localization/localization.h>
 
 namespace rgde
 {
