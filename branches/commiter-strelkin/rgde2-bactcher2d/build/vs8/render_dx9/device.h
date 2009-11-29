@@ -10,6 +10,7 @@ namespace rgde
 		DWORD convert_lock_flags(uint lock_flags);
 		DWORD convert_to_fvf(const vertex_elements_vector& elements); // to FVF
 		DWORD convert_blend_mode(blend_mode mode);
+		DWORD convert_cull_mode(cull_mode mode);
 
 		class device::device_impl
 		{

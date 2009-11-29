@@ -71,9 +71,30 @@ namespace rgde
 			get_impl().get_dx_device()->SetRenderState(D3DRS_ZENABLE, enable? TRUE : FALSE);
 		}
 
+		DWORD convert_cull_mode(cull_mode mode)
+		{
+			DWORD dx_cull_mode;
+
+			switch(mode)
+			{
+			case cull_none:
+				dx_cull_mode = D3DCULL_NONE;
+				break;
+			case cull_ccw:
+				dx_cull_mode = D3DCULL_CCW;
+				break;
+			case cull_cw:
+				dx_cull_mode = D3DCULL_CW;
+				break;
+			}
+
+			return dx_cull_mode;
+		}
+
 		void device::set_cull_mode(cull_mode mode)
 		{
-			//get_impl().get_dx_device()->SetRenderState(D3DRS_CULLMODE, D3D_TYPECCULLMODE );
+			DWORD cull_mode = convert_cull_mode(mode);
+			get_impl().get_dx_device()->SetRenderState(D3DRS_CULLMODE, cull_mode);
 		}
 
 		void device::set_alpha_test(bool enable)
