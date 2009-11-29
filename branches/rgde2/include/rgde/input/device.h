@@ -2,6 +2,8 @@
 
 #include <rgde/input/base.h>
 
+namespace rgde
+{
 namespace input
 {
     //устройство ввода
@@ -41,4 +43,5 @@ namespace input
 
         std::map<types::EControl, control*> m_controls; //контролы, которые есть у устройства
     };
+}
 }

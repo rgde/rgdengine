@@ -3,6 +3,8 @@
 
 #include <rgde/input/base.h>
 
+namespace rgde
+{
 namespace input
 {
 	struct InputMap
@@ -204,4 +206,5 @@ namespace input
 
         return types::InvalidControl;
     }
+}
 }

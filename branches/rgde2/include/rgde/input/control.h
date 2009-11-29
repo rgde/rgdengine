@@ -2,6 +2,8 @@
 
 #include <rgde/input/base.h>
 
+namespace rgde
+{
 namespace input
 {
     class control
@@ -10,7 +12,7 @@ namespace input
         enum EType
         {
             button,
-            Axis
+            axis
         };
 
         control(types::EControl name, EType type, device &device);
@@ -46,4 +48,5 @@ namespace input
 		//команды, к которой привязан контрол
         commands_list m_commands;
     };
+}
 }

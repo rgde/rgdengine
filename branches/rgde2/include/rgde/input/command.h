@@ -1,6 +1,7 @@
 #pragma once
 
-
+namespace rgde
+{
 namespace input
 {
 	class input_impl;
@@ -57,4 +58,5 @@ namespace input
 	{
 		return m_locked;
 	}
+}
 }

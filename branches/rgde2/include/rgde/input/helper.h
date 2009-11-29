@@ -2,20 +2,24 @@
 
 #include <rgde/input/base.h>
 
+namespace rgde
+{
 namespace input
 {
+	class system;
+
 	//helper
 
 	//параметр для helper::handler_type
 	struct helper_event
 	{
-		enum EType
+		enum type
 		{
 			button,
-			Axis
+			axis
 		};
 
-		EType m_type;
+		type m_type;
 		bool m_press;
 		int  m_delta;
 		int  m_time;
@@ -37,8 +41,8 @@ namespace input
 		command_ptr get_command() const {return m_command;}
 
 	protected:
-		helper();
-		explicit helper (const std::wstring &command_name);
+		explicit helper(system& system);
+		helper (const std::wstring &command_name, system& system);
 
 		friend class command;
 		virtual void notify (const control &control);
@@ -46,6 +50,7 @@ namespace input
 	private:
 		command_ptr         m_command;
 		std::list<handler_type> m_handlers;
+		system& m_system;
 	};
 
 	// button, обьект-посредник "кнопка"
@@ -53,8 +58,8 @@ namespace input
 	{
 	public:
 		typedef boost::function<void(bool)> button_handler_type;
-		button ();
-		explicit button (const std::wstring &command_name);
+		explicit button (system& system);
+		button (const std::wstring &command_name, system& system);
 
 		void operator += (button_handler_type handler);
 		operator bool () const {return m_press > 0;}
@@ -73,8 +78,8 @@ namespace input
 	{
 	public:
 		typedef boost::function<void(bool)> trigger_handler_type;
-		trigger ();
-		explicit trigger (const std::wstring &command_name);
+		explicit trigger (system& system);
+		trigger (const std::wstring &command_name, system& system);
 
 		void operator += (trigger_handler_type handler);
 		operator bool () const {return m_is_active;}
@@ -94,8 +99,8 @@ namespace input
 	{
 	public:
 		typedef boost::function<void()> keyup_handler_type;
-		key_up ();
-		explicit key_up (const std::wstring &command_name);
+		explicit key_up (system& system);
+		key_up (const std::wstring &command_name, system& system);
 
 		void operator += (keyup_handler_type handler);
 
@@ -113,8 +118,8 @@ namespace input
 	{
 	public:
 		typedef boost::function<void()> keydown_handler_type;
-		key_down ();
-		explicit key_down (const std::wstring &command_name);
+		explicit key_down (system& system);
+		key_down (const std::wstring &command_name, system& system);
 
 		void operator += (keydown_handler_type handler);
 
@@ -132,8 +137,8 @@ namespace input
 	{
 	public:
 		typedef boost::function<void(int)> relativeaxis_handle_type;
-		relative_axis ();
-		relative_axis (const std::wstring &command_name);
+		explicit relative_axis (system& system);
+		relative_axis (const std::wstring &command_name, system& system);
 
 		void operator += (relativeaxis_handle_type handler);
 
@@ -152,8 +157,8 @@ namespace input
 	public:
 		typedef boost::function<void(int)> absolute_axis_handler_type;
 
-		absolute_axis ();
-		absolute_axis (const std::wstring &command_name);
+		explicit absolute_axis (system& system);
+		absolute_axis (const std::wstring &command_name, system& system);
 
 		void operator += (absolute_axis_handler_type handler);
 		operator int () const {return m_pos;}
@@ -247,4 +252,5 @@ namespace input
  //   	std::list<button_handler_type> m_middleButtonHandlers;
  //   	std::list<button_handler_type> m_rightButtonHandlers;
  //   };
+}
 }
