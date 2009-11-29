@@ -36,6 +36,16 @@ namespace rgde
 			dev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 			dev->SetTextureStageState(0,D3DTSS_ALPHAARG2, D3DTA_DIFFUSE );
 
+			for (int i = 0; i < 8; ++i)
+			{
+				dev->SetSamplerState(i, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+				dev->SetSamplerState(i, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+				dev->SetSamplerState(i, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+
+				dev->SetSamplerState(i, D3DSAMP_ADDRESSU, D3DTADDRESS_BORDER);
+				dev->SetSamplerState(i, D3DSAMP_ADDRESSV, D3DTADDRESS_BORDER);
+			}
+
 			return res;
 		}
 
