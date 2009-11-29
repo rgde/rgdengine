@@ -63,11 +63,11 @@ namespace input
     }
 
     //отвязать команду ото всех контролов
-    void device::detach_command (command_ptr pCommand)
+    void device::detach_command (command_ptr command)
     {
         std::map<types::EControl, control*>::iterator i = m_controls.begin();
 
         while (i != m_controls.end())
-            i->second->unbind(pCommand);
+            i->second->unbind(command);
     }
 }

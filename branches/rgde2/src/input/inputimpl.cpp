@@ -219,13 +219,13 @@ namespace input
     }
 
     //загрузить раскладку
-    void input_impl::load (const std::string &sXml)
+    void input_impl::load (const std::string &xml_str)
     {
         if (!m_bInit)
             return;
 
 		//TiXmlDocument doc;
-		//doc.Parse(sXml.c_str());
+		//doc.Parse(xml_str.c_str());
 		//
 		//TiXmlNode *root = doc.FirstChild("input");
 		//if (root)
@@ -326,7 +326,7 @@ namespace input
     }
 
     //сохранить раскладку
-    void input_impl::save (std::string &sXml)
+    void input_impl::save (std::string &xml_str)
     {
         if (!m_bInit)
             return;
@@ -337,10 +337,10 @@ namespace input
     //    std::list<command_ptr>::iterator i = m_commands.begin();
     //    while (i != m_commands.end())
     //    {
-    //        command_ptr pCommand = *i;
+    //        command_ptr command = *i;
 
     //        TiXmlElement *command = (TiXmlElement*)(input->InsertEndChild(TiXmlElement("command")));
-    //        std::wstring sCommandNameW = pCommand->get_name();
+    //        std::wstring sCommandNameW = command->get_name();
     //        std::string command_name(sCommandNameW.begin(), sCommandNameW.end());
     //        command->SetAttribute("name", command_name.c_str());
 
@@ -356,7 +356,7 @@ namespace input
     //            while (k != pDevice->m_controls.end())
     //            {
     //                control *pControl = k->second;
-    //                if (pControl->is_bind(pCommand))
+    //                if (pControl->is_bind(command))
     //                {
     //                    std::wstring sControlNameW = Control2String(pControl->get_name());
     //                    std::string control_name(sControlNameW.begin(), sControlNameW.end());
@@ -374,7 +374,7 @@ namespace input
 
     //    std::stringstream ss;
     //    ss << doc;
-    //    sXml = ss.str();
+    //    xml_str = ss.str();
     }
 
     //завершить работу системы ввода
@@ -403,7 +403,7 @@ namespace input
     ////////////////////////////////
 
     //получить устройство
-    device* input_impl::get_device (types::EDevice eDeviceName, int indx/*=0*/)
+    device* input_impl::get_device (types::EDevice device_type, int indx/*=0*/)
     {
         if (!m_bInit)
             return 0;
@@ -411,7 +411,7 @@ namespace input
         std::list<device*>::iterator i = m_devices.begin();
         while (i != m_devices.end())
         {
-            if ((*i)->get_name() == eDeviceName && (*i)->get_index() == indx)
+            if ((*i)->get_name() == device_type && (*i)->get_index() == indx)
                 return *i;
             ++i;
         }
@@ -425,7 +425,7 @@ namespace input
     }
 
     //есть ли такое устройство
-    bool input_impl::is_device_present (types::EDevice eDeviceName, int indx/*=0*/) const
+    bool input_impl::is_device_present (types::EDevice device_type, int indx/*=0*/) const
     {
         if (!m_bInit)
             return false;
@@ -433,7 +433,7 @@ namespace input
         std::list<device*>::const_iterator i = m_devices.begin();
         while (i != m_devices.end())
         {
-            if ((*i)->get_name() == eDeviceName && (*i)->get_index() == indx)
+            if ((*i)->get_name() == device_type && (*i)->get_index() == indx)
                 return true;
             ++i;
         }
@@ -453,7 +453,7 @@ namespace input
     //добавить команду
     command_ptr input_impl::add_command (const std::wstring &command_name)
     {
-        if (m_bInit && !isCommandPresent(command_name))
+        if (m_bInit && !is_command_present(command_name))
         {
             command_ptr command(new command(command_name, *this));
             m_commands.push_back(command);
@@ -481,7 +481,7 @@ namespace input
     }
 
     //есть ли такая команда
-    bool input_impl::isCommandPresent (const std::wstring &command_name) const
+    bool input_impl::is_command_present (const std::wstring &command_name) const
     {
         if (!m_bInit)
             return false;
@@ -498,7 +498,7 @@ namespace input
     }
 
     //отвязать команду ото всех контролов
-    void input_impl::detach_command (command_ptr pCommand)
+    void input_impl::detach_command (command_ptr command)
     {
         if (!m_bInit)
             return;
@@ -507,7 +507,7 @@ namespace input
 
         while (i != m_devices.end())
         {
-            (*i)->detach_command(pCommand);
+            (*i)->detach_command(command);
             ++i;
         }
     }

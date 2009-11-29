@@ -17,19 +17,19 @@ namespace input
     {
     }
 
-    void control::bind (command_ptr pCommand)
+    void control::bind (command_ptr command)
     {
         commands_iter pos = std::find
         (
           m_commands.begin(),
           m_commands.end(),
-          pCommand
+          command
         );
 
         if (pos != m_commands.end())
             return;
 
-        m_commands.push_back(pCommand);
+        m_commands.push_back(command);
     }
 
     void control::bind (const std::wstring &command_name)
@@ -38,13 +38,13 @@ namespace input
     }
 
     //удалить наблюдателя
-    void control::unbind (command_ptr pCommand)
+    void control::unbind (command_ptr command)
     {
         commands_iter pos = std::find
         (
           m_commands.begin(),
           m_commands.end(),
-          pCommand
+          command
         );
 
         if (pos == m_commands.end())
@@ -59,13 +59,13 @@ namespace input
     }
 
     //добавлен ли такой наблюдатель
-    bool control::is_bind (command_ptr pCommand)
+    bool control::is_bind (command_ptr command)
     {
         commands_iter pos = std::find
         (
           m_commands.begin(),
           m_commands.end(),
-          pCommand
+          command
         );
 
         if (pos == m_commands.end())
