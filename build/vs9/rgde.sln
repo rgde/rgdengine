@@ -14,9 +14,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core_test", "tests\core_tes
 		{C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6} = {C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render", "engine\render\render.vcproj", "{98B9C120-939A-4A20-9231-B25805EB85D1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render", "engine\render.vcproj", "{98B9C120-939A-4A20-9231-B25805EB85D1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "engine\core\core.vcproj", "{C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "engine\core.vcproj", "{C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render_test", "tests\render_test\render_test.vcproj", "{2730B8D5-6D9E-41BA-975C-0DF08030BF83}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -28,23 +28,23 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render_test", "tests\render
 		{C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6} = {C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "log", "engine\log\log.vcproj", "{1E387E72-9FB4-485B-8DA2-C17161ABBC6F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "log", "engine\log.vcproj", "{1E387E72-9FB4-485B-8DA2-C17161ABBC6F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "log_test", "tests\log_test\log_test.vcproj", "{FB4E3B2B-37D2-48CA-9A73-AFFD02DF4C33}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1E387E72-9FB4-485B-8DA2-C17161ABBC6F} = {1E387E72-9FB4-485B-8DA2-C17161ABBC6F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render_win32_dx9", "render_dx9\render_dx9.vcproj", "{DD993359-1DA6-4B02-A429-827CDC85D983}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render_win32_dx9", "engine\render_dx9.vcproj", "{DD993359-1DA6-4B02-A429-827CDC85D983}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "localization", "engine\localization\localization.vcproj", "{499A4A27-1B37-4B09-A14C-362589A3DC06}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "localization", "engine\localization.vcproj", "{499A4A27-1B37-4B09-A14C-362589A3DC06}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6} = {C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "external\freetype.vcproj", "{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "input", "engine\input\input.vcproj", "{9DCBA5A5-4488-4996-8751-088C8A5327FF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "input", "engine\input.vcproj", "{9DCBA5A5-4488-4996-8751-088C8A5327FF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogg_static", "external\ogg_static.vcproj", "{7744E265-F311-410F-943D-A63B98C0FC4F}"
 EndProject
