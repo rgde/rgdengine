@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
-#include <engine/core/windows.h>
-#include <engine/core/math.h>
+#include <rgde/core/windows.h>
+#include <rgde/core/math.h>
 
 namespace rgde
 {

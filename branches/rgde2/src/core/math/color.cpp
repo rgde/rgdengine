@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include <gmtl/gmtl.h>
-#include <engine/core/math/color.h>
+#include <rgde/core/math/color.h>
 
 
 namespace rgde

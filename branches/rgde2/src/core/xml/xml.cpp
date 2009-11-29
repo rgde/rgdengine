@@ -11,14 +11,14 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "stdafx.h"
-#include "xml.h"
+#include <rgde/core/xml/xml.h>
 
 #include <stdlib.h>
 #include <stdio.h>
 
 #include <new>
 
-# include <fstream>
+#include <fstream>
 
 
 #	pragma warning(disable: 4127) // conditional expression is constant

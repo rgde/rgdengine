@@ -1,6 +1,6 @@
 #pragma once
 
-#include <engine/core/errors.h>
+#include <rgde/core/errors.h>
 
 #include <boost/call_traits.hpp>
 #include <boost/smart_ptr.hpp>

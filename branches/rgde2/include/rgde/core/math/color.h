@@ -1,7 +1,7 @@
 #pragma once
 
-#include <engine/core/math/forward.h>
-#include <engine/core/types.h>
+#include <rgde/core/math/forward.h>
+#include <rgde/core/types.h>
 
 namespace rgde
 {

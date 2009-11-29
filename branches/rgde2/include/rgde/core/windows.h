@@ -1,7 +1,7 @@
 #pragma once
 
-#include <engine/core/windows_forward.h>
-#include <engine/core/types.h>
+#include <rgde/core/windows_forward.h>
+#include <rgde/core/types.h>
 
 namespace rgde
 {

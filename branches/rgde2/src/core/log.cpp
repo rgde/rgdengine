@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include <engine/core/log.h>
+#include <rgde/core/log.h>
 #include <windows.h>
 
 //#if _SECURE_SCL == 1

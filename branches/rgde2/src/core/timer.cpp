@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include <engine/core/timer.h>
+#include <rgde/core/timer.h>
 #include <windows.h>
 
 namespace rgde
