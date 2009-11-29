@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(SolutionDir)..\..\libs\$(ConfigurationName)\$(ProjectName).lib"
+				OutputFile="$(SolutionDir)lib\$(ConfigurationName)\$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -82,8 +82,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\..\temp\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -105,7 +105,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -124,7 +124,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(SolutionDir)..\..\libs\$(ConfigurationName)\$(ProjectName).lib"
+				OutputFile="$(SolutionDir)lib\$(ConfigurationName)\$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -152,11 +152,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\localization.cpp"
+				RelativePath="..\..\..\src\localization\localization.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="..\..\..\src\localization\stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -175,6 +175,10 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath="..\..\..\src\localization\stdafx.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -182,11 +186,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\localization.h"
-				>
-			</File>
-			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="..\..\..\include\rgde\localization\localization.h"
 				>
 			</File>
 		</Filter>
