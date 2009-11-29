@@ -4,6 +4,8 @@
 #include <rgde/input/control.h>
 #include <rgde/input/helper.h>
 
+namespace rgde
+{
 namespace input
 {
 	command::command(const std::wstring &name, input_impl &input)
@@ -13,7 +15,7 @@ namespace input
 	{
 	}
 
-    void command::notify_all (const control &control)
+    void command::notify_all(const control &control)
     {
         if (m_locked)
             return;
@@ -42,6 +44,5 @@ namespace input
                 ++i;
         }
     }
-
-
+}
 }

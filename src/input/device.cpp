@@ -3,6 +3,8 @@
 #include <rgde/input/device.h>
 #include <rgde/input/control.h>
 
+namespace rgde
+{
 namespace input
 {
 	device::device(types::EDevice eName, int nIndx, input_impl &input):
@@ -58,7 +60,7 @@ namespace input
     //добавить ось
     void device::add_axis (types::EControl contol_type)
     {
-        control *pControl = new control(contol_type, control::Axis, *this);
+        control *pControl = new control(contol_type, control::axis, *this);
         m_controls[pControl->get_name()] = pControl;
     }
 
@@ -70,4 +72,5 @@ namespace input
         while (i != m_controls.end())
             i->second->unbind(command);
     }
+}
 }

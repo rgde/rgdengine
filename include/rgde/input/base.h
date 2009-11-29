@@ -1,5 +1,7 @@
 #pragma once
 
+namespace rgde
+{
 namespace input
 {
     class input_impl;
@@ -189,4 +191,5 @@ namespace input
 		static types::EDevice device(const std::wstring& type_name);
 		static types::EControl control(const std::wstring& type_name);
 	};
+}
 }

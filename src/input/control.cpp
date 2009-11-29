@@ -5,6 +5,8 @@
 #include <rgde/input/command.h>
 #include "inputimpl.h"
 
+namespace rgde
+{
 namespace input
 {
     control::control(types::EControl eName, EType eType, device &rDevice):
@@ -91,4 +93,5 @@ namespace input
         }
     }
 
+}
 }

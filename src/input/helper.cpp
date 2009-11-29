@@ -8,14 +8,18 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+namespace rgde
+{
 namespace input
 {
 //////////////////////////////////////////////////////////////////////////
-	helper::helper()
+	helper::helper(system& system)
+		: m_system(system)
 	{
 	}
 
-	helper::helper(const std::wstring &command_name)
+	helper::helper(const std::wstring &command_name, system& system)
+		: m_system(system)
 	{
 		attach(command_name);
 	}
@@ -28,12 +32,12 @@ namespace input
 	void helper::attach (const std::wstring &command_name)
 	{
 		detach();
-		m_command = system::get_command(command_name);
+		m_command = m_system.get_command(command_name);
 		//->
 		if (!m_command)
 		{
-			system::add_command(command_name);
-			m_command = system::get_command(command_name);
+			m_system.add_command(command_name);
+			m_command = m_system.get_command(command_name);
 		}
 		//-<
 		if (m_command)
@@ -61,8 +65,8 @@ namespace input
 
 		switch (control.get_type())
 		{
-			case control::Axis:
-				ev.m_type = helper_event::Axis; 
+			case control::axis:
+				ev.m_type = helper_event::axis; 
 				break;
 			case control::button:
 				ev.m_type = helper_event::button; 
@@ -86,12 +90,15 @@ namespace input
 
 	//////////////////////////////////////////////////////////////////////////
 	// CButton
-	button::button (): m_press(0) 
+	button::button (system& system)
+		: m_press(0)
+		, helper(system)
 	{
 	}
 
-	button::button(const std::wstring &command_name): 
-		helper(command_name), m_press(0) 
+	button::button(const std::wstring &command_name, system& system)
+		: helper(command_name, system)
+		, m_press(0) 
 	{
 	}
 
@@ -126,14 +133,15 @@ namespace input
 	//////////////////////////////////////////////////////////////////////////
 	// CTrigger
 
-	trigger::trigger()
-		: m_is_active(false) 
+	trigger::trigger(system& system)
+		: m_is_active(false)
+		, helper(system)
 	{
 	}
 
-	trigger::trigger(const std::wstring &command_name): 
-		helper(command_name), 
-		m_is_active(false) 
+	trigger::trigger(const std::wstring &command_name, system& system)
+		: helper(command_name, system)
+		, m_is_active(false) 
 	{
 	}
 
@@ -169,11 +177,13 @@ namespace input
 
 //////////////////////////////////////////////////////////////////////////
 
-	key_up::key_up() 
+	key_up::key_up(system& system) 
+		: helper(system)
 	{
 	}
 
-	key_up::key_up(const std::wstring &command_name): helper(command_name) 
+	key_up::key_up(const std::wstring &command_name, system& system)
+		: helper(command_name, system)
 	{
 	}
 
@@ -202,12 +212,13 @@ namespace input
 
 	//////////////////////////////////////////////////////////////////////////
 
-	key_down::key_down () 
+	key_down::key_down(system& system) 
+		: helper(system)
 	{
 	}
 
-	key_down::key_down (const std::wstring &command_name): 
-		helper(command_name) 
+	key_down::key_down(const std::wstring &command_name, system& system)
+		: helper(command_name, system) 
 	{
 	}
 
@@ -236,12 +247,13 @@ namespace input
 
 //////////////////////////////////////////////////////////////////////////
 
-	relative_axis::relative_axis()
+	relative_axis::relative_axis(system& system)
+		: helper(system)
 	{
 	}
 
-	relative_axis::relative_axis(const std::wstring &command_name) : 
-		helper(command_name) 
+	relative_axis::relative_axis(const std::wstring &command_name, system& system) 
+		: helper(command_name, system) 
 	{
 	}
 
@@ -254,7 +266,7 @@ namespace input
 	{
         helper::notify(control);
 
-		if (control.get_type() != control::Axis)
+		if (control.get_type() != control::axis)
 			return;
 
 		std::list<relative_axis::relativeaxis_handle_type>::iterator i = m_raxis_handlers.begin();
@@ -267,18 +279,19 @@ namespace input
 
 //////////////////////////////////////////////////////////////////////////
 
-	absolute_axis::absolute_axis ():
-		m_min (0),
-		m_max (100),
-		m_pos (0)
+	absolute_axis::absolute_axis (system& system)
+		: helper(system)
+		, m_min (0)
+		, m_max (100)
+		, m_pos (0)
 	{
 	}
 
-	absolute_axis::absolute_axis (const std::wstring &command_name):
-		helper(command_name),
-		m_min (0),
-		m_max (100),
-		m_pos (0)
+	absolute_axis::absolute_axis (const std::wstring &command_name, system& system)
+		: helper(command_name, system)
+		, m_min (0)
+		, m_max (100)
+		, m_pos (0)
 	{
 	}
 
@@ -314,7 +327,7 @@ namespace input
 	{
         helper::notify(control);
 
-		if (control.get_type() != control::Axis)
+		if (control.get_type() != control::axis)
 			return;
 
 		set_pos(m_pos + control.m_delta);
@@ -334,7 +347,7 @@ namespace input
 //        subscribe<CCursorMove>(&Cursor::onCursorMove);
 //    }
 //
-//	void Cursor::operator += (CursorHandler handler)
+//	  void Cursor::operator += (CursorHandler handler)
 //    {
 //		m_cursorHandlers.push_back(handler);
 //    }
@@ -511,4 +524,5 @@ namespace input
 //    }
 
 //////////////////////////////////////////////////////////////////////////
+}
 }
