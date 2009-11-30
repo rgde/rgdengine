@@ -5,6 +5,19 @@
 
 namespace rgde
 {
+	AlienUnit::AlienUnit()
+	{
+		using namespace gmtl::Math;
+		using namespace math;
+
+		velocity = rangeRandom(5.0f, 25.0f);
+
+		sprite.pos = vec2f(rangeRandom(0.0f, 800.0f), rangeRandom(-128.0f, 728.0f));
+		sprite.size = vec2f(rangeRandom(46.0f, 87.0f), rangeRandom(46.0f, 87.0f));
+		sprite.spin = rangeRandom(0.f,360.f);
+		sprite.color = color(255, 255, 255, 255);
+	}
+
 	GameApplication::GameApplication(int x, int y, int w, int h, const std::wstring& title)
 		: m_active(true)
 		, window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU)
@@ -23,10 +36,6 @@ namespace rgde
 	{
 	}
 
-	void GameApplication::update_frame()
-	{
-	}
-
 	void GameApplication::init_game_data()
 	{
 		using namespace math;
@@ -34,12 +43,23 @@ namespace rgde
 		m_ship_texture = render::base_texture::create(m_device, L"TestInput/SpaceShip.png");
 		m_alien_texture = render::base_texture::create(m_device, L"TestInput/Alien.png");
 
-		render::primitives_2d::sprite_desc sprite;
-		sprite.texture = m_alien_texture;
-		sprite.size = vec2f(256, 256);
-		sprite.pos = vec2f(50, 50);
-		sprite.color = math::color::White;
-		m_batcher.add_sprite(sprite);
+		m_aliens.clear();
+
+		for (int i=0; i<20; i++)
+		{
+			AlienUnit unit;
+			unit.sprite.texture = m_alien_texture;
+			add_unit(unit);
+		}
+	}
+
+	void GameApplication::update_frame()
+	{
+		for(aliens_iter it = m_aliens.begin(); it != m_aliens.end(); ++it)
+		{
+			AlienUnit &alien = *it;
+			alien.sprite.pos += math::vec2f(0, alien.velocity); 
+		}
 	}
 
 	void GameApplication::render_frame()
@@ -51,6 +71,12 @@ namespace rgde
 
 		m_device.frame_end();
 		m_device.present();
+	}
+
+	void GameApplication::add_unit(AlienUnit& unit)
+	{
+		m_batcher.add_sprite(unit.sprite);
+		m_aliens.push_back(unit);
 	}
 
 	void GameApplication::run()
