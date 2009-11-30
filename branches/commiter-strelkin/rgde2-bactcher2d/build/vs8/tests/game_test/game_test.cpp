@@ -13,7 +13,7 @@ int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 	std::wstring path = p.branch_path().string() + L"/../data/";
 	SetCurrentDirectoryW(path.c_str());
 
-	rgde::GameApplication app(250, 50, 640, 480, L"Batcher2D test");
+	rgde::GameApplication app(250, 50, 800, 600, L"Batcher2D test");
 
 	app.run();
 
