@@ -48,11 +48,11 @@ technique PartilesRenderModulate
 
         // Set up texture stage 0
         Texture[0]	= <ParticlesTexture>; // Use the texture parameter defined above
-        ColorOp[0]	= Modulate;
+        ColorOp[0]		= Modulate;
         ColorArg1[0]	= Texture;
         ColorArg2[0]	= Diffuse;
         
-        AlphaOp[0]	= Modulate;
+        AlphaOp[0]		= Modulate;
         AlphaArg1[0]	= Texture;
         AlphaArg2[0]	= Diffuse;
         

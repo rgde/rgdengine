@@ -606,10 +606,6 @@
 				Name="base"
 				>
 				<File
-					RelativePath=".\src\base\dator.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\base\exception.cpp"
 					>
 				</File>
