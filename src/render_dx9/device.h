@@ -7,8 +7,10 @@ namespace rgde
 	namespace render
 	{
 		D3DPOOL convert(resource::pool pool);
+		D3DPRIMITIVETYPE convert(primitive_type type);
 		DWORD convert_lock_flags(uint lock_flags);
 		DWORD convert_to_fvf(const vertex_elements_vector& elements); // to FVF
+		D3DBLEND convert_blend_mode(blend_mode mode);
 
 		class device::device_impl
 		{

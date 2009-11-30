@@ -13,9 +13,9 @@ namespace rgde
 	{
 		enum cull_mode
 		{
-			cull_none, 
-			cull_ccw,
-			cull_cw
+			cull_none = 1, 
+			cull_cw,
+			cull_ccw			
 		};
 
 		enum transform_type 
@@ -39,6 +39,20 @@ namespace rgde
 			triangle_fan
 		};
 
+		enum blend_mode
+		{
+			blend_one,
+			blend_zero,
+			blend_src_color,
+			blend_invsrc_color,
+			blend_src_alpha,
+			blend_invsrc_alpha,
+			blend_dest_alpha,
+			blend_invdest_alpha,
+			blend_dest_color,
+			blend_invdest_color
+		};
+
 		class device : boost::noncopyable
 		{
 			friend class device_object;
@@ -46,11 +60,8 @@ namespace rgde
 			class device_impl;
 			typedef boost::scoped_ptr<device_impl> pimpl;
 
-			device(core::windows::handle hwnd = NULL, bool windowed = true);
+			device(core::windows::handle hwnd = 0, bool windowed = true);
 			virtual ~device();
-
-			bool frame_begin();
-			bool frame_end();
 
 			void set_lighting(bool enable);
 			void set_ztest(bool enable);
@@ -58,17 +69,20 @@ namespace rgde
 			void set_alpha_test(bool enable);
 			void set_alpha_blend(bool enable);
 			void set_transform(transform_type type, const math::mat44f& m);
+			void set_texture(texture_ptr texture, size_t index);
+			void set_blend_mode(blend_mode src, blend_mode dest);
 
 			void draw(primitive_type type, uint start_vertex, uint primitive_count);
 			void draw(primitive_type type, int base_vertex_index, uint min_vertex_index,
 					  uint num_vertices, uint start_index, uint primitive_count);
 
-			void clear(unsigned int color, float depth = 1.0f);
-
-			bool present();
-
 			void set_index_buffer(index_buffer_ptr ib);
 			void set_stream_source(uint stream_number, vertex_buffer_ptr stream_data, uint stride);
+
+			void clear(unsigned int color, float depth = 1.0f);
+			bool frame_begin();
+			bool frame_end();
+			bool present();
 			
 			device_impl& get_impl();
 			const device_impl& get_impl() const;
