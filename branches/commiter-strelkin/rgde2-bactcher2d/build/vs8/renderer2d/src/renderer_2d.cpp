@@ -105,6 +105,11 @@ namespace rgde
 			m_need_update = true;
 		}
 
+		renderer_2d::sprites_vector& renderer_2d::get_sprites()
+		{
+			return m_sprites;
+		}
+
 		void renderer_2d::clear_sprites()
 		{
 			m_sprites.clear();

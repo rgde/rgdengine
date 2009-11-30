@@ -55,12 +55,14 @@ namespace rgde
 
 	void GameApplication::update_frame()
 	{
-		for(aliens_iter it = m_aliens.begin(); it != m_aliens.end(); ++it)
+		using namespace render;
+
+		for(renderer_2d::sprites_iter it = m_batcher.get_sprites().begin(); it != m_batcher.get_sprites().end(); ++it)
 		{
-			AlienUnit &alien = *it;
-			alien.sprite.pos += math::vec2f(0, alien.velocity); 
+			primitives_2d::sprite_desc &sprite = *it;
+			sprite.pos += math::vec2f(0, 0.05); 
 		}
-	}
+	} 
 
 	void GameApplication::render_frame()
 	{
