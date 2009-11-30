@@ -11,6 +11,7 @@ namespace rgde
 	namespace math
 	{
 
+		/// make perspective LH matrix
 		inline mat44f makePerspectiveFovLH(float fovy, float aspect, float zn, float zf)
 		{
 			float hfov = fovy/2;
@@ -24,13 +25,7 @@ namespace rgde
 					0,		0,		zf/(zf-zn),		1,
 					0,		0,		-zn*zf/(zf-zn), 0);
 
-			//RH
-			//out.set(xscale,	0,			0,			0,
-			//		0,		yscale,		0,			0, 
-			//		0,		0,		zf/(zn-zf),		1,
-			//		0,		0,		zn*zf/(zn-zf), 0);
-
-			gmtl::transpose(out);
+			//gmtl::transpose(out);
 
 			return out;
 		}
