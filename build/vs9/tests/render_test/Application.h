@@ -2,7 +2,6 @@
 
 #include "ArcBall.h"
 #include "camera.h"
-#include "karaoke.h"
 #include "game.h"
 
 #include "audio/audio.h"
@@ -106,6 +105,5 @@ namespace rgde
 		math::color m_back_color;
 
 		audio::system m_sound_system;
-		::game::karaoke *m_karaoke;
 	};
 }

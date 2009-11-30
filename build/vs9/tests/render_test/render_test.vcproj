@@ -242,38 +242,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="karaoke"
-			>
-			<File
-				RelativePath=".\karaoke.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\karaoke.h"
-				>
-			</File>
-			<Filter
-				Name="gui"
-				>
-				<File
-					RelativePath=".\game_gui.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\game_gui.h"
-					>
-				</File>
-				<File
-					RelativePath=".\imageset.h"
-					>
-				</File>
-				<File
-					RelativePath=".\main_menu.h"
-					>
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
 			Name="game"
 			>
 			<File
