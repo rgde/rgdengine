@@ -10,8 +10,6 @@ using namespace math;
 
 #include "Application.h"
 
-#include <windows.h>
-
 
 Application::Application(int x, int y, int w, int h, const std::wstring& title) 
 	: m_active(true),
@@ -20,7 +18,6 @@ Application::Application(int x, int y, int w, int h, const std::wstring& title)
 	//m_font(font::create(m_device, 18, L"Arial", font::heavy)),
 	//m_arc_ball(w, h), 
 	m_elapsed(0),
-	m_karaoke(0), 
 	m_sound_system(get_handle())
 {
 	m_size.w = w;
@@ -43,9 +40,6 @@ Application::~Application()
 {
 	//m_vb.reset();
 	//m_ib.reset();
-
-	delete m_karaoke;
-	m_karaoke = 0;
 }
 
 void Application::init_render_data()
@@ -87,7 +81,7 @@ void Application::render()
 	m_device.frame_begin();
 	m_device.clear(m_back_color);
 
-	m_karaoke->render();
+	
 
 	m_device.frame_end();
 	m_device.present();
@@ -110,11 +104,9 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 		{
 			if (VK_F5 == wparam)
 			{
-				init_game_data();
 			}
 			else if (VK_SPACE == wparam)
 			{
-				m_karaoke->on_key_pressed(wparam);
 			}
 
 			return 0;
@@ -129,8 +121,6 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 
 			int xPos = LOWORD(lparam); 
 			int yPos = HIWORD(lparam); 
-
-			m_karaoke->on_mouse_click(xPos, yPos);
 		}
 
 		return 0;
@@ -173,14 +163,8 @@ void Application::resize_scene(unsigned int width, unsigned int height)
 
 void Application::init_game_data()
 {
-	if(m_karaoke)
-	{
-		delete m_karaoke;
-	}
-
 	bool res = m_config.load_file("config.xml");
 	m_back_color = xml_color(m_config("root")("app")("background")("color"));
-	m_karaoke = new ::game::karaoke(*this);
 }
 
 
