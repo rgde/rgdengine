@@ -12,7 +12,7 @@ namespace rgde
 	{
 
 		/// make perspective LH matrix
-		inline mat44f makePerspectiveFovLH(float fovy, float aspect, float zn, float zf)
+		inline mat44f make_perspective(float fovy, float aspect, float zn, float zf)
 		{
 			float hfov = fovy/2;
 			float yscale = ::cos(hfov)/::sin(hfov);
@@ -30,7 +30,7 @@ namespace rgde
 			return out;
 		}
 
-		inline mat44f makeLookAt(const vec3f& eye, const vec3f& at, const vec3f& up)
+		inline mat44f make_lookat(const vec3f& eye, const vec3f& at, const vec3f& up)
 		{
 			//////////////////////////////////////////////////////////////////////////
 			// LH
