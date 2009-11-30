@@ -91,7 +91,7 @@ namespace rgde
 		//render::index_buffer_ptr m_ib;
 
 		//math::vec3f m_cam_pos;
-		//Camera m_camera;
+		//camera m_camera;
 
 		int old_x;
 		int old_y;

@@ -2,27 +2,27 @@
 
 namespace rgde
 {
-	class Camera
+	class camera
 	{
 	public:
-		Camera()
+		camera()
 		{
-			m_ProjMatrix = math::MAT_IDENTITY44F;
-			m_ViewMatrix = math::MAT_IDENTITY44F;
+			m_proj_matrix = math::MAT_IDENTITY44F;
+			m_view_matrix = math::MAT_IDENTITY44F;
 			m_rotx = m_roty = 0;
 			m_distance = 5.0f;
 		}
-		~Camera(){}
+		~camera(){}
 
-		void setProjection(float fFovy, float fAspect, float fZNear, float fZFar)
+		void setProjection(float fov_y, float aspect, float znear, float zfar)
 		{
-			m_ProjMatrix = math::makePerspectiveFovLH(fFovy, fAspect, fZNear, fZFar);
+			m_proj_matrix = math::make_perspective(fov_y, aspect, znear, zfar);
 		}
 
 		void lookAt(const math::vec3f& vEyePt, const math::vec3f& vLookatPt, const math::vec3f& vUpVec)
 		{
 			m_lookPt = vLookatPt;
-			m_ViewMatrix = math::makeLookAt(vEyePt, vLookatPt, vUpVec);
+			m_view_matrix = math::make_lookat(vEyePt, vLookatPt, vUpVec);
 			_asm nop;
 		}
 
@@ -37,14 +37,14 @@ namespace rgde
 
 			cam_pos = rotation * cam_pos;
 
-			m_ViewMatrix = math::makeLookAt(cam_pos, math::vec3f(0,0,0), math::vec3f(0,1,0));
+			m_view_matrix = math::make_lookat(cam_pos, math::vec3f(0,0,0), math::vec3f(0,1,0));
 
-			return m_ViewMatrix;
+			return m_view_matrix;
 		}
 
 		const math::mat44f& getProjMatrix() const 
 		{
-			return m_ProjMatrix;
+			return m_proj_matrix;
 		}
 
 		//движение
@@ -52,7 +52,7 @@ namespace rgde
 		{
 			math::mat44f trans = math::makeTrans<math::mat44f>(math::vec3f(0, 0, delta));
 
-			m_ViewMatrix *= trans;
+			m_view_matrix *= trans;
 
 			m_distance += delta;
 			m_distance = m_distance < 0 ? 5 : m_distance;
@@ -63,7 +63,7 @@ namespace rgde
 		{
 			math::mat44f rot = math::makeRot<math::mat44f>(math::EulerAngleXYZf(0, angle, 0));
 			math::invertFull(rot, rot);
-			m_ViewMatrix = rot * m_ViewMatrix;
+			m_view_matrix = rot * m_view_matrix;
 			m_roty -= angle;
 		}
 
@@ -71,13 +71,13 @@ namespace rgde
 		{
 			math::mat44f rot = math::makeRot<math::mat44f>(math::EulerAngleXYZf(0, 0, angle));
 			math::invertFull(rot, rot);
-			m_ViewMatrix = rot * m_ViewMatrix;
+			m_view_matrix = rot * m_view_matrix;
 			m_rotx -= angle;
 		}
 
 	protected:
-		math::mat44f m_ProjMatrix;
-		math::mat44f m_ViewMatrix;
+		math::mat44f m_proj_matrix;
+		math::mat44f m_view_matrix;
 		math::vec3f	 m_lookPt;
 		float m_rotx, m_roty, m_distance;
 	};
