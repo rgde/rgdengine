@@ -272,18 +272,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="mech"
-				>
-				<File
-					RelativePath=".\game_mech.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\game_mech.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="game"
