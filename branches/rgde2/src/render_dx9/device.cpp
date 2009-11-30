@@ -21,7 +21,32 @@ namespace rgde
 
 		bool device::frame_begin()
 		{
-			return m_pimpl->frame_begin();
+			bool res = m_pimpl->frame_begin();
+
+			IDirect3DDevice9* dev = get_impl().get_dx_device();
+
+			// Set default states
+
+			// Set the base texture operation and args.
+			dev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+			dev->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+			dev->SetTextureStageState(0,D3DTSS_COLORARG2, D3DTA_DIFFUSE );
+
+			dev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+			dev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+			dev->SetTextureStageState(0,D3DTSS_ALPHAARG2, D3DTA_DIFFUSE );
+
+			for (int i = 0; i < 8; ++i)
+			{
+				dev->SetSamplerState(i, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+				dev->SetSamplerState(i, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+				dev->SetSamplerState(i, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+
+				dev->SetSamplerState(i, D3DSAMP_ADDRESSU, D3DTADDRESS_BORDER);
+				dev->SetSamplerState(i, D3DSAMP_ADDRESSV, D3DTADDRESS_BORDER);
+			}
+
+			return res;
 		}
 
 		bool device::frame_end()
@@ -73,7 +98,7 @@ namespace rgde
 
 		void device::set_cull_mode(cull_mode mode)
 		{
-			//get_impl().get_dx_device()->SetRenderState(D3DRS_CULLMODE, D3D_TYPECCULLMODE );
+			get_impl().get_dx_device()->SetRenderState(D3DRS_CULLMODE, (D3DCULL)mode );
 		}
 
 		void device::set_alpha_test(bool enable)
@@ -86,67 +111,32 @@ namespace rgde
 			get_impl().get_dx_device()->SetRenderState(D3DRS_ALPHABLENDENABLE, enable? TRUE : FALSE);
 		}
 
+		void device::set_texture(texture_ptr texture, size_t index)
+		{
+			IDirect3DTexture9* dx_texture = texture->get_impl()->get_dx_texture();
+			get_impl().get_dx_device()->SetTexture(index, dx_texture);
+		}
+
 		void device::set_transform(transform_type type, const math::mat44f& m)
 		{
-			D3DTRANSFORMSTATETYPE ttype = D3DTS_VIEW;
-
-			switch(type)
+			static D3DTRANSFORMSTATETYPE trasform_maping[texture3_transform + 1] =  
 			{
-			case projection_transform:
-				ttype = D3DTS_PROJECTION;
-				break;
-			case view_transform:
-				ttype = D3DTS_VIEW;
-				break;
-			case world_transform:
-				ttype = D3DTS_WORLD;
-				break;
-			case texture0_transform:
-				ttype = D3DTS_TEXTURE0;
-				break;
-			case texture1_transform:
-				ttype = D3DTS_TEXTURE1;
-				break;
-			case texture2_transform:
-				ttype = D3DTS_TEXTURE2;
-				break;
-			case texture3_transform:
-				ttype = D3DTS_TEXTURE3;
-				break;
-			}
+				D3DTS_VIEW,
+				D3DTS_PROJECTION,
+				D3DTS_WORLD,
+				D3DTS_TEXTURE0,
+				D3DTS_TEXTURE1,
+				D3DTS_TEXTURE2,
+				D3DTS_TEXTURE3,
+			};
+
+			assert(type < texture3_transform + 1 && "transform_type out of range!");
+
+			D3DTRANSFORMSTATETYPE ttype = trasform_maping[type];
 
 			const D3DMATRIX* d3d_matrix = (const D3DMATRIX*)(float*)&m;
 
 			get_impl().get_dx_device()->SetTransform(ttype, d3d_matrix);
-		}
-
-		D3DPRIMITIVETYPE convert(primitive_type type)
-		{
-			D3DPRIMITIVETYPE dx_type = D3DPT_LINELIST;
-
-			switch(type)
-			{
-			case line_list:
-				dx_type = D3DPT_LINELIST;
-				break;
-			case line_strip:
-				dx_type = D3DPT_LINESTRIP;
-				break;
-			case point_list:
-				dx_type = D3DPT_POINTLIST;
-				break;
-			case triangle_list:
-				dx_type = D3DPT_TRIANGLELIST;
-				break;
-			case triangle_strip:
-				dx_type = D3DPT_TRIANGLESTRIP;
-				break;
-			case triangle_fan:
-				dx_type = D3DPT_TRIANGLEFAN;
-				break;
-			}
-
-			return dx_type;
 		}
 
 		void device::draw(primitive_type type, uint start_vertex, uint primitive_count)
@@ -167,21 +157,24 @@ namespace rgde
 		}
 
 		//////////////////////////////////////////////////////////////////////////
+
+		D3DPRIMITIVETYPE convert(primitive_type type)
+		{
+			D3DPRIMITIVETYPE dx_type = (D3DPRIMITIVETYPE)type;
+			return dx_type;
+		}
+
 		D3DPOOL convert(resource::pool pool)
 		{
-			D3DPOOL dx_pool;
-			switch(pool)
+			static D3DPOOL pool_mapings[resource::systemmem + 1] =
 			{
-			case resource::default:
-				dx_pool = D3DPOOL_DEFAULT;
-				break;
-			case resource::systemmem:
-				dx_pool = D3DPOOL_SYSTEMMEM;
-				break;
-			case resource::managed:
-				dx_pool = D3DPOOL_MANAGED;
-				break;
-			}
+				D3DPOOL_DEFAULT, D3DPOOL_MANAGED, D3DPOOL_SYSTEMMEM
+			};
+
+			assert(pool < resource::systemmem + 1);
+
+			D3DPOOL dx_pool = pool_mapings[pool] ;
+
 			return dx_pool;
 		}
 
@@ -211,7 +204,11 @@ namespace rgde
 		//#define D3DFVF_XYZB3            0x00a
 		//#define D3DFVF_XYZB4            0x00c
 		//#define D3DFVF_XYZB5            0x00e
-		inline DWORD GET_D3DFVF_XYZB(uint index) {assert(index > 0 && index < 6); return (0x006 + (index-1)*2)&0x00F;}
+		inline DWORD GET_D3DFVF_XYZB(uint index)		
+		{
+			assert(index > 0 && index < 6);
+			return (0x006 + (index-1)*2)&0x00F;
+		}
 
 		DWORD convert_to_fvf(const vertex_elements_vector& elements)
 		{
@@ -237,6 +234,8 @@ namespace rgde
 					fvf |= D3DFVF_SPECULAR;
 				else if (el.usage == vertex_element::texcoord)
 				{
+					fvf |= (D3DFVF_TEX1 * (el.usage_index + 1) );
+
 					switch(el.type)
 					{
 					case vertex_element::float1:
@@ -282,7 +281,6 @@ namespace rgde
 
 			return fvf;
 		}
-
 		DWORD convert_lock_flags(uint lock_flags)
 		{
 			DWORD flags = 0;
@@ -292,6 +290,20 @@ namespace rgde
 			flags |= (lock_flags & buffer::nosyslock) > 0 ? D3DLOCK_NOSYSLOCK : 0;
 			flags |= (lock_flags & buffer::no_dirty_update) > 0 ? D3DLOCK_NO_DIRTY_UPDATE : 0;
 			return flags;
+		}
+
+		D3DBLEND convert_blend_mode(blend_mode mode)
+		{
+			static D3DBLEND blend_mapings[blend_invdest_color + 1] =
+			{
+				D3DBLEND_ONE, D3DBLEND_ZERO, D3DBLEND_SRCCOLOR, D3DBLEND_INVSRCCOLOR,
+				D3DBLEND_SRCALPHA, D3DBLEND_INVSRCALPHA, D3DBLEND_DESTALPHA, 
+				D3DBLEND_INVDESTALPHA, D3DBLEND_DESTCOLOR, D3DBLEND_INVDESTCOLOR
+			};
+
+			D3DBLEND dx_blend_mode = blend_mapings[mode];
+
+			return dx_blend_mode;
 		}
 
 	}
