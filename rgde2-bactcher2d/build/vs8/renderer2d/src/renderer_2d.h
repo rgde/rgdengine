@@ -28,6 +28,8 @@ namespace rgde
 							const math::color& color_=0xffffffff,
 						    const texture_ptr texture_=texture_ptr());
 
+			sprites_vector& get_sprites();
+
 			void load_buffers();
 
 			void clear_sprites();
