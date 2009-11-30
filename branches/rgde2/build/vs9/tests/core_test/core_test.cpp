@@ -11,6 +11,9 @@
 #include <boost/iostreams/detail/ios.hpp> 
 #include <boost/iostreams/filtering_stream.hpp>
 
+#include <windows.h>
+#include <boost/filesystem.hpp>
+
 namespace io = boost::iostreams;
 
 template<typename Ch>
@@ -91,6 +94,13 @@ namespace test
 
 int _tmain(int argc, wchar_t* argv[])
 {
+	wchar_t buf[512];
+	GetModuleFileNameW(NULL, &buf[0], 512);
+
+	boost::filesystem::wpath p(buf);
+	std::wstring path = p.branch_path().string() + L"/../data/";
+	SetCurrentDirectoryW(path.c_str());
+
 	using namespace rgde;
 	using namespace std;
 
