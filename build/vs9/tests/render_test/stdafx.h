@@ -54,6 +54,7 @@
 #include <boost/tokenizer.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/filesystem.hpp>
 
 #include <rgde/core/core.h>
 #include <rgde/core/xml/xml.h>
