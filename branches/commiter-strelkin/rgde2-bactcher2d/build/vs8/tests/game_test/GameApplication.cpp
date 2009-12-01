@@ -2,8 +2,6 @@
 
 #include "GameApplication.h"
 
-#include <boost/foreach.hpp>
-#define BOOST_FOREACH for_each
 
 namespace rgde
 {
@@ -42,10 +40,15 @@ namespace rgde
 	{
 		using namespace math;
 
+		m_aliens.clear();
+
 		m_ship_texture = render::base_texture::create(m_device, L"TestInput/SpaceShip.png");
 		m_alien_texture = render::base_texture::create(m_device, L"TestInput/Alien.png");
 
-		m_aliens.clear();
+		ship.color = color(255, 255, 255, 255);
+		ship.pos = vec2f(400.0f, 200.0f);
+		ship.size = vec2f(64.0f, 256.0f);
+		ship.texture = m_ship_texture;	
 
 		for (int i=0; i<20; i++)
 		{
@@ -53,21 +56,30 @@ namespace rgde
 			unit.sprite.texture = m_alien_texture;
 			add_unit(unit);
 		}
+
+		m_batcher.add_sprite(ship);
 	}
 
 	void GameApplication::update_frame()
 	{
-		m_batcher.clear_all();
-
 		using namespace render;
-		
-		for (aliens_iter it = m_aliens.begin(), end = m_aliens.end(); it != end; ++it)
+
+		m_batcher.get_sprites().clear();
+
+		m_batcher.add_sprite(ship);
+
+		for(aliens_iter it = m_aliens.begin(); it != m_aliens.end(); ++it)
 		{
-			AlienUnit& unit = *it;
-			primitives_2d::sprite_desc &sprite = unit.sprite;
-			sprite.pos += math::vec2f(0, 0.01f * unit.velocity); 
+			primitives_2d::sprite_desc &sprite = it->sprite;
+			sprite.pos += math::vec2f(0, 0.05); 
+			
+			if(sprite.pos[1] >600)
+			{
+				sprite.pos[1] = - 50;
+			}
+
 			m_batcher.add_sprite(sprite);
-		}
+		}		
 	} 
 
 	void GameApplication::render_frame()
@@ -83,11 +95,12 @@ namespace rgde
 
 	void GameApplication::add_unit(AlienUnit& unit)
 	{
+		m_batcher.add_sprite(unit.sprite);
 		m_aliens.push_back(unit);
 	}
 
 	void GameApplication::run()
-	{
+	{ 
 		while( is_created() )
 		{
 			if( !do_events() && m_active)
@@ -110,7 +123,7 @@ namespace rgde
 		case WM_SIZE:
 			return 0;
 
-		case WM_MOUSEMOVE:
+		case WM_MOUSEMOVE:			
 			break;
 		}
 		return window::wnd_proc(message, wparam, lparam);
