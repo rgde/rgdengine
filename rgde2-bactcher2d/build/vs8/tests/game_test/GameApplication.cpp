@@ -2,6 +2,8 @@
 
 #include "GameApplication.h"
 
+#include <boost/foreach.hpp>
+#define BOOST_FOREACH for_each
 
 namespace rgde
 {
@@ -55,12 +57,16 @@ namespace rgde
 
 	void GameApplication::update_frame()
 	{
-		using namespace render;
+		m_batcher.clear_all();
 
-		for(renderer_2d::sprites_iter it = m_batcher.get_sprites().begin(); it != m_batcher.get_sprites().end(); ++it)
+		using namespace render;
+		
+		for (aliens_iter it = m_aliens.begin(), end = m_aliens.end(); it != end; ++it)
 		{
-			primitives_2d::sprite_desc &sprite = *it;
-			sprite.pos += math::vec2f(0, 0.05); 
+			AlienUnit& unit = *it;
+			primitives_2d::sprite_desc &sprite = unit.sprite;
+			sprite.pos += math::vec2f(0, 0.01f * unit.velocity); 
+			m_batcher.add_sprite(sprite);
 		}
 	} 
 
@@ -77,7 +83,6 @@ namespace rgde
 
 	void GameApplication::add_unit(AlienUnit& unit)
 	{
-		m_batcher.add_sprite(unit.sprite);
 		m_aliens.push_back(unit);
 	}
 
