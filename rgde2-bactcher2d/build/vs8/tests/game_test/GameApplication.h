@@ -38,6 +38,8 @@ namespace rgde
 		render::texture_ptr m_ship_texture;
 		render::texture_ptr m_alien_texture;
 
+		render::primitives_2d::sprite_desc ship;
+
 		aliens_vector m_aliens;
 	};
 }
