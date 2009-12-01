@@ -15,77 +15,77 @@ namespace audio
 	}
 
 	class listener;
-	class AudioTag;
-	class Sound3D;
-	class Music;
+	class audio_tag;
+	class sound3d;
+	class music;
 	class world_object;
 
 
 	// The internal::base_audio Manager class creates audio based on the XML
 	// tags it loads and handles all the sound buffer updates,
-	class AudioManager
+	class audio_manager
 	{
 	public:
-		enum HRTF
+		enum hrtf
 		{
-			HRTF_FULL,
-			HRTF_LIGHT,
-			HRTF_NONE
+			hrtf_full,
+			hrtf_light,
+			hrtf_none
 		};
 
-		enum Constants
+		enum constants
 		{
-			MAX_EFFECT_BUFFERS = 32,
-			EFFECT_BUFFER_SIZE = 141120,
-			EFFECT_INITIAL_READ_SIZE = 141120/2,
-			EFFECT_READ_SIZE = 141120/2,
+			max_effect_buffers = 32,
+			effect_buffer_size = 141120,
+			effect_initial_read_size = 141120/2,
+			effect_read_size = 141120/2,
 
-			MAX_MUSIC_BUFFERS = 2,
-			MUSIC_BUFFER_SIZE = 1411200,
-			MUSIC_INITIAL_READ_SIZE = 1411200/10,
-			MUSIC_READ_SIZE = 1411200/10,
+			max_music_buffers = 2,
+			music_buffer_size = 1411200,
+			music_initial_read_size = 1411200/10,
+			music_read_size = 1411200/10,
 		};
 
 		// Gets the instance of the singleton class
-		static AudioManager* Instance();
+		static audio_manager* instance();
 
-		AudioManager(HWND hWnd,
+		audio_manager(HWND hWnd,
 			DWORD dwPrimaryChannels = 2,
 			DWORD dwPrimaryFreq = 44100,
 			DWORD dwPrimaryBitRate = 16,
-			HRTF hrtf = HRTF_FULL);
+			hrtf hrtf = hrtf_full);
 
-		~AudioManager();
+		~audio_manager();
 
 		// loads tags from an XML file
-		bool LoadAudioTags(const char* szFileName);
-		bool LoadAudioTags(xml::node node);
+		bool load_audio_tags(const char* file_name);
+		bool load_audio_tags(xml::node node);
 
-		void ClearAudioTags();
+		void clear_audio_tags();
 
-		AudioTag* GetAudioTag(const char* szTagName);
+		audio_tag* get_audio_tag(const char* tag_name);
 
-		// Update needs to be called periodically to stream
+		// update needs to be called periodically to stream
 		// new audio into the sound buffers
-		void Update(int msElapsed);
+		void update(int msElapsed);
 
-		void Play(const char* szTagName,
-			world_object* pObj = NULL,		// used for positional sound effects
-			int msDuration = 0,			// length of time to play sound
-			int msDelay = 0,				// time to wait before playing
-			audio::listener* pNotify = NULL); // listener to receive notification when sound is done
+		void play(const char* tag_name,
+			world_object* obj = NULL,		// used for positional sound effects
+			int ms_duration = 0,			// length of time to play sound
+			int ms_delay = 0,				// time to wait before playing
+			audio::listener* notify = NULL); // listener to receive notification when sound is done
 
-		void Play(AudioTag* pTag,
-			world_object* pObj = NULL,		// used for positional sound effects
-			int msDuration = 0,			// length of time to play sound
-			int msDelay = 0,				// time to wait before playing
-			audio::listener* pNotify = NULL);	// listener to receive notification when sound is done
+		void play(audio_tag* pTag,
+			world_object* obj = NULL,		// used for positional sound effects
+			int ms_duration = 0,			// length of time to play sound
+			int ms_delay = 0,				// time to wait before playing
+			audio::listener* notify = NULL);	// listener to receive notification when sound is done
 
 		void StopAll();
 
 		// The game would set this to the player's camera to affect 
 		// how 3D audio is heard
-		void SetListenerCamera(camera* pCam);  
+		void set_listener_camera(camera* pCam);  
 
 		void SetDistanceFactor(float dF = DS3D_DEFAULTDISTANCEFACTOR);
 		void SetRolloffFactor(float rF = DS3D_DEFAULTROLLOFFFACTOR);
@@ -97,31 +97,31 @@ namespace audio
 		// Normally wouldn't need the following functions,
 		// but they're exposed so the sample can list all
 		// the audio tags for the simple testing interface.
-		int GetNumAudioTags();
-		const char* GetAudioTagName(unsigned int index);
+		int get_num_tags();
+		const char* get_tag_name(unsigned int index);
 
 		// returns time remaining of current music playing
 		unsigned int GetRemainingMusicPlayback();	// in milliseconds
 
 	protected:
 		// static singleton instance
-		static AudioManager* s_pInstance;
+		static audio_manager* sm_instance;
 
-		typedef std::map<std::string, AudioTag*> AudioTagMap;
+		typedef std::map<std::string, audio_tag*> AudioTagMap;
 		typedef AudioTagMap::iterator AudioTagIterator;
 
 		struct Buffer
 		{
 			LPDIRECTSOUNDBUFFER		pDSBuf;			// DirectSound buffer for playback
 			LPDIRECTSOUND3DBUFFER	pDSBuf3D;		// DirectSound 3D buffer for effects (positional audio)
-			internal::base_audio*					pAudio;			// internal::base_audio created by the tag
-			AudioTag*				pTag;			// Tag that decided to play this sound
+			internal::base_audio*					audio;			// internal::base_audio created by the tag
+			audio_tag*				pTag;			// Tag that decided to play this sound
 			bool					bMoreInBuffer;	// if more needs to be streamed into buffer
 			bool					bPlaying;		// if this is an active buffer or can it be reused
 			DWORD					dwLastWritePos; // last place we updated the buffer
 			DWORD					dwNextWritePos; // next place to update the buffer
 			long					volume;			// volume for this buffer (taking into account tag volume adjustment)
-			int                     msDuration;		// desired duration, in milliseconds
+			int                     ms_duration;		// desired duration, in milliseconds
 			int						msLifetime;		// elapsed playback time, in milliseconds
 			long					curVolume;      // current volume (if we're fading in or out)
 			float					volumeTransitionAdjust;	// amount to fade by per millsecond
@@ -129,11 +129,11 @@ namespace audio
 
 		struct AudioWaitingToBePlayed
 		{
-			AudioTag*				pTag;		// the tag waiting to be played
-			world_object*			pObj;		// the obj we want to attach it to (for 3D sound effects)
-			int		                msDuration; // time to play
-			int                     msDelay;	// wait before playing
-			audio::listener*			pNotify;	// the listener to receive finished notification
+			audio_tag*				pTag;		// the tag waiting to be played
+			world_object*			obj;		// the obj we want to attach it to (for 3D sound effects)
+			int		                ms_duration; // time to play
+			int                     ms_delay;	// wait before playing
+			audio::listener*			notify;	// the listener to receive finished notification
 		};
 
 		typedef std::list<AudioWaitingToBePlayed> AudioWaitingList;
@@ -143,14 +143,14 @@ namespace audio
 		HRESULT SetPrimaryBufferFormat(DWORD dwPrimaryChannels,
 			DWORD dwPrimaryFreq,
 			DWORD dwPrimaryBitRate);
-		bool CreateBuffer(Buffer* pBuf, DWORD size, bool b3D);
-		bool RestoreBuffer(Buffer* pBuf);
-		void StopBuffer(Buffer* pBuf);
-		void UpdateBuffer(int msElapsed, Buffer* pBuf, DWORD dwBufSize, DWORD dwWriteAmt);
+		bool CreateBuffer(Buffer* buff, DWORD size, bool b3D);
+		bool RestoreBuffer(Buffer* buff);
+		void StopBuffer(Buffer* buff);
+		void UpdateBuffer(int msElapsed, Buffer* buff, DWORD dwBufSize, DWORD dwWriteAmt);
 		void UpdateListener();
 
-		void PlayEffect(AudioTag* pTag, Sound3D* pSound3D, int msDuration);
-		void PlayMusic(AudioTag* pTag, Music* pMusic, int msDuration);
+		void PlayEffect(audio_tag* pTag, sound3d* pSound3D, int ms_duration);
+		void PlayMusic(audio_tag* pTag, music* pMusic, int ms_duration);
 
 	protected:
 		LPDIRECTSOUND8 m_pDS;
@@ -168,33 +168,33 @@ namespace audio
 		DWORD m_frequency;			// sample rate (usually 44.1 kHz)
 		DWORD m_bitRate;			// 
 		int m_volume;				// in hundredths of decibels
-		HRTF m_hrtf;				// Head related transfer function - how to calculate 3D audio
+		hrtf m_hrtf;				// Head related transfer function - how to calculate 3D audio
 
-		Buffer m_effectBufs[MAX_EFFECT_BUFFERS];	
-		Buffer m_musicBufs[MAX_MUSIC_BUFFERS];
+		Buffer m_effectBufs[max_effect_buffers];	
+		Buffer m_musicBufs[max_music_buffers];
 
 		AudioTagMap m_tags;			// tag database
 		AudioWaitingList m_toBePlayed; // queue of delayed audio
 	};
 
 
-	inline AudioManager* AudioManager::Instance()
+	inline audio_manager* audio_manager::instance()
 	{ 
-		ASSERT(NULL != s_pInstance);
-		return s_pInstance;
+		ASSERT(NULL != sm_instance);
+		return sm_instance;
 	}
 
-	inline void AudioManager::SetDistanceFactor(float dF)
+	inline void audio_manager::SetDistanceFactor(float dF)
 	{
 		m_distanceFactor = dF;
 	}
 
-	inline void AudioManager::SetRolloffFactor(float rF)
+	inline void audio_manager::SetRolloffFactor(float rF)
 	{
 		m_rolloffFactor = rF;
 	}
 
-	inline void AudioManager::SetDopplerFactor(float dF)
+	inline void audio_manager::SetDopplerFactor(float dF)
 	{
 		m_dopplerFactor = dF;
 	}

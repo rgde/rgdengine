@@ -6,18 +6,17 @@ namespace audio
 {
 class world_object;
 
-// Sound3D is used for any positional audio
-class Sound3D : public Sound
+// sound3d is used for any positional audio
+class sound3d : public sound
 {
     public:
-        Sound3D(const char* szWaveFileName);
-        virtual ~Sound3D();
+        sound3d(const char* wave_filename);
+        virtual ~sound3d();
 
-		void SetWorldObject(world_object* pObj) { m_pObj = pObj; }
-
-		world_object* GetWorldObject() { return m_pObj; }
+		void set_world_object(world_object* obj) { m_obj = obj; }
+		world_object* get_world_object() { return m_obj; }
 
     protected:
-		world_object* m_pObj;	// the object that tells us where the sound is
+		world_object* m_obj;	// the object that tells us where the sound is
 };
 }

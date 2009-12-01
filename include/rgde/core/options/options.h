@@ -1,5 +1,7 @@
 #pragma once
 
+//TODO: 
+
 namespace rgde
 {
 	class options
@@ -34,7 +36,7 @@ namespace rgde
 		{
 			struct section_finder
 			{
-				//bool
+				//TODO:
 			};
 
 			struct section_sorter
@@ -57,17 +59,11 @@ namespace rgde
 			section& operator[](const std::string& section_name)
 			{
 				return *m_sub_sections.begin();
-				//std::binary_search(m_sub_sections.begin(), m_sub_sections.end(), section_name, 
-				//	)
-
 			}
 		};
 
 		void load(const std::string& filename);
 		void save(const std::string& filename);
-
-		//static operator[](const std::string& section_name);
-		//static operator[](const std::string& section_name);
 
 	private:
 		section m_root_section;

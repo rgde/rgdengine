@@ -9,12 +9,12 @@
 namespace audio
 {
 //-----------------------------------------------------------------------------
-// Name: WaveFile::WaveFile()
-// Desc: Constructs the class.  Call Open() to open a wave file for reading.  
-//       Then call Read() as needed.  Calling the destructor or Close() 
+// Name: wave_file::wave_file()
+// Desc: Constructs the class.  Call open() to open a wave file for reading.  
+//       Then call read() as needed.  Calling the destructor or close() 
 //       will close the file.  
 //-----------------------------------------------------------------------------
-WaveFile::WaveFile()
+wave_file::wave_file()
 :	m_pwfx(NULL),
 	m_hmmio(NULL),
 	m_dwSize(0),
@@ -29,12 +29,12 @@ WaveFile::WaveFile()
 
 
 //-----------------------------------------------------------------------------
-// Name: WaveFile::~WaveFile()
+// Name: wave_file::~wave_file()
 // Desc: Destructs the class
 //-----------------------------------------------------------------------------
-WaveFile::~WaveFile()
+wave_file::~wave_file()
 {
-    Close();
+    close();
 
     delete [] m_pwfx;
 }
@@ -43,10 +43,10 @@ WaveFile::~WaveFile()
 
 
 //-----------------------------------------------------------------------------
-// Name: WaveFile::Open()
+// Name: wave_file::open()
 // Desc: Opens a wave file for reading
 //-----------------------------------------------------------------------------
-bool WaveFile::Open(const char* strFileName, WAVEFORMATEX* pwfx)
+bool wave_file::open(const char* strFileName, WAVEFORMATEX* pwfx)
 {
     HRESULT hr;
 
@@ -106,24 +106,24 @@ bool WaveFile::Open(const char* strFileName, WAVEFORMATEX* pwfx)
   //      m_hmmio = mmioOpen(NULL, &mmioInfo, MMIO_ALLOCBUF | MMIO_READ);
   //  }
 
-    if (FAILED(hr = ReadMMIO()))
+    if (FAILED(hr = read_mmio()))
     {
-        // ReadMMIO will fail if its an not a wave file
+        // read_mmio will fail if its an not a wave file
         mmioClose(m_hmmio, 0);
-        DXTRACE_ERR(TEXT("ReadMMIO"), hr);
+        DXTRACE_ERR(TEXT("read_mmio"), hr);
 		return false;
     }
 
-    if (FAILED(hr = ResetFile()))
+    if (FAILED(hr = reset_file()))
     {
-		DXTRACE_ERR(TEXT("ResetFile"), hr);
+		DXTRACE_ERR(TEXT("reset_file"), hr);
 		return false;
 	}
 
     // After the reset, the size of the wav file is m_ck.cksize so store it now
     m_dwSize = m_ck.cksize;
 	m_pbData = new BYTE[m_dwSize];
-	Read(m_pbData, 0, m_dwSize, &m_ulDataSize);
+	read(m_pbData, 0, m_dwSize, &m_ulDataSize);
 	m_bIsReadingFromMemory = true;
 
 	return SUCCEEDED(hr);
@@ -131,12 +131,12 @@ bool WaveFile::Open(const char* strFileName, WAVEFORMATEX* pwfx)
 
 
 //-----------------------------------------------------------------------------
-// Name: WaveFile::ReadMMIO()
+// Name: wave_file::read_mmio()
 // Desc: Support function for reading from a multimedia I/O stream.
 //       m_hmmio must be valid before calling.  This function uses it to
 //       update m_ckRiff, and m_pwfx. 
 //-----------------------------------------------------------------------------
-HRESULT WaveFile::ReadMMIO()
+HRESULT wave_file::read_mmio()
 {
     MMCKINFO        ckIn;           // chunk info. for general use.
     PCMWAVEFORMAT   pcmWaveFormat;  // Temp PCM structure to load in.       
@@ -161,7 +161,7 @@ HRESULT WaveFile::ReadMMIO()
        if( ckIn.cksize < (LONG) sizeof(PCMWAVEFORMAT) )
            return DXTRACE_ERR( TEXT("sizeof(PCMWAVEFORMAT)"), E_FAIL );
 
-    // Read the 'fmt ' chunk into <pcmWaveFormat>.
+    // read the 'fmt ' chunk into <pcmWaveFormat>.
     if( mmioRead( m_hmmio, (HPSTR) &pcmWaveFormat, 
                   sizeof(pcmWaveFormat)) != sizeof(pcmWaveFormat) )
         return DXTRACE_ERR( TEXT("mmioRead"), E_FAIL );
@@ -180,7 +180,7 @@ HRESULT WaveFile::ReadMMIO()
     }
     else
     {
-        // Read in length of extra bytes.
+        // read in length of extra bytes.
         WORD cbExtraBytes = 0L;
         if( mmioRead( m_hmmio, (CHAR*)&cbExtraBytes, sizeof(WORD)) != sizeof(WORD) )
             return DXTRACE_ERR( TEXT("mmioRead"), E_FAIL );
@@ -216,10 +216,10 @@ HRESULT WaveFile::ReadMMIO()
 
 
 //-----------------------------------------------------------------------------
-// Name: WaveFile::GetSize()
+// Name: wave_file::get_size()
 // Desc: Retuns the size of the read access wave file 
 //-----------------------------------------------------------------------------
-DWORD WaveFile::GetSize()
+DWORD wave_file::get_size()
 {
     return m_dwSize;
 }
@@ -228,11 +228,11 @@ DWORD WaveFile::GetSize()
 
 
 //-----------------------------------------------------------------------------
-// Name: WaveFile::ResetFile()
+// Name: wave_file::reset_file()
 // Desc: Resets the internal m_ck pointer so reading starts from the 
 //       beginning of the file again 
 //-----------------------------------------------------------------------------
-HRESULT WaveFile::ResetFile()
+HRESULT wave_file::reset_file()
 {
     if( m_bIsReadingFromMemory )
     {
@@ -261,14 +261,14 @@ HRESULT WaveFile::ResetFile()
 
 
 //-----------------------------------------------------------------------------
-// Name: WaveFile::Read()
+// Name: wave_file::read()
 // Desc: Reads section of data from a wave file into pBuffer and returns 
 //       how much read in pdwSizeRead, reading not more than dwSizeToRead.
 //       This uses m_ck to determine where to start reading from.  So 
 //       subsequent calls will be continue where the last left off unless 
-//       Reset() is called.
+//       reset() is called.
 //-----------------------------------------------------------------------------
-bool WaveFile::Read(BYTE* pBuffer, DWORD dwOffset,
+bool wave_file::read(BYTE* pBuffer, DWORD dwOffset,
 					   DWORD dwSizeToRead, DWORD* pdwSizeRead)
 {
     if( m_bIsReadingFromMemory )
@@ -366,10 +366,10 @@ bool WaveFile::Read(BYTE* pBuffer, DWORD dwOffset,
 
 
 //-----------------------------------------------------------------------------
-// Name: WaveFile::Close()
+// Name: wave_file::close()
 // Desc: Closes the wave file 
 //-----------------------------------------------------------------------------
-void WaveFile::Close()
+void wave_file::close()
 {
     mmioClose( m_hmmio, 0 );
     m_hmmio = NULL;

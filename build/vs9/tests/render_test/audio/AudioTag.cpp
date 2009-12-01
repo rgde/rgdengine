@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "AudioTag.h"
-#include "AudioManager.h"
+#include "audiotag.h"
+#include "audiomanager.h"
 #include "sound3D.h"
 #include "musicoggvorbis.h"
 
@@ -9,21 +9,21 @@ namespace audio
 {
 
 	////////////////////////////
-	// AudioTag class members
+	// audio_tag class members
 	////////////////////////////
 
-	AudioTag::AudioTag()
+	audio_tag::audio_tag()
 		:	m_priority(0),
-		m_volAdjust(0),
-		m_volAdjustRange(0),
-		m_loopDelay(-1),
-		m_loopDelayRange(0),
-		m_loopTimes(0),
-		m_curLoop(0)
+		m_vol_adjust(0),
+		m_vol_adjust_range(0),
+		m_loop_delay(-1),
+		m_loop_delay_range(0),
+		m_loop_times(0),
+		m_cur_loop(0)
 	{
 	}
 
-	AudioTag::~AudioTag()
+	audio_tag::~audio_tag()
 	{
 	}
 
@@ -64,87 +64,87 @@ namespace audio
 		return false;
 	}
 
-	bool AudioTag::LoadTag(xml::node pDOMElement)
+	bool audio_tag::load_tag(xml::node node)
 	{
-		xml::node el = pDOMElement;
+		xml::node el = node;
 
 		safe_read(el, "PRIORITY", m_priority);
 
 		float value = 0.0f;
 
 		if (safe_read(el, "VOLUME_ADJUST", value))
-			m_volAdjust = (int)(value * 100);
+			m_vol_adjust = (int)(value * 100);
 
 		// randomization on the volume adjust
 		if (safe_read(el, "VOLUME_ADJUST_RANGE", value))
-			m_volAdjustRange = (int)(value * 100);
+			m_vol_adjust_range = (int)(value * 100);
 
 		// number of times to loop - not specifying a value means no loop,
 		// 0 means infinite, any other number is the number of times to repeat
-		safe_read(el, "LOOP_TIMES", m_loopTimes);
+		safe_read(el, "LOOP_TIMES", m_loop_times);
 
 		// seconds to delay loopiung playback
 		if (safe_read(el, "LOOP_DELAY", value))
-			m_loopDelay = (int)(value*1000);	// convert sec to millisec
+			m_loop_delay = (int)(value*1000);	// convert sec to millisec
 
 		// randomization for loop delay
 		if (safe_read(el, "LOOP_DELAY_RANGE", value))
-			m_loopDelayRange = (int)(value*1000);	// convert sec to millisec
+			m_loop_delay_range = (int)(value*1000);	// convert sec to millisec
 
 		return true;
 	}
 
-	void AudioTag::audio_finished(internal::base_audio* pAudio)
+	void audio_tag::audio_finished(internal::base_audio* audio)
 	{
 		// check if the tag is set to loop
-		int delay = GetLoopDelay();
+		int delay = get_loop_delay();
 
 		if (delay >= 0)
 		{
-			if (0 == m_loopTimes)		// play infinitely
+			if (0 == m_loop_times)		// play infinitely
 			{
-				AudioManager::Instance()->Play(this, NULL, 0, delay, this);
+				audio_manager::instance()->play(this, NULL, 0, delay, this);
 			}
 			else
 			{
-				if (m_curLoop < m_loopTimes - 1)
+				if (m_cur_loop < m_loop_times - 1)
 				{
-					AudioManager::Instance()->Play(this, NULL, 0, delay, this);
-					++m_curLoop;
+					audio_manager::instance()->play(this, NULL, 0, delay, this);
+					++m_cur_loop;
 				}
 				else
 				{
-					m_curLoop = 0;
+					m_cur_loop = 0;
 				}
 			}
 		}
 	}
 
-	int AudioTag::GetVolumeAdjust()
+	int audio_tag::get_volume_adjust()
 	{
 		// use range to calculate random volume adjustment (volAdjust +/- range)
-		if (m_volAdjustRange > 0)
-			return m_volAdjust + ((rand() % (m_volAdjustRange*2)) - m_volAdjustRange);
+		if (m_vol_adjust_range > 0)
+			return m_vol_adjust + ((rand() % (m_vol_adjust_range*2)) - m_vol_adjust_range);
 		else
-			return m_volAdjust;
+			return m_vol_adjust;
 	}
 
-	int AudioTag::GetLoopDelay()
+	int audio_tag::get_loop_delay()
 	{
 		// calculate number of millseconds to delay looping of audio
 		// if audio is not meant to be looped, return -1.
 
 		int delay = -1;
 
-		if (m_loopDelay >= 0)
+		if (m_loop_delay >= 0)
 		{
-			if (0 == m_loopDelayRange)
+			if (0 == m_loop_delay_range)
 			{
-				delay = m_loopDelay;
+				delay = m_loop_delay;
 			}
 			else
 			{
-				delay = m_loopDelay + (rand() % (m_loopDelayRange*2) - m_loopDelayRange);
+				delay = m_loop_delay + (rand() % (m_loop_delay_range*2) - m_loop_delay_range);
 			}
 
 			if (delay < 0)
@@ -161,7 +161,7 @@ namespace audio
 	/////////////////////////////////
 
 	AudioEffectTag::AudioEffectTag()
-		:	AudioTag(),
+		:	audio_tag(),
 		m_minDist(0.0f),
 		m_maxDist(1000.0f),
 		m_cascadeNum(0x7FFFFFFF),
@@ -175,33 +175,33 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioEffectTag::CreateAudio(world_object* pObj,
-		int msDuration,
-		int msDelay,
-		audio::listener* pNotify)
+	internal::base_audio* AudioEffectTag::create_audio(world_object* obj,
+		int ms_duration,
+		int ms_delay,
+		audio::listener* notify)
 	{
-		Sound3D* pSound3D = new Sound3D(m_fileName.c_str());
-		if (!pSound3D->GetWaveFile())
+		sound3d* pSound3D = new sound3d(m_fileName.c_str());
+		if (!pSound3D->get_wave_file())
 		{
 			ASSERT(!"Bad wav file name");
 			delete pSound3D;
 			return NULL;
 		}
 
-		pSound3D->AddListener(pNotify);
-		pSound3D->AddListener(this);
+		pSound3D->add_listener(notify);
+		pSound3D->add_listener(this);
 		return pSound3D;
 	}
 
 
-	bool AudioEffectTag::LoadTag(xml::node pDOMElement)
+	bool AudioEffectTag::load_tag(xml::node node)
 	{
-		AudioTag::LoadTag(pDOMElement);
+		audio_tag::load_tag(node);
 
-		xml::node el = pDOMElement;
+		xml::node el = node;
 
 		// .wav file for this effect
-		if (const char* file_name = pDOMElement["FILE"].value())
+		if (const char* file_name = node["FILE"].value())
 		{
 			m_fileName = file_name;
 		}
@@ -228,7 +228,7 @@ namespace audio
 	/////////////////////////////////
 
 	AudioMusicTag::AudioMusicTag()
-		:	AudioTag(),
+		:	audio_tag(),
 		m_file("")
 	{
 	}
@@ -239,25 +239,25 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioMusicTag::CreateAudio(world_object* pObj,
-		int msDuration,
-		int msDelay, 
-		audio::listener* pNotify)
+	internal::base_audio* AudioMusicTag::create_audio(world_object* obj,
+		int ms_duration,
+		int ms_delay, 
+		audio::listener* notify)
 	{
 		// currently only Ogg Vorbis files are supported for streaming music
-		MusicOggVorbis* pMusic = new MusicOggVorbis(m_file.c_str());
-		pMusic->AddListener(pNotify);
-		if (pNotify != (audio::listener*)this)
-			pMusic->AddListener(this);
+		music_oggvorbis* pMusic = new music_oggvorbis(m_file.c_str());
+		pMusic->add_listener(notify);
+		if (notify != (audio::listener*)this)
+			pMusic->add_listener(this);
 		return pMusic;
 	}
 
-	bool AudioMusicTag::LoadTag(xml::node pDOMElement)
+	bool AudioMusicTag::load_tag(xml::node node)
 	{
-		AudioTag::LoadTag(pDOMElement);
+		audio_tag::load_tag(node);
 
 		// the .ogg file for this music tag
-		const char* file_name = pDOMElement["FILE"].value();
+		const char* file_name = node["FILE"].value();
 		if (NULL == file_name)
 			return false;
 
@@ -272,7 +272,7 @@ namespace audio
 	/////////////////////////////////////
 
 	AudioCompositionTag::AudioCompositionTag()
-		:	AudioTag(),
+		:	audio_tag(),
 		m_inTag(""),
 		m_loopTag(""),
 		m_outTag(""),
@@ -287,10 +287,10 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioCompositionTag::CreateAudio(world_object* pObj,
-		int msDuration,
-		int msDelay,
-		audio::listener* pNotify)
+	internal::base_audio* AudioCompositionTag::create_audio(world_object* obj,
+		int ms_duration,
+		int ms_delay,
+		audio::listener* notify)
 	{
 		// play the desired section of the composition
 		switch (m_lastSection)
@@ -298,26 +298,26 @@ namespace audio
 		case SECTION_NONE:
 		case SECTION_OUT:
 			m_lastSection = SECTION_IN;
-			AudioManager::Instance()->Play(m_inTag.c_str(), pObj, msDuration, msDelay, this);
+			audio_manager::instance()->play(m_inTag.c_str(), obj, ms_duration, ms_delay, this);
 			break;
 
 		case SECTION_IN:
 			{
 				int delay;
-				AudioManager::Instance()->Play(m_loopTag.c_str(), pObj, msDuration, msDelay, this);
+				audio_manager::instance()->play(m_loopTag.c_str(), obj, ms_duration, ms_delay, this);
 
 				// set out music to fade in if we need it to
-				if (msDuration > 0)
+				if (ms_duration > 0)
 				{
-					delay = msDuration - m_crossFadeToOutTime;
+					delay = ms_duration - m_crossFadeToOutTime;
 				}
 				else
 				{
-					delay = AudioManager::Instance()->GetRemainingMusicPlayback() - m_crossFadeToOutTime;
+					delay = audio_manager::instance()->GetRemainingMusicPlayback() - m_crossFadeToOutTime;
 				}
 
 				m_lastSection = SECTION_LOOP;
-				AudioManager::Instance()->Play(m_outTag.c_str(), pObj, 0, delay, this);
+				audio_manager::instance()->play(m_outTag.c_str(), obj, 0, delay, this);
 				break;
 			}
 
@@ -335,11 +335,11 @@ namespace audio
 	}
 
 
-	bool AudioCompositionTag::LoadTag(xml::node pDOMElement)
+	bool AudioCompositionTag::load_tag(xml::node node)
 	{
-		AudioTag::LoadTag(pDOMElement);
+		audio_tag::load_tag(node);
 
-		xml::node el = pDOMElement;
+		xml::node el = node;
 
 		// the first music tag to play
 		if (!safe_read(el, "IN", m_inTag))
@@ -361,18 +361,18 @@ namespace audio
 		return true;
 	}
 
-	void AudioCompositionTag::audio_finished(internal::base_audio* pAudio)
+	void AudioCompositionTag::audio_finished(internal::base_audio* audio)
 	{
 		if (SECTION_OUT == m_lastSection)
 		{
 			// repeat the composition tag if necessary 
-			AudioTag::audio_finished(pAudio);
+			audio_tag::audio_finished(audio);
 		}
 		else
 		{
 			// otherwise we're not done with the composition, 
 			// play the next section
-			AudioManager::Instance()->Play(this, NULL, 0, 0, this);
+			audio_manager::instance()->play(this, NULL, 0, 0, this);
 		}
 	}
 
@@ -382,7 +382,7 @@ namespace audio
 	/////////////////////////////////
 
 	AudioRandomTag::AudioRandomTag()
-		:	AudioTag()
+		:	audio_tag()
 	{
 	}
 
@@ -392,10 +392,10 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioRandomTag::CreateAudio(world_object* pObj,
-		int msDuration,
-		int msDelay,
-		audio::listener* pNotify)
+	internal::base_audio* AudioRandomTag::create_audio(world_object* obj,
+		int ms_duration,
+		int ms_delay,
+		audio::listener* notify)
 	{
 		int percent = (rand() % 100) + 1;
 		int size = m_probabilities.size();
@@ -416,17 +416,17 @@ namespace audio
 		// play the tag, if we've selected one
 		if (i < size)
 		{
-			AudioManager::Instance()->Play(m_tags[i].c_str(), pObj, msDuration, msDelay, this);
+			audio_manager::instance()->play(m_tags[i].c_str(), obj, ms_duration, ms_delay, this);
 		}
 
 		return NULL;
 	}
 
-	bool AudioRandomTag::LoadTag(xml::node pDOMElement)
+	bool AudioRandomTag::load_tag(xml::node node)
 	{
-		AudioTag::LoadTag(pDOMElement);
+		audio_tag::load_tag(node);
 
-		for (xml::node el = pDOMElement.first_child(); el.next_sibling(); el = el.next_sibling())
+		for (xml::node el = node.first_child(); el.next_sibling(); el = el.next_sibling())
 		{
 
 			// The tag name of the random element
@@ -470,23 +470,23 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioAmbientTag::CreateAudio(world_object* pObj,
-		int msDuration,
-		int msDelay,
-		audio::listener* pNotify)
+	internal::base_audio* AudioAmbientTag::create_audio(world_object* obj,
+		int ms_duration,
+		int ms_delay,
+		audio::listener* notify)
 	{
-		Sound3D* pSound3D = new Sound3D(m_fileName.c_str());
-		pSound3D->AddListener(pNotify);
-		if (pNotify != (audio::listener*)this)
-			pSound3D->AddListener(this);
-		pSound3D->SetWorldObject(&m_obj);
+		sound3d* pSound3D = new sound3d(m_fileName.c_str());
+		pSound3D->add_listener(notify);
+		if (notify != (audio::listener*)this)
+			pSound3D->add_listener(this);
+		pSound3D->set_world_object(&m_obj);
 		return pSound3D;
 	}
 
-	bool AudioAmbientTag::LoadTag(xml::node pDOMElement)
+	bool AudioAmbientTag::load_tag(xml::node node)
 	{
-		AudioEffectTag::LoadTag(pDOMElement);
-		xml::node el = pDOMElement;
+		AudioEffectTag::load_tag(node);
+		xml::node el = node;
 
 		// X position for 3D audio
 		safe_read(el, "X", m_xPos);
@@ -510,10 +510,10 @@ namespace audio
 		return true;
 	}
 
-	void AudioAmbientTag::audio_finished(internal::base_audio* pAudio)
+	void AudioAmbientTag::audio_finished(internal::base_audio* audio)
 	{
 		RandomizeWorldPosition();
-		AudioTag::audio_finished(pAudio);
+		audio_tag::audio_finished(audio);
 	}	
 
 	void AudioAmbientTag::RandomizeWorldPosition()
@@ -545,7 +545,7 @@ namespace audio
 	/////////////////////////////////
 
 	AudioGroupTag::AudioGroupTag()
-		:	AudioTag()
+		:	audio_tag()
 	{
 	}
 
@@ -555,10 +555,10 @@ namespace audio
 	}
 
 
-	internal::base_audio* AudioGroupTag::CreateAudio(world_object* pObj,
-		int msDuration,
-		int msDelay,
-		audio::listener* pNotify)
+	internal::base_audio* AudioGroupTag::create_audio(world_object* obj,
+		int ms_duration,
+		int ms_delay,
+		audio::listener* notify)
 	{
 		int numTags = m_tags.size();
 		int delay;
@@ -579,17 +579,17 @@ namespace audio
 			if (delay < 0)
 				delay = 0;
 
-			AudioManager::Instance()->Play(m_tags[i].c_str(), pObj, msDuration, msDelay+delay, this);
+			audio_manager::instance()->play(m_tags[i].c_str(), obj, ms_duration, ms_delay+delay, this);
 		}
 
 		return NULL;
 	}
 
-	bool AudioGroupTag::LoadTag(xml::node pDOMElement)
+	bool AudioGroupTag::load_tag(xml::node node)
 	{
-		AudioTag::LoadTag(pDOMElement);
+		audio_tag::load_tag(node);
 
-		for (xml::node el = pDOMElement.first_child(); el.next_sibling(); el = el.next_sibling())
+		for (xml::node el = node.first_child(); el.next_sibling(); el = el.next_sibling())
 		{
 			xml::node pChildNodes = el;
 

@@ -4,27 +4,27 @@
 
 namespace audio
 {
-class OggVorbisFile;
+class oggvorbis_file;
 
-// MusicOggVorbis is an implementation of the abstract Music
+// music_oggvorbis is an implementation of the abstract music
 // class supporting .ogg playback
-class MusicOggVorbis : public Music
+class music_oggvorbis : public music
 {
     public:
-        MusicOggVorbis(const char* szVorbisFile);
-        virtual ~MusicOggVorbis();
+        music_oggvorbis(const char* vorbis_filename);
+        virtual ~music_oggvorbis();
 
-		virtual bool FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
+		virtual bool fill_bufer(LPDIRECTSOUNDBUFFER pDSB,
 								DWORD startIndex,
 								DWORD amount,
 								DWORD* pAmtRead = NULL);
 
-		virtual void Reset();
+		virtual void reset();
 
-		virtual unsigned int GetTotalTime();
+		virtual unsigned int get_total_time();
 
 
     protected:
-		OggVorbisFile* m_pOVFile;
+		oggvorbis_file* m_ovfile;
 };
 }

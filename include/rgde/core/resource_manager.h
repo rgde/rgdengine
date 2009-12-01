@@ -13,7 +13,7 @@ namespace rgde
 	{
 		namespace utils
 		{
-			template<class ResourceType, typename KeyValue = std::wstring>
+			template<class ResourceType, typename KeyValue = std::string>
 			class resouce_manager
 			{
 			public:
@@ -21,7 +21,7 @@ namespace rgde
 				typedef KeyValue key_value;
 				typedef typename boost::call_traits<key_value>::param_type key_param_type;
 				typedef boost::shared_ptr<resource> resource_ptr;
-				typedef boost::function<resource_ptr (const std::wstring& file_name)> resource_creator;
+				typedef boost::function<resource_ptr (const KeyValue& file_name)> resource_creator;
 
 				resouce_manager(key_param_type default_resource_file_name, resource_creator creator)
 					: m_creator(creator)

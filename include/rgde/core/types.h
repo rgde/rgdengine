@@ -7,6 +7,5 @@ namespace rgde
 	typedef unsigned char   uchar;
 	typedef unsigned short  ushort;
 	typedef uchar           byte;
-
 	typedef __int64			int64;
 }
