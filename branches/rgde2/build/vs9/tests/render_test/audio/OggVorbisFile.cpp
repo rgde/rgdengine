@@ -1,11 +1,11 @@
 #include "stdafx.h"
 
-#include "OggVorbisFile.h"
+#include "oggvorbisfile.h"
 
 namespace audio
 {
 
-OggVorbisFile::OggVorbisFile()
+oggvorbis_file::oggvorbis_file()
 :	m_pVorbisFile(NULL),
 	m_size(0),
 	m_read(0)
@@ -13,25 +13,25 @@ OggVorbisFile::OggVorbisFile()
 }
 
 
-OggVorbisFile::~OggVorbisFile()
+oggvorbis_file::~oggvorbis_file()
 {
 	if (m_pVorbisFile)
 	{
-		ASSERT(!"OggVorbisFile: File not closed before deletion");
-		Close();
+		ASSERT(!"oggvorbis_file: File not closed before deletion");
+		close();
 		delete m_pVorbisFile;
 		m_pVorbisFile = NULL;
 	}
 }
 
 
-bool OggVorbisFile::Open(const char* szFileName)
+bool oggvorbis_file::open(const char* file_name)
 {
 	ASSERT(!m_pVorbisFile);
 
 	if (m_pVorbisFile)
 		return false;
-	FILE* pFile = fopen (szFileName, "rb");
+	FILE* pFile = fopen (file_name, "rb");
 
 	if (pFile)
 	{
@@ -55,7 +55,7 @@ bool OggVorbisFile::Open(const char* szFileName)
 }
 
 
-bool OggVorbisFile::Read(char* pBuf, int& amount)
+bool oggvorbis_file::read(char* buff, int& amount)
 {
 	ASSERT(m_pVorbisFile);
 
@@ -70,7 +70,7 @@ bool OggVorbisFile::Read(char* pBuf, int& amount)
 		// to read multiple times to get the desired amount. 
 		do
 		{
-			currentRead = ov_read(m_pVorbisFile, pBuf+totalRead, leftToRead, 0, 2, 1, &bitstream);
+			currentRead = ov_read(m_pVorbisFile, buff+totalRead, leftToRead, 0, 2, 1, &bitstream);
 			
 			if (currentRead > 0)
 			{
@@ -97,7 +97,7 @@ bool OggVorbisFile::Read(char* pBuf, int& amount)
 }
 
 
-bool OggVorbisFile::Close()
+bool oggvorbis_file::close()
 {
 	if (m_pVorbisFile)
 	{
@@ -115,13 +115,13 @@ bool OggVorbisFile::Close()
 }
 
 
-bool OggVorbisFile::Reset()
+bool oggvorbis_file::reset()
 {
 	return (0 == ov_pcm_seek(m_pVorbisFile, 0));
 }
 
 
-unsigned int OggVorbisFile::GetTotalTime()
+unsigned int oggvorbis_file::get_total_time()
 {
 	double secs = ov_time_total(m_pVorbisFile, -1);
 	return (unsigned int)(secs*1000);

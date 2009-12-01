@@ -7,42 +7,42 @@ namespace audio
 {
 
 	// The base class for any audio tag to be read from the XML database
-	class AudioTag : public audio::listener
+	class audio_tag : public listener
 	{
 	public:
-		AudioTag();
-		virtual ~AudioTag();
+		audio_tag();
+		virtual ~audio_tag();
 
-		int GetPriority() { return m_priority; }
-		int GetVolumeAdjust(); // returns hundredths of decibels to adjust by
-		int GetLoopDelay();  // returns milliseconds to delay next play of tag
+		int get_priority() { return m_priority; }
+		int get_volume_adjust(); // returns hundredths of decibels to adjust by
+		int get_loop_delay();  // returns milliseconds to delay next play of tag
 
 		// called to audio create internal::base_audio object based on this tag's data
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
-			int msDuration,
-			int msDelay,
-			audio::listener* pNotify) = 0;
+		virtual internal::base_audio* create_audio(world_object* obj,
+			int ms_duration,
+			int ms_delay,
+			audio::listener* notify) = 0;
 
 		// called when to load tag data from XML file
-		virtual bool LoadTag(xml::node pDOMElement);
+		virtual bool load_tag(xml::node node);
 
 		// called when audio created by this tag has finished playing
-		virtual void audio_finished(internal::base_audio* pAudio);
+		virtual void audio_finished(internal::base_audio* audio);
 
 	protected:
 		int m_priority;						// priority for interrupting other audio
-		int m_volAdjust, m_volAdjustRange;	// volume adjustment parameters
-		int m_loopDelay, m_loopDelayRange;	// looping audio parameters
-		int m_loopTimes, m_curLoop;		
+		int m_vol_adjust, m_vol_adjust_range;	// volume adjustment parameters
+		int m_loop_delay, m_loop_delay_range;	// looping audio parameters
+		int m_loop_times, m_cur_loop;		
 	};
 
 
-	typedef std::vector<AudioTag*> AudioTagVector;
+	typedef std::vector<audio_tag*> AudioTagVector;
 	typedef AudioTagVector::iterator AudioTagIterator;
 
 
 	// The EFFECT tag class - handles any basic 3D sound effect
-	class AudioEffectTag : public AudioTag
+	class AudioEffectTag : public audio_tag
 	{
 	public:
 		AudioEffectTag();
@@ -55,11 +55,11 @@ namespace audio
 		int GetCascadeNumber() { return m_cascadeNum; }
 		const char* GetCascadeTag() { return m_cascadeTag.c_str(); }
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
-			int msDuration,
-			int msDelay,
-			audio::listener* pNotify);
-		virtual bool LoadTag(xml::node pDOMElement);
+		virtual internal::base_audio* create_audio(world_object* obj,
+			int ms_duration,
+			int ms_delay,
+			audio::listener* notify);
+		virtual bool load_tag(xml::node node);
 
 	protected:
 		std::string m_fileName;		// our .wav file
@@ -78,14 +78,14 @@ namespace audio
 		AudioAmbientTag();
 		virtual ~AudioAmbientTag();
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
-			int msDuration,
-			int msDelay,
-			audio::listener* pNotify);
-		virtual bool LoadTag(xml::node pDOMElement);
+		virtual internal::base_audio* create_audio(world_object* obj,
+			int ms_duration,
+			int ms_delay,
+			audio::listener* notify);
+		virtual bool load_tag(xml::node node);
 
 		// called when audio created by this tag has finished playing
-		virtual void audio_finished(internal::base_audio* pAudio);
+		virtual void audio_finished(internal::base_audio* audio);
 
 	protected:
 		void RandomizeWorldPosition();
@@ -99,17 +99,17 @@ namespace audio
 
 	// The RANDOM tag controls selection of several tags with a certain
 	// probability for each tag
-	class AudioRandomTag : public AudioTag
+	class AudioRandomTag : public audio_tag
 	{
 	public:
 		AudioRandomTag();
 		virtual ~AudioRandomTag();
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
-			int msDuration,
-			int msDelay,
-			audio::listener* pNotify);
-		virtual bool LoadTag(xml::node pDOMElement);
+		virtual internal::base_audio* create_audio(world_object* obj,
+			int ms_duration,
+			int ms_delay,
+			audio::listener* notify);
+		virtual bool load_tag(xml::node node);
 
 	protected:
 		std::vector<std::string> m_tags;		// the tags to choose from
@@ -118,18 +118,18 @@ namespace audio
 
 
 	// The MUSIC tag plays an .ogg file
-	class AudioMusicTag : public AudioTag
+	class AudioMusicTag : public audio_tag
 	{
 	public:
 		AudioMusicTag();
 		virtual ~AudioMusicTag();
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
-			int msDuration,
-			int msDelay,
-			audio::listener* pNotify);
+		virtual internal::base_audio* create_audio(world_object* obj,
+			int ms_duration,
+			int ms_delay,
+			audio::listener* notify);
 
-		virtual bool LoadTag(xml::node pDOMElement);
+		virtual bool load_tag(xml::node node);
 
 	protected:
 		std::string m_file;		// the .ogg file
@@ -138,20 +138,20 @@ namespace audio
 
 	// The COMPOSITION tag plays a bunch of music tags in
 	// a certain order
-	class AudioCompositionTag : public AudioTag
+	class AudioCompositionTag : public audio_tag
 	{
 	public:
 		AudioCompositionTag();
 		virtual ~AudioCompositionTag();
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
-			int msDuration,
-			int msDelay,
-			audio::listener* pNotify);
+		virtual internal::base_audio* create_audio(world_object* obj,
+			int ms_duration,
+			int ms_delay,
+			audio::listener* notify);
 
-		virtual bool LoadTag(xml::node pDOMElement);
+		virtual bool load_tag(xml::node node);
 
-		virtual void audio_finished(internal::base_audio* pAudio);
+		virtual void audio_finished(internal::base_audio* audio);
 
 	protected:
 		enum Section
@@ -173,17 +173,17 @@ namespace audio
 	// The GROUP tag plays a bunch of audio tags, and
 	// any individual tag in the group can be run at a delay 
 	// from the time the group is requested to play
-	class AudioGroupTag : public AudioTag
+	class AudioGroupTag : public audio_tag
 	{
 	public:
 		AudioGroupTag();
 		virtual ~AudioGroupTag();
 
-		virtual internal::base_audio* CreateAudio(world_object* pObj,
-			int msDuration,
-			int msDelay,
-			audio::listener* pNotify);
-		virtual bool LoadTag(xml::node pDOMElement);
+		virtual internal::base_audio* create_audio(world_object* obj,
+			int ms_duration,
+			int ms_delay,
+			audio::listener* notify);
+		virtual bool load_tag(xml::node node);
 
 	protected:
 		std::vector<std::string> m_tags;	// the tags in the group

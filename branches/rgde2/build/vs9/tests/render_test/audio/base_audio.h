@@ -12,38 +12,38 @@ namespace audio
 		class base_audio
 		{
 		public:
-			enum Type
+			enum type
 			{
-				SOUND,
-				SOUND3D,
-				MUSIC
+				sound,
+				sound3d,
+				music
 			};
 
-			base_audio(Type type);
+			base_audio(type type);
 			virtual ~base_audio();
 
 			// returns true if more data exists to be read
-			virtual bool FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
+			virtual bool fill_bufer(LPDIRECTSOUNDBUFFER pDSB,
 				DWORD startIndex,
 				DWORD amount,
 				DWORD* pAmtRead = NULL) = 0;
 
 			// sets the buffer back to the beginning so the audio
 			// manager can loop the sound
-			virtual void Reset() = 0;
+			virtual void reset() = 0;
 
-			Type GetType() const;
+			type get_type() const;
 
-			void AddListener(audio::listener* pListener);
-			void Finish();
+			void add_listener(listener* pListener);
+			void finish();
 
 		protected:
-			Type m_type;
-			typedef std::vector<audio::listener*> Listeners;
-			Listeners m_listeners;
+			type m_type;
+			typedef std::vector<audio::listener*> listeners;
+			listeners m_listeners;
 		};
 
-		inline base_audio::base_audio(Type type)
+		inline base_audio::base_audio(type type)
 			:	m_type(type)
 		{
 		}
@@ -52,23 +52,23 @@ namespace audio
 		{
 		}
 
-		inline base_audio::Type base_audio::GetType() const
+		inline base_audio::type base_audio::get_type() const
 		{
 			return m_type;
 		}
 
-		inline void base_audio::AddListener(audio::listener* pListener)
+		inline void base_audio::add_listener(audio::listener* pListener)
 		{
 			if (pListener)
 				m_listeners.push_back(pListener);
 		}
 
-		inline void base_audio::Finish()
+		inline void base_audio::finish()
 		{
 			// notify all our listeners that we're done
-			size_t numListeners = m_listeners.size();
+			size_t num_listeners = m_listeners.size();
 
-			for (size_t i = 0; i < numListeners; ++i)
+			for (size_t i = 0; i < num_listeners; ++i)
 			{
 				m_listeners[i]->audio_finished(this);
 			}

@@ -8,18 +8,18 @@
 namespace audio
 {
 //-----------------------------------------------------------------------------
-// Name: Sound::Sound()
+// Name: sound::sound()
 // Desc: Constructs the class
 //-----------------------------------------------------------------------------
-Sound3D::Sound3D(const char* szWaveFile)
-:	Sound(szWaveFile),
-	m_pObj(0)
+sound3d::sound3d(const char* wave_filename)
+:	sound(wave_filename),
+	m_obj(0)
 {
-	m_type = internal::base_audio::SOUND3D;
+	m_type = internal::base_audio::sound3d;
 }
 
 
-Sound3D::~Sound3D()
+sound3d::~sound3d()
 {
 }
 }

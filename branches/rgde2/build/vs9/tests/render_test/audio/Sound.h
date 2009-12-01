@@ -5,26 +5,26 @@
 
 namespace audio
 {
-class WaveFile;
+class wave_file;
 
-// Sound represents any .wav file audio
-class Sound : public internal::base_audio
+// sound represents any .wav file audio
+class sound : public internal::base_audio
 {
     public:
-        Sound(const char* szWaveFile);
-        virtual ~Sound();
+        sound(const char* wave_filename);
+        virtual ~sound();
 
-		WaveFile* GetWaveFile() { return m_pWaveFile; }
+		wave_file* get_wave_file() { return m_wave_file; }
 
-		virtual bool FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
+		virtual bool fill_bufer(LPDIRECTSOUNDBUFFER pDSB,
 								DWORD startIndex,
 								DWORD amount,
 								DWORD* pAmtRead = NULL);
 
-		virtual void Reset();
+		virtual void reset();
 
     protected:
-        WaveFile* m_pWaveFile;
+        wave_file* m_wave_file;
 		DWORD m_pos;
 };
 }

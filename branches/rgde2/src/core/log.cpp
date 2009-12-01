@@ -3,10 +3,7 @@
 #include <rgde/core/log.h>
 #include <windows.h>
 
-//#if _SECURE_SCL == 1
-//int 5;
-//#endif
-
+//TODO: move that code to platform lib!
 namespace rgde
 {
 	namespace core

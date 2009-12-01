@@ -1,40 +1,38 @@
 #pragma once
 
-//#include <string>
-//#include <map>
 
 namespace audio
 {
-class WaveFile;
+class wave_file;
 
 // This is a singleton factory that manages .wav file memory.
 // Currently it just loads a wav file when it is requested
 // and keeps it in memory. Eventually you would want it to keep
 // only frequently requested and short duration wav files in memory
-class WaveFileFactory
+class wave_file_factory
 {
 	public:
-		WaveFileFactory();
-		virtual ~WaveFileFactory();
+		wave_file_factory();
+		virtual ~wave_file_factory();
 
-		static WaveFileFactory* Instance();
+		static wave_file_factory* instance();
 
-		WaveFile* Get(const char*);
+		wave_file* get(const char*);
 
     protected:
-		static WaveFileFactory* s_pInstance;
+		static wave_file_factory* sm_instance;
 
-		typedef std::map<std::string, WaveFile*> WavMap;
-		typedef WavMap::iterator WavIterator;
+		typedef std::map<std::string, wave_file*> wave_map;
+		typedef wave_map::iterator wave_iter;
 		
-		WavMap m_wavs;
+		wave_map m_wavs;
 };
 
-inline WaveFileFactory* WaveFileFactory::Instance()
+inline wave_file_factory* wave_file_factory::instance()
 {
-	if (!s_pInstance)
-		s_pInstance = new WaveFileFactory();
+	if (!sm_instance)
+		sm_instance = new wave_file_factory();
 
-	return s_pInstance;
+	return sm_instance;
 }
 }

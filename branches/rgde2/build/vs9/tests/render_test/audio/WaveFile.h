@@ -1,16 +1,11 @@
 #pragma once
 
-//#include <windows.h>
-//#include <mmsystem.h>
-//#include <mmreg.h>
-//#include <dsound.h>
-
 namespace audio
 {
 // The Wavefile class implements readim PCM data from a .wav file.
 // This implementation is based on the DirectSound SDK samples,
 // for more info download the DirectX sdk at http://www.msdn.com/directx
-class WaveFile
+class wave_file
 {
     public:
         WAVEFORMATEX* m_pwfx;        // Pointer to WAVEFORMATEX structure
@@ -24,21 +19,21 @@ class WaveFile
         BYTE*         m_pbDataCur;
         ULONG         m_ulDataSize;
 
-        WaveFile();
-        ~WaveFile();
+        wave_file();
+        ~wave_file();
 
-        bool Open(const char* strFileName, WAVEFORMATEX* pwfx);
+        bool open(const char* strFileName, WAVEFORMATEX* pwfx);
 
-        void Close();
+        void close();
 
-        bool Read(BYTE* pBuffer, DWORD dwOffset, DWORD dwSizeToRead, DWORD* pdwSizeRead);
+        bool read(BYTE* pBuffer, DWORD dwOffset, DWORD dwSizeToRead, DWORD* pdwSizeRead);
 
-        DWORD   GetSize();
-        HRESULT ResetFile();
-        WAVEFORMATEX* GetFormat()  {  return m_pwfx;  };
+        DWORD   get_size();
+        HRESULT reset_file();
+        WAVEFORMATEX* get_format()  {  return m_pwfx;  };
 
 
     protected:
-        HRESULT ReadMMIO();
+        HRESULT read_mmio();
 };
 }

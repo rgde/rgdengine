@@ -12,27 +12,27 @@
 namespace audio
 {
 //-----------------------------------------------------------------------------
-// Name: Sound::Sound()
+// Name: sound::sound()
 // Desc: Constructs the class
 //-----------------------------------------------------------------------------
-Sound::Sound(const char* szWaveFile)
-:	internal::base_audio(internal::base_audio::SOUND),
+sound::sound(const char* wave_filename)
+:	internal::base_audio(internal::base_audio::sound),
 	m_pos(0)
 {
-	m_pWaveFile = WaveFileFactory::Instance()->Get(szWaveFile);
+	m_wave_file = wave_file_factory::instance()->get(wave_filename);
 }
 
 
-Sound::~Sound()
+sound::~sound()
 {
-	if (m_pWaveFile)
+	if (m_wave_file)
 	{
-		m_pWaveFile = NULL;
+		m_wave_file = NULL;
 	}
 }
 
 
-bool Sound::FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
+bool sound::fill_bufer(LPDIRECTSOUNDBUFFER pDSB,
 					   DWORD startIndex,
 					   DWORD amount,
 					   DWORD* pAmtRead)
@@ -57,16 +57,16 @@ bool Sound::FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
 		return false;
 	}
 
-    // Reset the wave file to the beginning 
-    m_pWaveFile->ResetFile();
+    // reset the wave file to the beginning 
+    m_wave_file->reset_file();
 
-    if (FAILED( hr = m_pWaveFile->Read((BYTE*)pDSLockedBuffer,
+    if (FAILED( hr = m_wave_file->read((BYTE*)pDSLockedBuffer,
 									   m_pos,
                                        dwDSLockedBufferSize, 
                                        &dwWavDataRead)))        
 	{
 	    pDSB->Unlock(pDSLockedBuffer, dwDSLockedBufferSize, NULL, 0);
-		DXTRACE_ERR(TEXT("Read"), hr);
+		DXTRACE_ERR(TEXT("read"), hr);
 		return false;
 	}
 
@@ -74,7 +74,7 @@ bool Sound::FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
     {
         // Wav is blank, so just fill with silence
         FillMemory((BYTE*) pDSLockedBuffer+dwWavDataRead, dwDSLockedBufferSize-dwWavDataRead-1, 
-                   (BYTE)(m_pWaveFile->m_pwfx->wBitsPerSample == 8 ? 128 : 0 ) );
+                   (BYTE)(m_wave_file->m_pwfx->wBitsPerSample == 8 ? 128 : 0 ) );
     }
 
 	m_pos += dwWavDataRead;
@@ -85,17 +85,17 @@ bool Sound::FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
 	if (pAmtRead)
 		*pAmtRead = dwWavDataRead;
 
-    return (m_pos < m_pWaveFile->GetSize());
+    return (m_pos < m_wave_file->get_size());
 }
 
-void Sound::Reset()
+void sound::reset()
 {
 	// reset the reading position back to 0
 	m_pos = 0;
 
-	if (m_pWaveFile)
+	if (m_wave_file)
 	{
-		m_pWaveFile->ResetFile();
+		m_wave_file->reset_file();
 	}
 }
 }

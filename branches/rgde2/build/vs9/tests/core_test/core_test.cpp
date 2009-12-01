@@ -144,7 +144,7 @@ int _tmain(int argc, wchar_t* argv[])
 	{
 		//throw core::errors::not_implemented("actor::clone");
 		using namespace test;
-		typedef core::utils::resouce_manager<resource> resouce_manager;
+		typedef core::utils::resouce_manager<resource, std::wstring> resouce_manager;
 
 		resouce_manager manager(boost::bind<resource_ptr>(&create_resource, _1));
 
@@ -165,6 +165,9 @@ int _tmain(int argc, wchar_t* argv[])
 	wcout.rdbuf(old_buff);
 	wcout << log_text.c_str();
 	wcout.flush();
+
+	// TEST MEM LEAKS REPORTING
+	new int[10];
 	
 	return 0;
 }

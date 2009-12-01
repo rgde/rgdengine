@@ -1,41 +1,41 @@
 #include "stdafx.h"
-#include "MusicOggVorbis.h"
-#include "OggVorbisFile.h"
+#include "musicoggvorbis.h"
+#include "oggvorbisfile.h"
 
 
 
 namespace audio
 {
-MusicOggVorbis::MusicOggVorbis(const char* szFileName)
-:	Music(),
-	m_pOVFile(NULL)
+music_oggvorbis::music_oggvorbis(const char* file_name)
+:	music(),
+	m_ovfile(NULL)
 {
-	m_pOVFile = new OggVorbisFile();
-	if (m_pOVFile)
+	m_ovfile = new oggvorbis_file();
+	if (m_ovfile)
 	{
-		if (!m_pOVFile->Open(szFileName))
+		if (!m_ovfile->open(file_name))
 		{
-			delete m_pOVFile;
-			m_pOVFile = NULL;
+			delete m_ovfile;
+			m_ovfile = NULL;
 		}
 	}
 
-	ASSERT(m_pOVFile && "Couldn't find/open .ogg file.");
+	ASSERT(m_ovfile && "Couldn't find/open .ogg file.");
 }
 
 
-MusicOggVorbis::~MusicOggVorbis()
+music_oggvorbis::~music_oggvorbis()
 {
-	if (m_pOVFile)
+	if (m_ovfile)
 	{
-		m_pOVFile->Close();
-		delete m_pOVFile;
-		m_pOVFile = NULL;
+		m_ovfile->close();
+		delete m_ovfile;
+		m_ovfile = NULL;
 	}
 }
 
 
-bool MusicOggVorbis::FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
+bool music_oggvorbis::fill_bufer(LPDIRECTSOUNDBUFFER pDSB,
 								DWORD startIndex,
 								DWORD amount,
 								DWORD* pAmtRead)
@@ -59,7 +59,7 @@ bool MusicOggVorbis::FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
 
 
 	int read = dwDSLockedBufferSize;
-	bool bMore = m_pOVFile->Read((char*)pDSLockedBuffer, read);
+	bool bMore = m_ovfile->read((char*)pDSLockedBuffer, read);
 
 	// Fill Buffer with silence first because we won't get the exact
 	// amount read back from ogg. Assume bit stream > 8bit, therefore
@@ -75,17 +75,17 @@ bool MusicOggVorbis::FillBuffer(LPDIRECTSOUNDBUFFER pDSB,
     return bMore;
 }
 
-void MusicOggVorbis::Reset()
+void music_oggvorbis::reset()
 {
-	if (m_pOVFile)
+	if (m_ovfile)
 	{
-		m_pOVFile->Reset();
+		m_ovfile->reset();
 	}
 }
 
-unsigned int MusicOggVorbis::GetTotalTime()
+unsigned int music_oggvorbis::get_total_time()
 {
-	ASSERT(m_pOVFile);
-	return m_pOVFile->GetTotalTime();
+	ASSERT(m_ovfile);
+	return m_ovfile->get_total_time();
 }
 }
