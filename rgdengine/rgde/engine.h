@@ -50,7 +50,6 @@ typedef	uchar		  byte;
 typedef unsigned int  uint;
 
 #include "base\\counter.h"
-#include "base\\dator.h"
 #include "base\\log.h"
 #include "base\\log_helper.h"
 #include "base\\exceptions.h"
