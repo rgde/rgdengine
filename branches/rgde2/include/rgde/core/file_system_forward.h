@@ -14,14 +14,17 @@ namespace rgde
 			struct stream;
 			typedef boost::shared_ptr<stream> stream_ptr;
 			
-			struct read_stream;
-			typedef boost::shared_ptr<read_stream> read_stream_ptr;
+			struct istream;
+			typedef boost::shared_ptr<istream> istream_ptr;
 
-			struct write_stream;
-			typedef boost::shared_ptr<write_stream> write_stream_ptr;
+			struct ostream;
+			typedef boost::shared_ptr<ostream> ostream_ptr;
 
-			std::wstring get_extension(const std::wstring& file_name);
-			std::wstring strip_extension(const std::wstring& file_name);
+			std::wstring get_extension(const std::wstring& filename);
+			std::wstring strip_extension(const std::wstring& filename);
+
+			std::string get_extension(const std::string& filename);
+			std::string strip_extension(const std::string& filename);
 		}
 	}
 }

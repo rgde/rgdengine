@@ -34,7 +34,7 @@
 #include <mmreg.h>
 
 #include <dsound.h>
-#include <dxerr9.h>
+#include <dxerr.h>
 #include <d3dx9math.h>
 
 #include <map>

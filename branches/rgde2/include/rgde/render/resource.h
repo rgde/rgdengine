@@ -1,12 +1,10 @@
 #pragma once
 
-#include <rgde/render/device_object.h>
-
 namespace rgde
 {
 	namespace render
 	{
-		class resource : public device_object
+		class resource
 		{
 		public:
 			enum format
@@ -69,10 +67,9 @@ namespace rgde
 			inline pool		get_pool() const {return m_pool;}
 
 		protected:
-			resource(device& dev, type res_type, format res_format, 
-					 pool res_pool, bool register_on_lost_reset = false);
+			resource(type res_type, format res_format, pool res_pool);
 
-		private:
+		protected:
 			type	m_type;
 			pool	m_pool;
 			format	m_format;

@@ -8,49 +8,17 @@
 
 namespace rgde
 {
-	inline math::color xml_color(xml::node n);
-	inline render::font_ptr xml_font(render::device& dev, xml::node n);
-	inline math::rect xml_rect(xml::node n);
-
-	inline math::rect xml_rect(xml::node n)
-	{
-		float x, y, w, h;
-		sscanf_s(n["value"].value(), "%f %f %f %f", &x, &y, &w, &h);
-		return math::rect(x, y, w, h);
-	}
-
-	math::color xml_color(xml::node n)
-	{
-		int r, g, b, a;
-		sscanf_s(n["value"].value(), "%d %d %d %d", &r, &g, &b, &a);
-		return math::color((uchar)r, (uchar)g, (uchar)b, (uchar)a);
-	}
-
-	render::font_ptr xml_font(render::device& dev, xml::node n)
-	{
-		std::wstring name = xml::as_utf16(n["name"].value());
-		int size = n["size"].as_int();
-		std::string style = n["style"].value();
-
-		render::font::weight w = render::font::normal;
-
-		if (style == "bold")
-			w = render::font::bold;
-
-		return render::font::create(dev, size, name, w);
-	}
-
 	struct size
 	{
 		float w, h;
 	};
 
 
-	class Application : public core::windows::window
+	class application : public core::windows::window
 	{
 	public:
-		Application(int x, int y, int w, int h, const std::wstring& title);
-		~Application();
+		application(int x, int y, int w, int h, const std::wstring& title);
+		~application();
 
 		void run();
 

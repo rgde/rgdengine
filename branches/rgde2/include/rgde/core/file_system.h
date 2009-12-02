@@ -16,7 +16,7 @@ namespace rgde
 				virtual size_t get_pos() const = 0;
 			};
 
-			struct read_stream : public stream
+			struct istream : public stream
 			{
 				virtual void read(byte* buff, unsigned size) = 0;
 
@@ -25,20 +25,20 @@ namespace rgde
 			};
 
 			template<typename T>
-			read_stream_ptr& operator >> (read_stream_ptr& in_stream, T& value)
+			istream_ptr& operator >> (istream_ptr& in_stream, T& value)
 			{
 				if (in_stream)
 					in_stream->read((byte*)&var, sizeof(T));
 				return in_stream;
 			}
 
-			struct write_stream : public stream
+			struct ostream : public stream
 			{
 				virtual void write(const byte* buff, unsigned size) = 0;
 			};
 
 			template<typename T>
-			write_stream_ptr& operator << (write_stream_ptr& out_stream, const T& value)
+			ostream_ptr& operator << (ostream_ptr& out_stream, const T& value)
 			{
 				if (out_stream)
 					out_stream->write((const byte*)&var, sizeof(T));
@@ -53,7 +53,7 @@ namespace rgde
 				virtual bool is_support_write() = 0;
 				
 				virtual bool is_file_exist(const std::string& file_name) = 0;
-				virtual read_stream_ptr open_read(const std::string& file_name) = 0;
+				virtual istream_ptr open_read(const std::string& file_name) = 0;
 			};
 
 			typedef boost::shared_ptr<file_source> file_source_ptr;
@@ -67,8 +67,10 @@ namespace rgde
 
 				void add_file_source(file_source_ptr fs);
 
-				read_stream_ptr open_read(const std::string& file_name);
-				bool is_file_exist(const std::string& file_name);
+				ostream_ptr open_write(const std::string& filename);
+				istream_ptr open_read(const std::string& filename);
+
+				bool is_file_exist(const std::string& filename);
 
 			private:
 				typedef std::vector<file_source_ptr> sources;

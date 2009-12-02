@@ -180,17 +180,17 @@ namespace audio
 		int ms_delay,
 		audio::listener* notify)
 	{
-		sound3d* pSound3D = new sound3d(m_fileName.c_str());
-		if (!pSound3D->get_wave_file())
+		sound3d* snd = new sound3d(m_filename.c_str());
+		if (!snd->get_wave_file())
 		{
 			ASSERT(!"Bad wav file name");
-			delete pSound3D;
+			delete snd;
 			return NULL;
 		}
 
-		pSound3D->add_listener(notify);
-		pSound3D->add_listener(this);
-		return pSound3D;
+		snd->add_listener(notify);
+		snd->add_listener(this);
+		return snd;
 	}
 
 
@@ -203,7 +203,7 @@ namespace audio
 		// .wav file for this effect
 		if (const char* file_name = node["FILE"].value())
 		{
-			m_fileName = file_name;
+			m_filename = file_name;
 		}
 		else
 			return false;
@@ -475,12 +475,12 @@ namespace audio
 		int ms_delay,
 		audio::listener* notify)
 	{
-		sound3d* pSound3D = new sound3d(m_fileName.c_str());
-		pSound3D->add_listener(notify);
+		sound3d* snd = new sound3d(m_filename.c_str());
+		snd->add_listener(notify);
 		if (notify != (audio::listener*)this)
-			pSound3D->add_listener(this);
-		pSound3D->set_world_object(&m_obj);
-		return pSound3D;
+			snd->add_listener(this);
+		snd->set_world_object(&m_obj);
+		return snd;
 	}
 
 	bool AudioAmbientTag::load_tag(xml::node node)

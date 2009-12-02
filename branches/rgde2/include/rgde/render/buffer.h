@@ -95,10 +95,10 @@ namespace rgde
 
 		typedef std::vector<vertex_element> vertex_elements_vector;
 
-		class vertex_declaration : public device_object
+		class vertex_declaration
 		{
 			class vertex_declaration_impl;
-			typedef boost::scoped_ptr<class vertex_declaration_impl> pimpl;
+			typedef boost::shared_ptr<vertex_declaration_impl> pimpl;
 
 			vertex_declaration(device& dev, const vertex_element* vertex_elements_array, size_t size);
 			vertex_declaration(device& dev, const vertex_elements_vector& vertex_elements);
@@ -120,7 +120,7 @@ namespace rgde
 		class vertex_buffer : public buffer
 		{
 			class vertex_buffer_impl;
-			typedef boost::scoped_ptr<vertex_buffer_impl> pimpl;
+			typedef boost::shared_ptr<vertex_buffer_impl> pimpl;
 
 			vertex_buffer(device& dev, vertex_declaration_ptr decl, size_t size, resource::pool pool, uint usage_flags);
 		public:
@@ -145,7 +145,7 @@ namespace rgde
 		class index_buffer : public buffer
 		{
 			class index_buffer_impl;
-			typedef boost::scoped_ptr<index_buffer_impl> pimpl;
+			typedef boost::shared_ptr<index_buffer_impl> pimpl;
 
 		protected:
 			index_buffer(device& dev, size_t size, bool use_32bit, resource::pool pool, 

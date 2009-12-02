@@ -48,7 +48,7 @@ namespace audio
 		AudioEffectTag();
 		virtual ~AudioEffectTag();
 
-		const char* GetFileName() { return m_fileName.c_str(); }
+		const char* GetFileName() { return m_filename.c_str(); }
 
 		float GetMinDistance() { return m_minDist; }
 		float GetMaxDistance() { return m_maxDist; }
@@ -62,7 +62,7 @@ namespace audio
 		virtual bool load_tag(xml::node node);
 
 	protected:
-		std::string m_fileName;		// our .wav file
+		std::string m_filename;		// our .wav file
 		float m_minDist;			// minimum distance for 3D audio culling
 		float m_maxDist;			// maximum distance for 3D audio culling
 		int m_cascadeNum;			// number of times to play before we switch

@@ -2,8 +2,7 @@
 
 namespace audio
 {
-	namespace internal
-	{
+	namespace internal{
 		class base_audio;
 	}
 	
@@ -17,20 +16,15 @@ namespace audio
 
 	struct vec3
 	{
-		inline vec3(float fx=0, float fy=0, float fz=0)
-			: x(fx), y(fy), z(fz) {}
+		vec3(float fx, float fy, float fz);
 		float x, y, z;
 	};
 
 	// A class representing the player's view camera, 
 	// with the position orientation information exposed
 	// for the audio_manager
-	class camera
+	struct camera
 	{
-	public:
-		inline camera() {}
-		inline virtual ~camera() {}
-
 		virtual vec3& get_position() = 0;
 		virtual vec3& get_front() = 0;
 		virtual vec3& get_up() = 0;
@@ -56,6 +50,41 @@ namespace audio
 		vec3 m_pos;
 		vec3 m_vel;
 	};
+
+	class system
+	{
+	public:
+		system(void* window_handle /* hwnd on win32 */);
+		~system();
+
+		void update(int ms_elapsed);
+
+		void stop_all();
+		void set_volume(int volume);
+
+		bool load(xml::node node);
+		bool load(const char* file);
+
+		int get_num_tags();
+		const char* get_tag_name(size_t tag_index);
+
+		void set_camera(camera* cam);
+
+		void play(const char* tag_name);
+		void play(size_t tag_index);
+
+	private:
+		class audio_manager* manager;
+	};
+
+//////////////////////////////////////////////////////////////////////////
+
+	inline vec3::vec3(float fx, float fy, float fz)
+		: x(fx), y(fy), z(fz)
+	{
+	}
+
+//////////////////////////////////////////////////////////////////////////
 
 	inline world_object::world_object()
 		:	m_pos(0.0f, 0.0f, 0.0f),
@@ -93,30 +122,4 @@ namespace audio
 		m_vel.y = y;
 		m_vel.z = z;
 	}
-
-	class system
-	{
-	public:
-		system(void* window_handle /* hwnd on win32 */);
-		~system();
-
-		void update(int ms_elapsed);
-
-		void stop_all();
-		void set_volume(int volume);
-
-		bool load(xml::node node);
-		bool load(const char* file);
-
-		int get_num_tags();
-		const char* get_tag_name(size_t tag_index);
-
-		void set_camera(camera* cam);
-
-		void play(const char* tag_name);
-		void play(size_t tag_index);
-
-	private:
-		class audio_manager* manager;
-	};
 }

@@ -30,8 +30,6 @@ namespace rgde
 			renderer2d(device& dev);
 			~renderer2d();
 
-			//inline sprites_vector& get_sprites() { return m_sprites; }
-
 			void draw(const sprite& s);
 			void draw(const math::rect& r, const math::color& c, texture_ptr t = texture_ptr());
 

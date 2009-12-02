@@ -2,8 +2,6 @@
 
 #include <rgde/core/math/forward.h>
 
-#include <rgde/render/device_object.h>
-
 #include <string>
 
 #include <boost/noncopyable.hpp>
@@ -15,7 +13,7 @@ namespace rgde
 	{
 		class device;
 
-		class font : public device_object
+		class font
 		{
 			class font_impl;
 			typedef boost::scoped_ptr<font_impl> pimpl;

@@ -8,7 +8,7 @@ namespace rgde
 	{
 
 		vertex_declaration::vertex_declaration(device& dev, const vertex_element* vertex_elements_array, size_t num_elements)
-			: m_vertex_elements(num_elements), device_object(dev)
+			: m_vertex_elements(num_elements)
 		{
 			for (size_t i = 0; i < num_elements; ++i)
 			{
@@ -20,8 +20,7 @@ namespace rgde
 
 		vertex_declaration::vertex_declaration(device& dev, const vertex_elements_vector& vertex_elements)
 			: m_vertex_elements(vertex_elements),
-			m_impl(new vertex_declaration_impl(dev, m_vertex_elements)),
-			device_object(dev)
+			m_impl(new vertex_declaration_impl(dev, m_vertex_elements))
 		{
 		}
 
