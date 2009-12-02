@@ -62,9 +62,17 @@ namespace rgde
 		{ 
 		}
 
+		render_target::render_target(device& device, surface_ptr rt, surface_ptr depth)
+			: m_locked(false)
+			, device_object(device)
+			, m_surface(rt)
+			, m_depth_surface(depth)
+		{
+		}
+
 		render_target::~render_target()
 		{ 
-			//release(); 
+			release(); 
 		}
 
 		void render_target::release()
@@ -146,7 +154,7 @@ namespace rgde
 						m_desc.height_ = crop_height/m_desc.screen_divisor_ + m_desc.size_shift_;
 					}
 
-			reinit();
+					reinit();
 		}
 
 		void render_target::reinit()								
@@ -240,186 +248,176 @@ namespace rgde
 				//}
 			}
 		}
+
+
+		rt_manager::rt_manager(device& device)
+			: device_object(device, true)
+		{
+			m_cache.reserve(10);
+			m_stack.reserve(10);
+		}
+
+		rt_manager::~rt_manager()
+		{
+			for(size_t i = 0; i < m_cache.size(); ++i)
+			{
+				if (m_cache[i].use_count() > 1)
+				{
+					//warning("[~rt_manager] some RT are still in use!");
+				}
+			}
+
+			on_device_lost(); // HACK: to force deleting all device resources
+		}
+
+
+		render_target_ptr rt_manager::get(const rt_desc& d, bool force_create)	
+		{
+			try
+			{
+				render_target_ptr rt;
+
+				if( force_create )
+				{
+					//<any time create./>
+					rt = render_target_ptr(new render_target(get_device()));
+					rt->m_desc = d;
+					rt->reinit();
+					rt->lock();
+					m_cache.push_back(rt);
+				}
+				else
+				{
+					//<create if not exists and not in use./>
+					for( render_targets_vector::const_iterator i = m_cache.begin(); i != m_cache.end(); ++i )
+					{
+						if( (*i)->get_desc() == d
+							&& ( !(*i)->is_locked() || (*i).use_count() == 1 ) )
+						{
+							rt = (*i);
+							rt->unlock();
+							break;
+						}				
+					}
+					//<if not found in cache - create and push./>
+					if( !rt )
+					{
+						rt = render_target_ptr(new render_target(get_device()));
+						rt->m_desc = d;
+						rt->reinit();
+						m_cache.push_back(rt);
+					}		
+				}
+
+
+				return rt;
+			}
+			catch( std::exception& e )
+			{
+				std::clog << e.what() << std::endl;
+				return render_target_ptr();
+			}
+		}
+
+		void rt_manager::set( const render_target_ptr& rt, bool& set_color, bool& set_depth )
+		{
+			if( set_color && rt->get_color_surface() )
+			{
+				if( !get_device().set_render_target(0, rt->get_color_surface()) )
+				{
+					throw std::exception( "rt_manager::set: SetRenderTarget: failed. "  );
+				}
+
+				set_color = false;
+			}
+
+			if( set_depth && rt->get_depth_surface() )
+			{
+				if( !get_device().set_depth_surface(rt->get_depth_surface()) )
+				{
+					throw std::exception( "rt_manager::set: SetDepthStencilSurface: failed. " );
+				}
+
+				set_depth = false;
+			}
+		}
+
+		void rt_manager::push(render_target_ptr rt)
+		{
+			m_stack.push_back(rt);
+
+			bool set_color = true;
+			bool set_depth = true;
+			set( rt, set_color, set_depth );
+		}
+
+		void rt_manager::pop()
+		{
+			const render_target_ptr& curent = m_stack.back();
+			bool set_color = curent->get_color_surface();
+			bool set_depth = curent->get_depth_surface();
+			m_stack.pop_back();	
+
+			render_targets_vector::const_reverse_iterator ri = m_stack.rbegin(), rend = m_stack.rend();
+			for( ; ri != rend && (set_color || set_depth); ++ri )
+			{
+				set( *ri, set_color, set_depth );
+			}	
+		}
+
+
+		void rt_manager::on_device_lost()
+		{
+			m_stack.clear();
+
+			std::for_each(m_cache.begin(), m_cache.end(), 
+				boost::bind(&render_target::on_device_lost, _1));
+		}
+
+
+		void rt_manager::on_device_reset()
+		{
+			surface_ptr depth_surface = get_device().get_depth_surface();
+			assert(depth_surface);
+
+			surface_ptr color_surface = get_device().get_render_target(0);
+			assert(color_surface);
+
+			render_target_ptr rt(new render_target(get_device(), color_surface, depth_surface));
+
+			m_stack.push_back(rt);
+
+			try
+			{
+				std::for_each(m_cache.begin(), m_cache.end(), 
+					boost::bind(&render_target::on_device_reset, _1));
+			}
+			catch( const std::exception& e )
+			{
+				std::cerr << e.what() << std::endl;
+				throw;
+			}
+		}
+
+		void rt_manager::get_mem_usage( std::vector<std::string>& _list ) const
+		{
+			//render_targets_vector::const_iterator i =  m_cache.begin(), end = m_cache.end();
+			//for( ; i != end; ++i )
+			//{
+			//	_list.push_back((*i)->get_mem_usage());
+			//}
+		}
+
+		int rt_manager::get_mem_usage( ) const
+		{
+			int result(0);
+			//render_targets_vector::const_iterator i =  m_cache.begin(), end = m_cache.end();
+			//for( ; i != end; ++i )
+			//{
+			//	result += (*i)->get_mem_usage();
+			//}
+
+			return result;
+		}
 	}
 }
-
-
-
-//
-//rt_manager::rt_manager()
-//{
-//	m_cache.reserve(10);
-//	m_stack.reserve(10);
-//}
-//
-//rt_manager::~rt_manager()
-//{
-//	for(size_t i = 0; i < m_cache.size(); ++i)
-//	{
-//		if (m_cache[i].use_count() > 1)
-//		{
-//			warning("[~rt_manager] some RT are still in use!");
-//		}
-//	}
-//
-//	on_device_lost(); // HACK: to force deleting all device resources
-//}
-//
-//
-//render_target_ptr rt_manager::get(const render_target::desc& d, bool force_create)	
-//{
-//	try
-//	{
-//		render_target_ptr rt;
-//
-//		if( force_create )
-//		{
-//			//<any time create./>
-//			rt = render_target_ptr(new render_target());
-//			rt->ini(d);
-//			rt->lock();
-//			m_cache.push_back(rt);
-//		}
-//		else
-//		{
-//			//<create if not exists and not in use./>
-//			for( render_targets_vector::const_iterator i = m_cache.begin(); i != m_cache.end(); ++i )
-//			{
-//				if( (*i)->get_desc() == d
-//				 && ( !(*i)->is_locked() || (*i).use_count() == 1 ) )
-//				{
-//					rt = (*i);
-//					rt->unlock();
-//					break;
-//				}				
-//			}
-//			//<if not found in cache - create and push./>
-//			if( !rt )
-//			{
-//				rt = render_target_ptr(new render_target());
-//				rt->ini(d);
-//				m_cache.push_back(rt);
-//			}		
-//		}
-//
-//
-//		return rt;
-//	}
-//	catch( std::exception& e )
-//	{
-//		LogPrintf( e.what() );
-//		return render_target_ptr();
-//	}
-//}
-//
-//void rt_manager::set( const render_target_ptr& rt, bool& set_color, bool& set_depth )
-//{
-//	HRESULT hr;
-//
-//	if( set_color && rt->GetSurface() )
-//	{
-//		hr = RenderDevice::Instance()->dev->SetRenderTarget( 0, rt->GetSurface() );
-//		if( FAILED(hr) )
-//		{
-//			string errorString = "rt_manager::set: SetRenderTarget: failed. " + string(DXGetErrorDescription9A(hr));
-//			throw std::exception( errorString.c_str() );
-//		}
-//
-//		set_color = false;
-//	}
-//
-//	if( set_depth && rt->GetDepthStensilSurface() )
-//	{
-//		hr = RenderDevice::Instance()->dev->SetDepthStencilSurface( rt->GetDepthStensilSurface() );
-//		if( FAILED(hr) )
-//		{
-//			string errorString = "rt_manager::set: SetDepthStencilSurface: failed. " + string(DXGetErrorDescription9A(hr));
-//			throw std::exception( errorString.c_str() );
-//		}
-//
-//		set_depth = false;
-//	}
-//}
-//
-//void rt_manager::push(const render_target_ptr& rt)
-//{
-//	m_stack.push_back(rt);
-//
-//	bool set_color = true;
-//	bool set_depth = true;
-//	set( rt, set_color, set_depth );
-//}
-//
-//void rt_manager::pop()
-//{
-//	const render_target_ptr& curent = m_stack.back();
-//	bool set_color = curent->GetSurface();
-//	bool set_depth = curent->GetDepthStensilSurface();
-//	m_stack.pop_back();	
-//
-//	render_targets_vector::const_reverse_iterator ri = m_stack.rbegin(), rend = m_stack.rend();
-//	for( ; ri != rend && (set_color || set_depth); ++ri )
-//	{
-//		set( *ri, set_color, set_depth );
-//	}	
-//}
-//
-//
-//void rt_manager::on_device_lost()
-//{
-//	m_stack.clear();
-//
-//	std::for_each(m_cache.begin(), m_cache.end(), 
-//		boost::bind(&render_target::on_device_lost, _1));
-//}
-//
-//
-//void rt_manager::on_device_reset()
-//{
-//	render_target_ptr rt(new render_target());
-//
-//	IDirect3DSurface9* ds(0);
-//	RenderDevice::Instance()->dev->GetDepthStencilSurface(&ds);
-//	assert(ds);
-//
-//	IDirect3DSurface9* bb(0);
-//	RenderDevice::Instance()->dev->GetRenderTarget(0, &bb );
-//	assert(bb);
-//
-//	rt->SetSurface(bb);
-//	rt->SetDepthStensilSurface(ds);
-//
-//	m_stack.push_back(rt);
-//
-//	try
-//	{
-//		std::for_each(m_cache.begin(), m_cache.end(), 
-//			boost::bind(&render_target::on_device_reset, _1));
-//	}
-//	catch( const std::exception& e )
-//	{
-//		LogPrintf( e.what());
-//		throw;
-//	}
-//}
-//
-//void rt_manager::get_mem_usage( std::vector<std::string>& _list ) const
-//{
-//	render_targets_vector::const_iterator i =  m_cache.begin(), end = m_cache.end();
-//	for( ; i != end; ++i )
-//	{
-//		_list.push_back((*i)->get_mem_usage());
-//	}
-//}
-//
-//int rt_manager::get_mem_usage( ) const
-//{
-//	int result(0);
-//	render_targets_vector::const_iterator i =  m_cache.begin(), end = m_cache.end();
-//	for( ; i != end; ++i )
-//	{
-//		result += (*i)->get_mem_usage();
-//	}
-//
-//	return result;
-//}

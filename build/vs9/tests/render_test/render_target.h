@@ -98,6 +98,8 @@ namespace rgde
 
 		private:
 			render_target(device& device);
+			render_target(device& device, surface_ptr tr, surface_ptr depth);
+
 			void reinit();				//<throw std::exception./> <init with current descriptor./>
 			void release();
 
@@ -105,8 +107,8 @@ namespace rgde
 			void on_device_reset();
 
 		protected:
-			rt_desc				m_desc;
-			bool				m_locked;
+			rt_desc		m_desc;
+			bool		m_locked;
 
 			texture_ptr	m_texture;
 			surface_ptr	m_surface;
@@ -116,7 +118,7 @@ namespace rgde
 		
 		typedef boost::shared_ptr<class render_target> render_target_ptr;
 
-		class rt_manager : boost::noncopyable
+		class rt_manager : public device_object
 		{	
 		public :
 			rt_manager(device& device);
@@ -127,8 +129,8 @@ namespace rgde
 			void push(render_target_ptr rt);//<throw std::exception./>
 			void pop();//<throw std::exception./>
 
-			//void get_mem_usage( std::vector<std::string>& list ) const;
-			//int get_mem_usage() const;
+			void get_mem_usage( std::vector<std::string>& list ) const;
+			int get_mem_usage() const;
 
 		private:
 			void on_device_lost();

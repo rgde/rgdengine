@@ -83,7 +83,16 @@ namespace rgde
 			bool frame_begin();
 			bool frame_end();
 			bool present();
-			
+
+			size_t get_viewport_x() const {return 0;}
+			size_t get_viewport_y() const {return 0;}
+
+			bool set_render_target(size_t rt_index, surface_ptr rt_surface) {return false;}
+			bool set_depth_surface(surface_ptr depth_surface) {return false;}
+
+			surface_ptr get_render_target(size_t rt_index) { return surface_ptr(); }
+			surface_ptr get_depth_surface() { return surface_ptr(); }
+
 			device_impl& get_impl();
 			const device_impl& get_impl() const;
 

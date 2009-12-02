@@ -17,12 +17,28 @@ namespace rgde
 
 	namespace render
 	{
+
+		enum multisample_type
+		{
+			ms_none	   =  0,
+			ms_2       =  2,
+			ms_3       =  3,
+			ms_4       =  4,
+			ms_5       =  5,
+			ms_6       =  6,
+			ms_7       =  7,
+			ms_8       =  8,
+		};
+
 		class surface : public resource
 		{
 		protected:
 			explicit surface();
 
 		public:
+			static surface_ptr create_rt(device& dev, size_t width, size_t heigh, 
+				resource::format format, multisample_type sm_type, bool locable);
+
 			size_t get_width() const;
 			size_t get_height() const;
 
@@ -38,6 +54,15 @@ namespace rgde
 			bool unlock() const;
 		};
 
+		// Usage Flags
+		enum texture_usage
+		{
+			usage_default = 0, 
+			usage_rendertarget = (0x00000001L),
+			usage_depthstencil = (0x00000002L),
+			usage_dynamic = (0x00000200L),
+		};
+
 		class texture : public resource
 		{
 		public:
@@ -46,6 +71,9 @@ namespace rgde
 
 			static texture_ptr create(device& dev, void* data, size_t size);
 			static texture_ptr create(device& dev, core::vfs::istream_ptr file);
+
+			static texture_ptr create(device& dev, size_t width, size_t heigh, size_t num_levels,
+									resource::format format, texture_usage usage = usage_default);
 
 			impl_ptr		get_impl()		 {return m_impl;}
 			const impl_ptr& get_impl() const {return m_impl;}
