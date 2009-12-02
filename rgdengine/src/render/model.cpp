@@ -62,10 +62,10 @@ namespace render
 
 		if (elem)
 		{
-			for (TiXmlNode* pNode = elem->IterateChildren(NULL);
-					pNode != 0; pNode = elem->IterateChildren(pNode))
+			for (TiXmlNode* node = elem->IterateChildren(NULL);
+					node != 0; node = elem->IterateChildren(node))
 			{
-				TiXmlElement *tx= pNode->ToElement();
+				TiXmlElement *tx= node->ToElement();
 				int m_id= 0; 
 				tx->Attribute("id", &m_id);
 
@@ -95,18 +95,18 @@ namespace render
 		// load transformation data if exist
 		{
 			// translation
-			if (TiXmlElement * pNode = elem->FirstChildElement("translation"))
+			if (TiXmlElement * node = elem->FirstChildElement("translation"))
 			{
 				math::vec3f v;
-				base::read(v, pNode);
+				base::read(v, node);
 				root_frame.set_position(v);
 			}
 
 			//rotation
-			if (TiXmlElement * pNode = elem->FirstChildElement("rotation"))
+			if (TiXmlElement * node = elem->FirstChildElement("rotation"))
 			{
 				math::vec3f v;
-				base::read(v, pNode);
+				base::read(v, node);
 
 				using math::Math::deg2Rad;				
 				math::EulerAngleXYZf ang(deg2Rad(v[0]), deg2Rad(v[1]), deg2Rad(v[2]));
@@ -118,10 +118,10 @@ namespace render
 			}
 
 			//scale
-			if (TiXmlElement * pNode = elem->FirstChildElement("scale"))
+			if (TiXmlElement * node = elem->FirstChildElement("scale"))
 			{
 				math::vec3f v;
-				base::read(v, pNode);
+				base::read(v, node);
 				root_frame.set_scale(v);
 			}
 		}

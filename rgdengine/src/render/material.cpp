@@ -155,10 +155,10 @@ namespace render
 		TiXmlElement *maps	= elem->FirstChildElement("maps");
 		if (maps)
 		{
-			TiXmlNode* pNode = NULL;
-			while (pNode = maps->IterateChildren(pNode))
+			TiXmlNode* node = NULL;
+			while (node = maps->IterateChildren(node))
 			{
-				TiXmlElement *tx = pNode->ToElement();
+				TiXmlElement *tx = node->ToElement();
 				if (0 != tx->Attribute("file"))
 				{
 					std::string str	= tx->Attribute("file");

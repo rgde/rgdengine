@@ -204,28 +204,28 @@ namespace render
 	static void Read(TiXmlElement*, type&);\
 	};\
 	\
-	inline void XmlVertexReader<type>::Read(TiXmlElement* pNode, type& vertex)\
+	inline void XmlVertexReader<type>::Read(TiXmlElement* node, type& vertex)\
 	{
 #define END_VERTEX_READER	}
 
-	void readColor( TiXmlElement* pNode, math::Color& color);
-	void readPosition( TiXmlElement* pNode, math::vec3f& position);
-	void readTangent( TiXmlElement* pNode, math::vec3f& tangent);
-	void readBinormal( TiXmlElement* pNode, math::vec3f& binormal);
-	void readNormal( TiXmlElement* pNode, math::vec3f& normal);
-	void readTexCoords( TiXmlElement* pNode, math::vec2f& tex);
-	void readTexCoords2( TiXmlElement* pNode, math::vec2f& tex0, math::vec2f& tex1);
-	void readWeights( TiXmlElement* pNode, math::vec4f& weights);
+	void readColor( TiXmlElement* node, math::Color& color);
+	void readPosition( TiXmlElement* node, math::vec3f& position);
+	void readTangent( TiXmlElement* node, math::vec3f& tangent);
+	void readBinormal( TiXmlElement* node, math::vec3f& binormal);
+	void readNormal( TiXmlElement* node, math::vec3f& normal);
+	void readTexCoords( TiXmlElement* node, math::vec2f& tex);
+	void readTexCoords2( TiXmlElement* node, math::vec2f& tex0, math::vec2f& tex1);
+	void readWeights( TiXmlElement* node, math::vec4f& weights);
 
 
-	#define READ_COLOR		readColor(pNode, vertex.color);
-	#define READ_POSITION	readPosition(pNode, vertex.position);
-	#define READ_TANGENT	readTangent(pNode, vertex.tangent);
-	#define READ_BINORMAL	readBinormal(pNode, vertex.binormal);
-	#define READ_NORMAL		readNormal(pNode, vertex.normal);
-	#define READ_TEXCOORD	readTexCoords(pNode, vertex.tex);
-	#define READ_TEXCOORD2	readTexCoords2(pNode, vertex.tex0, vertex.tex1 );
-	#define READ_WEIGHTS	readWeights(pNode, vertex.weights);
+	#define READ_COLOR		readColor(node, vertex.color);
+	#define READ_POSITION	readPosition(node, vertex.position);
+	#define READ_TANGENT	readTangent(node, vertex.tangent);
+	#define READ_BINORMAL	readBinormal(node, vertex.binormal);
+	#define READ_NORMAL		readNormal(node, vertex.normal);
+	#define READ_TEXCOORD	readTexCoords(node, vertex.tex);
+	#define READ_TEXCOORD2	readTexCoords2(node, vertex.tex0, vertex.tex1 );
+	#define READ_WEIGHTS	readWeights(node, vertex.weights);
 
 	START_VERTEX_READER( vertex::PositionNormalColoredTexturedBinormalTangent )
 		READ_POSITION
