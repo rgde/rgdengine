@@ -26,6 +26,7 @@ namespace rgde
 	{
 		show();
 		update();
+		ShowCursor(false);
 
 		init_game_data();
 
@@ -48,7 +49,7 @@ namespace rgde
 		ship.color = color(255, 255, 255, 255);
 		ship.pos = vec2f(400.0f, 200.0f);
 		ship.size = vec2f(64.0f, 256.0f);
-		ship.texture = m_ship_texture;	
+		ship.texture = m_ship_texture;
 
 		for (int i=0; i<20; i++)
 		{
@@ -57,22 +58,20 @@ namespace rgde
 			add_unit(unit);
 		}
 
-		m_batcher.add_sprite(ship);
+		m_batcher.add_sprite(ship);	
 	}
 
 	void GameApplication::update_frame()
 	{
 		using namespace render;
 
-		m_batcher.get_sprites().clear();
-
-		m_batcher.add_sprite(ship);
+		m_batcher.clear_all();
 
 		for(aliens_iter it = m_aliens.begin(); it != m_aliens.end(); ++it)
 		{
 			primitives_2d::sprite_desc &sprite = it->sprite;
 			sprite.pos += math::vec2f(0, 0.05); 
-			
+
 			if(sprite.pos[1] >600)
 			{
 				sprite.pos[1] = - 50;
@@ -80,6 +79,7 @@ namespace rgde
 
 			m_batcher.add_sprite(sprite);
 		}		
+		m_batcher.add_sprite(ship);	
 	} 
 
 	void GameApplication::render_frame()
@@ -123,7 +123,10 @@ namespace rgde
 		case WM_SIZE:
 			return 0;
 
-		case WM_MOUSEMOVE:			
+		case WM_MOUSEMOVE:	
+			float xPos = LOWORD(lparam); 
+			float yPos = HIWORD(lparam); 
+			ship.pos = math::vec2f(xPos, yPos);
 			break;
 		}
 		return window::wnd_proc(message, wparam, lparam);

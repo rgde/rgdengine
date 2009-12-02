@@ -163,12 +163,15 @@ namespace rgde
 					const primitives_2d::sprite_desc &s = *it;
 					const math::color &color= s.color;
 					const math::rect &tex_coord	= s.tex_coord;
+					const texture_ptr &tex = s.texture;
 
 					math::vec2f hsize = s.size*0.5f;
 					math::vec2f pos	= s.pos + hsize;
 
 					float cosa	= ::cos(s.spin);
 					float sina	= ::sin(s.spin);
+
+					m_device.set_texture(tex, 0);
 
 					// Top left
 					math::vec2f rotPos		= rotate_pos(-hsize[0], -hsize[1], sina, cosa) + pos;
@@ -198,8 +201,6 @@ namespace rgde
 					vertices->color = color;
 					++vertices;
 
-					m_device.set_texture(s.texture, 0);
-
 					current_data_size += sizeof(primitives_2d::prim_vertex)*4;
 					if(current_data_size == m_batch_size)
 					{
@@ -212,6 +213,7 @@ namespace rgde
 
 			    if( current_data_size )
 				{
+					
 					m_device.set_stream_source( 0, m_vb, sizeof(primitives_2d::prim_vertex) );
 					m_device.draw(render::triangle_list, 0, 0, m_buffer_offset, 0, current_data_size/sizeof(primitives_2d::prim_vertex));
 				}
