@@ -29,13 +29,7 @@
 #include <tchar.h>
 
 
-#include <windows.h>
-#include <mmsystem.h>
-#include <mmreg.h>
 
-#include <dsound.h>
-#include <dxerr.h>
-#include <d3dx9math.h>
 
 #include <map>
 #include <vector>
@@ -59,11 +53,4 @@
 #include <rgde/core/core.h>
 #include <rgde/core/xml/xml.h>
 #include <rgde/render/render.h>
-
-#include <windows.h>
-#define ASSERT _ASSERTE
-
-#define COM_NO_WINDOWS_H
-#include <objbase.h>
-
-#include <vorbis\vorbisfile.h>
+#include <rgde/audio/audio.h>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
-	Name="render_test"
-	ProjectGUID="{2730B8D5-6D9E-41BA-975C-0DF08030BF83}"
-	RootNamespace="core_test"
+	Version="9.00"
+	Name="audio"
+	ProjectGUID="{3F8B7D7D-F4A7-4E75-A74A-5877CFBDC167}"
+	RootNamespace="audio"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			CharacterSet="1"
 			>
 			<Tool
@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include&quot;;&quot;$(SolutionDir)..\..\external\vorbis\include&quot;;&quot;$(SolutionDir)..\..\external\ogg\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include&quot;;&quot;$(SolutionDir)..\..\external\vorbis\include&quot;;&quot;$(SolutionDir)..\..\external\ogg\include&quot;;&quot;$(SolutionDir)..\..\include\rgde\audio\&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,23 +61,11 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="dsound.lib DxErr9.lib DxErr.lib X3DAudio.lib dxguid.lib"
-				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName)_d.exe"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86;$(SolutionDir)..\..\external\boost\lib\"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
+				OutputFile="$(SolutionDir)libs\$(ConfigurationName)\$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -89,9 +77,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -99,7 +84,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -120,12 +105,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="1"
-				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include&quot;;&quot;$(SolutionDir)..\..\external\vorbis\include&quot;;&quot;$(SolutionDir)..\..\external\ogg\include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;;&quot;$(SolutionDir)..\..\include&quot;;;&quot;$(SolutionDir)..\..\external\vorbis\include&quot;;&quot;$(SolutionDir)..\..\external\ogg\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -141,25 +123,11 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="dsound.lib DxErr9.lib DxErr.lib X3DAudio.lib dxguid.lib"
-				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName).exe"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86;$(SolutionDir)..\..\external\boost\lib\"
-				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(IntDir)\$(TargetName).pdb"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
+				OutputFile="$(SolutionDir)libs\$(ConfigurationName)\$(ProjectName).lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -169,9 +137,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -187,19 +152,67 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Application.cpp"
+				RelativePath="..\..\..\src\audio\audio.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ArcBall.cpp"
+				RelativePath="..\..\..\src\audio\audio_manager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\render_test.cpp"
+				RelativePath="..\..\..\src\audio\audio_manager.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="..\..\..\src\audio\audio_tag.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\audio_tag.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\base_audio.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\music.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\music_ogg.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\music_ogg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\ogg_file.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\ogg_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\sound.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\sound.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\sound3d.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\sound3d.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -218,6 +231,26 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath="..\..\..\src\audio\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\wavefile.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\wavefile.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\wavefile_factory.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\audio\wavefile_factory.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -225,67 +258,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Application.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ArcBall.h"
-				>
-			</File>
-			<File
-				RelativePath=".\camera.h"
-				>
-			</File>
-			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="game"
-			>
-			<File
-				RelativePath=".\console.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\console.h"
-				>
-			</File>
-			<File
-				RelativePath=".\game.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\game.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="gfx"
-			>
-			<File
-				RelativePath=".\geometry.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\geometry.h"
-				>
-			</File>
-			<File
-				RelativePath=".\render_target.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\render_target.h"
-				>
-			</File>
-			<File
-				RelativePath=".\sprite.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\sprite.h"
+				RelativePath="..\..\..\include\rgde\audio\audio.h"
 				>
 			</File>
 		</Filter>
