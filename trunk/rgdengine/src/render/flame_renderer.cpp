@@ -112,7 +112,7 @@ namespace render
 
 		root = root.FirstChildElement("flame");
 
-		std::string strTextureName	= base::safe_read<std::string>(root, "texture_name", "");
+		std::string texture_filename	= base::safe_read<std::string>(root, "texture_name", "");
 
 		float x = base::safe_read_attr(root, "size", "x", 0.0f);
 		float y = base::safe_read_attr(root, "size", "y", 0.0f);
@@ -134,7 +134,7 @@ namespace render
 
 		float fps = base::safe_read(root, "fps", 0.0f);
 
-		return create(strTextureName, color, pos, size, (int)fps, vector);
+		return create(texture_filename, color, pos, size, (int)fps, vector);
 	}
 
 	void readValue(int &value, io::readstream_ptr in)

@@ -135,19 +135,19 @@ namespace base
 		color = math::Color(r, g, b, a);
 	}
 
-	inline void read(math::vec4f& v, TiXmlElement* pNode)
+	inline void read(math::vec4f& v, TiXmlElement* node)
 	{
 		double x = 0;
-		pNode->Attribute("x", &x);
+		node->Attribute("x", &x);
 
 		double y = 0;
-		pNode->Attribute("y", &y);
+		node->Attribute("y", &y);
 
 		double z = 0;
-		pNode->Attribute("z", &z);
+		node->Attribute("z", &z);
 
 		double w = 0;
-		pNode->Attribute("w", &w);
+		node->Attribute("w", &w);
 
 		v[0] = static_cast<float>(x);
 		v[1] = static_cast<float>(y);
@@ -155,39 +155,39 @@ namespace base
 		v[3] = static_cast<float>(w);
 	}
 
-	inline void read(math::vec3f& v, TiXmlElement* pNode)
+	inline void read(math::vec3f& v, TiXmlElement* node)
 	{
 		double x = 0;
-		pNode->Attribute("x", &x);
+		node->Attribute("x", &x);
 
 		double y = 0;
-		pNode->Attribute("y", &y);
+		node->Attribute("y", &y);
 
 		double z = 0;
-		pNode->Attribute("z", &z);
+		node->Attribute("z", &z);
 
 		v[0] = static_cast<float>(x);
 		v[1] = static_cast<float>(y);
 		v[2] = static_cast<float>(z);
 	}
 
-	inline void read(math::vec2f& v, TiXmlElement* pNode)
+	inline void read(math::vec2f& v, TiXmlElement* node)
 	{
 		double x = 0;
-		pNode->Attribute("u", &x);
+		node->Attribute("u", &x);
 
 		double y = 0;
-		pNode->Attribute("v", &y);
+		node->Attribute("v", &y);
 
 		v[0] = static_cast<float>(x);
 		v[1] = static_cast<float>(y);
 	}
 
 	template<typename T> 
-	inline T safe_read_node_name(TiXmlNode* pNode,	const T& defaultValue) 
+	inline T safe_read_node_name(TiXmlNode* node,	const T& defaultValue) 
 	{ 
 		try {
-			std::string strValue = pNode->Value();
+			std::string strValue = node->Value();
 			return base::lexical_cast<T>(strValue); 
 		} catch(...)
 		{
