@@ -8,15 +8,13 @@ using render::device;
 using render::font;
 using namespace math;
 
-#include "Application.h"
+#include "application.h"
 
 
-Application::Application(int x, int y, int w, int h, const std::wstring& title) 
+application::application(int x, int y, int w, int h, const std::wstring& title) 
 	: m_active(true),
 	window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU),
 	m_device(get_handle()),
-	//m_font(font::create(m_device, 18, L"Arial", font::heavy)),
-	//m_arc_ball(w, h), 
 	m_elapsed(0),
 	m_sound_system(get_handle())
 {
@@ -36,13 +34,13 @@ Application::Application(int x, int y, int w, int h, const std::wstring& title)
 	init_render_data();
 }
 
-Application::~Application()
+application::~application()
 {
 	//m_vb.reset();
 	//m_ib.reset();
 }
 
-void Application::init_render_data()
+void application::init_render_data()
 {
 	using namespace rgde::render;
 
@@ -56,7 +54,7 @@ void Application::init_render_data()
 	//m_camera.lookAt(cam_pos, (math::vec3f(1,0,0) + cam_pos), math::vec3f(0,1,0));
 }
 
-void Application::run()
+void application::run()
 {	
 	m_timer.restart();
 
@@ -71,12 +69,12 @@ void Application::run()
 	}
 }
 
-void Application::update()
+void application::update()
 {
 	m_game.do_update((float)m_elapsed);
 }
 
-void Application::render()
+void application::render()
 {
 	m_device.frame_begin();
 	m_device.clear(m_back_color);
@@ -87,7 +85,7 @@ void Application::render()
 	m_device.present();
 }
 
-core::windows::result Application::wnd_proc(ushort message, uint wparam, long lparam )
+core::windows::result application::wnd_proc(ushort message, uint wparam, long lparam )
 {
 	switch (message)
 	{
@@ -153,7 +151,7 @@ core::windows::result Application::wnd_proc(ushort message, uint wparam, long lp
 	return window::wnd_proc(message, wparam, lparam);
 }
 
-void Application::resize_scene(unsigned int width, unsigned int height)
+void application::resize_scene(unsigned int width, unsigned int height)
 {
 	if (height==0)										// Prevent A Divide By Zero By
 	{
@@ -161,14 +159,12 @@ void Application::resize_scene(unsigned int width, unsigned int height)
 	}
 }
 
-void Application::init_game_data()
+void application::init_game_data()
 {
-	bool res = m_config.load_file("config.xml");
-	m_back_color = xml_color(m_config("root")("app")("background")("color"));
+	m_back_color = rgde::math::color::Black;
 }
 
-
-bool Application::do_events()
+bool application::do_events()
 {
 	MSG msg = {0};
 	if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )

@@ -14,7 +14,6 @@ namespace audio
 		virtual ~music();
 
 		virtual unsigned int get_total_time() = 0;
-	protected:
 	};
 
 

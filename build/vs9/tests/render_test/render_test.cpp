@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "Application.h"
+#include "application.h"
 
 
 int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
@@ -12,21 +12,9 @@ int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 	std::wstring path = p.branch_path().string() + L"/../data/";
 	SetCurrentDirectoryW(path.c_str());
 
+	rgde::application app(100, 100, 800, 600, L"Render Test");
 
-	xml::document config;
-	bool res = config.load_file("config.xml");
-
-	xml::node app_node = config("root")("app"); 
-
-	std::wstring title = xml::as_utf16(app_node("title").first_child().value());
-
-	int x, y, w, h;
-	sscanf_s(app_node("rect")["value"].value(), "%d %d %d %d", &x, &y, &w, &h);
-
-	{
-		rgde::Application app(x, y, w, h, title);
-		app.run();
-	}
+	app.run();
 	
 	return 0;
 }

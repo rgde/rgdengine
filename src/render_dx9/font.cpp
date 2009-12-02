@@ -8,8 +8,7 @@ namespace rgde
 	{
 		//////////////////////////////////////////////////////////////////////////
 		font::font(device& dev, size_t height, const std::wstring& name, weight w)
-			: m_pimpl(new font_impl(dev, height, name, w)), 
-			device_object(dev, true)
+			: m_pimpl(new font_impl(dev, height, name, w))
 		{
 		}
 

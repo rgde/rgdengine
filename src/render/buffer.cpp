@@ -38,7 +38,7 @@ namespace rgde
 
 		buffer::buffer(device& dev, resource::type type, resource::format format, 
 			resource::pool pool, uint buffer_usage, bool register_on_lost_reset)
-			: resource(dev, type, format, pool, register_on_lost_reset), 
+			: resource(type, format, pool), 
 			m_buffer_usage(buffer_usage)
 		{
 		}

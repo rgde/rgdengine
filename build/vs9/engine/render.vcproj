@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="render"
 	ProjectGUID="{98B9C120-939A-4A20-9231-B25805EB85D1}"
 	RootNamespace="render"
@@ -219,10 +219,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\include\rgde\render\font.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\include\rgde\render\lines_renderer.h"
 				>
 			</File>
 			<File
