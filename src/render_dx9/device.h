@@ -97,6 +97,10 @@ namespace rgde
 				m_device->Clear( 0, NULL, flags ,color, depth, 0 );
 			}
 
+			operator IDirect3DDevice9* () {return get_dx_device(); }
+			IDirect3DDevice9* operator->() {return get_dx_device(); }
+
+
 			IDirect3DDevice9* get_dx_device() {return m_device;}
 
 			core::windows::handle m_hwnd;

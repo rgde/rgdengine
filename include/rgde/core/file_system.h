@@ -18,10 +18,15 @@ namespace rgde
 
 			struct istream : public stream
 			{
-				virtual void read(byte* buff, unsigned size) = 0;
+				virtual size_t read(byte* buff, unsigned size) = 0;
 
 				virtual size_t get_size() const = 0;
 				virtual void set_pos(size_t pos) = 0;
+			};
+
+			struct ostream : public stream
+			{
+				virtual void write(const byte* buff, unsigned size) = 0;
 			};
 
 			template<typename T>
@@ -31,11 +36,6 @@ namespace rgde
 					in_stream->read((byte*)&var, sizeof(T));
 				return in_stream;
 			}
-
-			struct ostream : public stream
-			{
-				virtual void write(const byte* buff, unsigned size) = 0;
-			};
 
 			template<typename T>
 			ostream_ptr& operator << (ostream_ptr& out_stream, const T& value)
@@ -48,12 +48,13 @@ namespace rgde
 			struct file_source
 			{
 				virtual ~file_source() {}
-				virtual int get_priority() = 0;
+				virtual int get_priority() const = 0;
 
-				virtual bool is_support_write() = 0;
+				virtual bool is_support_write() const = 0;
 				
-				virtual bool is_file_exist(const std::string& file_name) = 0;
+				virtual bool is_file_exist(const std::string& file_name) const = 0;
 				virtual istream_ptr open_read(const std::string& file_name) = 0;
+				virtual ostream_ptr open_write(const std::string& file_name) = 0;
 			};
 
 			typedef boost::shared_ptr<file_source> file_source_ptr;

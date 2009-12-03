@@ -131,8 +131,11 @@ namespace rgde
 
 		void render_target::on_device_reset()
 		{
-			int width = get_device().get_viewport_x();
-			int height = get_device().get_viewport_y();
+			view_port vp;
+			get_device().get_viewport(vp);
+
+			int width = (int)vp.width;
+			int height = (int)vp.height;
 
 			if( m_desc.screen_divisor_ == 0 )
 			{

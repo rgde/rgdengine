@@ -52,5 +52,6 @@
 
 #include <rgde/core/core.h>
 #include <rgde/core/xml/xml.h>
+#include <rgde/core/file_system.h>
 #include <rgde/render/render.h>
 #include <rgde/audio/audio.h>

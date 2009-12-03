@@ -10,6 +10,35 @@ namespace rgde
 {
 	namespace render
 	{
+		namespace
+		{
+			D3DVIEWPORT9 convert(const view_port& vp)
+			{
+				D3DVIEWPORT9 dx_vp;
+
+				dx_vp.X = (DWORD)vp.x;
+				dx_vp.Y = (DWORD)vp.y;
+				dx_vp.Width = (DWORD)vp.width;
+				dx_vp.Height = (DWORD)vp.height;
+				dx_vp.MinZ = vp.minz;
+				dx_vp.MaxZ = vp.maxz;
+
+				return dx_vp;
+			}
+
+			view_port convert(const D3DVIEWPORT9& dx_vp)
+			{
+				view_port vp;
+				vp.x		= (size_t)dx_vp.X;
+				vp.y		= (size_t)dx_vp.Y;
+				vp.width	= (size_t)dx_vp.Width;
+				vp.height	= (size_t)dx_vp.Height;
+				vp.minz		= dx_vp.MinZ;
+				vp.maxz		= dx_vp.MaxZ;
+				return vp;
+			}
+		}
+
 		device::device(core::windows::handle hwnd, bool windowed)
 			: m_pimpl(new device_impl(hwnd, windowed))
 		{
@@ -19,11 +48,44 @@ namespace rgde
 		{
 		}
 
+		void device::get_viewport(view_port& vp)
+		{			
+			D3DVIEWPORT9 dx_vp;
+			get_impl()->GetViewport(&dx_vp);
+			vp = convert(dx_vp);
+		}
+
+		void device::set_viewport(const view_port& vp)
+		{
+			D3DVIEWPORT9 dx_vp = convert(vp);
+			get_impl()->SetViewport(&dx_vp);
+		}
+
+		bool device::set_render_target(size_t rt_index, surface_ptr rt_surface) 
+		{
+			return false;
+		}
+
+		bool device::set_depth_surface(surface_ptr depth_surface) 
+		{
+			return false;
+		}
+
+		surface_ptr device::get_render_target(size_t rt_index) 
+		{ 
+			return surface_ptr(); 
+		}
+
+		surface_ptr device::get_depth_surface() 
+		{ 
+			return surface_ptr(); 
+		}
+
 		bool device::frame_begin()
 		{
 			bool res = m_pimpl->frame_begin();
 
-			IDirect3DDevice9* dev = get_impl().get_dx_device();
+			IDirect3DDevice9* dev = get_impl();
 
 			// Set default states
 
@@ -76,7 +138,7 @@ namespace rgde
 
 		void device::set_index_buffer(index_buffer_ptr ib)
 		{
-			get_impl().get_dx_device()->SetIndices(ib->get_impl().get_dx_index_buffer());
+			get_impl()->SetIndices(ib->get_impl().get_dx_index_buffer());
 		}
 
 		void device::set_stream_source(uint stream_number, vertex_buffer_ptr stream_data, uint stride)

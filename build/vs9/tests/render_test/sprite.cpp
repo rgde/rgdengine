@@ -92,7 +92,7 @@ namespace rgde
 
 		void renderer2d::create_buffers()
 		{
-			int size = m_sprites.size()*2;
+			size_t size = m_sprites.size()*2;
 
 			m_vb = vertex_buffer::create
 			(
@@ -214,7 +214,7 @@ namespace rgde
 			m_device.set_stream_source( 0, m_vb, sizeof(sprite_vertex) );
 			m_device.set_index_buffer(m_ib);
 
-			int sprites_num = m_sprites.size();
+			uint sprites_num = (uint)m_sprites.size();
 
 			m_device.draw(render::triangle_list, 0, 0, sprites_num * 4, 0, sprites_num *2);
 		}
