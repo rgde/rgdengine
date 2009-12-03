@@ -215,9 +215,11 @@ namespace rgde
 		texture::texture_impl::texture_impl(device& dev, core::vfs::istream_ptr file)
 			: m_dx_texture(0), m_device(dev)
 		{
+			assert(file->is_valid());
+
 			size_t size = file->get_size();
 
-			boost::scoped_array<byte> data(new byte(size));
+			boost::scoped_array<byte> data(new byte[size]);
 
 			file->read(data.get(), size);
 
