@@ -57,8 +57,8 @@ void application::init_render_data()
 
 	sprite s;
 	s.texture = t;
-	s.pos = math::vec2f(300,200);
-	s.size= math::vec2f(200,200);
+	s.pos = math::vec2f(200,100);
+	s.size= math::vec2f(400,400);
 	s.color = math::color::White;
 
 	m_batcher2d.draw(s);
