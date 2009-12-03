@@ -71,5 +71,6 @@ namespace rgde
 		math::color m_back_color;
 
 		audio::system m_sound_system;
+		core::vfs::system m_vfs;
 	};
 }

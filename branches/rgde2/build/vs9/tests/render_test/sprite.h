@@ -52,7 +52,7 @@ namespace rgde
 
 			vertex_buffer_ptr m_vb;
 			index_buffer_ptr m_ib;
-			unsigned m_reserved_size;				/// Число спрайтов, под которое зарезервированы буферы
+			size_t m_reserved_size;				/// Число спрайтов, под которое зарезервированы буферы
 
 			device& m_device;
 

@@ -18,7 +18,7 @@ namespace rgde
 			//					2 - 1/2 size
 			//					4 - 1/4 size
 			//					8 - 1/8 size
-			size_t screen_divisor_;
+			int screen_divisor_;
 
 			/// width of the render target surface / render target texture
 			int width_;					
