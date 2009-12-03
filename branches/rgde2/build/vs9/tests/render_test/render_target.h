@@ -54,7 +54,7 @@ namespace rgde
 				, int height = 0
 				, resource::format texture_format = resource::a8r8g8b8
 				, resource::format depth_stencil_format = resource::d24s8
-				, size_t screen_divisor = 1
+				, int screen_divisor = 1
 				, size_t size_shift = 0
 				, bool force_crop = false
 				, bool use_depth_wh = false

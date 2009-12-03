@@ -73,7 +73,7 @@ namespace rgde
 				int ms_delay = 0,				// time to wait before playing
 				audio::listener* notify = NULL); // listener to receive notification when sound is done
 
-			void play(audio_tag* pTag,
+			void play(audio_tag* tag,
 				world_object* obj = NULL,		// used for positional sound effects
 				int ms_duration = 0,			// length of time to play sound
 				int ms_delay = 0,				// time to wait before playing
@@ -113,7 +113,7 @@ namespace rgde
 				LPDIRECTSOUNDBUFFER		pDSBuf;			// DirectSound buffer for playback
 				LPDIRECTSOUND3DBUFFER	pDSBuf3D;		// DirectSound 3D buffer for effects (positional audio)
 				internal::base_audio*					audio;			// internal::base_audio created by the tag
-				audio_tag*				pTag;			// Tag that decided to play this sound
+				audio_tag*				tag;			// Tag that decided to play this sound
 				bool					bMoreInBuffer;	// if more needs to be streamed into buffer
 				bool					bPlaying;		// if this is an active buffer or can it be reused
 				DWORD					dwLastWritePos; // last place we updated the buffer
@@ -127,7 +127,7 @@ namespace rgde
 
 			struct AudioWaitingToBePlayed
 			{
-				audio_tag*				pTag;		// the tag waiting to be played
+				audio_tag*				tag;		// the tag waiting to be played
 				world_object*			obj;		// the obj we want to attach it to (for 3D sound effects)
 				int		                ms_duration; // time to play
 				int                     ms_delay;	// wait before playing
@@ -147,8 +147,8 @@ namespace rgde
 			void UpdateBuffer(int msElapsed, Buffer* buff, DWORD dwBufSize, DWORD dwWriteAmt);
 			void UpdateListener();
 
-			void PlayEffect(audio_tag* pTag, sound3d* pSound3D, int ms_duration);
-			void PlayMusic(audio_tag* pTag, music* pMusic, int ms_duration);
+			void PlayEffect(audio_tag* tag, sound3d* pSound3D, int ms_duration);
+			void PlayMusic(audio_tag* tag, music* pMusic, int ms_duration);
 
 		protected:
 			LPDIRECTSOUND8 m_pDS;
