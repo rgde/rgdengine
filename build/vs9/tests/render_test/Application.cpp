@@ -2,6 +2,7 @@
 
 #include <boost/assign.hpp>
 
+
 using namespace rgde;
 using core::windows::window;
 using render::device;
@@ -9,14 +10,16 @@ using render::font;
 using namespace math;
 
 #include "application.h"
+#include <rgde/render/surface.h>
 
 
 application::application(int x, int y, int w, int h, const std::wstring& title) 
-	: m_active(true),
-	window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU),
-	m_device(get_handle()),
-	m_elapsed(0),
-	m_sound_system(get_handle())
+	: m_active(true)
+	, window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU)
+	, m_device(get_handle())
+	, m_elapsed(0)
+	, m_sound_system(get_handle())
+	, m_batcher2d(m_device)
 {
 	m_size.w = w;
 	m_size.h = h;
@@ -50,6 +53,16 @@ void application::init_render_data()
 	m_device.set_alpha_blend(false);
 	m_device.set_alpha_test(false);
 
+	texture_ptr t = texture::create(m_device, m_filesystem.open_read("sprites/test01.jpg"));
+
+	sprite s;
+	s.texture = t;
+	s.pos = math::vec2f(300,200);
+	s.size= math::vec2f(200,200);
+	s.color = math::color::White;
+
+	m_batcher2d.draw(s);
+	//__asm nop;
 	//math::vec3f cam_pos(-5, 0, 0);
 	//m_camera.lookAt(cam_pos, (math::vec3f(1,0,0) + cam_pos), math::vec3f(0,1,0));
 }
@@ -72,6 +85,8 @@ void application::run()
 void application::update()
 {
 	m_game.do_update((float)m_elapsed);
+
+	m_batcher2d.update();
 }
 
 void application::render()
@@ -79,7 +94,7 @@ void application::render()
 	m_device.frame_begin();
 	m_device.clear(m_back_color);
 
-	
+	m_batcher2d.render();
 
 	m_device.frame_end();
 	m_device.present();
@@ -161,7 +176,7 @@ void application::resize_scene(unsigned int width, unsigned int height)
 
 void application::init_game_data()
 {
-	m_back_color = rgde::math::color::Black;
+	m_back_color = rgde::math::color(128, 130, 160, 255);
 }
 
 bool application::do_events()

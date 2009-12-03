@@ -216,6 +216,8 @@ namespace rgde
 
 			uint sprites_num = (uint)m_sprites.size();
 
+			m_device.set_texture(m_sprites.front().texture, 0);
+
 			m_device.draw(render::triangle_list, 0, 0, sprites_num * 4, 0, sprites_num *2);
 		}
 

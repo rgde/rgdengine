@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="render_test"
 	ProjectGUID="{2730B8D5-6D9E-41BA-975C-0DF08030BF83}"
 	RootNamespace="core_test"
@@ -191,10 +191,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ArcBall.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\render_test.cpp"
 				>
 			</File>
@@ -229,10 +225,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ArcBall.h"
-				>
-			</File>
-			<File
 				RelativePath=".\camera.h"
 				>
 			</File>
@@ -264,6 +256,14 @@
 		<Filter
 			Name="gfx"
 			>
+			<File
+				RelativePath=".\ArcBall.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ArcBall.h"
+				>
+			</File>
 			<File
 				RelativePath=".\geometry.cpp"
 				>

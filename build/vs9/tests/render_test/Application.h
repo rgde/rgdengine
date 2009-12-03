@@ -3,6 +3,7 @@
 #include "ArcBall.h"
 #include "camera.h"
 #include "game.h"
+#include "sprite.h"
 
 namespace rgde
 {
@@ -43,13 +44,14 @@ namespace rgde
 		void render();
 
 	private:
+		core::vfs::system m_filesystem;
 		xml::document m_config;
-		game::system m_game;
-		//ArcBall m_arc_ball;
-		bool m_active;
 		render::device m_device;
-
-		//math::vec2i m_size;
+		audio::system m_sound_system;
+		game::system m_game;
+		
+		bool m_active;
+			
 		size m_size;
 
 		//render::font_ptr m_font;
@@ -57,7 +59,7 @@ namespace rgde
 		//render::index_buffer_ptr m_ib;
 
 		//math::vec3f m_cam_pos;
-		//camera m_camera;
+		//camera m_camera;		
 
 		int old_x;
 		int old_y;
@@ -68,9 +70,7 @@ namespace rgde
 		double m_elapsed;
 		boost::timer m_timer;
 
-		math::color m_back_color;
-
-		audio::system m_sound_system;
-		core::vfs::system m_vfs;
+		math::color m_back_color;	
+		render::renderer2d m_batcher2d;
 	};
 }
