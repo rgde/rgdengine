@@ -17,9 +17,9 @@
 #include <stdio.h>
 
 #include <new>
-
 #include <fstream>
 
+#include <rgde/core/file_system.h>
 
 #	pragma warning(disable: 4127) // conditional expression is constant
 #	pragma warning(disable: 4996) // this function or variable may be unsafe
@@ -2649,6 +2649,37 @@ namespace xml
 		_memory.size = 0;
 
 		create();
+	}
+
+	/**
+	* Load document from stream.
+	*
+	* \param stream - stream with xml data
+	* \param options - parsing options
+	* \return success flag
+	*/
+	bool document::load(istream_ptr stream, unsigned int options)
+	{
+		if (!stream->is_valid()) return false;
+
+		std::streamoff length = stream->get_size();		
+
+		try
+		{
+			char* s = new char[length + 1];
+
+			stream->read((rgde::byte*)s, length);
+			s[length] = 0;
+
+			if (!stream->is_valid()) 
+				return false;
+
+			return parse(transfer_ownership_tag(), s, options); // Parse the input string.
+		}
+		catch (...)
+		{
+			return false;
+		}
 	}
 
 	/**
