@@ -35,6 +35,15 @@ application::application(int x, int y, int w, int h, const std::wstring& title)
 
 	init_game_data();
 	init_render_data();
+
+	xml::document doc;
+	if (doc.load(m_filesystem.open_read("audiodb.xml")))
+	{
+		xml::node audio_db = doc("AudioTagDatabase");
+		
+		if (m_sound_system.load(audio_db))
+			m_sound_system.play("music1");
+	}	
 }
 
 application::~application()
@@ -89,6 +98,8 @@ void application::update()
 	m_game.do_update((float)m_elapsed);
 
 	m_batcher2d.update();
+
+	m_sound_system.update((float)m_elapsed);
 }
 
 void application::render()

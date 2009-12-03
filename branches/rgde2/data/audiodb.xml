@@ -1,0 +1,9 @@
+<AudioTagDatabase>
+	<MUSIC ID="music1" FILE="music/music1.ogg" VOLUME_ADJUST="8"/>
+	<MUSIC ID="music2" FILE="music/music2.ogg" VOLUME_ADJUST="8"/>
+	<MUSIC ID="music3" FILE="music/music3.ogg" VOLUME_ADJUST="8"/>
+	<MUSIC ID="music4" FILE="music/music4.ogg" VOLUME_ADJUST="8"/>
+
+	<EFFECT ID="sound_helicopter" FILE="sound/helicopter.wav"/>
+	<EFFECT ID="sound_helicopter_loopped" FILE="sound/helicopter.wav" LOOP_DELAY="0.3"/>
+</AudioTagDatabase>

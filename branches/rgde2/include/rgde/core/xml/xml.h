@@ -22,9 +22,13 @@
 #include "xml_options.h"
 #include "xml_forward.h"
 
+#include <rgde/core/file_system_forward.h>
+
 /// XML Parser namespace.
 namespace xml
 {
+	using rgde::core::vfs::istream_ptr;
+
 	/**
 	 * A light-weight wrapper for manipulating attributes in DOM tree.
 	 * Note: attribute does not allocate any memory for the attribute it wraps; it only wraps a
@@ -456,6 +460,8 @@ namespace xml
 
 		bool parse(char* xmlstr, unsigned int options = parse_default);
 		bool parse(const transfer_ownership_tag&, char* xmlstr, unsigned int options = parse_default);
+		
+		bool load(istream_ptr stream, unsigned int options = parse_default);
 		
 		bool load(std::istream& stream, unsigned int options = parse_default);
 		bool save_file(const char* name, const char* indent = "\t", unsigned int flags = format_default);

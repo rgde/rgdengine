@@ -127,6 +127,8 @@ namespace rgde
 
 						m_root_read_path = path;
 						m_root_write_path = path;
+
+						fs::current_path(m_root_read_path);
 					}
 
 					~disk_file_source() {}
