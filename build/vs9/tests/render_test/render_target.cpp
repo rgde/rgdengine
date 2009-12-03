@@ -8,7 +8,7 @@ namespace rgde
 	namespace render
 	{
 		rt_desc::rt_desc(  int width, int height, resource::format texture_format
-			, resource::format depth_stencil_format, size_t screen_divisor
+			, resource::format depth_stencil_format, int screen_divisor
 			, size_t size_shift, bool force_crop 
 			, bool use_depth_wh, int depth_width
 			, int depth_height, bool create_rt_texture
@@ -153,8 +153,8 @@ namespace rgde
 						int crop_width = width - width % 8;
 						int crop_height = height - height % 8;
 
-						m_desc.width_ = crop_width/m_desc.screen_divisor_ + m_desc.size_shift_;
-						m_desc.height_ = crop_height/m_desc.screen_divisor_ + m_desc.size_shift_;
+						m_desc.width_ = crop_width/m_desc.screen_divisor_ + (int)m_desc.size_shift_;
+						m_desc.height_ = crop_height/m_desc.screen_divisor_ + (int)m_desc.size_shift_;
 					}
 
 					reinit();

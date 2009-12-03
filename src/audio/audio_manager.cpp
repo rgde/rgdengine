@@ -171,61 +171,60 @@ namespace rgde
 
 		bool audio_manager::load_audio_tags(xml::node audio_db_node)
 		{
-			audio_tag* pTag = NULL;
+			audio_tag* tag = NULL;
 
 			for(xml::node child_el = audio_db_node.first_child(); child_el.next_sibling(); 
 				child_el = child_el.next_sibling())
 			{
-				pTag = NULL;
-				//TiXmlElement* node = child_el;
+				tag = NULL;
 
-				std::string strTagName = child_el.name();
+				std::string tag_name = child_el.name();
 
-				if ( _stricmp("Effect", strTagName.c_str()) == 0)
+				if ( _stricmp("Effect", tag_name.c_str()) == 0)
 				{
-					pTag = new AudioEffectTag();
+					tag = new AudioEffectTag();
 				}
-				else if ( _stricmp("music", strTagName.c_str()) == 0)
+				else if ( _stricmp("music", tag_name.c_str()) == 0)
 				{
-					pTag = new AudioMusicTag();
+					tag = new AudioMusicTag();
 				}
-				else if ( _stricmp("Ambient", strTagName.c_str()) == 0)
+				else if ( _stricmp("Ambient", tag_name.c_str()) == 0)
 				{
-					pTag = new AudioAmbientTag();
+					tag = new AudioAmbientTag();
 				}
-				else if ( _stricmp("Composition", strTagName.c_str()) == 0)
+				else if ( _stricmp("Composition", tag_name.c_str()) == 0)
 				{
-					pTag = new AudioCompositionTag();
+					tag = new AudioCompositionTag();
 				}
-				else if ( _stricmp("Group", strTagName.c_str()) == 0)
+				else if ( _stricmp("Group", tag_name.c_str()) == 0)
 				{
-					pTag = new AudioGroupTag();
+					tag = new AudioGroupTag();
 				}
-				else if ( _stricmp("Random", strTagName.c_str()) == 0)
+				else if ( _stricmp("Random", tag_name.c_str()) == 0)
 				{
-					pTag = new AudioRandomTag();
+					tag = new AudioRandomTag();
 				}
 				else
 				{
 					ASSERT(!"Bad internal::base_audio Tag");
 				}
 
-				if (pTag)
+				if (tag)
 				{
-					if (!pTag->load_tag(child_el))
+					if (!tag->load_tag(child_el))
 					{
-						delete pTag;
+						delete tag;
 						return false;
 					}
 
-					std::string  strTagName = child_el["ID"].value();
-					if (strTagName.empty())
+					std::string  tag_name = child_el["ID"].value();
+					if (tag_name.empty())
 					{
-						delete pTag;
+						delete tag;
 						return false;
 					}
 
-					m_tags.insert(AudioTagMap::value_type(strTagName.c_str(), pTag));
+					m_tags.insert(AudioTagMap::value_type(tag_name.c_str(), tag));
 				}
 			}
 
@@ -235,16 +234,16 @@ namespace rgde
 
 		bool audio_manager::load_audio_tags(const char* file_name)
 		{
-			xml::document pDOMDoc;
-			bool varbSuccess = pDOMDoc.load_file(file_name);
+			xml::document doc;
+			bool success = doc.load_file(file_name);
 
-			if (!varbSuccess)
+			if (!success)
 			{
 				MessageBoxA(NULL, "Unable to process the XML document.", "Error", MB_OK);
 				return false;
 			}
 
-			xml::node audio_db_node = pDOMDoc("AudioTagDatabase");
+			xml::node audio_db_node = doc("AudioTagDatabase");
 
 			if (!audio_db_node)
 			{
@@ -258,12 +257,12 @@ namespace rgde
 
 		void audio_manager::clear_audio_tags()
 		{
-			AudioTagIterator iTag = m_tags.begin();
-			AudioTagIterator endTag = m_tags.end();
+			AudioTagIterator it = m_tags.begin();
+			AudioTagIterator end = m_tags.end();
 
-			for (; iTag != endTag; ++iTag)
+			for (; it != end; ++it)
 			{
-				delete iTag->second;
+				delete it->second;
 			}
 
 			m_tags.clear();
@@ -392,15 +391,15 @@ namespace rgde
 			int ms_delay,
 			audio::listener* notify)
 		{
-			audio_tag* pTag = get_audio_tag(tag_name);
-			//ASSERT(pTag);
+			audio_tag* tag = get_audio_tag(tag_name);
+			//ASSERT(tag);
 
-			if (pTag)
+			if (tag)
 			{
 				if (ms_delay > 0)
 				{
 					AudioWaitingToBePlayed wait;
-					wait.pTag = pTag;
+					wait.tag = tag;
 					wait.ms_duration = ms_duration;
 					wait.obj = obj;
 					wait.ms_delay = ms_delay;
@@ -409,23 +408,23 @@ namespace rgde
 				}
 				else
 				{
-					play(pTag, obj, ms_duration, ms_delay, notify);
+					play(tag, obj, ms_duration, ms_delay, notify);
 				}
 			}
 		}
 
-		void audio_manager::play(audio_tag* pTag,
+		void audio_manager::play(audio_tag* tag,
 			world_object* obj,
 			int ms_duration,
 			int ms_delay,
 			audio::listener* notify)
 		{
-			ASSERT(pTag);
+			ASSERT(tag);
 
 			if (ms_delay > 0)
 			{
 				AudioWaitingToBePlayed wait;
-				wait.pTag = pTag;
+				wait.tag = tag;
 				wait.ms_duration = ms_duration;
 				wait.obj = obj;
 				wait.ms_delay = ms_delay;
@@ -434,7 +433,7 @@ namespace rgde
 			}
 			else
 			{
-				internal::base_audio* audio = pTag->create_audio(obj, ms_duration, ms_delay, notify);
+				internal::base_audio* audio = tag->create_audio(obj, ms_duration, ms_delay, notify);
 
 				if (audio)			// some tags don't create any actual audio
 				{
@@ -454,14 +453,14 @@ namespace rgde
 								pSound3D->set_world_object(obj);
 							}
 
-							PlayEffect(pTag, pSound3D, ms_duration);
+							PlayEffect(tag, pSound3D, ms_duration);
 							return;
 						}
 
 					case internal::base_audio::music:
 						{
 							music* pMusic = (music*)(audio);
-							PlayMusic(pTag, pMusic, ms_duration);
+							PlayMusic(tag, pMusic, ms_duration);
 							return;
 						}
 
@@ -473,11 +472,11 @@ namespace rgde
 			}
 		}
 
-		void audio_manager::PlayEffect(audio_tag* pTag, sound3d* pSound3D,
+		void audio_manager::PlayEffect(audio_tag* tag, sound3d* pSound3D,
 			int ms_duration)
 		{
 			int availableIndex = -1;
-			int lowPriority = pTag->get_priority();
+			int lowPriority = tag->get_priority();
 			int lowestPriorityIndex = -1;
 			int i, numTimesPlaying = 0;
 			wave_file* pWaveFile = pSound3D->get_wave_file();
@@ -485,7 +484,7 @@ namespace rgde
 			// pick the appropriate buffer to use
 			for (i = 0; i < max_effect_buffers && -1 == availableIndex; ++i)
 			{
-				if (m_effectBufs[i].pTag == pTag)
+				if (m_effectBufs[i].tag == tag)
 				{
 					++numTimesPlaying;
 				}
@@ -502,9 +501,9 @@ namespace rgde
 
 					// todo add another test, in case of multiple lower priority choices
 					// like the buffer that's closest to completion, or check for similar sounds first
-					if (m_effectBufs[i].pTag->get_priority() <= lowPriority)
+					if (m_effectBufs[i].tag->get_priority() <= lowPriority)
 					{
-						lowPriority = m_effectBufs[i].pTag->get_priority();
+						lowPriority = m_effectBufs[i].tag->get_priority();
 						lowestPriorityIndex = i;
 					}
 				}
@@ -524,18 +523,18 @@ namespace rgde
 				}
 			}
 
-			int cascaded_num = ((AudioEffectTag*)pTag)->GetCascadeNumber();
+			int cascaded_num = ((AudioEffectTag*)tag)->GetCascadeNumber();
 			if (numTimesPlaying >= cascaded_num)
 			{
 				for (i = 0; i < max_effect_buffers; ++i)
 				{
-					if (m_effectBufs[i].pTag == pTag)
+					if (m_effectBufs[i].tag == tag)
 					{
 						StopBuffer(&m_effectBufs[i]);
 					}
 				}
 
-				play(((AudioEffectTag*)pTag)->GetCascadeTag(), pSound3D->get_world_object());
+				play(((AudioEffectTag*)tag)->GetCascadeTag(), pSound3D->get_world_object());
 				delete pSound3D; // not going to play this sound, clean it up
 			}
 			else 
@@ -547,8 +546,8 @@ namespace rgde
 				// Set up 3d data, position and velocity
 				m_effectBufs[availableIndex].pDSBuf->SetCurrentPosition(0);
 				m_effectBufs[availableIndex].audio = pSound3D;
-				m_effectBufs[availableIndex].pTag = pTag;
-				m_effectBufs[availableIndex].volume = m_volume + pTag->get_volume_adjust();
+				m_effectBufs[availableIndex].tag = tag;
+				m_effectBufs[availableIndex].volume = m_volume + tag->get_volume_adjust();
 				CLAMP(m_effectBufs[availableIndex].volume, DSBVOLUME_MIN, DSBVOLUME_MAX);
 				m_effectBufs[availableIndex].curVolume = m_effectBufs[availableIndex].volume;
 				m_effectBufs[availableIndex].volumeTransitionAdjust = 0;
@@ -580,10 +579,10 @@ namespace rgde
 			}
 		}
 
-		void audio_manager::PlayMusic(audio_tag* pTag, music* pMusic, int ms_duration)
+		void audio_manager::PlayMusic(audio_tag* tag, music* pMusic, int ms_duration)
 		{
 			int availableIndex = -1;
-			int lowPriority = pTag->get_priority();
+			int lowPriority = tag->get_priority();
 			int lowestPriorityIndex = -1;
 			int fadeOutMusicIndex = -1;
 
@@ -604,9 +603,9 @@ namespace rgde
 
 					// todo add another test, in case of multiple lower priority choices
 					// like the buffer that's closest to completion, or check for similar sounds first
-					if (m_musicBufs[i].pTag->get_priority() < lowPriority)
+					if (m_musicBufs[i].tag->get_priority() < lowPriority)
 					{
-						lowPriority = m_musicBufs[i].pTag->get_priority();
+						lowPriority = m_musicBufs[i].tag->get_priority();
 						lowestPriorityIndex = i;
 					}
 
@@ -631,8 +630,8 @@ namespace rgde
 
 			delete m_musicBufs[availableIndex].audio;
 			m_musicBufs[availableIndex].audio = pMusic;
-			m_musicBufs[availableIndex].pTag = pTag;
-			m_musicBufs[availableIndex].volume = m_volume + pTag->get_volume_adjust();
+			m_musicBufs[availableIndex].tag = tag;
+			m_musicBufs[availableIndex].volume = m_volume + tag->get_volume_adjust();
 			CLAMP(m_musicBufs[availableIndex].volume, DSBVOLUME_MIN, DSBVOLUME_MAX);
 			m_musicBufs[availableIndex].bMoreInBuffer = 
 				m_musicBufs[availableIndex].audio->fill_bufer(m_musicBufs[availableIndex].pDSBuf, 0, music_initial_read_size);
@@ -811,7 +810,7 @@ namespace rgde
 			{
 				if (iToBePlayed->ms_delay <= msElapsed)
 				{
-					play(iToBePlayed->pTag, iToBePlayed->obj, iToBePlayed->ms_duration, 0, iToBePlayed->notify);
+					play(iToBePlayed->tag, iToBePlayed->obj, iToBePlayed->ms_duration, 0, iToBePlayed->notify);
 					iToBePlayed = m_toBePlayed.erase(iToBePlayed);
 				}
 				else
@@ -935,7 +934,7 @@ namespace rgde
 			{
 				if (m_effectBufs[i].bPlaying)
 				{
-					m_effectBufs[i].volume = m_volume + m_effectBufs[i].pTag->get_volume_adjust();
+					m_effectBufs[i].volume = m_volume + m_effectBufs[i].tag->get_volume_adjust();
 					CLAMP(m_effectBufs[i].volume, DSBVOLUME_MIN, DSBVOLUME_MAX);
 					m_effectBufs[i].pDSBuf->SetVolume(m_effectBufs[i].volume);
 				}
@@ -945,7 +944,7 @@ namespace rgde
 			{
 				if (m_musicBufs[i].bPlaying)
 				{
-					m_musicBufs[i].volume = m_volume + m_musicBufs[i].pTag->get_volume_adjust();
+					m_musicBufs[i].volume = m_volume + m_musicBufs[i].tag->get_volume_adjust();
 					CLAMP(m_musicBufs[i].volume, DSBVOLUME_MIN, DSBVOLUME_MAX);
 					m_musicBufs[i].pDSBuf->SetVolume(m_musicBufs[i].volume);
 				}

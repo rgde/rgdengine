@@ -10,83 +10,83 @@ namespace rgde
 		{
 			namespace
 			{
-				class ListManagers
+				class list_managers
 				{
 				public:
-					ListManagers() {}
-					~ListManagers() {}
+					list_managers() {}
+					~list_managers() {}
 
 					//отписать данного получателя ото всех менеджеров
-					void unsubscribeAll (details::BaseListener *pListener);
+					void unsubscribe_all (details::base_listener *listener);
 
 					//менеджер добавляет себя в общий список менеджеров
-					void addManager     (details::BaseEventsManager *pManager);
+					void add_manager     (details::base_events_manager *manager);
 
 					//менеджер удаляет себя из общего списка менеджеров
-					void delManager     (details::BaseEventsManager *pManager);
+					void remove_manager     (details::base_events_manager *manager);
 
 				private:
-					std::list<details::BaseEventsManager*> m_managers;
+					std::list<details::base_events_manager*> m_managers;
 				} list_manager;
 			}
 
 			namespace details
 			{
 
-				BaseEventsManager::BaseEventsManager()
+				base_events_manager::base_events_manager()
 				{
-					list_manager.addManager(this);
+					list_manager.add_manager(this);
 				}
 
-				BaseEventsManager::~BaseEventsManager()
+				base_events_manager::~base_events_manager()
 				{
-					list_manager.delManager(this);
+					list_manager.remove_manager(this);
 				}
 
-				BaseListener::BaseListener() 
+				base_listener::base_listener() 
 				{
 				}
 
 				//отписать получателя от всех менеджеров
-				BaseListener::~BaseListener()
+				base_listener::~base_listener()
 				{		
-					list_manager.unsubscribeAll(this);
+					list_manager.unsubscribe_all(this);
 				}
 
-				BaseSender::BaseSender() 
+				base_sender::base_sender() 
 				{
 				}
 
-				BaseSender::~BaseSender()
+				base_sender::~base_sender()
 				{
 				}
 
 			}
 
 			//отписать данного получателя ото всех менеджеров
-			void ListManagers::unsubscribeAll(details::BaseListener *pListener)
+			void list_managers::unsubscribe_all(details::base_listener *listener)
 			{
-				std::list<details::BaseEventsManager*>::iterator i = m_managers.begin();
+				std::list<details::base_events_manager*>::iterator i = m_managers.begin();
 				while (i != m_managers.end())
 				{
-					(*i)->unsubscribe(pListener);
+					(*i)->unsubscribe(listener);
 					++i;
 				}
 			}
 
 			//менеджер добавляет себя в общий список менеджеров
-			void ListManagers::addManager (details::BaseEventsManager *pManager)
+			void list_managers::add_manager (details::base_events_manager *manager)
 			{
-				m_managers.push_back(pManager);
+				m_managers.push_back(manager);
 			}
 
 			//менеджер удаляет себя из общего списка менеджеров
-			void ListManagers::delManager (details::BaseEventsManager *pManager)
+			void list_managers::remove_manager (details::base_events_manager *manager)
 			{
-				std::list<details::BaseEventsManager*>::iterator i = m_managers.begin();
+				std::list<details::base_events_manager*>::iterator i = m_managers.begin();
 				while (i != m_managers.end())
 				{
-					if ((*i) == pManager)
+					if ((*i) == manager)
 						i = m_managers.erase(i);
 					else
 						++i;
