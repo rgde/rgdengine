@@ -53,6 +53,8 @@ void application::init_render_data()
 	m_device.set_alpha_blend(false);
 	m_device.set_alpha_test(false);
 
+	m_font = font::create(m_device, 17, L"Arial");
+
 	texture_ptr t = texture::create(m_device, m_filesystem.open_read("sprites/test01.jpg"));
 
 	sprite s;
@@ -95,6 +97,8 @@ void application::render()
 	m_device.clear(m_back_color);
 
 	m_batcher2d.render();
+
+	m_font->render(L"Render test:", math::rect(5,5, 300, 30), math::color::White.data, true);
 
 	m_device.frame_end();
 	m_device.present();

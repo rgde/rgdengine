@@ -54,7 +54,6 @@ namespace rgde
 			
 		size m_size;
 
-		//render::font_ptr m_font;
 		//render::vertex_buffer_ptr m_vb;
 		//render::index_buffer_ptr m_ib;
 
@@ -72,5 +71,7 @@ namespace rgde
 
 		math::color m_back_color;	
 		render::renderer2d m_batcher2d;
+
+		render::font_ptr m_font;
 	};
 }
