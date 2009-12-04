@@ -81,7 +81,6 @@ application::application(int x, int y, int w, int h, const std::wstring& title)
 	, m_elapsed(0)
 	, m_sound_system(get_handle())
 	, m_batcher2d(m_device)
-	, m_arc_ball(w, h)
 {
 	m_size.w = w;
 	m_size.h = h;
@@ -154,10 +153,14 @@ void application::init_render_data()
 
 	sprite s;
 	s.texture = t;
-	s.x = 200;
-	s.y = 100;
-	s.w = 400;
-	s.h = 400;
+
+	render::view_port vp;
+	m_device.get_viewport(vp);
+
+	s.x = vp.width - 80;
+	s.y = vp.height - 80;
+	s.w = 80;
+	s.h = 80;
 	s.color = math::color::White;
 
 	m_batcher2d.draw(s);
@@ -170,7 +173,7 @@ void application::init_render_data()
 
 	/*math::vec3f cam_pos(0, 0, -5);*/
 	math::vec3f cam_pos(-5, 0, 0);
-	m_camera.lookAt(cam_pos, (math::vec3f(1,0,0) + cam_pos), math::vec3f(0,1,0));
+	m_camera.look_at(cam_pos, (math::vec3f(1,0,0) + cam_pos), math::vec3f(0,1,0));
 }
 
 void application::run()
@@ -232,12 +235,10 @@ void application::render()
 	math::mat44f view = math::make_lookat(eyept, lookatpt, upvec);
 	math::mat44f proj = math::make_perspective(D3DX_PI / 4, 1.0f, 1.0f, 100.0f);
 
-	m_device.set_transform( render::projection_transform, proj);
-	m_device.set_transform( render::view_transform, view);
+	m_device.set_transform( render::projection_transform, m_camera.get_proj_matrix());
+	m_device.set_transform( render::view_transform, m_camera.get_view_matrix());
 
 
-
-	//m_batcher2d.render();
 	m_device.set_ztest(true);
 	m_device.set_cull_mode(rgde::render::cull_none);
 	m_device.set_lighting(false);
@@ -248,8 +249,11 @@ void application::render()
 	m_device.set_index_buffer(m_ib);
 
 	m_device.draw(render::triangle_list, 0, 0, 24, 0, 12);
+	
+	m_batcher2d.render();
 
 	m_font->render(L"Render test:", math::rect(5,5, 300, 30), math::color::White, true);
+
 
 	m_device.frame_end();
 	m_device.present();
@@ -270,21 +274,18 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 		}
 	case WM_KEYDOWN:
 		{
+			if (VK_ESCAPE)
+				exit(0);
+
 			if (VK_UP == wparam)
 			{
 				m_cam_pos += math::vec3f(0.05f,0,0);
-				m_camera.goForward(0.05f);
+				//m_camera.goForward(0.05f);
 			}
 			else if (VK_DOWN == wparam)
 			{
 				m_cam_pos -= math::vec3f(0.05f,0,0);
-				m_camera.goForward(-0.05f);
-			}
-			else if (VK_F5 == wparam)
-			{
-			}
-			else if (VK_SPACE == wparam)
-			{
+				//m_camera.goForward(-0.05f);
 			}
 			return 0;
 		}
@@ -313,7 +314,7 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 		{
 			float delta = (short)HIWORD((DWORD)wparam);//120.0f;
 			delta /= 80.0f;
-			m_camera.goForward(-delta);
+			//m_camera.goForward(-delta);
 		}
 		break;
 
@@ -324,9 +325,12 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 
 			if ((old_x != -1 || old_y != -1) && ((wparam & MK_LBUTTON) != 0))
 			{
-				m_arc_ball.drag(xPos, yPos);
+				//m_arc_ball.drag(xPos, yPos);
 				int dx = xPos - old_x;
 				int dy = yPos - old_y;
+
+				//m_camera.rotateRight(-dx/200.0f);
+				//m_camera.rotateUp(dy/200.0f);
 			}
 
 			old_x = xPos;
@@ -344,7 +348,7 @@ void application::resize_scene(unsigned int width, unsigned int height)
 		height=1;										// Making Height Equal One
 	}
 
-	m_camera.setProjection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
+	m_camera.set_projection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
 }
 
 void application::init_game_data()
