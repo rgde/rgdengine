@@ -32,12 +32,15 @@ namespace rgde
 
 		class surface : public resource
 		{
-		protected:
-			explicit surface();
-
 		public:
+			class surface_impl;
+			typedef boost::shared_ptr<surface_impl> impl_ptr;
+			
 			static surface_ptr create_rt(device& dev, size_t width, size_t heigh, 
 				resource::format format, multisample_type sm_type, bool locable);
+
+			/// for internal use
+			static surface_ptr create(impl_ptr impl) ;
 
 			size_t get_width() const;
 			size_t get_height() const;
@@ -52,6 +55,14 @@ namespace rgde
 
 			bool lock(lock_data& data) const;
 			bool unlock() const;
+
+			impl_ptr		get_impl()		 {return m_impl;}
+			const impl_ptr& get_impl() const {return m_impl;}
+
+		protected:
+			surface(impl_ptr impl, resource::format res_format, resource::pool res_pool);
+
+			impl_ptr m_impl;
 		};
 
 		// Usage Flags

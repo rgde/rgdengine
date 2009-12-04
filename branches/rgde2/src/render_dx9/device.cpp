@@ -10,6 +10,51 @@ namespace rgde
 {
 	namespace render
 	{
+		//////////////////////////////////////////////////////////////////////////
+
+		D3DPRIMITIVETYPE convert(primitive_type type)
+		{
+			D3DPRIMITIVETYPE dx_type = (D3DPRIMITIVETYPE)type;
+			return dx_type;
+		}
+
+		D3DPOOL convert(resource::pool pool)
+		{
+			static D3DPOOL pool_mapings[resource::systemmem + 1] =
+			{
+				D3DPOOL_DEFAULT, D3DPOOL_MANAGED, D3DPOOL_SYSTEMMEM
+			};
+
+			assert(pool < resource::systemmem + 1);
+
+			D3DPOOL dx_pool = pool_mapings[pool] ;
+
+			return dx_pool;
+		}
+
+		resource::pool convert(D3DPOOL pool)
+		{
+			//typedef enum _D3DPOOL {
+			//	D3DPOOL_DEFAULT                 = 0,
+			//	D3DPOOL_MANAGED                 = 1,
+			//	D3DPOOL_SYSTEMMEM               = 2,
+			//	D3DPOOL_SCRATCH                 = 3,
+
+			//	D3DPOOL_FORCE_DWORD             = 0x7fffffff
+			//} D3DPOOL;
+
+			static resource::pool pool_mapings[D3DPOOL_SYSTEMMEM + 1] =
+			{
+				resource::default, resource::managed, resource::systemmem
+			};
+
+			assert(pool < D3DPOOL_SYSTEMMEM + 1);
+
+			resource::pool out_pool = pool_mapings[pool] ;
+
+			return out_pool;
+		}
+
 		namespace
 		{
 			D3DVIEWPORT9 convert(const view_port& vp)
@@ -63,22 +108,56 @@ namespace rgde
 
 		bool device::set_render_target(size_t rt_index, surface_ptr rt_surface) 
 		{
-			return false;
+			IDirect3DSurface9* dx_surface = rt_surface->get_impl()->get_dx_surface();
+			HRESULT hr = get_impl()->SetRenderTarget((DWORD)rt_index, dx_surface);
+			return hr == S_OK;
 		}
+
+		//surface_ptr surface::create(impl_ptr impl)
+		//{
+		//	return surface_ptr
+		//		(
+		//		new surface
+		//			(
+		//			impl, 
+		//			(resource::format)impl->get_dx_desc().Format, 
+		//			convert(impl->get_dx_desc().Pool)
+		//			)
+		//		);
+		//}
 
 		bool device::set_depth_surface(surface_ptr depth_surface) 
 		{
-			return false;
+			//TODO: check format
+			IDirect3DSurface9* dx_surface = depth_surface->get_impl()->get_dx_surface();
+			HRESULT hr = get_impl()->SetDepthStencilSurface(dx_surface);
+			return hr == S_OK;
 		}
 
 		surface_ptr device::get_render_target(size_t rt_index) 
 		{ 
-			return surface_ptr(); 
+			IDirect3DSurface9* rt = 0;
+
+			HRESULT hr = get_impl()->GetRenderTarget((DWORD)rt_index, &rt);
+
+			if (hr != S_OK)
+				return surface_ptr(); 
+
+			surface::impl_ptr impl(new surface::surface_impl(*this, rt));
+			return surface::create(impl);			
 		}
 
 		surface_ptr device::get_depth_surface() 
 		{ 
-			return surface_ptr(); 
+			IDirect3DSurface9* rt = 0;
+
+			HRESULT hr = get_impl()->GetDepthStencilSurface(&rt);
+
+			if (hr != S_OK)
+				return surface_ptr(); 
+
+			surface::impl_ptr impl(new surface::surface_impl(*this, rt));
+			return surface::create(impl);	
 		}
 
 		bool device::frame_begin()
@@ -176,7 +255,7 @@ namespace rgde
 		void device::set_texture(texture_ptr texture, size_t index)
 		{
 			IDirect3DTexture9* dx_texture = texture->get_impl()->get_dx_texture();
-			get_impl().get_dx_device()->SetTexture(index, dx_texture);
+			get_impl().get_dx_device()->SetTexture((DWORD)index, dx_texture);
 		}
 
 		void device::set_transform(transform_type type, const math::mat44f& m)
@@ -218,27 +297,7 @@ namespace rgde
 				num_vertices, start_index, primitive_count);
 		}
 
-		//////////////////////////////////////////////////////////////////////////
 
-		D3DPRIMITIVETYPE convert(primitive_type type)
-		{
-			D3DPRIMITIVETYPE dx_type = (D3DPRIMITIVETYPE)type;
-			return dx_type;
-		}
-
-		D3DPOOL convert(resource::pool pool)
-		{
-			static D3DPOOL pool_mapings[resource::systemmem + 1] =
-			{
-				D3DPOOL_DEFAULT, D3DPOOL_MANAGED, D3DPOOL_SYSTEMMEM
-			};
-
-			assert(pool < resource::systemmem + 1);
-
-			D3DPOOL dx_pool = pool_mapings[pool] ;
-
-			return dx_pool;
-		}
 
 		//#define D3DFVF_XYZB1            0x006
 		//#define D3DFVF_XYZB2            0x008
@@ -343,6 +402,7 @@ namespace rgde
 
 			return fvf;
 		}
+
 		DWORD convert_lock_flags(uint lock_flags)
 		{
 			DWORD flags = 0;
@@ -366,6 +426,47 @@ namespace rgde
 			D3DBLEND dx_blend_mode = blend_mapings[mode];
 
 			return dx_blend_mode;
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+		surface_ptr surface::create(impl_ptr impl) 
+		{
+			resource::format format = (resource::format)impl->get_dx_desc().Format;
+			resource::pool pool = convert(impl->get_dx_desc().Pool);
+			
+			return surface_ptr(new surface(impl, format, pool));
+		}
+
+		surface_ptr surface::create_rt(device& dev, size_t width, size_t heigh, 
+			resource::format format, multisample_type sm_type, bool locable)
+		{
+			IDirect3DSurface9* dx_surface = 0;
+			HRESULT hr = dev.get_impl()->CreateRenderTarget((UINT)width, (UINT)heigh, (D3DFORMAT)format,
+				D3DMULTISAMPLE_NONE, 0, locable ? TRUE : FALSE,
+				&dx_surface, 0);
+
+			return hr != S_OK ? surface_ptr() 
+				: 
+				surface::create(
+					impl_ptr(
+						new surface::surface_impl(dev, dx_surface)
+					)
+				);
+		}
+
+		texture_ptr texture::create(device& dev, size_t width, size_t heigh, size_t num_levels,
+			resource::format format, texture_usage usage)
+		{
+			IDirect3DTexture9* dx_texture = 0;
+			HRESULT hr = dev.get_impl()->CreateTexture((DWORD)width, (DWORD)heigh, (UINT)num_levels, (DWORD)usage, 
+				(D3DFORMAT)format, D3DPOOL_DEFAULT, &dx_texture, 0);
+
+			if (hr != S_OK)
+				return texture_ptr();
+
+			impl_ptr impl(new  texture_impl(dev, dx_texture));
+
+			return texture_ptr(new texture(impl, resource::texture, format));
 		}
 
 	}
