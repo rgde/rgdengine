@@ -6,32 +6,45 @@ namespace rgde
 	{
 		struct sprite
 		{
-			math::rect rect;					///> Прямоугольник текстурных координат спрайта
-			math::vec2f pos;					///> Позиция спрайта (в экранных координатах)
-			math::vec2f size;					///> Размер спрайта (в экранных координатах)
-			float spin;							///< Поворот
-			ulong priority;			///> Приоритет отрисовки
-			render::texture_ptr texture;			///> Адрес текстуры
-			math::color color;					///> Цвет
+			float x,y,w,h;				///> screen rect
+			float uvx, uvy, uvw, uvh;	///> texture coordinates rect			
+			float spin;					///< Поворот
+			int color;					///> Цвет
+			ulong priority;				///> Приоритет отрисовки
+			render::texture_ptr texture;///> Адрес текстуры			
 
 			sprite();
 			sprite( const math::vec2f& pos_, const math::vec2f& size_, 
-				const math::color& color_ = 0xffffffff,render::texture_ptr tex_ = render::texture_ptr(), 
+				math::color color_ = 0xffffffff,render::texture_ptr tex_ = render::texture_ptr(), 
 				float spin_ = 0, const math::rect& rect_ = math::rect(0, 0, 1, 1),			
 				unsigned long priority = 0 );
 		};
 
-		class renderer2d
+		class canvas
 		{
 		public:
 			typedef std::vector<sprite> sprites_vector;
 			typedef sprites_vector::iterator sprite_iter;
 
-			renderer2d(device& dev);
-			~renderer2d();
+			canvas(device& dev);
+			~canvas();
 
-			void draw(const sprite& s);
-			void draw(const math::rect& r, const math::color& c, texture_ptr t = texture_ptr());
+			enum flags
+			{
+				f_none = 0,
+				f_sort = 1,
+				f_clear = 2,
+			};
+
+			//void begin(int flags = f_none | f_clear);
+				void draw(const sprite& s);
+				void draw(const math::rect& r, const math::color& c, texture_ptr t = texture_ptr());
+				//void draw(const math::rect& r, const math::color& c);
+				//void draw(float x, float y, float w, float h, int color);
+				//void draw(float x, float y, float w, float h, int color, texture_ptr t);
+			//void end() {update();}
+
+			//void flush() {render();}
 
 			void clear();
 
@@ -42,6 +55,8 @@ namespace rgde
 			bool check_size();
 			void create_buffers();
 			void fill_buffers();
+
+
 
 		protected:
 			sprites_vector m_sprites;

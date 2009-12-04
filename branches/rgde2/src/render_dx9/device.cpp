@@ -217,7 +217,8 @@ namespace rgde
 
 		void device::set_index_buffer(index_buffer_ptr ib)
 		{
-			get_impl()->SetIndices(ib->get_impl().get_dx_index_buffer());
+			HRESULT hr = get_impl()->SetIndices(ib->get_impl().get_dx_index_buffer());
+			assert(hr == S_OK);
 		}
 
 		void device::set_stream_source(uint stream_number, vertex_buffer_ptr stream_data, uint stride)
@@ -225,37 +226,38 @@ namespace rgde
 			get_impl().get_dx_device()->SetStreamSource(stream_number, stream_data->get_impl().get_dx_vertex_buffer(),0, stride);
 			DWORD fvf = convert_to_fvf(stream_data->get_declaration()->get_vertex_elemets());
 			HRESULT hr = get_impl().get_dx_device()->SetFVF(fvf);
+			assert(hr == S_OK);
 		}
 
 		void device::set_lighting(bool enable)
 		{
-			get_impl().get_dx_device()->SetRenderState(D3DRS_LIGHTING, enable? TRUE : FALSE);
+			get_impl()->SetRenderState(D3DRS_LIGHTING, enable? TRUE : FALSE);
 		}
 
 		void device::set_ztest(bool enable)
 		{
-			get_impl().get_dx_device()->SetRenderState(D3DRS_ZENABLE, enable? TRUE : FALSE);
+			get_impl()->SetRenderState(D3DRS_ZENABLE, enable? TRUE : FALSE);
 		}
 
 		void device::set_cull_mode(cull_mode mode)
 		{
-			get_impl().get_dx_device()->SetRenderState(D3DRS_CULLMODE, (D3DCULL)mode );
+			get_impl()->SetRenderState(D3DRS_CULLMODE, (D3DCULL)mode );
 		}
 
 		void device::set_alpha_test(bool enable)
 		{
-			get_impl().get_dx_device()->SetRenderState(D3DRS_ALPHATESTENABLE, enable? TRUE : FALSE);
+			get_impl()->SetRenderState(D3DRS_ALPHATESTENABLE, enable? TRUE : FALSE);
 		}
 
 		void device::set_alpha_blend(bool enable)
 		{
-			get_impl().get_dx_device()->SetRenderState(D3DRS_ALPHABLENDENABLE, enable? TRUE : FALSE);
+			get_impl()->SetRenderState(D3DRS_ALPHABLENDENABLE, enable? TRUE : FALSE);
 		}
 
 		void device::set_texture(texture_ptr texture, size_t index)
 		{
 			IDirect3DTexture9* dx_texture = texture->get_impl()->get_dx_texture();
-			get_impl().get_dx_device()->SetTexture((DWORD)index, dx_texture);
+			get_impl()->SetTexture((DWORD)index, dx_texture);
 		}
 
 		void device::set_transform(transform_type type, const math::mat44f& m)
@@ -277,14 +279,16 @@ namespace rgde
 
 			const D3DMATRIX* d3d_matrix = (const D3DMATRIX*)(float*)&m;
 
-			get_impl().get_dx_device()->SetTransform(ttype, d3d_matrix);
+			HRESULT hr = get_impl()->SetTransform(ttype, d3d_matrix);
+			
+			assert(hr == S_OK);
 		}
 
 		void device::draw(primitive_type type, uint start_vertex, uint primitive_count)
 		{
 			D3DPRIMITIVETYPE prim_type = convert(type);
 			HRESULT hr = get_impl().get_dx_device()->DrawPrimitive(prim_type, start_vertex, primitive_count);
-			__asm nop;
+			assert(hr == S_OK);
 		}
 
 		void device::draw(primitive_type type, int base_vertex_index, uint min_vertex_index,
@@ -293,8 +297,10 @@ namespace rgde
 			D3DPRIMITIVETYPE prim_type = convert(type);
 
 			IDirect3DDevice9* dev = get_impl().get_dx_device();
-			dev->DrawIndexedPrimitive(prim_type, base_vertex_index, min_vertex_index,
+			HRESULT hr = dev->DrawIndexedPrimitive(prim_type, base_vertex_index, min_vertex_index,
 				num_vertices, start_index, primitive_count);
+
+			assert(hr == S_OK);
 		}
 
 

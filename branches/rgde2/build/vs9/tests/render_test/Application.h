@@ -54,11 +54,11 @@ namespace rgde
 			
 		size m_size;
 
-		//render::vertex_buffer_ptr m_vb;
-		//render::index_buffer_ptr m_ib;
+		render::vertex_buffer_ptr m_vb;
+		render::index_buffer_ptr m_ib;
 
-		//math::vec3f m_cam_pos;
-		//camera m_camera;		
+		math::vec3f m_cam_pos;
+		camera m_camera;		
 
 		int old_x;
 		int old_y;
@@ -70,8 +70,10 @@ namespace rgde
 		boost::timer m_timer;
 
 		math::color m_back_color;	
-		render::renderer2d m_batcher2d;
+		render::canvas m_batcher2d;
 
 		render::font_ptr m_font;
+
+		ArcBall m_arc_ball;
 	};
 }
