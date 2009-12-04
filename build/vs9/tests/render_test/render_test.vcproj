@@ -225,10 +225,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\camera.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
@@ -257,14 +253,6 @@
 			Name="gfx"
 			>
 			<File
-				RelativePath=".\ArcBall.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ArcBall.h"
-				>
-			</File>
-			<File
 				RelativePath=".\geometry.cpp"
 				>
 			</File>
@@ -286,6 +274,46 @@
 			</File>
 			<File
 				RelativePath=".\sprite.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="core"
+			>
+			<File
+				RelativePath=".\camera.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\camera.h"
+				>
+			</File>
+			<File
+				RelativePath=".\frustum.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\frustum.h"
+				>
+			</File>
+			<File
+				RelativePath=".\named_object.h"
+				>
+			</File>
+			<File
+				RelativePath=".\transform.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\transform.h"
+				>
+			</File>
+			<File
+				RelativePath=".\xml_class.h"
+				>
+			</File>
+			<File
+				RelativePath=".\xml_node.h"
 				>
 			</File>
 		</Filter>

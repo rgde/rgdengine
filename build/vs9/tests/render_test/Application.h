@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ArcBall.h"
 #include "camera.h"
 #include "game.h"
 #include "sprite.h"
@@ -58,7 +57,7 @@ namespace rgde
 		render::index_buffer_ptr m_ib;
 
 		math::vec3f m_cam_pos;
-		camera m_camera;		
+		scene::camera m_camera;
 
 		int old_x;
 		int old_y;
@@ -73,7 +72,5 @@ namespace rgde
 		render::canvas m_batcher2d;
 
 		render::font_ptr m_font;
-
-		ArcBall m_arc_ball;
 	};
 }

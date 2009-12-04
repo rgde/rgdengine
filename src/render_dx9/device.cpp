@@ -256,7 +256,7 @@ namespace rgde
 
 		void device::set_texture(texture_ptr texture, size_t index)
 		{
-			IDirect3DTexture9* dx_texture = texture->get_impl()->get_dx_texture();
+			IDirect3DTexture9* dx_texture = texture ? texture->get_impl()->get_dx_texture() : 0;
 			get_impl()->SetTexture((DWORD)index, dx_texture);
 		}
 
