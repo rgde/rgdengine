@@ -22,8 +22,8 @@ namespace rgde
 			vertex_element::end_element
 		};
 
-		renderer_2d::renderer_2d(device& dev, const uint buff_size, const uint batch_size) : m_device(dev),
-											m_buffer_offset(0), m_buffer_size(buff_size), m_batch_size(batch_size),
+		renderer_2d::renderer_2d(device& dev, const uint buff_size) : m_device(dev), current_data_size(0),
+											m_buffer_offset(0), m_buffer_size(buff_size), m_batch_size(0),
 											m_need_update(false)
 		{
 			init_primitives_data();
@@ -126,7 +126,7 @@ namespace rgde
 			clear_lines();
 		}
 
-		void renderer_2d::render_all()
+		void renderer_2d::prepare_data()
 		{
 			if (m_sprites.empty())
 				return;
@@ -136,107 +136,99 @@ namespace rgde
 			m_device.set_alpha_test(true);
 			m_device.set_blend_mode(render::blend_srcalpha, render::blend_invsrcalpha);
 
-			{
-				 // если достигнут конец буфера, возвращаемся в начало
-				if(m_buffer_offset >= m_buffer_size)
-					m_buffer_offset = 0;
+			// если достигнут конец буфера, возвращаемся в начало
+//			if(m_buffer_offset >= m_buffer_size)
+//				m_buffer_offset = 0;
 
-				// вершины примитивов
-				primitives_2d::prim_vertex* vertices;
+			// вершины примитивов
+			primitives_2d::prim_vertex* vertices;
 
-				//if (m_need_update)
-				//{
-					vertices = (primitives_2d::prim_vertex*)m_vb->lock(m_buffer_offset * sizeof(primitives_2d::prim_vertex), 
+			//if (m_need_update)
+			//{
+				vertices = (primitives_2d::prim_vertex*)m_vb->lock(m_buffer_offset * sizeof(primitives_2d::prim_vertex), 
 																				m_batch_size * sizeof(primitives_2d::prim_vertex), 
 																				m_buffer_offset ? buffer::nooverwrite : buffer::discard);
-					m_need_update = false;
-				//}
-
-				// текущий размер данных
-				ulong current_data_size = 0;
-				// счётчик вершин
-				//uint i = 0;
+			//	m_need_update = false;
+			//}
 			
-				// батчинг примитивов	
-				for(sprites_iter it = m_sprites.begin(); it != m_sprites.end(); ++it)
-				{
-					const primitives_2d::sprite_desc &s = *it;
-					const math::color &color= s.color;
-					const math::rect &tex_coord	= s.tex_coord;
-					const texture_ptr &tex = s.texture;
+			current_data_size = 0;
 
-					math::vec2f hsize = s.size*0.5f;
-					math::vec2f pos	= s.pos + hsize;
+			for(sprites_iter it = m_sprites.begin(); it != m_sprites.end(); ++it)
+			{
+				const primitives_2d::sprite_desc &s = *it;
+				const math::color &color= s.color;
+				const math::rect &tex_coord	= s.tex_coord;
 
-					float cosa	= ::cos(s.spin);
-					float sina	= ::sin(s.spin);
+				math::vec2f hsize = s.size*0.5f;
+				math::vec2f pos	= s.pos + hsize;
 
-					m_device.set_texture(tex, 0);
+				float cosa	= ::cos(s.spin);
+				float sina	= ::sin(s.spin);
 
-					// Top left
-					math::vec2f rotPos		= rotate_pos(-hsize[0], -hsize[1], sina, cosa) + pos;
-					vertices->pos   = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-					vertices->tex   = tex_coord.get_top_left();
-					vertices->color = color;
-					++vertices;
+				// Top left
+				math::vec2f rotPos		= rotate_pos(-hsize[0], -hsize[1], sina, cosa) + pos;
+				vertices->pos   = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+				vertices->tex   = tex_coord.get_top_left();
+				vertices->color = color;
+				++vertices;
 
 					// Top right
-					rotPos			= rotate_pos(hsize[0], -hsize[1], sina, cosa) + pos;
-					vertices->pos	= math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-					vertices->tex   = tex_coord.get_top_right();
-					vertices->color = color;
-					++vertices;
+				rotPos			= rotate_pos(hsize[0], -hsize[1], sina, cosa) + pos;
+				vertices->pos	= math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+				vertices->tex   = tex_coord.get_top_right();
+				vertices->color = color;
+				++vertices;
 
 					// Bottom right
-					rotPos			= rotate_pos(hsize[0], hsize[1], sina, cosa) + pos;
-					vertices->pos	= math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-					vertices->tex   = tex_coord.get_bottom_right();
-					vertices->color = color;
-					++vertices;
+				rotPos			= rotate_pos(hsize[0], hsize[1], sina, cosa) + pos;
+				vertices->pos	= math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+				vertices->tex   = tex_coord.get_bottom_right();
+				vertices->color = color;
+				++vertices;
 
 					// Bottom left
-					rotPos			= rotate_pos(-hsize[0], hsize[1], sina, cosa) + pos;
-					vertices->pos   = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-					vertices->tex   = tex_coord.get_bottom_left();
-					vertices->color = color;
-					++vertices;
+				rotPos			= rotate_pos(-hsize[0], hsize[1], sina, cosa) + pos;
+				vertices->pos   = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
+				vertices->tex   = tex_coord.get_bottom_left();
+				vertices->color = color;
+				++vertices;
 
-					current_data_size += sizeof(primitives_2d::prim_vertex)*4;
-					if(current_data_size == m_batch_size)
-					{
-						current_data_size = 0;
-						draw_batch(vertices);
-					}
-				}
-
-				m_vb->unlock();
-
-			    if( current_data_size )
-				{
-					
-					m_device.set_stream_source( 0, m_vb, sizeof(primitives_2d::prim_vertex) );
-					m_device.draw(render::triangle_list, 0, 0, m_buffer_offset, 0, current_data_size/sizeof(primitives_2d::prim_vertex));
-				}
-
-				m_buffer_offset += m_batch_size;
+				current_data_size += sizeof(primitives_2d::prim_vertex)*4;
 			}
+
+			m_vb->unlock();
+		}
+
+		void renderer_2d::render_all()
+		{
+			prepare_data();
+
+			primitives_2d::sprite_desc* s = &m_sprites.front();
+			texture_ptr cur_tex = s->texture;
+			int size = m_sprites.size();
+			int start_sprite = 0;
+			for (int i = 0; i < size; ++i)
+			{
+				primitives_2d::sprite_desc &sprite = s[i];
+
+				if (cur_tex != sprite.texture)
+				{
+					int cur_sprite = i - 1;
+					int num_sprites = cur_sprite - start_sprite + 1;
+
+					if (num_sprites > 0)
+					{
+						m_device.set_texture(cur_tex, 0);
+						m_device.set_stream_source( 0, m_vb, sizeof(primitives_2d::prim_vertex) );
+						m_device.draw(render::triangle_list, 0, 0, num_sprites * 4, 6 * start_sprite, num_sprites * 2);
+					}
+					cur_tex = sprite.texture;
+				}
+			}		
 		}
 
 		void renderer_2d::draw_batch(primitives_2d::prim_vertex* vert)
 		{
-			// рисуем батч буфера, который был залит последним
-			m_vb->unlock();
-			m_device.set_stream_source( 0, m_vb, sizeof(primitives_2d::prim_vertex) );
-			m_device.draw(render::triangle_list, 0, 0, m_buffer_offset, 0, m_batch_size);
-
-			// пока текущий батч рисуется, заполняем следующий
-			m_buffer_offset += m_batch_size;
-			// если достигнут конец буфера, возвращаемся в начало
-			if(m_buffer_offset >= m_buffer_size)
-				m_buffer_offset = 0;
-
-			vert = (primitives_2d::prim_vertex*)m_vb->lock(m_buffer_offset * sizeof(primitives_2d::prim_vertex), m_batch_size * sizeof(primitives_2d::prim_vertex), 
-				m_buffer_offset ? buffer::nooverwrite : buffer::discard);
 		}
 	}
 }

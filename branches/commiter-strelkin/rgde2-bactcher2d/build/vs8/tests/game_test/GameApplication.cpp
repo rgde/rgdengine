@@ -57,8 +57,6 @@ namespace rgde
 			unit.sprite.texture = m_alien_texture;
 			add_unit(unit);
 		}
-
-		m_batcher.add_sprite(ship);	
 	}
 
 	void GameApplication::update_frame()
@@ -95,7 +93,6 @@ namespace rgde
 
 	void GameApplication::add_unit(AlienUnit& unit)
 	{
-		m_batcher.add_sprite(unit.sprite);
 		m_aliens.push_back(unit);
 	}
 
