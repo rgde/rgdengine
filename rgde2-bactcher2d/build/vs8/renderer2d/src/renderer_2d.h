@@ -14,7 +14,7 @@ namespace rgde
 			typedef lines_vector::iterator lines_iter;
 			typedef sprites_vector::iterator sprites_iter;
 
-			renderer_2d(device& dev, const uint buff_size = 2097152, const uint butch_size = 524288);
+			renderer_2d(device& dev, const uint buff_size = 2097152);
 			~renderer_2d();
 
 			void init_primitives_data();
@@ -35,11 +35,11 @@ namespace rgde
 			void clear_sprites();
 			void clear_lines();
 			void clear_all();
-
+		
 			void render_all();
-			void drawButch(primitives_2d::prim_vertex* vert);
 
 		private:
+			void prepare_data();
 			void draw_batch(primitives_2d::prim_vertex* vert);
 
 			lines_vector m_lines;
@@ -54,6 +54,8 @@ namespace rgde
 
 			texture_ptr default_texture;
 
+			// текущий размер данных
+			ulong current_data_size;	
 			// смещение вершин в буфере
 			uint m_buffer_offset;
 			// размер буфера
