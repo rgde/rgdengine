@@ -15,23 +15,24 @@ namespace rgde
 		//////////////////////////////////////////////////////////////////////////
 
 		sprite::sprite()
-			: spin(0), 
-			priority(0), 
-			rect(0, 0, 1, 1)
+			: x(0),y(0),w(0),h(0)
+			, uvx(0), uvy(0), uvw(1.0f), uvh(1.0f)
+			, spin(0)
+			, priority(0)
+			, color(0xFFFFFFFF)
 		{
 		}
 
-		sprite::sprite( const math::vec2f& pos_, const math::vec2f& size_, 
-			const math::color& color_,texture_ptr texture_,
-			float spin_, const math::rect& rect_,
+		sprite::sprite( const math::vec2f& pos, const math::vec2f& size, 
+			math::color color_,texture_ptr texture_,
+			float spin_, const math::rect& uv,
 			unsigned long priority_)
-			: rect (rect_)
-			, pos (pos_)
-			, size (size_)
+			: x(pos[0]),y(pos[1]),w(size[0]),h(size[1])
+			, uvx(uv.x), uvy(uv.y), uvw(uv.w), uvh(uv.h)
 			, spin (spin_)
 			, priority (priority_)
 			, texture (texture_)
-			, color (color_)
+			, color (color_.data)
 		{
 		}
 
@@ -53,19 +54,15 @@ namespace rgde
 
 			struct sprite_vertex		// Our new vertex struct
 			{
-				math::vec4f		position;		// 3D position
+				//math::vec4f		position;		// 3D position
+				float x,y,z,w;
 				ulong color;			// Hex Color Value
-				math::vec2f		tex;				// texure coords
-			};
-
-			struct line_vertex			// Our new vertex struct
-			{
-				float x, y, z;			// 3D position
-				ulong color;			// Hex Color Value
+				//math::vec2f		tex;				// texure coords
+				float u,v;
 			};
 		}
 
-		renderer2d::renderer2d(device& dev)
+		canvas::canvas(device& dev)
 			: m_device(dev)
 			, m_updated(false)
 			, m_scale(1.0f, 1.0f)
@@ -75,11 +72,11 @@ namespace rgde
 			sprites_decl = vertex_declaration::create(m_device, sprites_vertex_desc, 4);
 		}
 
-		renderer2d::~renderer2d()
+		canvas::~canvas()
 		{
 		}
 
-		bool renderer2d::check_size()
+		bool canvas::check_size()
 		{
 			if (m_sprites.size() > m_reserved_size)
 			{
@@ -90,7 +87,7 @@ namespace rgde
 			return true;
 		}
 
-		void renderer2d::create_buffers()
+		void canvas::create_buffers()
 		{
 			size_t size = m_sprites.size()*2;
 
@@ -116,7 +113,7 @@ namespace rgde
 			m_reserved_size = size;
 		}
 
-		void renderer2d::fill_buffers()
+		void canvas::fill_buffers()
 		{
 			if (m_need_ib_update)
 			{
@@ -142,7 +139,7 @@ namespace rgde
 				m_ib->unlock();
 			}
 
-			sprite_vertex* vertices = (sprite_vertex*)m_vb->lock( 0, 
+			sprite_vertex* v = (sprite_vertex*)m_vb->lock( 0, 
 				sizeof(sprite_vertex)*m_sprites.size()*4, 0 );
 
 			unsigned i	= 0;
@@ -150,42 +147,43 @@ namespace rgde
 			{
 				// Срайты масштабируются только при записи в буфер
 				const sprite &s = *it;
-				const math::color &color= s.color;
-				const math::rect &rect	= s.rect;
+
+				float hsize_w = s.w * 0.5f;
+				float hsize_h = s.h * 0.5f;
+
 				// Сразу же масштабируем позицию и размер
-				math::vec2f hsize		= s.size*0.5f;//= math::vec2f(s.size[0] * m_scale[0], s.size[1] * m_scale[1]) / 2.0f;
-				math::vec2f pos			= s.pos + hsize; //= math::vec2f(s.pos[0] * m_scale[0], s.pos[1] * m_scale[1]);
+				math::vec2f pos(s.x + hsize_w, s.y + hsize_h); //= math::vec2f(s.pos[0] * m_scale[0], s.pos[1] * m_scale[1]);
 
 				float cosa				= ::cos(s.spin);
 				float sina				= ::sin(s.spin);
 
 				// Top left
-				math::vec2f rotPos		= rotate_pos(-hsize[0], -hsize[1], sina, cosa) + pos;
-				vertices[i].position = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-				vertices[i].tex = rect.get_top_left();
-				vertices[i].color = color;
-				++i;
+				math::vec2f rotPos		= rotate_pos(-hsize_w, -hsize_h, sina, cosa) + pos;
+				v->x = rotPos[0]; v->y = rotPos[1]; v->z = v->w = 0;
+				v->u = s.uvx; v->v = s.uvy;
+				v->color = s.color;
+				++v;
 
 				// Top right
-				rotPos = rotate_pos(hsize[0], -hsize[1], sina, cosa) + pos;
-				vertices[i].position = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-				vertices[i].tex = rect.get_top_right();
-				vertices[i].color = color;
-				++i;
+				rotPos = rotate_pos(hsize_w, -hsize_h, sina, cosa) + pos;
+				v->x = rotPos[0]; v->y = rotPos[1]; v->z = v->w = 0;
+				v->u = s.uvx + s.uvw; v->v = s.uvy;
+				v->color = s.color;
+				++v;
 
 				// Bottom right
-				rotPos = rotate_pos(hsize[0], hsize[1], sina, cosa) + pos;
-				vertices[i].position = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-				vertices[i].tex = rect.get_bottom_right();
-				vertices[i].color = color;
-				++i;
+				rotPos = rotate_pos(hsize_w, hsize_h, sina, cosa) + pos;
+				v->x = rotPos[0]; v->y = rotPos[1]; v->z = v->w = 0;
+				v->u = s.uvx + s.uvw; v->v = s.uvy + s.uvh;
+				v->color = s.color;
+				++v;
 
 				// Bottom left
-				rotPos = rotate_pos(-hsize[0], hsize[1], sina, cosa) + pos;
-				vertices[i].position = math::Vec4f(rotPos[0], rotPos[1], 0, 0);
-				vertices[i].tex = rect.get_bottom_left();
-				vertices[i].color = color;
-				++i;
+				rotPos = rotate_pos(-hsize_w, hsize_h, sina, cosa) + pos;
+				v->x = rotPos[0]; v->y = rotPos[1]; v->z = v->w = 0;
+				v->u = s.uvx; v->v = s.uvy + s.uvh;
+				v->color = s.color;
+				++v;
 			}
 
 			//
@@ -193,7 +191,7 @@ namespace rgde
 			m_vb->unlock();
 		}
 
-		void renderer2d::update()
+		void canvas::update()
 		{
 			if (m_sprites.empty())
 				return;
@@ -206,7 +204,7 @@ namespace rgde
 			m_updated = true;
 		}
 
-		void renderer2d::render()
+		void canvas::render()
 		{
 			if (m_sprites.empty() || !m_updated || !m_ib || !m_vb)
 				return;
@@ -221,18 +219,18 @@ namespace rgde
 			m_device.draw(render::triangle_list, 0, 0, sprites_num * 4, 0, sprites_num *2);
 		}
 
-		void renderer2d::draw(const sprite& s)
+		void canvas::draw(const sprite& s)
 		{
 			m_sprites.push_back(s);
 			m_updated = false;
 		}
 
-		void renderer2d::clear()
+		void canvas::clear()
 		{
 			m_sprites.clear();
 		}
 
-		void renderer2d::draw(const math::rect& r, const math::color& c, texture_ptr t)
+		void canvas::draw(const math::rect& r, const math::color& c, texture_ptr t)
 		{
 			m_sprites.push_back(sprite(r.position, r.size, c, t));
 		}

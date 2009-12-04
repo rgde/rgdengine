@@ -19,13 +19,13 @@ namespace rgde
 			float xscale = yscale / aspect;
 
 			mat44f out;
-			//LH
+
 			out.set(xscale,	0,			0,			0,
 					0,		yscale,		0,			0, 
 					0,		0,		zf/(zf-zn),		1,
 					0,		0,		-zn*zf/(zf-zn), 0);
 
-			//gmtl::transpose(out);
+			gmtl::transpose(out);
 
 			return out;
 		}
@@ -41,15 +41,6 @@ namespace rgde
 			normalize(xaxis);
 
 			vec3f yaxis = makeCross(zaxis, xaxis);
-			//////////////////////////////////////////////////////////////////////////
-
-			//vec3f zaxis = (eye - at);
-			//normalize(zaxis);
-
-			//vec3f xaxis = makeCross(up, zaxis);
-			//normalize(xaxis);
-
-			//vec3f yaxis = makeCross(zaxis, xaxis);
 
 			mat44f out;
 
