@@ -56,9 +56,6 @@ namespace rgde
 		render::vertex_buffer_ptr m_vb;
 		render::index_buffer_ptr m_ib;
 
-		math::vec3f m_cam_pos;
-		scene::camera m_camera;
-
 		int old_x;
 		int old_y;
 
@@ -72,5 +69,8 @@ namespace rgde
 		render::canvas m_batcher2d;
 
 		render::font_ptr m_font;
+
+		scene::camera_ptr m_camera;
+		scene::free_camera_ptr m_cam_controller;
 	};
 }

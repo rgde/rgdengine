@@ -94,8 +94,14 @@ application::application(int x, int y, int w, int h, const std::wstring& title)
 	show();
 	update();
 
+	m_camera = new scene::camera();
+
+	resize_scene(w, h);
+	
 	init_game_data();
 	init_render_data();
+
+	m_cam_controller = scene::free_camera::create(m_camera);
 
 	xml::document doc;
 	if (doc.load(m_filesystem.open_read("audiodb.xml")))
@@ -104,7 +110,7 @@ application::application(int x, int y, int w, int h, const std::wstring& title)
 		
 		if (m_sound_system.load(audio_db))
 			m_sound_system.play("music1");
-	}	
+	}
 }
 
 application::~application()
@@ -171,9 +177,8 @@ void application::init_render_data()
 	m_device.set_alpha_blend(false);
 	m_device.set_alpha_test(false);
 
-	/*math::vec3f cam_pos(0, 0, -5);*/
 	math::vec3f cam_pos(-5, 0, 0);
-	m_camera.look_at(cam_pos, (math::vec3f(1,0,0) + cam_pos), math::vec3f(0,1,0));
+	m_camera->look_at(cam_pos, (math::vec3f(1,0,0) + cam_pos), math::vec3f(0,1,0));
 }
 
 void application::run()
@@ -205,39 +210,8 @@ void application::render()
 	m_device.frame_begin();
 	m_device.clear(m_back_color);
 
-	D3DXMATRIXA16 matWorld;
-	UINT iTime = 0;//timeGetTime() % 1000;
-	FLOAT fAngle = iTime * ( 2.0f * D3DX_PI ) / 1000.0f;
-	D3DXMatrixRotationY( &matWorld, fAngle );
-
-	D3DXVECTOR3 vEyePt( 0.0f, 3.0f,-5.0f );
-	D3DXVECTOR3 vLookatPt( 0.0f, 0.0f, 0.0f );
-	D3DXVECTOR3 vUpVec( 0.0f, 1.0f, 0.0f );
-	D3DXMATRIXA16 matView;
-	D3DXMatrixLookAtLH( &matView, &vEyePt, &vLookatPt, &vUpVec );
-
-	D3DXMATRIXA16 matProj;
-	D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4, 1.0f, 1.0f, 100.0f );
-
-	//g_pd3dDevice->SetTransform( D3DTS_VIEW, &matView );
-	//g_pd3dDevice->SetTransform( D3DTS_WORLD, &matWorld );
-	//g_pd3dDevice->SetTransform( D3DTS_PROJECTION, &matProj );
-	
-	//math::mat44f view = math::make_lookat(cam_pos, cam_pos + math::vec3f(0,0,-1), math::vec3f(0,1,0));
-	//math::mat44f proj = math::make_perspective(45.0f, (float)800/(float)600, 0.1f, 100.0f);	
-	//m_device.set_transform( render::projection_transform, math::MAT_IDENTITY44F);
-	//m_device.set_transform( render::view_transform, view);
-
-	math::vec3f eyept( 0.0f, 3.0f,-5.0f );
-	math::vec3f lookatpt( 0.0f, 0.0f, 0.0f );
-	math::vec3f upvec( 0.0f, 1.0f, 0.0f );
-
-	math::mat44f view = math::make_lookat(eyept, lookatpt, upvec);
-	math::mat44f proj = math::make_perspective(D3DX_PI / 4, 1.0f, 1.0f, 100.0f);
-
-	m_device.set_transform( render::projection_transform, m_camera.get_proj_matrix());
-	m_device.set_transform( render::view_transform, m_camera.get_view_matrix());
-
+	m_device.set_transform( render::projection_transform, m_camera->get_proj_matrix());
+	m_device.set_transform( render::view_transform, m_camera->get_view_matrix());
 
 	m_device.set_ztest(true);
 	m_device.set_cull_mode(rgde::render::cull_none);
@@ -274,34 +248,44 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 		}
 	case WM_KEYDOWN:
 		{
-			if (VK_ESCAPE)
+			if ('Q' == wparam || 'q' == wparam)
 				exit(0);
 
-			if (VK_UP == wparam)
+			if (VK_ESCAPE == wparam)
+				exit(0);
+
+			if ('w' == wparam || 'W' == wparam)
 			{
-				m_cam_pos += math::vec3f(0.05f,0,0);
-				//m_camera.goForward(0.05f);
+				m_cam_controller->move_forward(0.1f);
 			}
-			else if (VK_DOWN == wparam)
+			else if ('s' == wparam || 'S' == wparam)
 			{
-				m_cam_pos -= math::vec3f(0.05f,0,0);
-				//m_camera.goForward(-0.05f);
+				m_cam_controller->move_back(0.1f);
 			}
+			else if ('a' == wparam || 'A' == wparam)
+			{
+				m_cam_controller->move_left(0.1f);
+			}
+			else if ('d' == wparam || 'D' == wparam)
+			{
+				m_cam_controller->move_right(0.1f);
+			}
+
 			return 0;
 		}
-	case WM_LBUTTONDOWN:
-	case WM_LBUTTONDBLCLK:
-		{
-			POINT p;
-			GetCursorPos(&p);
-			clicked_x = p.x;
-			clicked_y = p.y;
+	//case WM_LBUTTONDOWN:
+	//case WM_LBUTTONDBLCLK:
+	//	{
+	//		POINT p;
+	//		GetCursorPos(&p);
+	//		clicked_x = p.x;
+	//		clicked_y = p.y;
 
-			int xPos = LOWORD(lparam); 
-			int yPos = HIWORD(lparam); 
-		}
+	//		int xPos = LOWORD(lparam); 
+	//		int yPos = HIWORD(lparam); 
+	//	}
 
-		return 0;
+	//	return 0;
 
 	case WM_SIZE:
 		{
@@ -312,9 +296,9 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 
 	case WM_MOUSEWHEEL:
 		{
-			float delta = (short)HIWORD((DWORD)wparam);//120.0f;
+			float delta = (short)HIWORD((DWORD)wparam);
 			delta /= 80.0f;
-			//m_camera.goForward(-delta);
+			m_cam_controller->move_forward(delta);
 		}
 		break;
 
@@ -323,14 +307,13 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 			int xPos = LOWORD(lparam); 
 			int yPos = HIWORD(lparam);
 
-			if ((old_x != -1 || old_y != -1) && ((wparam & MK_LBUTTON) != 0))
+			if ((old_x != -1 || old_y != -1) /*&& ((wparam & MK_LBUTTON) != 0)*/)
 			{
-				//m_arc_ball.drag(xPos, yPos);
 				int dx = xPos - old_x;
 				int dy = yPos - old_y;
 
-				//m_camera.rotateRight(-dx/200.0f);
-				//m_camera.rotateUp(dy/200.0f);
+				m_cam_controller->rotate_right(dx/200.0f);
+				m_cam_controller->rotate_up(dy/200.0f);
 			}
 
 			old_x = xPos;
@@ -343,12 +326,13 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 
 void application::resize_scene(unsigned int width, unsigned int height)
 {
-	if (height==0)										// Prevent A Divide By Zero By
+	if (height==0) // Prevent A Divide By Zero By
 	{
-		height=1;										// Making Height Equal One
+		height=1; // Making Height Equal One
 	}
 
-	m_camera.set_projection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
+	if (m_camera)
+		m_camera->set_projection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
 }
 
 void application::init_game_data()
