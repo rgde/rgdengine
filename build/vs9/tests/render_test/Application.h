@@ -3,6 +3,7 @@
 #include "camera.h"
 #include "game.h"
 #include "sprite.h"
+#include "mesh.h"
 
 namespace rgde
 {
@@ -10,7 +11,6 @@ namespace rgde
 	{
 		float w, h;
 	};
-
 
 	class application : public core::windows::window
 	{
@@ -53,8 +53,10 @@ namespace rgde
 			
 		size m_size;
 
-		render::vertex_buffer_ptr m_vb;
-		render::index_buffer_ptr m_ib;
+		//render::vertex_buffer_ptr m_vb;
+		//render::index_buffer_ptr m_ib;
+
+		render::mesh_ptr m_box;
 
 		int old_x;
 		int old_y;

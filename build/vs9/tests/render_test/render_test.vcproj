@@ -261,6 +261,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\mesh.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mesh.h"
+				>
+			</File>
+			<File
 				RelativePath=".\render_target.cpp"
 				>
 			</File>
