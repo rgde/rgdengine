@@ -130,28 +130,30 @@ void application::init_render_data()
 	m_device.set_alpha_test(false);
 
 	using namespace rgde::render;
-	vertex_declaration_ptr decl = vertex_declaration::create(m_device, custom_vertex_desc, 3);
 
-	{
-		m_vb = vertex_buffer::create
-			(
-			m_device, decl, 
-			sizeof(cube_vb), 
-			resource::default, 
-			buffer::write_only
-			);
+	m_box = mesh::create_box(m_device, 1, 1, 1);
+	//vertex_declaration_ptr decl = vertex_declaration::create(m_device, custom_vertex_desc, 3);
 
-		void *vertices = m_vb->lock( 0, sizeof(cube_vb), 0 );
-		memcpy( vertices, cube_vb, sizeof(cube_vb) );
-		m_vb->unlock();
-	}
+	//{
+	//	m_vb = vertex_buffer::create
+	//		(
+	//		m_device, decl, 
+	//		sizeof(cube_vb), 
+	//		resource::default, 
+	//		buffer::write_only
+	//		);
 
-	{
-		m_ib = index_buffer::create(m_device, sizeof(cube_ib), false, resource::default, buffer::write_only);
-		void *indices = m_ib->lock( 0, sizeof(cube_ib), 0 );
-		memcpy( indices, cube_ib, sizeof(cube_ib) );
-		m_ib->unlock();
-	}
+	//	void *vertices = m_vb->lock( 0, sizeof(cube_vb), 0 );
+	//	memcpy( vertices, cube_vb, sizeof(cube_vb) );
+	//	m_vb->unlock();
+	//}
+
+	//{
+	//	m_ib = index_buffer::create(m_device, sizeof(cube_ib), false, resource::default, buffer::write_only);
+	//	void *indices = m_ib->lock( 0, sizeof(cube_ib), 0 );
+	//	memcpy( indices, cube_ib, sizeof(cube_ib) );
+	//	m_ib->unlock();
+	//}
 
 	m_font = font::create(m_device, 17, L"Arial");
 
@@ -219,10 +221,12 @@ void application::render()
 	m_device.set_alpha_blend(false);
 	m_device.set_alpha_test(false);
 
-	m_device.set_stream_source( 0, m_vb, sizeof(color_vertex) );
-	m_device.set_index_buffer(m_ib);
+	//m_device.set_stream_source( 0, m_vb, sizeof(color_vertex) );
+	//m_device.set_index_buffer(m_ib);
 
-	m_device.draw(render::triangle_list, 0, 0, 24, 0, 12);
+	//m_device.draw(render::triangle_list, 0, 0, 24, 0, 12);
+
+	m_box->render(m_device);
 	
 	m_batcher2d.render();
 
