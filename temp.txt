@@ -1,0 +1,52 @@
+
+enum ProxyType
+{
+	RENDER_PROXY, 
+	SOUND, 
+	AI, 
+	SCRIPT
+};
+
+class Entity
+{
+	Proxy* GetProxy(ProxyType type)
+	{
+		if(Proxy* proxy = m_proxy_collection[type])
+			return proxy;
+		else
+		{
+			// create and return
+		}
+	}
+
+	virtual void ProcessEvents(..)
+	{
+		// dispatch to proxies
+	}
+};
+
+class RenderProxy : public Proxy
+{
+	RenderItem* GetSlot(size_t i);
+	void SetSlot(size_t slot_index, RenderItem* );
+};
+
+
+class mesh
+{
+	decl, vb, ib, materials, atrribs;
+};
+
+class model
+{
+	bones, meshes;
+};
+
+class entity
+{
+	render_proxy -> models[N]
+
+	parent, children
+
+	atachments {model(bone), entity}
+};
