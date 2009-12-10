@@ -230,7 +230,7 @@ void application::render()
 	
 	m_batcher2d.render();
 
-	m_font->render(L"Render test:", math::rect(5,5, 300, 30), math::color::White, true);
+	m_font->render(L"render test:", math::rect(5,5, 300, 30), math::color::White, true);
 
 
 	m_device.frame_end();

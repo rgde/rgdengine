@@ -33,43 +33,28 @@ namespace rgde
 			~console();
 
 			// clears all console text
-			void Clear();
-			void Hide()
-			{
-				is_console_on = false;
-				m_is_chat_line_on = false;
-			}
+			void clear();
+			void hide();
 
-			void Show(bool ChatLineOnly = false)
-			{
-				is_console_on = true;
-				m_is_chat_line_on = ChatLineOnly;
-			}
+			void show(bool ChatLineOnly = false);
 
-			//IronBunny - for render only chat lines
-			void ChatLineOnly()
-			{
-				is_console_on = false;
-				m_is_chat_line_on = true;
-			}
-
-			bool IsChatLineOn(){return m_is_chat_line_on;}
-			void ClearEditingLine(){editing_line="";cursor_pos=0;}
+			bool is_chat_line_on(){return m_is_chat_line_on;}
+			void clear_edit_line(){editing_line="";cursor_pos=0;}
 			/// Current Line
 
 			// adds entry to the console's history list of previously displayed lines
-			void AddHistoryLine(std::string& line, math::color color = math::color(0,220,0,255));	
-			void AddHistoryLine(message_type type,int team,std::string& line, math::color color = math::color(0,220,0,255));	
+			void add_history_line(std::string& line, math::color color = math::color(0,220,0,255));	
+			void add_history_line(message_type type,int team,std::string& line, math::color color = math::color(0,220,0,255));	
 
 			/// Windows Messages 
-			void MsgKeyDown(unsigned int wParam);
-			void MsgChar(unsigned int wParam);
-			void ToggleConsole();
+			void msg_keydown(unsigned int wParam);
+			void msg_char(unsigned int wParam);
+			void toggle();
 
 			// Draws the console system onto the canvas
-			void Render(class Canvas* canvas);
+			void render(class Canvas* canvas);
 			// initialized during game init process
-			void Initialize(const std::string& frontTex, const std::string& backTex);
+			void init(const std::string& frontTex, const std::string& backTex);
 
 			bool is_on()
 			{ 
@@ -83,13 +68,13 @@ namespace rgde
 			void printf(message_type type,int team,math::color color,const char *fmt, ...);
 
 			// Registers a variable or function for access within the console
-			void declare(shell_type type, std::string name, void* pSymbol) { shell.DeclareSymbol(type,name,pSymbol); }
-			void declare(const std::string& name, const boost::function<void(const char*)>& function) { shell.DeclareFunction(name, function); }
-			void undeclare(const std::string& name) { shell.Undeclare(name); }
+			void declare(shell_type type, std::string name, void* pSymbol) { m_shell.decl_symbol(type,name,pSymbol); }
+			void declare(const std::string& name, const boost::function<void(const char*)>& function) { m_shell.decl_func(name, function); }
+			void undeclare(const std::string& name) { m_shell.undecl(name); }
 
-			void ExecuteCommand(std::string command){shell.ExecuteSymbol(command);}
+			void exec_command(std::string command){m_shell.exec_symbol(command);}
 
-			void ExecuteFile(const char* filename);
+			void exec_file(const char* filename);
 		private:
 			/// A symbol defined for use in shell.
 			struct shell_symbol 
@@ -114,11 +99,11 @@ namespace rgde
 			{
 			public:
 				// registerd a var or function for use with the console exceution system
-				void DeclareSymbol(shell_type type, const std::string& name, void* pSymbol);
-				void DeclareFunction(const std::string& name, const boost::function<void(const char*)>& function);
-				void Undeclare(const std::string& name);
+				void decl_symbol(shell_type type, const std::string& name, void* pSymbol);
+				void decl_func(const std::string& name, const boost::function<void(const char*)>& function);
+				void undecl(const std::string& name);
 				// Parses & executes command, whether a function with params or setting of a var
-				std::string ExecuteSymbol(std::string cmd);
+				std::string exec_symbol(std::string cmd);
 				// Returns string name of symbol, function or var, on the array
 				std::string get_symbol_name(size_t index){ return symbols[index].name; }
 				size_t get_num_symbols() const { return symbols.size(); }
@@ -126,22 +111,22 @@ namespace rgde
 			private:
 				std::vector<shell_symbol> symbols;
 				// Finds a specified command symbol within the execution shell, returns the index on the shell_symbol list
-				int FindCmdName(std::string s);
+				int find_cmd_name(std::string s);
 				// Returns symbol value if a var, converted to string
-				std::string GetSymbolValue(shell_symbol symbol);
+				std::string get_symbol_value(shell_symbol symbol);
 			};
 
 			/// Tab key; shows commands
-			void KeyTab();	
+			void key_tab();	
 
 			/// Return key is pressed, line is processed
-			void KeyReturn();				
+			void key_return();				
 			/// Up key; previous line is shown
-			void KeyArrowUp();				
+			void key_up();				
 			/// Down key; scrolls to most recent line
-			void KeyArrowDown();			
+			void key_down();			
 			/// Delete key; deletes character at cursor pos
-			void KeyBackspace();
+			void key_backspace();
 
 		private:
 			/// Old editing line while user scrolls up and down
@@ -154,12 +139,15 @@ namespace rgde
 
 			/// Textures
 			render::texture_ptr textures[2];
+			render::font_ptr m_small_font;
+			render::font_ptr m_medium_font;
+
 
 			bool m_is_chat_line_on;
 
 			std::string editing_line;
 			/// Command shell for console
-			shell shell;	
+			shell m_shell;	
 			/// Position of blinking text cursor
 			int cursor_pos;	
 
@@ -170,7 +158,7 @@ namespace rgde
 			/// animated fade factor for 'disappearing' history line
 			float m_fade_line_opacity_factor; 
 
-			bool bDrawChatLines;
+			bool m_draw_chat;
 
 			bool m_is_allow_toggling;
 
