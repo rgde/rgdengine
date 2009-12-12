@@ -31,14 +31,21 @@ namespace rgde
 			//static mesh_ptr create_conus(float h, float r);
 			//static mesh_ptr create_cylinder(float h, float r);
 
-			void render(device& dev);
-			void render(device& dev, size_t arrib_index);
+			mesh(device& dev) : m_device(dev){}
+
+			void render();
+			void render(size_t arrib_index);
 
 			vertex_buffer_ptr vb;
 			index_buffer_ptr ib;
 			std::vector<std::pair<attrib_range, material_ptr>> m_parts;
 
 			//TODO: custom atribs, bbox, bsphere, bones, etc
+			device& get_device() {return m_device;}
+			const device& get_device() const {return m_device;}
+
+		protected:
+			device& m_device;
 		};
 	}
 }

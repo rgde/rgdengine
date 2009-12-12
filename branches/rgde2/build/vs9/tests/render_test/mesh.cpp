@@ -34,7 +34,7 @@ namespace rgde
 
 			mesh_ptr create_mesh(device& dev, vertex* vertices, size_t num_vertices, uint16* indices, size_t num_indices)
 			{
-				mesh_ptr out(new mesh);
+				mesh_ptr out(new mesh(dev));
 
 				vertex_declaration_ptr decl = vertex_declaration::create(dev, vertex_desc, 4);
 
@@ -74,27 +74,27 @@ namespace rgde
 		}
 
 
-		void mesh::render(device& dev)
+		void mesh::render()
 		{
-			dev.set_stream_source( 0, vb, sizeof(vertex) );
-			dev.set_index_buffer(ib);
+			m_device.set_stream_source( 0, vb, sizeof(vertex) );
+			m_device.set_index_buffer(ib);
 
 			for (size_t i = 0, size = m_parts.size(); i < size; ++i)
 			{
 				attrib_range& attr = m_parts[i].first;
 
-				dev.draw(attr.prim_type, attr.vertex_start, 0, attr.vertex_count,
+				m_device.draw(attr.prim_type, attr.vertex_start, 0, attr.vertex_count,
 					attr.index_start, attr.prim_count);
 			}
 		}
 
-		void mesh::render(device& dev, size_t attrib_index)
+		void mesh::render(size_t attrib_index)
 		{
-			dev.set_stream_source( 0, vb, sizeof(vertex) );
-			dev.set_index_buffer(ib);
+			m_device.set_stream_source( 0, vb, sizeof(vertex) );
+			m_device.set_index_buffer(ib);
 
 			attrib_range& attr = m_parts[attrib_index].first;
-			dev.draw(attr.prim_type, attr.vertex_start, 0, attr.vertex_count,
+			m_device.draw(attr.prim_type, attr.vertex_start, 0, attr.vertex_count,
 				attr.index_start, attr.prim_count);
 		}
 

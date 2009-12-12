@@ -253,6 +253,14 @@
 			Name="gfx"
 			>
 			<File
+				RelativePath=".\effect_d3d9.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\effect_d3d9.h"
+				>
+			</File>
+			<File
 				RelativePath=".\geometry.cpp"
 				>
 			</File>
