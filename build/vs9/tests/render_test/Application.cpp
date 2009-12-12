@@ -132,28 +132,6 @@ void application::init_render_data()
 	using namespace rgde::render;
 
 	m_box = mesh::create_box(m_device, 1, 1, 1);
-	//vertex_declaration_ptr decl = vertex_declaration::create(m_device, custom_vertex_desc, 3);
-
-	//{
-	//	m_vb = vertex_buffer::create
-	//		(
-	//		m_device, decl, 
-	//		sizeof(cube_vb), 
-	//		resource::default, 
-	//		buffer::write_only
-	//		);
-
-	//	void *vertices = m_vb->lock( 0, sizeof(cube_vb), 0 );
-	//	memcpy( vertices, cube_vb, sizeof(cube_vb) );
-	//	m_vb->unlock();
-	//}
-
-	//{
-	//	m_ib = index_buffer::create(m_device, sizeof(cube_ib), false, resource::default, buffer::write_only);
-	//	void *indices = m_ib->lock( 0, sizeof(cube_ib), 0 );
-	//	memcpy( indices, cube_ib, sizeof(cube_ib) );
-	//	m_ib->unlock();
-	//}
 
 	m_font = font::create(m_device, 17, L"Arial");
 
@@ -221,17 +199,11 @@ void application::render()
 	m_device.set_alpha_blend(false);
 	m_device.set_alpha_test(false);
 
-	//m_device.set_stream_source( 0, m_vb, sizeof(color_vertex) );
-	//m_device.set_index_buffer(m_ib);
-
-	//m_device.draw(render::triangle_list, 0, 0, 24, 0, 12);
-
-	m_box->render(m_device);
+	m_box->render(); //TODO: remove device ref
 	
 	m_batcher2d.render();
 
 	m_font->render(L"render test:", math::rect(5,5, 300, 30), math::color::White, true);
-
 
 	m_device.frame_end();
 	m_device.present();
@@ -277,19 +249,6 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 
 			return 0;
 		}
-	//case WM_LBUTTONDOWN:
-	//case WM_LBUTTONDBLCLK:
-	//	{
-	//		POINT p;
-	//		GetCursorPos(&p);
-	//		clicked_x = p.x;
-	//		clicked_y = p.y;
-
-	//		int xPos = LOWORD(lparam); 
-	//		int yPos = HIWORD(lparam); 
-	//	}
-
-	//	return 0;
 
 	case WM_SIZE:
 		{
