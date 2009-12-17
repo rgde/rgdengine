@@ -29,7 +29,7 @@ namespace rgde
 		class console
 		{
 		public:
-			console();
+			console(render::device& dev);
 			~console();
 
 			// clears all console text
@@ -75,7 +75,10 @@ namespace rgde
 			void exec_command(std::string command){m_shell.exec_symbol(command);}
 
 			void exec_file(const char* filename);
+
 		private:
+			render::device& m_device;
+
 			/// A symbol defined for use in shell.
 			struct shell_symbol 
 			{				

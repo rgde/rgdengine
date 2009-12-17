@@ -25,5 +25,25 @@ namespace rgde
 		{
 			render(text, rc, color, draw_shadow, top | left | word_break);
 		}
+
+		void font::render(const std::string& text, const math::rect& rc, unsigned int color)
+		{
+			render(std::wstring(text.begin(), text.end()), rc, color, false);
+		}
+
+		void font::render(const std::string& text, const math::rect& rc, unsigned int color, bool draw_shadow)
+		{
+			render(std::wstring(text.begin(), text.end()), rc, color, draw_shadow);
+		}
+
+		void font::render(const std::string& text, const math::rect& rc, unsigned int color, bool draw_shadow, int flags)
+		{
+			render(std::wstring(text.begin(), text.end()), rc, color, draw_shadow, flags);
+		}
+
+		math::rect font::measure_text( const std::string& text, int flags)
+		{
+			return measure_text(std::wstring(text.begin(), text.end()), flags);
+		}
 	}
 }

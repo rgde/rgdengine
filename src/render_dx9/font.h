@@ -30,7 +30,7 @@ namespace rgde
 				dx_font->DrawText(NULL, text.c_str(), -1, &textLocation, flags, color);
 			}
 
-			math::rect measure_test( const std::wstring& text, int flags = 0)
+			math::rect measure_text( const std::wstring& text, int flags = 0)
 			{
 				RECT rc	= {0, 0, 0, 200};
 				if (m_font)

@@ -21,9 +21,9 @@ namespace rgde
 			m_pimpl->render(text, rc, color, draw_shadow, flags);
 		}
 
-		math::rect font::measure_test( const std::wstring& text, int flags)
+		math::rect font::measure_text( const std::wstring& text, int flags)
 		{
-			return m_pimpl->measure_test(text, flags);
+			return m_pimpl->measure_text(text, flags);
 		}
 		//////////////////////////////////////////////////////////////////////////
 	}
