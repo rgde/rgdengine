@@ -45,5 +45,15 @@ namespace rgde
 		{
 			return measure_text(std::wstring(text.begin(), text.end()), flags);
 		}
+
+		void font::render(const std::string& text, float x, float y, unsigned int color)
+		{
+			render(text, math::rect(x, y, 0,0), color, false, 0);
+		}
+
+		void font::render(const std::wstring& text, float x, float y, unsigned int color)
+		{
+			render(text, math::rect(x, y, 0,0), color, false, 0);
+		}
 	}
 }
