@@ -62,6 +62,9 @@ namespace rgde
 			void render(const std::string& text, const math::rect& rc, unsigned int color, bool draw_shadow = true);
 			void render(const std::string& text, const math::rect& rc, unsigned int color, bool draw_shadow, int flags);
 
+			void render(const std::string& text, float x, float y, unsigned int color);
+			void render(const std::wstring& text, float x, float y, unsigned int color);
+
 			math::rect measure_text( const std::string& text, int flags = 0);
 
 			~font();
