@@ -755,10 +755,10 @@ namespace effects
 		return D3D_OK == hr;
 	}
 
-	bool Effect::SetMatrixArray(const ParamPtr& param, const D3DXMATRIX* pMatrix, unsigned int Count)
+	bool Effect::set_matrix_array(const ParamPtr& param, const D3DXMATRIX* matrix, unsigned int count)
 	{
 		EFFECT_PARAMS_VALIDATE
-		HRESULT hr = m_effect->SetMatrixArray(param->m_handle, pMatrix, Count);
+		HRESULT hr = m_effect->SetMatrixArray(param->m_handle, matrix, count);
 		return D3D_OK == hr;
 	}
 
@@ -847,10 +847,10 @@ namespace effects
 		return false;
 	}
 
-	bool Effect::SetMatrixArray(const std::string& param_name, const D3DXMATRIX* pMatrix, unsigned int Count)
+	bool Effect::set_matrix_array(const std::string& param_name, const D3DXMATRIX* array, unsigned int count)
 	{
 		if(ParamPtr p = GetParameterByName(param_name))
-			return SetMatrixArray(p, pMatrix,Count);
+			return set_matrix_array(p, array,count);
 
 		return false;
 	}
@@ -866,7 +866,7 @@ namespace effects
 		m_effect->OnLostDevice();
 	}
 
-	void Effect::CommitChanges()
+	void Effect::commit_changes()
 	{
 		m_effect->CommitChanges();		
 	}

@@ -205,7 +205,7 @@ namespace rgde
 				bool SetVector(const ParamPtr& param, const D3DXVECTOR4& value);
 				bool SetFloatArray(const ParamPtr& param, const float* pf, unsigned int Count);
 				bool SetVectorArray(const ParamPtr& param, const D3DXVECTOR4* pVector, unsigned int Count);
-				bool SetMatrixArray(const ParamPtr& param, const D3DXMATRIX* pMatrix, unsigned int Count);
+				bool set_matrix_array(const ParamPtr& param, const D3DXMATRIX* pMatrix, unsigned int Count);
 				bool SetValue(const ParamPtr& param, void* data, unsigned int bytes);
 
 				bool SetInt(const std::string& param_name, int value);			
@@ -216,10 +216,10 @@ namespace rgde
 				bool SetVector(const std::string& param_name, const D3DXVECTOR4& value);
 				bool SetFloatArray(const std::string& param_name, const float* pf, unsigned int Count);
 				bool SetVectorArray(const std::string& param_name, const D3DXVECTOR4* pVector, unsigned int Count);
-				bool SetMatrixArray(const std::string& param_name, const D3DXMATRIX* pMatrix, unsigned int Count);
+				bool set_matrix_array(const std::string& param_name, const D3DXMATRIX* pMatrix, unsigned int count);
 				bool SetValue(const std::string& param_name, void* data, unsigned int bytes);
 
-				void CommitChanges();
+				void commit_changes();
 
 				void on_device_reset();
 				void on_device_lost();
