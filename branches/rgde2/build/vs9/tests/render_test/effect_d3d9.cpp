@@ -21,15 +21,15 @@ namespace render
 namespace effects
 {
 
-	bool Effect::skip_unused_params = true;
+	bool Effect::m_skip_unused_params = true;
 
 	//////////////////////////////////////////////////////////////////////////
-	bool BaseHandle::IsAnnotationExist(const std::string& annot_name) const 
+	bool base_handle::IsAnnotationExist(const std::string& annot_name) const 
 	{
 		return annotations.find(to_lower(annot_name)) != annotations.end();
 	}
 
-	std::string BaseHandle::GetAnnotation(const std::string& annot_name) const
+	std::string base_handle::GetAnnotation(const std::string& annot_name) const
 	{
 		annot_const_iter it = annotations.find(to_lower(annot_name));
 		if (it!=annotations.end())
@@ -38,20 +38,20 @@ namespace effects
 		return std::string();
 	}
 
-	void ParamInfo::Refresh(Effect& e)
+	void param_info::refresh(Effect& e)
 	{
 		m_handle = 
 			(internal_effect_handle)
 				(e.m_effect ? e.m_effect->GetParameterByName(NULL, m_name.c_str()) : 0);
 	}
 
-	void TechInfo::Refresh(Effect& e)
+	void tech_info::refresh(Effect& e)
 	{
 		m_handle = (internal_effect_handle)
 			(e.m_effect ? e.m_effect->GetTechnique(tech_index) : 0);
 	}
 
-	TechInfo::TechInfo()
+	tech_info::tech_info()
 	{
 		MaxLights = 1; 
 		PerPixel = true; 
@@ -89,8 +89,8 @@ namespace effects
 
 	}
 
-		ParamInfo::UIParams::UIParams()
-			:HasSlider(false),
+		param_info::ui_params::ui_params()
+			:has_slider(false),
 			SliderMax(10000),
 			SliderMin(0),
 			SliderFactor(1),
@@ -98,58 +98,58 @@ namespace effects
 		{
 		}
 
-		ParamInfo::Type get_param_type(D3DXPARAMETER_TYPE type, int cols, int rows)
+		param_info::Type get_param_type(D3DXPARAMETER_TYPE type, int cols, int rows)
 		{
 			switch(type)
 			{
 			case D3DXPT_INT:
-				return ParamInfo::INT;
+				return param_info::INT;
 			case D3DXPT_STRING:
-				return ParamInfo::STRING;
+				return param_info::STRING;
 			case D3DXPT_FLOAT:
 				if (rows == 1) // single var
 				{
 					if (cols == 1)
 					{
-						return ParamInfo::FLOAT;
+						return param_info::FLOAT;
 					}
 					else if (cols == 2)
 					{
-						return ParamInfo::FLOAT2;
+						return param_info::FLOAT2;
 					}
 					else if (cols == 3)
 					{
-						return ParamInfo::FLOAT3;
+						return param_info::FLOAT3;
 					}
 					else if (cols == 4)
 					{
-						return ParamInfo::FLOAT4;
+						return param_info::FLOAT4;
 					}
 				}
 				break;
 			case D3DXPT_BOOL:
-				return ParamInfo::BOOL;
+				return param_info::BOOL;
 				break;
 			case D3DXPT_TEXTURE:
 			case D3DXPT_TEXTURE1D:
 			case D3DXPT_TEXTURE2D:
 			case D3DXPT_TEXTURECUBE:
 			case D3DXPT_TEXTURE3D:
-				return ParamInfo::TEXTURE;
+				return param_info::TEXTURE;
 				break;
 
 			default:				
 				break;
 			}
-			return ParamInfo::INVALID;
+			return param_info::INVALID;
 		}
 
-	void Effect::parse_techniques(std::list<TechInfoPtr>& tech_list, float shader_max_version)
+	void Effect::parse_techniques(std::list<techinfo_ptr>& tech_list, float shader_max_version)
 	{
 		D3DXEFFECT_DESC effect_desc;
 		m_effect->GetDesc(&effect_desc);
 
-		std::list<TechInfoPtr>& techniques = tech_list;
+		std::list<techinfo_ptr>& techniques = tech_list;
 
 		for(uint i = 0; i < effect_desc.Techniques; ++i)
 		{
@@ -157,9 +157,9 @@ namespace effects
 			D3DXTECHNIQUE_DESC tech_desc;
 			m_effect->GetTechniqueDesc(tech_handle, &tech_desc);
 
-			TechInfoPtr tech_ptr(new TechInfo);
+			techinfo_ptr tech_ptr(new tech_info);
 
-			TechInfo& ti = *tech_ptr;
+			tech_info& ti = *tech_ptr;
 			ti.m_name = tech_desc.Name;
 			ti.m_handle = (internal_effect_handle)tech_handle;
 			ti.tech_index = i;
@@ -229,16 +229,16 @@ namespace effects
 				const std::string& str = annot_it->second;
 
 				if(str.find("omniprojector") != -1)
-					ti.LightTypes |= LIGHT_OMNI_PROJ;
+					ti.LightTypes |= light_omni_proj;
 				if(str.find("omni,") != -1 || str.find("point") != -1)
-					ti.LightTypes |= LIGHT_OMNI;
+					ti.LightTypes |= light_omni;
 				if(str.find("spot") != -1)
-					ti.LightTypes |= LIGHT_SPOT;
+					ti.LightTypes |= light_spot;
 				if(str.find("ambient") != -1 || str.find("dir") != -1)
-					ti.LightTypes |= LIGHT_DIR;
+					ti.LightTypes |= light_dir;
 
 				if(ti.LightTypes == 0)
-					ti.LightTypes = LIGHT_OMNI;
+					ti.LightTypes = light_omni;
 			}
 
 			annot_it = ti.annotations.find("maxlights");
@@ -264,7 +264,7 @@ namespace effects
 
 			// Default if nothing specified
 			if(ti.LightTypes == 0)
-				ti.LightTypes = LIGHT_OMNI;
+				ti.LightTypes = light_omni;
 
 			// Technique annotation for optional grouping
 			{
@@ -279,25 +279,25 @@ namespace effects
 			}
 		}
 
-		typedef std::list<TechInfoPtr> TechList;
-		typedef TechList::iterator TechListIter;
+		//typedef std::list<techinfo_ptr> tech_list;
+		//typedef tech_list::iterator tech_list_iter;
 
-		std::list<TechListIter> erase_items;
+		std::list<tech_list_iter> erase_items;
 		
-		for(TechListIter it = techniques.begin(); it != techniques.end(); ++it)
+		for(tech_list_iter it = techniques.begin(); it != techniques.end(); ++it)
 		{
-			TechInfo& a = *(*it);
+			tech_info& a = *(*it);
 
 			if (std::find(erase_items.begin(), erase_items.end(), it) != erase_items.end())
 				continue;
 			// Search for techniques inferior to a
 
-			for(TechListIter j = techniques.begin(); j != techniques.end(); ++j)
+			for(tech_list_iter j = techniques.begin(); j != techniques.end(); ++j)
 			{
 				if (std::find(erase_items.begin(), erase_items.end(), j) != erase_items.end())
 					continue;
 
-				TechInfo& b = *(*j);
+				tech_info& b = *(*j);
 
 				if(a.m_handle == b.m_handle)
 					continue;
@@ -324,15 +324,15 @@ namespace effects
 	}
 
 
-	void Effect::parse_params(std::list<ParamPtr>& params_list)
+	void Effect::parse_params(std::list<param_ptr>& params_list)
 	{
 		D3DXEFFECT_DESC effect_desc;
 		m_effect->GetDesc(&effect_desc);
 
 		for (uint i = 0; i < effect_desc.Parameters; ++i)
 		{
-			ParamPtr param(new ParamInfo);
-			ParamInfo& pi = *param;
+			param_ptr param(new param_info);
+			param_info& pi = *param;
 			pi.m_is_used = false;
 			D3DXHANDLE param_handle = m_effect->GetParameter(NULL, i);
 			assert(param_handle);
@@ -400,7 +400,7 @@ namespace effects
 			pi.m_is_tweakable = is_tweakable(pi.annotations);
 			pi.m_type = get_param_type(param_desc.Type, param_desc.Columns, param_desc.Rows);
 
-			if (pi.m_type != ParamInfo::INVALID)
+			if (pi.m_type != param_info::INVALID)
 			{
 				pi.m_data.resize(param_desc.Bytes);
 				m_effect->GetValue(pi.m_handle,&(pi.m_data[0]),param_desc.Bytes);
@@ -410,13 +410,13 @@ namespace effects
 		}
 	}
 
-	void Effect::FillUIParams(std::list<ParamPtr>& params_list)
+	void Effect::fill_ui_params(std::list<param_ptr>& params_list)
 	{
 		int t = 0;
-		std::list<ParamPtr>::iterator paramIter = params_list.begin();
+		std::list<param_ptr>::iterator paramIter = params_list.begin();
 		while (paramIter != params_list.end())
 		{
-			ParamInfo& param = **paramIter;
+			param_info& param = **paramIter;
 			annot_iter annIter = param.annotations.begin();
 			while (annIter != param.annotations.end())
 			{
@@ -426,7 +426,7 @@ namespace effects
 				if (annIter->first == "UIType")
 				{
 					if (annIter->second == "IntSpinner")
-						param.m_ui_params.HasSlider = true;
+						param.m_ui_params.has_slider = true;
 					else
 					if (annIter->second == "ColorSwatch")
 						param.m_ui_params.isColorSwatch = true;
@@ -457,31 +457,31 @@ namespace effects
 
 	}
 
-	void Effect::erase_param_block(ParamBlockIter iter)
+	void Effect::erase_param_block(param_block_iter iter)
 	{
 		m_param_blocks.erase(iter);
 	}
 
 	void Effect::init(float shader_max_version)
 	{
-		m_ReadsColorBuffer = false;
-		m_ReadsGlobalColorBuffer = false;
-		m_ForceLDR = false;
-		m_UsesLightArray = false;
+		m_reads_color_buffer = false;
+		m_reads_global_color_buffer = false;
+		m_force_ldr = false;
+		m_use_light_array = false;
 
 		m_techniques_list.clear();
-		TechList& tech_list = m_techniques_list;
+		tech_list& tech_list = m_techniques_list;
 		parse_techniques(tech_list, shader_max_version);
 
-		typedef std::list<ParamPtr> ParamList;
+		typedef std::list<param_ptr> ParamList;
 		ParamList params_list;
 		parse_params(params_list);
-		FillUIParams(params_list);
+		fill_ui_params(params_list);
 
 		//Read global params
 		//for (ParamList::iterator pit = params_list.begin(); pit != params_list.end(); ++pit)
 		{
-			//ParamPtr& param = (*pit);
+			//param_ptr& param = (*pit);
 			D3DXHANDLE global = m_effect->GetParameterBySemantic(NULL, "StandardsGlobal");
 			if (global)
 			{
@@ -504,10 +504,10 @@ namespace effects
 					{
 						const std::string& str = annot_text;
 
-						m_ReadsColorBuffer = str.find("ReadsColorBuffer") != -1;
-						m_ReadsGlobalColorBuffer = str.find("ReadsGlobalColorBuffer") != -1;
-						m_ForceLDR = str.find("ForceLDR") != -1;
-						m_UsesLightArray = str.find("UsesLightArray") != -1;
+						m_reads_color_buffer = str.find("ReadsColorBuffer") != -1;
+						m_reads_global_color_buffer = str.find("ReadsGlobalColorBuffer") != -1;
+						m_force_ldr = str.find("ForceLDR") != -1;
+						m_use_light_array = str.find("UsesLightArray") != -1;
 					}
 				}
 			}
@@ -516,14 +516,14 @@ namespace effects
 
 		m_handlers.reserve(params_list.size() + tech_list.size());
 
-		for(TechList::iterator it = tech_list.begin(); it != tech_list.end(); ++it)
+		for(tech_list::iterator it = tech_list.begin(); it != tech_list.end(); ++it)
 		{
 			internal_effect_handle tech_handle = (*it)->m_handle;
 			m_handlers.push_back(*it);
 
 			for (ParamList::iterator pit = params_list.begin(); pit != params_list.end(); ++pit)
 			{
-				ParamPtr& param = (*pit);
+				param_ptr& param = (*pit);
 
 				internal_effect_handle param_handle = param->m_handle;
 
@@ -541,10 +541,10 @@ namespace effects
 
 		for (ParamList::iterator pit = params_list.begin(); pit != params_list.end(); ++pit)
 		{
-			ParamPtr& pptr = *pit;
-			ParamInfo& p = *pptr;
+			param_ptr& pptr = *pit;
+			param_info& p = *pptr;
 
-			if (p.m_is_used || !skip_unused_params)
+			if (p.m_is_used || !m_skip_unused_params)
 			{
 				m_handlers.push_back(pptr);
 				m_params.push_back(pptr);
@@ -572,15 +572,15 @@ namespace effects
 		clean_param_blocks();
 
 		{
-			typedef ParamBlocks::iterator PBIter;
+			typedef param_blocks::iterator PBIter;
 			for (PBIter it = m_param_blocks.begin(); it != m_param_blocks.end(); ++it)
 			{
-				ParamBlockPtr bp = it->lock();
+				paramblock_ptr bp = it->lock();
 				bp->m_parent_effect = NULL;
 			}
 		}
 
-		typedef BaseHandlesVertor::iterator HIter;
+		typedef handles_vertor::iterator HIter;
 		for (HIter it = m_handlers.begin(); it != m_handlers.end(); ++it)
 		{
 			(*it)->m_handle = NULL;
@@ -606,8 +606,8 @@ namespace effects
 	{
 		struct is_expired
 		{
-			typedef boost::weak_ptr<ParamBlock> ParamBlockWeakPtr;
-			bool operator()(ParamBlockWeakPtr& pb)
+			typedef boost::weak_ptr<param_block> paramblock_wptr;
+			bool operator()(paramblock_wptr& pb)
 			{
 				return pb.expired();
 			}
@@ -616,7 +616,7 @@ namespace effects
 
 	void Effect::clean_param_blocks()
 	{
-		typedef ParamBlocks::iterator PBIter;
+		typedef param_blocks::iterator PBIter;
 		{
 			PBIter it = std::remove_if(m_param_blocks.begin(), m_param_blocks.end(), is_expired());
 			m_param_blocks.erase(it, m_param_blocks.end());
@@ -624,12 +624,12 @@ namespace effects
 		
 		for (PBIter it = m_param_blocks.begin(); it != m_param_blocks.end(); ++it)
 		{
-			ParamBlockPtr bp = it->lock();
-			bp->DeleteHandle();
+			paramblock_ptr bp = it->lock();
+			bp->free_handle();
 		}
 	}
 
-	void Effect::SetTechnique(TechInfoPtr tech)
+	void Effect::set_tech(techinfo_ptr tech)
 	{
 		D3DXHANDLE h = tech->m_handle;
 		if (NULL == h) return;
@@ -637,7 +637,7 @@ namespace effects
 		assert(hr == D3D_OK);
 	}
 
-	void Effect::Reload(ID3DXEffect *new_effect)
+	void Effect::reload(ID3DXEffect *new_effect)
 	{
 		clean_param_blocks();
 
@@ -651,10 +651,10 @@ namespace effects
 			m_effect = new_effect;
 		}		
 
-		typedef BaseHandlesVertor::iterator HIter;
+		typedef handles_vertor::iterator HIter;
 		for (HIter it = m_handlers.begin(); it != m_handlers.end(); ++it)
 		{
-			(*it)->Refresh(*this);
+			(*it)->refresh(*this);
 		}
 	}
 
@@ -664,17 +664,17 @@ namespace effects
 //#define EFFECT_NAME_VALIDATE
 //#endif
 
-	TechInfoPtr Effect::GetTechnique(const std::string& name)
+	techinfo_ptr Effect::get_tech(const std::string& name)
 	{
 		//EFFECT_NAME_VALIDATE
-		TechMap::iterator it = m_techiques.find(to_lower(name));
+		tech_map::iterator it = m_techiques.find(to_lower(name));
 		if (it != m_techiques.end())
 			return it->second;
 		else
-			return TechInfoPtr();
+			return techinfo_ptr();
 	}
 
-	ParamPtr Effect::GetParameterByName(const std::string& name) const
+	param_ptr Effect::get_param(const std::string& name) const
 	{
 		EFFECT_NAME_VALIDATE
 		ParamsIter it = m_params_by_name.find(name);
@@ -682,10 +682,10 @@ namespace effects
 		if(it != m_params_by_name.end())
 			return it->second;
 
-		return ParamPtr();
+		return param_ptr();
 	}
 
-	ParamPtr Effect::GetParameterBySemantic(const std::string& name) const
+	param_ptr Effect::GetParameterBySemantic(const std::string& name) const
 	{
 		EFFECT_NAME_VALIDATE
 		ParamsIter it = m_params_by_semantic.find(name);
@@ -693,76 +693,76 @@ namespace effects
 		if(it != m_params_by_semantic.end())
 			return it->second;
 
-		return ParamPtr();
+		return param_ptr();
 	}
 
 #define EFFECT_PARAMS_VALIDATE _ASSERTE((NULL != m_effect) && param);
 
 
-	bool Effect::SetFloat(const ParamPtr& param, float value) 
+	bool Effect::set(const param_ptr& param, float value) 
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetFloat(param->m_handle, value);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::SetTexture(const ParamPtr& param, IDirect3DBaseTexture9* value) 
+	bool Effect::set(const param_ptr& param, IDirect3DBaseTexture9* value) 
 	{
 		EFFECT_PARAMS_VALIDATE		
 		HRESULT hr = m_effect->SetTexture(param->m_handle, value);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::SetMatrix(const ParamPtr& param, const D3DXMATRIX& value) 
+	bool Effect::set(const param_ptr& param, const D3DXMATRIX& value) 
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetMatrix(param->m_handle, &value);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::SetVector(const ParamPtr& param, const D3DXVECTOR4& value) 
+	bool Effect::set(const param_ptr& param, const D3DXVECTOR4& value) 
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetVector(param->m_handle, &value);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::SetBool(const ParamPtr& param, bool value)
+	bool Effect::set(const param_ptr& param, bool value)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetBool(param->m_handle, value);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::SetValue(const ParamPtr& param, void* data, unsigned int bytes)
+	bool Effect::set(const param_ptr& param, void* data, unsigned int bytes)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetValue(param->m_handle, data, bytes);
 		return D3D_OK == hr;
 	}
 
-	bool  Effect::SetFloatArray(const ParamPtr& param, const float* pf, unsigned int Count)
+	bool  Effect::set(const param_ptr& param, const float* pf, unsigned int Count)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetFloatArray(param->m_handle, pf, Count);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::SetVectorArray(const ParamPtr& param, const D3DXVECTOR4* pVector, unsigned int Count)
+	bool Effect::set(const param_ptr& param, const D3DXVECTOR4* pVector, unsigned int Count)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetVectorArray(param->m_handle, pVector, Count);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::set_matrix_array(const ParamPtr& param, const D3DXMATRIX* matrix, unsigned int count)
+	bool Effect::set(const param_ptr& param, const D3DXMATRIX* matrix, unsigned int count)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetMatrixArray(param->m_handle, matrix, count);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::SetInt(const ParamPtr& param, int value)
+	bool Effect::set(const param_ptr& param, int value)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetInt(param->m_handle, value);
@@ -770,87 +770,87 @@ namespace effects
 	}
 
 
-	bool Effect::SetFloat(const std::string& param_name, float value)
+	bool Effect::set(const std::string& param_name, float value)
 	{
-		if(ParamPtr p = GetParameterByName(param_name))
+		if(param_ptr p = get_param(param_name))
 		{
-			return SetFloat(p, value);
+			return set(p, value);
 		}
 		return false;
 	}
 
-	bool Effect::SetTexture(const std::string& param_name, IDirect3DBaseTexture9* value)
+	bool Effect::set(const std::string& param_name, IDirect3DBaseTexture9* value)
 	{
-		if(ParamPtr p = GetParameterByName(param_name))
+		if(param_ptr p = get_param(param_name))
 		{
-			return SetTexture(p, value);
+			return set(p, value);
 		}
 		return false;
 	}
 
-	bool Effect::SetMatrix(const std::string& param_name, const D3DXMATRIX& value)
+	bool Effect::set(const std::string& param_name, const D3DXMATRIX& value)
 	{
-		if(ParamPtr p = GetParameterByName(param_name))
+		if(param_ptr p = get_param(param_name))
 		{
-			return SetMatrix(p, value);
+			return set(p, value);
 		}
 		return false;
 	}
 
-	bool Effect::SetVector(const std::string& param_name, const D3DXVECTOR4& value)
+	bool Effect::set(const std::string& param_name, const D3DXVECTOR4& value)
 	{
-		if(ParamPtr p = GetParameterByName(param_name))
+		if(param_ptr p = get_param(param_name))
 		{
-			return SetVector(p, value);
+			return set(p, value);
 		}
 		return false;
 	}
 
-	bool Effect::SetValue(const std::string& param_name, void* data, unsigned int bytes)
+	bool Effect::set(const std::string& param_name, void* data, unsigned int bytes)
 	{
-		if(ParamPtr p = GetParameterByName(param_name))
+		if(param_ptr p = get_param(param_name))
 		{
-			return SetValue(p, data, bytes);
+			return set(p, data, bytes);
 		}
 		return false;
 	}
 
-	bool Effect::SetFloatArray(const std::string& param_name, const float* pf, unsigned int Count)
+	bool Effect::set(const std::string& param_name, const float* pf, unsigned int Count)
 	{
-		if(ParamPtr p = GetParameterByName(param_name))
-			return SetFloatArray(p, pf, Count);
+		if(param_ptr p = get_param(param_name))
+			return set(p, pf, Count);
 
 		return false;
 	}
 
-	bool Effect::SetInt(const std::string& param_name, int value)
+	bool Effect::set(const std::string& param_name, int value)
 	{
-		if(ParamPtr p = GetParameterByName(param_name))
-			return SetInt(p, value);
+		if(param_ptr p = get_param(param_name))
+			return set(p, value);
 
 		return false;
 	}
 
-	bool Effect::SetBool(const std::string& param_name, bool value)
+	bool Effect::set(const std::string& param_name, bool value)
 	{
-		if(ParamPtr p = GetParameterByName(param_name))
-			return SetBool(p, value);
+		if(param_ptr p = get_param(param_name))
+			return set(p, value);
 
 		return false;
 	}
 
-	bool Effect::SetVectorArray(const std::string& param_name, const D3DXVECTOR4* pVector, unsigned int Count)
+	bool Effect::set(const std::string& param_name, const D3DXVECTOR4* pVector, unsigned int Count)
 	{
-		if(ParamPtr p = GetParameterByName(param_name))
-			return SetVectorArray(p, pVector,Count);
+		if(param_ptr p = get_param(param_name))
+			return set(p, pVector,Count);
 
 		return false;
 	}
 
-	bool Effect::set_matrix_array(const std::string& param_name, const D3DXMATRIX* array, unsigned int count)
+	bool Effect::set(const std::string& param_name, const D3DXMATRIX* array, unsigned int count)
 	{
-		if(ParamPtr p = GetParameterByName(param_name))
-			return set_matrix_array(p, array,count);
+		if(param_ptr p = get_param(param_name))
+			return set(p, array,count);
 
 		return false;
 	}
@@ -871,9 +871,9 @@ namespace effects
 		m_effect->CommitChanges();		
 	}
 
-	bool Effect::SetTechnique(const std::string& tech_name) 
+	bool Effect::set_tech(const std::string& tech_name) 
 	{
-		TechMapIter it = m_techiques.find(to_lower(tech_name));
+		tech_map_iter it = m_techiques.find(to_lower(tech_name));
 		if (it != m_techiques.end())
 		{
 			HRESULT hr = m_effect->SetTechnique(it->second->m_handle);
@@ -882,7 +882,7 @@ namespace effects
 		return false;
 	}
 
-	unsigned int Effect::Begin(unsigned int flags) 
+	unsigned int Effect::begin(unsigned int flags) 
 	{
 		unsigned int num_passes = 0;
 
@@ -892,7 +892,7 @@ namespace effects
 		return num_passes;
 	}
 
-	bool Effect::BeginPass(unsigned int pass) 
+	bool Effect::begin_pass(unsigned int pass) 
 	{
 		if (NULL == m_effect)
 			return false;
@@ -901,7 +901,7 @@ namespace effects
 		return D3D_OK == hr;
 	}
 
-	bool Effect::EndPass() 
+	bool Effect::end_pass() 
 	{
 		if (NULL == m_effect)
 			return false;
@@ -910,7 +910,7 @@ namespace effects
 		return D3D_OK == hr;
 	}
 
-	bool Effect::End() 
+	bool Effect::end() 
 	{
 		if (NULL == m_effect)
 			return false;
@@ -922,25 +922,25 @@ namespace effects
 	namespace
 	{
 		typedef boost::function<void(void)> unreg_func;
-		void param_block_deleter(ParamBlockPtr block, unreg_func func)
+		void param_block_deleter(paramblock_ptr block, unreg_func func)
 		{
-			if (block && NULL != block->GetParentEffect())
+			if (block && NULL != block->get_parent_effect())
 			{
 				func();
 			}
 		}
 	}
 
-	ParamBlockPtr Effect::CreateParamBlock()
+	paramblock_ptr Effect::create_paramblock()
 	{
-		ParamBlockPtr temp_ptr(new ParamBlock(*this));
+		paramblock_ptr temp_ptr(new param_block(*this));
 		m_param_blocks.push_back(temp_ptr);
 
-		ParamBlockIter iter = (--m_param_blocks.end());
+		param_block_iter iter = (--m_param_blocks.end());
 
 		unreg_func func = boost::bind(&Effect::erase_param_block, this, iter);
 
-		ParamBlockPtr block_ptr(
+		paramblock_ptr block_ptr(
 			temp_ptr.get(),
 			boost::bind(&param_block_deleter, temp_ptr, func)
 			);
@@ -950,18 +950,18 @@ namespace effects
 
 	//////////////////////////////////////////////////////////////////////////
 
-	ParamBlock::ParamBlock(Effect& parent_effect) :
+	param_block::param_block(Effect& parent_effect) :
 		m_handle(NULL), m_parent_effect(&parent_effect)
 	{
 		
 	}
 
-	ParamBlock::~ParamBlock()
+	param_block::~param_block()
 	{
-		DeleteHandle();
+		free_handle();
 	}
 
-	void ParamBlock::DeleteHandle()
+	void param_block::free_handle()
 	{
 		if (NULL != m_handle)
 		{
@@ -971,21 +971,21 @@ namespace effects
 		}
 	}
 
-	void ParamBlock::Begin()
+	void param_block::begin()
 	{
-		DeleteHandle();
+		free_handle();
 		assert(m_parent_effect != NULL && m_parent_effect->m_effect != NULL);
 		m_parent_effect->m_effect->BeginParameterBlock();
 	}
 
-	void ParamBlock::End()
+	void param_block::end()
 	{
 		assert(NULL == m_handle);
 		assert(m_parent_effect != NULL && m_parent_effect->m_effect != NULL);
 		m_handle = (internal_effect_handle)m_parent_effect->m_effect->EndParameterBlock();
 	}
 
-	void ParamBlock::Apply()
+	void param_block::apply()
 	{
 		if (NULL != m_handle && m_parent_effect != NULL && NULL != m_parent_effect->m_effect)
 			m_parent_effect->m_effect->ApplyParameterBlock(m_handle);

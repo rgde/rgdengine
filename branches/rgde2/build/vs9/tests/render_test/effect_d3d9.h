@@ -17,16 +17,16 @@ namespace rgde
 			typedef annotations_map::iterator annot_iter;
 			typedef annotations_map::const_iterator annot_const_iter;
 
-			class BaseHandle
+			class base_handle
 			{
 				friend class Effect;			
 			public:
-				BaseHandle(){m_handle = 0;}
-				virtual ~BaseHandle(){}
+				base_handle(){m_handle = 0;}
+				virtual ~base_handle(){}
 				const std::string GetName() const {return m_name;}
 
 				virtual bool IsValid() const {return 0 != m_handle;}
-				virtual void Refresh(Effect& e) = 0;
+				virtual void refresh(Effect& e) = 0;
 
 				bool IsAnnotationExist(const std::string& annot_name) const;
 				std::string GetAnnotation(const std::string& annot_name) const;
@@ -38,10 +38,10 @@ namespace rgde
 				annotations_map annotations;
 			};
 
-			typedef boost::shared_ptr<BaseHandle> BaseHandlePtr;
-			typedef std::vector<BaseHandlePtr> BaseHandlesVertor;
+			typedef boost::shared_ptr<base_handle> BaseHandlePtr;
+			typedef std::vector<BaseHandlePtr> handles_vertor;
 
-			class ParamInfo : public BaseHandle
+			class param_info : public base_handle
 			{
 				friend class Effect;
 			public:
@@ -53,38 +53,38 @@ namespace rgde
 					INVALID
 				};
 
-				struct UIParams
+				struct ui_params
 				{
-					UIParams();
+					ui_params();
 					std::string Name;
-					bool HasSlider;
+					bool has_slider;
 					int SliderMax; //"UIMax"
 					int SliderMin; //"UIMin"
 					int SliderFactor; //"UIStep"
 					bool isColorSwatch;
 				};
 
-				ParamInfo() {m_is_tweakable = false;}
+				param_info() {m_is_tweakable = false;}
 
-				/// Parameter tweakble in engine, FX Composer, RenderMonkey, etc??
-				bool IsTweakable() const {return m_is_tweakable;}
+				/// Parameter tweakable in engine, FX Composer, RenderMonkey, etc??
+				bool tweakable() const {return m_is_tweakable;}
 				const std::string& GetSemantic() const {return m_semantic;}
 
 				virtual bool IsValid() const {return 0 != m_handle && m_is_used;}
 
-				virtual void Refresh(Effect& e);	
+				virtual void refresh(Effect& e);	
 
 				int GetColumns() const {return m_columns;}
 				Type GetType() const {return m_type;}
 
 				const data& GetData() const {return m_data;}
 
-				const std::string& GetUIName() const {return m_ui_params.Name;}
-				bool HasSlider() const {return m_ui_params.HasSlider;}
-				const UIParams& GetUIParams() const {return m_ui_params;}
-				const bool IsColorSwatch() const {return m_ui_params.isColorSwatch;}
+				const std::string& get_ui_name() const {return m_ui_params.Name;}
+				bool has_slider() const {return m_ui_params.has_slider;}
+				const ui_params& get_ui_params() const {return m_ui_params;}
+				const bool is_color_swatch() const {return m_ui_params.isColorSwatch;}
 
-				const D3DXPARAMETER_DESC& GetDxDesc() const {return m_dx_desc;}
+				const D3DXPARAMETER_DESC& get_dx_desc() const {return m_dx_desc;}
 
 			protected:
 				D3DXPARAMETER_DESC m_dx_desc;
@@ -94,30 +94,34 @@ namespace rgde
 				bool m_is_used;
 				bool m_is_tweakable;
 				Type m_type;
-				UIParams m_ui_params;
+				ui_params m_ui_params;
 			};
 
-			typedef boost::shared_ptr<ParamInfo> ParamPtr;
-			typedef std::map<std::string, ParamPtr> ParamsMap;
-			typedef ParamsMap::const_iterator ParamsIter;
+			typedef boost::shared_ptr<param_info> param_ptr;
+			typedef std::map<std::string, param_ptr> params_map;
+			typedef params_map::const_iterator ParamsIter;
 
-			typedef std::vector<ParamPtr> ParamsVector;
+			typedef std::vector<param_ptr> params_vector;
 
-			/// Type enumeration
-			enum LightType{
-				LIGHT_OMNI = (1<<0),
-				LIGHT_SPOT = (1<<1),
-				LIGHT_DIR = (1<<2),
-				LIGHT_OMNI_PROJ = (1<<3),
-				FORCE_DWORD    = 0x7fffffff,
-			};
-
-			struct TechInfo : public BaseHandle
+			/// Light types enumeration
+			enum light_type
 			{
-				TechInfo();
+				light_omni		= 0,
+				light_spot		= (1<<1),
+				light_dir		= (1<<2),
+				light_omni_proj = (1<<3),
+				light_max		= 0x7fffffff,
+			};
+
+			struct tech_info : public base_handle
+			{
 				friend class Effect;
-				virtual void Refresh(Effect& e);			
-				ParamsMap params;			
+
+				tech_info();
+				
+				virtual void refresh(Effect& e);			
+
+				params_map params;			
 				float PixelShaderVersion;
 				int LightTypes;
 				int MaxLights;
@@ -128,134 +132,136 @@ namespace rgde
 				bool UseVS;
 				bool OverridesEngineMultipass;
 				std::string Group;
-				int tech_index; // должен оставаться неизменным иначе не будет работать перезагрузка!
+
+				// должен оставаться неизменным иначе не будет работать перезагрузка!
+				int tech_index;
 			};
 
-			typedef boost::shared_ptr<TechInfo> TechInfoPtr;
+			typedef boost::shared_ptr<tech_info> techinfo_ptr;
 
-			typedef std::list<TechInfoPtr> TechList;
-			typedef TechList::iterator TechListIter;
-			typedef TechList::const_iterator TechListConstIter;
+			typedef std::list<techinfo_ptr> tech_list;
+			typedef tech_list::iterator tech_list_iter;
+			typedef tech_list::const_iterator tech_list_citer;
 
-			typedef std::map<std::string, TechInfoPtr> TechMap;
-			typedef TechMap::iterator TechMapIter;
-			typedef TechMap::const_iterator TechMapConstIter;
+			typedef std::map<std::string, techinfo_ptr> tech_map;
+			typedef tech_map::iterator tech_map_iter;
+			typedef tech_map::const_iterator tech_map_citer;
 
-			class ParamBlock
+			class param_block
 			{
 				friend class Effect;
-				ParamBlock(Effect& parent_effect);
+				param_block(Effect& parent_effect);
 			public:			
-				~ParamBlock();
+				~param_block();
 
-				void Begin();
-				void End();
+				void begin();
+				void end();
 
-				void Apply();
+				void apply();
 
 				/// returns NULL if Effect was killed.
-				const Effect* GetParentEffect() const {return m_parent_effect;}
+				const Effect* get_parent_effect() const {return m_parent_effect;}
 
 			private:
-				void DeleteHandle();
+				void free_handle();
 
 			private:
 				Effect* m_parent_effect;
 				internal_effect_handle m_handle;
 			};
 
-			typedef boost::shared_ptr<ParamBlock> ParamBlockPtr;
+			typedef boost::shared_ptr<param_block> paramblock_ptr;
 
 			class Effect
 			{
-				friend ParamInfo;
-				friend TechInfo;
-				friend ParamBlock;
-				typedef boost::weak_ptr<ParamBlock> ParamBlockWeakPtr;
-				typedef std::list<ParamBlockWeakPtr> ParamBlocks;
-				typedef ParamBlocks::iterator ParamBlockIter;
+				friend param_info;
+				friend tech_info;
+				friend param_block;
+				typedef boost::weak_ptr<param_block> paramblock_wptr;
+				typedef std::list<paramblock_wptr> param_blocks;
+				typedef param_blocks::iterator param_block_iter;
 
 			public:
 				Effect(ID3DXEffect* effect, float shader_max_version = 2.2f);
 				~Effect();
 
-				TechInfoPtr GetTechnique(const std::string& tech_name);
-				const TechList& GetTechniques() const {return m_techniques_list;}
+				techinfo_ptr get_tech(const std::string& tech_name);
+				const tech_list& get_techniques() const {return m_techniques_list;}
 
-				void SetTechnique(TechInfoPtr tech);
+				void set_tech(techinfo_ptr tech);
 
-				void Reload(ID3DXEffect *new_effect = NULL);
+				void reload(ID3DXEffect *new_effect = NULL);
 
-				ParamPtr GetParameterByName(const std::string& param_name) const;
-				ParamPtr GetParameterBySemantic(const std::string& param_name) const;
+				param_ptr get_param(const std::string& param_name) const;
+				param_ptr GetParameterBySemantic(const std::string& param_name) const;
 
-				ParamBlockPtr CreateParamBlock();
+				paramblock_ptr create_paramblock();
 
-				bool SetTechnique(const std::string& tech_name);
-				unsigned int Begin(unsigned int flags);
-				bool BeginPass(unsigned int pass);
-				bool EndPass();
-				bool End();
+				bool set_tech(const std::string& tech_name);
+				unsigned int begin(unsigned int flags);
+				bool begin_pass(unsigned int pass);
+				bool end_pass();
+				bool end();
 
-				bool SetInt(const ParamPtr& param, int value);
-				bool SetBool(const ParamPtr& param, bool value);
-				bool SetFloat(const ParamPtr& param, float value);
-				bool SetTexture(const ParamPtr& param, IDirect3DBaseTexture9* value);
-				bool SetMatrix(const ParamPtr& param, const D3DXMATRIX& value);
-				bool SetVector(const ParamPtr& param, const D3DXVECTOR4& value);
-				bool SetFloatArray(const ParamPtr& param, const float* pf, unsigned int Count);
-				bool SetVectorArray(const ParamPtr& param, const D3DXVECTOR4* pVector, unsigned int Count);
-				bool set_matrix_array(const ParamPtr& param, const D3DXMATRIX* pMatrix, unsigned int Count);
-				bool SetValue(const ParamPtr& param, void* data, unsigned int bytes);
+				bool set(const param_ptr& p, int v);
+				bool set(const param_ptr& p, bool v);
+				bool set(const param_ptr& p, float v);
+				bool set(const param_ptr& p, IDirect3DBaseTexture9* v);
+				bool set(const param_ptr& p, const D3DXMATRIX& v);
+				bool set(const param_ptr& p, const D3DXVECTOR4& v);
+				bool set(const param_ptr& p, const float* pf, unsigned int count);
+				bool set(const param_ptr& p, const D3DXVECTOR4* pVector, unsigned int count);
+				bool set(const param_ptr& p, const D3DXMATRIX* pMatrix, unsigned int count);
+				bool set(const param_ptr& p, void* data, unsigned int bytes);
 
-				bool SetInt(const std::string& param_name, int value);			
-				bool SetBool(const std::string& param_name, bool value);
-				bool SetFloat(const std::string& param_name, float value);
-				bool SetTexture(const std::string& param_name, IDirect3DBaseTexture9* value);
-				bool SetMatrix(const std::string& param_name, const D3DXMATRIX& value);
-				bool SetVector(const std::string& param_name, const D3DXVECTOR4& value);
-				bool SetFloatArray(const std::string& param_name, const float* pf, unsigned int Count);
-				bool SetVectorArray(const std::string& param_name, const D3DXVECTOR4* pVector, unsigned int Count);
-				bool set_matrix_array(const std::string& param_name, const D3DXMATRIX* pMatrix, unsigned int count);
-				bool SetValue(const std::string& param_name, void* data, unsigned int bytes);
+				bool set(const std::string& param_name, int v);			
+				bool set(const std::string& param_name, bool v);
+				bool set(const std::string& param_name, float v);
+				bool set(const std::string& param_name, IDirect3DBaseTexture9* v);
+				bool set(const std::string& param_name, const D3DXMATRIX& v);
+				bool set(const std::string& param_name, const D3DXVECTOR4& v);
+				bool set(const std::string& param_name, const float* pf, unsigned int count);
+				bool set(const std::string& param_name, const D3DXVECTOR4* pv, unsigned int count);
+				bool set(const std::string& param_name, const D3DXMATRIX* pm, unsigned int count);
+				bool set(const std::string& param_name, void* data, unsigned int bytes);
 
 				void commit_changes();
 
 				void on_device_reset();
 				void on_device_lost();
 
-				const ParamsVector& GetParams() const {return m_params;}
+				const params_vector& GetParams() const {return m_params;}
 
-				bool IsReadsColorBuffer() const {return m_ReadsColorBuffer;}
-				bool IsReadsGlobalColorBuffer() const {return m_ReadsGlobalColorBuffer;}
-				bool IsForceLDR() const {return m_ForceLDR;}
-				bool IsUsesLightArray() const {return m_UsesLightArray;}
+				bool is_reads_color_buff() const {return m_reads_color_buffer;}
+				bool is_reads_global_color_buff() const {return m_reads_global_color_buffer;}
+				bool is_force_ldr() const {return m_force_ldr;}
+				bool is_uses_light_array() const {return m_use_light_array;}
 
-				static void SetSkipUnusedShaderParams(bool val) {skip_unused_params = val;}
+				static void skip_unused_params(bool val) {m_skip_unused_params = val;}
 
 			private:
 				void clean_param_blocks();
 				void init(float shader_max_version);
-				void parse_techniques(std::list<TechInfoPtr>& tech_list, float shader_max_version);
-				void parse_params(std::list<ParamPtr>& params_list);			
-				void erase_param_block(ParamBlockIter iter);
-				void FillUIParams(std::list<ParamPtr>& params_list);
+				void parse_techniques(std::list<techinfo_ptr>& tech_list, float shader_max_version);
+				void parse_params(std::list<param_ptr>& params_list);			
+				void erase_param_block(param_block_iter iter);
+				void fill_ui_params(std::list<param_ptr>& params_list);
 
 			private:
-				bool m_ReadsColorBuffer;
-				bool m_ReadsGlobalColorBuffer;
-				bool m_ForceLDR;
-				bool m_UsesLightArray;
-				static bool skip_unused_params;
+				bool m_reads_color_buffer;
+				bool m_reads_global_color_buffer;
+				bool m_force_ldr;
+				bool m_use_light_array;
+				static bool m_skip_unused_params;
 
-				ParamsVector m_params;
-				ParamsMap m_params_by_name;
-				ParamsMap m_params_by_semantic;
-				ParamBlocks	m_param_blocks;
+				params_vector m_params;
+				params_map m_params_by_name;
+				params_map m_params_by_semantic;
+				param_blocks	m_param_blocks;
 				ID3DXEffect* m_effect;
-				TechList m_techniques_list;
-				TechMap m_techiques;
-				BaseHandlesVertor m_handlers; // need to call refresh after reload
+				tech_list m_techniques_list;
+				tech_map m_techiques;
+				handles_vertor m_handlers; // need to call refresh after reload
 			};
 		}
 	}
