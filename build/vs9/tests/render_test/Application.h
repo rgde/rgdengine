@@ -4,6 +4,7 @@
 #include "game.h"
 #include "sprite.h"
 #include "mesh.h"
+#include "console.h"
 
 namespace rgde
 {
@@ -48,6 +49,8 @@ namespace rgde
 		render::device m_device;
 		audio::system m_sound_system;
 		game::system m_game;
+
+		game::console m_console;
 		
 		bool m_active;
 			

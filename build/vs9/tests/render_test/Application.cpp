@@ -81,6 +81,7 @@ application::application(int x, int y, int w, int h, const std::wstring& title)
 	, m_elapsed(0)
 	, m_sound_system(get_handle())
 	, m_batcher2d(m_device)
+	, m_console(m_device)
 {
 	m_size.w = w;
 	m_size.h = h;
@@ -199,7 +200,7 @@ void application::render()
 	m_device.set_alpha_blend(false);
 	m_device.set_alpha_test(false);
 
-	m_box->render(); //TODO: remove device ref
+	m_box->render();
 	
 	m_batcher2d.render();
 
