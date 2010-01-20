@@ -1,0 +1,118 @@
+<?xml version="1.0" ?>
+<Imageset Name="skin" Imagefile="skin.tga" NativeHorzRes="1024" NativeVertRes="512" AutoScaled="false">
+	<Image Name="Empty" XPos="896" YPos="375" Width="1" Height="1" />
+
+	<Image Name="ButtonLeftNormal" XPos="898" YPos="284" Width="20" Height="26" />	
+  	<Image Name="ButtonMiddleNormal" XPos="912" YPos="284" Width="30" Height="26" />
+  	<Image Name="ButtonRightNormal" XPos="936" YPos="284" Width="20" Height="26" />
+  	<Image Name="ButtonLeftHovered" XPos="898" YPos="310" Width="20" Height="28" />
+	<Image Name="ButtonMiddleHovered" XPos="912" YPos="310" Width="30" Height="28" />
+	<Image Name="ButtonRightHovered" XPos="936" YPos="310" Width="20" Height="28" />
+  	<Image Name="ButtonLeftPushed" XPos="898" YPos="339" Width="20" Height="28" />
+  	<Image Name="ButtonMiddlePushed" XPos="912" YPos="339" Width="30" Height="28" />
+  	<Image Name="ButtonRightPushed" XPos="936" YPos="339" Width="20" Height="28" />
+
+    <Image Name="CloseButtonNormal" XPos="800" YPos="371" Width="11" Height="11" />
+    <Image Name="CloseButtonHovered" XPos="800" YPos="371" Width="11" Height="11" />
+    <Image Name="CloseButtonPushed" XPos="800" YPos="371" Width="11" Height="11" />
+    
+
+    <Image Name="WindowTitlebarLeft" XPos="767" YPos="23" Width="16" Height="19" />
+	<Image Name="WindowTitlebarMiddle" XPos="785" YPos="23" Width="16" Height="19" />
+	<Image Name="WindowTitlebarRight" XPos="803" YPos="23" Width="16" Height="19" />
+	
+
+	<Image Name="WindowFill" XPos="812" YPos="392" Width="5" Height="5" />
+	<Image Name="WindowBorderTop" XPos="812" YPos="385" Width="4" Height="4" />
+	<Image Name="WindowBorderTopLeft" XPos="805" YPos="385" Width="4" Height="4" />
+	<Image Name="WindowBorderTopRight" XPos="820" YPos="385" Width="4" Height="4" />
+	<Image Name="WindowBorderLeft" XPos="805" YPos="392" Width="4" Height="4" />
+	<Image Name="WindowBorderRight" XPos="820" YPos="392" Width="4" Height="4" />
+	<Image Name="WindowBorderBottomLeft" XPos="805" YPos="400" Width="4" Height="4" />
+	<Image Name="WindowBorderBottomRight" XPos="820" YPos="400" Width="4" Height="4" />
+	<Image Name="WindowBorderBottom" XPos="812" YPos="400" Width="4" Height="4" />
+	
+
+	<Image Name="CheckboxUnchecked" XPos="988" YPos="479" Width="15" Height="15" />
+	<Image Name="CheckboxHovered" XPos="711" YPos="361" Width="15" Height="15" />
+	<Image Name="CheckboxChecked" XPos="1007" YPos="479" Width="15" Height="15" />
+	
+	
+	<Image Name="RadioUnchecked" XPos="988" YPos="495" Width="15" Height="15" />
+	<Image Name="RadioHovered" XPos="711" YPos="387" Width="15" Height="15" />
+	<Image Name="RadioChecked" XPos="1007" YPos="495" Width="15" Height="15" />
+	
+
+	<Image Name="EditboxLeft" XPos="963" YPos="362" Width="10" Height="18" />
+	<Image Name="EditboxMiddle" XPos="973" YPos="362" Width="40" Height="18" />
+	<Image Name="EditboxRight" XPos="1013" YPos="362" Width="10" Height="18" />
+	<Image Name="EditboxCaret" XPos="867" YPos="131" Width="1" Height="14" />
+	
+
+	<Image Name="TextSelectionBrush" XPos="785" YPos="24" Width="16" Height="16" />
+	
+	
+	<Image Name="HScrollLeftNormal" XPos="962" YPos="286" Width="19" Height="17" />
+	<Image Name="HScrollLeftHovered" XPos="983" YPos="286" Width="19" Height="17" />
+	<Image Name="HScrollLeftPushed" XPos="1004" YPos="286" Width="19" Height="17" />
+	<Image Name="HScrollRightNormal" XPos="962" YPos="342" Width="19" Height="17" />
+	<Image Name="HScrollRightHovered" XPos="983" YPos="324" Width="19" Height="17" />
+	<Image Name="HScrollRightPushed" XPos="1004" YPos="324" Width="19" Height="17" />
+	
+	<Image Name="VScrollUpNormal" XPos="962" YPos="286" Width="19" Height="17" />
+	<Image Name="VScrollUpHovered" XPos="983" YPos="286" Width="19" Height="17" />
+	<Image Name="VScrollUpPushed" XPos="1004" YPos="286" Width="19" Height="17" />
+	<Image Name="VScrollDownNormal" XPos="962" YPos="342" Width="19" Height="17" />
+	<Image Name="VScrollDownHovered" XPos="983" YPos="324" Width="19" Height="17" />
+	<Image Name="VScrollDownPushed" XPos="1004" YPos="324" Width="19" Height="17" />
+	
+	<Image Name="VScrollLeft" XPos="711" YPos="506" Width="4" Height="4" />
+	<Image Name="VScrollRight" XPos="711" YPos="506" Width="4" Height="4" />
+	<Image Name="VScrollFill" XPos="962" YPos="304" Width="19" Height="1" />
+	
+	<Image Name="VScrollThumbNormal" XPos="983" YPos="344" Width="19" Height="15" />
+	<Image Name="VScrollThumbHovered" XPos="983" YPos="306" Width="19" Height="15" />
+	<Image Name="VScrollThumbPushed" XPos="1004" YPos="306" Width="19" Height="15" />
+	
+	<Image Name="VScrollThumbTopNormal" XPos="983" YPos="344" Width="19" Height="7" />
+	<Image Name="VScrollThumbBottomNormal" XPos="983" YPos="352" Width="19" Height="7" />
+	<Image Name="VScrollThumbFillNormal" XPos="983" YPos="351" Width="19" Height="1" />
+	<Image Name="VScrollThumbTopHovered" XPos="983" YPos="306" Width="19" Height="7" />
+	<Image Name="VScrollThumbBottomHovered" XPos="983" YPos="314" Width="19" Height="7" />
+	<Image Name="VScrollThumbFillHovered" XPos="983" YPos="313" Width="19" Height="1" />
+	<Image Name="VScrollThumbTopPushed" XPos="1004" YPos="306" Width="19" Height="7" />
+	<Image Name="VScrollThumbBottomPushed" XPos="1004" YPos="314" Width="19" Height="7" />
+	<Image Name="VScrollThumbFillPushed" XPos="1004" YPos="313" Width="19" Height="1" />
+	
+	<Image Name="PlusNormal" XPos="822" YPos="23" Width="11" Height="11" />
+	<Image Name="MinusNormal" XPos="837" YPos="23" Width="11" Height="11" />
+	<Image Name="PlusHovered" XPos="852" YPos="23" Width="11" Height="11" />
+	<Image Name="MinusHovered" XPos="867" YPos="23" Width="11" Height="11" />	
+	
+	<Image Name="HMoveControlBG" XPos="767" YPos="121" Width="38" Height="15" />
+	<Image Name="VMoveControlBG" XPos="813" YPos="49" Width="15" Height="38" />
+	
+	<Image Name="ShowNormal" XPos="830" YPos="90" Width="13" Height="11" />
+	<Image Name="ShowHovered" XPos="830" YPos="104" Width="13" Height="11" />
+	<Image Name="ShowPushed" XPos="830" YPos="118" Width="13" Height="11" />
+	
+	<Image Name="HideNormal" XPos="830" YPos="51" Width="13" Height="11" />
+	<Image Name="HideHovered" XPos="846" YPos="51" Width="13" Height="11" />
+	<Image Name="HidePushed" XPos="862" YPos="51" Width="13" Height="11" />
+	
+	<Image Name="LockNormal" XPos="845" YPos="88" Width="13" Height="11" />
+	<Image Name="LockHovered" XPos="845" YPos="102" Width="13" Height="11" />
+	<Image Name="LockPushed" XPos="845" YPos="116" Width="13" Height="11" />
+	
+	<Image Name="UnlockNormal" XPos="830" YPos="74" Width="13" Height="11" />
+	<Image Name="UnlockHovered" XPos="846" YPos="74" Width="13" Height="11" />
+	<Image Name="UnlockPushed" XPos="862" YPos="74" Width="13" Height="11" />
+	
+	<Image Name="RotateNormal" XPos="862" YPos="89" Width="13" Height="11" />
+	<Image Name="RotateHovered" XPos="862" YPos="103" Width="13" Height="11" />
+	<Image Name="RotatePushed" XPos="862" YPos="117" Width="13" Height="11" />
+	
+	<Image Name="DragNormal" XPos="830" YPos="63" Width="13" Height="10" />
+	<Image Name="DragHovered" XPos="846" YPos="63" Width="13" Height="10" />
+	<Image Name="DragPushed" XPos="862" YPos="63" Width="13" Height="10" />	
+</Imageset>

@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<ImageButton name ="" file="" >
+	<Properties>
+		<Visible>true</Visible>
+		<TabStop>true</TabStop>
+		<StateImagery Imageset="Affects">
+			<State Type="Normal" Image="AF_BleedWound" />
+			<State Type="Hovered" Image="AF_Poison" />
+			<State Type="Pushed" Image="AF_Camouflage" />
+		</StateImagery>
+	</Properties>
+	<Children />
+	<Events />
+</ImageButton >

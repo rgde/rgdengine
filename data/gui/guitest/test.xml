@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<root>	
+	<Children>
+		<FrameWindow name="TestWindow" file="guitest\testfr.xml" >
+			<Children>
+				<Panel name="TestSubWindow">
+					<Children>
+						<Editbox name="TestSubEditWindow" >
+							<Properties>
+								<Password>true</Password>
+							</Properties>
+						</Editbox>
+					</Children>
+				</Panel>
+			</Children>
+		</FrameWindow>
+		<FrameWindow name="TestWindow1" file="guitest\testfr.xml" >
+			<Properties>
+					<Area>0 128 256 128</Area>
+					<Movable>false</Movable>
+					<ClampToScreen>false</ClampToScreen>
+			</Properties>
+		</FrameWindow>
+	</Children>
+</root>

@@ -39,7 +39,7 @@ void UITest::createGUISystem(IDirect3DDevice9* dev)
 	m_render = gui::win32dx9platform::CreateRenderer(dev, 1024);
 	if(m_system)
 		delete m_system;
-	m_system = new System(*m_render, "bootstrap\\GUI\\", "Well", 
+	m_system = new System(*m_render, "gui\\", "default", 
 			boost::bind(&UITest::log, this, _1, _2));
 	if(m_system)
 	{
