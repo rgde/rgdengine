@@ -5,7 +5,11 @@ using namespace gui;
 
 Xml2Test::Xml2Test(void)
 {
-	m_filename = "guitest\\hud.xml";
+	//m_filename = "guitest\\hud.xml";
+	//m_filename = "guitest\\sampleframetest_orig.xml";
+	//m_filename = "guitest\\sampleframe.xml";
+	m_filename = "guitest\\testfr.xml";
+	
 }
 
 Xml2Test::~Xml2Test(void)

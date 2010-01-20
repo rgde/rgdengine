@@ -115,18 +115,6 @@ LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
 				g_test->handleMouseMove(LOWORD(lParam), HIWORD(lParam));				
 				break;
 
-			//case WM_ACTIVATE:
-			//	if (WA_INACTIVE == wParam){
-			//		// This is only needed for fullscreen/exclusive
-			//		// Otherwise, windows snatches focus from us automatically
-			//		m_keyMod = 1;
-			//		SetAcquire(false);
-			//	}
-			//	else{
-			//		SetAcquire(true);
-			//	}
-			//break;
-
 			case WM_CHAR:
 				g_test->handleChar((UINT_PTR)wParam);
 				break;
@@ -162,24 +150,6 @@ LRESULT CALLBACK MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam,
 			case WM_MBUTTONUP:
 				g_test->handleMouseButton(EventArgs::Middle, EventArgs::Up);
 				break;
-
-			//case WM_LBUTTONDBLCLK:
-			//	m_leftDblClk = true;
-			//	if(!bMouseInputLocked)
-			//		HandleControl(WELL_LDBLCLK, true);
-			//	break;
-
-			//case WM_RBUTTONDBLCLK:
-			//	m_rightDblClk = true;
-			//	if(!bMouseInputLocked)
-			//		HandleControl(WELL_RDBLCLK, true);
-			//	break;
-
-			//case WM_MBUTTONDBLCLK:
-			//	m_midDblClk = true;
-			//	if(!bMouseInputLocked)
-			//		HandleControl(WELL_MDBLCLK, true);
-			//	break;
 
 			case WM_MOUSEWHEEL:
 				int delta = GET_WHEEL_DELTA_WPARAM(wParam);
@@ -218,9 +188,19 @@ void CALLBACK OnD3D9DestroyDevice( void* pUserContext )
 //--------------------------------------------------------------------------------------
 // Initialize everything and go into a render loop
 //--------------------------------------------------------------------------------------
+#include <windows.h>
+#include <boost/filesystem.hpp>
+
 INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR params, int )
 {
-	::SetCurrentDirectoryW(L".."); // workaround for guitest app!
+	wchar_t buf[512];
+	GetModuleFileNameW(NULL, &buf[0], 512);
+
+	boost::filesystem::wpath p(buf);
+	std::wstring path = p.branch_path().string() + L"/../data/";
+	SetCurrentDirectoryW(path.c_str());
+
+
 	g_test = NULL;
     // Enable run-time memory check for debug builds.
 #if defined(DEBUG) | defined(_DEBUG)

@@ -83,7 +83,7 @@ namespace gui
 			GetCurrentDirectoryA(MAX_PATH,s);
 			m_device->CreateVertexDeclaration(VERTEX_DECL, &m_vertexDeclaration);
 
-			m_shader.reset(new D3D9ShaderEffect(m_device, L"bootstrap\\Shaders\\fx\\gui.fx"));
+			m_shader.reset(new D3D9ShaderEffect(m_device, L"gui\\shaders\\gui.fx"));
 
 			// get the maximum available texture size.
 			D3DCAPS9	devCaps;
