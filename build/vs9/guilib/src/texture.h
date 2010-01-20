@@ -6,7 +6,7 @@ namespace gui
 {
 	class Renderer;
 
-	class GUILIB_API Texture
+	class  Texture
 	{
 	public:
 		enum PixelFormat

@@ -9,7 +9,7 @@
 namespace gui
 {
 
-class GUILIB_API Progress :
+class  Progress :
 	public StaticText
 {
 public:
@@ -35,7 +35,7 @@ protected:
 	float m_progress;
 };
 
-class GUILIB_API ProgressBar : public Progress
+class  ProgressBar : public Progress
 {
 public:
 	typedef ProgressBar Self;
@@ -61,7 +61,7 @@ protected:
 
 };
 
-class GUILIB_API ImageBar : public Progress
+class  ImageBar : public Progress
 {
 public:
 	typedef ImageBar Self;

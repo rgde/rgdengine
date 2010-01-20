@@ -26,7 +26,7 @@ class System;
 class ScriptSystem;
 class ScriptObject;
 
-class GUILIB_API BaseWindow :
+class  BaseWindow :
 	public NamedObject,
 	public TreeNode<BaseWindow>,
 	public RefCounted,

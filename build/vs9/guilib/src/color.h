@@ -12,7 +12,7 @@ typedef unsigned int argb_t;
 \brief
 	Class representing Color values within the system.
 */
-class GUILIB_API Color
+class  Color
 {
 public:
 	/*************************************************************************

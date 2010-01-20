@@ -9,7 +9,7 @@
 namespace gui
 {
 
-class GUILIB_API Editbox :
+class  Editbox :
 	public StaticText
 {
 public:
@@ -81,7 +81,7 @@ protected:
 	bool	m_numeric;
 };
 
-class GUILIB_API KeyBinder : public StaticText
+class  KeyBinder : public StaticText
 {
 public:
 	typedef KeyBinder Self;

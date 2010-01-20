@@ -47,7 +47,7 @@ private:
 	LoggerCallback m_callback;
 };
 
-class GUILIB_API System
+class  System
 {
 public:
 	System(Renderer& render, const std::string& resourceDir, const std::string& scheme, LoggerCallback callback);

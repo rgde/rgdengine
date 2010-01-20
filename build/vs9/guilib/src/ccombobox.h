@@ -11,7 +11,7 @@
 namespace gui
 {
 
-class GUILIB_API Combobox :
+class  Combobox :
 	public Editbox
 {
 public:

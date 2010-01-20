@@ -32,7 +32,7 @@ enum QuadSplitMode
 	BottomLeftToTopRight	//!< Diagonal goes from bottom-left to top-right
 };
 
-class GUILIB_API Renderer
+class  Renderer
 {
 public:
 	struct QuadInfo

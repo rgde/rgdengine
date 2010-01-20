@@ -13,7 +13,7 @@ namespace gui
 
 class ScrollBar;
 
-class GUILIB_API ScrollPane : public BaseWindow
+class  ScrollPane : public BaseWindow
 {
 public:
 	typedef ScrollPane Self;

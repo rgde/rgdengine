@@ -9,7 +9,7 @@ namespace gui
 	\brief
 	Class used as a two dimensional vector (aka a Point)
 	*/
-	class GUILIB_API Vector2
+	class  Vector2
 	{
 	public:
 		Vector2(void) {}
@@ -88,7 +88,7 @@ namespace gui
 	\brief
 	Class used as a three dimensional vector
 	*/
-	class GUILIB_API Vector3
+	class  Vector3
 	{
 	public:
 		Vector3(void) {}

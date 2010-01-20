@@ -9,7 +9,7 @@ namespace gui
 	\brief
 	Class encapsulating operations on a Rectangle
 	*/
-	class GUILIB_API Rect
+	class  Rect
 	{
 	public:
 		Rect(void) {}

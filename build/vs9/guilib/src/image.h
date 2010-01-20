@@ -8,7 +8,7 @@ namespace gui
 	class Imageset;
 	class Texture;
 
-	class GUILIB_API Image
+	class  Image
 	{
 	public:
 		enum BLEND_OPS

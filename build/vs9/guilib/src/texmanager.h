@@ -12,7 +12,7 @@ namespace gui
 {
 	class Renderer;
 
-	class GUILIB_API TextureManager
+	class  TextureManager
 	{
 		typedef boost::weak_ptr<Texture> TextureWeakPtr;
 		typedef std::map<std::string, TextureWeakPtr> Textures;

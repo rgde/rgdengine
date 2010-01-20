@@ -12,7 +12,7 @@
 namespace gui
 {
 
-class GUILIB_API BaseList : public Panel
+class  BaseList : public Panel
 {
 public:
 	typedef BaseList Self;
@@ -48,7 +48,7 @@ protected:
 
 class StaticText;
 
-class GUILIB_API ListBox : public BaseList
+class  ListBox : public BaseList
 {
 public:
 	typedef ListBox Self;
@@ -80,7 +80,7 @@ protected:
 	WindowPtr m_selectedItem;
 };
 
-class GUILIB_API CategorizedList : public BaseList
+class  CategorizedList : public BaseList
 {
 public:
 	struct Category

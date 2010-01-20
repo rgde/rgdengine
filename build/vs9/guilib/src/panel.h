@@ -12,7 +12,7 @@ namespace gui
 	class Imageset;
 
 
-	class GUILIB_API Panel :
+	class  Panel :
 		public BaseWindow
 	{
 	public:

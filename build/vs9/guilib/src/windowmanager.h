@@ -26,7 +26,7 @@ typedef boost::intrusive_ptr<BaseWindow> WindowPtr;
 
 class WindowFactory;
 
-class GUILIB_API WindowManager
+class  WindowManager
 {
 public:
 	WindowManager(System& sys, const std::string& resPath, const std::string& scheme);

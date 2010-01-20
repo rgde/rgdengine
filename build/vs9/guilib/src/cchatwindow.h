@@ -14,7 +14,7 @@ namespace xml {
 
 namespace gui
 {
-	class GUILIB_API ChatWindow : public Panel
+	class  ChatWindow : public Panel
 	{
 	public:
 		typedef ChatWindow Self;

@@ -13,7 +13,7 @@ namespace gui
 	class Image;
 	class Renderer;
 
-	class GUILIB_API Cursor
+	class  Cursor
 	{
 	public:
 		Cursor(Renderer& r);

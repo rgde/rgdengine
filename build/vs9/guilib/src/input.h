@@ -5,7 +5,7 @@
 namespace gui
 {
 
-class GUILIB_API EventArgs
+class  EventArgs
 {
 public:
 	enum ButtonState 
@@ -203,7 +203,7 @@ public:
 	bool handled;
 };
 
-class GUILIB_API MouseEventArgs : public EventArgs
+class  MouseEventArgs : public EventArgs
 {
 public:
 	MouseEventArgs() {}
@@ -216,7 +216,7 @@ public:
 	int wheelDelta;
 };
 
-class GUILIB_API MarkupEventArgs : public MouseEventArgs
+class  MarkupEventArgs : public MouseEventArgs
 {
 public:
 	MarkupEventArgs() {}
@@ -226,7 +226,7 @@ public:
 	std::string type;
 };
 
-class GUILIB_API MenuEventArgs : public MouseEventArgs
+class  MenuEventArgs : public MouseEventArgs
 {
 public:
 	MenuEventArgs() {}
@@ -235,7 +235,7 @@ public:
 	unsigned int id;
 };
 
-class GUILIB_API KeyEventArgs : public EventArgs
+class  KeyEventArgs : public EventArgs
 {
 public:
 	KeyEventArgs() {}
@@ -248,7 +248,7 @@ public:
 
 class BaseWindow;
 
-class GUILIB_API DragEventArgs : public EventArgs
+class  DragEventArgs : public EventArgs
 {
 public:
 	DragEventArgs() {}
@@ -258,7 +258,7 @@ public:
 	BaseWindow*	subj;
 };
 
-class GUILIB_API TickEventArgs : public EventArgs
+class  TickEventArgs : public EventArgs
 {
 public:
 	TickEventArgs() {}
@@ -267,7 +267,7 @@ public:
 	float delta;
 };
 
-class GUILIB_API BinderEventArgs : public EventArgs
+class  BinderEventArgs : public EventArgs
 {
 public:
 	BinderEventArgs() : isMouse(false), isKbd(false), isWheel(false), systemkey(0), doubleClick(false) {}

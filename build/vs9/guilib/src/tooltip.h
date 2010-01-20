@@ -8,7 +8,7 @@
 
 namespace gui
 {
-class GUILIB_API Tooltip : public BaseWindow
+class  Tooltip : public BaseWindow
 {
 public:
 	typedef Tooltip Self;

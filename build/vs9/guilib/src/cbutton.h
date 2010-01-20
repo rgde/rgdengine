@@ -12,7 +12,7 @@ namespace gui
 class Imageset;
 typedef boost::shared_ptr<Imageset> ImagesetPtr;
 
-class GUILIB_API Button : public StaticText
+class  Button : public StaticText
 {
 public:
 	enum States
@@ -60,7 +60,7 @@ protected:
 	bool m_pushed;
 };
 
-class GUILIB_API ImageButton : public Button
+class  ImageButton : public Button
 {
 public:
 	typedef ImageButton Self;
@@ -80,7 +80,7 @@ protected:
 	StateImages m_stateimg;
 };
 
-class GUILIB_API Thumb : public ImageButton
+class  Thumb : public ImageButton
 {
 public:
 	typedef Thumb Self;
@@ -112,7 +112,7 @@ protected:
 
 };
 
-class GUILIB_API ScrollThumb : public Thumb
+class  ScrollThumb : public Thumb
 {
 public:
 	typedef ScrollThumb Self;

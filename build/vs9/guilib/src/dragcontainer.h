@@ -8,7 +8,7 @@
 
 namespace gui
 {
-class GUILIB_API DragContainer : public BaseWindow
+class  DragContainer : public BaseWindow
 {
 public:
 	typedef DragContainer Self;

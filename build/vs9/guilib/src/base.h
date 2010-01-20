@@ -20,7 +20,7 @@ std::list<std::basic_string<Ch> > tokenize(const std::basic_string<Ch>& delim, c
 	return out_tokens;
 }
 //-----------------------------------------------------------------
-class GUILIB_API RefCounted 
+class  RefCounted 
 {
 public:
 	RefCounted():m_refCount(0){}
@@ -44,7 +44,7 @@ inline void intrusive_ptr_release(RefCounted* p)
 		delete p;
 }
 //-----------------------------------------------------------------
-class GUILIB_API NamedObject
+class  NamedObject
 {
 public:
 	NamedObject(const std::string& name);

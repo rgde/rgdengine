@@ -4,7 +4,7 @@ namespace gui
 {
 
 
-class GUILIB_API IShaderEffect
+class  IShaderEffect
 {
 	public:
 		//virtual bool Load(const std::wstring& name) = 0;
