@@ -38,8 +38,8 @@ namespace rgde
 				annotations_map annotations;
 			};
 
-			typedef boost::shared_ptr<base_handle> BaseHandlePtr;
-			typedef std::vector<BaseHandlePtr> handles_vertor;
+			typedef boost::shared_ptr<base_handle> handle_ptr;
+			typedef std::vector<handle_ptr> handles_vertor;
 
 			class param_info : public base_handle
 			{
@@ -99,7 +99,7 @@ namespace rgde
 
 			typedef boost::shared_ptr<param_info> param_ptr;
 			typedef std::map<std::string, param_ptr> params_map;
-			typedef params_map::const_iterator ParamsIter;
+			typedef params_map::const_iterator params_iter;
 
 			typedef std::vector<param_ptr> params_vector;
 

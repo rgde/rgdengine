@@ -677,7 +677,7 @@ namespace effects
 	param_ptr Effect::get_param(const std::string& name) const
 	{
 		EFFECT_NAME_VALIDATE
-		ParamsIter it = m_params_by_name.find(name);
+		params_iter it = m_params_by_name.find(name);
 
 		if(it != m_params_by_name.end())
 			return it->second;
@@ -688,7 +688,7 @@ namespace effects
 	param_ptr Effect::GetParameterBySemantic(const std::string& name) const
 	{
 		EFFECT_NAME_VALIDATE
-		ParamsIter it = m_params_by_semantic.find(name);
+		params_iter it = m_params_by_semantic.find(name);
 
 		if(it != m_params_by_semantic.end())
 			return it->second;

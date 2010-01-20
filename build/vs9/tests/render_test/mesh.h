@@ -131,3 +131,26 @@ namespace rgde
 //	aabb m_bbox;
 //	bsphere m_bbsphere;
 //};
+
+//struct material
+//{
+//	// need bind on reload event to reinit params bindings
+//	effects::effect_ptr m_effect;
+//
+//	struct param_info
+//	{
+//		enum param_type
+//		{
+//			type_float, type_vec, 
+//			type_samples, type_color
+//		};
+//		std::string name;
+//		effects::param_ptr shader_param;
+//		param_type type;
+//	};	
+//
+//	std::vector<std::pair<param_info, float> > m_float_values;
+//	std::vector<std::pair<param_info, texture_ptr> > m_samples;
+//	std::vector<std::pair<param_info, color> > m_colors;
+//	std::vector<std::pair<param_info, vec3f> > m_vectors;
+//};
