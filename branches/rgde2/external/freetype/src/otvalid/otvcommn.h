@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    OpenType common tables validation (specification).                   */
 /*                                                                         */
-/*  Copyright 2004, 2005, 2007 by                                          */
+/*  Copyright 2004, 2005 by                                                */
 /*  David Turner, Robert Wilhelm, and Werner Lemberg.                      */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -215,8 +215,7 @@ FT_BEGIN_HEADER
 
   FT_LOCAL( void )
   otv_Coverage_validate( FT_Bytes       table,
-                         OTV_Validator  valid,
-                         FT_Int         expected_count );
+                         OTV_Validator  valid );
 
   /* return first covered glyph */
   FT_LOCAL( FT_UInt )

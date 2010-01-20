@@ -32,7 +32,6 @@
 /*    version                                                              */
 /*    basic_types                                                          */
 /*    base_interface                                                       */
-/*    glyph_variants                                                       */
 /*    glyph_management                                                     */
 /*    mac_specific                                                         */
 /*    sizes_management                                                     */
@@ -55,7 +54,6 @@
 /*    type1_tables                                                         */
 /*    sfnt_names                                                           */
 /*    bdf_fonts                                                            */
-/*    cid_fonts                                                            */
 /*    pfr_fonts                                                            */
 /*    winfnt_fonts                                                         */
 /*    font_formats                                                         */
