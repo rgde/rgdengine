@@ -1,0 +1,143 @@
+#pragma once
+#include "panel.h"
+#include "font.h"
+
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
+namespace xml {
+	class node;
+};
+
+
+namespace gui
+{
+	class GUILIB_API ChatWindow : public Panel
+	{
+	public:
+		typedef ChatWindow Self;
+		ChatWindow(System& sys, const std::string& name = "");
+		virtual ~ChatWindow(void);
+
+		static const char* GetType() { return "ChatWindow"; }
+		virtual const char* getType() { return Self::GetType(); }
+
+		virtual void rise();
+
+		virtual void render(const Rect& finalRect, const Rect& finalClip);
+		void setFont(const std::string& font);
+
+		void setCaption(const std::string& text);
+		const std::string& getCaption() const { return m_text; }
+
+		void setCaptionColor(const Color& col) 
+		{
+			m_captionColor = col; 
+			invalidate();
+		}
+		const Color& getCaptionColor() const { return m_captionColor; }
+
+		void setMovable(bool movable) { m_movable = movable; }
+		bool getMovable() const { return m_movable; }
+
+		void setClamp(bool clamp) { m_clampToScreen = clamp; }
+		bool getClamp() const { return m_clampToScreen; }
+
+		void setCaptionFormatting(Font::TextFormatting fmt) 
+		{
+			m_format = fmt;
+			invalidate();
+		}
+		Font::TextFormatting getCaptionFormatting() const { return m_format; }
+
+	
+
+		virtual void init(xml::node& node);
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		typedef boost::function <void ()> EndCallback;
+		void SetEndCallback( EndCallback callback)
+		{
+			m_endCallback = callback;
+		}
+		virtual bool onTick(float delta);
+		void Show(const std::string& text);
+		void Hide() 
+		{
+			setVisible(false);
+			BaseWindow::stopTick();
+		}
+		void SetPosition(const Point& point);
+		void SetVisible(bool visible) {BaseWindow::setVisible(visible);}
+
+
+		void SetMaxWidth(float value) 
+		{
+			m_maxWidth = value;
+		}
+
+		void SetMinWidth(float value) 
+		{
+			m_minWidth = value;
+		}
+
+		void SetMaxHeight(float value) 
+		{
+			m_maxHeight = value;
+		}
+
+		void SetMinHeight(float value) 
+		{
+			m_minHeight = value;
+		}
+
+		void SetTextOffset(float x, float y)
+		{
+			m_textOffsetX = x;
+			m_textOffsetY = y;
+		}
+		void SetShowingTime(float time)
+		{
+			m_fMaxShowingTime = time;
+		}
+	protected:
+		ImagesetPtr m_imgset;
+		FontPtr m_font;
+		std::string m_text;
+		Font::TextFormatting m_format;
+		Color m_captionColor;
+
+		float m_fShowingTime;
+		float m_fMaxShowingTime;
+		// caption imagery
+		const Image*	m_captionLeftImg;
+		const Image*	m_captionRightImg;
+		const Image*	m_captionBackImg;
+
+		bool m_tracking;
+		Point m_offset;
+
+		bool m_movable;
+		bool m_clampToScreen;
+
+		
+		EndCallback m_endCallback;
+
+		float m_maxWidth;
+		float m_maxHeight;
+		float m_minWidth;
+		float m_minHeight;
+		float m_textOffsetX;
+		float m_textOffsetY;
+
+	};
+
+	typedef boost::intrusive_ptr<ChatWindow> ChatWindowPtr;
+}
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
