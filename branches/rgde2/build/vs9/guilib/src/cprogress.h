@@ -1,0 +1,91 @@
+#pragma once
+#include "cstatictext.h"
+
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
+namespace gui
+{
+
+class GUILIB_API Progress :
+	public StaticText
+{
+public:
+	typedef Progress Self;
+	Progress(System& sys, const std::string& name = "");
+	virtual ~Progress(void);
+
+	static const char* GetType() { return "Progress"; }
+	virtual const char* getType() { return Self::GetType(); }
+
+	virtual void render(const Rect& finalRect, const Rect& finalClip);
+
+	float getProgress() const { return m_progress; }
+	void setProgress(float val)
+	{
+		m_progress = val;
+		invalidate();
+	}
+
+	virtual void init(xml::node& node);
+
+protected:
+	float m_progress;
+};
+
+class GUILIB_API ProgressBar : public Progress
+{
+public:
+	typedef ProgressBar Self;
+	ProgressBar(System& sys, const std::string& name = "");
+	virtual ~ProgressBar(void);
+
+	static const char* GetType() { return "ProgressBar"; }
+	virtual const char* getType() { return Self::GetType(); }
+
+	virtual void render(const Rect& finalRect, const Rect& finalClip);
+
+	virtual void init(xml::node& node);
+
+protected:
+	ImagesetPtr m_imgset;
+	
+	// progress imagery
+	const Image*	m_leftImg;
+	const Image*	m_rightImg;
+	const Image*	m_backImg;
+
+	bool m_signed;
+
+};
+
+class GUILIB_API ImageBar : public Progress
+{
+public:
+	typedef ImageBar Self;
+	ImageBar(System& sys, const std::string& name = "");
+	virtual ~ImageBar(void);
+
+	static const char* GetType() { return "ImageBar"; }
+	virtual const char* getType() { return Self::GetType(); }
+
+	virtual void render(const Rect& finalRect, const Rect& finalClip);
+
+	virtual void init(xml::node& node);
+
+protected:
+	ImagesetPtr m_imgset;
+	
+	// progress imagery
+	const Image*	m_backImg;
+	const Image*	m_foreImg;
+
+};
+
+}
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
