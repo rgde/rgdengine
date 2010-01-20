@@ -7,7 +7,7 @@ namespace gui
 	class ScriptSystem;
 	class ScriptStack;
 
-	class GUILIB_API ScriptObject
+	class  ScriptObject
 	{
 	public:
 		ScriptObject(ScriptSystem& ref) : m_ref_script(ref) {}
@@ -55,7 +55,7 @@ namespace gui
 		std::vector<ScriptObject*> m_stack;
 	};
 
-	class GUILIB_API ScriptSystem
+	class  ScriptSystem
 	{
 	public:
 		ScriptSystem();

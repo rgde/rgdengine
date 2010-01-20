@@ -14,7 +14,7 @@ namespace gui
 {
 class Image;
 
-class GUILIB_API MarkupBase : public StaticText
+class  MarkupBase : public StaticText
 {
 public:
 	struct TextLine;
@@ -168,7 +168,7 @@ protected:
 
 };
 
-class GUILIB_API MarkupText : public MarkupBase
+class  MarkupText : public MarkupBase
 {
 public:
 	typedef MarkupText Self;

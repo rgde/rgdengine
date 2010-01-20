@@ -113,7 +113,7 @@ namespace events
 
 
     // базовый класс получателя
-    class GUILIB_API BaseListener
+    class  BaseListener
     {
     protected:
         BaseListener();
@@ -146,7 +146,7 @@ namespace events
     };
 
     // базовый класс отправителя
-    class GUILIB_API BaseSender
+    class  BaseSender
     {
     protected:
         BaseSender();
@@ -164,7 +164,7 @@ namespace events
     };
 
 	// получатель
-	class GUILIB_API Listener: private BaseListener
+	class  Listener: private BaseListener
 	{
 	public:
 		//подписаться на получение событий
@@ -201,7 +201,7 @@ namespace events
 
 
 	// отправитель
-	class GUILIB_API Sender: public Listener, public BaseSender
+	class  Sender: public Listener, public BaseSender
 	{
 	public:
 		template<typename Event>

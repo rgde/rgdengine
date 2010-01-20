@@ -15,7 +15,7 @@ class node;
 namespace gui
 {
 
-class GUILIB_API StaticText :
+class  StaticText :
 	public BaseWindow
 {
 public:

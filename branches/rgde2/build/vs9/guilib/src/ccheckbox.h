@@ -9,7 +9,7 @@
 namespace gui
 {
 
-class GUILIB_API Checkbox : public StaticText
+class  Checkbox : public StaticText
 {
 public:
 	typedef Checkbox Self;

@@ -10,7 +10,7 @@
 namespace gui
 {
 
-class GUILIB_API StaticImage :
+class  StaticImage :
 	public BaseWindow
 {
 public:

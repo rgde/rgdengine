@@ -14,7 +14,7 @@ class node;
 
 namespace gui
 {
-class GUILIB_API FrameWindow : public Panel
+class  FrameWindow : public Panel
 {
 public:
 	typedef FrameWindow Self;

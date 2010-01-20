@@ -78,7 +78,7 @@ namespace gui
 		float m_width, m_height;
 	};
 
-	class GUILIB_API Font
+	class  Font
 	{
 	public:
 		enum TextFormatting
@@ -213,7 +213,7 @@ namespace gui
 		const std::string&	getName(void) const {return m_name;}
 	};
 
-	GUILIB_API typedef boost::shared_ptr<Font> FontPtr;
+	 typedef boost::shared_ptr<Font> FontPtr;
 	Font::TextFormatting StringToFormatType(const std::string& type);
 }
 

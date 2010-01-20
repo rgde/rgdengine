@@ -9,7 +9,7 @@
 namespace gui
 {
 
-struct GUILIB_API MenuItem
+struct  MenuItem
 {
 	std::string text;
 	const Image* icon;
@@ -20,7 +20,7 @@ struct GUILIB_API MenuItem
 	MenuItem(const MenuItem& item) : text(item.text), icon(item.icon), col(item.col), selcol(item.selcol) {}	
 };
 
-class GUILIB_API Menu : public Panel
+class  Menu : public Panel
 {
 public:
 	typedef Menu Self;

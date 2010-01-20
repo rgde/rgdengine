@@ -13,7 +13,7 @@ namespace gui
 	typedef boost::shared_ptr<Texture> TexturePtr;
 	class Renderer;
 
-	class GUILIB_API Imageset
+	class  Imageset
 	{
 		typedef std::map<std::string, Image> Images;
 		typedef Images::iterator ImagesIter;

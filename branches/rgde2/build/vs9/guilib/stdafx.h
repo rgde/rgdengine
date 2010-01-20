@@ -11,16 +11,6 @@
 
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 
-#if defined(GUI_BUILD_AS_DLL)
-#	ifdef GUILIB_EXPORTS
-#		define GUILIB_API __declspec(dllexport)
-#	else
-#		define GUILIB_API __declspec(dllimport)
-#	endif
-#else
-#	define GUILIB_API
-#endif
-
 #include <math.h>
 #include <vector>
 #include <list>

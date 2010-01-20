@@ -4,7 +4,7 @@
 
 namespace gui
 {
-	struct GUILIB_API ColorRect
+	struct  ColorRect
 	{
 		ColorRect();
 		ColorRect(const Color& col);

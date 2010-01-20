@@ -6,7 +6,7 @@ namespace gui
 	\brief
 	Class that holds the size (width & height) of something.
 	*/
-	class GUILIB_API Size
+	class  Size
 	{
 	public:
 		Size(void) {}

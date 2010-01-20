@@ -9,7 +9,7 @@
 namespace gui
 {
 
-class GUILIB_API Slider : public BaseWindow
+class  Slider : public BaseWindow
 {
 public:
 	typedef Slider Self;
@@ -49,7 +49,7 @@ protected:
 
 };
 
-class GUILIB_API ScrollBar : public Slider
+class  ScrollBar : public Slider
 {
 public:
 	typedef ScrollBar Self;
