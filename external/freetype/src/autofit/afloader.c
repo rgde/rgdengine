@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    Auto-fitter glyph loading routines (body).                           */
 /*                                                                         */
-/*  Copyright 2003, 2004, 2005, 2006, 2007, 2008 by                        */
+/*  Copyright 2003, 2004, 2005, 2006, 2007 by                              */
 /*  David Turner, Robert Wilhelm, and Werner Lemberg.                      */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -165,10 +165,9 @@
 
       /* now load the slot image into the auto-outline and run the */
       /* automatic hinting process                                 */
-      if ( metrics->clazz->script_hints_apply )
-        metrics->clazz->script_hints_apply( hints,
-                                            &gloader->current.outline,
-                                            metrics );
+      metrics->clazz->script_hints_apply( hints,
+                                          &gloader->current.outline,
+                                          metrics );
 
       /* we now need to hint the metrics according to the change in */
       /* width/positioning that occurred during the hinting process */
@@ -516,13 +515,9 @@
         load_flags |=  FT_LOAD_NO_SCALE | FT_LOAD_IGNORE_TRANSFORM;
         load_flags &= ~FT_LOAD_RENDER;
 
-        if ( metrics->clazz->script_hints_init )
-        {
-          error = metrics->clazz->script_hints_init( &loader->hints,
-                                                     metrics );
-          if ( error )
-            goto Exit;
-        }
+        error = metrics->clazz->script_hints_init( &loader->hints, metrics );
+        if ( error )
+          goto Exit;
 
         error = af_loader_load_g( loader, &scaler, gindex, load_flags, 0 );
       }

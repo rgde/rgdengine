@@ -382,9 +382,8 @@
       break;
 
     case 5:
-      error = Load_SBit_Const_Metrics( range, stream );
-      if ( !error )
-        error = Load_SBit_Range_Codes( range, stream, 0 );
+      error = Load_SBit_Const_Metrics( range, stream )   ||
+              Load_SBit_Range_Codes( range, stream, 0 );
       break;
 
     default:

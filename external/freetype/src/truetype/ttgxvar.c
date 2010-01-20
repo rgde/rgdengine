@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    TrueType GX Font Variation loader                                    */
 /*                                                                         */
-/*  Copyright 2004, 2005, 2006, 2007, 2008 by                              */
+/*  Copyright 2004, 2005, 2006, 2007 by                                    */
 /*  David Turner, Robert Wilhelm, Werner Lemberg, and George Williams.     */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -337,8 +337,7 @@
   }
 
 
-  typedef struct  GX_GVar_Head_
-  {
+  typedef struct  GX_GVar_Head_ {
     FT_Long    version;
     FT_UShort  axisCount;
     FT_UShort  globalCoordCount;
@@ -565,8 +564,7 @@
   /*************************************************************************/
 
 
-  typedef struct  GX_FVar_Head_
-  {
+  typedef struct  GX_FVar_Head_ {
     FT_Long    version;
     FT_UShort  offsetToData;
     FT_UShort  countSizePairs;
@@ -578,8 +576,7 @@
   } GX_FVar_Head;
 
 
-  typedef struct  fvar_axis_
-  {
+  typedef struct  fvar_axis {
     FT_ULong   axisTag;
     FT_ULong   minValue;
     FT_ULong   defaultValue;
@@ -757,7 +754,7 @@
       }
 
       ns = mmvar->namedstyle;
-      for ( i = 0; i < fvar_head.instanceCount; ++i, ++ns )
+      for ( i = 0; i < fvar_head.instanceCount; ++i )
       {
         if ( FT_FRAME_ENTER( 4L + 4L * fvar_head.axisCount ) )
           goto Exit;

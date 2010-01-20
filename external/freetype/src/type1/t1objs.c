@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    Type 1 objects manager (body).                                       */
 /*                                                                         */
-/*  Copyright 1996-2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008 by       */
+/*  Copyright 1996-2001, 2002, 2003, 2004, 2005, 2006, 2007 by             */
 /*  David Turner, Robert Wilhelm, and Werner Lemberg.                      */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -90,7 +90,7 @@
   FT_LOCAL_DEF( FT_Error )
   T1_Size_Init( T1_Size  size )
   {
-    FT_Error           error = T1_Err_Ok;
+    FT_Error           error = 0;
     PSH_Globals_Funcs  funcs = T1_Size_Get_Globals_Funcs( size );
 
 
@@ -254,8 +254,8 @@
       face->unicode_map              = NULL;
 #endif
 
-      face->root.family_name = NULL;
-      face->root.style_name  = NULL;
+      face->root.family_name = 0;
+      face->root.style_name  = 0;
     }
   }
 
@@ -298,6 +298,7 @@
 
     FT_UNUSED( num_params );
     FT_UNUSED( params );
+    FT_UNUSED( face_index );
     FT_UNUSED( stream );
 
 
@@ -355,18 +356,11 @@
 
       /* XXX: TODO -- add kerning with .afm support */
 
-
-      /* The following code to extract the family and the style is very   */
-      /* simplistic and might get some things wrong.  For a full-featured */
-      /* algorithm you might have a look at the whitepaper given at       */
-      /*                                                                  */
-      /*   http://blogs.msdn.com/text/archive/2007/04/23/wpf-font-selection-model.aspx */
-
       /* get style name -- be careful, some broken fonts only */
       /* have a `/FontName' dictionary entry!                 */
       root->family_name = info->family_name;
-      root->style_name  = NULL;
-
+      /* assume "Regular" style if we don't know better */
+      root->style_name = (char *)"Regular";
       if ( root->family_name )
       {
         char*  full   = info->full_name;
@@ -375,9 +369,6 @@
 
         if ( full )
         {
-          FT_Bool  the_same = TRUE;
-
-
           while ( *full )
           {
             if ( *full == *family )
@@ -393,17 +384,12 @@
                 family++;
               else
               {
-                the_same = FALSE;
-
                 if ( !*family )
                   root->style_name = full;
                 break;
               }
             }
           }
-
-          if ( the_same )
-            root->style_name = (char *)"Regular";
         }
       }
       else
@@ -411,15 +397,6 @@
         /* do we have a `/FontName'? */
         if ( type1->font_name )
           root->family_name = type1->font_name;
-      }
-
-      if ( !root->style_name )
-      {
-        if ( info->weight )
-          root->style_name = info->weight;
-        else
-          /* assume `Regular' style because we don't know better */
-          root->style_name = (char *)"Regular";
       }
 
       /* compute style flags */
@@ -466,7 +443,7 @@
         if ( !error )
           root->max_advance_width = (FT_Short)max_advance;
         else
-          error = T1_Err_Ok;   /* clear error */
+          error = 0;   /* clear error */
       }
 
       root->max_advance_height = root->height;

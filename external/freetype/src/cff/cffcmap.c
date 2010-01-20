@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    CFF character mapping table (cmap) support (body).                   */
 /*                                                                         */
-/*  Copyright 2002, 2003, 2004, 2005, 2006, 2007 by                        */
+/*  Copyright 2002, 2003, 2004, 2005, 2006 by                              */
 /*  David Turner, Robert Wilhelm, and Werner Lemberg.                      */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -107,9 +107,7 @@
     (FT_CMap_InitFunc)     cff_cmap_encoding_init,
     (FT_CMap_DoneFunc)     cff_cmap_encoding_done,
     (FT_CMap_CharIndexFunc)cff_cmap_encoding_char_index,
-    (FT_CMap_CharNextFunc) cff_cmap_encoding_char_next,
-
-    NULL, NULL, NULL, NULL, NULL
+    (FT_CMap_CharNextFunc) cff_cmap_encoding_char_next
   };
 
 
@@ -215,9 +213,7 @@
     (FT_CMap_InitFunc)     cff_cmap_unicode_init,
     (FT_CMap_DoneFunc)     cff_cmap_unicode_done,
     (FT_CMap_CharIndexFunc)cff_cmap_unicode_char_index,
-    (FT_CMap_CharNextFunc) cff_cmap_unicode_char_next,
-
-    NULL, NULL, NULL, NULL, NULL
+    (FT_CMap_CharNextFunc) cff_cmap_unicode_char_next
   };
 
 

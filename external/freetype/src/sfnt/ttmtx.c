@@ -431,8 +431,7 @@
   {
     void*           v = &face->vertical;
     void*           h = &face->horizontal;
-    TT_HoriHeader*  header = vertical ? (TT_HoriHeader*)v
-                                      : (TT_HoriHeader*)h;
+    TT_HoriHeader*  header = vertical ? (TT_HoriHeader*)v : h;
     TT_LongMetrics  longs_m;
     FT_UShort       k = header->number_Of_HMetrics;
 
