@@ -56,8 +56,6 @@ namespace rgde
 			void create_buffers();
 			void fill_buffers();
 
-
-
 		protected:
 			sprites_vector m_sprites;
 
