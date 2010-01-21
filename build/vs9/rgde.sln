@@ -79,6 +79,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "guitest", "tests\guitest\gu
 		{C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6} = {C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AntTweakBar", "..\..\external\AntTweakBar\src\AntTweakBar.vcproj", "{B99E1FA1-C30A-45F2-9D57-9E9C21B2DF42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -200,6 +202,12 @@ Global
 		{D3D09108-96D0-4629-88B8-122C0256058C}.Product Release|Win32.Build.0 = Release|Win32
 		{D3D09108-96D0-4629-88B8-122C0256058C}.Release|Win32.ActiveCfg = Release|Win32
 		{D3D09108-96D0-4629-88B8-122C0256058C}.Release|Win32.Build.0 = Release|Win32
+		{B99E1FA1-C30A-45F2-9D57-9E9C21B2DF42}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B99E1FA1-C30A-45F2-9D57-9E9C21B2DF42}.Debug|Win32.Build.0 = Debug|Win32
+		{B99E1FA1-C30A-45F2-9D57-9E9C21B2DF42}.Product Release|Win32.ActiveCfg = Release|Win32
+		{B99E1FA1-C30A-45F2-9D57-9E9C21B2DF42}.Product Release|Win32.Build.0 = Release|Win32
+		{B99E1FA1-C30A-45F2-9D57-9E9C21B2DF42}.Release|Win32.ActiveCfg = Release|Win32
+		{B99E1FA1-C30A-45F2-9D57-9E9C21B2DF42}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -224,6 +232,7 @@ Global
 		{4B61F965-D1DA-4454-8983-D645CC327633} = {7833305A-3DA1-466C-9B3E-134BDF44F624}
 		{3C6A37B2-6046-4CA9-859A-5C28B4609ACC} = {7833305A-3DA1-466C-9B3E-134BDF44F624}
 		{EBC13284-800E-434E-903A-B532A0B23FCE} = {7833305A-3DA1-466C-9B3E-134BDF44F624}
+		{B99E1FA1-C30A-45F2-9D57-9E9C21B2DF42} = {7833305A-3DA1-466C-9B3E-134BDF44F624}
 	EndGlobalSection
 	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
 		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
