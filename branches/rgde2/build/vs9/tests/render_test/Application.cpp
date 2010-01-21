@@ -13,66 +13,6 @@ using namespace math;
 #include "application.h"
 #include <rgde/render/surface.h>
 
-using rgde::render::vertex_element;
-vertex_element custom_vertex_desc[] = 
-{
-	{0, 0,  vertex_element::float3,   vertex_element::default_method, vertex_element::position, 0}, 
-	{0, 12, vertex_element::color4ub, vertex_element::default_method, vertex_element::color,	0},
-	vertex_element::end_element
-};
-
-
-struct color_vertex				// Our new vertex struct
-{
-	float x, y, z;			// 3D position
-	ulong color;			// Hex Color Value
-};
-
-unsigned short cube_ib[] = 
-{
-	0,1,2,		1,3,2,
-	4,5,6,		5,7,6,
-	8,9,10,		9,11,10,
-	12,13,14,	13,15,14,
-	16,17,18,	17,19,18,
-	20,21,22,	21,23,22
-};
-
-
-color_vertex cube_vb[24] =			// Vertex Array
-{	
-	// Front Blue Color
-	{-1.0f, 1.0f,-1.0f,  0xF00FF00F },
-	{ 1.0f, 1.0f,-1.0f,  0xF00FF00F },
-	{-1.0f,-1.0f,-1.0f,  0xF00FF00F },
-	{ 1.0f,-1.0f,-1.0f,  0xF00FF00F },
-	// Back Orange Color
-	{-1.0f, 1.0f, 1.0f,  0xFFF8800F },
-	{-1.0f,-1.0f, 1.0f,  0xFFF8800F },
-	{ 1.0f, 1.0f, 1.0f,  0xFFF8800F },
-	{ 1.0f,-1.0f, 1.0f,  0xFFF8800F },
-	// Top Red Color
-	{-1.0f, 1.0f, 1.0f,  0xFFF0000F },
-	{ 1.0f, 1.0f, 1.0f,  0xFFF0000F },
-	{-1.0f, 1.0f,-1.0f,  0xFFF0000F },
-	{ 1.0f, 1.0f,-1.0f,  0xFFF0000F },
-	// Bottom Yellow Color
-	{-1.0f,-1.0f, 1.0f,  0xFFFFF00F },
-	{-1.0f,-1.0f,-1.0f,  0xFFFFF00F },
-	{ 1.0f,-1.0f, 1.0f,  0xFFFFF00F },
-	{ 1.0f,-1.0f,-1.0f,  0xFFFFF00F },
-	// Right Blue Color
-	{ 1.0f, 1.0f,-1.0f,  0xF0000FFF },
-	{ 1.0f, 1.0f, 1.0f,  0xF0000FFF },
-	{ 1.0f,-1.0f,-1.0f,  0xF0000FFF },
-	{ 1.0f,-1.0f, 1.0f,  0xF0000FFF },
-	// Left Violet Color
-	{-1.0f, 1.0f,-1.0f,  0xFFF00FFF },
-	{-1.0f,-1.0f,-1.0f,  0xFFF00FFF },
-	{-1.0f, 1.0f, 1.0f,  0xFFF00FFF },
-	{-1.0f,-1.0f, 1.0f,  0xFFF00FFF }
-};
-
 
 application::application(int x, int y, int w, int h, const std::wstring& title) 
 	: m_active(true)
@@ -102,81 +42,8 @@ application::application(int x, int y, int w, int h, const std::wstring& title)
 	init_game_data();
 	init_render_data();
 
-	xml::document dae_doc;
-	if (dae_doc.load(m_filesystem.open_read("models/MS-00X Experimental/models/MS-00X Experimental.dae")))
-	{		
-		//() - get node
-		//[] - get attribute
+	test_collada_read();
 
-		xml::node collada_node = dae_doc("COLLADA");
-
-		xml::node asset_node = collada_node("COLLADA");
-		
-		if (xml::node library_images_node = collada_node("library_images"))
-		{
-			for(xml::node n = library_images_node("image");n;n = n.next_sibling())
-			{
-				std::string id = n["id"].value();
-				std::string name = n["name"].value();
-				std::string load_path = n("init_from").first_child().value();
-
-				__asm nop;
-			}
-		}
-
-		if (xml::node library_materials_node = collada_node("library_materials"))
-		{
-			for(xml::node n = library_materials_node("material");n;n = n.next_sibling())
-			{ 
-				std::string id = n["id"].value();
-				std::string name = n["name"].value();
-				std::string effect_instance = n("instance_effect")["url"].value();
-				__asm nop;
-			}
-
-		}
-
-		if (xml::node library_effects_node = collada_node("library_effects"))
-		{
-			for(xml::node n = library_effects_node("effect");n;n = n.next_sibling())
-			{ 
-				std::string id = n["id"].value();
-				std::string name = n["name"].value();
-				__asm nop;
-			}
-		}
-
-		if(xml::node library_geometries_node = collada_node("library_geometries"))
-		{
-			for(xml::node n = library_geometries_node("geometry");n;n = n.next_sibling())
-			{ 
-				std::string id = n["id"].value();
-				std::string name = n["name"].value();
-
-				for(xml::node mesh_node = n("mesh"); mesh_node; mesh_node = mesh_node.next_sibling())
-				{
-					xml::node source_node = mesh_node("source");
-					std::string source_id = source_node["id"].value();
-
-					xml::node array_node = source_node("float_array");
-					std::string array_id = array_node["id"].value();
-					int cout = array_node["count"].as_int();
-
-					const char* str_data = array_node.first_child().value();
-
-					__asm nop;
-				}
-
-				__asm nop;
-			}
-		}
-
-		xml::node library_nodes_node = collada_node("library_nodes");
-		xml::node library_cameras_node = collada_node("library_cameras");
-		xml::node library_visual_scenes_node = collada_node("library_visual_scenes");
-			
-		__asm nop;
-	}
 
 	m_cam_controller = scene::free_camera::create(m_camera);
 
@@ -190,15 +57,9 @@ application::application(int x, int y, int w, int h, const std::wstring& title)
 	}
 }
 
-void test_collada_read()
-{
-
-}
 
 application::~application()
 {
-	//m_vb.reset();
-	//m_ib.reset();
 }
 
 void application::init_render_data()
@@ -213,7 +74,8 @@ void application::init_render_data()
 
 	using namespace rgde::render;
 
-	m_box = mesh::create_box(m_device, 1, 1, 1);
+	//m_box = mesh::create_box(m_device, 1, 1, 1);
+	m_box = mesh::create_random_terrain(m_device, 64, 64, 2);
 
 	m_font = font::create(m_device, 17, L"Arial");
 
@@ -395,4 +257,85 @@ bool application::do_events()
 		return true;
 	}
 	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void application::test_collada_read()
+{
+	xml::document dae_doc;
+	if (dae_doc.load(m_filesystem.open_read("models/MS-00X Experimental/models/MS-00X Experimental.dae")))
+	{		
+		//() - get node
+		//[] - get attribute
+
+		xml::node collada_node = dae_doc("COLLADA");
+
+		xml::node asset_node = collada_node("COLLADA");
+
+		if (xml::node library_images_node = collada_node("library_images"))
+		{
+			for(xml::node n = library_images_node("image");n;n = n.next_sibling())
+			{
+				std::string id = n["id"].value();
+				std::string name = n["name"].value();
+				std::string load_path = n("init_from").first_child().value();
+
+				__asm nop;
+			}
+		}
+
+		if (xml::node library_materials_node = collada_node("library_materials"))
+		{
+			for(xml::node n = library_materials_node("material");n;n = n.next_sibling())
+			{ 
+				std::string id = n["id"].value();
+				std::string name = n["name"].value();
+				std::string effect_instance = n("instance_effect")["url"].value();
+				__asm nop;
+			}
+
+		}
+
+		if (xml::node library_effects_node = collada_node("library_effects"))
+		{
+			for(xml::node n = library_effects_node("effect");n;n = n.next_sibling())
+			{ 
+				std::string id = n["id"].value();
+				std::string name = n["name"].value();
+				__asm nop;
+			}
+		}
+
+		if(xml::node library_geometries_node = collada_node("library_geometries"))
+		{
+			for(xml::node n = library_geometries_node("geometry");n;n = n.next_sibling())
+			{ 
+				std::string id = n["id"].value();
+				std::string name = n["name"].value();
+
+				for(xml::node mesh_node = n("mesh"); mesh_node; mesh_node = mesh_node.next_sibling())
+				{
+					xml::node source_node = mesh_node("source");
+					std::string source_id = source_node["id"].value();
+
+					xml::node array_node = source_node("float_array");
+					std::string array_id = array_node["id"].value();
+					int cout = array_node["count"].as_int();
+
+					const char* str_data = array_node.first_child().value();
+
+					__asm nop;
+				}
+
+				__asm nop;
+			}
+		}
+
+		xml::node library_nodes_node = collada_node("library_nodes");
+		xml::node library_cameras_node = collada_node("library_cameras");
+		xml::node library_visual_scenes_node = collada_node("library_visual_scenes");
+
+		__asm nop;
+	}
 }

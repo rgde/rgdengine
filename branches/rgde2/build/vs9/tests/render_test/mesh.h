@@ -4,11 +4,34 @@ namespace rgde
 {
 	namespace render
 	{
+		namespace effects
+		{
+			typedef boost::shared_ptr<class Effect> effect_ptr;
+			typedef boost::shared_ptr<struct param_info> param_ptr;
+		}
+
 		struct material
 		{
+			// need bind on reload event to reinit params bindings
+			effects::effect_ptr m_effect;
 
+			struct param_info
+			{
+				enum param_type
+				{
+					type_float, type_vec, 
+					type_samples, type_color
+				};
+				std::string name;
+				effects::param_ptr shader_param;
+				param_type type;
+			};	
+
+			std::vector<std::pair<param_info, float> > m_float_values;
+			std::vector<std::pair<param_info, texture_ptr> > m_samples;
+			std::vector<std::pair<param_info, math::color> > m_colors;
+			std::vector<std::pair<param_info, math::vec3f> > m_vectors;
 		};
-
 		typedef boost::shared_ptr<material> material_ptr;
 
 		typedef boost::shared_ptr<class mesh> mesh_ptr;
@@ -27,7 +50,7 @@ namespace rgde
 			};
 
 			static mesh_ptr create_box(device& dev, float x, float y, float z);
-			static mesh_ptr mesh::create_random_terrain(device& dev, int w, int l, float step);
+			static mesh_ptr create_random_terrain(device& dev, int w, int l, float step);
 			//static mesh_ptr create_sphere(float r);
 			//static mesh_ptr create_conus(float h, float r);
 			//static mesh_ptr create_cylinder(float h, float r);
@@ -133,25 +156,3 @@ namespace rgde
 //	bsphere m_bbsphere;
 //};
 
-//struct material
-//{
-//	// need bind on reload event to reinit params bindings
-//	effects::effect_ptr m_effect;
-//
-//	struct param_info
-//	{
-//		enum param_type
-//		{
-//			type_float, type_vec, 
-//			type_samples, type_color
-//		};
-//		std::string name;
-//		effects::param_ptr shader_param;
-//		param_type type;
-//	};	
-//
-//	std::vector<std::pair<param_info, float> > m_float_values;
-//	std::vector<std::pair<param_info, texture_ptr> > m_samples;
-//	std::vector<std::pair<param_info, color> > m_colors;
-//	std::vector<std::pair<param_info, vec3f> > m_vectors;
-//};
