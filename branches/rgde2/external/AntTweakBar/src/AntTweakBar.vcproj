@@ -135,7 +135,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../include"
+				AdditionalIncludeDirectories="../include;$(SolutionDir)..\..\external\;$(SolutionDir)..\..\external\dxsdk\Include;$(SolutionDir)..\..\include\;$(SolutionDir)..\..\external\boost"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
