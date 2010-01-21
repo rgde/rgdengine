@@ -190,13 +190,13 @@ namespace rgde
 			for(int z=0;z<(l-1);++z)
 				for(int x=0;x<(w-1);++x)
 				{
-					pf[0] = z*l+x;
-					pf[1] = z*l+x+1;
-					pf[2] = (z+1)*l+x+1;
+					pf[0] = z*w+x;
+					pf[1] = z*w+x+1;
+					pf[2] = (z+1)*w+x+1;
 					pf += 3;
-					pf[0] = (z+1)*l+x+1;
-					pf[1] = (z+1)*l+x;
-					pf[2] = z*l+x;
+					pf[0] = (z+1)*w+x+1;
+					pf[1] = (z+1)*w+x;
+					pf[2] = z*w+x;
 					pf += 3;
 				}
 			mesh_ptr out = create_mesh(dev, vb.get(), num_vertices, ib.get(), num_faces*3);

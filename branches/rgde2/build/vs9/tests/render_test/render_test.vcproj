@@ -284,10 +284,6 @@
 				RelativePath=".\sprite.h"
 				>
 			</File>
-			<File
-				RelativePath=".\terrain.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="core"
@@ -326,6 +322,34 @@
 			</File>
 			<File
 				RelativePath=".\xml_node.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="landscape"
+			>
+			<File
+				RelativePath=".\landscape.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\landscape.h"
+				>
+			</File>
+			<File
+				RelativePath=".\terrain.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="scenegraph"
+			>
+			<File
+				RelativePath=".\scene_node.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\scene_node.h"
 				>
 			</File>
 		</Filter>
