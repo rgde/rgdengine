@@ -21,21 +21,30 @@ namespace render
 namespace effects
 {
 
+	base_handle::base_handle()
+		: m_handle(0)
+	{}
+
+	base_handle::~base_handle(){}
+
+
 	bool Effect::m_skip_unused_params = true;
 
 	//////////////////////////////////////////////////////////////////////////
-	bool base_handle::IsAnnotationExist(const std::string& annot_name) const 
+	bool base_handle::is_annotation_exist(const std::string& annot_name) const 
 	{
 		return annotations.find(to_lower(annot_name)) != annotations.end();
 	}
 
-	std::string base_handle::GetAnnotation(const std::string& annot_name) const
+	const std::string& base_handle::get_annotation(const std::string& annot_name) const
 	{
 		annot_const_iter it = annotations.find(to_lower(annot_name));
 		if (it!=annotations.end())
 			return it->second;
 
-		return std::string();
+		static const std::string empty_str;
+
+		return empty_str;
 	}
 
 	void param_info::refresh(Effect& e)
@@ -207,7 +216,7 @@ namespace effects
 
 			for (uint annot_index = 0; annot_index < tech_desc.Annotations; ++annot_index)
 			{
-				D3DXHANDLE hAnnot = m_effect->GetAnnotation ( ti.m_handle, annot_index );
+				D3DXHANDLE hAnnot = m_effect->GetAnnotation( ti.m_handle, annot_index );
 
 				D3DXPARAMETER_DESC AnnotDesc;
 				m_effect->GetParameterDesc( hAnnot, &AnnotDesc );
@@ -368,7 +377,7 @@ namespace effects
 
 			for (uint annot_index = 0; annot_index < param_desc.Annotations; ++annot_index)
 			{
-				D3DXHANDLE hAnnot = m_effect->GetAnnotation ( pi.m_handle, annot_index );
+				D3DXHANDLE hAnnot = m_effect->GetAnnotation( pi.m_handle, annot_index );
 
 				D3DXPARAMETER_DESC AnnotDesc;
 				m_effect->GetParameterDesc( hAnnot, &AnnotDesc );
@@ -529,12 +538,12 @@ namespace effects
 
 				if (param_handle && TRUE == m_effect->IsParameterUsed(param_handle, tech_handle))
 				{
-					(*it)->params[to_lower(param->GetName())] = param;
+					(*it)->params[to_lower(param->get_name())] = param;
 					param->m_is_used = true;					
 				}
 			}
 
-			m_techiques[to_lower((*it)->GetName())] = (*it);
+			m_techiques[to_lower((*it)->get_name())] = (*it);
 		}
 
 		m_params.reserve(params_list.size());
@@ -548,7 +557,7 @@ namespace effects
 			{
 				m_handlers.push_back(pptr);
 				m_params.push_back(pptr);
-				m_params_by_name[to_lower(p.GetName())] = pptr;
+				m_params_by_name[to_lower(p.get_name())] = pptr;
 
 				if (!p.GetSemantic().empty())
 				{

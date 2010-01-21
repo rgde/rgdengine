@@ -21,16 +21,17 @@ namespace rgde
 			{
 				friend class Effect;			
 			public:
-				base_handle(){m_handle = 0;}
-				virtual ~base_handle(){}
-				const std::string GetName() const {return m_name;}
+				base_handle();
+				virtual ~base_handle();
 
-				virtual bool IsValid() const {return 0 != m_handle;}
+				const std::string& get_name() const {return m_name;}
+
+				virtual bool is_valid() const {return 0 != m_handle;}
 				virtual void refresh(Effect& e) = 0;
 
-				bool IsAnnotationExist(const std::string& annot_name) const;
-				std::string GetAnnotation(const std::string& annot_name) const;
-				const annotations_map& GetAnnotations() const {return annotations;}
+				bool is_annotation_exist(const std::string& annot_name) const;
+				const std::string& get_annotation(const std::string& annot_name) const;
+				const annotations_map& get_annotations() const {return annotations;}
 
 			protected:
 				std::string m_name;			
@@ -70,7 +71,7 @@ namespace rgde
 				bool tweakable() const {return m_is_tweakable;}
 				const std::string& GetSemantic() const {return m_semantic;}
 
-				virtual bool IsValid() const {return 0 != m_handle && m_is_used;}
+				virtual bool is_valid() const {return 0 != m_handle && m_is_used;}
 
 				virtual void refresh(Effect& e);	
 

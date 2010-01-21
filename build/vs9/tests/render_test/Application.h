@@ -40,6 +40,8 @@ namespace rgde
 		void init_game_data();
 		void init_render_data();
 
+		void test_collada_read();
+
 		void update();
 		void render();
 
