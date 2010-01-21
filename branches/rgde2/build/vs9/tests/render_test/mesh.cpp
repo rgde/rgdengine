@@ -2,6 +2,8 @@
 
 #include "mesh.h"
 
+#include "terrain.h"
+
 namespace rgde
 {
 	namespace render
@@ -139,6 +141,68 @@ namespace rgde
 			{ 3, 0, 1, 2 }, { 0, 1, 2, 3 }, { 1, 2, 3, 0 },
 			{ 0, 1, 2, 3 }, { 3, 0, 1, 2 }, { 0, 1, 2, 3 }
 		};
+
+		mesh_ptr mesh::create_random_terrain(device& dev, int w, int l, float step)
+		{
+			terrain t(w,l);
+			const size_t num_vertices = w*l;
+			boost::scoped_array<vertex> vb (new vertex[num_vertices]);
+			
+			vertex* pv = vb.get();
+
+			for(int z=0;z<l;++z)
+				for(int x=0;x<w;++x)
+				{
+					pv->pos[0] = x*step;
+					pv->pos[1] = t.get_height(x,z)*step;
+					pv->pos[2] = z*step;
+					div_t dx = div(x,2);
+					div_t dz = div(z,2);
+
+					if(dx.rem > 0)
+						pv->uv[0] = 1.0f;
+					else
+						pv->uv[0] = 0.0f;
+					if(dz.rem > 0)
+						pv->uv[1] = 1.0f;
+					else
+						pv->uv[1] = 0.0f;
+
+					const float& h1 = t.get_height( x,   z-1 );    
+					const float& h2 = t.get_height( x+1, z-1 );
+					const float& h3 = t.get_height( x+1, z   );
+					const float& h4 = t.get_height( x,   z+1 );
+					const float& h5 = t.get_height( x-1, z+1 );
+					const float& h6 = t.get_height( x-1, z   );
+
+					pv->norm[0] = h1-h2-3*h3-h4+h5+3*h6;
+					pv->norm[1] = 8;
+					pv->norm[2] = 3*h1+h2-h3-3*h4-h5+h6;
+					math::normalize(pv->norm);
+					pv++;
+
+
+				}
+			const size_t num_faces = (w-1)*(l-1)*2;
+			uint vertex_index = 0;
+			boost::scoped_array<uint16> ib (new uint16[num_faces*3]);
+			uint16* pf = ib.get();
+			for(int z=0;z<(l-1);++z)
+				for(int x=0;x<(w-1);++x)
+				{
+					pf[0] = z*l+x;
+					pf[1] = z*l+x+1;
+					pf[2] = (z+1)*l+x+1;
+					pf += 3;
+					pf[0] = (z+1)*l+x+1;
+					pf[1] = (z+1)*l+x;
+					pf[2] = z*l+x;
+					pf += 3;
+				}
+			mesh_ptr out = create_mesh(dev, vb.get(), num_vertices, ib.get(), num_faces*3);
+			return out;
+
+		}
 
 		mesh_ptr mesh::create_box(device& dev, float x, float y, float z)
 		{

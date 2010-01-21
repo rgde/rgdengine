@@ -27,6 +27,7 @@ namespace rgde
 			};
 
 			static mesh_ptr create_box(device& dev, float x, float y, float z);
+			static mesh_ptr mesh::create_random_terrain(device& dev, int w, int l, float step);
 			//static mesh_ptr create_sphere(float r);
 			//static mesh_ptr create_conus(float h, float r);
 			//static mesh_ptr create_cylinder(float h, float r);
