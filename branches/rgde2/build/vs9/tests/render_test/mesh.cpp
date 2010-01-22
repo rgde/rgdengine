@@ -82,10 +82,18 @@ namespace rgde
 		{			
 			m_device.set_stream_source( 0, vb, sizeof(vertex));
 			m_device.set_index_buffer(ib);
+			
+			vertex_declaration_ptr cur_decl;
 
 			for (size_t i = 0, size = m_parts.size(); i < size; ++i)
 			{
 				attrib_range& attr = m_parts[i].first;
+
+				if (cur_decl != attr.decl)
+				{
+					cur_decl = attr.decl;
+					m_device.set_decl(cur_decl);
+				}
 
 				if (attr.vb_offset > 0)
 					m_device.set_stream_source( 0, vb, sizeof(vertex));//attr.vb_offset );				

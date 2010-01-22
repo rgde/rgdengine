@@ -31,11 +31,11 @@ namespace rgde
 			vertex_declaration_impl(device& dev, const vertex_elements_vector& vertex_elements);
 			~vertex_declaration_impl();
 
+			IDirect3DVertexDeclaration9* get_dx_decl() const {return m_decl;}
+
 		private:
 			D3DVERTEXELEMENT9 convert(const vertex_element& element);
-			std::vector<D3DVERTEXELEMENT9> convert(const vertex_elements_vector& vertex_elements);
-
-			IDirect3DVertexDeclaration9* get_dx_decl() const {return m_decl;}
+			std::vector<D3DVERTEXELEMENT9> convert(const vertex_elements_vector& vertex_elements);		
 
 		private:
 			IDirect3DVertexDeclaration9* m_decl;

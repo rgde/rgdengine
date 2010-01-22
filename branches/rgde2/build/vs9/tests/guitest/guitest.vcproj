@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\external\dxsdk/include&quot;;&quot;$(SolutionDir)guilib/&quot;;&quot;$(SolutionDir)guiplatform/&quot;;&quot;$(SolutionDir)..\..\external\lua/src&quot;;&quot;$(SolutionDir)..\..\external\luabind&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\include&quot;;&quot;$(SolutionDir)..\..\external\dxsdk/include&quot;;&quot;$(SolutionDir)guilib/&quot;;&quot;$(SolutionDir)guiplatform/&quot;;&quot;$(SolutionDir)..\..\external\lua/src&quot;;&quot;$(SolutionDir)..\..\external\luabind&quot;;&quot;$(SolutionDir)..\..\external\boost\&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;PROFILE;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;STRSAFE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

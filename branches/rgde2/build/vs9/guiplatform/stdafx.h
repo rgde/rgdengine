@@ -30,10 +30,6 @@
 #include <string>
 #include <algorithm>
 
-#include <d3d9.h>
-#include <d3dx9.h>
-#include <dxerr9.h>
-
 #include <boost/shared_ptr.hpp>
 #include <boost/intrusive_ptr.hpp>
 #include <boost/function.hpp>
@@ -45,3 +41,8 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+#include <rgde/render/device.h>
+#include <rgde/render/surface.h>
+#include <rgde/render/buffer.h>
+#include <rgde/render/effect.h>

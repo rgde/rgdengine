@@ -4,7 +4,6 @@
 
 #include <boost/algorithm/string.hpp>
 
-//#include <d3dx9.h>
 
 namespace 
 {

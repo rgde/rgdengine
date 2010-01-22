@@ -97,9 +97,11 @@ namespace rgde
 
 		class vertex_declaration
 		{
+		public:
 			class vertex_declaration_impl;
 			typedef boost::shared_ptr<vertex_declaration_impl> pimpl;
 
+		private:
 			vertex_declaration(device& dev, const vertex_element* vertex_elements_array, size_t size);
 			vertex_declaration(device& dev, const vertex_elements_vector& vertex_elements);
 
@@ -107,8 +109,8 @@ namespace rgde
 			static vertex_declaration_ptr create(device& dev, const vertex_element* vertex_elements_array, size_t num_elements);
 			static vertex_declaration_ptr create(device& dev, const vertex_elements_vector& vertex_elements);
 
-			pimpl& get_impl();
-			const pimpl& get_impl() const;
+			vertex_declaration_impl& get_impl();
+			const vertex_declaration_impl& get_impl() const;
 			
 			const vertex_elements_vector& get_vertex_elemets() const {return m_vertex_elements;}
 

@@ -36,6 +36,16 @@ namespace rgde
 				);
 		}
 
+		vertex_declaration::vertex_declaration_impl& vertex_declaration::get_impl()
+		{
+			return *m_impl;
+		}
+
+		const vertex_declaration::vertex_declaration_impl& vertex_declaration::get_impl() const
+		{
+			return *m_impl;
+		}
+
 		buffer::buffer(device& dev, resource::type type, resource::format format, 
 			resource::pool pool, uint buffer_usage, bool register_on_lost_reset)
 			: resource(type, format, pool), 

@@ -1,48 +1,56 @@
 #include "stdafx.h"
 
-#include "d3d9renderer.h"
-#include "d3d9texture.h"
-#include "d3d9shader.h"
+#include <rgde/render/device.h>
+
+#include "renderer.h"
+#include "texture.h"
 #include "ftfont.h"
 
 // все правильно. макрос. да именно так!
 #define PixelAligned(x)	( ( (float)(int)(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f)) ) - 0.5f )
 
+using namespace rgde::render;
+
 namespace gui
 {
-	namespace win32dx9platform
+	namespace rgde_platform
 	{
-
-		Renderer* CreateRenderer(IDirect3DDevice9* dev, unsigned buff)
+		Renderer* CreateRenderer(rgde::render::device_ptr dev, unsigned buff)
 		{
-			return new DirectX9Renderer(dev, 1024);
+			return new renderer(dev, 1024);
 		}
-		
-		
+				
 		struct QuadVertex
 		{
 			float x, y, tu1, tv1;		//!< The transformed position for the vertex.
-			DWORD diffuse;			//!< colour of the vertex
+			unsigned int diffuse;			//!< colour of the vertex
 		};
-
 	
-		D3DVERTEXELEMENT9 VERTEX_DECL[] =
+		//D3DVERTEXELEMENT9 VERTEX_DECL[] =
+		//{
+		//	{ 0,  0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT,  D3DDECLUSAGE_POSITION, 0}, 
+		//	{ 0,  16, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT,  D3DDECLUSAGE_COLOR, 0}, 
+		//	D3DDECL_END()
+		//};
+
+		using rgde::render::vertex_element;
+		vertex_element vertex_desc[] = 
 		{
-			{ 0,  0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT,  D3DDECLUSAGE_POSITION, 0}, 
-			{ 0,  16, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT,  D3DDECLUSAGE_COLOR, 0}, 
-			D3DDECL_END()
+			{0, 0,  vertex_element::float4,   vertex_element::default_method, vertex_element::position, 0}, 
+			{0, 12, vertex_element::color4ub, vertex_element::default_method, vertex_element::color,	0},
+			vertex_element::end_element
 		};
 
-		const int			DirectX9Renderer::VERTEX_PER_QUAD = 6;
-		const int			DirectX9Renderer::VERTEX_PER_TRIANGLE = 3;
-		const int			DirectX9Renderer::VERTEXBUFFER_CAPACITY	= 8192;
+		const int			renderer::VERTEX_PER_QUAD = 6;
+		const int			renderer::VERTEX_PER_TRIANGLE = 3;
+		const int			renderer::VERTEXBUFFER_CAPACITY	= 8192;
 
-		const unsigned long	DirectX9Renderer::VERTEX_FVF = (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1);
+		/*const unsigned long	renderer::VERTEX_FVF = (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1);*/
 
 		/*************************************************************************
 		Constructor
 		*************************************************************************/
-		DirectX9Renderer::DirectX9Renderer(LPDIRECT3DDEVICE9 device, unsigned int max_quads)
+		renderer::renderer(device_ptr device, unsigned int max_quads)
 		{
 			m_device = device;
 			m_needToAddCallback = false;
@@ -55,24 +63,24 @@ namespace gui
 		/*************************************************************************
 		method to do work of constructor
 		*************************************************************************/
-		void DirectX9Renderer::constructor_impl(LPDIRECT3DDEVICE9 device, const Size& display_size)
+		void renderer::constructor_impl(device_ptr device, const Size& display_size)
 		{
 			m_device        = device;
-
-			m_currTexture   = 0;
-			m_buffer        = 0;
 			m_bufferPos     = 0;
 
 			m_originalsize = display_size;
 
+			m_vertexDeclaration = vertex_declaration::create(*m_device, vertex_desc, 3);
+
+			m_buffer = vertex_buffer::create(
+				*m_device, 
+				m_vertexDeclaration, 
+				VERTEXBUFFER_CAPACITY * sizeof(QuadVertex),
+				resource::default, 
+				buffer::write_only | buffer::dynamic);
+
 			// Create a vertex buffer
-			if (FAILED(m_device->CreateVertexBuffer(
-				(VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), 
-				D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, 
-				0, 
-				D3DPOOL_DEFAULT, 
-				&m_buffer,
-				0)))
+			if (!m_buffer)
 			{
 				// Ideally, this would have been a RendererException, but we can't use that until the System object is created
 				// and that requires a Renderer passed to the constructor, so we throw this instead.
@@ -81,51 +89,28 @@ namespace gui
 
 			char s[MAX_PATH];
 			GetCurrentDirectoryA(MAX_PATH,s);
-			m_device->CreateVertexDeclaration(VERTEX_DECL, &m_vertexDeclaration);
+					
 
-			m_shader.reset(new D3D9ShaderEffect(m_device, L"gui\\shaders\\gui.fx"));
+			assert(0 && "TODO!");
+			//m_shader.reset(new shader_effect(m_device, L"gui\\shaders\\gui.fx"));
 
 			// get the maximum available texture size.
-			D3DCAPS9	devCaps;
-			if (FAILED(device->GetDeviceCaps(&devCaps)))
-			{
-				// release vertex buffer
-				m_buffer->Release();
-			}
-
 			// set max texture size the the smaller of max width and max height.
-			m_maxTextureSize = devCaps.MaxTextureWidth < devCaps.MaxTextureHeight ? devCaps.MaxTextureWidth : devCaps.MaxTextureHeight;
+			m_maxTextureSize = 2048;//devCaps.MaxTextureWidth < devCaps.MaxTextureHeight ? devCaps.MaxTextureWidth : devCaps.MaxTextureHeight;
 
-			m_handleGuiTexture = m_shader->GetParameterByName(NULL, "guiTexture");
-			m_handleViewPortSize = m_shader->GetParameterByName(NULL, "ViewPortSize");
-
-			m_device->AddRef();
+			m_handleGuiTexture = m_shader->get_param("guiTexture");
+			m_handleViewPortSize = m_shader->get_param("ViewPortSize");
 		}
 
 
 		/*************************************************************************
 		Destructor
 		*************************************************************************/
-		DirectX9Renderer::~DirectX9Renderer(void)
+		renderer::~renderer(void)
 		{
-			if (m_vertexDeclaration)
-			{
-				m_vertexDeclaration->Release();
-				m_vertexDeclaration = NULL;
-			}
-		
-			if (m_buffer)
-			{
-				m_buffer->Release();
-			}
-
-			if (m_device)
-			{
-				m_device->Release();
-			}
 		}
 
-		void DirectX9Renderer::addCallback( AfterRenderCallbackFunc callback,
+		void renderer::addCallback( AfterRenderCallbackFunc callback,
 											BaseWindow* window, const Rect& dest, const Rect& clip)
 		{
 			// если сразу должны были рисовать, то сразу запускаем коллбак
@@ -143,7 +128,7 @@ namespace gui
 			m_callbackInfo.clip = clip;
 		}
 
-		void DirectX9Renderer::addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode)
+		void renderer::addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode)
 		{
 			Rect local_dest_rect = dest_rect;
 
@@ -213,30 +198,34 @@ namespace gui
 			}
 		}
 
-		void DirectX9Renderer::setRenderStates()
+		void renderer::setRenderStates()
 		{
 			// setup vertex stream
-			m_device->SetStreamSource(0, m_buffer, 0, sizeof(QuadVertex));
-			D3DVIEWPORT9 viewPortDesc;
-			m_device->GetViewport(&viewPortDesc);
-			m_device->SetVertexDeclaration(m_vertexDeclaration);
-			m_shader->SetTechnique("Simple");
-			D3DXVECTOR2 vec((float)viewPortDesc.Width, (float)viewPortDesc.Height);
-			m_shader->SetFloatArray(m_handleViewPortSize,vec, 2 );
-			m_shader->Begin(D3DXSPRITE_DONOTSAVESTATE );
-			m_shader->BeginPass(0);
+			m_device->set_stream_source(0, m_buffer, sizeof(QuadVertex));
+			
+			view_port viewPortDesc;
+			m_device->get_viewport(viewPortDesc);
+
+			//m_device->SetVertexDeclaration(m_vertexDeclaration);
+
+			m_shader->set_tech("Simple");
+			rgde::math::vec2f vec((float)viewPortDesc.width, (float)viewPortDesc.height);
+
+			m_shader->set(m_handleViewPortSize,(float*)&vec, 2 );
+			m_shader->begin(0);
+			m_shader->begin_pass(0);
 		}
 		/*************************************************************************
 		perform final rendering for all queued renderable quads.
 		*************************************************************************/
-		void DirectX9Renderer::doRender(void)
+		void renderer::doRender(void)
 		{
 
 			if (!m_buffer)
 				return;
 
 			setRenderStates();
-			m_currTexture = 0;
+			m_currTexture.reset();
 
 			float scaleX = 1.f;
 			float scaleY = 1.f;
@@ -256,9 +245,11 @@ namespace gui
 				if ( 6 * (batch.numQuads + s_quadOffset) >= VERTEXBUFFER_CAPACITY)
 					s_quadOffset = 0;
 
-				if (FAILED(m_buffer->Lock(UINT(s_quadOffset * 6 * sizeof(QuadVertex)), 
+				buffmem = (QuadVertex*)m_buffer->lock(UINT(s_quadOffset * 6 * sizeof(QuadVertex)), 
 					UINT(6 * (m_batches[b].numQuads)* sizeof(QuadVertex)),
-					(void**)&buffmem, s_quadOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD)))
+					s_quadOffset ? buffer::nooverwrite : buffer::discard);
+
+				if (!buffmem )
 					return;
 
 				std::size_t numQ = batch.numQuads;
@@ -353,18 +344,19 @@ namespace gui
 					++buffmem;
 				}
 
-				m_buffer->Unlock();
-				LPDIRECT3DTEXTURE9 tex = static_cast<DirectX9Texture*>(batch.texture)->getD3DTexture();
-				m_device->SetTexture(0, tex);
+				m_buffer->unlock();
 
-				m_device->DrawPrimitive(D3DPT_TRIANGLELIST, s_quadOffset * 6, UINT(numQ * 2));
+				gui::rgde_platform::texture* t = static_cast<gui::rgde_platform::texture*>(batch.texture);
+				m_device->set_texture(t->get_platform_resource(), 0);
+
+				m_device->draw(triangle_list, s_quadOffset * 6, UINT(numQ * 2));
 				s_quadOffset += (DWORD)numQ;
 
 
 				if (batch.callbackInfo.window && batch.callbackInfo.afterRenderCallback)
 				{
-					m_shader->EndPass();
-					m_shader->End();
+					m_shader->end_pass();
+					m_shader->end();
 
 					batch.callbackInfo.afterRenderCallback(batch.callbackInfo.window,
 									batch.callbackInfo.dest, batch.callbackInfo.clip);
@@ -375,8 +367,8 @@ namespace gui
 				}
 			}
 			
-			m_shader->EndPass();
-			m_shader->End();
+			m_shader->end_pass();
+			m_shader->end();
 			
 
 		}
@@ -384,55 +376,56 @@ namespace gui
 		/*************************************************************************
 		setup states etc
 		*************************************************************************/
-		void DirectX9Renderer::initPerFrameStates(void)
+		void renderer::initPerFrameStates(void)
 		{
 			// setup vertex stream
 			m_device->SetStreamSource(0, m_buffer, 0, sizeof(QuadVertex));
-			m_device->SetFVF(VERTEX_FVF);
-			m_device->SetVertexShader( 0 );
-			m_device->SetPixelShader( 0 );
+
+			//m_device->SetFVF(VERTEX_FVF);
+			//m_device->SetVertexShader( 0 );
+			//m_device->SetPixelShader( 0 );
 
 			// set device states
-			m_device->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
-			m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-			m_device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-			m_device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-			m_device->SetRenderState(D3DRS_FOGENABLE, FALSE);
-			m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+			//m_device->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+			//m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+			//m_device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+			//m_device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+			//m_device->SetRenderState(D3DRS_FOGENABLE, FALSE);
+			//m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 
 			// setup texture addressing settings
-			m_device->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
-			m_device->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
+			//m_device->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
+			//m_device->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
 
 			// setup colour calculations
-			m_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-			m_device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
-			m_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+			//m_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+			//m_device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+			//m_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 
 			// setup alpha calculations
-			m_device->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-			m_device->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
-			m_device->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+			//m_device->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+			//m_device->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+			//m_device->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 
 			// setup filtering
-			m_device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-			m_device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+			//m_device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+			//m_device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 
 			// disable texture stages we do not need.
-			m_device->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
+			//m_device->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
 
 			// setup scene alpha blending
-			m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-			m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-			m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+			//m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+			//m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			//m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 		}
 
 
 		/*************************************************************************
 		renders whatever is in the vertex buffer
 		*************************************************************************/
-		void DirectX9Renderer::renderVBuffer(void)
+		void renderer::renderVBuffer(void)
 		{
 			// if bufferPos is 0 there is no data in the buffer and nothing to render
 			if (m_bufferPos == 0)
@@ -450,31 +443,32 @@ namespace gui
 		/*************************************************************************
 		render a quad directly to the display
 		*************************************************************************/
-		void DirectX9Renderer::renderQuadDirect(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode)
+		void renderer::renderQuadDirect(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode)
 		{			
 			if (!m_buffer)
 				return;
 
-			m_device->SetStreamSource(0, m_buffer, 0, sizeof(QuadVertex));
-			D3DVIEWPORT9 viewPortDesc;
-			m_device->GetViewport(&viewPortDesc);
+			m_device->set_stream_source(0, m_buffer, sizeof(QuadVertex));
+			view_port viewPortDesc;
+			m_device->get_viewport(viewPortDesc);
 
 			//m_device->SetFVF(VERTEX_FVF);
 			m_device->SetVertexDeclaration(m_vertexDeclaration);
 
-			m_shader->SetTechnique("Simple");
-			D3DXVECTOR2 vec((float)viewPortDesc.Width, (float)viewPortDesc.Height);
-			m_shader->SetFloatArray("ViewPortSize",vec, 2 );
-			m_shader->Begin(D3DXSPRITE_DONOTSAVESTATE );
-			m_shader->BeginPass(0);
-
+			m_shader->set_technique("Simple");
+			rgde::math::vec2f vec((float)viewPortDesc.width, (float)viewPortDesc.height);
+			m_shader->set("ViewPortSize",&vec, 2 );
+			m_shader->begin(0 );
+			m_shader->begin_pass(0);
 
 			QuadVertex*	buffmem;
 			
-			DirectX9Texture* tex = static_cast<DirectX9Texture*>(&img.getTexture());
-			m_device->SetTexture(0, ((DirectX9Texture*)tex)->getD3DTexture());
+			texture* tex = static_cast<texture*>(&img.getTexture());
+			m_device->SetTexture(0, ((texture*)tex)->get_platform_resource());
 
-			if (SUCCEEDED(m_buffer->Lock(0, VERTEX_PER_QUAD * sizeof(QuadVertex), (void**)&buffmem, D3DLOCK_DISCARD)))
+			buffmem = (QuadVertex*)m_buffer->lock(0, VERTEX_PER_QUAD * sizeof(QuadVertex), (void**)&buffmem, buffer::discard);
+
+			if (buffmem)
 			{
 				float scaleX = 1.f;
 				float scaleY = 1.f;
@@ -569,18 +563,18 @@ namespace gui
 					buffmem->tv1 = tex_rect.m_bottom;
 				}
 
-				m_buffer->Unlock();
+				m_buffer->unlock();
 				m_bufferPos = VERTEX_PER_QUAD;
 
 				renderVBuffer();
 			}
-			m_shader->EndPass();
-			m_shader->End();
+			m_shader->end_pass();
+			m_shader->end();
 
 		}
 
 
-		void DirectX9Renderer::OnLostDevice(void)
+		void renderer::OnLostDevice(void)
 		{
 			if (m_shader)
 				m_shader->OnLostDevice();
@@ -589,7 +583,7 @@ namespace gui
 				// release the buffer prior to the reset call (will be re-created later)
 				if (FAILED(m_buffer->Release()))
 				{
-					throw std::exception("DirectX9Renderer::onDeviceLost - Failed to release the VertexBuffer used by the DirectX9Renderer object.");
+					throw std::exception("renderer::onDeviceLost - Failed to release the VertexBuffer used by the renderer object.");
 				}
 
 				m_buffer = 0;
@@ -598,14 +592,14 @@ namespace gui
 			m_texmanager.onDeviceLost();
 		}
 
-		void DirectX9Renderer::OnResetDevice(void)
+		void renderer::OnResetDevice(void)
 		{
 			if(!m_buffer)
 			{
 				// Recreate a vertex buffer
-				if (FAILED(m_device->CreateVertexBuffer((VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, VERTEX_FVF, D3DPOOL_DEFAULT, &m_buffer, 0)))
+				if (FAILED(m_device->CreateVertexBuffer((VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &m_buffer, 0)))
 				{
-					throw std::exception("DirectX9Renderer::onDeviceReset - Failed to create the VertexBuffer for use by the DirectX9Renderer object.");
+					throw std::exception("renderer::onDeviceReset - Failed to create the VertexBuffer for use by the renderer object.");
 				}
 			}
 			if (m_shader)
@@ -614,27 +608,20 @@ namespace gui
 			m_texmanager.onDeviceReset();
 		}
 
-		Size DirectX9Renderer::getViewportSize(void) const
+		Size renderer::getViewportSize(void) const
 		{
 			// initialise renderer size
-			D3DVIEWPORT9	vp;
-
-			if (FAILED(m_device->GetViewport(&vp)))
-			{
-				return Size(0.f, 0.f);
-			}
-			else
-			{
-				return Size((float)vp.Width, (float)vp.Height);
-			}
+			view_port	vp;
+			m_device->get_viewport(vp);
+			return Size((float)vp.width, (float)vp.height);
 		}
 
-		TexturePtr	DirectX9Renderer::createTexture(const std::string& filename)
+		TexturePtr	renderer::createTexture(const std::string& filename)
 		{
 			return m_texmanager.createTexture(filename);
 		}
 
-		TexturePtr	DirectX9Renderer::createTextureInstance(const std::string& filename) 
+		TexturePtr	renderer::createTextureInstance(const std::string& filename) 
 		{
 			TexturePtr tex;
 			if(!filename.empty())
@@ -643,17 +630,17 @@ namespace gui
 				HRESULT hr = D3DXCreateTextureFromFileA(m_device, filename.c_str(), &dx_tex);
 				if(!FAILED(hr))
 				{
-					tex.reset(new DirectX9Texture(*this, dx_tex));
+					tex.reset(new texture(*this, dx_tex));
 				}
 			}
 			return tex;
 		}
-		void DirectX9Renderer::destroyTexture(TexturePtr tex)
+		void renderer::destroyTexture(TexturePtr tex)
 		{
 			throw std::exception("Not implemented yet!");
 		}
 
-		TexturePtr DirectX9Renderer::createEmptyTexture(unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
+		TexturePtr renderer::createEmptyTexture(unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
 		{
 			TexturePtr tex;
 
@@ -685,16 +672,16 @@ namespace gui
 			}
 			else
 			{		
-				tex.reset(new DirectX9Texture(*this, dx_tex));
+				tex.reset(new texture(*this, dx_tex));
 				m_texmanager.pushTexture(tex);
 			}
 
 			return tex;
 		}
 
-		TexturePtr	DirectX9Renderer::reloadTextureFromBuffer(TexturePtr p, const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
+		TexturePtr	renderer::reloadTextureFromBuffer(TexturePtr p, const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
 		{
-			IDirect3DTexture9* dx_tex = static_cast<DirectX9Texture&>(*p).getD3DTexture();
+			IDirect3DTexture9* dx_tex = static_cast<texture&>(*p).get_platform_resource();
 			// lock the D3D texture
 			D3DLOCKED_RECT	rect = {0};
 			HRESULT hr = dx_tex->LockRect(0, &rect, 0, 0);
@@ -752,7 +739,7 @@ namespace gui
 			return p;
 		}
 
-		TexturePtr DirectX9Renderer::loadFromMemory(const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
+		TexturePtr renderer::loadFromMemory(const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
 		{
 			//using namespace std;
 			TexturePtr tex;
@@ -840,19 +827,19 @@ namespace gui
 					dx_tex->UnlockRect(0);
 				}
 
-				tex.reset(new DirectX9Texture(*this, dx_tex));
+				tex.reset(new texture(*this, dx_tex));
 				m_texmanager.pushTexture(tex);
 			}
 
 			return tex;
 		}
 
-		FontPtr	DirectX9Renderer::createFont(const std::string& name, const std::string& filename, unsigned int size)
+		FontPtr	renderer::createFont(const std::string& name, const std::string& filename, unsigned int size)
 		{
 			return FontPtr(new FreeTypeFont(name, filename, size, *this));
 		}
 
-		void DirectX9Renderer::drawFromCache( BaseWindow* window )
+		void renderer::drawFromCache( BaseWindow* window )
 		{
 			assert(window);
 			QuadCacheMap::iterator i = m_mapQuadList.find(window);
@@ -893,13 +880,13 @@ namespace gui
 			}
 		}
 
-		void DirectX9Renderer::beginBatching()
+		void renderer::beginBatching()
 		{
 			m_needToAddCallback = false;
 			Renderer::beginBatching();
 		}
 
-		void DirectX9Renderer::endBatching()
+		void renderer::endBatching()
 		{
 			if (!m_num_batches) return;
 			Renderer::endBatching();

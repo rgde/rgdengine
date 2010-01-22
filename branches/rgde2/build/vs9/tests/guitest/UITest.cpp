@@ -36,7 +36,7 @@ UITest::~UITest()
 
 void UITest::createGUISystem(IDirect3DDevice9* dev)
 {
-	m_render = gui::win32dx9platform::CreateRenderer(dev, 1024);
+	m_render = gui::rgde_platform::CreateRenderer(dev, 1024);
 	if(m_system)
 		delete m_system;
 	m_system = new System(*m_render, "gui\\", "default", 
