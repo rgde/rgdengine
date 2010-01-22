@@ -86,9 +86,15 @@ namespace scene
 
 		void activate();
 
+		bool is_up_fixed() const { return m_fixed_up; }
+		void set_up_fixed(bool flag) {m_fixed_up = flag;}
+
 	private:
 		void apply();
 		void do_ortho_normal();
+
+		// is true use fixed up dir
+		bool m_fixed_up;
 
 		math::vec3f m_up;
 		math::vec3f m_eye_pos;

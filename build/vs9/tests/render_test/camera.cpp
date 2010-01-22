@@ -48,6 +48,7 @@ namespace scene
 		, m_up(0.0f, 1.0f, 0.0f)
 		, m_eye_pos(0.0f, 0.0f, 0.0f)
 		, m_lookat_pt(0.0f, 0.0f, 1.0f)
+		, m_fixed_up(true)
 	{
 		//base::lmsg << "free_camera::free_camera()";
 		if (camera)
@@ -118,11 +119,12 @@ namespace scene
 	}
 
 	void free_camera::rotate_right(float angle)
-	{
-		quatf rot;
+	{		
 		vec3f axis = m_up;
 
 		normalize(axis);
+
+		quatf rot;
 		setRot(rot, AxisAnglef(angle, axis));
 
 		m_lookat_pt = xform<float>(m_lookat_pt, rot, m_lookat_pt-m_eye_pos) + m_eye_pos;
@@ -139,7 +141,12 @@ namespace scene
 		setRot(rot, AxisAnglef(angle, axis));
 
 		m_lookat_pt = xform<float>(m_lookat_pt, rot, m_lookat_pt-m_eye_pos) + m_eye_pos;
-		m_up = xform<float>(m_up, rot, m_up);
+		
+		if (!m_fixed_up)
+		{
+			m_up = xform<float>(m_up, rot, m_up);
+		}
+
 		apply();
 	}
 
@@ -181,10 +188,13 @@ namespace scene
 		vec3f fwd = m_lookat_pt-m_eye_pos;
 		normalize(fwd);
 
-		//m_up
-		vec3f vTmp;
-		cross(vTmp, m_up, fwd);
-		cross(m_up, fwd, vTmp);
+		if (!m_fixed_up)
+		{
+			//m_up
+			vec3f vTmp;
+			cross(vTmp, m_up, fwd);
+			cross(m_up, fwd, vTmp);
+		}
 
 		//m_lookat_pt
 		m_lookat_pt = m_eye_pos + fwd;
