@@ -19,7 +19,7 @@ namespace rgde
 
 			class base_handle
 			{
-				friend class Effect;			
+				friend class effect;			
 			public:
 				base_handle();
 				virtual ~base_handle();
@@ -27,7 +27,7 @@ namespace rgde
 				const std::string& get_name() const {return m_name;}
 
 				virtual bool is_valid() const {return 0 != m_handle;}
-				virtual void refresh(Effect& e) = 0;
+				virtual void refresh(effect& e) = 0;
 
 				bool is_annotation_exist(const std::string& annot_name) const;
 				const std::string& get_annotation(const std::string& annot_name) const;
@@ -44,10 +44,10 @@ namespace rgde
 
 			class param_info : public base_handle
 			{
-				friend class Effect;
+				friend class effect;
 			public:
 				typedef std::vector<char> data;
-				enum Type
+				enum type
 				{
 					INT, STRING, FLOAT, FLOAT2, 
 					FLOAT3, FLOAT4, TEXTURE, BOOL,
@@ -73,10 +73,10 @@ namespace rgde
 
 				virtual bool is_valid() const {return 0 != m_handle && m_is_used;}
 
-				virtual void refresh(Effect& e);	
+				virtual void refresh(effect& e);	
 
 				int GetColumns() const {return m_columns;}
-				Type GetType() const {return m_type;}
+				type get_type() const {return m_type;}
 
 				const data& GetData() const {return m_data;}
 
@@ -94,7 +94,7 @@ namespace rgde
 				std::string m_semantic;
 				bool m_is_used;
 				bool m_is_tweakable;
-				Type m_type;
+				type m_type;
 				ui_params m_ui_params;
 			};
 
@@ -116,25 +116,25 @@ namespace rgde
 
 			struct tech_info : public base_handle
 			{
-				friend class Effect;
+				friend class effect;
 
 				tech_info();
 				
-				virtual void refresh(Effect& e);			
+				virtual void refresh(effect& e);			
 
 				params_map params;			
-				float PixelShaderVersion;
-				int LightTypes;
-				int MaxLights;
+				float ps_version;
+				int light_types;
+				int max_lights;
 				bool PerPixel;
-				bool ShadowProjector;
-				bool LightMapping;
-				bool SupportsInstancing;
-				bool UseVS;
-				bool OverridesEngineMultipass;
-				std::string Group;
+				bool shadow_caster;
+				bool light_maping;
+				bool supports_instancing;
+				bool use_vs;
+				bool override_engine_multipass;
+				std::string group;
 
-				// должен оставаться неизменным иначе не будет работать перезагрузка!
+				// must stay same for shader reloading correct work
 				int tech_index;
 			};
 
@@ -150,8 +150,8 @@ namespace rgde
 
 			class param_block
 			{
-				friend class Effect;
-				param_block(Effect& parent_effect);
+				friend class effect;
+				param_block(effect& parent_effect);
 			public:			
 				~param_block();
 
@@ -160,20 +160,20 @@ namespace rgde
 
 				void apply();
 
-				/// returns NULL if Effect was killed.
-				const Effect* get_parent_effect() const {return m_parent_effect;}
+				/// returns NULL if effect was killed.
+				const effect* get_parent_effect() const {return m_parent_effect;}
 
 			private:
 				void free_handle();
 
 			private:
-				Effect* m_parent_effect;
+				effect* m_parent_effect;
 				internal_effect_handle m_handle;
 			};
 
 			typedef boost::shared_ptr<param_block> paramblock_ptr;
 
-			class Effect
+			class effect
 			{
 				friend param_info;
 				friend tech_info;
@@ -183,8 +183,8 @@ namespace rgde
 				typedef param_blocks::iterator param_block_iter;
 
 			public:
-				Effect(ID3DXEffect* effect, float shader_max_version = 2.2f);
-				~Effect();
+				effect(ID3DXEffect* effect, float shader_max_version = 2.2f);
+				~effect();
 
 				techinfo_ptr get_tech(const std::string& tech_name);
 				const tech_list& get_techniques() const {return m_techniques_list;}

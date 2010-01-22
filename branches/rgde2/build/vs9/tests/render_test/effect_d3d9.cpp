@@ -28,7 +28,7 @@ namespace effects
 	base_handle::~base_handle(){}
 
 
-	bool Effect::m_skip_unused_params = true;
+	bool effect::m_skip_unused_params = true;
 
 	//////////////////////////////////////////////////////////////////////////
 	bool base_handle::is_annotation_exist(const std::string& annot_name) const 
@@ -47,14 +47,14 @@ namespace effects
 		return empty_str;
 	}
 
-	void param_info::refresh(Effect& e)
+	void param_info::refresh(effect& e)
 	{
 		m_handle = 
 			(internal_effect_handle)
 				(e.m_effect ? e.m_effect->GetParameterByName(NULL, m_name.c_str()) : 0);
 	}
 
-	void tech_info::refresh(Effect& e)
+	void tech_info::refresh(effect& e)
 	{
 		m_handle = (internal_effect_handle)
 			(e.m_effect ? e.m_effect->GetTechnique(tech_index) : 0);
@@ -62,12 +62,12 @@ namespace effects
 
 	tech_info::tech_info()
 	{
-		MaxLights = 1; 
+		max_lights = 1; 
 		PerPixel = true; 
-		LightTypes = 0; 
-		PixelShaderVersion = 1.1f; 
-		ShadowProjector = false; 
-		LightMapping = false;
+		light_types = 0; 
+		ps_version = 1.1f; 
+		shadow_caster = false; 
+		light_maping = false;
 	}
 	//////////////////////////////////////////////////////////////////////////
 	namespace 
@@ -107,7 +107,7 @@ namespace effects
 		{
 		}
 
-		param_info::Type get_param_type(D3DXPARAMETER_TYPE type, int cols, int rows)
+		param_info::type get_param_type(D3DXPARAMETER_TYPE type, int cols, int rows)
 		{
 			switch(type)
 			{
@@ -153,7 +153,7 @@ namespace effects
 			return param_info::INVALID;
 		}
 
-	void Effect::parse_techniques(std::list<techinfo_ptr>& tech_list, float shader_max_version)
+	void effect::parse_techniques(std::list<techinfo_ptr>& tech_list, float shader_max_version)
 	{
 		D3DXEFFECT_DESC effect_desc;
 		m_effect->GetDesc(&effect_desc);
@@ -172,20 +172,20 @@ namespace effects
 			ti.m_name = tech_desc.Name;
 			ti.m_handle = (internal_effect_handle)tech_handle;
 			ti.tech_index = i;
-			ti.UseVS = false;
+			ti.use_vs = false;
 
-			ti.OverridesEngineMultipass = false;
+			ti.override_engine_multipass = false;
 			if(tech_desc.Annotations)
 			{
 				D3DXHANDLE annotation = m_effect->GetAnnotationByName(tech_handle,"OverrideEngineMultipass");
-				ti.OverridesEngineMultipass = (NULL != annotation);
+				ti.override_engine_multipass = (NULL != annotation);
 			}
 
 			if (D3DXHANDLE hPass = m_effect->GetPass(tech_handle, 0))
 			{
 				D3DXPASS_DESC pass_desc;
 				if(S_OK == m_effect->GetPassDesc(hPass, &pass_desc))
-					ti.UseVS = (0 != pass_desc.pVertexShaderFunction);
+					ti.use_vs = (0 != pass_desc.pVertexShaderFunction);
 			}
 
 			{				
@@ -196,21 +196,21 @@ namespace effects
 				{
 					DWORD ver = D3DXGetShaderVersion(pDesc.pPixelShaderFunction);
 					if(ver == D3DPS_VERSION(3,0))
-						ti.PixelShaderVersion = 3.0f;
+						ti.ps_version = 3.0f;
 					if(ver == D3DPS_VERSION(2,1))
-						ti.PixelShaderVersion = 2.1f;
+						ti.ps_version = 2.1f;
 					if(ver == D3DPS_VERSION(2,2))
-						ti.PixelShaderVersion = 2.2f;
+						ti.ps_version = 2.2f;
 					if(ver == D3DPS_VERSION(2,0))
-						ti.PixelShaderVersion = 2.0f;
+						ti.ps_version = 2.0f;
 					if(ver == D3DPS_VERSION(1,4))
-						ti.PixelShaderVersion = 1.4f;
+						ti.ps_version = 1.4f;
 					if(ver == D3DPS_VERSION(1,3))
-						ti.PixelShaderVersion = 1.3f;
+						ti.ps_version = 1.3f;
 					if(ver == D3DPS_VERSION(1,2))
-						ti.PixelShaderVersion = 1.2f;
+						ti.ps_version = 1.2f;
 					if(ver == D3DPS_VERSION(1,1))
-						ti.PixelShaderVersion = 1.1f;
+						ti.ps_version = 1.1f;
 				}
 			}
 
@@ -238,22 +238,22 @@ namespace effects
 				const std::string& str = annot_it->second;
 
 				if(str.find("omniprojector") != -1)
-					ti.LightTypes |= light_omni_proj;
+					ti.light_types |= light_omni_proj;
 				if(str.find("omni,") != -1 || str.find("point") != -1)
-					ti.LightTypes |= light_omni;
+					ti.light_types |= light_omni;
 				if(str.find("spot") != -1)
-					ti.LightTypes |= light_spot;
+					ti.light_types |= light_spot;
 				if(str.find("ambient") != -1 || str.find("dir") != -1)
-					ti.LightTypes |= light_dir;
+					ti.light_types |= light_dir;
 
-				if(ti.LightTypes == 0)
-					ti.LightTypes = light_omni;
+				if(ti.light_types == 0)
+					ti.light_types = light_omni;
 			}
 
 			annot_it = ti.annotations.find("maxlights");
 			if(annot_it != ti.annotations.end())
 			{
-				ti.MaxLights = atoi(annot_it->second.c_str());
+				ti.max_lights = atoi(annot_it->second.c_str());
 			}
 
 			// Extract methods
@@ -262,27 +262,27 @@ namespace effects
 			{
 				std::string str = to_lower(annot_it->second);
 				ti.PerPixel   = (str.find("perpixel") != -1);
-				ti.ShadowProjector   = (str.find("shadowproject") != -1);
-				ti.LightMapping = (str.find("lightmap") !=-1);
+				ti.shadow_caster   = (str.find("shadowproject") != -1);
+				ti.light_maping = (str.find("lightmap") !=-1);
 			}
 
 			{//Tehcnique supports isntancing
 				D3DXHANDLE handle = m_effect->GetParameterByName(NULL,"Instanced");
-				ti.SupportsInstancing = handle && (TRUE == m_effect->IsParameterUsed(handle,ti.m_handle));
+				ti.supports_instancing = handle && (TRUE == m_effect->IsParameterUsed(handle,ti.m_handle));
 			}
 
 			// Default if nothing specified
-			if(ti.LightTypes == 0)
-				ti.LightTypes = light_omni;
+			if(ti.light_types == 0)
+				ti.light_types = light_omni;
 
 			// Technique annotation for optional grouping
 			{
 				annot_it = ti.annotations.find("techgroup");
 				if(annot_it != ti.annotations.end())
-					ti.Group = to_lower(annot_it->second);
+					ti.group = to_lower(annot_it->second);
 			}
 
-			if (ti.PixelShaderVersion <= shader_max_version)
+			if (ti.ps_version <= shader_max_version)
 			{
 				techniques.push_back(tech_ptr);
 			}
@@ -312,19 +312,19 @@ namespace effects
 					continue;
 
 				// A is superior to B in every way
-				if(a.Group == b.Group && 
-					b.LightTypes & a.LightTypes && 
+				if(a.group == b.group && 
+					b.light_types & a.light_types && 
 					(
 					(b.PerPixel/* && b.PRT*/)
 					||
 					((a.PerPixel || !b.PerPixel) &&
 					/*(a.PRT || !b.PRT) && */
-					(a.LightMapping || !b.LightMapping)) 
+					(a.light_maping || !b.light_maping)) 
 					)
 					&& 
-					a.MaxLights >= b.MaxLights &&
-					a.PixelShaderVersion >= b.PixelShaderVersion
-					&& (a.ShadowProjector == b.ShadowProjector))
+					a.max_lights >= b.max_lights &&
+					a.ps_version >= b.ps_version
+					&& (a.shadow_caster == b.shadow_caster))
 				{
 					erase_items.push_back(j);
 				}
@@ -333,7 +333,7 @@ namespace effects
 	}
 
 
-	void Effect::parse_params(std::list<param_ptr>& params_list)
+	void effect::parse_params(std::list<param_ptr>& params_list)
 	{
 		D3DXEFFECT_DESC effect_desc;
 		m_effect->GetDesc(&effect_desc);
@@ -419,7 +419,7 @@ namespace effects
 		}
 	}
 
-	void Effect::fill_ui_params(std::list<param_ptr>& params_list)
+	void effect::fill_ui_params(std::list<param_ptr>& params_list)
 	{
 		int t = 0;
 		std::list<param_ptr>::iterator paramIter = params_list.begin();
@@ -466,12 +466,12 @@ namespace effects
 
 	}
 
-	void Effect::erase_param_block(param_block_iter iter)
+	void effect::erase_param_block(param_block_iter iter)
 	{
 		m_param_blocks.erase(iter);
 	}
 
-	void Effect::init(float shader_max_version)
+	void effect::init(float shader_max_version)
 	{
 		m_reads_color_buffer = false;
 		m_reads_global_color_buffer = false;
@@ -567,7 +567,7 @@ namespace effects
 		}
 	}
 
-	Effect::Effect(ID3DXEffect* effect, float shader_max_version)
+	effect::effect(ID3DXEffect* effect, float shader_max_version)
 		: m_effect(effect)
 	{
 		shader_max_version = 2.2f;
@@ -576,7 +576,7 @@ namespace effects
 			init(shader_max_version);
 	}
 
-	Effect::~Effect()
+	effect::~effect()
 	{
 		clean_param_blocks();
 
@@ -623,7 +623,7 @@ namespace effects
 		};
 	}
 
-	void Effect::clean_param_blocks()
+	void effect::clean_param_blocks()
 	{
 		typedef param_blocks::iterator PBIter;
 		{
@@ -638,7 +638,7 @@ namespace effects
 		}
 	}
 
-	void Effect::set_tech(techinfo_ptr tech)
+	void effect::set_tech(techinfo_ptr tech)
 	{
 		D3DXHANDLE h = tech->m_handle;
 		if (NULL == h) return;
@@ -646,7 +646,7 @@ namespace effects
 		assert(hr == D3D_OK);
 	}
 
-	void Effect::reload(ID3DXEffect *new_effect)
+	void effect::reload(ID3DXEffect *new_effect)
 	{
 		clean_param_blocks();
 
@@ -673,7 +673,7 @@ namespace effects
 //#define EFFECT_NAME_VALIDATE
 //#endif
 
-	techinfo_ptr Effect::get_tech(const std::string& name)
+	techinfo_ptr effect::get_tech(const std::string& name)
 	{
 		//EFFECT_NAME_VALIDATE
 		tech_map::iterator it = m_techiques.find(to_lower(name));
@@ -683,7 +683,7 @@ namespace effects
 			return techinfo_ptr();
 	}
 
-	param_ptr Effect::get_param(const std::string& name) const
+	param_ptr effect::get_param(const std::string& name) const
 	{
 		EFFECT_NAME_VALIDATE
 		params_iter it = m_params_by_name.find(name);
@@ -694,7 +694,7 @@ namespace effects
 		return param_ptr();
 	}
 
-	param_ptr Effect::GetParameterBySemantic(const std::string& name) const
+	param_ptr effect::GetParameterBySemantic(const std::string& name) const
 	{
 		EFFECT_NAME_VALIDATE
 		params_iter it = m_params_by_semantic.find(name);
@@ -708,70 +708,70 @@ namespace effects
 #define EFFECT_PARAMS_VALIDATE _ASSERTE((NULL != m_effect) && param);
 
 
-	bool Effect::set(const param_ptr& param, float value) 
+	bool effect::set(const param_ptr& param, float value) 
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetFloat(param->m_handle, value);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::set(const param_ptr& param, IDirect3DBaseTexture9* value) 
+	bool effect::set(const param_ptr& param, IDirect3DBaseTexture9* value) 
 	{
 		EFFECT_PARAMS_VALIDATE		
 		HRESULT hr = m_effect->SetTexture(param->m_handle, value);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::set(const param_ptr& param, const D3DXMATRIX& value) 
+	bool effect::set(const param_ptr& param, const D3DXMATRIX& value) 
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetMatrix(param->m_handle, &value);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::set(const param_ptr& param, const D3DXVECTOR4& value) 
+	bool effect::set(const param_ptr& param, const D3DXVECTOR4& value) 
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetVector(param->m_handle, &value);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::set(const param_ptr& param, bool value)
+	bool effect::set(const param_ptr& param, bool value)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetBool(param->m_handle, value);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::set(const param_ptr& param, void* data, unsigned int bytes)
+	bool effect::set(const param_ptr& param, void* data, unsigned int bytes)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetValue(param->m_handle, data, bytes);
 		return D3D_OK == hr;
 	}
 
-	bool  Effect::set(const param_ptr& param, const float* pf, unsigned int Count)
+	bool  effect::set(const param_ptr& param, const float* pf, unsigned int Count)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetFloatArray(param->m_handle, pf, Count);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::set(const param_ptr& param, const D3DXVECTOR4* pVector, unsigned int Count)
+	bool effect::set(const param_ptr& param, const D3DXVECTOR4* pVector, unsigned int Count)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetVectorArray(param->m_handle, pVector, Count);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::set(const param_ptr& param, const D3DXMATRIX* matrix, unsigned int count)
+	bool effect::set(const param_ptr& param, const D3DXMATRIX* matrix, unsigned int count)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetMatrixArray(param->m_handle, matrix, count);
 		return D3D_OK == hr;
 	}
 
-	bool Effect::set(const param_ptr& param, int value)
+	bool effect::set(const param_ptr& param, int value)
 	{
 		EFFECT_PARAMS_VALIDATE
 		HRESULT hr = m_effect->SetInt(param->m_handle, value);
@@ -779,7 +779,7 @@ namespace effects
 	}
 
 
-	bool Effect::set(const std::string& param_name, float value)
+	bool effect::set(const std::string& param_name, float value)
 	{
 		if(param_ptr p = get_param(param_name))
 		{
@@ -788,7 +788,7 @@ namespace effects
 		return false;
 	}
 
-	bool Effect::set(const std::string& param_name, IDirect3DBaseTexture9* value)
+	bool effect::set(const std::string& param_name, IDirect3DBaseTexture9* value)
 	{
 		if(param_ptr p = get_param(param_name))
 		{
@@ -797,7 +797,7 @@ namespace effects
 		return false;
 	}
 
-	bool Effect::set(const std::string& param_name, const D3DXMATRIX& value)
+	bool effect::set(const std::string& param_name, const D3DXMATRIX& value)
 	{
 		if(param_ptr p = get_param(param_name))
 		{
@@ -806,7 +806,7 @@ namespace effects
 		return false;
 	}
 
-	bool Effect::set(const std::string& param_name, const D3DXVECTOR4& value)
+	bool effect::set(const std::string& param_name, const D3DXVECTOR4& value)
 	{
 		if(param_ptr p = get_param(param_name))
 		{
@@ -815,7 +815,7 @@ namespace effects
 		return false;
 	}
 
-	bool Effect::set(const std::string& param_name, void* data, unsigned int bytes)
+	bool effect::set(const std::string& param_name, void* data, unsigned int bytes)
 	{
 		if(param_ptr p = get_param(param_name))
 		{
@@ -824,7 +824,7 @@ namespace effects
 		return false;
 	}
 
-	bool Effect::set(const std::string& param_name, const float* pf, unsigned int Count)
+	bool effect::set(const std::string& param_name, const float* pf, unsigned int Count)
 	{
 		if(param_ptr p = get_param(param_name))
 			return set(p, pf, Count);
@@ -832,7 +832,7 @@ namespace effects
 		return false;
 	}
 
-	bool Effect::set(const std::string& param_name, int value)
+	bool effect::set(const std::string& param_name, int value)
 	{
 		if(param_ptr p = get_param(param_name))
 			return set(p, value);
@@ -840,7 +840,7 @@ namespace effects
 		return false;
 	}
 
-	bool Effect::set(const std::string& param_name, bool value)
+	bool effect::set(const std::string& param_name, bool value)
 	{
 		if(param_ptr p = get_param(param_name))
 			return set(p, value);
@@ -848,7 +848,7 @@ namespace effects
 		return false;
 	}
 
-	bool Effect::set(const std::string& param_name, const D3DXVECTOR4* pVector, unsigned int Count)
+	bool effect::set(const std::string& param_name, const D3DXVECTOR4* pVector, unsigned int Count)
 	{
 		if(param_ptr p = get_param(param_name))
 			return set(p, pVector,Count);
@@ -856,7 +856,7 @@ namespace effects
 		return false;
 	}
 
-	bool Effect::set(const std::string& param_name, const D3DXMATRIX* array, unsigned int count)
+	bool effect::set(const std::string& param_name, const D3DXMATRIX* array, unsigned int count)
 	{
 		if(param_ptr p = get_param(param_name))
 			return set(p, array,count);
@@ -864,23 +864,23 @@ namespace effects
 		return false;
 	}
 
-	void Effect::on_device_reset()
+	void effect::on_device_reset()
 	{
 		m_effect->OnResetDevice();
 	}
 
-	void Effect::on_device_lost()
+	void effect::on_device_lost()
 	{
 		clean_param_blocks();
 		m_effect->OnLostDevice();
 	}
 
-	void Effect::commit_changes()
+	void effect::commit_changes()
 	{
 		m_effect->CommitChanges();		
 	}
 
-	bool Effect::set_tech(const std::string& tech_name) 
+	bool effect::set_tech(const std::string& tech_name) 
 	{
 		tech_map_iter it = m_techiques.find(to_lower(tech_name));
 		if (it != m_techiques.end())
@@ -891,7 +891,7 @@ namespace effects
 		return false;
 	}
 
-	unsigned int Effect::begin(unsigned int flags) 
+	unsigned int effect::begin(unsigned int flags) 
 	{
 		unsigned int num_passes = 0;
 
@@ -901,7 +901,7 @@ namespace effects
 		return num_passes;
 	}
 
-	bool Effect::begin_pass(unsigned int pass) 
+	bool effect::begin_pass(unsigned int pass) 
 	{
 		if (NULL == m_effect)
 			return false;
@@ -910,7 +910,7 @@ namespace effects
 		return D3D_OK == hr;
 	}
 
-	bool Effect::end_pass() 
+	bool effect::end_pass() 
 	{
 		if (NULL == m_effect)
 			return false;
@@ -919,7 +919,7 @@ namespace effects
 		return D3D_OK == hr;
 	}
 
-	bool Effect::end() 
+	bool effect::end() 
 	{
 		if (NULL == m_effect)
 			return false;
@@ -940,14 +940,14 @@ namespace effects
 		}
 	}
 
-	paramblock_ptr Effect::create_paramblock()
+	paramblock_ptr effect::create_paramblock()
 	{
 		paramblock_ptr temp_ptr(new param_block(*this));
 		m_param_blocks.push_back(temp_ptr);
 
 		param_block_iter iter = (--m_param_blocks.end());
 
-		unreg_func func = boost::bind(&Effect::erase_param_block, this, iter);
+		unreg_func func = boost::bind(&effect::erase_param_block, this, iter);
 
 		paramblock_ptr block_ptr(
 			temp_ptr.get(),
@@ -959,7 +959,7 @@ namespace effects
 
 	//////////////////////////////////////////////////////////////////////////
 
-	param_block::param_block(Effect& parent_effect) :
+	param_block::param_block(effect& parent_effect) :
 		m_handle(NULL), m_parent_effect(&parent_effect)
 	{
 		

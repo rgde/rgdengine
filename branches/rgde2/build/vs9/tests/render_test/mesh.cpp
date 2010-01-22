@@ -65,8 +65,10 @@ namespace rgde
 
 				mesh::attrib_range& attr = out->m_parts[0].first;
 				attr.id = 0;
+				attr.ib_offset = 0;
 				attr.index_start = 0;
 				attr.prim_count = num_indices/3;
+				attr.vb_offset = 0;
 				attr.vertex_start = 0;
 				attr.vertex_count = num_vertices;
 				attr.prim_type = triangle_list;
@@ -77,13 +79,16 @@ namespace rgde
 
 
 		void mesh::render()
-		{
-			m_device.set_stream_source( 0, vb, sizeof(vertex) );
+		{			
+			m_device.set_stream_source( 0, vb, sizeof(vertex));
 			m_device.set_index_buffer(ib);
 
 			for (size_t i = 0, size = m_parts.size(); i < size; ++i)
 			{
 				attrib_range& attr = m_parts[i].first;
+
+				if (attr.vb_offset > 0)
+					m_device.set_stream_source( 0, vb, sizeof(vertex), attr.vb_offset );				
 
 				m_device.draw(attr.prim_type, attr.vertex_start, 0, attr.vertex_count,
 					attr.index_start, attr.prim_count);
