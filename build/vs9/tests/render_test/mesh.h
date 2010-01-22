@@ -6,7 +6,7 @@ namespace rgde
 	{
 		namespace effects
 		{
-			typedef boost::shared_ptr<class Effect> effect_ptr;
+			typedef boost::shared_ptr<class effect> effect_ptr;
 			typedef boost::shared_ptr<struct param_info> param_ptr;
 		}
 
@@ -41,12 +41,25 @@ namespace rgde
 		public:
 			struct attrib_range
 			{
-				size_t id;
-				size_t index_start;
-				size_t prim_count;
-				size_t vertex_start;
-				size_t vertex_count;
+				size_t id;				
+
+				uint vb_offset;		//bytes
+				uint vb_size;		//bytes
+				uint ib_offset;		//bytes
+				uint ib_size;		//bytes
+
+				uint vert_size;		//bytes
+
+				uint vertex_start;
+				uint index_start;
+
+				uint vertex_count;
+				uint prim_count;
+
 				primitive_type prim_type;
+				
+				vertex_declaration_ptr decl;
+				material_ptr mat;
 			};
 
 			static mesh_ptr create_box(device& dev, float x, float y, float z);
