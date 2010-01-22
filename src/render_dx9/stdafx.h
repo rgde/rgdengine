@@ -26,9 +26,16 @@
 #define COM_NO_WINDOWS_H
 #include <objbase.h>
 
+#include <map>
+#include <list>
+#include <vector>
+
 // TODO: reference additional headers your program requires here
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/weak_ptr.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 
 template<typename T>
 void safe_release(T*& p)
