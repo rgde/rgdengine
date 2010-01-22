@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="guitest"
 	ProjectGUID="{D3D09108-96D0-4629-88B8-122C0256058C}"
 	RootNamespace="EmptyProject"
@@ -29,10 +29,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Performing Gui Custom Build Step"
-				CommandLine="copy nul &quot;$(SolutionDir)executable\tools\d3dx9d_31.dll&quot; /b /y&#x0D;&#x0A;copy &quot;$(SolutionDir)executable\tools\d3dx9d_31.dll&quot; /b + &quot;$(SolutionDir)sources\external\directx\bin\d3dx9d_31.dll&quot; /b &quot;$(SolutionDir)executable\tools\d3dx9d_31.dll&quot; /y&#x0D;&#x0A;"
-				AdditionalDependencies="$(SolutionDir)sources\external\directx\bin\d3dx9d_31.dll"
-				Outputs="$(SolutionDir)executable\bin\tools\d3dx9d_31.dll"
+				CommandLine=""
+				AdditionalDependencies=""
+				Outputs=""
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -119,10 +118,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="Performing Gui Custom Build Step"
-				CommandLine="copy nul &quot;$(SolutionDir)executable\tools\d3dx9_31.dll&quot; /b /y&#x0D;&#x0A;copy &quot;$(SolutionDir)executable\tools\d3dx9_31.dll&quot; /b + &quot;$(SolutionDir)sources\external\directx\bin\d3dx9_31.dll&quot; /b &quot;$(SolutionDir)executable\tools\d3dx9_31.dll&quot; /y&#x0D;&#x0A;"
-				AdditionalDependencies="$(SolutionDir)sources\external\directx\bin\d3dx9_31.dll"
-				Outputs="$(SolutionDir)executable\tools\d3dx9_31.dll"
+				CommandLine=""
+				AdditionalDependencies=""
+				Outputs=""
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
