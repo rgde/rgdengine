@@ -140,13 +140,17 @@ namespace rgde
 					fs::wpath get_file_path(const std::string& filename) const
 					{
 						std::wstring temp_str(filename.begin(), filename.end());
-						return  m_root_read_path / fs::wpath (temp_str);
+						fs::wpath out = m_root_read_path / fs::wpath (temp_str);
+						out.normalize();
+						return out;
 					}
 
 					virtual bool is_file_exist(const std::string& file_name) const 
 					{
 						fs::wpath p = get_file_path(file_name);
-						return fs::exists(p) && fs::is_regular_file(p);
+						bool exist = fs::exists(p);
+						bool regular = fs::is_regular_file(p);
+						return exist && regular;
 					}
 
 					virtual istream_ptr open_read(const std::string& file_name)

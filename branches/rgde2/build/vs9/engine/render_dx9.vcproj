@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="render_win32_dx9"
 	ProjectGUID="{DD993359-1DA6-4B02-A429-827CDC85D983}"
 	RootNamespace="render_dx9"
@@ -158,6 +158,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\src\render_dx9\device.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\src\render_dx9\effect_d3d9.cpp"
 				>
 			</File>
 			<File

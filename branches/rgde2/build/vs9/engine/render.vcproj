@@ -164,6 +164,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\src\render\effect.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\src\render\font.cpp"
 				>
 			</File>
@@ -215,6 +219,10 @@
 			</File>
 			<File
 				RelativePath="..\..\..\include\rgde\render\device_object.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\..\include\rgde\render\effect.h"
 				>
 			</File>
 			<File
