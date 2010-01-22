@@ -1,13 +1,14 @@
 #pragma once
 
-struct IDirect3DDevice9;
+//struct IDirect3DDevice9;
+#include <rgde/render/render_forward.h>
 
 namespace gui
 {
 	class Renderer;
 
-	namespace win32dx9platform
+	namespace rgde_platform
 	{
-		Renderer* CreateRenderer(IDirect3DDevice9* dev, unsigned buff = 1024);
+		Renderer* CreateRenderer(rgde::render::device_ptr dev, unsigned buff = 1024);
 	}	
 }

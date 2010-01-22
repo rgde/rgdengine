@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include <rgde/render/effect.h>
+#include "texture.h"
 
 namespace 
 {
@@ -569,7 +570,10 @@ namespace effects
 		EFFECT_PARAMS_VALIDATE
 		ID3DXEffect* effect = (ID3DXEffect*)m_platform_handle;
 		HRESULT hr = S_FALSE;
-		//hr = effect->SetTexture(param->m_handle, value);
+
+		IDirect3DTexture9* dx_texure = value->get_impl()->get_dx_texture();
+		hr = effect->SetTexture(param->m_handle, dx_texure);
+
 		return D3D_OK == hr;
 	}
 

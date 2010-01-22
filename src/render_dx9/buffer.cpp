@@ -19,17 +19,17 @@ namespace rgde
 		}
 
 		vertex_declaration::vertex_declaration(device& dev, const vertex_elements_vector& vertex_elements)
-			: m_vertex_elements(vertex_elements),
-			m_impl(new vertex_declaration_impl(dev, m_vertex_elements))
+			: m_vertex_elements(vertex_elements)
+			, m_impl(new vertex_declaration_impl(dev, m_vertex_elements))
 		{
 		}
 
 
 		vertex_buffer::vertex_buffer(device& dev, vertex_declaration_ptr decl, size_t size, 
 									resource::pool pool, uint usage_flags)
-			: buffer(dev, resource::vertexbuffer, resource::vertex_data, pool, usage_flags, false),
-			m_decl(decl),
-			m_pimpl(new vertex_buffer_impl(dev, decl, size, usage_flags, pool))			
+			: buffer(dev, resource::vertexbuffer, resource::vertex_data, pool, usage_flags, false)
+			, m_decl(decl)
+			, m_pimpl(new vertex_buffer_impl(dev, decl, size, usage_flags, pool))			
 		{
 		}
 
