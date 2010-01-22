@@ -1,14 +1,13 @@
 #pragma once
 
-struct IDirect3DDevice9;
-struct ID3DXEffect;
-struct IDirect3DTexture9;
-#include <d3dx9.h>
+#include <rgde/core/math.h>
 
 namespace rgde
 {
 	namespace render
 	{
+		typedef boost::shared_ptr<class texture> texture_ptr;
+
 		namespace effects
 		{
 			typedef char* internal_effect_handle;
@@ -57,38 +56,35 @@ namespace rgde
 				struct ui_params
 				{
 					ui_params();
-					std::string Name;
+					std::string name;
 					bool has_slider;
-					int SliderMax; //"UIMax"
-					int SliderMin; //"UIMin"
-					int SliderFactor; //"UIStep"
-					bool isColorSwatch;
+					int slider_max;
+					int slider_min;
+					int slider_factor; //or Step
+					bool is_color_swatch;
 				};
 
 				param_info() {m_is_tweakable = false;}
 
 				/// Parameter tweakable in engine, FX Composer, RenderMonkey, etc??
 				bool tweakable() const {return m_is_tweakable;}
-				const std::string& GetSemantic() const {return m_semantic;}
+				const std::string& get_semantic() const {return m_semantic;}
 
 				virtual bool is_valid() const {return 0 != m_handle && m_is_used;}
 
 				virtual void refresh(effect& e);	
 
-				int GetColumns() const {return m_columns;}
+				int get_columns() const {return m_columns;}
 				type get_type() const {return m_type;}
 
-				const data& GetData() const {return m_data;}
+				const data& get_data() const {return m_data;}
 
-				const std::string& get_ui_name() const {return m_ui_params.Name;}
+				const std::string& get_ui_name() const {return m_ui_params.name;}
 				bool has_slider() const {return m_ui_params.has_slider;}
 				const ui_params& get_ui_params() const {return m_ui_params;}
-				const bool is_color_swatch() const {return m_ui_params.isColorSwatch;}
+				const bool is_color_swatch() const {return m_ui_params.is_color_swatch;}
 
-				const D3DXPARAMETER_DESC& get_dx_desc() const {return m_dx_desc;}
-
-			protected:
-				D3DXPARAMETER_DESC m_dx_desc;
+			protected:				
 				data m_data;
 				int m_columns;
 				std::string m_semantic;
@@ -126,7 +122,7 @@ namespace rgde
 				float ps_version;
 				int light_types;
 				int max_lights;
-				bool PerPixel;
+				bool per_pixel;
 				bool shadow_caster;
 				bool light_maping;
 				bool supports_instancing;
@@ -162,6 +158,7 @@ namespace rgde
 
 				/// returns NULL if effect was killed.
 				const effect* get_parent_effect() const {return m_parent_effect;}
+				bool is_valid() const {return 0 != m_parent_effect && 0 != m_handle;}
 
 			private:
 				void free_handle();
@@ -183,7 +180,7 @@ namespace rgde
 				typedef param_blocks::iterator param_block_iter;
 
 			public:
-				effect(ID3DXEffect* effect, float shader_max_version = 2.2f);
+				effect(void* platform_handle, float shader_max_version = 2.2f);
 				~effect();
 
 				techinfo_ptr get_tech(const std::string& tech_name);
@@ -191,10 +188,10 @@ namespace rgde
 
 				void set_tech(techinfo_ptr tech);
 
-				void reload(ID3DXEffect *new_effect = NULL);
+				void reload(void* new_platform_handle  = NULL);
 
 				param_ptr get_param(const std::string& param_name) const;
-				param_ptr GetParameterBySemantic(const std::string& param_name) const;
+				param_ptr get_param_by_semantic(const std::string& param_semantic) const;
 
 				paramblock_ptr create_paramblock();
 
@@ -207,23 +204,23 @@ namespace rgde
 				bool set(const param_ptr& p, int v);
 				bool set(const param_ptr& p, bool v);
 				bool set(const param_ptr& p, float v);
-				bool set(const param_ptr& p, IDirect3DBaseTexture9* v);
-				bool set(const param_ptr& p, const D3DXMATRIX& v);
-				bool set(const param_ptr& p, const D3DXVECTOR4& v);
+				bool set(const param_ptr& p, texture_ptr tex);
+				bool set(const param_ptr& p, const math::mat44f& v);
+				bool set(const param_ptr& p, const math::vec4f& v);
 				bool set(const param_ptr& p, const float* pf, unsigned int count);
-				bool set(const param_ptr& p, const D3DXVECTOR4* pVector, unsigned int count);
-				bool set(const param_ptr& p, const D3DXMATRIX* pMatrix, unsigned int count);
+				bool set(const param_ptr& p, const math::vec4f* vec_array, unsigned int count);
+				bool set(const param_ptr& p, const math::mat44f* mat_array, unsigned int count);
 				bool set(const param_ptr& p, void* data, unsigned int bytes);
 
 				bool set(const std::string& param_name, int v);			
 				bool set(const std::string& param_name, bool v);
 				bool set(const std::string& param_name, float v);
-				bool set(const std::string& param_name, IDirect3DBaseTexture9* v);
-				bool set(const std::string& param_name, const D3DXMATRIX& v);
-				bool set(const std::string& param_name, const D3DXVECTOR4& v);
+				bool set(const std::string& param_name, texture_ptr tex);
+				bool set(const std::string& param_name, const math::mat44f& v);
+				bool set(const std::string& param_name, const math::vec4f& v);
 				bool set(const std::string& param_name, const float* pf, unsigned int count);
-				bool set(const std::string& param_name, const D3DXVECTOR4* pv, unsigned int count);
-				bool set(const std::string& param_name, const D3DXMATRIX* pm, unsigned int count);
+				bool set(const std::string& param_name, const math::vec4f* pv, unsigned int count);
+				bool set(const std::string& param_name, const math::mat44f* pm, unsigned int count);
 				bool set(const std::string& param_name, void* data, unsigned int bytes);
 
 				void commit_changes();
@@ -259,10 +256,12 @@ namespace rgde
 				params_map m_params_by_name;
 				params_map m_params_by_semantic;
 				param_blocks	m_param_blocks;
-				ID3DXEffect* m_effect;
+				
 				tech_list m_techniques_list;
 				tech_map m_techiques;
 				handles_vertor m_handlers; // need to call refresh after reload
+
+				void* m_platform_handle;
 			};
 		}
 	}
