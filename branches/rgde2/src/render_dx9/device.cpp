@@ -221,9 +221,9 @@ namespace rgde
 			assert(hr == S_OK);
 		}
 
-		void device::set_stream_source(uint stream_number, vertex_buffer_ptr stream_data, uint stride)
+		void device::set_stream_source(uint stream_number, vertex_buffer_ptr stream_data, uint stride, uint bytes_offset)
 		{
-			get_impl().get_dx_device()->SetStreamSource(stream_number, stream_data->get_impl().get_dx_vertex_buffer(),0, stride);
+			get_impl().get_dx_device()->SetStreamSource(stream_number, stream_data->get_impl().get_dx_vertex_buffer(),bytes_offset, stride);
 			set_decl(stream_data->get_declaration());
 		}
 
