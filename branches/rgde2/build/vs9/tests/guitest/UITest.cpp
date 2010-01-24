@@ -1,17 +1,25 @@
-#include "DXUT.h"
-
 #include	<shlobj.h>
 
-#include "UITest.h"
+#include "uitest.h"
 #include "guiplatform.h"
 
+#include <rgde/core/math.h>
+
+#include <boost/filesystem.hpp>
+#include <boost/bind.hpp>
+
 using namespace gui;
+using namespace rgde;
 
 
-UITest::UITest() 
-	: m_render(NULL), 
-	m_system(NULL),
-	m_hFile(INVALID_HANDLE_VALUE)
+ui_test_application::ui_test_application(int x, int y, int w, int h, const std::wstring& title)
+	: m_render(NULL)
+	, m_system(NULL)
+	, m_hFile(INVALID_HANDLE_VALUE)
+	, window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU)
+	, m_render_device(get_handle())
+	, m_elapsed(0)
+	, m_active(true)
 {
 	wchar_t	wpath[MAX_PATH];
 	// init app data path
@@ -20,9 +28,21 @@ UITest::UITest()
 	std::wstring log(wpath);
 	log += L"\\RGDEngine\\guitest.log";
 	m_hFile = CreateFileW(log.c_str(), GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, 0, 0);
+
+	wchar_t buf[512];
+	GetModuleFileNameW(NULL, &buf[0], 512);
+
+	boost::filesystem::wpath p(buf);
+	std::wstring path = p.branch_path().string() + L"/../data/";
+	SetCurrentDirectoryW(path.c_str());
+
+	show();
+	update(0.0f);
+
+	createGUISystem();
 }
 
-UITest::~UITest()
+ui_test_application::~ui_test_application()
 {
 	if(m_system)
 		delete m_system;
@@ -34,13 +54,33 @@ UITest::~UITest()
 		CloseHandle(m_hFile);
 }
 
-void UITest::createGUISystem(IDirect3DDevice9* dev)
+void ui_test_application::run()
+{	
+	m_timer.restart();
+
+	while( is_created() )
+	{
+		if( !do_events() && m_active)
+		{
+			m_elapsed = m_timer.elapsed();
+			update(m_elapsed);
+			render();
+		}
+	}
+}
+
+void ui_test_application::createGUISystem()
 {
-	m_render = gui::rgde_platform::CreateRenderer(dev, 1024);
+	m_render = gui::rgde_platform::CreateRenderer(m_render_device, 
+		m_filesystem, 
+		1024);
+
 	if(m_system)
 		delete m_system;
+
 	m_system = new System(*m_render, "gui\\", "default", 
-			boost::bind(&UITest::log, this, _1, _2));
+			boost::bind(&ui_test_application::log, this, _1, _2));
+
 	if(m_system)
 	{
 		//::ShowCursor(FALSE);
@@ -49,7 +89,7 @@ void UITest::createGUISystem(IDirect3DDevice9* dev)
 	}
 }
 
-void UITest::resetGUISystem()
+void ui_test_application::resetGUISystem()
 {
 	if(m_render)
 		m_render->clearRenderList();
@@ -58,7 +98,7 @@ void UITest::resetGUISystem()
 		m_system->reset();	
 }
 
-void UITest::Update(float delta)
+void ui_test_application::update(float delta)
 {
 	m_framecount++;
 	if(m_system)
@@ -69,7 +109,19 @@ void UITest::Update(float delta)
 	
 }
 
-void UITest::Render()
+bool ui_test_application::do_events()
+{
+	MSG msg = {0};
+	if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
+	{
+		TranslateMessage( &msg );
+		DispatchMessage( &msg );
+		return true;
+	}
+	return false;
+}
+
+void ui_test_application::render()
 {
 	if (NULL != m_system)
 		m_system->render();
@@ -77,7 +129,7 @@ void UITest::Render()
 	//	m_render->doRender();
 }
 
-bool UITest::isFinished() 
+bool ui_test_application::isFinished() 
 {
 	/*if(m_framecount >= 50)
 	return true;*/
@@ -85,29 +137,84 @@ bool UITest::isFinished()
 	return false;
 }
 
-void UITest::handleViewportChange()
+core::windows::result ui_test_application::wnd_proc(ushort message, uint wparam, long lparam )
+{
+	switch (message)
+	{
+	case WM_CHAR:
+		handleChar((UINT_PTR)wparam);
+		return 0;
+
+	case WM_LBUTTONDOWN:
+		handleMouseButton(EventArgs::Left, EventArgs::Down);
+		return 0;
+
+	case WM_LBUTTONUP:
+		handleMouseButton(EventArgs::Left, EventArgs::Up);
+		return 0;
+
+	case WM_RBUTTONDOWN:
+		handleMouseButton(EventArgs::Right, EventArgs::Down);
+		return 0;
+
+	case WM_RBUTTONUP:
+		handleMouseButton(EventArgs::Right, EventArgs::Up);
+		return 0;
+
+	case WM_MBUTTONDOWN:
+		handleMouseButton(EventArgs::Middle, EventArgs::Down);				
+		return 0;
+
+	case WM_MBUTTONUP:
+		handleMouseButton(EventArgs::Middle, EventArgs::Up);
+		return 0;
+
+	case WM_ACTIVATE:	// Watch For Window Activate Message
+		m_active = !HIWORD(wparam);// Check Minimization State
+		return 0;
+
+	case WM_KEYDOWN:
+		{
+			if ('Q' == wparam || 'q' == wparam || VK_ESCAPE == wparam)
+				exit(0);
+
+			handleKeyboard((UINT_PTR)wparam, EventArgs::Down);
+
+			return 0;
+		}
+
+	case WM_KEYUP:
+		handleKeyboard((UINT_PTR)wparam, EventArgs::Up);
+		return 0;
+
+	case WM_SIZE:
+		//resize_scene(LOWORD(lparam), HIWORD(lparam));
+		return 0;
+
+	case WM_MOUSEWHEEL:
+		{
+			int delta = GET_WHEEL_DELTA_WPARAM(wparam);
+			if(m_system)
+				m_system->handleMouseWheel(delta);
+		}
+		return 0;
+
+	case WM_MOUSEMOVE:
+		if(m_system)
+			return m_system->handleMouseMove(LOWORD(lparam), HIWORD(lparam));
+		return 0;
+	}
+	return window::wnd_proc(message, wparam, lparam);
+}
+
+void ui_test_application::handleViewportChange()
 {
 	if(m_system)
 		return m_system->handleViewportChange();
 }
 
-bool UITest::handleMouseMove(int x, int y)
-{
-	if(m_system)
-		return m_system->handleMouseMove(x, y);
-	else
-		return false;
-}
 
-bool UITest::handleMouseWheel(int diff)
-{
-	if(m_system)
-		return m_system->handleMouseWheel(diff);
-	else
-		return false;
-}
-
-bool UITest::handleMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state)
+bool ui_test_application::handleMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state)
 {
 	if(m_system)
 		return m_system->handleMouseButton(btn, state);
@@ -115,7 +222,7 @@ bool UITest::handleMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonSta
 		return false;
 }
 
-bool UITest::handleKeyboard(UINT_PTR key, EventArgs::ButtonState state)
+bool ui_test_application::handleKeyboard(UINT_PTR key, EventArgs::ButtonState state)
 {
 	if(m_system)
 	{
@@ -132,7 +239,7 @@ bool UITest::handleKeyboard(UINT_PTR key, EventArgs::ButtonState state)
 		return false;
 }
 
-bool UITest::handleChar(UINT_PTR ch)
+bool ui_test_application::handleChar(UINT_PTR ch)
 {
 	if(m_system)
 		return m_system->handleChar((unsigned int)ch);
@@ -141,7 +248,7 @@ bool UITest::handleChar(UINT_PTR ch)
 }
 
 
-void UITest::log(LogLevel level, const std::string& message)
+void ui_test_application::log(LogLevel level, const std::string& message)
 {
 	if(m_hFile != INVALID_HANDLE_VALUE)
 	{
@@ -183,7 +290,7 @@ void UITest::log(LogLevel level, const std::string& message)
 	}
 }
 
-void UITest::load(const std::string& xml)
+void ui_test_application::load(const std::string& xml)
 {
 	if(m_system)
 	{
@@ -191,7 +298,7 @@ void UITest::load(const std::string& xml)
 	}
 }
 
-void UITest::OnLostDevice(void)
+void ui_test_application::OnLostDevice(void)
 {
 	try
 	{
@@ -202,7 +309,7 @@ void UITest::OnLostDevice(void)
 	}		
 }
 
-HRESULT UITest::OnResetDevice(void)
+HRESULT ui_test_application::OnResetDevice(void)
 {
 	try
 	{

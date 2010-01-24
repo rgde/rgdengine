@@ -1,48 +1,70 @@
 #pragma once
 
-#include "guilib.h"
+#include <guilib.h>
+#include <rgde/core/windows.h>
+#include <rgde/render/device.h>
+#include <rgde/core/file_system.h>
 
-struct IDirect3DDevice9;
+#include <boost/timer.hpp>
 
-class UITest
+namespace rgde
 {
-public:
-	UITest();
-	virtual ~UITest();
+	class ui_test_application : public core::windows::window
+	{
+	public:
+		ui_test_application(int x, int y, int w, int h, const std::wstring& title);
+		~ui_test_application();
 
-	virtual void createGUISystem(IDirect3DDevice9* dev);
-	virtual void resetGUISystem();
+		void run();
 
-	virtual void Update(float delta);
-	virtual void Render();
+		virtual void createGUISystem();
+		virtual void resetGUISystem();
 
-	virtual bool isFinished();
+		virtual bool isFinished();
 
-	bool isInitialized() { return m_system != 0; }
+		bool isInitialized() { return m_system != 0; }
 
-	bool handleMouseMove(int x, int y);
-	bool handleMouseWheel(int diff);
-	bool handleMouseButton(gui::EventArgs::MouseButtons btn, gui::EventArgs::ButtonState state);
-	virtual bool handleKeyboard(UINT_PTR key, gui::EventArgs::ButtonState state);
-	bool handleChar(UINT_PTR ch);
+		bool handleMouseMove(int x, int y);
+		bool handleMouseWheel(int diff);
+		bool handleMouseButton(gui::EventArgs::MouseButtons btn, gui::EventArgs::ButtonState state);
+		virtual bool handleKeyboard(UINT_PTR key, gui::EventArgs::ButtonState state);
+		bool handleChar(UINT_PTR ch);
 
-	void handleViewportChange();
+		void handleViewportChange();
 
-	void load(const std::string& xml);
+		void load(const std::string& xml);
 
-	virtual HRESULT OnResetDevice();
-	virtual void	OnLostDevice();
+		virtual HRESULT OnResetDevice();
+		virtual void	OnLostDevice();
 
-protected:
-	void log(gui::LogLevel level, const std::string& message);
-	void reinit();
+	protected:
+		void log(gui::LogLevel level, const std::string& message);
+		void reinit();
 
-protected:
-	std::string m_filename;
+		void resize_scene(unsigned int width, unsigned int height);
+		bool do_events();
 
-	gui::Renderer* m_render;
-	gui::System* m_system;
+		void update(float delta);
+		void render();
 
-	unsigned int m_framecount;
-	HANDLE m_hFile;
-};
+		virtual core::windows::result wnd_proc(ushort message, uint wparam, long lparam );
+
+	protected:
+		std::string m_filename;
+
+		render::device m_render_device;
+		core::vfs::system m_filesystem;
+
+		gui::Renderer* m_render;
+		gui::System* m_system;
+
+		unsigned int m_framecount;
+		HANDLE m_hFile;
+
+		bool m_active;
+		double m_elapsed;
+		boost::timer m_timer;
+	};
+
+}
+

@@ -58,9 +58,6 @@ namespace rgde
 			
 		size m_size;
 
-		//render::vertex_buffer_ptr m_vb;
-		//render::index_buffer_ptr m_ib;
-
 		render::mesh_ptr m_box;
 
 		int old_x;
