@@ -2,6 +2,8 @@
 
 #include "size.h"
 
+#include <boost/shared_ptr.hpp>
+
 namespace gui
 {
 	class Renderer;

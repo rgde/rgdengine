@@ -1,5 +1,3 @@
-#include "DXUT.h"
-
 #include <windows.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -7,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "guicon.h"
+#include <assert.h>
 
 using namespace std;
 
