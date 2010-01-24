@@ -17,7 +17,7 @@ using namespace math;
 application::application(int x, int y, int w, int h, const std::wstring& title) 
 	: m_active(true)
 	, window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU)
-	, m_device(get_handle())
+	, m_device(get_handle(), m_filesystem)
 	, m_elapsed(0)
 	, m_sound_system(get_handle())
 	, m_batcher2d(m_device)

@@ -4,9 +4,19 @@
 
 namespace rgde
 {
+	namespace core
+	{
+		namespace vfs
+		{
+			typedef boost::shared_ptr<struct istream> istream_ptr;
+			typedef boost::shared_ptr<struct ostream> ostream_ptr;
+		}
+	}
+
 	namespace render
 	{
 		typedef boost::shared_ptr<class texture> texture_ptr;
+		class device;
 
 		namespace effects
 		{
@@ -169,6 +179,7 @@ namespace rgde
 			};
 
 			typedef boost::shared_ptr<param_block> paramblock_ptr;
+			typedef boost::shared_ptr<class effect> effect_ptr;
 
 			class effect
 			{
@@ -182,6 +193,9 @@ namespace rgde
 			public:
 				effect(void* platform_handle, float shader_max_version = 2.2f);
 				~effect();
+
+				static effect_ptr create(device& dev, const void* data, size_t size);
+				static effect_ptr create(device& dev, core::vfs::istream_ptr file);				
 
 				techinfo_ptr get_tech(const std::string& tech_name);
 				const tech_list& get_techniques() const {return m_techniques_list;}

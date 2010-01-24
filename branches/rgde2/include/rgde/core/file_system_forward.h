@@ -6,9 +6,7 @@ namespace rgde
 	{
 		namespace vfs
 		{
-			class file_system;
-			class mount_point;
-
+			class system;
 			class path;
 
 			struct stream;

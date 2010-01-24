@@ -298,6 +298,7 @@ void FreeTypeFont::updateFont()
 
 	if(!m_fileName.empty())
 	{
+		assert(0 && "TODO!");// replace to vfs!
 		HANDLE hFile = CreateFileA(m_fileName.c_str(), GENERIC_READ, 0, 0, OPEN_ALWAYS, 0, 0);
 		if(hFile != INVALID_HANDLE_VALUE)
 		{

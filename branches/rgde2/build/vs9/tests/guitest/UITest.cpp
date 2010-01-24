@@ -17,7 +17,7 @@ ui_test_application::ui_test_application(int x, int y, int w, int h, const std::
 	, m_system(NULL)
 	, m_hFile(INVALID_HANDLE_VALUE)
 	, window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU)
-	, m_render_device(get_handle())
+	, m_render_device(get_handle(), m_filesystem)
 	, m_elapsed(0)
 	, m_active(true)
 {

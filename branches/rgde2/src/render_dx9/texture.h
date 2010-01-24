@@ -44,9 +44,10 @@ namespace rgde
 
 			bool created() {return m_dx_texture ? true : false;}
 
-		private:
-			D3DXIMAGE_INFO m_info;
 			device& m_device;
+
+		private:
+			D3DXIMAGE_INFO m_info;			
 			IDirect3DTexture9* m_dx_texture;
 		};
 	}

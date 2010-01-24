@@ -55,37 +55,39 @@ namespace rgde
 			return out_pool;
 		}
 
-		namespace
+//////////////////////////////////////////////////////////////////////////
+
+		D3DVIEWPORT9 convert(const view_port& vp)
 		{
-			D3DVIEWPORT9 convert(const view_port& vp)
-			{
-				D3DVIEWPORT9 dx_vp;
+			D3DVIEWPORT9 dx_vp;
 
-				dx_vp.X = (DWORD)vp.x;
-				dx_vp.Y = (DWORD)vp.y;
-				dx_vp.Width = (DWORD)vp.width;
-				dx_vp.Height = (DWORD)vp.height;
-				dx_vp.MinZ = vp.minz;
-				dx_vp.MaxZ = vp.maxz;
+			dx_vp.X = (DWORD)vp.x;
+			dx_vp.Y = (DWORD)vp.y;
+			dx_vp.Width = (DWORD)vp.width;
+			dx_vp.Height = (DWORD)vp.height;
+			dx_vp.MinZ = vp.minz;
+			dx_vp.MaxZ = vp.maxz;
 
-				return dx_vp;
-			}
-
-			view_port convert(const D3DVIEWPORT9& dx_vp)
-			{
-				view_port vp;
-				vp.x		= (size_t)dx_vp.X;
-				vp.y		= (size_t)dx_vp.Y;
-				vp.width	= (size_t)dx_vp.Width;
-				vp.height	= (size_t)dx_vp.Height;
-				vp.minz		= dx_vp.MinZ;
-				vp.maxz		= dx_vp.MaxZ;
-				return vp;
-			}
+			return dx_vp;
 		}
 
-		device::device(core::windows::handle hwnd, bool windowed)
-			: m_pimpl(new device_impl(hwnd, windowed))
+		view_port convert(const D3DVIEWPORT9& dx_vp)
+		{
+			view_port vp;
+			vp.x		= (size_t)dx_vp.X;
+			vp.y		= (size_t)dx_vp.Y;
+			vp.width	= (size_t)dx_vp.Width;
+			vp.height	= (size_t)dx_vp.Height;
+			vp.minz		= dx_vp.MinZ;
+			vp.maxz		= dx_vp.MaxZ;
+			return vp;
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+
+
+		device::device(core::windows::handle hwnd, core::vfs::system& vfs, bool windowed)
+			: m_pimpl(new device_impl(hwnd, windowed, vfs))
 		{
 		}
 
@@ -440,52 +442,130 @@ namespace rgde
 			return dx_blend_mode;
 		}
 
+
 		//////////////////////////////////////////////////////////////////////////
-		surface_ptr surface::create(impl_ptr impl) 
+
+		device::device_impl::device_impl(core::windows::handle hwnd, bool windowed, core::vfs::system& vfs)
+			: m_hwnd(hwnd)
+			, m_d3d(NULL)
+			, m_device(NULL)
+			, m_dx_include(vfs)
 		{
-			resource::format format = (resource::format)impl->get_dx_desc().Format;
-			resource::pool pool = convert(impl->get_dx_desc().Pool);
-			
-			return surface_ptr(new surface(impl, format, pool));
+			m_d3d = Direct3DCreate9( D3D_SDK_VERSION );
+
+			if ( m_d3d == NULL )
+			{
+				MessageBox(m_hwnd, L"Can't init DirectX.", L"ERROR", MB_OK|MB_ICONEXCLAMATION);
+			}
+
+			RECT rc;
+			GetClientRect((HWND)m_hwnd, &rc);
+
+			using rgde::uint;
+
+			uint width = rc.right - rc.left;
+			uint height = rc.bottom - rc.top;
+
+			// Tell the window how we want things to be..
+			D3DPRESENT_PARAMETERS d3dpp=
+			{
+				width,			// Back Buffer Width
+				height,			// Back Buffer Height
+				D3DFMT_X8R8G8B8,		// Back Buffer Format (Color Depth)
+				1,				// Back Buffer Count (Double Buffer)
+				D3DMULTISAMPLE_NONE,	// No Multi Sample Type
+				0,				// No Multi Sample Quality
+				D3DSWAPEFFECT_DISCARD,	// Swap Effect (Fast)
+				(HWND)m_hwnd,	// The Window Handle
+				windowed,		// Windowed or Fullscreen
+				TRUE,			// Enable Auto Depth Stencil  
+				D3DFMT_D24S8,	// 16Bit Z-Buffer (Depth Buffer)
+				0,				// No Flags
+				D3DPRESENT_RATE_DEFAULT,   // Default Refresh Rate
+				//D3DPRESENT_INTERVAL_IMMEDIATE
+				D3DPRESENT_INTERVAL_DEFAULT	// Presentation Interval (vertical sync)
+			};
+
+			// Check The Wanted Surface Format
+			if ( FAILED( m_d3d->CheckDeviceFormat( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL,
+				d3dpp.BackBufferFormat, D3DUSAGE_DEPTHSTENCIL,
+				D3DRTYPE_SURFACE, d3dpp.AutoDepthStencilFormat ) ) )
+			{
+				MessageBox(m_hwnd, L"Can't Find Surface Format.", L"ERROR",MB_OK|MB_ICONEXCLAMATION);
+			}
+
+			// Create The DirectX 3D Device 
+			if(FAILED( m_d3d->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hwnd,
+				D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+				&d3dpp, &m_device ) ) )
+			{
+				MessageBox(m_hwnd, L"Can't Create DirectX 3D Device.", L"ERROR",MB_OK|MB_ICONEXCLAMATION);
+			}
 		}
 
-		surface_ptr surface::create_rt(device& dev, size_t width, size_t heigh, 
-			resource::format format, multisample_type sm_type, bool locable)
+		device::device_impl::~device_impl()
 		{
-			IDirect3DSurface9* dx_surface = 0;
-			HRESULT hr = dev.get_impl()->CreateRenderTarget((UINT)width, (UINT)heigh, (D3DFORMAT)format,
-				D3DMULTISAMPLE_NONE, 0, locable ? TRUE : FALSE,
-				&dx_surface, 0);
-
-			return hr != S_OK ? surface_ptr() 
-				: 
-				surface::create(
-					impl_ptr(
-						new surface::surface_impl(dev, dx_surface)
-					)
-				);
+			safe_release(m_device);
+			safe_release(m_d3d);
 		}
 
-		texture_ptr texture::create(device& dev, size_t width, size_t heigh, size_t num_levels,
-			resource::format format, texture_usage usage, resource::pool pool)
+		bool device::device_impl::frame_begin()
 		{
-			IDirect3DTexture9* dx_texture = 0;
-			HRESULT hr = dev.get_impl()->CreateTexture(
-				(DWORD)width, 
-				(DWORD)heigh, 
-				(UINT)num_levels, 
-				(DWORD)usage, 
-				(D3DFORMAT)format, 
-				pool == resource::managed ? D3DPOOL_MANAGED : D3DPOOL_DEFAULT, 
-				&dx_texture, 0);
-
-			if (hr != S_OK)
-				return texture_ptr();
-
-			impl_ptr impl(new  texture_impl(dev, dx_texture));
-
-			return texture_ptr(new texture(impl, resource::texture, format));
+			return S_OK == m_device->BeginScene();
 		}
 
+		bool device::device_impl::frame_end()
+		{
+			return S_OK == m_device->EndScene();
+		}
+
+		bool device::device_impl::present()
+		{
+			return S_OK == m_device->Present(NULL, NULL, NULL, NULL);
+		}
+
+		void device::device_impl::clear(unsigned int color, float depth)
+		{
+			unsigned int flags = D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL;
+			m_device->Clear( 0, NULL, flags ,color, depth, 0 );
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+
+		dx_include_impl::dx_include_impl(core::vfs::system& vfs)
+			: m_vfs(vfs)
+		{
+		}
+
+		HRESULT dx_include_impl::Open(D3DXINCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID *ppData, UINT *pBytes)
+		{
+			__asm nop;
+
+			core::vfs::istream_ptr in = m_vfs.open_read(pFileName);
+
+			if (!in)
+			{
+				*pBytes = 0;
+				*ppData = 0;
+
+				return S_FALSE;
+			}
+
+			uint size = in->get_size();
+			byte* data = new byte[size];
+			in->read(data, size);
+
+			*pBytes = size;
+			*ppData = data;
+
+			return S_OK;
+		}
+
+		HRESULT dx_include_impl::Close(LPCVOID data)
+		{
+			byte* data_bytes = (byte*)data;
+			delete []data_bytes;
+			return S_OK;
+		}
 	}
 }

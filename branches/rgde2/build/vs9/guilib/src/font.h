@@ -74,7 +74,7 @@ namespace gui
 		KerningMap	m_kerning;
 #endif
 
-		// размер в пикселях
+		// size in pixels
 		float m_width, m_height;
 	};
 
@@ -92,51 +92,8 @@ namespace gui
 			WordWrapCentred,
 			WordWrapJustified
 		};
-
-		Font (const std::string& name, const std::string& fontname, unsigned int size, Renderer& render);
+		
 		virtual ~Font ();
-
-	protected:
-		typedef std::map<utf32, FontGlyph> CodepointMap;
-		/// Contains mappings from code points to Image objects
-		CodepointMap m_cp_map;
-
-		std::string m_name;
-		std::string m_fileName;
-
-		/// maximal font ascender (pixels above the baseline)
-		float m_ascender;
-		/// maximal font descender (negative pixels below the baseline)
-		float m_descender;
-		/// (ascender - descender) + linegap
-		float m_height;
-
-		float m_spacing;
-
-		/// Maximal codepoint for font glyphs
-		utf32 m_maxCodepoint;
-
-		unsigned int *m_glyphPageLoaded;
-
-		virtual void updateFont () = 0;
-
-		size_t drawWrappedText (const std::wstring& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
-
-		size_t getNextWord (const std::wstring& in_string, size_t start_idx, size_t max_length, std::wstring& out_string) const;
-
-		void drawTextLine (const std::wstring& text, const Rect& draw_area, const Vector3& position, const Rect& clip_rect, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
-
-		void drawTextLineJustified (const std::wstring& text, const Rect& draw_area, const Vector3& position, const Rect& clip_rect, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
-
-		float getWrappedTextExtent (const std::wstring& text, float wrapWidth, float x_scale = 1.0f);
-
-		const FontGlyph* getGlyphData (utf32 codepoint);
-
-		void setMaxCodepoint (utf32 codepoint);
-
-		virtual void rasterize (utf32 start_codepoint, utf32 end_codepoint);
-
-		Font& operator=(const Font&) {return *this;}
 
 	public:
 		/// Colour value used whenever a colour is not specified.
@@ -144,9 +101,6 @@ namespace gui
 		static const std::wstring	DefaultWhitespace;		//!< The default set of whitespace
 		static const std::wstring	DefaultAlphanumerical;	//!< default set of alphanumericals.
 		static const std::wstring	DefaultWrapDelimiters;	//!< The default set of word-wrap delimiters
-
-		Renderer& m_render;
-		unsigned int m_size;
 
 		bool isCodepointAvailable (utf32 cp) const
 		{ 
@@ -211,6 +165,56 @@ namespace gui
 		float getFormattedTextExtent (const std::wstring& text, const Rect& format_area, TextFormatting fmt, float x_scale = 1.0f);
 
 		const std::string&	getName(void) const {return m_name;}
+
+	protected:
+		Font (const std::string& name, const std::string& fontname, unsigned int size, Renderer& render);
+		Font& operator=(const Font&) {return *this;}
+
+		virtual void updateFont () = 0;
+
+		size_t drawWrappedText (const std::wstring& text, const Rect& draw_area, float z, const Rect& clip_rect, 
+								TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
+
+		size_t getNextWord (const std::wstring& in_string, size_t start_idx, size_t max_length, std::wstring& out_string) const;
+
+		void drawTextLine (const std::wstring& text, const Rect& draw_area, const Vector3& position, const Rect& clip_rect, 
+							const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
+
+		void drawTextLineJustified (const std::wstring& text, const Rect& draw_area, const Vector3& position, 
+							const Rect& clip_rect, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
+
+		float getWrappedTextExtent (const std::wstring& text, float wrapWidth, float x_scale = 1.0f);
+
+		const FontGlyph* getGlyphData (utf32 codepoint);
+
+		void setMaxCodepoint (utf32 codepoint);
+
+		virtual void rasterize (utf32 start_codepoint, utf32 end_codepoint);
+
+	protected:
+		typedef std::map<utf32, FontGlyph> CodepointMap;
+		/// Contains mappings from code points to Image objects
+		CodepointMap m_cp_map;
+
+		std::string m_name;
+		std::string m_fileName;
+
+		/// maximal font ascender (pixels above the baseline)
+		float m_ascender;
+		/// maximal font descender (negative pixels below the baseline)
+		float m_descender;
+		/// (ascender - descender) + linegap
+		float m_height;
+
+		float m_spacing;
+
+		/// Maximal codepoint for font glyphs
+		utf32 m_maxCodepoint;
+
+		unsigned int *m_glyphPageLoaded;
+
+		Renderer& m_render;
+		unsigned int m_size;
 	};
 
 	 typedef boost::shared_ptr<Font> FontPtr;
