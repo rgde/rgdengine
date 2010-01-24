@@ -37,9 +37,7 @@ ui_test_application::ui_test_application(int x, int y, int w, int h, const std::
 	SetCurrentDirectoryW(path.c_str());
 
 	show();
-	update(0.0f);
-
-	createGUISystem();
+	update(0.0f);	
 }
 
 ui_test_application::~ui_test_application()
@@ -56,6 +54,8 @@ ui_test_application::~ui_test_application()
 
 void ui_test_application::run()
 {	
+	createGUISystem();
+
 	m_timer.restart();
 
 	while( is_created() )
@@ -123,10 +123,20 @@ bool ui_test_application::do_events()
 
 void ui_test_application::render()
 {
+	m_render_device.frame_begin();
+	m_render_device.clear(rgde::math::color::Black);
+
+	m_render_device.set_ztest(true);
+	m_render_device.set_cull_mode(rgde::render::cull_none);
+	m_render_device.set_lighting(false);
+	m_render_device.set_alpha_blend(false);
+	m_render_device.set_alpha_test(false);
+
 	if (NULL != m_system)
 		m_system->render();
-	//else if (NULL != m_render)
-	//	m_render->doRender();
+
+	m_render_device.frame_end();
+	m_render_device.present();
 }
 
 bool ui_test_application::isFinished() 
