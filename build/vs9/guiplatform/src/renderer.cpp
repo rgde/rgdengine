@@ -6,7 +6,7 @@
 #include "texture.h"
 #include "ftfont.h"
 
-// все правильно. макрос. да именно так!
+// fine tune :)
 #define PixelAligned(x)	( ( (float)(int)(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f)) ) - 0.5f )
 
 using namespace rgde::render;
@@ -15,9 +15,11 @@ namespace gui
 {
 	namespace rgde_platform
 	{
-		Renderer* CreateRenderer(rgde::render::device_ptr dev, unsigned buff)
+		Renderer* CreateRenderer(rgde::render::device& dev, 
+			rgde::core::vfs::system& vfs,
+			unsigned buff)
 		{
-			return new renderer(dev, 1024);
+			return new renderer(dev, 1024, vfs);
 		}
 				
 		struct QuadVertex
@@ -25,13 +27,6 @@ namespace gui
 			float x, y, tu1, tv1;		//!< The transformed position for the vertex.
 			unsigned int diffuse;			//!< colour of the vertex
 		};
-	
-		//D3DVERTEXELEMENT9 VERTEX_DECL[] =
-		//{
-		//	{ 0,  0, D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT,  D3DDECLUSAGE_POSITION, 0}, 
-		//	{ 0,  16, D3DDECLTYPE_D3DCOLOR, D3DDECLMETHOD_DEFAULT,  D3DDECLUSAGE_COLOR, 0}, 
-		//	D3DDECL_END()
-		//};
 
 		using rgde::render::vertex_element;
 		vertex_element vertex_desc[] = 
@@ -45,35 +40,34 @@ namespace gui
 		const int			renderer::VERTEX_PER_TRIANGLE = 3;
 		const int			renderer::VERTEXBUFFER_CAPACITY	= 8192;
 
-		/*const unsigned long	renderer::VERTEX_FVF = (D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_TEX1);*/
-
 		/*************************************************************************
 		Constructor
 		*************************************************************************/
-		renderer::renderer(device_ptr device, unsigned int max_quads)
+		renderer::renderer(device& device, unsigned int max_quads, 
+			rgde::core::vfs::system& vfs)
+			: m_filesystem(vfs)
+			, m_device(device)
 		{
-			m_device = device;
 			m_needToAddCallback = false;
 			Size size(getViewportSize());
 
-			constructor_impl(device, size);
+			constructor_impl(size);
 		}
 
 
 		/*************************************************************************
 		method to do work of constructor
 		*************************************************************************/
-		void renderer::constructor_impl(device_ptr device, const Size& display_size)
+		void renderer::constructor_impl(const Size& display_size)
 		{
-			m_device        = device;
 			m_bufferPos     = 0;
 
 			m_originalsize = display_size;
 
-			m_vertexDeclaration = vertex_declaration::create(*m_device, vertex_desc, 3);
+			m_vertexDeclaration = vertex_declaration::create(m_device, vertex_desc, 3);
 
 			m_buffer = vertex_buffer::create(
-				*m_device, 
+				m_device, 
 				m_vertexDeclaration, 
 				VERTEXBUFFER_CAPACITY * sizeof(QuadVertex),
 				resource::default, 
@@ -201,10 +195,10 @@ namespace gui
 		void renderer::setRenderStates()
 		{
 			// setup vertex stream
-			m_device->set_stream_source(0, m_buffer, sizeof(QuadVertex));
+			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
 			
 			view_port viewPortDesc;
-			m_device->get_viewport(viewPortDesc);
+			m_device.get_viewport(viewPortDesc);
 
 			//m_device->SetVertexDeclaration(m_vertexDeclaration);
 
@@ -347,9 +341,9 @@ namespace gui
 				m_buffer->unlock();
 
 				gui::rgde_platform::texture* t = static_cast<gui::rgde_platform::texture*>(batch.texture);
-				m_device->set_texture(t->get_platform_resource(), 0);
+				m_device.set_texture(t->get_platform_resource(), 0);
 
-				m_device->draw(triangle_list, s_quadOffset * 6, UINT(numQ * 2));
+				m_device.draw(triangle_list, s_quadOffset * 6, UINT(numQ * 2));
 				s_quadOffset += (DWORD)numQ;
 
 
@@ -379,7 +373,7 @@ namespace gui
 		void renderer::initPerFrameStates(void)
 		{
 			// setup vertex stream
-			m_device->SetStreamSource(0, m_buffer, 0, sizeof(QuadVertex));
+			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
 
 			//m_device->SetFVF(VERTEX_FVF);
 			//m_device->SetVertexShader( 0 );
@@ -434,7 +428,7 @@ namespace gui
 			}
 
 			// render the sprites
-			HRESULT hr = m_device->DrawPrimitive(D3DPT_TRIANGLELIST, 0, (m_bufferPos / VERTEX_PER_TRIANGLE));
+			m_device.draw(triangle_list, 0, (m_bufferPos / VERTEX_PER_TRIANGLE));
 
 			// reset buffer position to 0...
 			m_bufferPos = 0;
@@ -448,14 +442,13 @@ namespace gui
 			if (!m_buffer)
 				return;
 
-			m_device->set_stream_source(0, m_buffer, sizeof(QuadVertex));
+			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
 			view_port viewPortDesc;
-			m_device->get_viewport(viewPortDesc);
+			m_device.get_viewport(viewPortDesc);
 
-			//m_device->SetFVF(VERTEX_FVF);
-			m_device->SetVertexDeclaration(m_vertexDeclaration);
+			m_device.set_decl(m_vertexDeclaration);
 
-			m_shader->set_technique("Simple");
+			m_shader->set_tech("Simple");
 			rgde::math::vec2f vec((float)viewPortDesc.width, (float)viewPortDesc.height);
 			m_shader->set("ViewPortSize",&vec, 2 );
 			m_shader->begin(0 );
@@ -464,9 +457,10 @@ namespace gui
 			QuadVertex*	buffmem;
 			
 			texture* tex = static_cast<texture*>(&img.getTexture());
-			m_device->SetTexture(0, ((texture*)tex)->get_platform_resource());
+			m_device.set_texture(((texture*)tex)->get_platform_resource(), 0 );
 
-			buffmem = (QuadVertex*)m_buffer->lock(0, VERTEX_PER_QUAD * sizeof(QuadVertex), (void**)&buffmem, buffer::discard);
+			buffmem = (QuadVertex*)m_buffer->lock(0, VERTEX_PER_QUAD * sizeof(QuadVertex), 
+				buffer::discard);
 
 			if (buffmem)
 			{
@@ -574,20 +568,12 @@ namespace gui
 		}
 
 
-		void renderer::OnLostDevice(void)
+		void renderer::OnLostDevice()
 		{
 			if (m_shader)
-				m_shader->OnLostDevice();
-			if(m_buffer)
-			{
-				// release the buffer prior to the reset call (will be re-created later)
-				if (FAILED(m_buffer->Release()))
-				{
-					throw std::exception("renderer::onDeviceLost - Failed to release the VertexBuffer used by the renderer object.");
-				}
+				m_shader->on_device_lost();
 
-				m_buffer = 0;
-			}
+			m_buffer.reset();
 
 			m_texmanager.onDeviceLost();
 		}
@@ -597,13 +583,21 @@ namespace gui
 			if(!m_buffer)
 			{
 				// Recreate a vertex buffer
-				if (FAILED(m_device->CreateVertexBuffer((VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), D3DUSAGE_DYNAMIC|D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &m_buffer, 0)))
+				m_buffer = vertex_buffer::create(
+					m_device,
+					m_vertexDeclaration,
+					(VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), 
+					resource::default,
+					buffer::dynamic|buffer::write_only
+					);
+
+				if (!m_buffer)
 				{
 					throw std::exception("renderer::onDeviceReset - Failed to create the VertexBuffer for use by the renderer object.");
 				}
 			}
 			if (m_shader)
-				m_shader->OnResetDevice();
+				m_shader->on_device_reset();
 
 			m_texmanager.onDeviceReset();
 		}
@@ -612,7 +606,7 @@ namespace gui
 		{
 			// initialise renderer size
 			view_port	vp;
-			m_device->get_viewport(vp);
+			m_device.get_viewport(vp);
 			return Size((float)vp.width, (float)vp.height);
 		}
 
@@ -626,18 +620,17 @@ namespace gui
 			TexturePtr tex;
 			if(!filename.empty())
 			{
-				IDirect3DTexture9* dx_tex = NULL;
-				HRESULT hr = D3DXCreateTextureFromFileA(m_device, filename.c_str(), &dx_tex);
-				if(!FAILED(hr))
+				texture_ptr t = rgde::render::texture::create(
+					m_device, 
+					m_filesystem.open_read(filename)
+					);
+
+				if (t)
 				{
-					tex.reset(new texture(*this, dx_tex));
+					tex.reset(new texture(*this, t));
 				}
 			}
 			return tex;
-		}
-		void renderer::destroyTexture(TexturePtr tex)
-		{
-			throw std::exception("Not implemented yet!");
 		}
 
 		TexturePtr renderer::createEmptyTexture(unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
@@ -649,30 +642,35 @@ namespace gui
 
 			// create a texture
 			// TODO: Check resulting pixel format and react appropriately.
-			D3DFORMAT pixfmt;
+			resource::format pixfmt;
 			switch (pixFormat)
 			{
 			case Texture::PF_RGB:
-				pixfmt = D3DFMT_R8G8B8;
+				pixfmt = resource::r8g8b8;
 				break;
 			case Texture::PF_RGBA:
-				pixfmt = D3DFMT_A8B8G8R8;
+				pixfmt = resource::a8b8g8r8;
 				break;
 			default:
 				throw std::exception("Failed to load texture from memory: Invalid pixelformat.");
 				break;
 			}
 
-			IDirect3DTexture9* dx_tex = NULL;
-			HRESULT hr = D3DXCreateTexture(m_device, tex_size, tex_size, 1, 0, pixfmt, D3DPOOL_MANAGED, &dx_tex);
-
-			if (FAILED(hr))
+			rgde::render::texture_ptr platform_texture = rgde::render::texture::create(
+				m_device, 
+				tex_size, 
+				tex_size, 
+				1, 
+				pixfmt
+				);
+			
+			if (!platform_texture)
 			{
 				throw std::exception("Failed to load texture from memory: D3D Texture creation failed.");
 			}
 			else
 			{		
-				tex.reset(new texture(*this, dx_tex));
+				tex.reset(new texture(*this, platform_texture));
 				m_texmanager.pushTexture(tex);
 			}
 
@@ -681,22 +679,21 @@ namespace gui
 
 		TexturePtr	renderer::reloadTextureFromBuffer(TexturePtr p, const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
 		{
-			IDirect3DTexture9* dx_tex = static_cast<texture&>(*p).get_platform_resource();
-			// lock the D3D texture
-			D3DLOCKED_RECT	rect = {0};
-			HRESULT hr = dx_tex->LockRect(0, &rect, 0, 0);
+			texture_ptr platform_tex = static_cast<texture&>(*p).get_platform_resource();
 
-			if (FAILED(hr))
+			surface_ptr surface = platform_tex->get_surface(0);
+			surface::lock_data ld;
+			bool res = surface->lock(ld);
+
+			if (!res)
 			{
-				dx_tex->Release();
-				dx_tex = 0;
-
+				platform_tex.reset();
 				throw std::exception("Failed to load texture from memory: IDirect3DTexture9::LockRect failed.");
 			}
 			else
 			{
 				// copy data from buffer into texture
-				unsigned long* dst = (unsigned long*)rect.pBits;
+				unsigned long* dst = (unsigned long*)ld.bytes;
 				unsigned long* src = (unsigned long*)buffPtr;
 
 				// RGBA
@@ -706,16 +703,16 @@ namespace gui
 					{
 						for (unsigned int j = 0; j < buffWidth; ++j)
 						{
-							// we dont need endian safety on microsoft
+							//TODO: check for endian safety on non-MS platforms
 							unsigned char r = (unsigned char)(src[j] & 0xFF);
 							unsigned char g = (unsigned char)((src[j] >> 8) & 0xFF);
 							unsigned char b = (unsigned char)((src[j] >> 16)  & 0xFF);
 							unsigned char a = (unsigned char)((src[j] >> 24) & 0xFF);
 
-							dst[j] = D3DCOLOR_ARGB(a, r, g, b);
+							dst[j] = rgde::math::color(a, r, g, b).data;
 						}
 
-						dst += rect.Pitch / sizeof(unsigned long);
+						dst += ld.pitch / sizeof(unsigned long);
 						src += buffWidth;
 					}
 				}
@@ -729,12 +726,12 @@ namespace gui
 							dst[j] = src[j];
 						}
 
-						dst += rect.Pitch / sizeof(unsigned long);
+						dst += ld.pitch / sizeof(unsigned long);
 						src += buffWidth;
 					}
 				}
 
-				dx_tex->UnlockRect(0);
+				surface->unlock();
 			}
 			return p;
 		}
@@ -749,44 +746,47 @@ namespace gui
 
 			// create a texture
 			// TODO: Check resulting pixel format and react appropriately.
-			D3DFORMAT pixfmt;
+			resource::format pixfmt;
 			switch (pixFormat)
 			{
 			case Texture::PF_RGB:
-				pixfmt = D3DFMT_R8G8B8;
+				pixfmt = resource::r8g8b8;
 				break;
 			case Texture::PF_RGBA:
-				pixfmt = D3DFMT_A8B8G8R8;
+				pixfmt = resource::a8b8g8r8;
 				break;
 			default:
 				throw std::exception("Failed to load texture from memory: Invalid pixelformat.");
 				break;
 			}
 
-			IDirect3DTexture9* dx_tex = NULL;
-			HRESULT hr = D3DXCreateTexture(m_device, tex_size, tex_size, 1, 0, pixfmt, D3DPOOL_MANAGED, &dx_tex);
+			texture_ptr platform_tex = rgde::render::texture::create(
+				m_device, 
+				tex_size, 
+				tex_size, 
+				1, 
+				pixfmt);
 
-			if (!FAILED(hr))
+			if (!platform_tex)
 			{
 				throw std::exception("Failed to load texture from memory: D3D Texture creation failed.");
 			}
 			else
 			{
-				// lock the D3D texture
-				D3DLOCKED_RECT	rect;
-				hr = dx_tex->LockRect(0, &rect, 0, 0);
+				// lock the texture
+				surface_ptr surface = platform_tex->get_surface(0);
+				rgde::render::surface::lock_data ld;
+				bool res = surface->lock(ld);
 
-				if (FAILED(hr))
+				if (!res)
 				{
-					dx_tex->Release();
-					dx_tex = 0;
-
+					platform_tex.reset();
 					throw std::exception("Failed to load texture from memory: IDirect3DTexture9::LockRect failed.");
 				}
 				else
 				{
 					// copy data from buffer into texture
-					unsigned long* dst = (unsigned long*)rect.pBits;
+					unsigned long* dst = (unsigned long*)ld.bytes;
 					unsigned long* src = (unsigned long*)buffPtr;
 
 					// RGBA
@@ -802,10 +802,10 @@ namespace gui
 								unsigned char b = (unsigned char)((src[j] >> 16)  & 0xFF);
 								unsigned char a = (unsigned char)((src[j] >> 24) & 0xFF);
 
-								dst[j] = D3DCOLOR_ARGB(a, r, g, b);
+								dst[j] = rgde::math::color(a, r, g, b).data;
 							}
 
-							dst += rect.Pitch / sizeof(unsigned long);
+							dst += ld.pitch / sizeof(unsigned long);
 							src += buffWidth;
 						}
 					}
@@ -819,15 +819,15 @@ namespace gui
 								dst[j] = src[j];
 							}
 
-							dst += rect.Pitch / sizeof(unsigned long);
+							dst += ld.pitch / sizeof(unsigned long);
 							src += buffWidth;
 						}
 					}
 
-					dx_tex->UnlockRect(0);
+					surface->unlock();
 				}
 
-				tex.reset(new texture(*this, dx_tex));
+				tex.reset(new texture(*this, platform_tex));
 				m_texmanager.pushTexture(tex);
 			}
 

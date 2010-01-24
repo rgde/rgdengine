@@ -467,11 +467,17 @@ namespace rgde
 		}
 
 		texture_ptr texture::create(device& dev, size_t width, size_t heigh, size_t num_levels,
-			resource::format format, texture_usage usage)
+			resource::format format, texture_usage usage, resource::pool pool)
 		{
 			IDirect3DTexture9* dx_texture = 0;
-			HRESULT hr = dev.get_impl()->CreateTexture((DWORD)width, (DWORD)heigh, (UINT)num_levels, (DWORD)usage, 
-				(D3DFORMAT)format, D3DPOOL_DEFAULT, &dx_texture, 0);
+			HRESULT hr = dev.get_impl()->CreateTexture(
+				(DWORD)width, 
+				(DWORD)heigh, 
+				(UINT)num_levels, 
+				(DWORD)usage, 
+				(D3DFORMAT)format, 
+				pool == resource::managed ? D3DPOOL_MANAGED : D3DPOOL_DEFAULT, 
+				&dx_texture, 0);
 
 			if (hr != S_OK)
 				return texture_ptr();

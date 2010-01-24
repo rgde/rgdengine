@@ -19,55 +19,35 @@ namespace rgde
 
 			resource::format convert(D3DFORMAT dx_format)
 			{
-				return resource::a8r8g8b8; 
-//				D3DFMT_UNKNOWN              =  0,
-//
-//					D3DFMT_R8G8B8               = 20,
-//					D3DFMT_A8R8G8B8             = 21,
-//					D3DFMT_X8R8G8B8             = 22,
-
-//
-//					D3DFMT_DXT1                 = MAKEFOURCC('D', 'X', 'T', '1'),
-//					D3DFMT_DXT2                 = MAKEFOURCC('D', 'X', 'T', '2'),
-//					D3DFMT_DXT3                 = MAKEFOURCC('D', 'X', 'T', '3'),
-//					D3DFMT_DXT4                 = MAKEFOURCC('D', 'X', 'T', '4'),
-//					D3DFMT_DXT5                 = MAKEFOURCC('D', 'X', 'T', '5'),
-//
-//					D3DFMT_D16_LOCKABLE         = 70,
-//					D3DFMT_D32                  = 71,
-//					D3DFMT_D24S8                = 75,
-//					D3DFMT_D24X8                = 77,
-//					D3DFMT_D16                  = 80,
-//
-//					D3DFMT_D32F_LOCKABLE        = 82,
-
-//					// Floating point surface formats
-//					// s10e5 formats (16-bits per channel)
-//					D3DFMT_R16F                 = 111,
-//					D3DFMT_G16R16F              = 112,
-//					D3DFMT_A16B16G16R16F        = 113,
-//
-//					// IEEE s23e8 formats (32-bits per channel)
-//					D3DFMT_R32F                 = 114,
-//					D3DFMT_G32R32F              = 115,
-//					D3DFMT_A32B32G32R32F        = 116,
+				switch(dx_format)
+				{
+					case D3DFMT_R8G8B8:
+						return resource::r8g8b8;
+					case D3DFMT_A8R8G8B8:
+						return resource::a8r8g8b8;
+					case D3DFMT_X8R8G8B8:
+						return resource::a8r8g8b8;
+					case D3DFMT_A8B8G8R8:
+						return resource::a8b8g8r8;
+					case D3DFMT_DXT1:
+						return resource::dxt1;
+					case D3DFMT_DXT2:
+						return resource::dxt2;
+					case D3DFMT_DXT3:
+						return resource::dxt3;
+					case D3DFMT_DXT4:
+						return resource::dxt4;
+					case D3DFMT_DXT5:
+						return resource::dxt5;
+					case D3DFMT_D32:
+						return resource::d32;
+					case D3DFMT_D24S8:
+						return resource::d24s8;
+				};
+				return resource::unknown; 
 			}
 		}
 //////////////////////////////////////////////////////////////////////////
-		//texture::texture(device& dev, void* data, size_t size)
-		//	: resource(dev, resource::texture, resource::x8r8g8b8, resource::default)
-		//	, m_impl(new texture_impl(dev, data, size))
-		//{
-		//	m_impl->get_dx_info().ResourceType
-		//	m_type = resource::
-		//}
-
-		//texture::texture(device& dev, core::vfs::istream_ptr file)
-		//	: resource(dev, resource::texture, resource::x8r8g8b8, resource::default)
-		//	, m_impl(new texture_impl(dev, file))
-		//{
-		//}
-
 		texture_ptr texture::create(device& dev, void* data, size_t size)
 		{
 			texture::impl_ptr impl(new texture_impl(dev, data, size));
@@ -84,8 +64,6 @@ namespace rgde
 
 			return texture_ptr();
 		}
-
-		 //resource::type type, resource::format format)
 
 		texture_ptr texture::create(device& dev, core::vfs::istream_ptr file)
 		{
