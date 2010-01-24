@@ -91,10 +91,8 @@ namespace gui
 			// set max texture size the the smaller of max width and max height.
 			m_maxTextureSize = 2048;//devCaps.MaxTextureWidth < devCaps.MaxTextureHeight ? devCaps.MaxTextureWidth : devCaps.MaxTextureHeight;
 
-			m_handleGuiTexture = m_shader->get_param("guiTexture");
-			m_handleViewPortSize = m_shader->get_param("ViewPortSize");
-
-			__asm nop;
+			m_handleGuiTexture = m_shader->get_param("guitexture");
+			m_handleViewPortSize = m_shader->get_param("viewportsize");
 		}
 
 
@@ -652,7 +650,7 @@ namespace gui
 				pixfmt = resource::r8g8b8;
 				break;
 			case Texture::PF_RGBA:
-				pixfmt = resource::a8b8g8r8;
+				pixfmt = resource::a8r8g8b8;
 				break;
 			default:
 				throw std::exception("Failed to load texture from memory: Invalid pixelformat.");
@@ -756,7 +754,7 @@ namespace gui
 				pixfmt = resource::r8g8b8;
 				break;
 			case Texture::PF_RGBA:
-				pixfmt = resource::a8b8g8r8;
+				pixfmt = resource::a8r8g8b8;
 				break;
 			default:
 				throw std::exception("Failed to load texture from memory: Invalid pixelformat.");

@@ -27,8 +27,8 @@ namespace rgde
 						return resource::a8r8g8b8;
 					case D3DFMT_X8R8G8B8:
 						return resource::a8r8g8b8;
-					case D3DFMT_A8B8G8R8:
-						return resource::a8b8g8r8;
+					//case D3DFMT_A8B8G8R8:
+					//	return resource::a8b8g8r8;
 					case D3DFMT_DXT1:
 						return resource::dxt1;
 					case D3DFMT_DXT2:
@@ -237,12 +237,13 @@ namespace rgde
 			resource::format format, texture_usage usage, resource::pool pool)
 		{
 			IDirect3DTexture9* dx_texture = 0;
+			D3DFORMAT dx_format = (D3DFORMAT)format;
 			HRESULT hr = dev.get_impl()->CreateTexture(
 				(DWORD)width, 
 				(DWORD)heigh, 
 				(UINT)num_levels, 
 				(DWORD)usage, 
-				(D3DFORMAT)format, 
+				dx_format, 
 				pool == resource::managed ? D3DPOOL_MANAGED : D3DPOOL_DEFAULT, 
 				&dx_texture, 0);
 
