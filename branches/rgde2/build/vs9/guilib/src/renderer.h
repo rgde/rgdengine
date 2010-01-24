@@ -93,7 +93,6 @@ public:
 	bool	isQueueingEnabled(void) const { return m_isQueueing; }
 
 	virtual	TexturePtr	createTexture(const std::string& filename) {throw std::exception("Unsupported operation!");}
-	virtual	void		destroyTexture(TexturePtr tex) {};
 	virtual	TexturePtr	loadFromMemory(const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat) = 0;
 	
 	//temporary

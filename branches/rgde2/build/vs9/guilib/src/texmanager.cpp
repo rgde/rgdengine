@@ -37,16 +37,6 @@ TexturePtr TextureManager::createTexture(const std::string& filename)
 	return weak_tex.lock();
 }
 
-void TextureManager::destroyTexture(TexturePtr tex)
-{
-	// TODO:
-	//TexturesIter i = std::find(m_textures.begin(), m_textures.end(), tex);
-	//if(i != m_textures.end())
-	//{
-	//	m_textures.erase(i);
-	//}
-}
-
 void TextureManager::pushTexture(TexturePtr tex)
 {
 	//TextureListIter i = std::find(m_textures.begin(), m_textures.end(), tex);

@@ -26,7 +26,6 @@ namespace gui
 		void	onDeviceLost();
 
 		TexturePtr	createTexture(const std::string& filename);
-		void		destroyTexture(TexturePtr tex);
 		void		pushTexture(TexturePtr tex);
 
 		void	cleanup();

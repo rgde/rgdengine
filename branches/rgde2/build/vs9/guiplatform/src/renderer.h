@@ -1,6 +1,7 @@
 #pragma once
 
 #include <rgde/render/effect.h>
+#include <rgde/core/file_system.h>
 
 namespace gui
 {
@@ -9,7 +10,8 @@ namespace gui
 		class renderer : public Renderer
 		{
 		public:
-			renderer(rgde::render::device_ptr device, unsigned int max_quads);
+			renderer(rgde::render::device& device, unsigned int max_quads, 
+				rgde::core::vfs::system& vfs);
 			virtual ~renderer();
 
 			virtual void addCallback( AfterRenderCallbackFunc callback,
@@ -19,7 +21,6 @@ namespace gui
 		
 			virtual void drawFromCache(BaseWindow* window);
 			virtual	TexturePtr	createTexture(const std::string& filename);
-			virtual	void		destroyTexture(TexturePtr tex);
 			virtual	TexturePtr loadFromMemory(const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat);
 
 			// temporary
@@ -36,7 +37,7 @@ namespace gui
 
 			virtual Size	getViewportSize() const;
 
-			rgde::render::device_ptr getDevice() const {return m_device;}
+			rgde::render::device& getDevice() const {return m_device;}
 
 		protected:
 			virtual void renderQuadDirect(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode);
@@ -44,15 +45,17 @@ namespace gui
 
 			void	initPerFrameStates();
 			void	renderVBuffer();
-			void	constructor_impl(rgde::render::device_ptr device, const Size& display_size);
+			void	constructor_impl(const Size& display_size);
 			void	setRenderStates();
 
 		protected:	
-			rgde::render::device_ptr m_device;
+			rgde::render::device& m_device;
 			rgde::render::texture_ptr m_currTexture;
 			rgde::render::vertex_buffer_ptr	m_buffer;
 			rgde::render::vertex_declaration_ptr m_vertexDeclaration;
 			int m_bufferPos;	
+
+			rgde::core::vfs::system& m_filesystem;
 
 			typedef rgde::render::effects::effect shader_effect;
 			typedef rgde::render::effects::param_ptr shader_handle;

@@ -77,7 +77,6 @@ namespace rgde
 			}
 		}
 
-
 		void mesh::render()
 		{			
 			m_device.set_stream_source( 0, vb, sizeof(vertex));

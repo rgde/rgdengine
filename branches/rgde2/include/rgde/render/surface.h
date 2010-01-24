@@ -84,7 +84,8 @@ namespace rgde
 			static texture_ptr create(device& dev, core::vfs::istream_ptr file);
 
 			static texture_ptr create(device& dev, size_t width, size_t heigh, size_t num_levels,
-									resource::format format, texture_usage usage = usage_default);
+									resource::format format, texture_usage usage = usage_default,
+									resource::pool pool = resource::managed);
 
 			impl_ptr		get_impl()		 {return m_impl;}
 			const impl_ptr& get_impl() const {return m_impl;}
