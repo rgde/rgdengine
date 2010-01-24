@@ -85,8 +85,7 @@ namespace gui
 			GetCurrentDirectoryA(MAX_PATH,s);
 					
 
-			assert(0 && "TODO!");
-			//m_shader.reset(new shader_effect(m_device, L"gui\\shaders\\gui.fx"));
+			m_shader = shader_effect::create(m_device, m_filesystem.open_read("gui\\shaders\\gui.fx"));
 
 			// get the maximum available texture size.
 			// set max texture size the the smaller of max width and max height.
@@ -94,6 +93,8 @@ namespace gui
 
 			m_handleGuiTexture = m_shader->get_param("guiTexture");
 			m_handleViewPortSize = m_shader->get_param("ViewPortSize");
+
+			__asm nop;
 		}
 
 
@@ -205,7 +206,9 @@ namespace gui
 			m_shader->set_tech("Simple");
 			rgde::math::vec2f vec((float)viewPortDesc.width, (float)viewPortDesc.height);
 
-			m_shader->set(m_handleViewPortSize,(float*)&vec, 2 );
+			if (m_handleViewPortSize)
+				m_shader->set(m_handleViewPortSize,(float*)&vec, 2 );
+
 			m_shader->begin(0);
 			m_shader->begin_pass(0);
 		}

@@ -1,7 +1,14 @@
 #include "stdafx.h"
 
 #include <rgde/render/effect.h>
+
 #include "texture.h"
+
+#include <rgde/core/file_system.h>
+#include <boost/scoped_array.hpp>
+
+#include "device.h"
+
 
 namespace 
 {
@@ -19,6 +26,46 @@ namespace render
 {
 namespace effects
 {
+	effect_ptr effect::create(device& dev, const void* data, size_t size)
+	{
+		ID3DXEffect* dxeffect_p = 0;
+		HRESULT hr = D3DXCreateEffect(
+			dev.get_impl().m_device,
+			data,
+			size,
+			0 /* defines */,
+			&dev.get_impl().m_dx_include, 
+			0 /* flags */,
+			0 /* pool */,
+			&dxeffect_p, 
+			0);
+
+		if (hr == S_OK)
+			return effect_ptr(new effect(dxeffect_p)); 
+		else
+		{
+			if (dxeffect_p)
+				dxeffect_p->Release();
+		}
+
+		return effect_ptr();
+	}
+
+	effect_ptr effect::create(device& dev, core::vfs::istream_ptr file)
+	{
+		assert(file->is_valid());
+
+		size_t size = file->get_size();
+
+		boost::scoped_array<byte> data(new byte[size]);
+
+		file->read(data.get(), (unsigned int)size);
+
+		effect_ptr out = create(dev, data.get(), size);
+
+		return out;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	void param_info::refresh(effect& e)
 	{

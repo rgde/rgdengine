@@ -47,6 +47,32 @@ namespace rgde
 				return resource::unknown; 
 			}
 		}
+
+//////////////////////////////////////////////////////////////////////////
+
+		bool surface::lock(lock_data& data) const
+		{
+			IDirect3DSurface9* sur = get_impl()->get_dx_surface();
+			
+			D3DLOCKED_RECT lock_rect;
+			HRESULT hr = sur->LockRect(&lock_rect, 0, 0);
+
+			if (hr == S_OK)
+			{
+				data.bytes = lock_rect.pBits;
+				data.pitch = lock_rect.Pitch;
+			}
+
+			return hr == S_OK;
+		}
+
+		bool surface::unlock() const
+		{
+			IDirect3DSurface9* sur = get_impl()->get_dx_surface();
+			HRESULT hr = sur->UnlockRect();
+			return hr == S_OK;
+		}
+
 //////////////////////////////////////////////////////////////////////////
 		texture_ptr texture::create(device& dev, void* data, size_t size)
 		{
@@ -89,11 +115,27 @@ namespace rgde
 
 		surface_ptr texture::get_surface(size_t surface_level)
 		{
+			IDirect3DSurface9* dx_surface_p = 0;
+			HRESULT hr = get_impl()->get_dx_texture()->GetSurfaceLevel(surface_level, &dx_surface_p);
+
+			if (hr == S_OK)
+			{
+				return surface::create(
+					surface::impl_ptr(new surface::surface_impl(get_impl()->m_device, dx_surface_p))
+					);
+
+			}
+			else if (dx_surface_p)
+			{
+				dx_surface_p->Release();
+			}
+
 			return surface_ptr();
 		}
 
 		surface_ptr texture::get_surface(cube_face face, size_t surface_level)
 		{
+			assert(0 && "NOT IMPLEMENTED!");
 			return surface_ptr();
 		}
 
@@ -164,5 +206,53 @@ namespace rgde
 				(UINT)size,
 				&m_dx_texture);
 		}
+
+		//////////////////////////////////////////////////////////////////////////
+		surface_ptr surface::create(impl_ptr impl) 
+		{
+			resource::format format = (resource::format)impl->get_dx_desc().Format;
+			resource::pool pool = convert(impl->get_dx_desc().Pool);
+
+			return surface_ptr(new surface(impl, format, pool));
+		}
+
+		surface_ptr surface::create_rt(device& dev, size_t width, size_t heigh, 
+			resource::format format, multisample_type sm_type, bool locable)
+		{
+			IDirect3DSurface9* dx_surface = 0;
+			HRESULT hr = dev.get_impl()->CreateRenderTarget((UINT)width, (UINT)heigh, (D3DFORMAT)format,
+				D3DMULTISAMPLE_NONE, 0, locable ? TRUE : FALSE,
+				&dx_surface, 0);
+
+			return hr != S_OK ? surface_ptr() 
+				: 
+				surface::create(
+				impl_ptr(
+				new surface::surface_impl(dev, dx_surface)
+				)
+				);
+		}
+
+		texture_ptr texture::create(device& dev, size_t width, size_t heigh, size_t num_levels,
+			resource::format format, texture_usage usage, resource::pool pool)
+		{
+			IDirect3DTexture9* dx_texture = 0;
+			HRESULT hr = dev.get_impl()->CreateTexture(
+				(DWORD)width, 
+				(DWORD)heigh, 
+				(UINT)num_levels, 
+				(DWORD)usage, 
+				(D3DFORMAT)format, 
+				pool == resource::managed ? D3DPOOL_MANAGED : D3DPOOL_DEFAULT, 
+				&dx_texture, 0);
+
+			if (hr != S_OK)
+				return texture_ptr();
+
+			impl_ptr impl(new  texture_impl(dev, dx_texture));
+
+			return texture_ptr(new texture(impl, resource::texture, format));
+		}
+
 	}
 }

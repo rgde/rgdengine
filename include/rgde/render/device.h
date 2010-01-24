@@ -3,6 +3,7 @@
 #include <rgde/core/types.h>
 #include <rgde/core/windows_forward.h>
 #include <rgde/render/render_forward.h>
+#include <rgde/core/file_system_forward.h>
 
 #include <boost/noncopyable.hpp>
 #include <list>
@@ -71,7 +72,7 @@ namespace rgde
 			class device_impl;
 			typedef boost::scoped_ptr<device_impl> pimpl;
 
-			device(core::windows::handle hwnd = 0, bool windowed = true);
+			device(core::windows::handle hwnd, core::vfs::system& vfs, bool windowed = true);
 			virtual ~device();
 
 			void set_lighting(bool enable);
