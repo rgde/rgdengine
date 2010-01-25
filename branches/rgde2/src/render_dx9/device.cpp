@@ -192,6 +192,18 @@ namespace rgde
 			return res;
 		}
 
+		void device::set_tex_adressu(size_t stage, texture_addr mode)
+		{
+			IDirect3DDevice9* dev = get_impl();
+			dev->SetSamplerState((DWORD)stage, D3DSAMP_ADDRESSU, (D3DTEXTUREADDRESS)mode);
+		}
+
+		void device::set_tex_adressv(size_t stage, texture_addr mode)
+		{
+			IDirect3DDevice9* dev = get_impl();
+			dev->SetSamplerState((DWORD)stage, D3DSAMP_ADDRESSV, (D3DTEXTUREADDRESS)mode);
+		}
+
 		bool device::frame_end()
 		{
 			return m_pimpl->frame_end();
