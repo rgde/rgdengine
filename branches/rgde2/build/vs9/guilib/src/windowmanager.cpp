@@ -105,8 +105,8 @@ void WindowManager::loadScheme(const std::string& scheme)
 				std::string file(setting["file"].value());
 				if(!file.empty())
 				{
-					m_defaultImageset = createImageset(file);
-					m_imagesetRegistry[m_defaultImageset->getName()] = m_defaultImageset;
+					if (m_defaultImageset = createImageset(file))
+						m_imagesetRegistry[m_defaultImageset->getName()] = m_defaultImageset;
 				}
 			}
 			setting = schemenode("DefaultFont");
