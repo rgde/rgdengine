@@ -143,6 +143,9 @@ void application::render()
 	m_device.set_alpha_blend(false);
 	m_device.set_alpha_test(false);
 
+	m_device.set_tex_adressu(0, render::mode_wrap);
+	m_device.set_tex_adressv(0, render::mode_wrap);
+
 	m_box->render();
 	
 	m_batcher2d.render();
