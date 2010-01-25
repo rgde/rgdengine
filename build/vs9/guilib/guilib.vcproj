@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="guilib"
 	ProjectGUID="{05E7E63D-01BF-4586-9215-D56FA02B2223}"
 	RootNamespace="guilib"
@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)lib/$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)temp/$(ProjectName)/$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -63,6 +63,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalOptions="/LTCG"
+				OutputFile="$(SolutionDir)libs\$(ConfigurationName)\$(ProjectName).lib"
 				AdditionalLibraryDirectories=""
 			/>
 			<Tool
