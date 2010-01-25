@@ -277,7 +277,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\terrain.h"
+				RelativePath=".\terrain_test.h"
 				>
 			</File>
 		</Filter>
@@ -318,6 +318,14 @@
 			</File>
 			<File
 				RelativePath=".\xml_node.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="terrain"
+			>
+			<File
+				RelativePath=".\terrain.h"
 				>
 			</File>
 		</Filter>

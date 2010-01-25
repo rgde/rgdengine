@@ -2,29 +2,48 @@
 
 namespace rgde
 {
-
-	class terrain
+	namespace terrain_container
 	{
-	public:
-		terrain(unsigned int width, unsigned int length)
-			: m_width(width),m_length(length)
+		struct vertex
 		{
+			vertex() : height(0)
+			{
+				norm[0] = .0f;
+				norm[1] = .1f;
+				norm[2] = .0f;
+			}
+
+			float height;
+			math::vec3f norm;
+		}
+	
+		class chunk
+		{
+		private:
+			chunk(){};
+			vertex* data;
+
+
+		public:
+			const uint width;
+			const uint length;
+			
+
+			chunk(const uint w, const uint l) : width(w), length(l) 
+			{
+				data = new vertex[width*length];
+			}
+
+			const vertex& get_vertex(int w, int l) const
+			{
+				assert(w<width && l < length);
+				return *data[l*width+w];
+			}
+
+
+
 		}
 
-		inline float get_height(unsigned int x, unsigned int z) const 
-		{
-			if(x<0 || x>=m_width || z<0 || z>=m_length )
-				return 0.0f;
 
-			return (float) rand()/RAND_MAX;
-		}
-
-		inline int get_width() const {return m_width;}
-		inline int get_length()const {return m_length;}
-
-	private:
-		unsigned int m_width;
-		unsigned int m_length;
-
-	};
+	}
 }
