@@ -93,6 +93,9 @@ namespace rgde
 
 		texture_ptr texture::create(device& dev, core::vfs::istream_ptr file)
 		{
+			if (!file)
+				return texture_ptr();
+
 			texture::impl_ptr impl(new texture_impl(dev, file));
 
 			if (impl && impl->created())
