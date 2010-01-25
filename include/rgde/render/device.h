@@ -54,7 +54,14 @@ namespace rgde
 			blend_invdest_color
 		};
 
-		
+		enum texture_addr
+		{
+			mode_wrap            = 1,
+			mode_mirror          = 2,
+			mode_clamp           = 3,
+			mode_border          = 4,
+		};
+	
 		struct view_port
 		{
 			size_t      x;
@@ -91,6 +98,9 @@ namespace rgde
 			void set_index_buffer(index_buffer_ptr ib);
 			void set_stream_source(uint stream_number, vertex_buffer_ptr stream_data, uint stride, uint bytes_offset = 0);
 			void set_decl(vertex_declaration_ptr& decl);
+
+			void set_tex_adressu(size_t stage, texture_addr mode);
+			void set_tex_adressv(size_t stage, texture_addr mode);
 
 			void clear(unsigned int color, float depth = 1.0f);
 			bool frame_begin();
