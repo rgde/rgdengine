@@ -86,6 +86,8 @@ void ui_test_application::createGUISystem()
 		//::ShowCursor(FALSE);
 		Cursor& cursor = m_system->getCursor();
 		cursor.setType("CursorNormal");
+
+		m_font = m_system->getWindowManager().loadFont("default");
 	}
 }
 
@@ -133,7 +135,10 @@ void ui_test_application::render()
 	m_render_device.set_alpha_test(false);
 
 	if (m_system)
+	{		
+		m_font->drawText("BLAAA BAAA LAA LALA", gui::Vector3(0,20,14),gui::Rect(0,0,200,200));
 		m_system->render();
+	}
 
 	m_render_device.frame_end();
 	m_render_device.present();
