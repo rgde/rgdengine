@@ -12,7 +12,7 @@ namespace gui
 	class  Rect
 	{
 	public:
-		Rect(void) {}
+		Rect(void) : m_left(0), m_top(0), m_right(0), m_bottom(0) {}
 		Rect(float left, float top, float right, float bottom);
 		Rect(Point pos, Size sz);
 
