@@ -32,7 +32,7 @@ namespace gui
 		vertex_element vertex_desc[] = 
 		{
 			{0, 0,  vertex_element::float4,   vertex_element::default_method, vertex_element::position, 0}, 
-			{0, 12, vertex_element::color4ub, vertex_element::default_method, vertex_element::color,	0},
+			{0, 16, vertex_element::color4ub, vertex_element::default_method, vertex_element::color,	0},
 			vertex_element::end_element
 		};
 
@@ -200,6 +200,7 @@ namespace gui
 			m_device.get_viewport(viewPortDesc);
 
 			//m_device->SetVertexDeclaration(m_vertexDeclaration);
+			m_device.set_decl(m_vertexDeclaration);
 
 			m_shader->set_tech("Simple");
 			rgde::math::vec2f vec((float)viewPortDesc.width, (float)viewPortDesc.height);
