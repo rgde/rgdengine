@@ -132,7 +132,7 @@ void ui_test_application::render()
 	m_render_device.set_alpha_blend(false);
 	m_render_device.set_alpha_test(false);
 
-	if (NULL != m_system)
+	if (m_system)
 		m_system->render();
 
 	m_render_device.frame_end();

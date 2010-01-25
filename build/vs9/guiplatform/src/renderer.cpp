@@ -215,7 +215,6 @@ namespace gui
 		*************************************************************************/
 		void renderer::doRender(void)
 		{
-
 			if (!m_buffer)
 				return;
 
