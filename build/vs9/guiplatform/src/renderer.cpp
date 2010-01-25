@@ -182,6 +182,7 @@ namespace gui
 					// начнем следующий батч
 					m_batches[m_num_batches].texture = quad.texture;
 					m_batches[m_num_batches].startQuad = (int)m_num_quads;
+					m_batches[m_num_batches].numQuads = 0;
 
 					++m_num_batches;
 				}

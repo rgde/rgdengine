@@ -1,3 +1,8 @@
+#define WINVER		0x0500
+#define _WIN32_WINNT	0x0501
+#define _WIN32_IE	0x0501
+#define _RICHEDIT_VER	0x0200
+
 #include	<shlobj.h>
 
 #include "uitest.h"
@@ -136,7 +141,7 @@ void ui_test_application::render()
 
 	if (m_system)
 	{		
-		m_font->drawText("BLAAA BAAA LAA LALA", gui::Vector3(0,20,14),gui::Rect(0,0,200,200));
+		m_font->drawText("BLAAA BAAA LAA LALA", gui::Rect(0,0,200,200), 1.f);
 		m_system->render();
 	}
 
