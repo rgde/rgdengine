@@ -2,7 +2,7 @@
 
 #include "mesh.h"
 
-#include "terrain.h"
+#include "terrain_test.h"
 
 namespace rgde
 {
