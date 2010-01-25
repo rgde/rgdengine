@@ -171,14 +171,8 @@ namespace rgde
 					div_t dx = div(x,2);
 					div_t dz = div(z,2);
 
-					if(dx.rem > 0)
-						pv->uv[0] = 1.0f;
-					else
-						pv->uv[0] = 0.0f;
-					if(dz.rem > 0)
-						pv->uv[1] = 1.0f;
-					else
-						pv->uv[1] = 0.0f;
+						pv->uv[0] = (float)x;
+						pv->uv[1] = (float)z;
 
 					const float& h1 = t.get_height( x,   z-1 );    
 					const float& h2 = t.get_height( x+1, z-1 );
