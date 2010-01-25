@@ -395,14 +395,17 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
 			std::wstring tmp1 = outtext.substr(0, m_selectionEnd);
 			stops = m_font->getFormattedTextExtent(tmp1, Rect(), m_format);
 			
-			imgSize = m_selectImg->getPixelRect().getSize();
-			
-			Rect selrect(dest);
-			selrect.m_left += starts;
-			selrect.m_right = dest.m_left + stops;
-			selrect.setHeight(imgSize.m_height);
-			
-			r.draw(*m_selectImg, selrect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Tile, Image::Stretch);
+			if(m_selectImg)
+			{
+				imgSize = m_selectImg->getPixelRect().getSize();
+				
+				Rect selrect(dest);
+				selrect.m_left += starts;
+				selrect.m_right = dest.m_left + stops;
+				selrect.setHeight(imgSize.m_height);
+				
+				r.draw(*m_selectImg, selrect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Tile, Image::Stretch);
+			}
 		}
 
 		m_font->drawText(outtext, dest, 1.0f, clip, m_format, m_backColor, 1.f, 1.f);

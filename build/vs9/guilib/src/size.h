@@ -9,7 +9,7 @@ namespace gui
 	class  Size
 	{
 	public:
-		Size(void) {}
+		Size(void) : m_width(0.f), m_height(0.f) {}
 		Size(float width, float height) : m_width(width), m_height(height) {}
 
 		bool operator==(const Size& other) const;
