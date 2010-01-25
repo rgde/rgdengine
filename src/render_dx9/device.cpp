@@ -239,17 +239,13 @@ namespace rgde
 		{
 			get_impl().get_dx_device()->SetStreamSource(stream_number, stream_data->get_impl().get_dx_vertex_buffer(),bytes_offset, stride);
 			DWORD fvf = convert_to_fvf(stream_data->get_declaration()->get_vertex_elemets());
-			//set_decl(stream_data->get_declaration());
 			HRESULT hr = get_impl().get_dx_device()->SetFVF(fvf);
 			assert(hr == S_OK);
 		}
 
 		void device::set_decl(vertex_declaration_ptr& decl)
 		{
-			DWORD fvf = convert_to_fvf(decl->get_vertex_elemets());
 			get_impl().get_dx_device()->SetVertexDeclaration(decl->get_impl().get_dx_decl());
-			//HRESULT hr = get_impl().get_dx_device()->SetFVF(fvf);
-			//assert(hr == S_OK);
 		}
 
 		void device::set_lighting(bool enable)

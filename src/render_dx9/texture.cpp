@@ -27,8 +27,6 @@ namespace rgde
 						return resource::a8r8g8b8;
 					case D3DFMT_X8R8G8B8:
 						return resource::a8r8g8b8;
-					//case D3DFMT_A8B8G8R8:
-					//	return resource::a8b8g8r8;
 					case D3DFMT_DXT1:
 						return resource::dxt1;
 					case D3DFMT_DXT2:

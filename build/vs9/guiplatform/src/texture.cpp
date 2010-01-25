@@ -85,7 +85,6 @@ void texture::calculateMetrics()
 		m_format = Texture::PF_RGB;
 	    break;
 	case resource::x8r8g8b8:
-	//case resource::a8b8g8r8:
 	case resource::a8r8g8b8:
 		m_format = Texture::PF_RGBA;
 	    break;

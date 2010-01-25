@@ -107,7 +107,7 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
         if (!texsize)
             break;
 
-		TexturePtr p = m_render.createEmptyTexture(texsize, texsize, Texture::PF_RGBA); // TODO: An empty texture creation needed!
+		TexturePtr p = m_render.createEmptyTexture(texsize, texsize, Texture::PF_RGBA);
 		Imageset *is = new Imageset("glyphimgset", p);
         m_glyphImages.push_back(is);
 

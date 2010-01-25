@@ -200,10 +200,9 @@ namespace gui
 			view_port viewPortDesc;
 			m_device.get_viewport(viewPortDesc);
 
-			//m_device->SetVertexDeclaration(m_vertexDeclaration);
 			m_device.set_decl(m_vertexDeclaration);
 
-			m_shader->set_tech("Simple");
+			m_shader->set_tech("simple");
 			rgde::math::vec2f vec((float)viewPortDesc.width, (float)viewPortDesc.height);
 
 			if (m_handleViewPortSize)
@@ -711,7 +710,7 @@ namespace gui
 							unsigned char b = (unsigned char)((src[j] >> 16)  & 0xFF);
 							unsigned char a = (unsigned char)((src[j] >> 24) & 0xFF);
 
-							dst[j] = rgde::math::color(a, r, g, b).data;
+							dst[j] = rgde::math::color(r, g, b, a).data;
 						}
 
 						dst += ld.pitch / sizeof(unsigned long);
@@ -804,7 +803,7 @@ namespace gui
 								unsigned char b = (unsigned char)((src[j] >> 16)  & 0xFF);
 								unsigned char a = (unsigned char)((src[j] >> 24) & 0xFF);
 
-								dst[j] = rgde::math::color(a, r, g, b).data;
+								dst[j] = rgde::math::color(r, g, b, a).data;
 							}
 
 							dst += ld.pitch / sizeof(unsigned long);
