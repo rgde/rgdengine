@@ -164,11 +164,11 @@ namespace rgde
 				break;
 
 			case vertex_element::color4ub:
-				type = D3DDECLTYPE_FLOAT4;
+				type = D3DDECLTYPE_D3DCOLOR;
 				break;
 
 			case vertex_element::ubyte4:
-				type = D3DDECLTYPE_D3DCOLOR;
+				type = D3DDECLTYPE_UBYTE4;
 				break;
 
 			case vertex_element::short2:

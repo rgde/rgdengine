@@ -133,15 +133,9 @@ void ui_test_application::render()
 	m_render_device.frame_begin();
 	m_render_device.clear(rgde::math::color::Black);
 
-	m_render_device.set_ztest(false);
-	m_render_device.set_cull_mode(rgde::render::cull_none);
-	m_render_device.set_lighting(false);
-	m_render_device.set_alpha_blend(true);
-	m_render_device.set_alpha_test(true);
-
 	if (m_system)
 	{		
-		m_font->drawText("BLAAA BAAA LAA LALA", gui::Rect(0,0,200,200), 1.f);
+		//m_font->drawText("BLAAA BAAA LAA LALA", gui::Rect(0,0,200,200), 1.f);
 		m_system->render();
 	}
 

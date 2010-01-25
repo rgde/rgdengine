@@ -27,8 +27,6 @@ namespace rgde
 				dxt4 = MKFRCC('D','X','T','4'),
 				dxt5 = MKFRCC('D','X','T','5'),
 
-				//a8b8g8r8 = 32,
-
 				d16_locable = 70,
 				d32 = 71,
 				d24s8 = 75,
