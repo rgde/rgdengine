@@ -154,6 +154,46 @@ namespace rgde
 			{ 0, 1, 2, 3 }, { 3, 0, 1, 2 }, { 0, 1, 2, 3 }
 		};
 
+		mesh_ptr mesh::create_terrain_chunk(device& dev, terrain_container::terrain& ter, uint x, uint z, float step)
+		{
+			terrain_container::chunk& c = ter.get_chunk(x,z);
+			const size_t num_vertices = c.get_width() * c.get_length();
+			boost::scoped_array<vertex> vb (new vertex[num_vertices]);
+			
+			vertex* pv = vb.get();
+
+			for(int z=0;z<c.get_length();++z)
+				for(int x=0;x<c.get_width();++x)
+				{
+					pv->pos[0] = x*step;
+					pv->pos[1] = c.get_vertex(x,z).height;
+					pv->pos[2] = z*step;
+					pv->uv[0] = (float)x;
+					pv->uv[1] = (float)z;
+					pv->norm = c.get_vertex(x,z).norm;
+					pv++;
+				}
+			const size_t num_faces = (c.get_width()-1)*(c.get_length()-1)*2;
+			uint vertex_index = 0;
+			boost::scoped_array<uint16> ib (new uint16[num_faces*3]);
+			uint16* pf = ib.get();
+			for(int z=0;z<(c.get_length()-1);++z)
+				for(int x=0;x<(c.get_width()-1);++x)
+				{
+					pf[0] = z*c.get_width()+x;
+					pf[1] = z*c.get_width()+x+1;
+					pf[2] = (z+1)*c.get_width()+x+1;
+					pf += 3;
+					pf[0] = (z+1)*c.get_width()+x+1;
+					pf[1] = (z+1)*c.get_width()+x;
+					pf[2] = z*c.get_width()+x;
+					pf += 3;
+				}
+			mesh_ptr out = create_mesh(dev, vb.get(), num_vertices, ib.get(), num_faces*3);
+			return out;
+
+		}
+
 		mesh_ptr mesh::create_random_terrain(device& dev, int w, int l, float step)
 		{
 			terrain t(w,l);

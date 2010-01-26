@@ -46,7 +46,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
@@ -324,6 +324,10 @@
 		<Filter
 			Name="terrain"
 			>
+			<File
+				RelativePath=".\terrain.cpp"
+				>
+			</File>
 			<File
 				RelativePath=".\terrain.h"
 				>
