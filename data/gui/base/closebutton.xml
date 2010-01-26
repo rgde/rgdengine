@@ -5,8 +5,8 @@
 		<TabStop>false</TabStop>
         <Size>11 11</Size>
 		<StateImagery Imageset="skin">
-			<State Type="Normal" Image="CloseButtonNormal" />
-			<State Type="Hovered" Image="CloseButtonHovered" />
+			<State Type="Normal" Image="CloseButton" />
+			<State Type="Hovered" Image="CloseButtonHover" />
 			<State Type="Pushed" Image="CloseButtonPushed" />
 		</StateImagery>
 	</Properties>
