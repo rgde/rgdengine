@@ -9,13 +9,12 @@
 namespace gui
 {
 
-class  Progress :
-	public StaticText
+class  Progress : public StaticText
 {
 public:
 	typedef Progress Self;
 	Progress(System& sys, const std::string& name = "");
-	virtual ~Progress(void);
+	virtual ~Progress();
 
 	static const char* GetType() { return "Progress"; }
 	virtual const char* getType() { return Self::GetType(); }
@@ -40,7 +39,7 @@ class  ProgressBar : public Progress
 public:
 	typedef ProgressBar Self;
 	ProgressBar(System& sys, const std::string& name = "");
-	virtual ~ProgressBar(void);
+	virtual ~ProgressBar();
 
 	static const char* GetType() { return "ProgressBar"; }
 	virtual const char* getType() { return Self::GetType(); }
@@ -81,7 +80,6 @@ protected:
 	// progress imagery
 	const Image*	m_backImg;
 	const Image*	m_foreImg;
-
 };
 
 }

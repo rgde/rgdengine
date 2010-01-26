@@ -14,7 +14,7 @@ class  Checkbox : public StaticText
 public:
 	typedef Checkbox Self;
 	Checkbox(System& sys, const std::string& name = "");
-	virtual ~Checkbox(void);
+	virtual ~Checkbox();
 	
 	static const char* GetType() { return "Checkbox"; }
 	virtual const char* getType() { return Self::GetType(); }
@@ -28,8 +28,8 @@ public:
 		invalidate();
 	}
 
-	virtual bool onMouseEnter(void);
-	virtual bool onMouseLeave(void);
+	virtual bool onMouseEnter();
+	virtual bool onMouseLeave();
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
 	virtual bool onKeyboardButton(EventArgs::Keys key, EventArgs::ButtonState state);
 

@@ -16,7 +16,7 @@ class  StaticImage :
 public:
 	typedef StaticImage Self;
 	StaticImage(System& sys, const std::string& name = "");
-	virtual ~StaticImage(void);
+	virtual ~StaticImage();
 	
 	static const char* GetType() { return "StaticImage"; }
 	virtual const char* getType() { return Self::GetType(); }

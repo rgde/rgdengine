@@ -14,7 +14,7 @@ class  Slider : public BaseWindow
 public:
 	typedef Slider Self;
 	Slider(System& sys, const std::string& name = "");
-	virtual ~Slider(void);
+	virtual ~Slider();
 
 	static const char* GetType() { return "Slider"; }
 	virtual const char* getType() { return Self::GetType(); }
@@ -31,7 +31,7 @@ public:
 	float getUserValue() const { return m_user; }
 	void setUserValue(float p) { m_user = p; }
 
-	virtual bool onLoad(void);
+	virtual bool onLoad();
 	virtual bool onSized(bool update = true);
 	virtual void init(xml::node& node);
 
@@ -54,12 +54,12 @@ class  ScrollBar : public Slider
 public:
 	typedef ScrollBar Self;
 	ScrollBar(System& sys, const std::string& name = "");
-	virtual ~ScrollBar(void);
+	virtual ~ScrollBar();
 
 	static const char* GetType() { return "ScrollBar"; }
 	virtual const char* getType() { return Self::GetType(); }
 
-	virtual bool onLoad(void);
+	virtual bool onLoad();
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
 	virtual bool onMouseWheel(int delta);
 	virtual void init(xml::node& node);

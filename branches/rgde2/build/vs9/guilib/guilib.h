@@ -1,7 +1,4 @@
-
 #pragma once
-
-
 
 #include <list>
 #include <set>
@@ -25,7 +22,6 @@
 #include "src/scripthost.h"
 #include "src/system.h"
 #include "src/window.h"
-
 
 //controls
 #include "src/panel.h"

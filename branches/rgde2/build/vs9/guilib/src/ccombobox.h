@@ -17,12 +17,12 @@ class  Combobox :
 public:
 	typedef Combobox Self;
 	Combobox(System& sys, const std::string& name = "");
-	virtual ~Combobox(void);
+	virtual ~Combobox();
 
 	static const char* GetType() { return "Combobox"; }
 	virtual const char* getType() { return Self::GetType(); }
 
-	virtual bool onLoad(void);
+	virtual bool onLoad();
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
 	virtual bool onFocusLost(BaseWindow* newFocus);
 	void onBtnClick(const events::ClickEvent& e);

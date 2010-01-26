@@ -65,7 +65,7 @@ class  ImageButton : public Button
 public:
 	typedef ImageButton Self;
 	ImageButton(System& sys, const std::string& name = "");
-	virtual ~ImageButton(void);
+	virtual ~ImageButton();
 
 	static const char* GetType() { return "ImageButton"; }
 	virtual const char* getType() { return Self::GetType(); }
@@ -73,7 +73,6 @@ public:
 	virtual void render(const Rect& finalRect, const Rect& finalClip);
 
 	virtual void init(xml::node& node);
-
 
 protected:
 	typedef std::map<unsigned int, const Image*> StateImages; 
@@ -94,15 +93,14 @@ public:
 	void setProgress(float p);
 
 	void setTrackarea(const Rect& rc);
-	const Rect& getTrackarea(void) const { return m_trackarea; }
+	const Rect& getTrackarea() const { return m_trackarea; }
 
-	virtual bool onMouseMove(void);
+	virtual bool onMouseMove();
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
 
 	virtual void render(const Rect& finalRect, const Rect& finalClip);
 
 	virtual void init(xml::node& node);
-
 
 protected:
 	bool m_movable;

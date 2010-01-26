@@ -96,10 +96,10 @@ namespace gui
 		virtual ~Font ();
 
 	public:
-		/// Colour value used whenever a colour is not specified.
+		/// Color value used whenever a color is not specified.
 		static const argb_t DefaultColour;
 		static const std::wstring	DefaultWhitespace;		//!< The default set of whitespace
-		static const std::wstring	DefaultAlphanumerical;	//!< default set of alphanumericals.
+		static const std::wstring	DefaultAlphanumerical;	//!< default set of alphanumerical.
 		static const std::wstring	DefaultWrapDelimiters;	//!< The default set of word-wrap delimiters
 
 		bool isCodepointAvailable (utf32 cp) const
@@ -217,7 +217,8 @@ namespace gui
 		unsigned int m_size;
 	};
 
-	 typedef boost::shared_ptr<Font> FontPtr;
+	typedef boost::shared_ptr<Font> FontPtr;
+
 	Font::TextFormatting StringToFormatType(const std::string& type);
 }
 

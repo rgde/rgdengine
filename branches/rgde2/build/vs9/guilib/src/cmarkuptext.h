@@ -134,14 +134,14 @@ public:
 
 	typedef MarkupBase Self;
 	MarkupBase(System& sys, const std::string& name = "");
-	virtual ~MarkupBase(void);
+	virtual ~MarkupBase();
 
 	static const char* GetType() { return "MarkupBase"; }
 	virtual const char* getType() { return Self::GetType(); }
 
 	virtual void setText(const std::string& text);
 
-	virtual bool onLoad(void);
+	virtual bool onLoad();
 	virtual void init(xml::node& node);
 	virtual bool onSized(bool update = true);
 	virtual void render(const Rect& finalRect, const Rect& finalClip);
@@ -178,10 +178,10 @@ public:
 	static const char* GetType() { return "MarkupText"; }
 	virtual const char* getType() { return Self::GetType(); }
 
-	virtual bool onMouseMove(void);
+	virtual bool onMouseMove();
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
-	virtual bool onMouseEnter(void);
-	virtual bool onMouseLeave(void);
+	virtual bool onMouseEnter();
+	virtual bool onMouseLeave();
 
 	virtual void clear();
 

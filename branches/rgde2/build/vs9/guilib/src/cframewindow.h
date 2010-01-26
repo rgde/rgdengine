@@ -19,7 +19,7 @@ class  FrameWindow : public Panel
 public:
 	typedef FrameWindow Self;
 	FrameWindow(System& sys, const std::string& name = "");
-	virtual ~FrameWindow(void);
+	virtual ~FrameWindow();
 
 	static const char* GetType() { return "FrameWindow"; }
 	virtual const char* getType() { return Self::GetType(); }
@@ -56,9 +56,9 @@ public:
 	}
 	Font::TextFormatting getCaptionFormatting() const { return m_format; }
 
-	virtual bool onMouseMove(void);
+	virtual bool onMouseMove();
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
-	virtual bool onCaptureLost(void);
+	virtual bool onCaptureLost();
 
 	virtual void init(xml::node& node);
 

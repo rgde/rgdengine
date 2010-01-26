@@ -15,7 +15,7 @@ class  Editbox :
 public:
 	typedef Editbox Self;
 	Editbox(System& sys, const std::string& name = "");
-	virtual ~Editbox(void);
+	virtual ~Editbox();
 
 	static const char* GetType() { return "Editbox"; }
 	virtual const char* getType() { return Self::GetType(); }
@@ -35,11 +35,11 @@ public:
 	}
 	bool getPassword() const { return m_password; }
 
-	virtual bool onMouseMove(void);
+	virtual bool onMouseMove();
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
 	virtual bool onKeyboardButton(EventArgs::Keys key, EventArgs::ButtonState state);
 	virtual bool onChar(const std::wstring& text);
-	virtual bool onCaptureLost(void);
+	virtual bool onCaptureLost();
 	virtual bool onSized(bool update = true);
 
 	void clearSelection();
@@ -86,14 +86,14 @@ class  KeyBinder : public StaticText
 public:
 	typedef KeyBinder Self;
 	KeyBinder(System& sys, const std::string& name = "");
-	virtual ~KeyBinder(void);
+	virtual ~KeyBinder();
 
 	static const char* GetType() { return "KeyBinder"; }
 	virtual const char* getType() { return Self::GetType(); }
 
 	virtual void render(const Rect& finalRect, const Rect& finalClip);
 	
-	virtual bool onMouseMove(void);
+	virtual bool onMouseMove();
 	virtual bool onMouseWheel(int delta);
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
 	virtual bool onMouseDouble(EventArgs::MouseButtons btn);
