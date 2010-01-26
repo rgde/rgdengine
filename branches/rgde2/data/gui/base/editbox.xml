@@ -7,10 +7,10 @@
 		<TabStop>true</TabStop>
 		<Text />
 		<FrameImagery Imageset="skin">
-			<Left Image="EditboxLeft" />
-			<Right Image="EditboxRight" />
-			<Background Image="EditboxMiddle" />
-			<Caret Image="EditboxCaret" />
+			<Left Image="EditFrameLeft" />
+			<Right Image="EditFrameRight" />
+			<Background Image="EditFrameBottomLeft" />
+			<Caret Image="EditBoxCarat" />
 			<Selection Image="TextSelectionBrush" />
 		</FrameImagery>
 	</Properties>

@@ -3,10 +3,10 @@
 	<Properties>
 		<Visible>true</Visible>
 		<TabStop>true</TabStop>
-		<StateImagery Imageset="Affects">
-			<State Type="Normal" Image="AF_BleedWound" />
-			<State Type="Hovered" Image="AF_Poison" />
-			<State Type="Pushed" Image="AF_Camouflage" />
+		<StateImagery Imageset="skin">
+			<State Type="Normal" Image="CloseButton" />
+			<State Type="Hovered" Image="CloseButtonHover" />
+			<State Type="Pushed" Image="CloseButtonPushed" />
 		</StateImagery>
 	</Properties>
 	<Children />

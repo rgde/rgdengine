@@ -6,20 +6,20 @@
 		<Formatting>Centred</Formatting>
 		<Title />		
 		<Caption Imageset="skin">
-			<Left Image="WindowTitlebarLeft" />
-			<Right Image="WindowTitlebarRight" />
-			<Background Image="WindowTitlebarMiddle" />
+			<Left Image="TitlebarLeft" />
+			<Right Image="TitlebarRight" />
+			<Background Image="TitlebarMiddle" />
 		</Caption>
 		<FrameImagery Imageset="skin">
-			<Background Image="WindowFill" />
-			<Top Image="WindowBorderTop" />
-			<TopLeft Image="WindowBorderTopLeft" />
-			<TopRight Image="WindowBorderTopRight" />
-			<Left Image="WindowBorderLeft" />
-			<Right Image="WindowBorderRight" />
-			<BottomLeft Image="WindowBorderBottomLeft" />
-			<BottomRight Image="WindowBorderBottomRight" />
-			<Bottom Image="WindowBorderBottom" />
+			<Background Image="TitlebarMiddle" />
+			<Top Image="FrameTop" />
+			<TopLeft Image="FrameTopLeft" />
+			<TopRight Image="FrameTopRight" />
+			<Left Image="FrameLeft" />
+			<Right Image="FrameRight" />
+			<BottomLeft Image="FrameBottomLeft" />
+			<BottomRight Image="FrameBottomRight" />
+			<Bottom Image="FrameBottom" />
 		</FrameImagery>		
 	</Properties>
 	<Children>
