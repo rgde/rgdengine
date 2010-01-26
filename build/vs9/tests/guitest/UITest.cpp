@@ -135,7 +135,7 @@ void ui_test_application::render()
 
 	if (m_system)
 	{		
-		//m_font->drawText("BLAAA BAAA LAA LALA", gui::Rect(0,0,200,200), 1.f);
+		m_font->drawText("BLAAA BAAA LAA LALA", gui::Rect(0,0,200,200), 1.f);
 		m_system->render();
 	}
 

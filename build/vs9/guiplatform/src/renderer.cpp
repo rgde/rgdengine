@@ -188,6 +188,8 @@ namespace gui
 				}
 
 				++m_num_quads;
+				assert(m_num_batches);
+				++m_batches[m_num_batches - 1].numQuads;
 
 			}
 		}
