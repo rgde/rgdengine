@@ -7,21 +7,20 @@
 #	pragma warning(disable : 4251)
 #endif
 
-namespace xml {
-class node;
+namespace xml 
+{
+	class node;
 };
-
 
 namespace gui
 {
 
-class  StaticText :
-	public BaseWindow
+class  StaticText :	public BaseWindow
 {
 public:
 	typedef StaticText Self;
-	StaticText(System& sys, const std::string& name = "");
-	virtual ~StaticText(void);
+	StaticText(System& sys, const std::string& name = std::string());
+	virtual ~StaticText();
 
 	static const char* GetType() { return "StaticText"; }
 	virtual const char* getType() { return Self::GetType(); }
@@ -54,6 +53,7 @@ protected:
 
 	bool m_centred;
 };
+
 }
 
 #if defined(_MSC_VER)

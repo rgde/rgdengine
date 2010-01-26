@@ -17,7 +17,7 @@ class  BaseList : public Panel
 public:
 	typedef BaseList Self;
 	BaseList(System& sys, const std::string& name = "");
-	virtual ~BaseList(void);
+	virtual ~BaseList();
 
 	static const char* GetType() { return "BaseList"; }
 	virtual const char* getType() { return Self::GetType(); }
@@ -26,7 +26,7 @@ public:
 
 	virtual void render(const Rect& finalRect, const Rect& finalClip);
 	virtual void init(xml::node& node);
-	virtual bool onLoad(void);
+	virtual bool onLoad();
 
 	void setColumns(unsigned int col) { m_columns = col > 0 ? col : 1; }
 	unsigned int getColumns() const { return m_columns; }

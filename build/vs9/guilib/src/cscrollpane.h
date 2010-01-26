@@ -18,12 +18,12 @@ class  ScrollPane : public BaseWindow
 public:
 	typedef ScrollPane Self;
 	ScrollPane(System& sys, const std::string& name = "");
-	virtual ~ScrollPane(void);
+	virtual ~ScrollPane();
 
 	static const char* GetType() { return "ScrollPane"; }
 	virtual const char* getType() { return Self::GetType(); }
 
-	virtual bool onLoad(void);
+	virtual bool onLoad();
 	virtual bool onSized(bool update = true);
 	virtual bool onMouseWheel(int delta);
 	virtual void init(xml::node& node);

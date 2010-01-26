@@ -19,7 +19,7 @@ namespace gui
 	public:
 		typedef ChatWindow Self;
 		ChatWindow(System& sys, const std::string& name = "");
-		virtual ~ChatWindow(void);
+		virtual ~ChatWindow();
 
 		static const char* GetType() { return "ChatWindow"; }
 		virtual const char* getType() { return Self::GetType(); }
