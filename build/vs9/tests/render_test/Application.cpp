@@ -13,6 +13,7 @@ using namespace math;
 #include "application.h"
 #include <rgde/render/surface.h>
 
+#include "terrain.h"
 
 application::application(int x, int y, int w, int h, const std::wstring& title) 
 	: m_active(true)
@@ -75,7 +76,8 @@ void application::init_render_data()
 	using namespace rgde::render;
 
 	//m_box = mesh::create_box(m_device, 1, 1, 1);
-	m_box = mesh::create_random_terrain(m_device, 64, 64, 2);
+	terrain_container::terrain ter(1,1,256,256);
+	m_box = mesh::create_terrain_chunk(m_device,ter,0,0,1);
 
 	m_font = font::create(m_device, 17, L"Arial");
 

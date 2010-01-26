@@ -1,4 +1,5 @@
 #pragma once
+#include "terrain.h"
 
 namespace rgde
 {
@@ -64,6 +65,7 @@ namespace rgde
 
 			static mesh_ptr create_box(device& dev, float x, float y, float z);
 			static mesh_ptr create_random_terrain(device& dev, int w, int l, float step);
+			static mesh_ptr create_terrain_chunk(device& dev, terrain_container::terrain& ter, uint x, uint z, float step);
 			//static mesh_ptr create_sphere(float r);
 			//static mesh_ptr create_conus(float h, float r);
 			//static mesh_ptr create_cylinder(float h, float r);
