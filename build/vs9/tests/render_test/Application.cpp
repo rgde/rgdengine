@@ -158,6 +158,8 @@ void application::render()
 
 core::windows::result application::wnd_proc(ushort message, uint wparam, long lparam )
 {
+	static bool rm_down = false;
+
 	switch (message)
 	{
 	case WM_ACTIVATE:	// Watch For Window Activate Message
@@ -212,12 +214,18 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 		}
 		break;
 
-	case WM_MOUSEMOVE:
+	case WM_RBUTTONDOWN:
+		rm_down = true;
+		break;
+	case WM_RBUTTONUP:
+		rm_down = false;
+		break;
+	case WM_MOUSEMOVE:		
 		{
 			int xPos = LOWORD(lparam); 
 			int yPos = HIWORD(lparam);
 
-			if ((old_x != -1 || old_y != -1) /*&& ((wparam & MK_LBUTTON) != 0)*/)
+			if (rm_down && (old_x != -1 || old_y != -1) /*&& ((wparam & MK_LBUTTON) != 0)*/)
 			{
 				int dx = xPos - old_x;
 				int dy = yPos - old_y;
