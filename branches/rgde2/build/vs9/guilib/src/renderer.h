@@ -57,7 +57,6 @@ public:
 
 	struct RenderCallbackInfo
 	{
-		// для коллбеков
 		AfterRenderCallbackFunc afterRenderCallback;
 		BaseWindow* window;
 		Rect dest;
@@ -73,17 +72,18 @@ public:
 		RenderCallbackInfo callbackInfo;
 	};
 
-	Renderer(void);
-	virtual ~Renderer(void);
+	Renderer();
+	virtual ~Renderer();
 
 	virtual void	addCallback( AfterRenderCallbackFunc callback,
 								 BaseWindow* window, const Rect& dest, const Rect& clip) = 0;
+
 	virtual void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode);
 	virtual void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode, Image::ImageOps horz, Image::ImageOps vert);
 	virtual void	immediateDraw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode);
 
-	virtual	void	doRender(void) = 0;
-	virtual	void	clearRenderList(void);	
+	virtual	void	doRender() = 0;
+	virtual	void	clearRenderList();	
 
 	virtual void	beginBatching();
 	virtual void	endBatching();
@@ -92,20 +92,16 @@ public:
 	virtual void	setQueueingEnabled(bool setting)  { m_isQueueing = setting; }
 	bool	isQueueingEnabled(void) const { return m_isQueueing; }
 
-	virtual	TexturePtr	createTexture(const std::string& filename) {throw std::exception("Unsupported operation!");}
-	virtual	TexturePtr	loadFromMemory(const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat) = 0;
-	
-	//temporary
-	virtual	TexturePtr	createEmptyTexture(unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat) = 0;
-	virtual TexturePtr	reloadTextureFromBuffer(TexturePtr p, const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat) = 0;
+	virtual	TexturePtr	createTexture(const std::string& filename) = 0;
+	virtual	TexturePtr	createTexture(const void* data, unsigned int width, unsigned int height, Texture::PixelFormat format) = 0;
+	virtual	TexturePtr	createTexture(unsigned int width, unsigned int height, Texture::PixelFormat format) = 0;
+	virtual TexturePtr	reloadTexture(TexturePtr p, const void* data, unsigned int width, unsigned int height, Texture::PixelFormat format) = 0;
 
 	virtual FontPtr		createFont(const std::string& name, const std::string& fontname, unsigned int size) = 0;
-
 
 	virtual void startCaptureForCache(BaseWindow* window) ;
 	virtual void endCaptureForCache(BaseWindow* window) ;
 	virtual void drawFromCache(BaseWindow* window) {}
-
 
 	const Size&	getOriginalSize(void) const	{ return m_originalsize; }
 	const Size	getSize(void);
@@ -115,17 +111,17 @@ public:
 
 	void	setOriginalSize(const Size& sz) { m_originalsize = sz; }
 
-	void	resetZValue(void)				{m_current_z = GuiZInitialValue;}
-	void	advanceZValue(void)				{m_current_z -= GuiZElementStep;}
-	float	getCurrentZ(void) const			{return m_current_z;}
-	float	getZLayer(unsigned int layer) const		{return m_current_z - ((float)layer * GuiZLayerStep);}
+	void	resetZValue()				{m_current_z = GuiZInitialValue;}
+	void	advanceZValue()				{m_current_z -= GuiZElementStep;}
+	float	getCurrentZ() const			{return m_current_z;}
+	float	getZLayer(unsigned int layer) const {return m_current_z - ((float)layer * GuiZLayerStep);}
 
 	virtual void	OnResetDevice();
 	virtual void	OnLostDevice();
 
 	void setAutoScale(bool status) { m_autoScale = status; }
-	bool isAutoScale() { return m_autoScale; }
-	virtual Size getViewportSize(void) const = 0;
+	bool isAutoScale() const { return m_autoScale; }
+	virtual Size getViewportSize() const = 0;
 
 	Rect virtualToRealCoord( const Rect& virtualRect ) const;
 	Rect realToVirtualCoord( const Rect& realRect ) const;
@@ -136,19 +132,18 @@ public:
 
 protected:
 	virtual	void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode) {}
-	
-	void sortQuads(void);
 	virtual void renderQuadDirect(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode) = 0;
+
+	void sortQuads();	
 	
-	friend class TextureManager;
-	virtual	TexturePtr	createTextureInstance(const std::string& filename) { throw std::exception("Unsupported operation!"); }
+	friend TextureManager;
+	virtual	TexturePtr	createTextureInstance(const std::string& filename) = 0;
 
 protected:
 	Renderer& operator=(const Renderer&) { return *this; }
 	void computeVirtualDivRealFactor(Size& coefOut) const;
 	
 	TextureManager m_texmanager;
-
 	
 	typedef std::vector<QuadInfo> Quads;
 	typedef std::vector<BatchInfo> Batches;
@@ -173,7 +168,6 @@ protected:
 	float	m_current_z;
 
 	LoggerCallback m_log_cb;
-
 
 	typedef std::vector <QuadInfo> CachedQuadList;
 	struct QuadCacheRecord

@@ -107,7 +107,7 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
         if (!texsize)
             break;
 
-		TexturePtr p = m_render.createEmptyTexture(texsize, texsize, Texture::PF_RGBA);
+		TexturePtr p = m_render.createTexture(texsize, texsize, Texture::PF_RGBA);
 		Imageset *is = new Imageset("glyphimgset", p);
         m_glyphImages.push_back(is);
 
@@ -149,8 +149,8 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
                     Point offset(0, 0);
                     std::string name;
                     name += s->first;
-					s->second.setOffsetX(offset.m_x);
-					s->second.setOffsetY(offset.m_y);
+					s->second.setOffsetX(offset.x);
+					s->second.setOffsetY(offset.y);
                     
                     cur_glyph.setImage(is->defineImage(name, area));
                 }
@@ -183,8 +183,8 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
 
                     std::string name;
                     name += s->first;
-					cur_glyph.setOffsetX(offset.m_x);
-					cur_glyph.setOffsetY(offset.m_y);
+					cur_glyph.setOffsetX(offset.x);
+					cur_glyph.setOffsetY(offset.y);
 
 					{
 						float width = (float)(glyph_w - INTER_GLYPH_PAD_SPACE);
@@ -221,7 +221,7 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
         }
 
         // Copy our memory buffer into the texture and free it
-		m_render.reloadTextureFromBuffer(is->getTexture(), mem_buffer, texsize, texsize, Texture::PF_RGBA);
+		m_render.reloadTexture(is->getTexture(), mem_buffer, texsize, texsize, Texture::PF_RGBA);
         delete [] mem_buffer;
 
         if (finished)

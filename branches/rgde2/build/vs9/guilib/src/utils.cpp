@@ -67,7 +67,7 @@ Point StringToPoint(const std::string& str)
 std::string PointToString(const Point& val)
 {
 	char buff[128] = {0};
-	_snprintf(buff, sizeof (buff), "%d %d", val.m_x, val.m_y);
+	_snprintf(buff, sizeof (buff), "%d %d", val.x, val.y);
 
 	return std::string(buff);
 }

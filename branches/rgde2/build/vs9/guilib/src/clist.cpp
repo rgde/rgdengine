@@ -80,17 +80,17 @@ void BaseList::layoutItems()
 			if(i == end)
 				break;
 			Size child((*i)->getSize());
-			(*i)->setPosition(Point(m_borders.m_left + col * m_colWidth, sz.m_height));
+			(*i)->setPosition(Point(m_borders.m_left + col * m_colWidth, sz.height));
 			height = height > child.m_height ? height : child.m_height;
 			width += child.m_width;
 			++i;
 		}
 		
-		sz.m_height += height;
+		sz.height += height;
 		float widthWithBorders = width + m_borders.m_right;
-		sz.m_width = widthWithBorders > sz.m_width ? widthWithBorders : sz.m_width;
+		sz.width = widthWithBorders > sz.width ? widthWithBorders : sz.width;
 	}
-	sz.m_height += m_borders.m_bottom;
+	sz.height += m_borders.m_bottom;
 	setSize(sz);
 }
 

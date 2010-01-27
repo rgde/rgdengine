@@ -206,7 +206,7 @@ bool Menu::onMouseMove(void)
 	Point pt = transformToWndCoord(m_system.getCursor().getPosition());
 	pt -= m_area.getPosition();
 	
-	float item = pt.m_y / (2 * m_margin + m_itemHeight);
+	float item = pt.y / (2 * m_margin + m_itemHeight);
 	m_selected = (size_t)item;
 	
 	if(m_selected > m_items.size())

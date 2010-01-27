@@ -229,11 +229,11 @@ namespace gui
 			if(m_autoScale)
 			{
 				Size& viewport = getViewportSize();
-				scaleX = viewport.m_width / m_originalsize.m_width;
-				scaleY = viewport.m_height / m_originalsize.m_height;
+				scaleX = viewport.width / m_originalsize.width;
+				scaleY = viewport.height / m_originalsize.height;
 			}
 
-			static DWORD s_quadOffset = 0;	// смещение от начала буффера в квадах
+			static DWORD s_quadOffset = 0;	// buffer offset in quads
 			QuadVertex*	buffmem;
 			
 			for (std::size_t b = 0; b < m_num_batches; ++b)
@@ -472,8 +472,8 @@ namespace gui
 				if(m_autoScale)
 				{
 					Size& viewport = getViewportSize();
-					scaleX = viewport.m_width / m_originalsize.m_width;
-					scaleY = viewport.m_height / m_originalsize.m_height;
+					scaleX = viewport.width / m_originalsize.width;
+					scaleY = viewport.height / m_originalsize.height;
 				}
 
 				float left = dest_rect.m_left * scaleX;
@@ -636,7 +636,7 @@ namespace gui
 			return tex;
 		}
 
-		TexturePtr renderer::createEmptyTexture(unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
+		TexturePtr renderer::createTexture(unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
 		{
 			TexturePtr tex;
 
@@ -680,7 +680,7 @@ namespace gui
 			return tex;
 		}
 
-		TexturePtr	renderer::reloadTextureFromBuffer(TexturePtr p, const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
+		TexturePtr	renderer::reloadTexture(TexturePtr p, const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
 		{
 			texture_ptr platform_tex = static_cast<texture&>(*p).get_platform_resource();
 
@@ -739,7 +739,7 @@ namespace gui
 			return p;
 		}
 
-		TexturePtr renderer::loadFromMemory(const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
+		TexturePtr renderer::createTexture(const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat)
 		{
 			//using namespace std;
 			TexturePtr tex;

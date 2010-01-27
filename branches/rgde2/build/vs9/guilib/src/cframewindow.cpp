@@ -123,8 +123,8 @@ void FrameWindow::render(const Rect& finalRect, const Rect& finalClip)
         componentRect.m_top  = finalRect.m_top;
         componentRect.setSize(imgSize);
         componentRect = finalRect.getIntersection (componentRect);
-		left  = imgSize.m_width;
-		height = imgSize.m_height;
+		left  = imgSize.width;
+		height = imgSize.height;
 
         // draw this element.
         r.draw(*m_captionLeftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -133,12 +133,12 @@ void FrameWindow::render(const Rect& finalRect, const Rect& finalClip)
     if (m_captionRightImg)
     {
         imgSize = m_captionRightImg->getPixelRect().getSize();
-        componentRect.m_left = finalRect.m_right - imgSize.m_width;
+        componentRect.m_left = finalRect.m_right - imgSize.width;
         componentRect.m_top  = finalRect.m_top;
         componentRect.setSize(imgSize);
         componentRect = finalRect.getIntersection (componentRect);
 
-		right = imgSize.m_width;
+		right = imgSize.width;
 
         // draw this element.
         r.draw(*m_captionRightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);

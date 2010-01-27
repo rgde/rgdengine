@@ -22,8 +22,8 @@ namespace gui
 		virtual ~Texture() {}
 
 		const Size& getSize() const { return m_size; }
-		virtual float getWidth(void) const { return m_size.m_width; }
-		virtual float getHeight(void) const { return m_size.m_height; }
+		virtual float getWidth(void) const { return m_size.width; }
+		virtual float getHeight(void) const { return m_size.height; }
 
 		Renderer&	getRenderer(void) const { return m_owner; }
 		PixelFormat getPixelFormat() const { return m_format; }

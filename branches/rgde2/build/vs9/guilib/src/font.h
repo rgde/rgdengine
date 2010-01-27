@@ -136,12 +136,12 @@ namespace gui
 
 		void drawText (const std::string& text, const Vector3& position, const Rect& clip_rect, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			drawText (text, Rect (position.m_x, position.m_y, position.m_x, position.m_y), position.m_z, clip_rect, LeftAligned, colours, x_scale, y_scale);
+			drawText (text, Rect (position.x, position.y, position.x, position.y), position.z, clip_rect, LeftAligned, colours, x_scale, y_scale);
 		}
 
 		void drawText (const std::string& text, const Vector3& position, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			drawText (text, Rect (position.m_x, position.m_y, position.m_x, position.m_y), position.m_z, clip_rect, LeftAligned, ColorRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); 
+			drawText (text, Rect (position.x, position.y, position.x, position.y), position.z, clip_rect, LeftAligned, ColorRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); 
 		}
 
 		void setSpacing(float spacing) { m_spacing = spacing; }

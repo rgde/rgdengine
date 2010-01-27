@@ -219,11 +219,11 @@ size_t Editbox::getTextIndexAtPoint(const Point& pt)
 	{
 		Point local = transformToWndCoord(pt);
 		local -= m_area.getPosition();
-		local.m_x -= m_editOffset;
+		local.x -= m_editOffset;
 		std::wstring outtext(m_wtext);
 		if(m_password)
 			outtext.assign(outtext.length(), m_maskChar);
-		ret = m_font->getCharAtPixel(outtext, local.m_x);
+		ret = m_font->getCharAtPixel(outtext, local.x);
 	}
 	return ret;
 }
@@ -332,8 +332,8 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
         // calculate final destination area
         imgSize = m_leftImg->getPixelRect().getSize();
 		componentRect = finalRect;
-        componentRect.m_right = componentRect.m_left + imgSize.m_width;
-		left  = imgSize.m_width;
+        componentRect.m_right = componentRect.m_left + imgSize.width;
+		left  = imgSize.width;
 
         // draw this element.
         r.draw(*m_leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -343,8 +343,8 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
     {
         imgSize = m_rightImg->getPixelRect().getSize();
 		componentRect = finalRect;
-        componentRect.m_left = finalRect.m_right - imgSize.m_width;
-		right = imgSize.m_width;
+        componentRect.m_left = finalRect.m_right - imgSize.width;
+		right = imgSize.width;
 
         // draw this element.
         r.draw(*m_rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -402,7 +402,7 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
 				Rect selrect(dest);
 				selrect.m_left += starts;
 				selrect.m_right = dest.m_left + stops;
-				selrect.setHeight(imgSize.m_height);
+				selrect.setHeight(imgSize.height);
 				
 				r.draw(*m_selectImg, selrect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Tile, Image::Stretch);
 			}
@@ -597,8 +597,8 @@ void KeyBinder::render(const Rect& finalRect, const Rect& finalClip)
         // calculate final destination area
         imgSize = m_leftImg->getPixelRect().getSize();
 		componentRect = finalRect;
-        componentRect.m_right = componentRect.m_left + imgSize.m_width;
-		left  = imgSize.m_width;
+        componentRect.m_right = componentRect.m_left + imgSize.width;
+		left  = imgSize.width;
 
         // draw this element.
         r.draw(*m_leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -608,8 +608,8 @@ void KeyBinder::render(const Rect& finalRect, const Rect& finalClip)
     {
         imgSize = m_rightImg->getPixelRect().getSize();
 		componentRect = finalRect;
-        componentRect.m_left = finalRect.m_right - imgSize.m_width;
-		right = imgSize.m_width;
+        componentRect.m_left = finalRect.m_right - imgSize.width;
+		right = imgSize.width;
 
         // draw this element.
         r.draw(*m_rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);

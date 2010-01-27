@@ -29,13 +29,13 @@ texture::~texture()
 
 void texture::calculateMetrics()
 {
-	m_size.m_width = 0;
-	m_size.m_height = 0;
+	m_size.width = 0;
+	m_size.height = 0;
 
 	assert(m_texture);
 
-	m_size.m_width = m_texture->get_width();
-	m_size.m_height = m_texture->get_height();
+	m_size.width = m_texture->get_width();
+	m_size.height = m_texture->get_height();
 
 	rgde::render::surface_ptr surface = m_texture->get_surface(0);
 

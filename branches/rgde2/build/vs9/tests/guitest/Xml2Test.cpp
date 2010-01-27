@@ -19,7 +19,6 @@ Xml2Test::~Xml2Test(void)
 void Xml2Test::createGUISystem()
 {
 	ui_test_application::createGUISystem();
-	
 	load(m_filename);
 }
 

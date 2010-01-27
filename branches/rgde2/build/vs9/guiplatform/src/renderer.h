@@ -20,12 +20,12 @@ namespace gui
 			virtual void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode);
 		
 			virtual void drawFromCache(BaseWindow* window);
-			virtual	TexturePtr	createTexture(const std::string& filename);
-			virtual	TexturePtr loadFromMemory(const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat);
+			virtual	TexturePtr createTexture(const std::string& filename);
+			virtual	TexturePtr createTexture(const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat);
 
 			// temporary
-			virtual	TexturePtr	createEmptyTexture(unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat);
-			virtual TexturePtr	reloadTextureFromBuffer(TexturePtr p, const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat);
+			virtual	TexturePtr	createTexture(unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat);
+			virtual TexturePtr	reloadTexture(TexturePtr p, const void* buffPtr, unsigned int buffWidth, unsigned int buffHeight, Texture::PixelFormat pixFormat);
 
 			virtual FontPtr		createFont(const std::string& name, const std::string& fontname, unsigned int size);
 

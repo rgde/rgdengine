@@ -56,8 +56,8 @@ void Panel::renderFrame(const Rect& dest, const Rect& clip)
         finalRect.setSize(imageSize);
         finalRect = dest.getIntersection (finalRect);
 
-		topOffset  += imageSize.m_width;
-		leftOffset += imageSize.m_height;
+		topOffset  += imageSize.width;
+		leftOffset += imageSize.height;
 		topWidth   -= topOffset;
 		leftHeight -= leftOffset;
 
@@ -71,13 +71,13 @@ void Panel::renderFrame(const Rect& dest, const Rect& clip)
     {
         // calculate final destination area
         imageSize = m_toprImg->getPixelRect().getSize();
-        finalRect.m_left = dest.m_right - imageSize.m_width;
+        finalRect.m_left = dest.m_right - imageSize.width;
         finalRect.m_top  = dest.m_top;
         finalRect.setSize(imageSize);
         finalRect = dest.getIntersection (finalRect);
 
-		rightOffset += imageSize.m_height;
-		topWidth    -= imageSize.m_width;
+		rightOffset += imageSize.height;
+		topWidth    -= imageSize.width;
 		rightHeight -= rightOffset;
 
         // draw this element.
@@ -90,13 +90,13 @@ void Panel::renderFrame(const Rect& dest, const Rect& clip)
         // calculate final destination area
         imageSize = m_botlImg->getPixelRect().getSize();
         finalRect.m_left = dest.m_left;
-        finalRect.m_top  = dest.m_bottom - imageSize.m_height;
+        finalRect.m_top  = dest.m_bottom - imageSize.height;
         finalRect.setSize(imageSize);
         finalRect = dest.getIntersection (finalRect);
 
-		bottomOffset += imageSize.m_width;
+		bottomOffset += imageSize.width;
 		bottomWidth  -= bottomOffset;
-		leftHeight   -= imageSize.m_height;
+		leftHeight   -= imageSize.height;
 
         // draw this element.
         r.draw(*m_botlImg, finalRect, 1.f, clip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -107,13 +107,13 @@ void Panel::renderFrame(const Rect& dest, const Rect& clip)
     {
         // calculate final destination area
         imageSize = m_botrImg->getPixelRect().getSize();
-        finalRect.m_left = dest.m_right - imageSize.m_width;
-        finalRect.m_top  = dest.m_bottom - imageSize.m_height;
+        finalRect.m_left = dest.m_right - imageSize.width;
+        finalRect.m_top  = dest.m_bottom - imageSize.height;
         finalRect.setSize(imageSize);
         finalRect = dest.getIntersection (finalRect);
 
-		bottomWidth -= imageSize.m_width;
-		rightHeight -= imageSize.m_height;
+		bottomWidth -= imageSize.width;
+		rightHeight -= imageSize.height;
 
         // draw this element.
 		r.draw(*m_botrImg, finalRect, 1.f, clip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);        
@@ -127,11 +127,11 @@ void Panel::renderFrame(const Rect& dest, const Rect& clip)
         finalRect.m_left   = dest.m_left + topOffset;
         finalRect.m_right  = finalRect.m_left + topWidth;
         finalRect.m_top    = dest.m_top;
-        finalRect.m_bottom = finalRect.m_top + imageSize.m_height;
+        finalRect.m_bottom = finalRect.m_top + imageSize.height;
         finalRect = dest.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.m_top += imageSize.m_height;
+        backgroundRect.m_top += imageSize.height;
 
         // draw this element.
 		r.draw(*m_topImg, finalRect, 1.f, clip,  m_backColor, TopLeftToBottomRight, Image::Tile, Image::Stretch);
@@ -145,11 +145,11 @@ void Panel::renderFrame(const Rect& dest, const Rect& clip)
         finalRect.m_left   = dest.m_left + bottomOffset;
         finalRect.m_right  = finalRect.m_left + bottomWidth;
         finalRect.m_bottom = dest.m_bottom;
-        finalRect.m_top    = finalRect.m_bottom - imageSize.m_height;
+        finalRect.m_top    = finalRect.m_bottom - imageSize.height;
         finalRect = dest.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.m_bottom -= imageSize.m_height;
+        backgroundRect.m_bottom -= imageSize.height;
 
         // draw this element.
 		r.draw(*m_botImg, finalRect, 1.f, clip,  m_backColor, TopLeftToBottomRight, Image::Tile, Image::Stretch);
@@ -161,13 +161,13 @@ void Panel::renderFrame(const Rect& dest, const Rect& clip)
         // calculate final destination area
         imageSize = m_lImg->getPixelRect().getSize();
         finalRect.m_left   = dest.m_left;
-        finalRect.m_right  = finalRect.m_left + imageSize.m_width;
+        finalRect.m_right  = finalRect.m_left + imageSize.width;
         finalRect.m_top    = dest.m_top + leftOffset;
         finalRect.m_bottom = finalRect.m_top + leftHeight;
         finalRect = dest.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.m_left += imageSize.m_width;
+        backgroundRect.m_left += imageSize.width;
 
         // draw this element.
 		r.draw(*m_lImg, finalRect, 1.f, clip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Tile);
@@ -181,11 +181,11 @@ void Panel::renderFrame(const Rect& dest, const Rect& clip)
         finalRect.m_top    = dest.m_top + rightOffset;
         finalRect.m_bottom = finalRect.m_top + rightHeight;
         finalRect.m_right  = dest.m_right;
-        finalRect.m_left   = finalRect.m_right - imageSize.m_width;
+        finalRect.m_left   = finalRect.m_right - imageSize.width;
         finalRect = dest.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.m_right -= imageSize.m_width;
+        backgroundRect.m_right -= imageSize.width;
 
         // draw this element.
 		r.draw(*m_rImg, finalRect, 1.f, clip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Tile);

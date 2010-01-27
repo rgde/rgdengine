@@ -79,7 +79,7 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
     {		
 	case Image::Stretch:
 	default:
-		imgSz.m_width = dest_rect.getWidth();
+		imgSz.width = dest_rect.getWidth();
 		xpos = dest_rect.m_left;
 		horzTiles = 1;
 		break;
@@ -88,14 +88,14 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
 		xpos = dest_rect.m_left;
 		if(dest_rect.getWidth() <= 0.f)
 			return;
-		horzTiles = (unsigned int)((dest_rect.getWidth() + (imgSz.m_width - 1)) / imgSz.m_width);
+		horzTiles = (unsigned int)((dest_rect.getWidth() + (imgSz.width - 1)) / imgSz.width);
 		break;
 	}
 	switch (vert)
     {
 	case Image::Stretch:
 	default:
-		imgSz.m_height = dest_rect.getHeight();
+		imgSz.height = dest_rect.getHeight();
 		ypos = dest_rect.m_top;
 		vertTiles = 1;
 		break;
@@ -104,7 +104,7 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
 		ypos = dest_rect.m_top;
 		if(dest_rect.getHeight() <= 0.f)
 			return;
-		vertTiles = (unsigned int)((dest_rect.getHeight() + (imgSz.m_height - 1)) / imgSz.m_height);
+		vertTiles = (unsigned int)((dest_rect.getHeight() + (imgSz.height - 1)) / imgSz.height);
 		break;
 	}
 
@@ -112,24 +112,24 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
     Rect finalRect;
     Rect finalClipper(clip_rect.getIntersection(dest_rect));
     finalRect.m_top = ypos;
-    finalRect.m_bottom = ypos + imgSz.m_height;
+    finalRect.m_bottom = ypos + imgSz.height;
 
     for (unsigned int row = 0; row < vertTiles; ++row)
     {
         finalRect.m_left = xpos;
-        finalRect.m_right = xpos + imgSz.m_width;
+        finalRect.m_right = xpos + imgSz.width;
 
         for (unsigned int col = 0; col < horzTiles; ++col)
         {
             // add image to the rendering cache for the target window.
             draw(img, finalRect, z, finalClipper, colors,  quad_split_mode);
 
-            finalRect.m_left += imgSz.m_width;
-            finalRect.m_right += imgSz.m_width;
+            finalRect.m_left += imgSz.width;
+            finalRect.m_right += imgSz.width;
         }
 
-        finalRect.m_top += imgSz.m_height;
-        finalRect.m_bottom += imgSz.m_height;
+        finalRect.m_top += imgSz.height;
+        finalRect.m_bottom += imgSz.height;
     }
 }
 
@@ -249,8 +249,8 @@ void Renderer::computeVirtualDivRealFactor(Size& coefOut) const
 {
 	if (!m_autoScale)
 	{
-		coefOut.m_width = 1.0f;
-		coefOut.m_height = 1.0f;
+		coefOut.width = 1.0f;
+		coefOut.height = 1.0f;
 		return;
 	}
 	const Size& original = getOriginalSize(); 
@@ -262,10 +262,10 @@ Rect Renderer::virtualToRealCoord( const Rect& virtualRect ) const
 	Rect result = virtualRect;
 	Size k;
 	computeVirtualDivRealFactor(k);
-	result.m_left *= k.m_width;
-	result.m_right *= k.m_width;
-	result.m_top *= k.m_height;
-	result.m_bottom *= k.m_height;
+	result.m_left *= k.width;
+	result.m_right *= k.width;
+	result.m_top *= k.height;
+	result.m_bottom *= k.height;
 	return result;
 }
 
@@ -274,10 +274,10 @@ Rect Renderer::realToVirtualCoord( const Rect& realRect ) const
 	Size k;
 	computeVirtualDivRealFactor(k);
 	Rect result = realRect;
-	result.m_left /= k.m_width;
-	result.m_right /= k.m_width;
-	result.m_top /= k.m_height;
-	result.m_bottom /= k.m_height;
+	result.m_left /= k.width;
+	result.m_right /= k.width;
+	result.m_top /= k.height;
+	result.m_bottom /= k.height;
 	return result;
 }
 

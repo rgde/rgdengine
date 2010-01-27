@@ -386,7 +386,7 @@ void Font::drawTextLine(const std::wstring& text,  const Rect& draw_area, const 
 	{
 		Vector3	cur_pos(position);
 
-		float base_y = position.m_y;
+		float base_y = position.y;
 
 		for (size_t c = 0; c < text.length(); ++c)
 		{ 
@@ -395,23 +395,23 @@ void Font::drawTextLine(const std::wstring& text,  const Rect& draw_area, const 
 				const Image* img = glyph->getImage();
 	            
 				Size size = glyph->getSize(x_scale, y_scale);
-				float x = cur_pos.m_x + glyph->getOffsetX() * x_scale;					  
-				float y = cur_pos.m_y + glyph->getOffsetY() * y_scale;
+				float x = cur_pos.x + glyph->getOffsetX() * x_scale;					  
+				float y = cur_pos.y + glyph->getOffsetY() * y_scale;
 
-				Rect rec (x, y, x + size.m_width, y + size.m_height);
+				Rect rec (x, y, x + size.width, y + size.height);
 
 				Rect shadow_rec (rec.m_left+.5f,rec.m_top+.5f,rec.m_right+1.f,rec.m_bottom+1.f);
 				Color shadow_color(0,0,0,colours.m_top_left.getAlpha());
 				ColorRect shadow_colours(shadow_color,shadow_color,
 											shadow_color,shadow_color);
 				
-				m_render.draw(*img, shadow_rec, cur_pos.m_z, clip_rect, shadow_colours, TopLeftToBottomRight);
-				//m_render.draw(*img, rec, cur_pos.m_z, clip_rect, shadow_colours, TopLeftToBottomRight);
+				m_render.draw(*img, shadow_rec, cur_pos.z, clip_rect, shadow_colours, TopLeftToBottomRight);
+				//m_render.draw(*img, rec, cur_pos.z, clip_rect, shadow_colours, TopLeftToBottomRight);
 
-				cur_pos.m_x += glyph->getAdvance(x_scale);
+				cur_pos.x += glyph->getAdvance(x_scale);
 	#ifdef GUI_KERNING_ENABLED
 				if (c < text.length() - 1)
-					cur_pos.m_x += glyph->getKerning(text[c+1]) * x_scale;
+					cur_pos.x += glyph->getKerning(text[c+1]) * x_scale;
 	#endif
 			}
 		}
@@ -426,16 +426,16 @@ void Font::drawTextLine(const std::wstring& text,  const Rect& draw_area, const 
 			const Image* img = glyph->getImage();
 
 			Size size = glyph->getSize(x_scale, y_scale);
-			float x = cur_pos.m_x + glyph->getOffsetX() * x_scale;					  
-			float y = cur_pos.m_y + glyph->getOffsetY() * y_scale;
+			float x = cur_pos.x + glyph->getOffsetX() * x_scale;					  
+			float y = cur_pos.y + glyph->getOffsetY() * y_scale;
 
-			Rect rec (x, y, x + size.m_width, y + size.m_height);
-			m_render.draw(*img, rec, cur_pos.m_z, clip_rect, colours, TopLeftToBottomRight);
+			Rect rec (x, y, x + size.width, y + size.height);
+			m_render.draw(*img, rec, cur_pos.z, clip_rect, colours, TopLeftToBottomRight);
 
-			cur_pos.m_x += glyph->getAdvance(x_scale);
+			cur_pos.x += glyph->getAdvance(x_scale);
 #ifdef GUI_KERNING_ENABLED
 			if (c < text.length() - 1)
-				cur_pos.m_x += glyph->getKerning(text[c+1]) * x_scale;
+				cur_pos.x += glyph->getKerning(text[c+1]) * x_scale;
 #endif
 		}
 	}
@@ -450,7 +450,7 @@ void Font::drawTextLineJustified (const std::wstring& text, const Rect& draw_are
 		Vector3	cur_pos(position);
 
 		const FontGlyph* glyph;
-		float base_y = position.m_y;
+		float base_y = position.y;
 		size_t char_count = text.length();
 
 		// Calculate the length difference between the justified text and the same text, left aligned
@@ -476,24 +476,24 @@ void Font::drawTextLineJustified (const std::wstring& text, const Rect& draw_are
 			if (glyph)
 			{
 				const Image* img = glyph->getImage();
-				//cur_pos.m_y = base_y + glyph->getOffsetY()* y_scale;// - glyph->getOffsetY() * y_scale);
+				//cur_pos.y = base_y + glyph->getOffsetY()* y_scale;// - glyph->getOffsetY() * y_scale);
 				Size size = glyph->getSize(x_scale, y_scale);
-				Rect rec (cur_pos.m_x + glyph->getOffsetX() * x_scale, cur_pos.m_y + glyph->getOffsetY() * y_scale, cur_pos.m_x + glyph->getOffsetX() * x_scale + size.m_width, cur_pos.m_y + glyph->getOffsetY() * y_scale + size.m_height);
+				Rect rec (cur_pos.x + glyph->getOffsetX() * x_scale, cur_pos.y + glyph->getOffsetY() * y_scale, cur_pos.x + glyph->getOffsetX() * x_scale + size.width, cur_pos.y + glyph->getOffsetY() * y_scale + size.height);
 
 				Rect shadow_rec (rec.m_left+.5f,rec.m_top+.5f,rec.m_right+1.f,rec.m_bottom+1.f);
 				ColorRect shadow_color (Color(0,0,0,colours.m_top_left.getAlpha()),Color(0,0,0,colours.m_top_right.getAlpha()),Color(0,0,0,colours.m_bottom_left.getAlpha()),Color(0,0,0,colours.m_bottom_right.getAlpha()));
-				m_render.draw(*img, shadow_rec, cur_pos.m_z, clip_rect, shadow_color, TopLeftToBottomRight);
+				m_render.draw(*img, shadow_rec, cur_pos.z, clip_rect, shadow_color, TopLeftToBottomRight);
 
-				//m_render.draw(*img, rec, cur_pos.m_z, clip_rect, shadow_color, TopLeftToBottomRight);
+				//m_render.draw(*img, rec, cur_pos.z, clip_rect, shadow_color, TopLeftToBottomRight);
 
-				cur_pos.m_x += glyph->getAdvance(x_scale);
+				cur_pos.x += glyph->getAdvance(x_scale);
 #ifdef GUI_KERNING_ENABLED
 				if (c < text.length() - 1)
-					cur_pos.m_x += glyph->getKerning(text[c+1]) * x_scale;
+					cur_pos.x += glyph->getKerning(text[c+1]) * x_scale;
 #endif
 				// That's where we adjust the size of each space character
 				if ((text[c] == ' ') || (text[c] == '\t'))
-					cur_pos.m_x += shared_lost_space;
+					cur_pos.x += shared_lost_space;
 			}
 		}
 	}
@@ -502,7 +502,7 @@ void Font::drawTextLineJustified (const std::wstring& text, const Rect& draw_are
 		Vector3	cur_pos(position);
 
 		const FontGlyph* glyph;
-		float base_y = position.m_y;
+		float base_y = position.y;
 		size_t char_count = text.length();
 
 		// Calculate the length difference between the justified text and the same text, left aligned
@@ -528,20 +528,20 @@ void Font::drawTextLineJustified (const std::wstring& text, const Rect& draw_are
 			if (glyph)
 			{
 				const Image* img = glyph->getImage();
-				//cur_pos.m_y = base_y + glyph->getOffsetY()* y_scale;// - glyph->getOffsetY() * y_scale);
+				//cur_pos.y = base_y + glyph->getOffsetY()* y_scale;// - glyph->getOffsetY() * y_scale);
 				Size size = glyph->getSize(x_scale, y_scale);
-				Rect rec (cur_pos.m_x + glyph->getOffsetX() * x_scale, cur_pos.m_y + glyph->getOffsetY() * y_scale, cur_pos.m_x + glyph->getOffsetX() * x_scale + size.m_width, cur_pos.m_y + glyph->getOffsetY() * y_scale + size.m_height);
+				Rect rec (cur_pos.x + glyph->getOffsetX() * x_scale, cur_pos.y + glyph->getOffsetY() * y_scale, cur_pos.x + glyph->getOffsetX() * x_scale + size.width, cur_pos.y + glyph->getOffsetY() * y_scale + size.height);
 
-				m_render.draw(*img, rec, cur_pos.m_z, clip_rect, colours, TopLeftToBottomRight);
+				m_render.draw(*img, rec, cur_pos.z, clip_rect, colours, TopLeftToBottomRight);
 
-				cur_pos.m_x += glyph->getAdvance(x_scale);
+				cur_pos.x += glyph->getAdvance(x_scale);
 #ifdef GUI_KERNING_ENABLED
 				if (c < text.length() - 1)
-					cur_pos.m_x += glyph->getKerning(text[c+1]) * x_scale;
+					cur_pos.x += glyph->getKerning(text[c+1]) * x_scale;
 #endif
 				// That's where we adjust the size of each space character
 				if ((text[c] == ' ') || (text[c] == '\t'))
-					cur_pos.m_x += shared_lost_space;
+					cur_pos.x += shared_lost_space;
 			}
 		}
 	}

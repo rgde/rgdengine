@@ -15,10 +15,10 @@ m_right(right)
 }
 
 Rect::Rect(Point pos, Size sz) :
-m_top(pos.m_y),
-m_bottom(pos.m_y + sz.m_height),
-m_left(pos.m_x),
-m_right(pos.m_x + sz.m_width)
+m_top(pos.y),
+m_bottom(pos.y + sz.height),
+m_left(pos.x),
+m_right(pos.x + sz.width)
 {
 }
 
@@ -61,10 +61,10 @@ Apply an offset the the Rect
 *************************************************************************/
 Rect& Rect::offset(const Point& pt)
 {
-	m_left		+= pt.m_x;
-	m_right		+= pt.m_x;
-	m_top		+= pt.m_y;
-	m_bottom	+= pt.m_y;
+	m_left		+= pt.x;
+	m_right		+= pt.x;
+	m_top		+= pt.y;
+	m_bottom	+= pt.y;
 	return *this;
 }
 
@@ -74,10 +74,10 @@ Check if a given point is within the Rect
 *************************************************************************/
 bool Rect::isPointInRect(const Point& pt) const
 {
-	if ((m_left > pt.m_x) ||
-		(m_right <= pt.m_x) ||
-		(m_top > pt.m_y) ||
-		(m_bottom <= pt.m_y))
+	if ((m_left > pt.x) ||
+		(m_right <= pt.x) ||
+		(m_top > pt.y) ||
+		(m_bottom <= pt.y))
 	{
 		return false;
 	}
@@ -92,8 +92,8 @@ void Rect::setPosition(const Point& pt)
 {
 	Size sz(getSize());
 
-	m_left = pt.m_x;
-	m_top  = pt.m_y;
+	m_left = pt.x;
+	m_top  = pt.y;
 	setSize(sz);
 }
 
@@ -104,14 +104,14 @@ resize it so it isn't.
 *************************************************************************/
 Rect& Rect::constrainSizeMax(const Size& sz)
 {
-	if (getWidth() > sz.m_width)
+	if (getWidth() > sz.width)
 	{
-		setWidth(sz.m_width);
+		setWidth(sz.width);
 	}
 
-	if (getHeight() > sz.m_height)
+	if (getHeight() > sz.height)
 	{
-		setHeight(sz.m_height);
+		setHeight(sz.height);
 	}
 
 	return *this;
@@ -124,14 +124,14 @@ resize it so it isn't.
 *************************************************************************/
 Rect& Rect::constrainSizeMin(const Size& sz)
 {
-	if (getWidth() < sz.m_width)
+	if (getWidth() < sz.width)
 	{
-		setWidth(sz.m_width);
+		setWidth(sz.width);
 	}
 
-	if (getHeight() < sz.m_height)
+	if (getHeight() < sz.height)
 	{
-		setHeight(sz.m_height);
+		setHeight(sz.height);
 	}
 
 	return *this;
@@ -146,22 +146,22 @@ Rect& Rect::constrainSize(const Size& max_sz, const Size& min_sz)
 {
 	Size curr_sz(getSize());
 
-	if (curr_sz.m_width > max_sz.m_width)
+	if (curr_sz.width > max_sz.width)
 	{
-		setWidth(max_sz.m_width);
+		setWidth(max_sz.width);
 	}
-	else if (curr_sz.m_width < min_sz.m_width)
+	else if (curr_sz.width < min_sz.width)
 	{
-		setWidth(min_sz.m_width);
+		setWidth(min_sz.width);
 	}
 
-	if (curr_sz.m_height > max_sz.m_height)
+	if (curr_sz.height > max_sz.height)
 	{
-		setHeight(max_sz.m_height);
+		setHeight(max_sz.height);
 	}
-	else if (curr_sz.m_height < min_sz.m_height)
+	else if (curr_sz.height < min_sz.height)
 	{
-		setHeight(min_sz.m_height);
+		setHeight(min_sz.height);
 	}
 
 	return *this;
@@ -179,8 +179,8 @@ Rect& Rect::operator=(const Rect& rhs)
 
 Rect& Rect::scale(const Size& size)
 {
-	const float scaleX = 1 / size.m_width;
-	const float scaleY = 1 / size.m_height;
+	const float scaleX = 1 / size.width;
+	const float scaleY = 1 / size.height;
 	m_left *= scaleX;
 	m_right *= scaleX;
 	m_top *= scaleY;

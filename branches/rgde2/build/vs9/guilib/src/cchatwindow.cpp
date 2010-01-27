@@ -168,10 +168,10 @@ void ChatWindow::SetPosition( const Point& point )
 	float w2 = m_area.getWidth() * 0.5f;
 	float h = m_area.getHeight();
 
-	m_area.m_left = point.m_x - w2;
-	m_area.m_right = point.m_x + w2;
-	m_area.m_top = point.m_y - h;
-	m_area.m_bottom = point.m_y;
+	m_area.m_left = point.x - w2;
+	m_area.m_right = point.x + w2;
+	m_area.m_top = point.y - h;
+	m_area.m_bottom = point.y;
 }
 
 bool ChatWindow::onTick( float delta )

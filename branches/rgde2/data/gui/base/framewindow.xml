@@ -11,7 +11,7 @@
 			<Background Image="TitlebarMiddle" />
 		</Caption>
 		<FrameImagery Imageset="skin">
-			<Background Image="TitlebarMiddle" />
+			<Background Image="Background" />
 			<Top Image="FrameTop" />
 			<TopLeft Image="FrameTopLeft" />
 			<TopRight Image="FrameTopRight" />

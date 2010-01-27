@@ -9,7 +9,7 @@
 		<FrameImagery Imageset="skin">
 			<Left Image="EditFrameLeft" />
 			<Right Image="EditFrameRight" />
-			<Background Image="EditFrameBottomLeft" />
+			<Background Image="EditFrameMiddle" />
 			<Caret Image="EditBoxCarat" />
 			<Selection Image="TextSelectionBrush" />
 		</FrameImagery>
