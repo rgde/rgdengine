@@ -408,7 +408,7 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
 			}
 		}
 
-		m_font->drawText(outtext, dest, 1.0f, clip, m_format, m_backColor, 1.f, 1.f);
+		m_font->drawText(outtext, dest, 1.0f, clip, m_format, m_foreColor, 1.f, 1.f);
 
 		if(m_caretImg && m_focus && !m_readOnly)
 		{

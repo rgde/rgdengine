@@ -383,39 +383,40 @@ void Font::drawTextLine(const std::wstring& text,  const Rect& draw_area, const 
 {
 	if(Rect(draw_area).getIntersection(clip_rect).empty())
 		return;
-	{
-		Vector3	cur_pos(position);
 
-		float base_y = position.y;
+	//{ // draw text shadow
+	//	Vector3	cur_pos(position);
 
-		for (size_t c = 0; c < text.length(); ++c)
-		{ 
-			if (const FontGlyph* glyph = getGlyphData(text[c]))
-			{
-				const Image* img = glyph->getImage();
-	            
-				Size size = glyph->getSize(x_scale, y_scale);
-				float x = cur_pos.x + glyph->getOffsetX() * x_scale;					  
-				float y = cur_pos.y + glyph->getOffsetY() * y_scale;
+	//	float base_y = position.y;
 
-				Rect rec (x, y, x + size.width, y + size.height);
+	//	for (size_t c = 0; c < text.length(); ++c)
+	//	{ 
+	//		if (const FontGlyph* glyph = getGlyphData(text[c]))
+	//		{
+	//			const Image* img = glyph->getImage();
+	//            
+	//			Size size = glyph->getSize(x_scale, y_scale);
+	//			float x = cur_pos.x + glyph->getOffsetX() * x_scale;					  
+	//			float y = cur_pos.y + glyph->getOffsetY() * y_scale;
 
-				Rect shadow_rec (rec.m_left+.5f,rec.m_top+.5f,rec.m_right+1.f,rec.m_bottom+1.f);
-				Color shadow_color(0,0,0,colours.m_top_left.getAlpha());
-				ColorRect shadow_colours(shadow_color,shadow_color,
-											shadow_color,shadow_color);
-				
-				m_render.draw(*img, shadow_rec, cur_pos.z, clip_rect, shadow_colours, TopLeftToBottomRight);
-				//m_render.draw(*img, rec, cur_pos.z, clip_rect, shadow_colours, TopLeftToBottomRight);
+	//			Rect rec (x, y, x + size.width, y + size.height);
 
-				cur_pos.x += glyph->getAdvance(x_scale);
-	#ifdef GUI_KERNING_ENABLED
-				if (c < text.length() - 1)
-					cur_pos.x += glyph->getKerning(text[c+1]) * x_scale;
-	#endif
-			}
-		}
-	}
+	//			Rect shadow_rec (rec.m_left+.5f,rec.m_top+.5f,rec.m_right+1.f,rec.m_bottom+1.f);
+	//			Color shadow_color(0,0,0,colours.m_top_left.getAlpha());
+	//			ColorRect shadow_colours(shadow_color,shadow_color,
+	//										shadow_color,shadow_color);
+	//			
+	//			m_render.draw(*img, shadow_rec, cur_pos.z, clip_rect, shadow_colours, TopLeftToBottomRight);
+	//			//m_render.draw(*img, rec, cur_pos.z, clip_rect, shadow_colours, TopLeftToBottomRight);
+
+	//			cur_pos.x += glyph->getAdvance(x_scale);
+	//#ifdef GUI_KERNING_ENABLED
+	//			if (c < text.length() - 1)
+	//				cur_pos.x += glyph->getKerning(text[c+1]) * x_scale;
+	//#endif
+	//		}
+	//	}
+	//}
 
 	Vector3	cur_pos(position);
 
