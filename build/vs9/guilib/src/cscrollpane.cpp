@@ -62,7 +62,7 @@ bool ScrollPane::onLoad(void)
 		{
 			subscribe<events::TrackEvent, ScrollPane> (&ScrollPane::onTrack, m_scroll);
 			Size sz(m_area.getSize());
-			sz.m_width = m_scroll->getSize().m_width;
+			sz.width = m_scroll->getSize().m_width;
 			m_scroll->setSize(sz);
 			m_scroll->setAlwaysOnTop(true);
 		}

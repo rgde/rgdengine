@@ -12,59 +12,59 @@ namespace gui
 	class  Vector2
 	{
 	public:
-		Vector2(void) {}
-		Vector2(float x, float y) : m_x(x), m_y(y) {}
+		Vector2() {}
+		Vector2(float x, float y) : x(x), y(y) {}
 
 		Vector2& operator*=(const Vector2& vec)
 		{
-			m_x *= vec.m_x;
-			m_y *= vec.m_y;
+			x *= vec.x;
+			y *= vec.y;
 
 			return *this;
 		}
 
 		Vector2& operator/=(const Vector2& vec)
 		{
-			m_x /= vec.m_x;
-			m_y /= vec.m_y;
+			x /= vec.x;
+			y /= vec.y;
 
 			return *this;
 		}
 
 		Vector2& operator+=(const Vector2& vec)
 		{
-			m_x += vec.m_x;
-			m_y += vec.m_y;
+			x += vec.x;
+			y += vec.y;
 
 			return *this;
 		}
 
 		Vector2& operator-=(const Vector2& vec)
 		{
-			m_x -= vec.m_x;
-			m_y -= vec.m_y;
+			x -= vec.x;
+			y -= vec.y;
 
 			return *this;
 		}
 
 		Vector2	operator+(const Vector2& vec) const
 		{
-			return Vector2(m_x + vec.m_x, m_y + vec.m_y);
+			return Vector2(x + vec.x, y + vec.y);
 		}
 
 		Vector2	operator-(const Vector2& vec) const
 		{
-			return Vector2(m_x - vec.m_x, m_y - vec.m_y);
+			return Vector2(x - vec.x, y - vec.y);
 		}
 
 		Vector2	operator*(const Vector2& vec) const
 		{
-			return Vector2(m_x * vec.m_x, m_y * vec.m_y);
+			return Vector2(x * vec.x, y * vec.y);
 		}
 
 		bool	operator==(const Vector2& vec) const
 		{
-			return ((m_x == vec.m_x) && (m_y == vec.m_y));
+			return ((x == vec.x) && (y == vec.y));
 		}
 
 		bool	operator!=(const Vector2& vec) const
@@ -72,16 +72,14 @@ namespace gui
 			return !(operator==(vec));
 		}
 
-		Size asSize() const     { return Size(m_x, m_y); }
-
-		float m_x, m_y;
+		float x, y;
 	};
 
 	/*!
 	\brief
 	Point class
 	*/
-	typedef	Vector2		Point;
+	typedef	Vector2	Point;
 
 
 	/*!
@@ -92,8 +90,8 @@ namespace gui
 	{
 	public:
 		Vector3(void) {}
-		Vector3(float x, float y, float z) : m_x(x), m_y(y), m_z(z) {}
+		Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 
-		float	m_x, m_y, m_z;
+		float	x, y, z;
 	};
 }

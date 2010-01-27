@@ -5,43 +5,37 @@ namespace gui
 {
 	bool Size::operator==(const Size& other) const
 	{
-		return m_width == other.m_width && m_height == other.m_height;
+		return width == other.width && height == other.height;
 	}
-
 
 	bool Size::operator!=(const Size& other) const
 	{
 		return !operator==(other);
 	}
 
-
-
 	Size operator* ( const Size& lhs,const Size& rhs )
 	{
-		return Size( lhs.m_width*rhs.m_width, lhs.m_height*rhs.m_height );
+		return Size( lhs.width*rhs.width, lhs.height*rhs.height );
 	}
 
 	Size operator/ ( const Size& lhs,const Size& rhs )
 	{
-		return Size( lhs.m_width/rhs.m_width, lhs.m_height/rhs.m_height );
+		return Size( lhs.width/rhs.width, lhs.height/rhs.height );
 	}
 
 	Size StringToSize(const std::string& str)
 	{
-		using namespace std;
+		Size out;
 
-		int width = 0;
-		int height = 0;
-		sscanf(str.c_str(), "%d %d", &width, &height);
+		sscanf(str.c_str(), "%d %d", &out.width, &out.height);
 
-		return Size((float)width, (float)height);
+		return out;
 	}
 
 	std::string SizeToString(const Size& val)
 	{
 		char buff[128] = {0};
-		_snprintf(buff, sizeof (buff), "%d %d", val.m_width, val.m_height);
-
+		_snprintf(buff, sizeof (buff), "%d %d", val.width, val.height);
 		return std::string(buff);
 	}
 }

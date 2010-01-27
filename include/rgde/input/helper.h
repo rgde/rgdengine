@@ -194,8 +194,8 @@ namespace input
 
 	//	void operator += (CursorHandler handler);
 
- //       float getX () const {return m_x;}
-	//	float getY () const {return m_y;}
+ //       float getX () const {return x;}
+	//	float getY () const {return y;}
  //       void  set_pos (float x, float y);
 
 	//protected:
@@ -206,8 +206,8 @@ namespace input
  //       void adjustPosToClient (float &x, float &y);
 
 	//private:
- //       float m_x;
- //       float m_y;
+ //       float x;
+ //       float y;
 	//	std::list<CursorHandler> m_cursorHandlers;
 	//};
 

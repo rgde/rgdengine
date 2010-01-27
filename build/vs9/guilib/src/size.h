@@ -9,13 +9,12 @@ namespace gui
 	class  Size
 	{
 	public:
-		Size(void) : m_width(0.f), m_height(0.f) {}
-		Size(float width, float height) : m_width(width), m_height(height) {}
+		Size(float width = 0, float height = 0) : width(width), height(height) {}
 
 		bool operator==(const Size& other) const;
 		bool operator!=(const Size& other) const;
 
-		float m_width, m_height;
+		float width, height;
 	};
 
 	Size operator* ( const Size& lhs,const Size& rhs );

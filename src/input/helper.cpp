@@ -342,7 +342,7 @@ namespace input
 //
 ////////////////////////////////////////////////////////////////////////////
 //
-//    Cursor::Cursor (): m_x(0), m_y(0)
+//    Cursor::Cursor (): x(0), y(0)
 //    {
 //        subscribe<CCursorMove>(&Cursor::onCursorMove);
 //    }
@@ -354,8 +354,8 @@ namespace input
 //
 //    void Cursor::set_pos (float x, float y)
 //    {
-//        m_x = x;
-//        m_y = y;
+//        x = x;
+//        y = y;
 //
 //        adjustPosToClient(x,y);
 //
@@ -370,15 +370,15 @@ namespace input
 //
 //    void Cursor::onCursorMove (CCursorMove e)
 //    {
-//        m_x = e.x;
-//        m_y = e.y;
+//        x = e.x;
+//        y = e.y;
 //
-//        adjustPosToWindow(m_x, m_y);
+//        adjustPosToWindow(x, y);
 //
 //		std::list<Cursor::CursorHandler>::iterator i = m_cursorHandlers.begin();
 //		while (i != m_cursorHandlers.end())
 //		{
-//			(*i)(m_x, m_y);
+//			(*i)(x, y);
 //			++i;
 //		}
 //    }

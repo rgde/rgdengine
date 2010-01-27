@@ -242,7 +242,7 @@ bool System::handleMouseMove(int x, int y)
 			if(!m_dragfired)
 			{
 				Point t = m_cursor.getPosition() - m_dragOffset;
-				if(sqrt(t.m_x*t.m_x + t.m_y*t.m_y) > m_dragThreshold)
+				if(sqrt(t.x*t.x + t.y*t.y) > m_dragThreshold)
 				{
 					Point off = m_dragWindow->transformToWndCoord(m_dragOffset);
 					off -= m_dragWindow->getPosition();

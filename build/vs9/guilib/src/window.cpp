@@ -240,8 +240,8 @@ bool BaseWindow::onMouseMove(void)
 	MouseEventArgs m;
 	m.name = "On_MouseMove";
 	Point pt = m_system.getCursor().getPosition();
-	m.mouseX = pt.m_x;
-	m.mouseY = pt.m_y;
+	m.mouseX = pt.x;
+	m.mouseY = pt.y;
 	callHandler(&m);
 	return m.handled; 
 }
@@ -393,20 +393,20 @@ void BaseWindow::Align()
 		float x = 0.f;
 		if(original_width > 0.f)
 		{
-			float width = parent_size.m_width - sz.m_width;
+			float width = parent_size.width - sz.width;
 			x = width * m_alignmentRect.m_left / original_width;
 		}
-		m_area.setPosition(Point(x, pos.m_y));
+		m_area.setPosition(Point(x, pos.y));
 	}
 	else
 	{
 		if(m_alignment & Left)
 		{
-			m_area.setPosition(Point(m_alignmentRect.m_left, pos.m_y));
+			m_area.setPosition(Point(m_alignmentRect.m_left, pos.y));
 		}
 		else if(m_alignment & Right)
 		{
-			m_area.setPosition(Point(parent_size.m_width - sz.m_width - m_alignmentRect.m_right, pos.m_y));
+			m_area.setPosition(Point(parent_size.width - sz.width - m_alignmentRect.m_right, pos.y));
 		}
 	}
 
@@ -418,20 +418,20 @@ void BaseWindow::Align()
 		float y = 0.f;
 		if(original_height > 0.f)
 		{
-			float height = parent_size.m_height - sz.m_height;
+			float height = parent_size.height - sz.height;
 			y = height * m_alignmentRect.m_top / original_height;
 		}
-		m_area.setPosition(Point(pos.m_x, y));
+		m_area.setPosition(Point(pos.x, y));
 	}
 	else
 	{
 		if(m_alignment & Top)
 		{
-			m_area.setPosition(Point(pos.m_x, m_alignmentRect.m_top));
+			m_area.setPosition(Point(pos.x, m_alignmentRect.m_top));
 		}
 		else if(m_alignment & Bottom)
 		{
-			m_area.setPosition(Point(pos.m_x, parent_size.m_height - sz.m_height - m_alignmentRect.m_bottom));
+			m_area.setPosition(Point(pos.x, parent_size.height - sz.height - m_alignmentRect.m_bottom));
 		}
 	}
 }
@@ -448,7 +448,7 @@ void BaseWindow::Stick()
 
 	if(m_stick & HCenter)
 	{
-		m_area.setPosition(Point((parent_size.m_width - sz.m_width) / 2, m_area.m_top));
+		m_area.setPosition(Point((parent_size.width - sz.width) / 2, m_area.m_top));
 	}
 	else
 	{
@@ -458,13 +458,13 @@ void BaseWindow::Stick()
 		}
 		else if(m_stick & Right)
 		{
-			m_area.setPosition(Point(parent_size.m_width - sz.m_width - m_stickRect.m_right, m_area.m_top));
+			m_area.setPosition(Point(parent_size.width - sz.width - m_stickRect.m_right, m_area.m_top));
 		}
 	}
 
 	if(m_stick & VCenter)
 	{
-		m_area.setPosition(Point(m_area.m_left, (parent_size.m_height - sz.m_height) / 2));
+		m_area.setPosition(Point(m_area.m_left, (parent_size.height - sz.height) / 2));
 	}
 	else
 	{
@@ -474,7 +474,7 @@ void BaseWindow::Stick()
 		}
 		else if(m_stick & Bottom)
 		{
-			m_area.setPosition(Point(m_area.m_left, parent_size.m_height - sz.m_height - m_stickRect.m_bottom));
+			m_area.setPosition(Point(m_area.m_left, parent_size.height - sz.height - m_stickRect.m_bottom));
 		}
 	}
 }

@@ -155,15 +155,15 @@ void ScrollBar::updateThumb()
 	Size s(m_thumb->getArea().getSize());
 	if(m_horiz)
 	{
-		thumbArea.m_left += dbtnsize.m_width;
-		thumbArea.m_right -= ibtnsize.m_width;
-		s.m_width = thumbArea.getWidth() * m_area.getWidth() / m_doc;
+		thumbArea.m_left += dbtnsize.width;
+		thumbArea.m_right -= ibtnsize.width;
+		s.width = thumbArea.getWidth() * m_area.getWidth() / m_doc;
 	}
 	else
 	{
-		thumbArea.m_top += dbtnsize.m_height;
-		thumbArea.m_bottom -= ibtnsize.m_height;
-		s.m_height = thumbArea.getHeight() * m_area.getHeight() / m_doc;
+		thumbArea.m_top += dbtnsize.height;
+		thumbArea.m_bottom -= ibtnsize.height;
+		s.height = thumbArea.getHeight() * m_area.getHeight() / m_doc;
 	}
 	m_thumb->setSize(s);
 	m_thumb->setTrackarea(thumbArea);	
@@ -185,9 +185,9 @@ bool ScrollBar::onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonStat
 				if(track.isPointInRect(pt))
 				{
 					Point pos = pt - track.getPosition();
-					/*pos.m_x -= m_thumb->getArea().getWidth() / 2;
-					pos.m_y -= m_thumb->getArea().getHeight() / 2;*/
-					m_thumb->setProgress(m_horiz ? pos.m_x / size : pos.m_y / size);
+					/*pos.x -= m_thumb->getArea().getWidth() / 2;
+					pos.y -= m_thumb->getArea().getHeight() / 2;*/
+					m_thumb->setProgress(m_horiz ? pos.x / size : pos.y / size);
 				}
 			}
 		}
@@ -242,7 +242,7 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
 			componentRect = finalRect.getIntersection (componentRect);
-			left  = imgSize.m_width;
+			left  = imgSize.width;
 
 			// draw this element.
 			r.draw(*m_leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -251,12 +251,12 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 		if (m_rightImg)
 		{
 			imgSize = m_rightImg->getPixelRect().getSize();
-			componentRect.m_left = finalRect.m_right - imgSize.m_width;
+			componentRect.m_left = finalRect.m_right - imgSize.width;
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
 			componentRect = finalRect.getIntersection (componentRect);
 
-			right = imgSize.m_width;
+			right = imgSize.width;
 
 			// draw this element.
 			r.draw(*m_rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -283,7 +283,7 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
 			componentRect = finalRect.getIntersection (componentRect);
-			left  = imgSize.m_height;
+			left  = imgSize.height;
 
 			// draw this element.
 			r.draw(*m_leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -293,11 +293,11 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 		{
 			imgSize = m_rightImg->getPixelRect().getSize();
 			componentRect.m_left = finalRect.m_left;
-			componentRect.m_top  = finalRect.m_bottom - imgSize.m_height;
+			componentRect.m_top  = finalRect.m_bottom - imgSize.height;
 			componentRect.setSize(imgSize);
 			componentRect = finalRect.getIntersection (componentRect);
 
-			right = imgSize.m_height;
+			right = imgSize.height;
 
 			// draw this element.
 			r.draw(*m_rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);

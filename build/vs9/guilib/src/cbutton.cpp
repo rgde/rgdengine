@@ -125,11 +125,11 @@ void Button::render(const Rect& finalRect, const Rect& finalClip)
         imgSize = state.leftImg->getPixelRect().getSize();
         componentRect.m_left = finalRect.m_left;
         componentRect.m_top  = finalRect.m_top;
-		componentRect.m_right = finalRect.m_left + imgSize.m_width;
+		componentRect.m_right = finalRect.m_left + imgSize.width;
         componentRect.m_bottom = finalRect.m_bottom;
         componentRect = finalRect.getIntersection (componentRect);
 
-		left  = imgSize.m_width;
+		left  = imgSize.width;
 
         // draw this element.
         r.draw(*state.leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -138,13 +138,13 @@ void Button::render(const Rect& finalRect, const Rect& finalClip)
     if (state.rightImg)
     {
         imgSize = state.rightImg->getPixelRect().getSize();
-        componentRect.m_left = finalRect.m_right - imgSize.m_width;
+        componentRect.m_left = finalRect.m_right - imgSize.width;
         componentRect.m_top  = finalRect.m_top;
         componentRect.m_right = finalRect.m_right;
 		componentRect.m_bottom = finalRect.m_bottom;
         componentRect = finalRect.getIntersection (componentRect);
 
-		right = imgSize.m_width;
+		right = imgSize.width;
 
         // draw this element.
         r.draw(*state.rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -323,17 +323,17 @@ float Thumb::getProgress(void) const
 
 	if(m_horiz)
 	{
-		if(width < 1.f || width == sz.m_width)
+		if(width < 1.f || width == sz.width)
 			return 0.f;
 
-		return pos.m_x / (width - sz.m_width);
+		return pos.x / (width - sz.width);
 	}
 	else
 	{
-		if(height < 1.f || height == sz.m_height)
+		if(height < 1.f || height == sz.height)
 			return 0.f;
 
-		return pos.m_y / (height - sz.m_height);
+		return pos.y / (height - sz.height);
 	}
 }
 
@@ -348,20 +348,20 @@ void Thumb::setProgress(float p)
 	if(m_horiz)
 	{
 		if(width > 0.f)
-			pt.m_x += p * (width - sz.m_width);
-		if(pt.m_x < z.m_x)
-			pt.m_x = z.m_x;
-		if(pt.m_x > z.m_x + width - sz.m_width)
-			pt.m_x = z.m_x + width - sz.m_width;
+			pt.x += p * (width - sz.width);
+		if(pt.x < z.x)
+			pt.x = z.x;
+		if(pt.x > z.x + width - sz.width)
+			pt.x = z.x + width - sz.width;
 	}
 	else
 	{
 		if(height > 0.f)
-			pt.m_y += p * (height - sz.m_height);
-		if(pt.m_y < z.m_y)
-			pt.m_y = z.m_y;
-		if(pt.m_y > z.m_y + height - sz.m_height)
-			pt.m_y = z.m_y + height - sz.m_height;
+			pt.y += p * (height - sz.height);
+		if(pt.y < z.y)
+			pt.y = z.y;
+		if(pt.y > z.y + height - sz.height)
+			pt.y = z.y + height - sz.height;
 	}
 	invalidate();
 	m_area.setPosition(pt);
@@ -444,7 +444,7 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
 			componentRect = finalRect.getIntersection (componentRect);
-			left  = imgSize.m_width;
+			left  = imgSize.width;
 
 			// draw this element.
 			r.draw(*state.leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -453,12 +453,12 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 		if (state.rightImg)
 		{
 			imgSize = state.rightImg->getPixelRect().getSize();
-			componentRect.m_left = finalRect.m_right - imgSize.m_width;
+			componentRect.m_left = finalRect.m_right - imgSize.width;
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
 			componentRect = finalRect.getIntersection (componentRect);
 
-			right = imgSize.m_width;
+			right = imgSize.width;
 
 			// draw this element.
 			r.draw(*state.rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -485,7 +485,7 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
 			componentRect = finalRect.getIntersection (componentRect);
-			left  = imgSize.m_height;
+			left  = imgSize.height;
 
 			// draw this element.
 			r.draw(*state.leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -495,11 +495,11 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 		{
 			imgSize = state.rightImg->getPixelRect().getSize();
 			componentRect.m_left = finalRect.m_left;
-			componentRect.m_top  = finalRect.m_bottom - imgSize.m_height;
+			componentRect.m_top  = finalRect.m_bottom - imgSize.height;
 			componentRect.setSize(imgSize);
 			componentRect = finalRect.getIntersection (componentRect);
 
-			right = imgSize.m_height;
+			right = imgSize.height;
 
 			// draw this element.
 			r.draw(*state.rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);

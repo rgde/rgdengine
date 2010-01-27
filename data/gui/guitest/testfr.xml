@@ -34,7 +34,7 @@
             </StaticText>
             <Button name="TestSubButtonWindow" file="base\Button.xml" >
               <Properties>
-                <Area>4 60 232 20</Area>
+                <Area>4 55 232 20</Area>
                 <Text>Click me</Text>
               </Properties>
               <Events>

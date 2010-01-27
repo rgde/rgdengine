@@ -92,10 +92,10 @@ void ProgressBar::render(const Rect& finalRect, const Rect& finalClip)
     {
         // calculate final destination area
         imgSize = m_leftImg->getPixelRect().getSize();
-		componentRect.m_right = componentRect.m_left + imgSize.m_width;
-		componentRect.m_bottom = componentRect.m_top + imgSize.m_height;
-		left  = imgSize.m_width;
-		height = imgSize.m_height;
+		componentRect.m_right = componentRect.m_left + imgSize.width;
+		componentRect.m_bottom = componentRect.m_top + imgSize.height;
+		left  = imgSize.width;
+		height = imgSize.height;
 
         // draw this element.
         r.draw(*m_leftImg, componentRect, 1.f, clip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
@@ -105,10 +105,10 @@ void ProgressBar::render(const Rect& finalRect, const Rect& finalClip)
     if (m_rightImg)
     {
         imgSize = m_rightImg->getPixelRect().getSize();
-        componentRect.m_left = componentRect.m_right - imgSize.m_width;
-        componentRect.m_bottom = componentRect.m_top + imgSize.m_height;
+        componentRect.m_left = componentRect.m_right - imgSize.width;
+        componentRect.m_bottom = componentRect.m_top + imgSize.height;
 
-		right = imgSize.m_width;
+		right = imgSize.width;
 
         // draw this element.
         r.draw(*m_rightImg, componentRect, 1.f, clip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);

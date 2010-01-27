@@ -16,16 +16,16 @@ namespace gui
 		Rect(float left, float top, float right, float bottom);
 		Rect(Point pos, Size sz);
 
-		Point	getPosition(void) const		{return Point(m_left, m_top);}
-		float	getWidth(void) const		{return m_right - m_left;}
-		float	getHeight(void) const		{return m_bottom - m_top;}
-		Size	getSize(void) const			{return Size(getWidth(), getHeight());}
+		Point	getPosition() const		{return Point(m_left, m_top);}
+		float	getWidth() const		{return m_right - m_left;}
+		float	getHeight() const		{return m_bottom - m_top;}
+		Size	getSize() const			{return Size(getWidth(), getHeight());}
 
 
 		void	setPosition(const Point& pt);
 		void	setWidth(float width)		{m_right = m_left + width;}
 		void	setHeight(float height)		{m_bottom = m_top + height;}
-		void	setSize(const Size& sze)	{setWidth(sze.m_width); setHeight(sze.m_height);}
+		void	setSize(const Size& size)	{setWidth(size.width); setHeight(size.height);}
 
 		Rect	getIntersection(const Rect& rect) const;
 		Rect&	offset(const Point& pt);

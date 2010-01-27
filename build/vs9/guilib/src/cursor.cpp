@@ -6,14 +6,13 @@
 namespace gui
 {
 
-
-Cursor::Cursor(Renderer& r) :
-	m_render(r),
-	m_currentCursor(0)
+Cursor::Cursor(Renderer& r) 
+	: m_render(r)
+	, m_currentCursor(0)
 {
 }
 
-Cursor::~Cursor(void)
+Cursor::~Cursor()
 {
 }
 
@@ -25,13 +24,13 @@ void Cursor::setPosition(Point pt)
 Point Cursor::getPosition() const
 {	
 	Size vp = m_render.getViewportSize();
-	if(m_render.isAutoScale() && vp.m_width && vp.m_height)
+	if(m_render.isAutoScale() && vp.width && vp.height)
 	{
 		Size sz = m_render.getOriginalSize();
-		float cx = sz.m_width / vp.m_width;
-		float cy = sz.m_height / vp.m_height;
+		float cx = sz.width / vp.width;
+		float cy = sz.height / vp.height;
 		
-		return Point(m_cursorPos.m_x * cx, m_cursorPos.m_y * cy);
+		return Point(m_cursorPos.x * cx, m_cursorPos.y * cy);
 	}
 	else
 	{
@@ -48,7 +47,7 @@ void Cursor::setType(const std::string& curname)
 	}
 }
 
-std::string Cursor::getType(void) const
+std::string Cursor::getType() const
 {
 	if(m_currentCursor)
 	{
