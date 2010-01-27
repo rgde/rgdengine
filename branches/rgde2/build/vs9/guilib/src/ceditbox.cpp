@@ -408,7 +408,16 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
 			}
 		}
 
-		m_font->drawText(outtext, dest, 1.0f, clip, m_format, m_foreColor, 1.f, 1.f);
+		{
+			Rect rc(dest);
+			float height = m_font->getLineSpacing();
+			float offset = (finalRect.getHeight() - height) / 2;
+			rc.offset(Point(0.f, offset));
+
+			m_font->drawText(outtext, rc, 1.0f, clip, m_format, m_foreColor, 1.f, 1.f);
+		}
+
+		
 
 		if(m_caretImg && m_focus && !m_readOnly)
 		{
