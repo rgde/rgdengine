@@ -1,48 +1,12 @@
 <?xml version="1.0" ?>
-<Imageset Name="Cursors" Imagefile="Cursors.tga">
-
-	<Image Name="CursorNormal" XPos="96" YPos="64" Width="32" Height="32" />
-
-	<Image Name="CursorNormalOver" XPos="64" YPos="64" Width="32" Height="32" />
-
-	<Image Name="CursorPositive" XPos="64" YPos="96" Width="32" Height="32" />
-
-	<Image Name="CursorPositiveOver" XPos="32" YPos="96" Width="32" Height="32" />
-
-	<Image Name="CursorNegative" XPos="64" YPos="96" Width="32" Height="32" />
-
-	<Image Name="CursorNegativeOver" XPos="0" YPos="96" Width="32" Height="32" />
-
-	<Image Name="CursorTargetRed" XPos="96" YPos="32" Width="32" Height="32" />
-
-	<Image Name="CursorTargetRedOver" XPos="96" YPos="0" Width="32" Height="32" />
-
-	<Image Name="CursorTargetBlue" XPos="32" YPos="64" Width="32" Height="32" />
-
-	<Image Name="CursorTargetBlueOver" XPos="0" YPos="64" Width="32" Height="32" />
-
-	<Image Name="CursorTargetYellow" XPos="64" YPos="32" Width="32" Height="32" />
-
-	<Image Name="CursorTargetYellowOver" XPos="32" YPos="32" Width="32" Height="32" />
-
-	<Image Name="CursorAttack" XPos="64" YPos="0" Width="32" Height="32" />
-
+<Imageset Name="Cursors" Imagefile="skin.png">
+	<Image Name="CursorNormal" XPos="109" YPos="6" Width="11" Height="18" />
+	<Image Name="CursorNormalOver" XPos="109" YPos="6" Width="11" Height="18" />
 	<Image Name="CursorAction" XPos="64" YPos="64" Width="32" Height="32" />
-
-	<Image Name="CursorContainer" XPos="0" YPos="0" Width="32" Height="32" />
-
-	<Image Name="CursorDialog" XPos="32" YPos="0" Width="32" Height="32" />
-
 	<Image Name="CursorResizerHoriz" XPos="0" YPos="128" Width="32" Height="32" />
-
 	<Image Name="CursorResizerVert" XPos="32" YPos="128" Width="32" Height="32" />
-
 	<Image Name="CursorResizerDownUp" XPos="96" YPos="128" Width="32" Height="32" />
-	
 	<Image Name="CursorResizerUpDown" XPos="64" YPos="128" Width="32" Height="32" />
-
-	<!-- <Image Name="CursorTyper" XPos="96" YPos="96" Width="32" Height="32" /> -->
     <Image Name="CursorTyper" XPos="109" YPos="101" Width="8" Height="22" />
-
     <Image Name="CursorDrag" XPos="64" YPos="32" Width="32" Height="32" />
 </Imageset>
