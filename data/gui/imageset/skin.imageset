@@ -1,6 +1,6 @@
 <Imageset Name="skin" Imagefile="skin.png" NativeHorzRes="1024" NativeVertRes="768" AutoScaled="False">
 
-	<Image Name="Background" XPos="0.0" YPos="0.0" Width="2.0" Height="2.0" />
+	<Image Name="Background" XPos="64.0" YPos="32.0" Width="2.0" Height="2.0" />
   
 	<Image Name="CloseButton" XPos="5.0" YPos="5.0" Width="16.0" Height="16.0" />
 	<Image Name="CloseButtonHover" XPos="5.0" YPos="24.0" Width="16.0" Height="16.0" />

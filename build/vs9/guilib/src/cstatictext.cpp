@@ -60,7 +60,7 @@ void StaticText::render(const Rect& finalRect, const Rect& finalClip)
 			size_t count = m_font->getFormattedLineCount(m_text, finalRect, m_format);
 			float height = m_font->getLineSpacing() * (float)count;
 			float offset = (finalRect.getHeight() - height) / 2;
-			rc.offset(Point(0.f, offset - 2.f));
+			rc.offset(Point(0.f, offset));
 		}
 		m_font->drawText(m_text, rc, 1.0f, finalClip, m_format, m_foreColor, 1.f, 1.f);
 	}
