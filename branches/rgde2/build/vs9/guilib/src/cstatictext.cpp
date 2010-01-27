@@ -62,7 +62,7 @@ void StaticText::render(const Rect& finalRect, const Rect& finalClip)
 			float offset = (finalRect.getHeight() - height) / 2;
 			rc.offset(Point(0.f, offset - 2.f));
 		}
-		m_font->drawText(m_text, rc, 1.0f, finalClip, m_format, m_backColor, 1.f, 1.f);
+		m_font->drawText(m_text, rc, 1.0f, finalClip, m_format, m_foreColor, 1.f, 1.f);
 	}
 }
 

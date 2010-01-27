@@ -64,7 +64,7 @@ void Combobox::onBtnClick(const events::ClickEvent& e)
 		else
 		{
 			m_system.getRootWindow().addChildWindow(m_list.get());
-			m_list->setSize(Size(m_area.getSize().m_width, m_list->getSize().m_height));
+			m_list->setSize(Size(m_area.getSize().width, m_list->getSize().height));
 			m_list->setVisible(true);
 			m_list->moveToFront();
 			Point pt = transformToRootCoord(Point(m_area.m_left, m_area.m_bottom));

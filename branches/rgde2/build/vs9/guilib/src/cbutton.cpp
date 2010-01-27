@@ -275,9 +275,9 @@ bool Thumb::onMouseMove(void)
 		if(testarea.m_top < m_trackarea.m_top)
 			testarea.m_top = m_trackarea.m_top;
 		if(testarea.m_right > m_trackarea.m_right)
-			testarea.m_left = m_trackarea.m_right - me.m_width;
+			testarea.m_left = m_trackarea.m_right - me.width;
 		if(testarea.m_bottom > m_trackarea.m_bottom)
-			testarea.m_top = m_trackarea.m_bottom - me.m_height;
+			testarea.m_top = m_trackarea.m_bottom - me.height;
 
 		testarea.setSize(me);
 		invalidate();

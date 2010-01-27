@@ -81,8 +81,8 @@ void BaseList::layoutItems()
 				break;
 			Size child((*i)->getSize());
 			(*i)->setPosition(Point(m_borders.m_left + col * m_colWidth, sz.height));
-			height = height > child.m_height ? height : child.m_height;
-			width += child.m_width;
+			height = height > child.height ? height : child.height;
+			width += child.width;
 			++i;
 		}
 		
