@@ -35,7 +35,7 @@ BaseWindow::BaseWindow(System& sys, const std::string& name) :
 	m_suspended(false)
 {
 	m_backColor = Color(1.f, 1.f, 1.f);
-	m_foreColor = Color(1.f, 1.f, 1.f);
+	m_foreColor = Color(0.f, 0.f, 0.f);
 }
 
 BaseWindow::~BaseWindow(void)

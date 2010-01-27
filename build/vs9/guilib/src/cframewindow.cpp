@@ -17,7 +17,7 @@ FrameWindow::FrameWindow(System& sys, const std::string& name) :
 	m_tracking(false),
 	m_movable(true),
 	m_clampToScreen(true),
-	m_captionColor(1.f, 1.f, 1.f)
+	m_captionColor(0.f, 0.f, 0.f)
 {
 }
 
@@ -156,7 +156,12 @@ void FrameWindow::render(const Rect& finalRect, const Rect& finalClip)
     }
 	
 	if(m_font)
+	{
+		float font_height = m_font->getFontHeight();
+		float caption_height = componentRect.m_bottom - componentRect.m_top;
+		componentRect.m_top += (caption_height - font_height)*0.5f;
 		m_font->drawText(m_text, componentRect, 1.0f, finalClip, m_format, m_captionColor, 1.f, 1.f);
+	}
 
 	//rendering frame
 	const Rect rc(finalRect.m_left, finalRect.m_top + height, finalRect.m_right, finalRect.m_bottom);
