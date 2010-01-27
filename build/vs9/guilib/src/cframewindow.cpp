@@ -61,10 +61,10 @@ bool FrameWindow::onMouseMove(void)
 				testarea.m_left = 0.f;
 			if(testarea.m_top < 0.f)
 				testarea.m_top = 0.f;
-			if(testarea.m_right > max.m_width)
-				testarea.m_left = max.m_width - me.m_width;
-			if(testarea.m_bottom > max.m_height)
-				testarea.m_top = max.m_height - me.m_height;
+			if(testarea.m_right > max.width)
+				testarea.m_left = max.width - me.width;
+			if(testarea.m_bottom > max.height)
+				testarea.m_top = max.height - me.height;
 
 			testarea.setSize(me);
 		}

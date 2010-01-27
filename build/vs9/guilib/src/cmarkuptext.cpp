@@ -258,7 +258,7 @@ void MarkupBase::parseBBCodes()
 			{
 				Size imgsize = img->getPixelRect().getSize();
 
-				if(imgsize.m_width > maxwidth - xpos)
+				if(imgsize.width > maxwidth - xpos)
 				{
 					height += addTextLine(currentLine);
 					
@@ -276,9 +276,9 @@ void MarkupBase::parseBBCodes()
 
 				imgChunk->area.m_left = m_viewport.m_left + xpos;
 				imgChunk->area.m_top = /*m_viewport.m_top*/ + currentLine->area.m_top;
-				imgChunk->area.m_bottom = imgChunk->area.m_top + imgsize.m_height;
-				imgChunk->area.m_right = imgChunk->area.m_left + imgsize.m_width;
-				xpos += imgsize.m_width;
+				imgChunk->area.m_bottom = imgChunk->area.m_top + imgsize.height;
+				imgChunk->area.m_right = imgChunk->area.m_left + imgsize.width;
+				xpos += imgsize.width;
 				wordcount++;
 
 				currentLine->addChunk(imgChunk);
