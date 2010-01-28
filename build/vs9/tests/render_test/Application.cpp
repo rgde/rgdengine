@@ -274,6 +274,8 @@ bool application::do_events()
 
 //////////////////////////////////////////////////////////////////////////
 
+#include "collada.h"
+
 void application::test_collada_read()
 {
 	xml::document dae_doc;

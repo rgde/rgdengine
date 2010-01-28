@@ -7,8 +7,9 @@
 #	pragma warning(disable : 4251)
 #endif
 
-namespace xml {
-class node;
+namespace xml 
+{
+	class node;
 };
 
 
@@ -18,7 +19,7 @@ class  FrameWindow : public Panel
 {
 public:
 	typedef FrameWindow Self;
-	FrameWindow(System& sys, const std::string& name = "");
+	FrameWindow(System& sys, const std::string& name = std::string());
 	virtual ~FrameWindow();
 
 	static const char* GetType() { return "FrameWindow"; }
