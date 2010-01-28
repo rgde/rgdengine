@@ -9,10 +9,10 @@
 namespace gui
 {
 
-ScrollPane::ScrollPane(System& sys, const std::string& name) : 
-	BaseWindow(sys, name),
-	m_scroll(0),
-	m_target(0)
+ScrollPane::ScrollPane(System& sys, const std::string& name) 
+	: BaseWindow(sys, name)
+	, m_scroll(0)
+	, m_target(0)
 {
 }
 

@@ -12,6 +12,11 @@ namespace gui
 {
 
 class ScrollBar;
+class ScrollPane;
+
+template<>
+struct type_name<ScrollPane>{
+	static const char* get() {return "ScrollPane";} };
 
 class  ScrollPane : public BaseWindow
 {
@@ -20,8 +25,8 @@ public:
 	ScrollPane(System& sys, const std::string& name = "");
 	virtual ~ScrollPane();
 
-	static const char* GetType() { return "ScrollPane"; }
-	virtual const char* getType() { return Self::GetType(); }
+	static const char* GetType() { return type_name<Self>::get(); }
+	virtual const char* getType() { return type_name<Self>::get(); }
 
 	virtual bool onLoad();
 	virtual bool onSized(bool update = true);

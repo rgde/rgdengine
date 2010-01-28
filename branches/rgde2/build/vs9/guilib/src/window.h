@@ -22,6 +22,9 @@ class node;
 namespace gui
 {
 
+template<class T>
+struct type_name{ static const char* get(); };
+
 class System;
 class ScriptSystem;
 class ScriptObject;

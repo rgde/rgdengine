@@ -112,7 +112,7 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
         m_glyphImages.push_back(is);
 
         // Create a memory buffer where we will render our glyphs
-        argb_t *mem_buffer = new argb_t [texsize * texsize];
+        argb_t *mem_buffer = new argb_t[texsize * texsize];
         memset (mem_buffer, 0, texsize * texsize * sizeof (argb_t));
 
         // Go ahead, line by line, top-left to bottom-right
