@@ -48,7 +48,7 @@ void ScrollPane::layoutTarget()
 
 		float pos = m_scroll->getScrollPosition();
 		float height = doc > h ? doc - h : doc;
-		m_target->setPosition(Point(0.f, -pos*height));
+		m_target->setPosition(point(0.f, -pos*height));
 	}
 }
 
@@ -102,7 +102,7 @@ void ScrollPane::onTrack(const events::TrackEvent& e)
 	{
 		float pos = m_scroll->getScrollPosition();
 		float doc = m_target->getSize().height - m_area.getHeight();
-		m_target->setPosition(Point(0.f, -pos*doc));		
+		m_target->setPosition(point(0.f, -pos*doc));		
 	}
 }
 

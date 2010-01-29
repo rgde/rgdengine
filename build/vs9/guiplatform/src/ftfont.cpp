@@ -146,7 +146,7 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
                 {
                     // Create a 'null' image for this glyph so we do not seg later
                     Rect area(0, 0, 0, 0);
-                    Point offset(0, 0);
+                    point offset(0, 0);
                     std::string name;
                     name += s->first;
 					s->second.setOffsetX(offset.x);
@@ -178,7 +178,7 @@ void FreeTypeFont::rasterize (utf32 start_codepoint, utf32 end_codepoint)
 
                     // Create a new image in the imageset
 
-                    Point offset (m_fontFace->glyph->metrics.horiBearingX * float(FT_POS_COEF),
+                    point offset (m_fontFace->glyph->metrics.horiBearingX * float(FT_POS_COEF),
                                   -m_fontFace->glyph->metrics.horiBearingY * float(FT_POS_COEF));
 
                     std::string name;

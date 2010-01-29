@@ -33,7 +33,7 @@ void DragContainer::rise()
 }
 
 
-void DragContainer::update(BaseWindow* target, const Point& pt)
+void DragContainer::update(BaseWindow* target, const point& pt)
 {
 	m_dropTarget = target;
 	setPosition(pt - m_childOffset);
@@ -47,7 +47,7 @@ void DragContainer::reset(void)
 	m_dragSubject = 0;
 }
 
-bool DragContainer::startDrag(BaseWindow* subj, const Point& off)
+bool DragContainer::startDrag(BaseWindow* subj, const point& off)
 {
 	setVisible(true);
 	m_dragSubject = subj;

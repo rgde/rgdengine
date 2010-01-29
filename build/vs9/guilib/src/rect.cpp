@@ -14,7 +14,7 @@ m_right(right)
 {
 }
 
-Rect::Rect(Point pos, Size sz) :
+Rect::Rect(point pos, Size sz) :
 m_top(pos.y),
 m_bottom(pos.y + sz.height),
 m_left(pos.x),
@@ -59,7 +59,7 @@ Rect Rect::getIntersection(const Rect& rect) const
 /*************************************************************************
 Apply an offset the the Rect
 *************************************************************************/
-Rect& Rect::offset(const Point& pt)
+Rect& Rect::offset(const point& pt)
 {
 	m_left		+= pt.x;
 	m_right		+= pt.x;
@@ -72,7 +72,7 @@ Rect& Rect::offset(const Point& pt)
 /*************************************************************************
 Check if a given point is within the Rect
 *************************************************************************/
-bool Rect::isPointInRect(const Point& pt) const
+bool Rect::isPointInRect(const point& pt) const
 {
 	if ((m_left > pt.x) ||
 		(m_right <= pt.x) ||
@@ -88,7 +88,7 @@ bool Rect::isPointInRect(const Point& pt) const
 /*************************************************************************
 Set location of rect retaining current size.
 *************************************************************************/
-void Rect::setPosition(const Point& pt)
+void Rect::setPosition(const point& pt)
 {
 	Size sz(getSize());
 
@@ -197,7 +197,7 @@ Rect StringToArea(const std::string& str)
 	float h = 0;
 	sscanf(str.c_str(), "%f %f %f %f", &x, &y, &w, &h);
 
-	return Rect(Point(x, y), Size(w, h));
+	return Rect(point(x, y), Size(w, h));
 }
 
 Rect StringToRect(const std::string& str)

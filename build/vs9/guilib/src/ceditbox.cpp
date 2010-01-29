@@ -212,12 +212,12 @@ void Editbox::setSelection(size_t start, size_t end)
 	invalidate();
 }
 
-size_t Editbox::getTextIndexAtPoint(const Point& pt)
+size_t Editbox::getTextIndexAtPoint(const point& pt)
 {
 	size_t ret = 0;
 	if(m_font)
 	{
-		Point local = transformToWndCoord(pt);
+		point local = transformToWndCoord(pt);
 		local -= m_area.getPosition();
 		local.x -= m_editOffset;
 		std::wstring outtext(m_wtext);
@@ -374,11 +374,11 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
 		Rect clip(finalClip);
 		
 		dest.setWidth(m_font->getFormattedTextExtent(outtext, Rect(), m_format));
-		dest.offset(Point(m_editOffset, 0.f));
-		dest.offset(Point(4.f, 0.f));
+		dest.offset(point(m_editOffset, 0.f));
+		dest.offset(point(4.f, 0.f));
 
 		clip.setWidth(finalClip.getWidth() - 6.f);
-		clip.offset(Point(4.f, 0.f));
+		clip.offset(point(4.f, 0.f));
 		clip.m_top += 1.f;
 		clip.m_bottom -= 1.f;
 
@@ -412,7 +412,7 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
 			Rect rc(dest);
 			float height = m_font->getLineSpacing();
 			float offset = (finalRect.getHeight() - height) / 2;
-			rc.offset(Point(0.f, offset));
+			rc.offset(point(0.f, offset));
 
 			m_font->drawText(outtext, rc, 1.0f, clip, m_format, m_foreColor, 1.f, 1.f);
 		}
@@ -431,7 +431,7 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
 			Rect caretrect(dest);
 			caretrect.m_left += x;
 			caretrect.setSize(imgSize);
-			caretrect.offset(Point(0.f, 2.f));
+			caretrect.offset(point(0.f, 2.f));
 			r.draw(*m_caretImg, caretrect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
 		}
 	}
@@ -643,10 +643,10 @@ void KeyBinder::render(const Rect& finalRect, const Rect& finalClip)
 		Rect clip(finalClip);
 		
 		dest.setWidth(m_font->getFormattedTextExtent(m_text, Rect(), m_format));
-		dest.offset(Point(4.f, 0.f));
+		dest.offset(point(4.f, 0.f));
 
 		clip.setWidth(finalClip.getWidth() - 6.f);
-		clip.offset(Point(4.f, 0.f));
+		clip.offset(point(4.f, 0.f));
 		clip.m_top += 1.f;
 		clip.m_bottom -= 1.f;
 		

@@ -105,7 +105,7 @@ public:
 protected:
 	bool m_movable;
 	bool m_horiz;
-	Point m_offset;
+	point m_offset;
 	Rect m_trackarea;
 
 };

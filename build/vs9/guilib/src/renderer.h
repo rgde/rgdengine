@@ -35,26 +35,6 @@ enum QuadSplitMode
 class  Renderer
 {
 public:
-	struct QuadInfo
-	{
-		Texture*			texture;
-		Rect				position;
-		float				z;
-		Rect				texPosition;
-		unsigned long		topLeftCol;
-		unsigned long		topRightCol;
-		unsigned long		bottomLeftCol;
-		unsigned long		bottomRightCol;
-
-        QuadSplitMode       splitMode;
-
-		bool operator<(const QuadInfo& other) const
-		{
-			// this is intentionally reversed.
-			return z > other.z;
-		}
-	};
-
 	struct RenderCallbackInfo
 	{
 		AfterRenderCallbackFunc afterRenderCallback;
@@ -72,15 +52,42 @@ public:
 		RenderCallbackInfo callbackInfo;
 	};
 
+	struct QuadInfo 
+	{
+		struct vec2 {float x, y;};
+		Texture*			texture;
+
+		// order: 0 ---> 1
+		//		  2 ---> 3
+		vec2				positions[4];
+		//Rect				position;
+		float				z;
+		Rect				texPosition;
+		unsigned long		topLeftCol;
+		unsigned long		topRightCol;
+		unsigned long		bottomLeftCol;
+		unsigned long		bottomRightCol;
+
+		QuadSplitMode       splitMode;
+
+		bool operator<(const QuadInfo& other) const
+		{
+			// this is intentionally reversed.
+			return z > other.z;
+		}
+	};
+
 	Renderer();
 	virtual ~Renderer();
 
 	virtual void	addCallback( AfterRenderCallbackFunc callback,
 								 BaseWindow* window, const Rect& dest, const Rect& clip) = 0;
 
-	virtual void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode);
-	virtual void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode, Image::ImageOps horz, Image::ImageOps vert);
-	virtual void	immediateDraw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode);
+	void	drawLine(const Image& img, const vec2* p, size_t size, float z, const Rect& clip_rect, const Color& color, float width);
+	
+	void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode);
+	void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode, Image::ImageOps horz, Image::ImageOps vert);
+	void	immediateDraw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode);
 
 	virtual	void	doRender() = 0;
 	virtual	void	clearRenderList();	
@@ -101,7 +108,7 @@ public:
 
 	virtual void startCaptureForCache(BaseWindow* window) ;
 	virtual void endCaptureForCache(BaseWindow* window) ;
-	virtual void drawFromCache(BaseWindow* window) {}
+	virtual void drawFromCache(BaseWindow* window) {window;}
 
 	const Size&	getOriginalSize(void) const	{ return m_originalsize; }
 	const Size	getSize(void);
@@ -131,9 +138,12 @@ public:
 	void cleanup(bool complete);
 
 protected:
-	virtual	void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode) {}
-	virtual void renderQuadDirect(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode) = 0;
+	virtual	void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode) = 0;
+	virtual void addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, 
+		QuadSplitMode quad_split_mode) = 0;
+	virtual void renderQuadDirect(const QuadInfo& q) = 0;
 
+	void fillQuad(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors, QuadSplitMode split_mode);
 	void sortQuads();	
 	
 	friend TextureManager;
@@ -142,7 +152,8 @@ protected:
 protected:
 	Renderer& operator=(const Renderer&) { return *this; }
 	void computeVirtualDivRealFactor(Size& coefOut) const;
-	
+
+protected:
 	TextureManager m_texmanager;
 	
 	typedef std::vector<QuadInfo> Quads;

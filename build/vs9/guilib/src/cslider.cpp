@@ -77,7 +77,7 @@ void Slider::updateThumb()
 {
 	if(!m_thumb)
 		return;
-	m_thumb->setTrackarea(Rect(Point(0.f, 0.f), m_area.getSize()));
+	m_thumb->setTrackarea(Rect(point(0.f, 0.f), m_area.getSize()));
 	m_pos = m_thumb->getProgress();
 }
 
@@ -144,7 +144,7 @@ void ScrollBar::updateThumb()
 	if(m_doc < dmin)
 		m_doc = dmin;
 
-	Rect thumbArea(Point(0.f, 0.f), m_area.getSize());
+	Rect thumbArea(point(0.f, 0.f), m_area.getSize());
 	Size ibtnsize(0.f, 0.f);
 	Size dbtnsize(0.f, 0.f);
 	if(m_incBtn)
@@ -176,7 +176,7 @@ bool ScrollBar::onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonStat
 	{
 		if(state == EventArgs::Down)
 		{
-			Point pt = transformToWndCoord(m_system.getCursor().getPosition());
+			point pt = transformToWndCoord(m_system.getCursor().getPosition());
 			pt -= m_area.getPosition();
 			if(m_thumb)
 			{
@@ -184,7 +184,7 @@ bool ScrollBar::onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonStat
 				float size = m_horiz ? track.getWidth() : track.getHeight();
 				if(track.isPointInRect(pt))
 				{
-					Point pos = pt - track.getPosition();
+					point pos = pt - track.getPosition();
 					/*pos.x -= m_thumb->getArea().getWidth() / 2;
 					pos.y -= m_thumb->getArea().getHeight() / 2;*/
 					m_thumb->setProgress(m_horiz ? pos.x / size : pos.y / size);

@@ -54,7 +54,7 @@ public:
 	virtual void init(xml::node& node);
 
 protected:
-	size_t	getTextIndexAtPoint(const Point& pt);	
+	size_t	getTextIndexAtPoint(const point& pt);	
 	void	clampCaret();
 	void	handleDelete();
 	void	handleBackspace();

@@ -49,7 +49,7 @@ void BaseWindow::setArea(const Rect& rc)
 	onSized();
 }
 
-void BaseWindow::setPosition(const Point& pt) 
+void BaseWindow::setPosition(const point& pt) 
 {
 	if(pt != m_area.getPosition())
 	{
@@ -108,7 +108,7 @@ void BaseWindow::setInputFocus(bool query)
 
 }
 
-bool BaseWindow::hitTest(const Point& pt)
+bool BaseWindow::hitTest(const point& pt)
 {
 	if(!m_visible)
 		return false;
@@ -239,7 +239,7 @@ bool BaseWindow::onMouseMove(void)
 {
 	MouseEventArgs m;
 	m.name = "On_MouseMove";
-	Point pt = m_system.getCursor().getPosition();
+	point pt = m_system.getCursor().getPosition();
 	m.mouseX = pt.x;
 	m.mouseY = pt.y;
 	callHandler(&m);
@@ -383,7 +383,7 @@ void BaseWindow::Align()
 	if(!m_alignment)
 		return;
 
-	Point pos = m_area.getPosition();
+	point pos = m_area.getPosition();
 	Size sz = m_area.getSize();
 	Size parent_size(m_parent->getSize());
 
@@ -396,17 +396,17 @@ void BaseWindow::Align()
 			float width = parent_size.width - sz.width;
 			x = width * m_alignmentRect.m_left / original_width;
 		}
-		m_area.setPosition(Point(x, pos.y));
+		m_area.setPosition(point(x, pos.y));
 	}
 	else
 	{
 		if(m_alignment & Left)
 		{
-			m_area.setPosition(Point(m_alignmentRect.m_left, pos.y));
+			m_area.setPosition(point(m_alignmentRect.m_left, pos.y));
 		}
 		else if(m_alignment & Right)
 		{
-			m_area.setPosition(Point(parent_size.width - sz.width - m_alignmentRect.m_right, pos.y));
+			m_area.setPosition(point(parent_size.width - sz.width - m_alignmentRect.m_right, pos.y));
 		}
 	}
 
@@ -421,17 +421,17 @@ void BaseWindow::Align()
 			float height = parent_size.height - sz.height;
 			y = height * m_alignmentRect.m_top / original_height;
 		}
-		m_area.setPosition(Point(pos.x, y));
+		m_area.setPosition(point(pos.x, y));
 	}
 	else
 	{
 		if(m_alignment & Top)
 		{
-			m_area.setPosition(Point(pos.x, m_alignmentRect.m_top));
+			m_area.setPosition(point(pos.x, m_alignmentRect.m_top));
 		}
 		else if(m_alignment & Bottom)
 		{
-			m_area.setPosition(Point(pos.x, parent_size.height - sz.height - m_alignmentRect.m_bottom));
+			m_area.setPosition(point(pos.x, parent_size.height - sz.height - m_alignmentRect.m_bottom));
 		}
 	}
 }
@@ -448,33 +448,33 @@ void BaseWindow::Stick()
 
 	if(m_stick & HCenter)
 	{
-		m_area.setPosition(Point((parent_size.width - sz.width) / 2, m_area.m_top));
+		m_area.setPosition(point((parent_size.width - sz.width) / 2, m_area.m_top));
 	}
 	else
 	{
 		if(m_stick & Left)
 		{
-			m_area.setPosition(Point(m_stickRect.m_left, m_area.m_top));
+			m_area.setPosition(point(m_stickRect.m_left, m_area.m_top));
 		}
 		else if(m_stick & Right)
 		{
-			m_area.setPosition(Point(parent_size.width - sz.width - m_stickRect.m_right, m_area.m_top));
+			m_area.setPosition(point(parent_size.width - sz.width - m_stickRect.m_right, m_area.m_top));
 		}
 	}
 
 	if(m_stick & VCenter)
 	{
-		m_area.setPosition(Point(m_area.m_left, (parent_size.height - sz.height) / 2));
+		m_area.setPosition(point(m_area.m_left, (parent_size.height - sz.height) / 2));
 	}
 	else
 	{
 		if(m_stick & Top)
 		{
-			m_area.setPosition(Point(m_area.m_left, m_stickRect.m_top));
+			m_area.setPosition(point(m_area.m_left, m_stickRect.m_top));
 		}
 		else if(m_stick & Bottom)
 		{
-			m_area.setPosition(Point(m_area.m_left, parent_size.height - sz.height - m_stickRect.m_bottom));
+			m_area.setPosition(point(m_area.m_left, parent_size.height - sz.height - m_stickRect.m_bottom));
 		}
 	}
 }
@@ -649,7 +649,7 @@ void BaseWindow::CallAfterRenderCallback(const Rect& dest, const Rect& clip)
 	}
 }
 
-void BaseWindow::draw(const Point& offset, const Rect& clip)
+void BaseWindow::draw(const point& offset, const Rect& clip)
 {
 	if(m_visible)
 	{
@@ -692,10 +692,10 @@ void BaseWindow::draw(const Point& offset, const Rect& clip)
 	}	
 }
 
-Point BaseWindow::transformToWndCoord(const Point& global)
+point BaseWindow::transformToWndCoord(const point& global)
 {
 	BaseWindow* parent = m_parent;
-	Point out(global);
+	point out(global);
 	if(parent)
 	{
 		out -= parent->getArea().getPosition();
@@ -704,10 +704,10 @@ Point BaseWindow::transformToWndCoord(const Point& global)
 	return out;
 }
 
-Point BaseWindow::transformToRootCoord(const Point& local)
+point BaseWindow::transformToRootCoord(const point& local)
 {
 	BaseWindow* parent = m_parent;
-	Point out(local);
+	point out(local);
 	if(parent)
 	{
 		out += parent->getArea().getPosition();

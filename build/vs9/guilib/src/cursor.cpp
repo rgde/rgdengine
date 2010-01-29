@@ -16,12 +16,12 @@ Cursor::~Cursor()
 {
 }
 
-void Cursor::setPosition(Point pt) 
+void Cursor::setPosition(point pt) 
 {
 	m_cursorPos = pt;
 }
 
-Point Cursor::getPosition() const
+point Cursor::getPosition() const
 {	
 	Size vp = m_render.getViewportSize();
 	if(m_render.isAutoScale() && vp.width && vp.height)
@@ -30,7 +30,7 @@ Point Cursor::getPosition() const
 		float cx = sz.width / vp.width;
 		float cy = sz.height / vp.height;
 		
-		return Point(m_cursorPos.x * cx, m_cursorPos.y * cy);
+		return point(m_cursorPos.x * cx, m_cursorPos.y * cy);
 	}
 	else
 	{
@@ -61,7 +61,7 @@ void Cursor::render()
 	if(m_currentCursor)
 	{
 		Rect dest(getPosition(), m_currentCursor->getPixelRect().getSize());
-		m_render.immediateDraw(*m_currentCursor, dest, 0.f, Rect(Point(0.f,0.f), m_render.getViewportSize()), Color(1.f, 1.f, 1.f), TopLeftToBottomRight);
+		//m_render.immediateDraw(*m_currentCursor, dest, 0.f, Rect(point(0.f,0.f), m_render.getViewportSize()), Color(1.f, 1.f, 1.f), TopLeftToBottomRight);
 	}
 }
 

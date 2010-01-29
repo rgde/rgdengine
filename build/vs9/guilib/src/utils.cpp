@@ -53,7 +53,7 @@ std::string UTF16ToUTF8(const std::wstring& wtext)
 	return out;	
 }
 
-Point StringToPoint(const std::string& str)
+point StringToPoint(const std::string& str)
 {
 	using namespace std;
 
@@ -61,10 +61,10 @@ Point StringToPoint(const std::string& str)
 	int y = 0;
 	sscanf(str.c_str(), "%d %d", &x, &y);
 
-	return Point((float)x, (float)y);
+	return point((float)x, (float)y);
 }
 
-std::string PointToString(const Point& val)
+std::string PointToString(const point& val)
 {
 	char buff[128] = {0};
 	_snprintf(buff, sizeof (buff), "%d %d", val.x, val.y);

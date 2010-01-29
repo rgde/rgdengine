@@ -35,7 +35,7 @@ public:
 
 	void reset(void);
 
-	void show(Point& pt);
+	void show(point& pt);
 
 	float getFadeIn() const { return m_fadein; }
 	float getFadeOut() const { return m_fadeout; }

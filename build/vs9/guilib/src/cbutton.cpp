@@ -50,7 +50,7 @@ bool Button::onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState s
 			m_system.queryCaptureInput(0);
 			m_pushed = false;
 			
-			Point pt = transformToWndCoord(m_system.getCursor().getPosition());
+			point pt = transformToWndCoord(m_system.getCursor().getPosition());
 			if(m_area.isPointInRect(pt))
 			{
 				MouseEventArgs m;
@@ -263,8 +263,8 @@ bool Thumb::onMouseMove(void)
 {
 	if(m_pushed)
 	{
-		Point pt = transformToWndCoord(m_system.getCursor().getPosition());
-		Point newpos = pt - m_offset;
+		point pt = transformToWndCoord(m_system.getCursor().getPosition());
+		point newpos = pt - m_offset;
 		Rect testarea(m_area);
 		testarea.setPosition(newpos);
 
@@ -297,7 +297,7 @@ bool Thumb::onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState st
 			m_system.queryCaptureInput(this);
 			m_pushed = true;
 
-			Point pt = transformToWndCoord(m_system.getCursor().getPosition());
+			point pt = transformToWndCoord(m_system.getCursor().getPosition());
 			m_offset = pt - m_area.getPosition();
 
 		}
@@ -318,7 +318,7 @@ float Thumb::getProgress(void) const
 	float width = m_trackarea.getWidth();
 	float height = m_trackarea.getHeight();
 
-	Point pos = m_area.getPosition() - m_trackarea.getPosition();
+	point pos = m_area.getPosition() - m_trackarea.getPosition();
 	Size sz = m_area.getSize();
 
 	if(m_horiz)
@@ -342,8 +342,8 @@ void Thumb::setProgress(float p)
 	Size sz = m_area.getSize();
 	float width = m_trackarea.getWidth();
 	float height = m_trackarea.getHeight();
-	Point pt(m_trackarea.getPosition());
-	Point z(pt);
+	point pt(m_trackarea.getPosition());
+	point z(pt);
 
 	if(m_horiz)
 	{

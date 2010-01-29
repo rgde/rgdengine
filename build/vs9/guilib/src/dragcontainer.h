@@ -20,9 +20,9 @@ public:
 
 	virtual void rise();
 
-	void update(BaseWindow* target, const Point& pt);
+	void update(BaseWindow* target, const point& pt);
 	
-	bool startDrag(BaseWindow* subj, const Point& off);
+	bool startDrag(BaseWindow* subj, const point& off);
 	bool stopDrag(void);
 
 	void reset(void);
@@ -32,7 +32,7 @@ protected:
 	BaseWindow* m_dragSubject;
 	
 	BaseWindow* m_dropTarget;
-	Point		m_childOffset;
+	point		m_childOffset;
 	
 };
 }

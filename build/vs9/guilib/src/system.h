@@ -113,7 +113,7 @@ public:
 	void			hideTooltip(BaseWindow* wnd);
 
 	DragContainer*	getDragContainer() const;
-	bool			startDrag(BaseWindow* wnd, Point offset);
+	bool			startDrag(BaseWindow* wnd, point offset);
 	bool			stopDrag(void);
 	void			freezeDrag() { m_dragfreeze = true; }
 	void			unfreezeDrag() { m_dragfreeze = false; }
@@ -132,7 +132,7 @@ public:
 	BaseWindow*		createWindow(BaseWindow* parent, const std::string& name, const std::string& type_or_path);
 	BaseWindow*		loadXml(BaseWindow& parent, const std::string& filename);
 	BaseWindow*		loadXml(const std::string& filename);
-	BaseWindow*		getTargetWindow(const Point& pt) const;
+	BaseWindow*		getTargetWindow(const point& pt) const;
 
 	ScriptSystem&	getScriptSystem() { return m_scriptSys; }
 
@@ -140,7 +140,7 @@ public:
 	bool			isMouseInGui(float x, float y) const;
 
 protected:
-	WindowPtr	getTargetWindow(const Point& pt, BaseWindow::ChildrenList& list) const;
+	WindowPtr	getTargetWindow(const point& pt, BaseWindow::ChildrenList& list) const;
 	BaseWindow* getTabstopWindow(BaseWindow::ChildrenList& list) const;
 	bool		proceedSystemKey(EventArgs::Keys key, EventArgs::ButtonState state);
 	WindowPtr	loadXml_(const std::string& filename);
@@ -180,7 +180,7 @@ protected:
 	bool	m_dragging;
 	bool	m_dragfreeze;
 	bool	m_dragfired;
-	Point	m_dragOffset;
+	point	m_dragOffset;
 	float	m_dragThreshold;
 	BaseWindow*	m_dragWindow;
 

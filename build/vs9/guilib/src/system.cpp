@@ -142,7 +142,7 @@ void System::reset(bool complete)
 	
 	menu->reset();
 
-	rootWindow->setArea(Rect(Point(0.f, 0.f), m_render.getSize())); // full window area
+	rootWindow->setArea(Rect(point(0.f, 0.f), m_render.getSize())); // full window area
 	rootWindow->setVisible(true);
 	rootWindow->addChild(m_dragContainer);
 	rootWindow->addChild(m_tooltipWindow);
@@ -229,7 +229,7 @@ bool System::handleMouseMove(int x, int y)
 	if(m_exclusiveInputWindow)
 		return m_exclusiveInputWindow->onMouseMove();
 
-	const Point pt((float)x, (float)y);
+	const point pt((float)x, (float)y);
 	m_cursor.setPosition(pt);
 
 	if(m_rootWindow)
@@ -241,10 +241,10 @@ bool System::handleMouseMove(int x, int y)
 			
 			if(!m_dragfired)
 			{
-				Point t = m_cursor.getPosition() - m_dragOffset;
+				point t = m_cursor.getPosition() - m_dragOffset;
 				if(sqrt(t.x*t.x + t.y*t.y) > m_dragThreshold)
 				{
-					Point off = m_dragWindow->transformToWndCoord(m_dragOffset);
+					point off = m_dragWindow->transformToWndCoord(m_dragOffset);
 					off -= m_dragWindow->getPosition();
 					if(!startDrag(m_dragWindow, off))
 					{
@@ -612,12 +612,12 @@ void System::LeaveExclusiveInputMode()
 	m_exclusiveInputWindow = 0;
 }
 
-BaseWindow* System::getTargetWindow(const Point& pt) const
+BaseWindow* System::getTargetWindow(const point& pt) const
 {
 	return getTargetWindow(pt, m_rootWindow->getChildren()).get();
 }
 
-WindowPtr System::getTargetWindow(const Point& pt, BaseWindow::ChildrenList& list) const
+WindowPtr System::getTargetWindow(const point& pt, BaseWindow::ChildrenList& list) const
 {
 	WindowPtr ret;
 	BaseWindow::ReverseChildrenIter i = list.rbegin();
@@ -734,8 +734,8 @@ void System::draw()
 	m_render.beginBatching();
 
 	getRootWindow().draw(
-		Point(0.f, 0.f),
-		Rect(Point(0.f, 0.f),
+		point(0.f, 0.f),
+		Rect(point(0.f, 0.f),
 		m_render.getSize())
 		);
 
@@ -759,7 +759,7 @@ void System::hideTooltip(BaseWindow* wnd)
 	static_cast<Tooltip*>(m_tooltipWindow.get())->reset();
 }
 
-bool System::startDrag(BaseWindow* wnd, Point offset)
+bool System::startDrag(BaseWindow* wnd, point offset)
 {
 	if(!wnd) return false;
 
@@ -767,7 +767,7 @@ bool System::startDrag(BaseWindow* wnd, Point offset)
 	DragContainer* dc = getDragContainer();
 	if(wnd->isDragable() && dc->startDrag(wnd, offset))
 	{
-		Point pt = m_cursor.getPosition() - offset;
+		point pt = m_cursor.getPosition() - offset;
 		dc->setPosition(pt);
 		m_dragfired = true;
 		BaseWindow* mouseWnd = getTargetWindow(m_cursor.getPosition());
@@ -858,7 +858,7 @@ bool System::isMouseInGui(float x, float y) const
 	if(m_exclusiveInputWindow)
 		return true;
 
-	const Point pt(x, y);
+	const point pt(x, y);
 	if(m_rootWindow)
 	{
 		BaseWindow* mouseWnd = getTargetWindow(pt);

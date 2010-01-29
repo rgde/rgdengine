@@ -15,8 +15,8 @@ namespace gui
 	{
 		struct HitTestTask
 		{
-			Point pt;
-			HitTestTask(Point p) : pt(p) {}
+			point pt;
+			HitTestTask(point p) : pt(p) {}
 			bool operator () (WindowPtr w) { return w ? w->getArea().isPointInRect(pt) : false; }
 		};
 	}
@@ -80,7 +80,7 @@ void BaseList::layoutItems()
 			if(i == end)
 				break;
 			Size child((*i)->getSize());
-			(*i)->setPosition(Point(m_borders.m_left + col * m_colWidth, sz.height));
+			(*i)->setPosition(point(m_borders.m_left + col * m_colWidth, sz.height));
 			height = height > child.height ? height : child.height;
 			width += child.width;
 			++i;
@@ -192,7 +192,7 @@ bool ListBox::onMouseLeave(void)
 
 bool ListBox::onMouseMove(void)
 {
-	Point pt = transformToWndCoord(m_system.getCursor().getPosition()) - m_area.getPosition();
+	point pt = transformToWndCoord(m_system.getCursor().getPosition()) - m_area.getPosition();
 	ChildrenIter i = std::find_if(m_children.begin(), m_children.end(), detail::HitTestTask(pt));
 	if(i != m_children.end())
 	{
@@ -467,7 +467,7 @@ void CategorizedList::Category::layoutChildren()
 	while(i != end)
 	{
 		WindowPtr child = *i;
-		child->setPosition(Point(area.m_left, area.m_top + pos));
+		child->setPosition(point(area.m_left, area.m_top + pos));
 		pos += child->getArea().getHeight();
 
 		++i;
@@ -478,7 +478,7 @@ bool CategorizedList::onMouseButton(EventArgs::MouseButtons btn, EventArgs::Butt
 {
 	if(state == EventArgs::Up)
 	{
-		Point pt = transformToWndCoord(m_system.getCursor().getPosition()) - m_area.getPosition();
+		point pt = transformToWndCoord(m_system.getCursor().getPosition()) - m_area.getPosition();
 		CategoriesIter i = std::find_if(m_categories.begin(), m_categories.end(), HitTestTask(pt));
 		if(i != m_categories.end())
 		{

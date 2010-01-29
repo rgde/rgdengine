@@ -24,14 +24,14 @@ namespace gui
 		std::string getType(void) const;
 		void render();
 
-		void setPosition(Point pt);
-		Point getPosition() const;
+		void setPosition(point pt);
+		point getPosition() const;
 
 	protected:
 		Cursor& operator=(const Cursor&) { return *this; }
 		ImagesetPtr		m_cursors;	
-		Point			m_cursorPos;
-		Point			m_renderPos;
+		point			m_cursorPos;
+		point			m_renderPos;
 		const Image*	m_currentCursor;
 		Renderer&		m_render;
 	};

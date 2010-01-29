@@ -274,7 +274,7 @@ bool application::do_events()
 
 //////////////////////////////////////////////////////////////////////////
 
-#include "collada.h"
+//#include "collada.h"
 
 void application::test_collada_read()
 {

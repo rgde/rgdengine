@@ -63,48 +63,45 @@ void Renderer::immediateDraw(const Image& img, const Rect& dest_rect, float z, c
 		tex_rect *= img.getTexture().getSize();
 
 		// queue a quad to be rendered
-		renderQuadDirect(final_rect, tex_rect, z, img, colors, quad_split_mode);
+		QuadInfo quad;
+		fillQuad(quad, final_rect, tex_rect, z, img, colors, quad_split_mode);
+		renderQuadDirect(quad);
 	}
-
 }
 void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect,const ColorRect& colors, QuadSplitMode quad_split_mode, Image::ImageOps horz, Image::ImageOps vert)
 {
 	const Rect& source_rect = img.getPixelRect();
 	Size imgSz = source_rect.getSize();
     
-	unsigned int horzTiles, vertTiles;
-    float xpos, ypos;
+	unsigned int horzTiles = 1;
+	unsigned int vertTiles = 1;
+
+	float xpos = dest_rect.m_left;
+	float ypos = dest_rect.m_top;
 
 	switch (horz)
     {		
-	case Image::Stretch:
-	default:
-		imgSz.width = dest_rect.getWidth();
-		xpos = dest_rect.m_left;
-		horzTiles = 1;
-		break;
-
 	case Image::Tile:
-		xpos = dest_rect.m_left;
 		if(dest_rect.getWidth() <= 0.f)
 			return;
 		horzTiles = (unsigned int)((dest_rect.getWidth() + (imgSz.width - 1)) / imgSz.width);
 		break;
-	}
-	switch (vert)
-    {
 	case Image::Stretch:
 	default:
-		imgSz.height = dest_rect.getHeight();
-		ypos = dest_rect.m_top;
-		vertTiles = 1;
+		imgSz.width = dest_rect.getWidth();
 		break;
+	}
 
+	switch (vert)
+    {
 	case Image::Tile:
-		ypos = dest_rect.m_top;
 		if(dest_rect.getHeight() <= 0.f)
 			return;
 		vertTiles = (unsigned int)((dest_rect.getHeight() + (imgSz.height - 1)) / imgSz.height);
+		break;
+	case Image::Stretch:
+	default:
+		imgSz.height = dest_rect.getHeight();
 		break;
 	}
 
@@ -133,6 +130,36 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
     }
 }
 
+void Renderer::drawLine(const Image& img, const vec2* p, size_t size, float z, const Rect& clip_rect, const Color& color, float width)
+{
+	ColorRect color_rect(color);
+
+	vec2 p0, p1, p2, p3;
+
+	for(size_t i = 0; i < size - 1; ++i)
+	{
+		const vec2& v1 = p[i];
+		const vec2& v2 = p[i+1];
+
+		vec2 dir = make_normal(v2-v1);
+
+		vec2 nv(-dir.y, dir.x);
+		nv *= width*0.5;
+
+		//if (i == 0)
+		{
+			p0 = v1 + nv;
+			p1 = v2 + nv;
+		}
+		p2 = v1 - nv;
+		p3 = v2 - nv;
+
+		addQuad(p0, p1, p2, p3, img.getPixelRect(), z, img, color_rect, BottomLeftToTopRight/*TopLeftToBottomRight*/);
+
+		p0 = p1;
+		p2 = p3;
+	}
+}
 
 void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect,const ColorRect& colors, QuadSplitMode quad_split_mode)
 {
@@ -281,8 +308,29 @@ Rect Renderer::realToVirtualCoord( const Rect& realRect ) const
 	return result;
 }
 
-}
+void Renderer::fillQuad(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors, QuadSplitMode split_mode)
+{
+	quad.positions[0].x	= rc.m_left;
+	quad.positions[0].y	= rc.m_top;
 
+	quad.positions[1].x	= rc.m_right;
+	quad.positions[1].y	= rc.m_top;
+
+	quad.positions[2].x	= rc.m_left;
+	quad.positions[2].y	= rc.m_bottom;
+
+	quad.positions[3].x	= rc.m_right;
+	quad.positions[3].y	= rc.m_bottom;
+
+	quad.z				= z;
+	quad.texture		= &img.getTexture();
+	quad.texPosition	= uv;
+	quad.topLeftCol		= colors.m_top_left.getARGB();
+	quad.topRightCol	= colors.m_top_right.getARGB();
+	quad.bottomLeftCol	= colors.m_bottom_left.getARGB();
+	quad.bottomRightCol	= colors.m_bottom_right.getARGB();
+}
+}
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif

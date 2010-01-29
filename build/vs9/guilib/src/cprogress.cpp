@@ -68,7 +68,7 @@ void ProgressBar::render(const Rect& finalRect, const Rect& finalClip)
 		float offset = targetRect.getWidth() / 2.f;
 		targetRect.setWidth(offset);
 		if(m_progress > 0.f)
-			targetRect.offset(Point(offset, 0.f));
+			targetRect.offset(point(offset, 0.f));
 	}
 	Rect clip(targetRect);
 

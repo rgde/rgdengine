@@ -59,12 +59,12 @@ namespace rgde
 
 			inline const uint get_width() const{return width;};
 			inline const uint get_length() const{return length;};
-			const vertex& get_vertex(int x, int z) const
+			const vertex& get_vertex(uint x, uint z) const
 			{
-				assert(x<width && z < length);
+				assert(width-x >=0 && length-z >= 0);
 				return data[z*width+x];
 			}
-			void set_height(int x, int z, float height)
+			void set_height(uint x, uint z, float height)
 			{
 				assert(x<width && z < length);
 				data[z*width+x].height = height;

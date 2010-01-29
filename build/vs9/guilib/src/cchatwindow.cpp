@@ -163,7 +163,7 @@ void ChatWindow::Show( const std::string& text )
 	BaseWindow::startTick();
 }
 
-void ChatWindow::SetPosition( const Point& point )
+void ChatWindow::SetPosition( const point& point )
 {
 	float w2 = m_area.getWidth() * 0.5f;
 	float h = m_area.getHeight();
