@@ -555,7 +555,7 @@ bool MarkupText::onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonSta
 }
 
 template<typename T>
-bool MarkupText::isHitChunk(T* p, Point& pt)
+bool MarkupText::isHitChunk(T* p, point& pt)
 {
 	if(!p) return false;
 	std::vector<PImg>::iterator img = std::find_if(p->maskedimg.begin(), p->maskedimg.end(), hittester<Img>(pt));

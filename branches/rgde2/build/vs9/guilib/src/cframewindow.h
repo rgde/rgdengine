@@ -76,7 +76,7 @@ protected:
 	const Image*	m_captionBackImg;
 
 	bool m_tracking;
-	Point m_offset;
+	point m_offset;
 
 	bool m_movable;
 	bool m_clampToScreen;

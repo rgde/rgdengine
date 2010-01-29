@@ -122,10 +122,10 @@ public:
 			float& height;
 			HeightCalcTask(float& h) : height(h) {}
 			void operator () (WindowPtr w) { if(w) height += w->getArea().getHeight(); }
-			HeightCalcTask& operator=(const HeightCalcTask& rhs) {}
+			HeightCalcTask& operator=(const HeightCalcTask& rhs) {rhs;}
 		};
 	private:
-		Category& operator=(const Category& rhs) {}
+		Category& operator=(const Category& rhs) {rhs;}
 	};
 	typedef boost::shared_ptr<Category> CategoryPtr;
 
@@ -168,8 +168,8 @@ protected:
 private:
 	struct HitTestTask
 	{
-		Point pt;
-		HitTestTask(Point p) : pt(p) {}
+		point pt;
+		HitTestTask(point p) : pt(p) {}
 		bool operator () (CategoryPtr cat) { return cat ? cat->clickable.isPointInRect(pt) : false; }
 	};
 };

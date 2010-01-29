@@ -14,22 +14,22 @@ namespace gui
 	public:
 		Rect(void) : m_left(0), m_top(0), m_right(0), m_bottom(0) {}
 		Rect(float left, float top, float right, float bottom);
-		Rect(Point pos, Size sz);
+		Rect(point pos, Size sz);
 
-		Point	getPosition() const		{return Point(m_left, m_top);}
+		point	getPosition() const		{return point(m_left, m_top);}
 		float	getWidth() const		{return m_right - m_left;}
 		float	getHeight() const		{return m_bottom - m_top;}
 		Size	getSize() const			{return Size(getWidth(), getHeight());}
 
 
-		void	setPosition(const Point& pt);
+		void	setPosition(const point& pt);
 		void	setWidth(float width)		{m_right = m_left + width;}
 		void	setHeight(float height)		{m_bottom = m_top + height;}
 		void	setSize(const Size& size)	{setWidth(size.width); setHeight(size.height);}
 
 		Rect	getIntersection(const Rect& rect) const;
-		Rect&	offset(const Point& pt);
-		bool	isPointInRect(const Point& pt) const;
+		Rect&	offset(const point& pt);
+		bool	isPointInRect(const point& pt) const;
 		Rect&	constrainSizeMax(const Size& sz);
 		Rect&	constrainSizeMin(const Size& sz);
 

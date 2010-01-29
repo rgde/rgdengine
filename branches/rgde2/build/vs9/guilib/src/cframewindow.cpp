@@ -47,8 +47,8 @@ bool FrameWindow::onMouseMove(void)
 {
 	if(m_tracking)
 	{
-		Point pt = transformToWndCoord(m_system.getCursor().getPosition());
-		Point newpos = pt - m_offset;
+		point pt = transformToWndCoord(m_system.getCursor().getPosition());
+		point newpos = pt - m_offset;
 
 		Rect testarea(m_area);
 		testarea.setPosition(newpos);
@@ -85,7 +85,7 @@ bool FrameWindow::onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonSt
 		m_system.queryCaptureInput(this);
 		m_tracking = true;
 
-		Point pt = transformToWndCoord(m_system.getCursor().getPosition());
+		point pt = transformToWndCoord(m_system.getCursor().getPosition());
 		m_offset = pt - m_area.getPosition();
 	}
 	else

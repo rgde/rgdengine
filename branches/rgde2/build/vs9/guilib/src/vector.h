@@ -2,72 +2,83 @@
 
 #include "size.h"
 
+#include <math.h>
 
 namespace gui
 {
 	/*!
 	\brief
-	Class used as a two dimensional vector (aka a Point)
+	Class used as a two dimensional vector (aka a point)
 	*/
-	class  Vector2
+	class  vec2
 	{
 	public:
-		Vector2() {}
-		Vector2(float x, float y) : x(x), y(y) {}
+		vec2() {}
+		vec2(float x, float y) : x(x), y(y) {}
 
-		Vector2& operator*=(const Vector2& vec)
+		vec2& operator*=(float f)
+		{
+			x *= f;
+			y *= f;
+			return *this;
+		}
+
+		vec2& operator/=(float f)
+		{
+			x /= f;
+			y /= f;
+			return *this;
+		}
+
+		vec2& operator*=(const vec2& vec)
 		{
 			x *= vec.x;
 			y *= vec.y;
-
 			return *this;
 		}
 
-		Vector2& operator/=(const Vector2& vec)
+		vec2& operator/=(const vec2& vec)
 		{
 			x /= vec.x;
 			y /= vec.y;
-
 			return *this;
 		}
 
-		Vector2& operator+=(const Vector2& vec)
+		vec2& operator+=(const vec2& vec)
 		{
 			x += vec.x;
 			y += vec.y;
-
 			return *this;
 		}
 
-		Vector2& operator-=(const Vector2& vec)
+		vec2& operator-=(const vec2& vec)
 		{
 			x -= vec.x;
 			y -= vec.y;
-
 			return *this;
 		}
 
-		Vector2	operator+(const Vector2& vec) const
+		vec2	operator+(const vec2& vec) const
 		{
-			return Vector2(x + vec.x, y + vec.y);
+			return vec2(x + vec.x, y + vec.y);
 		}
 
-		Vector2	operator-(const Vector2& vec) const
+		vec2	operator-(const vec2& vec) const
 		{
-			return Vector2(x - vec.x, y - vec.y);
+			return vec2(x - vec.x, y - vec.y);
 		}
 
-		Vector2	operator*(const Vector2& vec) const
+		vec2	operator*(const vec2& vec) const
 		{
-			return Vector2(x * vec.x, y * vec.y);
+			return vec2(x * vec.x, y * vec.y);
 		}
 
-		bool	operator==(const Vector2& vec) const
+		bool	operator==(const vec2& vec) const
 		{
 			return ((x == vec.x) && (y == vec.y));
 		}
 
-		bool	operator!=(const Vector2& vec) const
+		bool	operator!=(const vec2& vec) const
 		{
 			return !(operator==(vec));
 		}
@@ -75,11 +86,24 @@ namespace gui
 		float x, y;
 	};
 
+
+	inline void normalize(vec2& v)
+	{
+		v /= sqrtf(v.x*v.x + v.y*v.y);
+	}
+
+	inline vec2 make_normal(const vec2& v)
+	{
+		vec2 out = v;
+		normalize(out);
+		return out;
+	}
+
 	/*!
 	\brief
-	Point class
+	point class
 	*/
-	typedef	Vector2	Point;
+	typedef	vec2	point;
 
 
 	/*!

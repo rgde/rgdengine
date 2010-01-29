@@ -68,7 +68,7 @@ void ui_test_application::run()
 		if( !do_events() && m_active)
 		{
 			m_elapsed = m_timer.elapsed();
-			update(m_elapsed);
+			update((float)m_elapsed);
 			render();
 		}
 	}
@@ -136,6 +136,28 @@ void ui_test_application::render()
 	if (m_system)
 	{		
 		m_font->drawText("BLAAA BAAA LAA LALA", gui::Rect(0,0,200,200), 1.f);
+		gui::Renderer& r = m_system->getRenderer();
+
+		struct vec2 {float x, y;};
+
+		vec2 points[] = 
+		{
+			{0,50}, 
+			{70,50}, 
+			{80,90},
+			{110,0},
+			{130,60},
+			{150,50},
+			{260,50},
+		};
+
+		gui::Imageset* imageset = m_system->getWindowManager().getImageset("skin");
+		const gui::Image* img = imageset->getImage("Background");
+
+		r.drawLine(*img, (gui::vec2*)points, 7, 1, gui::Rect(0,0,400,400), gui::Color(0xFFFF0F0F), 7);
+
+		//r.addQuad()
+
 		m_system->render();
 	}
 
@@ -308,7 +330,10 @@ void ui_test_application::load(const std::string& xml)
 {
 	if(m_system)
 	{
-		m_system->loadXml(xml);
+		if (gui::BaseWindow* wnd = m_system->loadXml(xml))
+		{
+
+		}
 	}
 }
 

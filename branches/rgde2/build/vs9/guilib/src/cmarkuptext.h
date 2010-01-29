@@ -29,7 +29,7 @@ public:
 		Color			selcol;
 		TextLine*		parent;
 		Text() : area(0.f, 0.f, 0.f, 0.f), start(0), len(0), col(1.f, 1.f, 1.f), selected(false), selcol(1.f, 1.f, 1.f), parent(0) {}
-		bool isHit(Point& pt) 
+		bool isHit(point& pt) 
 		{ 
 			if(!parent)
 				return false;
@@ -44,7 +44,7 @@ public:
 		Rect			area;
 		const Image*	img;
 		Img() : area(0.f, 0.f, 0.f, 0.f) {}
-		bool isHit(Point& pt) { return area.isPointInRect(pt); }
+		bool isHit(point& pt) { return area.isPointInRect(pt); }
 	};
 	typedef boost::shared_ptr<Img> PImg;
 	
@@ -100,7 +100,7 @@ public:
 			void operator ()(boost::shared_ptr<T>& p)
 			{
 				float h = p->area.getHeight();
-				p->area.offset(Point(0.f, (height - h)/2));
+				p->area.offset(point(0.f, (height - h)/2));
 			}
 		};
 	};
@@ -186,9 +186,9 @@ public:
 	virtual void clear();
 
 protected:
-	MarkupText& operator=(const MarkupText& rhs) {}
+	MarkupText& operator=(const MarkupText& rhs) {rhs;}
 	template<typename T>
-	bool isHitChunk(T* p, Point& pt);
+	bool isHitChunk(T* p, point& pt);
 	void setHovered(LinkArea* p, bool status);
 	void setTooltipHover(TooltipArea* p);
 
@@ -198,13 +198,13 @@ protected:
 protected:
 	PTooltipArea m_selectedtt;
 	PLinkArea m_selectedlnk;
-	Point m_pt;
+	point m_pt;
 
 	template<typename T>
 	struct hittester
 	{
-		hittester(Point& p) : pt(p) {}
-		Point pt;
+		hittester(point& p) : pt(p) {}
+		point pt;
 		bool operator ()(boost::shared_ptr<T>& p)
 		{
 			return p->isHit(pt);
@@ -214,8 +214,8 @@ protected:
 	template<typename T>
 	struct hovertester
 	{
-		hovertester(Point& p, MarkupText& m) : pt(p), parent(m) {}
-		Point pt;
+		hovertester(point& p, MarkupText& m) : pt(p), parent(m) {}
+		point pt;
 		MarkupText& parent;
 		bool operator ()(boost::shared_ptr<T>& p)
 		{

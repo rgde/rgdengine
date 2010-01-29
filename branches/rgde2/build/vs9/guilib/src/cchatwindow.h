@@ -70,7 +70,7 @@ namespace gui
 			setVisible(false);
 			BaseWindow::stopTick();
 		}
-		void SetPosition(const Point& point);
+		void SetPosition(const point& point);
 		void SetVisible(bool visible) {BaseWindow::setVisible(visible);}
 
 
@@ -118,7 +118,7 @@ namespace gui
 		const Image*	m_captionBackImg;
 
 		bool m_tracking;
-		Point m_offset;
+		point m_offset;
 
 		bool m_movable;
 		bool m_clampToScreen;

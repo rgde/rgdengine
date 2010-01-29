@@ -90,7 +90,7 @@ public:
 	TextViewVector& getFormattedOutput() { return m_formatting; }
 
 protected:
-	Parser& operator=(const Parser& rhs) {}
+	Parser& operator=(const Parser& rhs) {rhs;}
 	size_t parseString(const std::string& text, size_t start, size_t len, PTextNode node);
 	TagType parseNodeTag(const std::string tag, bool& closed, std::string& param);
 	void applyFormatting(PTextView chunk, TextNode* node);

@@ -9,6 +9,8 @@ namespace gui
 
 	class  ScriptObject
 	{
+		ScriptObject();
+		ScriptObject(const ScriptObject&);
 	public:
 		ScriptObject(ScriptSystem& ref) : m_ref_script(ref) {}
 		virtual ~ScriptObject() {}

@@ -56,7 +56,7 @@ void Menu::reset(void)
 	setVisible(false);
 }
 
-void Menu::show(Point& pt)
+void Menu::show(point& pt)
 {
 	m_area.setPosition(m_system.getCursor().getPosition() - pt);
 	rise();
@@ -67,7 +67,7 @@ void Menu::show(Point& pt)
 void Menu::render(const Rect& finalRect, const Rect& finalClip)
 {
 	Panel::render(finalRect, finalClip);
-	Point left = finalRect.getPosition();
+	point left = finalRect.getPosition();
 	
 	Rect itemrect(left, Size(m_actualWidth, m_itemHeight));	
 	Rect iconrect(left, Size(m_itemHeight, m_itemHeight));
@@ -93,12 +93,12 @@ void Menu::render(const Rect& finalRect, const Rect& finalClip)
 
 		if(item.icon)
 		{
-			iconrect.setPosition(Point(m_margin, h + m_margin));
+			iconrect.setPosition(point(m_margin, h + m_margin));
 			iconrect.offset(left);
 			r.draw(*item.icon, iconrect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);			
 		}		
 
-		itemrect.setPosition(Point(3 * m_margin + m_itemHeight, h + m_margin));
+		itemrect.setPosition(point(3 * m_margin + m_itemHeight, h + m_margin));
 		itemrect.offset(left);
 		m_font->drawText(item.text, itemrect, 1.0f, finalClip, Font::LeftAligned, selected ? item.selcol : item.col, 1.f, 1.f);		
 
@@ -203,7 +203,7 @@ bool Menu::onMouseLeave(void)
 
 bool Menu::onMouseMove(void)
 {
-	Point pt = transformToWndCoord(m_system.getCursor().getPosition());
+	point pt = transformToWndCoord(m_system.getCursor().getPosition());
 	pt -= m_area.getPosition();
 	
 	float item = pt.y / (2 * m_margin + m_itemHeight);

@@ -18,6 +18,8 @@ namespace gui
 				BaseWindow* window, const Rect& dest, const Rect& clip);
 			virtual	void doRender();
 			virtual void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode);
+			virtual void addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, 
+				QuadSplitMode quad_split_mode);
 		
 			virtual void drawFromCache(BaseWindow* window);
 			virtual	TexturePtr createTexture(const std::string& filename);
@@ -40,7 +42,7 @@ namespace gui
 			rgde::render::device& getDevice() const {return m_device;}
 
 		protected:
-			virtual void renderQuadDirect(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode);
+			virtual void renderQuadDirect(const QuadInfo& q);
 			virtual	TexturePtr	createTextureInstance(const std::string& filename);
 
 			void	initPerFrameStates();
@@ -62,12 +64,8 @@ namespace gui
 
 			typedef boost::shared_ptr<shader_effect> shader_ptr;
 			shader_ptr				m_shader;
-		protected:
-			static const int			VERTEX_PER_QUAD;							//!< number of vertices per quad
-			static const int			VERTEX_PER_TRIANGLE;						//!< number of vertices for a triangle
-			static const int			VERTEXBUFFER_CAPACITY;						//!< capacity of the allocated vertex buffer
-			static const unsigned long	VERTEX_FVF;									//!< FVF specifier constant
 
+		protected:
 			shader_handle m_handleViewPortSize;
 			shader_handle m_handleGuiTexture;
 

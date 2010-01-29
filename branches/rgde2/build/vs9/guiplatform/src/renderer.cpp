@@ -36,9 +36,12 @@ namespace gui
 			vertex_element::end_element
 		};
 
-		const int			renderer::VERTEX_PER_QUAD = 6;
-		const int			renderer::VERTEX_PER_TRIANGLE = 3;
-		const int			renderer::VERTEXBUFFER_CAPACITY	= 8192;
+		enum
+		{
+			VERTEX_PER_QUAD = 6,
+			VERTEX_PER_TRIANGLE = 3,
+			VERTEXBUFFER_CAPACITY	= 8192,
+		};
 
 		/*************************************************************************
 		Constructor
@@ -121,77 +124,285 @@ namespace gui
 			m_callbackInfo.clip = clip;
 		}
 
-		void renderer::addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode)
-		{
-			Rect local_dest_rect = dest_rect;
+		/*************************************************************************
+		render a quad directly to the display		
+		*************************************************************************/
 
-			// if not queueing, render directly (as in, right now!)
+		namespace 
+		{
+			// return value = buff offset in QuadInfo
+			unsigned int fill_vertex(const Renderer::QuadInfo& q, QuadVertex*& v, float scaleX, float scaleY)
+			{												   
+				// setup Vertex 1...
+				v->x = PixelAligned(q.positions[0].x * scaleX);
+				v->y = PixelAligned(q.positions[0].y * scaleY);
+				v->diffuse = q.topLeftCol;
+				v->tu1 = q.texPosition.m_left;
+				v->tv1 = q.texPosition.m_top;
+				++v;
+
+				// setup Vertex 2...
+
+				// top-left to bottom-right diagonal
+				if (q.splitMode == TopLeftToBottomRight)
+				{
+					v->x = PixelAligned(q.positions[3].x * scaleX);
+					v->y = PixelAligned(q.positions[3].y * scaleY);
+					v->diffuse = q.bottomRightCol;
+					v->tu1 = q.texPosition.m_right;
+					v->tv1 = q.texPosition.m_bottom;
+				}
+				// bottom-left to top-right diagonal
+				else
+				{
+					v->x = PixelAligned(q.positions[1].x * scaleX);
+					v->y = PixelAligned(q.positions[1].y * scaleY);
+					v->diffuse = q.topRightCol;
+					v->tu1 = q.texPosition.m_right;
+					v->tv1 = q.texPosition.m_top;
+				}
+				++v;
+
+				// setup Vertex 3...
+				v->x = PixelAligned(q.positions[2].x * scaleX);
+				v->y = PixelAligned(q.positions[2].y * scaleY);
+				v->diffuse = q.bottomLeftCol;
+				v->tu1 = q.texPosition.m_left;
+				v->tv1 = q.texPosition.m_bottom;
+				++v;
+
+				// setup Vertex 4...
+				v->x = PixelAligned(q.positions[1].x * scaleX);
+				v->y = PixelAligned(q.positions[1].y * scaleY);
+				v->diffuse = q.topRightCol;
+				v->tu1 = q.texPosition.m_right;
+				v->tv1 = q.texPosition.m_top;
+				++v;
+
+				// setup Vertex 5...
+				v->x = PixelAligned(q.positions[3].x * scaleX);
+				v->y = PixelAligned(q.positions[3].y * scaleY);
+				v->diffuse = q.bottomRightCol;
+				v->tu1 = q.texPosition.m_right;
+				v->tv1 = q.texPosition.m_bottom;
+				++v;
+
+				// setup Vertex 6...
+
+				// top-left to bottom-right diagonal
+				if (q.splitMode == TopLeftToBottomRight)
+				{
+					v->x = PixelAligned(q.positions[0].x * scaleX);
+					v->y = PixelAligned(q.positions[0].y * scaleY);
+					v->diffuse = q.topLeftCol;
+					v->tu1 = q.texPosition.m_left;
+					v->tv1 = q.texPosition.m_top;
+				}
+				// bottom-left to top-right diagonal
+				else
+				{
+					v->x = PixelAligned(q.positions[2].x * scaleX);
+					v->y = PixelAligned(q.positions[2].y * scaleY);
+					v->diffuse = q.bottomLeftCol;
+					v->tu1 = q.texPosition.m_left;
+					v->tv1 = q.texPosition.m_bottom;
+				}
+				++v;
+				return VERTEX_PER_QUAD;
+			}			
+		}
+
+		/*************************************************************************
+		render a quad directly to the display
+		*************************************************************************/
+		void renderer::renderQuadDirect(const QuadInfo& q)
+		{
+			if (!m_buffer)
+				return;
+
+			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
+			view_port viewPortDesc;
+			m_device.get_viewport(viewPortDesc);
+
+			m_device.set_decl(m_vertexDeclaration);
+
+			m_shader->set_tech("Simple");
+			rgde::math::vec2f vec((float)viewPortDesc.width, (float)viewPortDesc.height);
+			m_shader->set("ViewPortSize",&vec, 2 );
+			m_shader->begin(0 );
+			m_shader->begin_pass(0);
+
+			QuadVertex*	buffmem;
+
+			texture* tex = (texture*)q.texture;
+			m_device.set_texture(((texture*)tex)->get_platform_resource(), 0 );
+
+			buffmem = (QuadVertex*)m_buffer->lock(0, VERTEX_PER_QUAD * sizeof(QuadVertex), 
+				buffer::discard);
+
+			if (buffmem)
+			{
+				float scaleX = 1.f;
+				float scaleY = 1.f;
+				if(m_autoScale)
+				{
+					const Size viewport = getViewportSize();
+					scaleX = viewport.width / m_originalsize.width;
+					scaleY = viewport.height / m_originalsize.height;
+				}
+				
+				unsigned int vert_filled = fill_vertex(q, buffmem, scaleX, scaleY);
+
+				m_buffer->unlock();
+				m_bufferPos = vert_filled;
+
+				renderVBuffer();
+			}
+			m_shader->end_pass();
+			m_shader->end();
+		}
+
+		void renderer::addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode)
+		{
+			if (m_num_quads >= m_quads.size())
+			{
+				m_quads.resize(m_num_quads*2);
+			}
+
+			QuadInfo& quad = (&m_quads.front())[m_num_quads];
+			quad.positions[0].x	= p0.x;
+			quad.positions[0].y	= p0.y;
+
+			quad.positions[1].x	= p1.x;
+			quad.positions[1].y	= p1.y;
+
+			quad.positions[2].x	= p2.x;
+			quad.positions[2].y	= p2.y;
+
+			quad.positions[3].x	= p3.x;
+			quad.positions[3].y	= p3.y;
+
+			quad.z				= z;
+			quad.texture		= &img.getTexture();
+			quad.texPosition	= tex_rect;
+			quad.topLeftCol		= colours.m_top_left.getARGB();
+			quad.topRightCol	= colours.m_top_right.getARGB();
+			quad.bottomLeftCol	= colours.m_bottom_left.getARGB();
+			quad.bottomRightCol	= colours.m_bottom_right.getARGB();
+
+			// set quad split mode
+			quad.splitMode = quad_split_mode;
+
+			// if not queering, render directly (as in, right now!)
 			if (!m_isQueueing)
 			{
-				renderQuadDirect(local_dest_rect, tex_rect, 1.0f, img, colours, quad_split_mode);
+				renderQuadDirect(quad);
+				return;
 			}
-			else
+
+			if (m_currentCapturing)
 			{
-				if (m_num_quads >= m_quads.size())
-				{
-					m_quads.resize(m_num_quads*2);
-				}
-
-
-				QuadInfo& quad = m_quads[m_num_quads];
-				quad.position		= local_dest_rect;
-				quad.z				= z;
-				quad.texture		= &img.getTexture();
-				quad.texPosition	= tex_rect;
-				quad.topLeftCol		= colours.m_top_left.getARGB();
-				quad.topRightCol	= colours.m_top_right.getARGB();
-				quad.bottomLeftCol	= colours.m_bottom_left.getARGB();
-				quad.bottomRightCol	= colours.m_bottom_right.getARGB();
-
-				// set quad split mode
-				quad.splitMode = quad_split_mode;
-				
-				if (m_currentCapturing)
-				{
-					if (m_currentCapturing->num >= m_currentCapturing->m_vec.size())
-						m_currentCapturing->m_vec.resize(m_currentCapturing->num * 2);
-					m_currentCapturing->m_vec[m_currentCapturing->num] = quad;
-					++(m_currentCapturing->num);
-				}
-
-
-
-				if (!m_num_quads  || m_quads[m_num_quads - 1].texture != quad.texture ||
-					m_needToAddCallback || 
-					(m_num_batches && (m_num_quads - m_batches[m_num_batches - 1].startQuad + 1)*VERTEX_PER_QUAD >= VERTEXBUFFER_CAPACITY))
-				{
-					// закончим предыдущий батч если он есть
-					if (m_num_batches)
-					{
-						m_batches[m_num_batches - 1].numQuads = int(m_num_quads - m_batches[m_num_batches - 1].startQuad);
-						
-						if (!m_needToAddCallback)
-						{
-							m_callbackInfo.window = NULL;
-							m_callbackInfo.afterRenderCallback = NULL;
-						}
-						m_needToAddCallback = false;
-						m_batches[m_num_batches - 1].callbackInfo = m_callbackInfo;
-					}
-
-					// начнем следующий батч
-					m_batches[m_num_batches].texture = quad.texture;
-					m_batches[m_num_batches].startQuad = (int)m_num_quads;
-					m_batches[m_num_batches].numQuads = 0;
-
-					++m_num_batches;
-				}
-
-				++m_num_quads;
-				assert(m_num_batches);
-				++m_batches[m_num_batches - 1].numQuads;
-
+				if (m_currentCapturing->num >= m_currentCapturing->m_vec.size())
+					m_currentCapturing->m_vec.resize(m_currentCapturing->num * 2);
+				m_currentCapturing->m_vec[m_currentCapturing->num] = quad;
+				++(m_currentCapturing->num);
 			}
+
+
+			BatchInfo* batches = &m_batches[0];
+
+
+			if (!m_num_quads  || m_quads[m_num_quads - 1].texture != quad.texture ||
+				m_needToAddCallback || 
+				(m_num_batches && (m_num_quads - batches[m_num_batches - 1].startQuad + 1)*VERTEX_PER_QUAD >= VERTEXBUFFER_CAPACITY))
+			{
+				// finalize prev batch if one
+				if (m_num_batches)
+				{
+					batches[m_num_batches - 1].numQuads = int(m_num_quads - batches[m_num_batches - 1].startQuad);
+
+					if (!m_needToAddCallback)
+					{
+						m_callbackInfo.window = NULL;
+						m_callbackInfo.afterRenderCallback = NULL;
+					}
+					m_needToAddCallback = false;
+					batches[m_num_batches - 1].callbackInfo = m_callbackInfo;
+				}
+
+				// start new batch
+				batches[m_num_batches].texture = quad.texture;
+				batches[m_num_batches].startQuad = (int)m_num_quads;
+				batches[m_num_batches].numQuads = 0;
+
+				++m_num_batches;
+			}
+
+			++m_num_quads;
+			assert(m_num_batches);
+			++batches[m_num_batches - 1].numQuads;
+		}
+
+		void renderer::addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colors, QuadSplitMode quad_split_mode)		
+		{
+			if (m_num_quads >= m_quads.size())
+			{
+				m_quads.resize(m_num_quads*2);
+			}
+			
+			QuadInfo& quad = (&m_quads.front())[m_num_quads];
+
+			fillQuad(quad, dest_rect, tex_rect, z, img, colors, quad_split_mode);
+
+			// set quad split mode
+			quad.splitMode = quad_split_mode;
+			
+			// if not queering, render directly (as in, right now!)
+			if (!m_isQueueing)
+			{
+				renderQuadDirect(quad);
+				return;
+			}
+
+			if (m_currentCapturing)
+			{
+				if (m_currentCapturing->num >= m_currentCapturing->m_vec.size())
+					m_currentCapturing->m_vec.resize(m_currentCapturing->num * 2);
+				m_currentCapturing->m_vec[m_currentCapturing->num] = quad;
+				++(m_currentCapturing->num);
+			}
+
+			BatchInfo* batches = &m_batches[0];
+
+			if (!m_num_quads  || m_quads[m_num_quads - 1].texture != quad.texture ||
+				m_needToAddCallback || 
+				(m_num_batches && (m_num_quads - batches[m_num_batches - 1].startQuad + 1)*VERTEX_PER_QUAD >= VERTEXBUFFER_CAPACITY))
+			{
+				// finalize prev batch if one
+				if (m_num_batches)
+				{
+					batches[m_num_batches - 1].numQuads = int(m_num_quads - batches[m_num_batches - 1].startQuad);
+					
+					if (!m_needToAddCallback)
+					{
+						m_callbackInfo.window = NULL;
+						m_callbackInfo.afterRenderCallback = NULL;
+					}
+					m_needToAddCallback = false;
+					batches[m_num_batches - 1].callbackInfo = m_callbackInfo;
+				}
+
+				// start new batch
+				batches[m_num_batches].texture = quad.texture;
+				batches[m_num_batches].startQuad = (int)m_num_quads;
+				batches[m_num_batches].numQuads = 0;
+
+				++m_num_batches;
+			}
+
+			++m_num_quads;
+			assert(m_num_batches);
+			++batches[m_num_batches - 1].numQuads;
 		}
 
 		void renderer::setRenderStates()
@@ -253,92 +464,7 @@ namespace gui
 				for (std::size_t q = 0; q < numQ; ++q)
 				{
 					const QuadInfo& quad = m_quads[q + batch.startQuad];
-
-					float left = quad.position.m_left * scaleX;
-					float right = quad.position.m_right * scaleX;
-					float top = quad.position.m_top * scaleY - 0.5f;
-					float bottom = quad.position.m_bottom * scaleY - 0.5f;
-
-					right = PixelAligned(right);
-					left = PixelAligned(left);
-					top = PixelAligned(top);
-					bottom = PixelAligned(bottom);
-
-					// setup Vertex 1...
-					buffmem->x = left;
-					buffmem->y = top;
-					buffmem->diffuse = quad.topLeftCol;
-					buffmem->tu1 = quad.texPosition.m_left;
-					buffmem->tv1 = quad.texPosition.m_top;
-					++buffmem;
-
-					// setup Vertex 2...
-
-					// top-left to bottom-right diagonal
-					if (quad.splitMode == TopLeftToBottomRight)
-					{
-						buffmem->x = right;
-						buffmem->y = bottom;
-						buffmem->diffuse = quad.bottomRightCol;
-						buffmem->tu1 = quad.texPosition.m_right;
-						buffmem->tv1 = quad.texPosition.m_bottom;
-					}
-					// bottom-left to top-right diagonal
-					else
-					{
-						buffmem->x = right;
-						buffmem->y = top;
-						buffmem->diffuse = quad.topRightCol;
-						buffmem->tu1 = quad.texPosition.m_right;
-						buffmem->tv1 = quad.texPosition.m_top;
-					}
-					++buffmem;
-
-					// setup Vertex 3...
-					buffmem->x = left;
-					buffmem->y = bottom;
-					buffmem->diffuse = quad.bottomLeftCol;
-					buffmem->tu1 = quad.texPosition.m_left;
-					buffmem->tv1 = quad.texPosition.m_bottom;
-					++buffmem;
-
-					// setup Vertex 4...
-					buffmem->x = right;
-					buffmem->y = top;
-					buffmem->diffuse = quad.topRightCol;
-					buffmem->tu1 = quad.texPosition.m_right;
-					buffmem->tv1 = quad.texPosition.m_top;
-					++buffmem;
-
-					// setup Vertex 5...
-					buffmem->x = right;
-					buffmem->y = bottom;
-					buffmem->diffuse = quad.bottomRightCol;
-					buffmem->tu1 = quad.texPosition.m_right;
-					buffmem->tv1 = quad.texPosition.m_bottom;
-					++buffmem;
-
-					// setup Vertex 6...
-
-					// top-left to bottom-right diagonal
-					if (quad.splitMode == TopLeftToBottomRight)
-					{
-						buffmem->x = left;
-						buffmem->y = top;
-						buffmem->diffuse = quad.topLeftCol;
-						buffmem->tu1 = quad.texPosition.m_left;
-						buffmem->tv1 = quad.texPosition.m_top;
-					}
-					// bottom-left to top-right diagonal
-					else
-					{
-						buffmem->x = left;
-						buffmem->y = bottom;
-						buffmem->diffuse = quad.bottomLeftCol;
-						buffmem->tu1 = quad.texPosition.m_left;
-						buffmem->tv1 = quad.texPosition.m_bottom;
-					}
-					++buffmem;
+					fill_vertex(quad, buffmem, scaleX, scaleY);
 				}
 
 				m_buffer->unlock();
@@ -349,7 +475,6 @@ namespace gui
 				m_device.draw(triangle_list, s_quadOffset * 6, UINT(numQ * 2));
 				s_quadOffset += (DWORD)numQ;
 
-
 				if (batch.callbackInfo.window && batch.callbackInfo.afterRenderCallback)
 				{
 					m_shader->end_pass();
@@ -358,7 +483,7 @@ namespace gui
 					batch.callbackInfo.afterRenderCallback(batch.callbackInfo.window,
 									batch.callbackInfo.dest, batch.callbackInfo.clip);
 
-					// если это был не последний батч
+					// if it was not last batch
 					if (b < m_num_batches -1)
 						setRenderStates();
 				}
@@ -366,8 +491,6 @@ namespace gui
 			
 			m_shader->end_pass();
 			m_shader->end();
-			
-
 		}
 
 		/*************************************************************************
@@ -377,45 +500,6 @@ namespace gui
 		{
 			// setup vertex stream
 			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
-
-			//m_device->SetFVF(VERTEX_FVF);
-			//m_device->SetVertexShader( 0 );
-			//m_device->SetPixelShader( 0 );
-
-			// set device states
-			//m_device->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
-			//m_device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-			//m_device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-			//m_device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-			//m_device->SetRenderState(D3DRS_FOGENABLE, FALSE);
-			//m_device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
-
-			// setup texture addressing settings
-			//m_device->SetSamplerState( 0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);
-			//m_device->SetSamplerState( 0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);
-
-			// setup colour calculations
-			//m_device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-			//m_device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
-			//m_device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
-
-			// setup alpha calculations
-			//m_device->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-			//m_device->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
-			//m_device->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-
-			// setup filtering
-			//m_device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-			//m_device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-
-			// disable texture stages we do not need.
-			//m_device->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
-
-			// setup scene alpha blending
-			//m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-			//m_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-			//m_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 		}
 
 
@@ -436,140 +520,6 @@ namespace gui
 			// reset buffer position to 0...
 			m_bufferPos = 0;
 		}
-
-		/*************************************************************************
-		render a quad directly to the display
-		*************************************************************************/
-		void renderer::renderQuadDirect(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode)
-		{			
-			if (!m_buffer)
-				return;
-
-			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
-			view_port viewPortDesc;
-			m_device.get_viewport(viewPortDesc);
-
-			m_device.set_decl(m_vertexDeclaration);
-
-			m_shader->set_tech("Simple");
-			rgde::math::vec2f vec((float)viewPortDesc.width, (float)viewPortDesc.height);
-			m_shader->set("ViewPortSize",&vec, 2 );
-			m_shader->begin(0 );
-			m_shader->begin_pass(0);
-
-			QuadVertex*	buffmem;
-			
-			texture* tex = static_cast<texture*>(&img.getTexture());
-			m_device.set_texture(((texture*)tex)->get_platform_resource(), 0 );
-
-			buffmem = (QuadVertex*)m_buffer->lock(0, VERTEX_PER_QUAD * sizeof(QuadVertex), 
-				buffer::discard);
-
-			if (buffmem)
-			{
-				float scaleX = 1.f;
-				float scaleY = 1.f;
-				if(m_autoScale)
-				{
-					Size& viewport = getViewportSize();
-					scaleX = viewport.width / m_originalsize.width;
-					scaleY = viewport.height / m_originalsize.height;
-				}
-
-				float left = dest_rect.m_left * scaleX;
-				left = PixelAligned(left);
-				float top = dest_rect.m_top * scaleY;
-				top = PixelAligned(top);
-				float right = dest_rect.m_right * scaleX;
-				right = PixelAligned(right);
-				float bottom = dest_rect.m_bottom * scaleY;
-				bottom = PixelAligned(bottom);
-
-				// setup Vertex 1...
-				buffmem->x = left;
-				buffmem->y = top;
-				buffmem->diffuse = colours.m_top_left.getARGB();
-				buffmem->tu1 = tex_rect.m_left;
-				buffmem->tv1 = tex_rect.m_top;
-				++buffmem;
-
-				// setup Vertex 2...
-
-				// top-left to bottom-right diagonal
-				if (quad_split_mode == TopLeftToBottomRight)
-				{
-					buffmem->x = right;
-					buffmem->y = bottom;
-					buffmem->diffuse = colours.m_bottom_right.getARGB();
-					buffmem->tu1 = tex_rect.m_right;
-					buffmem->tv1 = tex_rect.m_bottom;
-				}
-				// bottom-left to top-right diagonal
-				else
-				{
-					buffmem->x = right;
-					buffmem->y = top;
-					buffmem->diffuse = colours.m_top_right.getARGB();
-					buffmem->tu1 = tex_rect.m_right;
-					buffmem->tv1 = tex_rect.m_top;
-				}
-				++buffmem;
-
-				// setup Vertex 3...
-				buffmem->x = left;
-				buffmem->y = bottom;
-				buffmem->diffuse = colours.m_bottom_left.getARGB();
-				buffmem->tu1 = tex_rect.m_left;
-				buffmem->tv1 = tex_rect.m_bottom;
-				++buffmem;
-
-				// setup Vertex 4...
-				buffmem->x = right;
-				buffmem->y = top;
-				buffmem->diffuse = colours.m_top_right.getARGB();
-				buffmem->tu1 = tex_rect.m_right;
-				buffmem->tv1 = tex_rect.m_top;
-				++buffmem;
-
-				// setup Vertex 5...
-				buffmem->x = right;
-				buffmem->y = bottom;
-				buffmem->diffuse = colours.m_bottom_right.getARGB();
-				buffmem->tu1 = tex_rect.m_right;
-				buffmem->tv1 = tex_rect.m_bottom;
-				++buffmem;
-
-				// setup Vertex 6...
-
-				// top-left to bottom-right diagonal
-				if (quad_split_mode == TopLeftToBottomRight)
-				{
-					buffmem->x = left;
-					buffmem->y = top;
-					buffmem->diffuse = colours.m_top_left.getARGB();
-					buffmem->tu1 = tex_rect.m_left;
-					buffmem->tv1 = tex_rect.m_top;
-				}
-				// bottom-left to top-right diagonal
-				else
-				{
-					buffmem->x = left;
-					buffmem->y = bottom;
-					buffmem->diffuse = colours.m_bottom_left.getARGB();
-					buffmem->tu1 = tex_rect.m_left;
-					buffmem->tv1 = tex_rect.m_bottom;
-				}
-
-				m_buffer->unlock();
-				m_bufferPos = VERTEX_PER_QUAD;
-
-				renderVBuffer();
-			}
-			m_shader->end_pass();
-			m_shader->end();
-
-		}
-
 
 		void renderer::OnLostDevice()
 		{

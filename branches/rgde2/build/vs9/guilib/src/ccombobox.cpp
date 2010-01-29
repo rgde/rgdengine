@@ -67,7 +67,7 @@ void Combobox::onBtnClick(const events::ClickEvent& e)
 			m_list->setSize(Size(m_area.getSize().width, m_list->getSize().height));
 			m_list->setVisible(true);
 			m_list->moveToFront();
-			Point pt = transformToRootCoord(Point(m_area.m_left, m_area.m_bottom));
+			point pt = transformToRootCoord(point(m_area.m_left, m_area.m_bottom));
 			m_list->setPosition(pt);
 			setInputFocus(true);
 		}

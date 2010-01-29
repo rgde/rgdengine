@@ -254,7 +254,7 @@ public:
 	DragEventArgs() {}
 	virtual ~DragEventArgs() {}
 	
-	Point offset;	
+	point offset;	
 	BaseWindow*	subj;
 };
 

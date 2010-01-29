@@ -50,8 +50,8 @@ public:
 	void setArea(const Rect& rc);
 	const Rect& getArea(void) const { return m_area; }
 
-	void setPosition(const Point& pt);
-	const Point getPosition(void) const { return m_area.getPosition(); }
+	void setPosition(const point& pt);
+	const point getPosition(void) const { return m_area.getPosition(); }
 	void setSize(const Size& sz);
 	const Size getSize(void) const { return m_area.getSize(); }
 
@@ -96,7 +96,7 @@ public:
 	bool hasInputFocus() const { return m_focus; }
 	bool isTabStop() const { return m_tabstop; }
 
-	bool hitTest(const Point& pt);
+	bool hitTest(const point& pt);
 
 	bool isDragable() const { return m_dragable; }
 	void setDragable(bool drag) { m_dragable = drag;}
@@ -107,9 +107,9 @@ public:
 	bool getIgnoreInputEvents() const { return m_ignoreInputEvents; }
 
 	virtual void invalidate();
-	virtual void render(const Rect& dest, const Rect& clip) {}
+	virtual void render(const Rect& dest, const Rect& clip) {clip;dest;}
 
-	void draw(const Point& offset, const Rect& clip);
+	void draw(const point& offset, const Rect& clip);
 
 	// events
 	virtual bool onMouseEnter(void);
@@ -140,8 +140,8 @@ public:
 	BaseWindow* nextSibling();
 	BaseWindow* prevSibling();
 
-	Point transformToWndCoord(const Point& global); // translate to parent coords!
-	Point transformToRootCoord(const Point& local);
+	point transformToWndCoord(const point& global); // translate to parent coords!
+	point transformToRootCoord(const point& local);
 
 	void subscribeNamedEvent(std::string name, BaseWindow* sender, std::string script);
 	void unsubscribeNamedEvent(std::string name, BaseWindow* sender);

@@ -186,9 +186,9 @@ protected:
 			m_parent->removeChild(static_cast<T*>(this));
 	}
 
-	virtual void onParentChange(){}
-	virtual void onChildAdd(PNode& node)	 {}
-	virtual void onChildRemove(PNode& node) {}
+	virtual void onParentChange()			{}
+	virtual void onChildAdd(PNode& node)	{node;}
+	virtual void onChildRemove(PNode& node) {node;}
 
 protected:
 	ChildrenList m_children;
