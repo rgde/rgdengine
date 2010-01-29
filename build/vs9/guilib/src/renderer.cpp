@@ -155,7 +155,7 @@ void Renderer::drawLine(const Image& img, const vec2* p, size_t size, float z, c
 		p2 = v1 - nv;
 		p3 = v2 - nv;
 
-		addQuad(p0, p1, p2, p3, source_rect, z, img, color_rect, BottomLeftToTopRight);
+		addQuad(p0, p1, p2, p3, source_rect, z, img, color_rect, TopLeftToBottomRight);
 	}
 }
 
