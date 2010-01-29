@@ -136,6 +136,9 @@ void Renderer::drawLine(const Image& img, const vec2* p, size_t size, float z, c
 
 	vec2 p0, p1, p2, p3;
 
+	Rect source_rect = img.getPixelRect();
+	source_rect *= img.getTexture().getSize();
+
 	for(size_t i = 0; i < size - 1; ++i)
 	{
 		const vec2& v1 = p[i];
@@ -146,18 +149,13 @@ void Renderer::drawLine(const Image& img, const vec2* p, size_t size, float z, c
 		vec2 nv(-dir.y, dir.x);
 		nv *= width*0.5;
 
-		//if (i == 0)
-		{
-			p0 = v1 + nv;
-			p1 = v2 + nv;
-		}
+		p0 = v1 + nv;
+		p1 = v2 + nv;
+
 		p2 = v1 - nv;
 		p3 = v2 - nv;
 
-		addQuad(p0, p1, p2, p3, img.getPixelRect(), z, img, color_rect, BottomLeftToTopRight/*TopLeftToBottomRight*/);
-
-		p0 = p1;
-		p2 = p3;
+		addQuad(p0, p1, p2, p3, source_rect, z, img, color_rect, BottomLeftToTopRight);
 	}
 }
 
