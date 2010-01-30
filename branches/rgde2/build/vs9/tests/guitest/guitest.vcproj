@@ -161,7 +161,7 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/IGNORE:4089"
 				AdditionalDependencies="dxerr.lib dxguid.lib d3dx9.lib d3d9.lib winmm.lib comctl32.lib"
-				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName)_d.exe"
+				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\dxsdk\Lib\x86;$(SolutionDir)..\..\external\boost\lib\"
 				GenerateManifest="true"
