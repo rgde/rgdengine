@@ -55,20 +55,15 @@ std::string UTF16ToUTF8(const std::wstring& wtext)
 
 point StringToPoint(const std::string& str)
 {
-	using namespace std;
-
-	int x = 0;
-	int y = 0;
-	sscanf(str.c_str(), "%d %d", &x, &y);
-
-	return point((float)x, (float)y);
+	point out;
+	sscanf(str.c_str(), "%f %f", &out.x, &out.y);
+	return out;
 }
 
 std::string PointToString(const point& val)
 {
 	char buff[128] = {0};
-	_snprintf(buff, sizeof (buff), "%d %d", val.x, val.y);
-
+	_snprintf(buff, sizeof (buff), "%f %f", val.x, val.y);
 	return std::string(buff);
 }
 
