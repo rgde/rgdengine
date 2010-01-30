@@ -25,15 +25,15 @@ namespace gui
 
 	Size StringToSize(const std::string& str)
 	{
-		Size out;
-		sscanf(str.c_str(), "%f %f", &out.width, &out.height);
-		return out;
+		int w,h;
+		sscanf(str.c_str(), "%d %d", &w, &h);
+		return Size((float)w, (float)h);
 	}
 
 	std::string SizeToString(const Size& val)
 	{
 		char buff[128] = {0};
-		_snprintf(buff, sizeof (buff), "%f %f", val.width, val.height);
+		_snprintf(buff, sizeof (buff), "%d %d", val.width, val.height);
 		return std::string(buff);
 	}
 }

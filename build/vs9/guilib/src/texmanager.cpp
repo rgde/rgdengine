@@ -39,11 +39,7 @@ TexturePtr TextureManager::createTexture(const std::string& filename)
 
 void TextureManager::pushTexture(TexturePtr tex)
 {
-	//TextureListIter i = std::find(m_textures.begin(), m_textures.end(), tex);
-	//if(i == m_textures.end())
-	//{
-	//	m_textures.push_back(tex);
-	//}
+	//TODO: add mem statistics
 }
 
 void TextureManager::cleanup()
@@ -53,16 +49,6 @@ void TextureManager::cleanup()
 
 void TextureManager::onDeviceLost()
 {
-	//class devlost
-	//{
-	//public:
-	//	void operator ()(TexturePtr& ptr)
-	//	{
-	//		ptr->onDeviceLost();
-	//	}
-	//};
-	//devlost d;
-	//std::for_each(m_textures.begin(), m_textures.end(), d);
 	for(TexturesIter it = m_textures.begin(); it != m_textures.end(); ++it)
 	{
 		TextureWeakPtr weak_tex = it->second;
@@ -76,17 +62,6 @@ void TextureManager::onDeviceLost()
 
 void TextureManager::onDeviceReset()
 {
-	//class devreset
-	//{
-	//public:
-	//	void operator ()(TexturePtr& ptr)
-	//	{
-	//		ptr->onDeviceReset();
-	//	}
-	//};
-	//devreset d;
-	//std::for_each(m_textures.begin(), m_textures.end(), d);
-
 	for(TexturesIter it = m_textures.begin(); it != m_textures.end(); ++it)
 	{
 		TextureWeakPtr weak_tex = it->second;
