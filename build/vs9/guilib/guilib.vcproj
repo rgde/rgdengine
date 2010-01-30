@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="guilib"
 	ProjectGUID="{05E7E63D-01BF-4586-9215-D56FA02B2223}"
 	RootNamespace="guilib"
@@ -84,8 +84,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)lib/$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)temp/$(ProjectName)/$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			CharacterSet="0"
 			WholeProgramOptimization="0"
@@ -112,7 +112,7 @@
 				FavorSizeOrSpeed="1"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)sources/external/directx/include&quot;;&quot;$(SolutionDir)sources/external/boost&quot;;&quot;$(SolutionDir)sources/external/pugixml/src&quot;;&quot;$(SolutionDir)sources/client/lua-5.1.3/src&quot;;&quot;$(SolutionDir)sources/client/luabind&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)../../external/boost&quot;;&quot;$(SolutionDir)../../external/lua/src&quot;;&quot;$(SolutionDir)../../external/luabind&quot;;&quot;$(SolutionDir)..\..\include\&quot;"
 				PreprocessorDefinitions="WIN32;GUILIB_EXPORTS;GUI_KERNING_ENABLED;_CRT_SECURE_NO_WARNINGS;D_SCL_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				MinimalRebuild="true"
@@ -137,7 +137,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalOptions="/LTCG"
-				AdditionalDependencies="pugixml.lib"
+				OutputFile="$(SolutionDir)libs\$(ConfigurationName)\$(ProjectName).lib"
 				AdditionalLibraryDirectories="$(SolutionDir)sources/external/pugixml/Lib/$(ConfigurationName)"
 			/>
 			<Tool
@@ -158,8 +158,8 @@
 		</Configuration>
 		<Configuration
 			Name="Product Release|Win32"
-			OutputDirectory="$(SolutionDir)lib/$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)temp/$(ProjectName)/$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
+			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			CharacterSet="0"
 			WholeProgramOptimization="0"
@@ -186,7 +186,7 @@
 				FavorSizeOrSpeed="1"
 				EnableFiberSafeOptimizations="true"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)sources/external/directx/include&quot;;&quot;$(SolutionDir)sources/external/boost&quot;;&quot;$(SolutionDir)sources/external/pugixml/src&quot;;&quot;$(SolutionDir)sources/client/lua-5.1.3/src&quot;;&quot;$(SolutionDir)sources/client/luabind&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)../../external/boost&quot;;&quot;$(SolutionDir)../../external/lua/src&quot;;&quot;$(SolutionDir)../../external/luabind&quot;;&quot;$(SolutionDir)..\..\include\&quot;"
 				PreprocessorDefinitions="WIN32;GUILIB_EXPORTS;_CRT_SECURE_NO_WARNINGS;D_SCL_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				MinimalRebuild="true"
@@ -211,7 +211,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalOptions="/LTCG"
-				AdditionalDependencies="pugixml.lib"
+				OutputFile="$(SolutionDir)libs\$(ConfigurationName)\$(ProjectName).lib"
 				AdditionalLibraryDirectories="$(SolutionDir)sources/external/pugixml/Lib/release"
 			/>
 			<Tool
