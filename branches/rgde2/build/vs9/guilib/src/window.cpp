@@ -334,6 +334,7 @@ bool BaseWindow::onFocusLost(BaseWindow* newFocus)
 
 bool BaseWindow::onLoad(void)
 {
+	onMoved();
 	if(m_alwaysOnTop)
 		moveToFront();
 
