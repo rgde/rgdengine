@@ -303,6 +303,41 @@ namespace rgde
 			assert(hr == S_OK);
 		}
 
+		//DrawIndexedPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType,
+		//	UINT MinVertexIndex, = 0
+		//	UINT NumVertices,
+		//	UINT PrimitiveCount,
+		//	CONST void* pIndexData,
+		//	D3DFORMAT IndexDataFormat, == D3DFMT_INDEX16
+		//	CONST void* pVertexStreamZeroData,
+		//	UINT VertexStreamZeroStride);
+
+		void device::draw(primitive_type type, uint num_vertices, uint primitive_count, const void* vertex_data, uint vertex_stride,
+						const uint16* index_data)
+		{			
+			D3DPRIMITIVETYPE prim_type = convert(type);
+			HRESULT hr = get_impl().get_dx_device()->DrawIndexedPrimitiveUP
+				(
+				prim_type, 
+				0,
+				num_vertices,
+				primitive_count,
+				index_data,
+				D3DFMT_INDEX16,
+				vertex_data,
+				vertex_stride);
+
+			assert(hr == S_OK);
+		}
+
+
+		void device::draw(primitive_type type, uint primitive_count, void* data, uint stride)
+		{
+			D3DPRIMITIVETYPE prim_type = convert(type);
+			HRESULT hr = get_impl().get_dx_device()->DrawPrimitiveUP(prim_type, primitive_count, data, stride);
+			assert(hr == S_OK);
+		}
+
 		void device::draw(primitive_type type, uint start_vertex, uint primitive_count)
 		{
 			D3DPRIMITIVETYPE prim_type = convert(type);

@@ -91,6 +91,9 @@ namespace rgde
 			void set_texture(texture_ptr texture, size_t index);
 			void set_blend_mode(blend_mode src, blend_mode dest);
 
+			void draw(primitive_type type, uint num_vertices, uint primitive_count, const void* vertex_data, uint vertex_stride,
+								const uint16* index_data);
+			void draw(primitive_type type, uint primitive_count, void* data, uint stride);
 			void draw(primitive_type type, uint start_vertex, uint primitive_count);
 			void draw(primitive_type type, int base_vertex_index, uint min_vertex_index,
 					  uint num_vertices, uint start_index, uint primitive_count);
