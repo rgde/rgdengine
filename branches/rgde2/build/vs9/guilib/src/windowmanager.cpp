@@ -174,12 +174,12 @@ ImagesetPtr WindowManager::createImageset(const std::string& filename)
 				if(nodename == "Image")
 				{
 					std::string imgname = imgnode["Name"].value();
-					float y = imgnode["YPos"].as_float();
-					float x = imgnode["XPos"].as_float();
-					float width = imgnode["Width"].as_float();
-					float height = imgnode["Height"].as_float();
+					float y = imgnode["YPos"].as_int();
+					float x = imgnode["XPos"].as_int();
+					float width = imgnode["Width"].as_int();
+					float height = imgnode["Height"].as_int();
 
-					imageset->defineImage(imgname, Rect((float)x, (float)y, (float)(x+width), (float)(y+height)));
+					imageset->defineImage(imgname, Rect(x, y, x+width, y+height));
 				}
 				imgnode = imgnode.next_sibling();
 			}
