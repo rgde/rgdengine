@@ -122,7 +122,7 @@ void System::makeLuaBinding(void)
 				value("Stretch", Image::Stretch),
 				value("Tile", Image::Tile)
 			]
-			.def("getPixelRect", &Image::getPixelRect)
+			.def_readonly("PixelRect", &Image::pixel_rect)
 			.def("getName", &Image::getName)
 			,
 			class_ <Imageset>("Imageset")

@@ -88,7 +88,7 @@ void ui_test_application::createGUISystem()
 
 	if(m_system)
 	{
-		//::ShowCursor(FALSE);
+		::ShowCursor(FALSE);
 		Cursor& cursor = m_system->getCursor();
 		cursor.setType("CursorNormal");
 
@@ -136,7 +136,7 @@ void ui_test_application::render()
 	if (m_system)
 	{		
 		//m_font->drawText("BLAAA BAAA LAA LALA", gui::Rect(0,0,200,200), 1.f);
-		gui::Renderer& r = m_system->getRenderer();
+		//gui::Renderer& r = m_system->getRenderer();
 
 		//struct vec2 {float x, y;};
 
@@ -155,8 +155,6 @@ void ui_test_application::render()
 		//const gui::Image* img = imageset->getImage("Background");
 
 		//r.drawLine(*img, (gui::vec2*)points, 7, 1, gui::Rect(0,0,400,400), gui::Color(0xFFFF0F0F), 7);
-
-		//r.addQuad()
 
 		m_system->render();
 	}

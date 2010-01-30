@@ -8,21 +8,21 @@ namespace gui
 Image::Image(Texture& tex, const std::string& name, const Rect& pixelArea, 
 	BLEND_OPS blend, const Imageset* owner) :
 	m_owner(owner),	
-	m_texture(tex),	
-	m_pixelArea(pixelArea),
-	m_UVArea(pixelArea),
-	m_blend(blend),	
+	texture(tex),	
+	uv_rect(pixelArea),
+	pixel_rect(pixelArea),
+	blend_mode(blend_mode),	
 	m_name(name)
 {
-	m_UVArea *= m_texture.getSize();
+	uv_rect *= texture.getSize();
 }
 
 Image::Image(const Image& img) :
-	m_texture(img.m_texture),
+	texture(img.texture),
 	m_owner(img.m_owner),
-	m_pixelArea(img.m_pixelArea),
-	m_UVArea(img.m_UVArea),
-	m_blend(img.m_blend),
+	pixel_rect(img.pixel_rect),
+	uv_rect(img.uv_rect),
+	blend_mode(img.blend_mode),
 	m_name(img.m_name)
 {
 }

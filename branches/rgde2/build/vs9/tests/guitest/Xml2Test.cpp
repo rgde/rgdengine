@@ -8,8 +8,7 @@ Xml2Test::Xml2Test(int x, int y, int w, int h, const std::wstring& title)
 	//m_filename = "guitest\\hud.xml";
 	//m_filename = "guitest\\sampleframetest_orig.xml";
 	//m_filename = "guitest\\sampleframe.xml";
-	m_filename = "guitest\\testfr.xml";
-	
+	m_filename = "guitest\\testfr.xml";	
 }
 
 Xml2Test::~Xml2Test(void)

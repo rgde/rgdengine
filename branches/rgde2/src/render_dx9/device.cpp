@@ -322,34 +322,6 @@ namespace rgde
 			assert(hr == S_OK);
 		}
 
-
-
-		//#define D3DFVF_XYZB1            0x006
-		//#define D3DFVF_XYZB2            0x008
-		//#define D3DFVF_XYZB3            0x00a
-		//#define D3DFVF_XYZB4            0x00c
-		//#define D3DFVF_XYZB5            0x00e
-
-		//===========================================================================================
-		//Data type:		|	Usage:					|	Usage index:  | FVF:					|
-		//-------------------------------------------------------------------------------------------
-		//D3DDECLTYPE_FLOAT3	D3DDECLUSAGE_POSITION		0				D3DFVF_XYZ				|*
-		//D3DDECLTYPE_FLOAT4	D3DDECLUSAGE_POSITIONT		0				D3DFVF_XYZRHW			|*
-		//D3DDECLTYPE_FLOATn	D3DDECLUSAGE_BLENDWEIGHT	0				D3DFVF_XYZBn			|
-		//D3DDECLTYPE_UBYTE4	D3DDECLUSAGE_BLENDINDICES	0				D3DFVF_XYZB (nWeights+1)|
-		//D3DDECLTYPE_FLOAT3	D3DDECLUSAGE_NORMAL			0				D3DFVF_NORMAL			|*
-		//D3DDECLTYPE_D3DCOLOR	D3DDECLUSAGE_COLOR			0				D3DFVF_DIFFUSE			|*
-		//D3DDECLTYPE_D3DCOLOR	D3DDECLUSAGE_COLOR			1				D3DFVF_SPECULAR			|*
-		//D3DDECLTYPE_FLOATm	D3DDECLUSAGE_TEXCOORD		n				D3DFVF_TEXCOORDSIZEm(n) |*
-		//===========================================================================================
-
-		//D3DFVF_TEXCOORDSIZE3(CoordIndex)
-
-		//#define D3DFVF_XYZB1            0x006
-		//#define D3DFVF_XYZB2            0x008
-		//#define D3DFVF_XYZB3            0x00a
-		//#define D3DFVF_XYZB4            0x00c
-		//#define D3DFVF_XYZB5            0x00e
 		inline DWORD GET_D3DFVF_XYZB(uint index)		
 		{
 			assert(index > 0 && index < 6);

@@ -155,7 +155,7 @@ namespace rgde
 
 		public:
 			static index_buffer_ptr create(device& dev, size_t size, bool use_32bit, 
-											resource::pool pool, uint usage_flags = 0);
+											resource::pool pool, uint usage_flags = buffer::write_only);
 			~index_buffer();
 
 			void* lock(uint offset_to_lock, uint size_to_lock, ulong flags);

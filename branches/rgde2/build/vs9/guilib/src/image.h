@@ -29,26 +29,18 @@ namespace gui
 		~Image();
 
 		const std::string&	getName() const {return m_name;}
-
 		const Imageset*	getImageset() const {return m_owner;}
 
-		const Rect& getPixelRect() const {return m_pixelArea;}
-		const Rect& getUVRect() const {return m_UVArea;}
+		Texture&	texture;
 
-		Texture& getTexture() const {return m_texture;}
-
-		BLEND_OPS getBlend() const { return m_blend; }
+		Rect		pixel_rect;
+		Rect		uv_rect;
+		BLEND_OPS	blend_mode;
 
 	private:
 		Image& operator=(const Image&) { return *this; }
-		Texture& m_texture;
+		
 		const Imageset*	m_owner;
-
-		BLEND_OPS m_blend;
-
-		Rect			m_pixelArea;
-		Rect			m_UVArea;
-
 		std::string	m_name;
 	};
 
