@@ -18,7 +18,7 @@ public:
 	void drawImage(const Image* img, Rect& dest, Rect& clip, Color col, Image::ImageOps h, Image::ImageOps v)
 	{
 		assert(img);
-		m_render.draw(*img, dest, 0.f, clip, ColorRect(col), TopLeftToBottomRight, h, v);
+		m_render.draw(*img, dest, 0.f, clip, ColorRect(col), h, v);
 	}
 	void drawText(Font* font, std::string text, Rect& area, Rect& clip, Font::TextFormatting fmt, Color col)	
 	{

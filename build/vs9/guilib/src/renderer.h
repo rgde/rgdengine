@@ -26,11 +26,11 @@ enum OrientationFlags
 	RotateRightAngle	= 4		//!< Rotate the image anticlockwise 90 degree
 };
 
-enum QuadSplitMode
-{
-	TopLeftToBottomRight,	//!< Diagonal goes from top-left to bottom-right
-	BottomLeftToTopRight	//!< Diagonal goes from bottom-left to top-right
-};
+//enum QuadSplitMode
+//{
+//	TopLeftToBottomRight,	//!< Diagonal goes from top-left to bottom-right
+//	BottomLeftToTopRight	//!< Diagonal goes from bottom-left to top-right
+//};
 
 class  Renderer
 {
@@ -68,7 +68,7 @@ public:
 		unsigned long		bottomLeftCol;
 		unsigned long		bottomRightCol;
 
-		QuadSplitMode       splitMode;
+		//QuadSplitMode       splitMode;
 
 		bool operator<(const QuadInfo& other) const
 		{
@@ -85,16 +85,16 @@ public:
 
 	void	drawLine(const Image& img, const vec2* p, size_t size, float z, const Rect& clip_rect, const Color& color, float width);
 	
-	void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode);
-	void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode, Image::ImageOps horz, Image::ImageOps vert);
-	void	immediateDraw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, QuadSplitMode quad_split_mode);
+	void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors);
+	void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, Image::ImageOps horz, Image::ImageOps vert);
+	void	immediateDraw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors);
 
 	virtual	void	doRender() = 0;
 	virtual	void	clearRenderList();	
 
 	virtual void	beginBatching();
 	virtual void	endBatching();
-	void			clearCache();
+	void			clearCache(BaseWindow* window = 0);
 	
 	virtual void	setQueueingEnabled(bool setting)  { m_isQueueing = setting; }
 	bool	isQueueingEnabled(void) const { return m_isQueueing; }
@@ -138,12 +138,11 @@ public:
 	void cleanup(bool complete);
 
 protected:
-	virtual	void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode) = 0;
-	virtual void addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, 
-		QuadSplitMode quad_split_mode) = 0;
+	virtual	void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours) = 0;
+	virtual void addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours) = 0;
 	virtual void renderQuadDirect(const QuadInfo& q) = 0;
 
-	void fillQuad(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors, QuadSplitMode split_mode);
+	void fillQuad(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors);
 	void sortQuads();	
 	
 	friend TextureManager;

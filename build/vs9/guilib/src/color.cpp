@@ -8,22 +8,19 @@ namespace gui
 /*************************************************************************
 	Construction & Destruction
 *************************************************************************/
-Color::Color(void) :
+Color::Color() :
 	m_alpha(1.0f),
 	m_red(0.0f),
 	m_green(0.0f),
 	m_blue(0.0f),
-	m_argb(0xFF000000),
-	m_argbValid(true)
-{
-	
+	m_argb(0xFF000000)
+{	
 }
 
 
 Color::Color(const Color& val)
 {
 	this->operator=(val);
-	getARGB();
 }
 
 
@@ -31,10 +28,9 @@ Color::Color(float red, float green, float blue, float alpha) :
 	m_alpha(alpha),
 	m_red(red),
 	m_green(green),
-	m_blue(blue),
-	m_argbValid(false)
+	m_blue(blue)
 {
-	getARGB();
+	calculateARGB();
 }
 
 
@@ -138,8 +134,6 @@ void Color::setARGB(argb_t argb)
 	argb >>= 8;
 	m_alpha	= static_cast<float>(argb & 0xFF) / 255.0f;
 #endif
-
-	m_argbValid = true;
 }
 
 
@@ -213,46 +207,25 @@ void Color::setHSL(float hue, float saturation, float luminance, float alpha)
 		m_blue = temp3[2];
 	}
 
-	m_argbValid = false;
+	calculateARGB();
 }
 
-
-argb_t Color::calculateARGB(void) const
+void Color::invertColour()
 {
-#ifdef __BIG_ENDIAN__
-	return (
-		static_cast<unsigned char>(m_blue * 255) << 24 |
-		static_cast<unsigned char>(m_green * 255) << 16 |
-		static_cast<unsigned char>(m_red * 255) << 8 |
-		static_cast<unsigned char>(m_alpha * 255)
-	);
-#else
-    return (
-		static_cast<unsigned char>(m_alpha * 255) << 24 |
-		static_cast<unsigned char>(m_red * 255) << 16 |
-		static_cast<unsigned char>(m_green * 255) << 8 |
-		static_cast<unsigned char>(m_blue * 255)
-	);
-#endif
-}
-
-
-void Color::invertColour(void)
-{
-	m_argbValid = false;
 	m_red	= 1.0f - m_red;
 	m_green	= 1.0f - m_green;
 	m_blue	= 1.0f - m_blue;
+	calculateARGB();
 }
 
 
-void Color::invertColourWithAlpha(void)
+void Color::invertColourWithAlpha()
 {
-	m_argbValid = false;
 	m_alpha	= 1.0f - m_alpha;
 	m_red	= 1.0f - m_red;
 	m_green	= 1.0f - m_green;
 	m_blue	= 1.0f - m_blue;
+	calculateARGB();
 }
 
 Color StringToColor(const std::string& str)

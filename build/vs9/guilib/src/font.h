@@ -32,9 +32,9 @@ namespace gui
 			return Size(m_width*x_scale ,m_height*y_scale); 
 		}
 
-		float getWidth (float x_scale) const { return m_image->getPixelRect().getWidth () * x_scale; }
-		float getHeight (float y_scale) const { return m_image->getPixelRect().getHeight () * y_scale; }
-		float getRenderedAdvance (float x_scale) const { return (m_image->getPixelRect().getWidth () + getOffsetX ()) * x_scale; }
+		float getWidth (float x_scale) const { return m_image->pixel_rect.getWidth () * x_scale; }
+		float getHeight (float y_scale) const { return m_image->pixel_rect.getHeight () * y_scale; }
+		float getRenderedAdvance (float x_scale) const { return (m_image->pixel_rect.getWidth () + getOffsetX ()) * x_scale; }
 		float getAdvance (float x_scale = 1.0) const { return m_advance * x_scale; }
 
 		float getOffsetX() const { return m_xoffset; }
@@ -111,12 +111,12 @@ namespace gui
 		size_t drawText (const std::wstring& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
 		size_t drawText (const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			return drawText (text, draw_area, z, clip_rect, fmt, ColorRect (DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); 
+			return drawText (text, draw_area, z, clip_rect, fmt, ColorRect(DefaultColour), x_scale, y_scale); 
 		}
 
 		void drawText (const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			drawText (text, draw_area, z, clip_rect, LeftAligned, ColorRect (DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale);
+			drawText (text, draw_area, z, clip_rect, LeftAligned, ColorRect(DefaultColour), x_scale, y_scale);
 		}
 
 		size_t drawText (const std::string& text, const Rect& draw_area, float z, TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f)
@@ -126,12 +126,12 @@ namespace gui
 
 		size_t drawText (const std::string& text, const Rect& draw_area, float z, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			return drawText (text, draw_area, z, draw_area, fmt, ColorRect (DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale);
+			return drawText (text, draw_area, z, draw_area, fmt, ColorRect(DefaultColour), x_scale, y_scale);
 		}
 
 		void drawText (const std::string& text, const Rect& draw_area, float z, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			drawText (text, draw_area, z, draw_area, LeftAligned, ColorRect (DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); 
+			drawText (text, draw_area, z, draw_area, LeftAligned, ColorRect(DefaultColour), x_scale, y_scale); 
 		}
 
 		void drawText (const std::string& text, const Vector3& position, const Rect& clip_rect, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f)
@@ -141,7 +141,7 @@ namespace gui
 
 		void drawText (const std::string& text, const Vector3& position, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			drawText (text, Rect (position.x, position.y, position.x, position.y), position.z, clip_rect, LeftAligned, ColorRect(DefaultColour, DefaultColour, DefaultColour, DefaultColour), x_scale, y_scale); 
+			drawText (text, Rect (position.x, position.y, position.x, position.y), position.z, clip_rect, LeftAligned, ColorRect(DefaultColour), x_scale, y_scale); 
 		}
 
 		void setSpacing(float spacing) { m_spacing = spacing; }

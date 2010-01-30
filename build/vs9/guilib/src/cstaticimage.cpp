@@ -62,7 +62,7 @@ void StaticImage::render(const Rect& finalRect, const Rect& finalClip)
 
 	if (m_img)
     {
-        r.draw(*m_img, finalRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, m_hformat, m_vformat);
+        r.draw(*m_img, finalRect, 1.f, finalClip,  m_backColor, m_hformat, m_vformat);
     }
 }
 

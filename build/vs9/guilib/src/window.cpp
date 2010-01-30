@@ -38,8 +38,9 @@ BaseWindow::BaseWindow(System& sys, const std::string& name) :
 	m_foreColor = Color(0.f, 0.f, 0.f);
 }
 
-BaseWindow::~BaseWindow(void)
+BaseWindow::~BaseWindow()
 {
+	m_system.getRenderer().clearCache(this);
 }
 
 void BaseWindow::setArea(const Rect& rc) 

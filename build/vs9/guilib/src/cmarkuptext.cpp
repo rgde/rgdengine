@@ -256,7 +256,7 @@ void MarkupBase::parseBBCodes()
 			
 			if(img)
 			{
-				Size imgsize = img->getPixelRect().getSize();
+				Size imgsize = img->pixel_rect.getSize();
 
 				if(imgsize.width > maxwidth - xpos)
 				{
@@ -397,7 +397,7 @@ void MarkupBase::render(const Rect& finalRect, const Rect& finalClip)
 		rc.offset(finalRect.getPosition());
 		if (img->img)
 		{
-			r.draw(*img->img, rc, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+			r.draw(*img->img, rc, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 		}
 		++cimg;
 	}

@@ -26,25 +26,16 @@ public:
 	/*************************************************************************
 		Accessors
 	*************************************************************************/
-	argb_t	getARGB(void) const
-	{
-		if (!m_argbValid)
-		{
-			m_argb = calculateARGB();
-			m_argbValid = true;
-		}
-
-		return m_argb;
-	}
+	__inline argb_t	getARGB() const	{	return m_argb;	}
 	
-	float	getAlpha(void) const	{return m_alpha;}
-	float	getRed(void) const		{return m_red;}
-	float	getGreen(void) const	{return m_green;}
-	float	getBlue(void) const		{return m_blue;}
+	__inline float	getAlpha() const	{return m_alpha;}
+	__inline float	getRed() const		{return m_red;}
+	__inline float	getGreen() const	{return m_green;}
+	__inline float	getBlue() const		{return m_blue;}
 
-	float	getHue(void) const;
-	float	getSaturation(void) const;
-	float	getLumination(void) const;
+	float	getHue() const;
+	float	getSaturation() const;
+	float	getLumination() const;
 
 
 	/*************************************************************************
@@ -53,43 +44,43 @@ public:
 	void	setARGB(argb_t argb);
 	inline void setAlpha(float alpha)
     {
-        m_argbValid = false;
         m_alpha = alpha;
+		calculateARGB();
     }
 
 	inline void setRed(float red)
     {   
-        m_argbValid = false;
         m_red = red;
+		calculateARGB();
     }
 
 	inline void setGreen(float green)
     {
-        m_argbValid = false;
         m_green = green;
+		calculateARGB();
     }
 
 	inline void setBlue(float blue)
     {
-        m_argbValid = false;
         m_blue = blue;
+		calculateARGB();
     }
 
 	inline void set(float red, float green, float blue, float alpha = 1.0f)
     {
-        m_argbValid = false;
         m_alpha = alpha;
         m_red = red;
         m_green = green;
         m_blue = blue;
+		calculateARGB();
     }
 
 	inline void setRGB(float red, float green, float blue)
     {
-        m_argbValid = false;
         m_red = red;
         m_green = green;
         m_blue = blue;
+		calculateARGB();
     }
 
 	inline void setRGB(const Color& val)
@@ -97,18 +88,13 @@ public:
         m_red = val.m_red;
         m_green = val.m_green;
         m_blue = val.m_blue;
-        if (m_argbValid)
-        {
-            m_argbValid = val.m_argbValid;
-            if (m_argbValid)
-                m_argb = (m_argb & 0xFF000000) | (val.m_argb & 0x00FFFFFF);
-        }
+        m_argb = (m_argb & 0xFF000000) | (val.m_argb & 0x00FFFFFF);
     }
 
 	void	setHSL(float hue, float saturation, float luminance, float alpha = 1.0f);
 
-	void	invertColour(void);
-	void	invertColourWithAlpha(void);
+	void	invertColour();
+	void	invertColourWithAlpha();
 
 	/*************************************************************************
 		Operators
@@ -126,7 +112,6 @@ public:
         m_green = val.m_green;
         m_blue  = val.m_blue;
         m_argb  = val.m_argb;
-        m_argbValid = val.m_argbValid;
 
         return *this;
     }
@@ -204,7 +189,7 @@ public:
         m_green *= val.m_green;
         m_alpha *= val.m_alpha;
 
-		m_argbValid = false;
+		calculateARGB();
 
         return *this;
     }
@@ -214,10 +199,7 @@ public:
 	*************************************************************************/
 	inline bool operator==(const Color& rhs) const
     {
-        return m_red   == rhs.m_red   &&
-               m_green == rhs.m_green &&
-               m_blue  == rhs.m_blue  &&
-               m_alpha == rhs.m_alpha;
+        return m_argb  == rhs.m_argb;
     }
 
 	inline bool operator!=(const Color& rhs) const
@@ -238,19 +220,38 @@ private:
 	\brief
 		calculate and return the ARGB value based on the current Color component values.
 	*/
-	argb_t	calculateARGB(void) const;
+	void calculateARGB() const;
 
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	float m_alpha, m_red, m_green, m_blue;		//!< Colour components.
-	mutable argb_t m_argb;						//!< Colour as ARGB value.
-	mutable bool m_argbValid;					//!< True if argb value is valid.
+	float m_alpha, m_red, m_green, m_blue;		//!< Color components.
+	mutable argb_t m_argb;						//!< Color as ARGB value.
 };
 
 Color StringToColor(const std::string& str);
 std::string ColorToString(const Color& val);
 Color HexStringToColor(const std::string& str);
 std::string ColorToHexString(const Color& val);
+
+__inline void Color::calculateARGB() const
+{
+	m_argb = (
+#ifdef __BIG_ENDIAN__
+	
+		static_cast<unsigned char>(m_blue * 255) << 24 |
+		static_cast<unsigned char>(m_green * 255) << 16 |
+		static_cast<unsigned char>(m_red * 255) << 8 |
+		static_cast<unsigned char>(m_alpha * 255)
+		
+#else
+		static_cast<unsigned char>(m_alpha * 255) << 24 |
+		static_cast<unsigned char>(m_red * 255) << 16 |
+		static_cast<unsigned char>(m_green * 255) << 8 |
+		static_cast<unsigned char>(m_blue * 255)
+#endif
+		);
+}
+
 
 }

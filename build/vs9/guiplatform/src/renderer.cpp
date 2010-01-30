@@ -6,8 +6,6 @@
 #include "texture.h"
 #include "ftfont.h"
 
-#include <xmmintrin.h>
-
 // fine tune :)
 #define PixelAligned(x)	( ( (float)(int)(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f)) ) - 0.5f )
 
@@ -27,7 +25,7 @@ namespace gui
 		struct QuadVertex
 		{
 			float x, y, tu1, tv1;		//!< The transformed position for the vertex.
-			unsigned int diffuse;			//!< colour of the vertex
+			unsigned int diffuse;		//!< colour of the vertex
 		};
 
 		using rgde::render::vertex_element;
@@ -43,6 +41,7 @@ namespace gui
 			VERTEX_PER_QUAD = 6,
 			VERTEX_PER_TRIANGLE = 3,
 			VERTEXBUFFER_CAPACITY	= 8192,
+			INDEXBUFFER_CAPACITY	= VERTEX_PER_QUAD*VERTEXBUFFER_CAPACITY/(VERTEX_PER_TRIANGLE*2),
 		};
 
 		/*************************************************************************
@@ -71,6 +70,7 @@ namespace gui
 
 			m_vertexDeclaration = vertex_declaration::create(m_device, vertex_desc, 3);
 
+			// Create a vertex buffer
 			m_buffer = vertex_buffer::create(
 				m_device, 
 				m_vertexDeclaration, 
@@ -78,7 +78,7 @@ namespace gui
 				resource::default, 
 				buffer::write_only | buffer::dynamic);
 
-			// Create a vertex buffer
+			
 			if (!m_buffer)
 			{
 				// Ideally, this would have been a RendererException, but we can't use that until the System object is created
@@ -86,9 +86,26 @@ namespace gui
 				throw std::exception("Creation of VertexBuffer for Renderer object failed");
 			}
 
-			char s[MAX_PATH];
-			GetCurrentDirectoryA(MAX_PATH,s);
-					
+			{
+				m_ibuffer = index_buffer::create(m_device, INDEXBUFFER_CAPACITY*sizeof(unsigned short), false, resource::default);
+
+				unsigned short* data = (unsigned short*)m_ibuffer->lock(0, INDEXBUFFER_CAPACITY*sizeof(unsigned short), 0);
+
+				for (int i = 0; i < VERTEXBUFFER_CAPACITY; i += VERTEX_PER_QUAD)
+				{
+					const size_t quad_index = i / VERTEX_PER_QUAD;
+
+					data[i+0] = quad_index + 0;
+					data[i+1] = quad_index + 1;
+					data[i+2] = quad_index + 2;
+
+					data[i+3] = quad_index + 3;
+					data[i+4] = quad_index + 4;
+					data[i+5] = quad_index + 5;
+				}
+
+				m_ibuffer->unlock();
+			}
 
 			m_shader = shader_effect::create(m_device, m_filesystem.open_read("gui\\shaders\\gui.fx"));
 
@@ -139,7 +156,6 @@ namespace gui
 				QuadVertex& v0 = *v; ++v;
 				QuadVertex& v1 = *v; ++v;
 				QuadVertex& v2 = *v; ++v;
-
 				QuadVertex& v3 = *v; ++v;
 				QuadVertex& v4 = *v; ++v;
 				QuadVertex& v5 = *v; ++v;
@@ -152,25 +168,11 @@ namespace gui
 				v0.tv1 = q.texPosition.m_top;
 
 				// setup Vertex 2...
-
-				// top-left to bottom-right diagonal
-				if (q.splitMode == TopLeftToBottomRight)
-				{
-					v1.x = PixelAligned(q.positions[3].x * scaleX);
-					v1.y = PixelAligned(q.positions[3].y * scaleY);
-					v1.diffuse = q.bottomRightCol;
-					v1.tu1 = q.texPosition.m_right;
-					v1.tv1 = q.texPosition.m_bottom;
-				}
-				// bottom-left to top-right diagonal
-				else
-				{
-					v1.x = PixelAligned(q.positions[1].x * scaleX);
-					v1.y = PixelAligned(q.positions[1].y * scaleY);
-					v1.diffuse = q.topRightCol;
-					v1.tu1 = q.texPosition.m_right;
-					v1.tv1 = q.texPosition.m_top;
-				}
+				v1.x = PixelAligned(q.positions[1].x * scaleX);
+				v1.y = PixelAligned(q.positions[1].y * scaleY);
+				v1.diffuse = q.topRightCol;
+				v1.tu1 = q.texPosition.m_right;
+				v1.tv1 = q.texPosition.m_top;
 
 				// setup Vertex 3...
 				v2.x = PixelAligned(q.positions[2].x * scaleX);
@@ -179,34 +181,15 @@ namespace gui
 				v2.tu1 = q.texPosition.m_left;
 				v2.tv1 = q.texPosition.m_bottom;
 
+				// setup Vertex 4...
+				v3.x = PixelAligned(q.positions[3].x * scaleX);
+				v3.y = PixelAligned(q.positions[3].y * scaleY);
+				v3.diffuse = q.bottomRightCol;
+				v3.tu1 = q.texPosition.m_right;
+				v3.tv1 = q.texPosition.m_bottom;
 
-				//////////////////////////////////////////////////////////////////////////
-
-				if (q.splitMode == TopLeftToBottomRight)
-				{
-					v3.x = PixelAligned(q.positions[1].x * scaleX);
-					v3.y = PixelAligned(q.positions[1].y * scaleY);
-					v3.diffuse = q.topRightCol;
-					v3.tu1 = q.texPosition.m_right;
-					v3.tv1 = q.texPosition.m_top;
-
-					v4 = v1;
-				}
-				else
-				{
-					v3 = v1;
-
-					// setup Vertex 5...
-					v4.x = PixelAligned(q.positions[3].x * scaleX);
-					v4.y = PixelAligned(q.positions[3].y * scaleY);
-					v4.diffuse = q.bottomRightCol;
-					v4.tu1 = q.texPosition.m_right;
-					v4.tv1 = q.texPosition.m_bottom;
-				}
-
-				// setup Vertex 6...
-				// top-left to bottom-right diagonal
-				v5 = q.splitMode == TopLeftToBottomRight ? v0 : v2;
+				v4 = v2;
+				v5 = v1;
 
 				return VERTEX_PER_QUAD;
 			}			
@@ -221,6 +204,8 @@ namespace gui
 				return;
 
 			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
+			m_device.set_index_buffer(m_ibuffer);
+			
 			view_port viewPortDesc;
 			m_device.get_viewport(viewPortDesc);
 
@@ -236,6 +221,8 @@ namespace gui
 
 			texture* tex = (texture*)q.texture;
 			m_device.set_texture(((texture*)tex)->get_platform_resource(), 0 );
+
+#pragma message ("remove lock\unlock vb from ImmediateModeRender!")
 
 			buffmem = (QuadVertex*)m_buffer->lock(0, VERTEX_PER_QUAD * sizeof(QuadVertex), 
 				buffer::discard);
@@ -262,7 +249,7 @@ namespace gui
 			m_shader->end();
 		}
 
-		void renderer::addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode)
+		void renderer::addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colors)
 		{
 			if (m_num_quads >= m_quads.size())
 			{
@@ -283,15 +270,12 @@ namespace gui
 			quad.positions[3].y	= p3.y;
 
 			quad.z				= z;
-			quad.texture		= &img.getTexture();
+			quad.texture		= &img.texture;
 			quad.texPosition	= tex_rect;
-			quad.topLeftCol		= colours.m_top_left.getARGB();
-			quad.topRightCol	= colours.m_top_right.getARGB();
-			quad.bottomLeftCol	= colours.m_bottom_left.getARGB();
-			quad.bottomRightCol	= colours.m_bottom_right.getARGB();
-
-			// set quad split mode
-			quad.splitMode = quad_split_mode;
+			quad.topLeftCol		= colors.m_top_left.getARGB();
+			quad.topRightCol	= colors.m_top_right.getARGB();
+			quad.bottomLeftCol	= colors.m_bottom_left.getARGB();
+			quad.bottomRightCol	= colors.m_bottom_right.getARGB();
 
 			// if not queering, render directly (as in, right now!)
 			if (!m_isQueueing)
@@ -319,7 +303,7 @@ namespace gui
 				// finalize prev batch if one
 				if (m_num_batches)
 				{
-					batches[m_num_batches - 1].numQuads = int(m_num_quads - batches[m_num_batches - 1].startQuad);
+					batches[m_num_batches - 1].numQuads = m_num_quads - batches[m_num_batches - 1].startQuad;
 
 					if (!m_needToAddCallback)
 					{
@@ -332,7 +316,7 @@ namespace gui
 
 				// start new batch
 				batches[m_num_batches].texture = quad.texture;
-				batches[m_num_batches].startQuad = (int)m_num_quads;
+				batches[m_num_batches].startQuad = m_num_quads;
 				batches[m_num_batches].numQuads = 0;
 
 				++m_num_batches;
@@ -343,20 +327,18 @@ namespace gui
 			++batches[m_num_batches - 1].numQuads;
 		}
 
-		void renderer::addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colors, QuadSplitMode quad_split_mode)		
+		void renderer::addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colors)		
 		{
 			if (m_num_quads >= m_quads.size())
 			{
 				m_quads.resize(m_num_quads*2);
 			}
-			
-			QuadInfo& quad = (&m_quads.front())[m_num_quads];
 
-			fillQuad(quad, dest_rect, tex_rect, z, img, colors, quad_split_mode);
+			QuadInfo* quads = &m_quads.front();
+			QuadInfo& quad = quads[m_num_quads];
 
-			// set quad split mode
-			quad.splitMode = quad_split_mode;
-			
+			fillQuad(quad, dest_rect, tex_rect, z, img, colors);
+		
 			// if not queering, render directly (as in, right now!)
 			if (!m_isQueueing)
 			{
@@ -374,14 +356,14 @@ namespace gui
 
 			BatchInfo* batches = &m_batches[0];
 
-			if (!m_num_quads  || m_quads[m_num_quads - 1].texture != quad.texture ||
+			if (!m_num_quads  || quads[m_num_quads - 1].texture != quad.texture ||
 				m_needToAddCallback || 
 				(m_num_batches && (m_num_quads - batches[m_num_batches - 1].startQuad + 1)*VERTEX_PER_QUAD >= VERTEXBUFFER_CAPACITY))
 			{
 				// finalize prev batch if one
 				if (m_num_batches)
 				{
-					batches[m_num_batches - 1].numQuads = int(m_num_quads - batches[m_num_batches - 1].startQuad);
+					batches[m_num_batches - 1].numQuads = m_num_quads - batches[m_num_batches - 1].startQuad;
 					
 					if (!m_needToAddCallback)
 					{
@@ -394,7 +376,7 @@ namespace gui
 
 				// start new batch
 				batches[m_num_batches].texture = quad.texture;
-				batches[m_num_batches].startQuad = (int)m_num_quads;
+				batches[m_num_batches].startQuad = m_num_quads;
 				batches[m_num_batches].numQuads = 0;
 
 				++m_num_batches;
@@ -409,6 +391,7 @@ namespace gui
 		{
 			// setup vertex stream
 			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
+			m_device.set_index_buffer(m_ibuffer);
 			
 			view_port viewPortDesc;
 			m_device.get_viewport(viewPortDesc);
@@ -447,15 +430,23 @@ namespace gui
 			static DWORD s_quadOffset = 0;	// buffer offset in quads
 			QuadVertex*	buffmem;
 			
+			static const unsigned int quad_size = VERTEX_PER_QUAD * sizeof(QuadVertex);
+
 			for (std::size_t b = 0; b < m_num_batches; ++b)
 			{
 				BatchInfo& batch = m_batches[b];
-				if ( 6 * (batch.numQuads + s_quadOffset) >= VERTEXBUFFER_CAPACITY)
+				if ( VERTEX_PER_QUAD * (batch.numQuads + s_quadOffset) >= VERTEXBUFFER_CAPACITY)
 					s_quadOffset = 0;
 
-				buffmem = (QuadVertex*)m_buffer->lock(UINT(s_quadOffset * 6 * sizeof(QuadVertex)), 
-					UINT(6 * (m_batches[b].numQuads)* sizeof(QuadVertex)),
-					s_quadOffset ? buffer::nooverwrite : buffer::discard);
+				buffmem = (QuadVertex*)m_buffer->lock
+					(
+					s_quadOffset * quad_size, 
+					m_batches[b].numQuads * quad_size,
+					buffer::nooverwrite
+					);
+
+#pragma message ("gui: compare perfomance!")
+					//s_quadOffset ? buffer::nooverwrite : buffer::discard);
 
 				if (!buffmem )
 					return;
@@ -463,10 +454,10 @@ namespace gui
 				QuadInfo* quads = &m_quads.front();
 
 				std::size_t numQ = batch.numQuads;
-				for (std::size_t q = 0; q < numQ; ++q)
+				QuadInfo* quad = &quads[batch.startQuad];
+				for (std::size_t q = 0; q < numQ; ++q, ++quad)
 				{
-					const QuadInfo& quad = quads[q + batch.startQuad];
-					fill_vertex(quad, buffmem, scaleX, scaleY);
+					fill_vertex(*quad, buffmem, scaleX, scaleY);
 				}
 
 				m_buffer->unlock();
@@ -474,7 +465,23 @@ namespace gui
 				gui::rgde_platform::texture* t = static_cast<gui::rgde_platform::texture*>(batch.texture);
 				m_device.set_texture(t->get_platform_resource(), 0);
 
-				m_device.draw(triangle_list, s_quadOffset * 6, UINT(numQ * 2));
+				m_device.draw(triangle_list, s_quadOffset * VERTEX_PER_QUAD, UINT(numQ * 2));
+				//m_device.draw(triangle_list, 
+				//	s_quadOffset * VERTEX_PER_QUAD, //Ok
+				//	0, //Ok
+				//	numQ*VERTEX_PER_QUAD, //OK
+				//	0, 
+				//	numQ*2);
+
+				//void draw(primitive_type type, uint start_vertex, uint primitive_count);
+				//void draw(primitive_type type, 
+				//int base_vertex_index, 
+				//uint min_vertex_index,
+				//uint num_vertices, 
+				//uint start_index, 
+				//uint primitive_count);
+
+
 				s_quadOffset += (DWORD)numQ;
 
 				if (batch.callbackInfo.window && batch.callbackInfo.afterRenderCallback)
@@ -502,6 +509,7 @@ namespace gui
 		{
 			// setup vertex stream
 			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
+			m_device.set_index_buffer(m_ibuffer);
 		}
 
 
@@ -518,6 +526,7 @@ namespace gui
 
 			// render the sprites
 			m_device.draw(triangle_list, 0, (m_bufferPos / VERTEX_PER_TRIANGLE));
+			//m_device.draw(triangle_list, 0, 0, m_bufferPos, 0, m_bufferPos / VERTEX_PER_TRIANGLE);
 
 			// reset buffer position to 0...
 			m_bufferPos = 0;

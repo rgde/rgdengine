@@ -17,9 +17,8 @@ namespace gui
 			virtual void addCallback( AfterRenderCallbackFunc callback,
 				BaseWindow* window, const Rect& dest, const Rect& clip);
 			virtual	void doRender();
-			virtual void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, QuadSplitMode quad_split_mode);
-			virtual void addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours, 
-				QuadSplitMode quad_split_mode);
+			virtual void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours);
+			virtual void addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours);
 		
 			virtual void drawFromCache(BaseWindow* window);
 			virtual	TexturePtr createTexture(const std::string& filename);
@@ -54,6 +53,7 @@ namespace gui
 			rgde::render::device& m_device;
 			rgde::render::texture_ptr m_currTexture;
 			rgde::render::vertex_buffer_ptr	m_buffer;
+			rgde::render::index_buffer_ptr	m_ibuffer;
 			rgde::render::vertex_declaration_ptr m_vertexDeclaration;
 			int m_bufferPos;	
 

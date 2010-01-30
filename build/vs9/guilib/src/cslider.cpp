@@ -237,7 +237,7 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 		if (m_leftImg)
 		{
 			// calculate final destination area
-			imgSize = m_leftImg->getPixelRect().getSize();
+			imgSize = m_leftImg->pixel_rect.getSize();
 			componentRect.m_left = finalRect.m_left;
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
@@ -245,12 +245,12 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 			left  = imgSize.width;
 
 			// draw this element.
-			r.draw(*m_leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+			r.draw(*m_leftImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 		}
 		// right image
 		if (m_rightImg)
 		{
-			imgSize = m_rightImg->getPixelRect().getSize();
+			imgSize = m_rightImg->pixel_rect.getSize();
 			componentRect.m_left = finalRect.m_right - imgSize.width;
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
@@ -259,7 +259,7 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 			right = imgSize.width;
 
 			// draw this element.
-			r.draw(*m_rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+			r.draw(*m_rightImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 		}
 		// center image
 		if (m_backImg)
@@ -269,7 +269,7 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 			componentRect.m_right -= right;
 	        
 			// draw this element.
-			r.draw(*m_backImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Tile, Image::Stretch);
+			r.draw(*m_backImg, componentRect, 1.f, finalClip,  m_backColor, Image::Tile, Image::Stretch);
 		}
 	}
 	else
@@ -278,7 +278,7 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 		if (m_leftImg)
 		{
 			// calculate final destination area
-			imgSize = m_leftImg->getPixelRect().getSize();
+			imgSize = m_leftImg->pixel_rect.getSize();
 			componentRect.m_left = finalRect.m_left;
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
@@ -286,12 +286,12 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 			left  = imgSize.height;
 
 			// draw this element.
-			r.draw(*m_leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+			r.draw(*m_leftImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 		}
 		// bottom image
 		if (m_rightImg)
 		{
-			imgSize = m_rightImg->getPixelRect().getSize();
+			imgSize = m_rightImg->pixel_rect.getSize();
 			componentRect.m_left = finalRect.m_left;
 			componentRect.m_top  = finalRect.m_bottom - imgSize.height;
 			componentRect.setSize(imgSize);
@@ -300,7 +300,7 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 			right = imgSize.height;
 
 			// draw this element.
-			r.draw(*m_rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+			r.draw(*m_rightImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 		}
 		// center image
 		if (m_backImg)
@@ -310,7 +310,7 @@ void ScrollBar::render(const Rect& finalRect, const Rect& finalClip)
 			componentRect.m_bottom -= right;
 	        
 			// draw this element.
-			r.draw(*m_backImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Tile);
+			r.draw(*m_backImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Tile);
 		}
 	}
 }

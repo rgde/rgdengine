@@ -122,7 +122,7 @@ void Button::render(const Rect& finalRect, const Rect& finalClip)
     if (state.leftImg)
     {
         // calculate final destination area
-        imgSize = state.leftImg->getPixelRect().getSize();
+        imgSize = state.leftImg->pixel_rect.getSize();
         componentRect.m_left = finalRect.m_left;
         componentRect.m_top  = finalRect.m_top;
 		componentRect.m_right = finalRect.m_left + imgSize.width;
@@ -132,12 +132,12 @@ void Button::render(const Rect& finalRect, const Rect& finalClip)
 		left  = imgSize.width;
 
         // draw this element.
-        r.draw(*state.leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+        r.draw(*state.leftImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
     }
 	// right image
     if (state.rightImg)
     {
-        imgSize = state.rightImg->getPixelRect().getSize();
+        imgSize = state.rightImg->pixel_rect.getSize();
         componentRect.m_left = finalRect.m_right - imgSize.width;
         componentRect.m_top  = finalRect.m_top;
         componentRect.m_right = finalRect.m_right;
@@ -147,7 +147,7 @@ void Button::render(const Rect& finalRect, const Rect& finalClip)
 		right = imgSize.width;
 
         // draw this element.
-        r.draw(*state.rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+        r.draw(*state.rightImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
     }
 	// center image
     if (state.backImg)
@@ -157,7 +157,7 @@ void Button::render(const Rect& finalRect, const Rect& finalClip)
 		componentRect.m_right -= right;
         
 		// draw this element.
-        r.draw(*state.backImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Tile, Image::Stretch);
+        r.draw(*state.backImg, componentRect, 1.f, finalClip,  m_backColor, Image::Tile, Image::Stretch);
     }
 
 	StaticText::render(finalRect, finalClip);	
@@ -219,7 +219,7 @@ void ImageButton::render(const Rect& finalRect, const Rect& finalClip)
 	if(i)
 	{	
 		Renderer& r = m_system.getRenderer();
-		r.draw(*i, finalRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+		r.draw(*i, finalRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 	}
 }
 
@@ -439,7 +439,7 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 		if (state.leftImg)
 		{
 			// calculate final destination area
-			imgSize = state.leftImg->getPixelRect().getSize();
+			imgSize = state.leftImg->pixel_rect.getSize();
 			componentRect.m_left = finalRect.m_left;
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
@@ -447,12 +447,12 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 			left  = imgSize.width;
 
 			// draw this element.
-			r.draw(*state.leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+			r.draw(*state.leftImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 		}
 		// right image
 		if (state.rightImg)
 		{
-			imgSize = state.rightImg->getPixelRect().getSize();
+			imgSize = state.rightImg->pixel_rect.getSize();
 			componentRect.m_left = finalRect.m_right - imgSize.width;
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
@@ -461,7 +461,7 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 			right = imgSize.width;
 
 			// draw this element.
-			r.draw(*state.rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+			r.draw(*state.rightImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 		}
 		// center image
 		if (state.backImg)
@@ -471,7 +471,7 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 			componentRect.m_right -= right;
 	        
 			// draw this element.
-			r.draw(*state.backImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Tile, Image::Stretch);
+			r.draw(*state.backImg, componentRect, 1.f, finalClip,  m_backColor, Image::Tile, Image::Stretch);
 		}
 	}
 	else
@@ -480,7 +480,7 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 		if (state.leftImg)
 		{
 			// calculate final destination area
-			imgSize = state.leftImg->getPixelRect().getSize();
+			imgSize = state.leftImg->pixel_rect.getSize();
 			componentRect.m_left = finalRect.m_left;
 			componentRect.m_top  = finalRect.m_top;
 			componentRect.setSize(imgSize);
@@ -488,12 +488,12 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 			left  = imgSize.height;
 
 			// draw this element.
-			r.draw(*state.leftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+			r.draw(*state.leftImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 		}
 		// bottom image
 		if (state.rightImg)
 		{
-			imgSize = state.rightImg->getPixelRect().getSize();
+			imgSize = state.rightImg->pixel_rect.getSize();
 			componentRect.m_left = finalRect.m_left;
 			componentRect.m_top  = finalRect.m_bottom - imgSize.height;
 			componentRect.setSize(imgSize);
@@ -502,7 +502,7 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 			right = imgSize.height;
 
 			// draw this element.
-			r.draw(*state.rightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+			r.draw(*state.rightImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 		}
 		// center image
 		if (state.backImg)
@@ -512,7 +512,7 @@ void ScrollThumb::render(const Rect& finalRect, const Rect& finalClip)
 			componentRect.m_bottom -= right;
 	        
 			// draw this element.
-			r.draw(*state.backImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Tile);
+			r.draw(*state.backImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Tile);
 		}
 	}
 }

@@ -6,7 +6,6 @@ namespace rgde
 {
 	namespace render
 	{
-
 		vertex_declaration::vertex_declaration(device& dev, const vertex_element* vertex_elements_array, size_t num_elements)
 			: m_vertex_elements(num_elements)
 		{
@@ -63,7 +62,6 @@ namespace rgde
 		{
 
 		}
-
 
 		index_buffer::~index_buffer()
 		{
@@ -125,7 +123,8 @@ namespace rgde
 
 		void index_buffer::index_buffer_impl::unlock()
 		{
-			m_dx_index_buffer->Unlock();
+			HRESULT hr = m_dx_index_buffer->Unlock();
+			assert(hr == S_OK);
 		}
 
 
@@ -237,8 +236,6 @@ namespace rgde
 			size_t in_size = vertex_elements.size();
 			std::vector<D3DVERTEXELEMENT9> out(in_size);
 
-			//out.reserve(in_size+1);
-			//out.resize(in_size);
 			for (size_t i = 0; i < in_size; ++i)
 			{
 				out[i] = convert(vertex_elements[i]);
@@ -267,8 +264,6 @@ namespace rgde
 			: m_device(dev), m_dx_vertex_buffer(NULL)
 		{
 			IDirect3DDevice9* dx_dev = m_device.get_impl().get_dx_device();
-
-			//DWORD fvf = convert_to_fvf(const vertex_elements_vector& elements);
 
 			DWORD vb_usage = ((usage & buffer::dynamic) > 0 ? D3DUSAGE_DYNAMIC : 0) |
 				((usage & buffer::write_only) > 0 ? D3DUSAGE_WRITEONLY : 0);

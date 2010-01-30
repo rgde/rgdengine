@@ -89,11 +89,11 @@ void Checkbox::render(const Rect& finalRect, const Rect& finalClip)
 	float offset = 0.f;
 	if(state)
 	{
-		Size imgSize = state->getPixelRect().getSize();
+		Size imgSize = state->pixel_rect.getSize();
 		Rect dest(finalRect);
 		dest.setWidth(imgSize.width);
 		offset += imgSize.width;
-		r.draw(*state, dest, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+		r.draw(*state, dest, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
 	}
 	
 	Rect desttext(finalRect);

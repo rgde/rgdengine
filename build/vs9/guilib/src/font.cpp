@@ -406,8 +406,8 @@ void Font::drawTextLine(const std::wstring& text,  const Rect& draw_area, const 
 	//			ColorRect shadow_colours(shadow_color,shadow_color,
 	//										shadow_color,shadow_color);
 	//			
-	//			m_render.draw(*img, shadow_rec, cur_pos.z, clip_rect, shadow_colours, TopLeftToBottomRight);
-	//			//m_render.draw(*img, rec, cur_pos.z, clip_rect, shadow_colours, TopLeftToBottomRight);
+	//			m_render.draw(*img, shadow_rec, cur_pos.z, clip_rect, shadow_colours);
+	//			//m_render.draw(*img, rec, cur_pos.z, clip_rect, shadow_colours);
 
 	//			cur_pos.x += glyph->getAdvance(x_scale);
 	//#ifdef GUI_KERNING_ENABLED
@@ -431,7 +431,7 @@ void Font::drawTextLine(const std::wstring& text,  const Rect& draw_area, const 
 			float y = cur_pos.y + glyph->getOffsetY() * y_scale;
 
 			Rect rec (x, y, x + size.width, y + size.height);
-			m_render.draw(*img, rec, cur_pos.z, clip_rect, colours, TopLeftToBottomRight);
+			m_render.draw(*img, rec, cur_pos.z, clip_rect, colours);
 
 			cur_pos.x += glyph->getAdvance(x_scale);
 #ifdef GUI_KERNING_ENABLED
@@ -483,9 +483,9 @@ void Font::drawTextLineJustified (const std::wstring& text, const Rect& draw_are
 
 				Rect shadow_rec (rec.m_left+.5f,rec.m_top+.5f,rec.m_right+1.f,rec.m_bottom+1.f);
 				ColorRect shadow_color (Color(0,0,0,colours.m_top_left.getAlpha()),Color(0,0,0,colours.m_top_right.getAlpha()),Color(0,0,0,colours.m_bottom_left.getAlpha()),Color(0,0,0,colours.m_bottom_right.getAlpha()));
-				m_render.draw(*img, shadow_rec, cur_pos.z, clip_rect, shadow_color, TopLeftToBottomRight);
+				m_render.draw(*img, shadow_rec, cur_pos.z, clip_rect, shadow_color);
 
-				//m_render.draw(*img, rec, cur_pos.z, clip_rect, shadow_color, TopLeftToBottomRight);
+				//m_render.draw(*img, rec, cur_pos.z, clip_rect, shadow_color);
 
 				cur_pos.x += glyph->getAdvance(x_scale);
 #ifdef GUI_KERNING_ENABLED
@@ -533,7 +533,7 @@ void Font::drawTextLineJustified (const std::wstring& text, const Rect& draw_are
 				Size size = glyph->getSize(x_scale, y_scale);
 				Rect rec (cur_pos.x + glyph->getOffsetX() * x_scale, cur_pos.y + glyph->getOffsetY() * y_scale, cur_pos.x + glyph->getOffsetX() * x_scale + size.width, cur_pos.y + glyph->getOffsetY() * y_scale + size.height);
 
-				m_render.draw(*img, rec, cur_pos.z, clip_rect, colours, TopLeftToBottomRight);
+				m_render.draw(*img, rec, cur_pos.z, clip_rect, colours);
 
 				cur_pos.x += glyph->getAdvance(x_scale);
 #ifdef GUI_KERNING_ENABLED

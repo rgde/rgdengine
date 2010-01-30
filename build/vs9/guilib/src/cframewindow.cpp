@@ -118,7 +118,7 @@ void FrameWindow::render(const Rect& finalRect, const Rect& finalClip)
 	if (m_captionLeftImg)
     {
         // calculate final destination area
-        imgSize = m_captionLeftImg->getPixelRect().getSize();
+        imgSize = m_captionLeftImg->pixel_rect.getSize();
         componentRect.m_left = finalRect.m_left;
         componentRect.m_top  = finalRect.m_top;
         componentRect.setSize(imgSize);
@@ -127,12 +127,12 @@ void FrameWindow::render(const Rect& finalRect, const Rect& finalClip)
 		height = imgSize.height;
 
         // draw this element.
-        r.draw(*m_captionLeftImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+        r.draw(*m_captionLeftImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
     }
 	// right image
     if (m_captionRightImg)
     {
-        imgSize = m_captionRightImg->getPixelRect().getSize();
+        imgSize = m_captionRightImg->pixel_rect.getSize();
         componentRect.m_left = finalRect.m_right - imgSize.width;
         componentRect.m_top  = finalRect.m_top;
         componentRect.setSize(imgSize);
@@ -141,7 +141,7 @@ void FrameWindow::render(const Rect& finalRect, const Rect& finalClip)
 		right = imgSize.width;
 
         // draw this element.
-        r.draw(*m_captionRightImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Stretch, Image::Stretch);
+        r.draw(*m_captionRightImg, componentRect, 1.f, finalClip,  m_backColor, Image::Stretch, Image::Stretch);
     }
 	// center image
     if (m_captionBackImg)
@@ -152,7 +152,7 @@ void FrameWindow::render(const Rect& finalRect, const Rect& finalClip)
 		componentRect.m_bottom = componentRect.m_top + height;
         
 		// draw this element.
-        r.draw(*m_captionBackImg, componentRect, 1.f, finalClip,  m_backColor, TopLeftToBottomRight, Image::Tile, Image::Stretch);
+        r.draw(*m_captionBackImg, componentRect, 1.f, finalClip,  m_backColor, Image::Tile, Image::Stretch);
     }
 	
 	if(m_font)

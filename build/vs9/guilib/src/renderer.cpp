@@ -36,9 +36,7 @@ Renderer::~Renderer(void)
 {
 }
 
-
-
-void Renderer::immediateDraw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect,const ColorRect& colors, QuadSplitMode quad_split_mode)
+void Renderer::immediateDraw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect,const ColorRect& colors)
 {
 	// get the rect area that we will actually draw to (i.e. perform clipping)
 	Rect final_rect(dest_rect.getIntersection(clip_rect));
@@ -46,7 +44,7 @@ void Renderer::immediateDraw(const Image& img, const Rect& dest_rect, float z, c
 	// check if rect was totally clipped
 	if (final_rect.getWidth() != 0)
 	{
-		const Rect& source_rect = img.getPixelRect();
+		const Rect& source_rect = img.pixel_rect;
 
         const float x_scale = 1.f;
         const float y_scale = 1.f;
@@ -60,17 +58,17 @@ void Renderer::immediateDraw(const Image& img, const Rect& dest_rect, float z, c
 			(source_rect.m_right + ((final_rect.m_right - dest_rect.m_right) * tex_per_pix_x)) * x_scale,
 			(source_rect.m_bottom + ((final_rect.m_bottom - dest_rect.m_bottom) * tex_per_pix_y)) * y_scale);
 
-		tex_rect *= img.getTexture().getSize();
+		tex_rect *= img.texture.getSize();
 
 		// queue a quad to be rendered
 		QuadInfo quad;
-		fillQuad(quad, final_rect, tex_rect, z, img, colors, quad_split_mode);
+		fillQuad(quad, final_rect, tex_rect, z, img, colors);
 		renderQuadDirect(quad);
 	}
 }
-void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect,const ColorRect& colors, QuadSplitMode quad_split_mode, Image::ImageOps horz, Image::ImageOps vert)
+void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect,const ColorRect& colors, Image::ImageOps horz, Image::ImageOps vert)
 {
-	const Rect& source_rect = img.getPixelRect();
+	const Rect& source_rect = img.pixel_rect;
 	Size imgSz = source_rect.getSize();
     
 	unsigned int horzTiles = 1;
@@ -119,7 +117,7 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
         for (unsigned int col = 0; col < horzTiles; ++col)
         {
             // add image to the rendering cache for the target window.
-            draw(img, finalRect, z, finalClipper, colors,  quad_split_mode);
+            draw(img, finalRect, z, finalClipper, colors/*,  quad_split_mode*/);
 
             finalRect.m_left += imgSz.width;
             finalRect.m_right += imgSz.width;
@@ -136,8 +134,8 @@ void Renderer::drawLine(const Image& img, const vec2* p, size_t size, float z, c
 
 	vec2 p0, p1, p2, p3;
 
-	Rect source_rect = img.getPixelRect();
-	source_rect *= img.getTexture().getSize();
+	Rect source_rect = img.pixel_rect;
+	source_rect *= img.texture.getSize();
 
 	for(size_t i = 0; i < size - 1; ++i)
 	{
@@ -155,11 +153,11 @@ void Renderer::drawLine(const Image& img, const vec2* p, size_t size, float z, c
 		p2 = v1 - nv;
 		p3 = v2 - nv;
 
-		addQuad(p0, p1, p2, p3, source_rect, z, img, color_rect, TopLeftToBottomRight);
+		addQuad(p0, p1, p2, p3, source_rect, z, img, color_rect);
 	}
 }
 
-void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect,const ColorRect& colors, QuadSplitMode quad_split_mode)
+void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect,const ColorRect& colors)
 {
 	// get the rect area that we will actually draw to (i.e. perform clipping)
 	Rect final_rect(dest_rect.getIntersection(clip_rect));
@@ -167,7 +165,7 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
 	// check if rect was totally clipped
 	if (final_rect.getWidth() != 0)
 	{
-		const Rect& source_rect = img.getPixelRect();
+		const Rect& source_rect = img.pixel_rect;
 
 		float tex_per_pix_x = source_rect.getWidth() / dest_rect.getWidth();
 		float tex_per_pix_y = source_rect.getHeight() / dest_rect.getHeight();
@@ -181,18 +179,21 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
 			);
 
 		
-		tex_rect *= img.getTexture().getSize();
+		tex_rect *= img.texture.getSize();
 
 		// queue a quad to be rendered
-		addQuad(final_rect, tex_rect, z, img, colors, quad_split_mode);
+		addQuad(final_rect, tex_rect, z, img, colors);
 	}
 
 }
-void Renderer::clearCache()
+void Renderer::clearCache(BaseWindow* window)
 {
-	m_mapQuadList.clear();
-
+	if (window)
+		m_mapQuadList.erase(window);
+	else
+		m_mapQuadList.clear();
 }
+
 void Renderer::startCaptureForCache(BaseWindow* window)
 {
 	QuadCacheMap::iterator i = m_mapQuadList.find(window);
@@ -306,7 +307,7 @@ Rect Renderer::realToVirtualCoord( const Rect& realRect ) const
 	return result;
 }
 
-void Renderer::fillQuad(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors, QuadSplitMode split_mode)
+void Renderer::fillQuad(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors)
 {
 	quad.positions[0].x	= quad.positions[2].x = rc.m_left;
 	quad.positions[0].y	= quad.positions[1].y = rc.m_top;
@@ -314,7 +315,7 @@ void Renderer::fillQuad(QuadInfo& quad, const Rect& rc, const Rect& uv, float z,
 	quad.positions[2].y	= quad.positions[3].y = rc.m_bottom;
 
 	quad.z				= z;
-	quad.texture		= &img.getTexture();
+	quad.texture		= &img.texture;
 	quad.texPosition	= uv;
 	quad.topLeftCol		= colors.m_top_left.getARGB();
 	quad.topRightCol	= colors.m_top_right.getARGB();
