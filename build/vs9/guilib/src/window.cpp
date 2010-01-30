@@ -73,6 +73,8 @@ void BaseWindow::setSize(const Size& sz)
 }
 void BaseWindow::invalidate()	
 {
+	m_system.getRenderer().clearCache(this);
+
 	m_invalidated = true;	
 	ChildrenIter i = m_children.begin();
 	ChildrenIter end = m_children.end();
@@ -664,7 +666,7 @@ void BaseWindow::draw(const point& offset, const Rect& clip)
 
 		if (m_invalidated)
 		{
-			m_system.getRenderer().startCaptureForCache(this);			
+			//m_system.getRenderer().startCaptureForCache(this);			
 			if(m_customDraw && !m_drawhandler.empty())
 			{
 				EventArgs a;
@@ -675,11 +677,29 @@ void BaseWindow::draw(const point& offset, const Rect& clip)
 			}
 
 			render(destrect, cliprect); // render self first
-			m_system.getRenderer().endCaptureForCache(this);		
+			//m_system.getRenderer().endCaptureForCache(this);		
 			m_invalidated = false;
 		}
 		else 
-			m_system.getRenderer().drawFromCache(this);
+		{
+			if (!m_system.getRenderer().isExistInCache(this))
+			{
+				m_system.getRenderer().startCaptureForCache(this);			
+				if(m_customDraw && !m_drawhandler.empty())
+				{
+					EventArgs a;
+					a.name = "On_Draw";
+					luabind::globals (m_ref_script.LuaState())["eventArgs"] = &a;
+					ExecuteScript(a.name, m_drawhandler);
+					luabind::globals (m_ref_script.LuaState())["eventArgs"] = 0;
+				}
+
+				render(destrect, cliprect); // render self first
+				m_system.getRenderer().endCaptureForCache(this);
+			}
+			else 
+				m_system.getRenderer().drawFromCache(this);
+		}
 
 		ChildrenIter i = m_children.begin();
 		ChildrenIter end = m_children.end();

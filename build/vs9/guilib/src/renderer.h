@@ -43,15 +43,6 @@ public:
 		Rect clip;
 	};
 
-	struct BatchInfo
-	{
-		Texture* texture;
-		std::size_t startQuad;
-		std::size_t numQuads;
-
-		RenderCallbackInfo callbackInfo;
-	};
-
 	struct QuadInfo 
 	{
 		struct vec2 {float x, y;};
@@ -77,6 +68,16 @@ public:
 		}
 	};
 
+	struct BatchInfo
+	{
+		Texture* texture;
+		std::size_t startQuad;
+		std::size_t numQuads;
+		QuadInfo* quads;
+
+		RenderCallbackInfo callbackInfo;
+	};
+
 	Renderer();
 	virtual ~Renderer();
 
@@ -95,6 +96,7 @@ public:
 	virtual void	beginBatching();
 	virtual void	endBatching();
 	void			clearCache(BaseWindow* window = 0);
+	bool			isExistInCache(BaseWindow* window) const;
 	
 	virtual void	setQueueingEnabled(bool setting)  { m_isQueueing = setting; }
 	bool	isQueueingEnabled(void) const { return m_isQueueing; }
