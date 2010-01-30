@@ -38,7 +38,7 @@ namespace gui
 
 		enum
 		{
-			VERTEX_PER_QUAD = 6,
+			VERTEX_PER_QUAD = 4,
 			VERTEX_PER_TRIANGLE = 3,
 			QUADS_BUFFER = 10000,
 			VERTEXBUFFER_CAPACITY = QUADS_BUFFER * VERTEX_PER_QUAD,
@@ -92,30 +92,17 @@ namespace gui
 
 				unsigned short* data = (unsigned short*)m_ibuffer->lock(0, INDEXBUFFER_CAPACITY*sizeof(unsigned short), 0);
 
-				//for (int i = 0; i < VERTEXBUFFER_CAPACITY; i += VERTEX_PER_QUAD)
-				//{
-				//	const size_t quad_index = i / VERTEX_PER_QUAD;
-
-				//	data[i+0] = quad_index + 0;
-				//	data[i+1] = quad_index + 1;
-				//	data[i+2] = quad_index + 2;
-
-				//	data[i+3] = quad_index + 3;
-				//	data[i+4] = quad_index + 4;
-				//	data[i+5] = quad_index + 5;
-				//}
-
 				for (int i = 0; i < VERTEXBUFFER_CAPACITY; i += VERTEX_PER_QUAD)
 				{
-					const size_t quad_index = i;// / VERTEX_PER_QUAD;
+					const size_t quad_index = (i / VERTEX_PER_QUAD)*6;
 
-					data[quad_index+0] = quad_index + 0;
-					data[quad_index+1] = quad_index + 1;
-					data[quad_index+2] = quad_index + 2;
+					data[quad_index+0] = i + 0;
+					data[quad_index+1] = i + 2;
+					data[quad_index+2] = i + 1;
 
-					data[quad_index+3] = quad_index + 3;
-					data[quad_index+4] = quad_index + 4;
-					data[quad_index+5] = quad_index + 5;
+					data[quad_index+3] = i + 1;
+					data[quad_index+4] = i + 2;
+					data[quad_index+5] = i + 3;
 				}
 
 				m_ibuffer->unlock();
@@ -171,8 +158,6 @@ namespace gui
 				QuadVertex& v1 = *v; ++v;
 				QuadVertex& v2 = *v; ++v;
 				QuadVertex& v3 = *v; ++v;
-				QuadVertex& v4 = *v; ++v;
-				QuadVertex& v5 = *v; ++v;
 
 				// setup Vertex 1...
 				v0.x = PixelAligned(q.positions[0].x * scaleX);
@@ -202,9 +187,6 @@ namespace gui
 				v3.tu1 = q.texPosition.m_right;
 				v3.tv1 = q.texPosition.m_bottom;
 
-				v4 = v2;
-				v5 = v1;
-
 				return VERTEX_PER_QUAD;
 			}			
 		}
@@ -216,9 +198,7 @@ namespace gui
 		{
 			if (!m_buffer)
 				return;
-
-			//m_device.set_index_buffer(m_ibuffer);
-			
+	
 			view_port viewPortDesc;
 			m_device.get_viewport(viewPortDesc);
 
@@ -257,16 +237,15 @@ namespace gui
 
 			typedef rgde::uint16 uint16;
 
-			static const uint16 index_data[VERTEX_PER_QUAD] = 
-			{
-				0,1,2, // 1st triangle
-				3,4,5  // 2nd triangle
-			};
-
 			const unsigned int prim_count = 2 * m_bufferPos / VERTEX_PER_QUAD;
 
+			static const uint16 index_data[6] = 
+			{
+				0,1,2, // 1st triangle
+				1,2,3  // 2nd triangle
+			};
+
 			m_device.draw(triangle_list, m_bufferPos, prim_count, buffmem, sizeof(QuadVertex), index_data);			
-			//m_device.draw(triangle_list, prim_count, buffmem, sizeof(QuadVertex));
 
 			// reset buffer position to 0...
 			m_bufferPos = 0;
