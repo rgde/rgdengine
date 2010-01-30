@@ -6,6 +6,8 @@
 #include "texture.h"
 #include "ftfont.h"
 
+#include <xmmintrin.h>
+
 // fine tune :)
 #define PixelAligned(x)	( ( (float)(int)(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f)) ) - 0.5f )
 
@@ -131,83 +133,81 @@ namespace gui
 		namespace 
 		{
 			// return value = buff offset in QuadInfo
-			unsigned int fill_vertex(const Renderer::QuadInfo& q, QuadVertex*& v, float scaleX, float scaleY)
-			{												   
+			__inline unsigned int fill_vertex(const Renderer::QuadInfo& q, QuadVertex*& v, float scaleX, float scaleY)
+			{									
+
+				QuadVertex& v0 = *v; ++v;
+				QuadVertex& v1 = *v; ++v;
+				QuadVertex& v2 = *v; ++v;
+
+				QuadVertex& v3 = *v; ++v;
+				QuadVertex& v4 = *v; ++v;
+				QuadVertex& v5 = *v; ++v;
+
 				// setup Vertex 1...
-				v->x = PixelAligned(q.positions[0].x * scaleX);
-				v->y = PixelAligned(q.positions[0].y * scaleY);
-				v->diffuse = q.topLeftCol;
-				v->tu1 = q.texPosition.m_left;
-				v->tv1 = q.texPosition.m_top;
-				++v;
+				v0.x = PixelAligned(q.positions[0].x * scaleX);
+				v0.y = PixelAligned(q.positions[0].y * scaleY);
+				v0.diffuse = q.topLeftCol;
+				v0.tu1 = q.texPosition.m_left;
+				v0.tv1 = q.texPosition.m_top;
 
 				// setup Vertex 2...
 
 				// top-left to bottom-right diagonal
 				if (q.splitMode == TopLeftToBottomRight)
 				{
-					v->x = PixelAligned(q.positions[3].x * scaleX);
-					v->y = PixelAligned(q.positions[3].y * scaleY);
-					v->diffuse = q.bottomRightCol;
-					v->tu1 = q.texPosition.m_right;
-					v->tv1 = q.texPosition.m_bottom;
+					v1.x = PixelAligned(q.positions[3].x * scaleX);
+					v1.y = PixelAligned(q.positions[3].y * scaleY);
+					v1.diffuse = q.bottomRightCol;
+					v1.tu1 = q.texPosition.m_right;
+					v1.tv1 = q.texPosition.m_bottom;
 				}
 				// bottom-left to top-right diagonal
 				else
 				{
-					v->x = PixelAligned(q.positions[1].x * scaleX);
-					v->y = PixelAligned(q.positions[1].y * scaleY);
-					v->diffuse = q.topRightCol;
-					v->tu1 = q.texPosition.m_right;
-					v->tv1 = q.texPosition.m_top;
+					v1.x = PixelAligned(q.positions[1].x * scaleX);
+					v1.y = PixelAligned(q.positions[1].y * scaleY);
+					v1.diffuse = q.topRightCol;
+					v1.tu1 = q.texPosition.m_right;
+					v1.tv1 = q.texPosition.m_top;
 				}
-				++v;
 
 				// setup Vertex 3...
-				v->x = PixelAligned(q.positions[2].x * scaleX);
-				v->y = PixelAligned(q.positions[2].y * scaleY);
-				v->diffuse = q.bottomLeftCol;
-				v->tu1 = q.texPosition.m_left;
-				v->tv1 = q.texPosition.m_bottom;
-				++v;
+				v2.x = PixelAligned(q.positions[2].x * scaleX);
+				v2.y = PixelAligned(q.positions[2].y * scaleY);
+				v2.diffuse = q.bottomLeftCol;
+				v2.tu1 = q.texPosition.m_left;
+				v2.tv1 = q.texPosition.m_bottom;
 
-				// setup Vertex 4...
-				v->x = PixelAligned(q.positions[1].x * scaleX);
-				v->y = PixelAligned(q.positions[1].y * scaleY);
-				v->diffuse = q.topRightCol;
-				v->tu1 = q.texPosition.m_right;
-				v->tv1 = q.texPosition.m_top;
-				++v;
 
-				// setup Vertex 5...
-				v->x = PixelAligned(q.positions[3].x * scaleX);
-				v->y = PixelAligned(q.positions[3].y * scaleY);
-				v->diffuse = q.bottomRightCol;
-				v->tu1 = q.texPosition.m_right;
-				v->tv1 = q.texPosition.m_bottom;
-				++v;
+				//////////////////////////////////////////////////////////////////////////
 
-				// setup Vertex 6...
-
-				// top-left to bottom-right diagonal
 				if (q.splitMode == TopLeftToBottomRight)
 				{
-					v->x = PixelAligned(q.positions[0].x * scaleX);
-					v->y = PixelAligned(q.positions[0].y * scaleY);
-					v->diffuse = q.topLeftCol;
-					v->tu1 = q.texPosition.m_left;
-					v->tv1 = q.texPosition.m_top;
+					v3.x = PixelAligned(q.positions[1].x * scaleX);
+					v3.y = PixelAligned(q.positions[1].y * scaleY);
+					v3.diffuse = q.topRightCol;
+					v3.tu1 = q.texPosition.m_right;
+					v3.tv1 = q.texPosition.m_top;
+
+					v4 = v1;
 				}
-				// bottom-left to top-right diagonal
 				else
 				{
-					v->x = PixelAligned(q.positions[2].x * scaleX);
-					v->y = PixelAligned(q.positions[2].y * scaleY);
-					v->diffuse = q.bottomLeftCol;
-					v->tu1 = q.texPosition.m_left;
-					v->tv1 = q.texPosition.m_bottom;
+					v3 = v1;
+
+					// setup Vertex 5...
+					v4.x = PixelAligned(q.positions[3].x * scaleX);
+					v4.y = PixelAligned(q.positions[3].y * scaleY);
+					v4.diffuse = q.bottomRightCol;
+					v4.tu1 = q.texPosition.m_right;
+					v4.tv1 = q.texPosition.m_bottom;
 				}
-				++v;
+
+				// setup Vertex 6...
+				// top-left to bottom-right diagonal
+				v5 = q.splitMode == TopLeftToBottomRight ? v0 : v2;
+
 				return VERTEX_PER_QUAD;
 			}			
 		}
@@ -460,10 +460,12 @@ namespace gui
 				if (!buffmem )
 					return;
 
+				QuadInfo* quads = &m_quads.front();
+
 				std::size_t numQ = batch.numQuads;
 				for (std::size_t q = 0; q < numQ; ++q)
 				{
-					const QuadInfo& quad = m_quads[q + batch.startQuad];
+					const QuadInfo& quad = quads[q + batch.startQuad];
 					fill_vertex(quad, buffmem, scaleX, scaleY);
 				}
 
@@ -724,65 +726,12 @@ namespace gui
 			{
 				throw std::exception("Failed to load texture from memory: D3D Texture creation failed.");
 			}
-			else
-			{
-				// lock the texture
-				surface_ptr surface = platform_tex->get_surface(0);
-				rgde::render::surface::lock_data ld;
-				bool res = surface->lock(ld);
 
-				if (!res)
-				{
-					platform_tex.reset();
-					throw std::exception("Failed to load texture from memory: IDirect3DTexture9::LockRect failed.");
-				}
-				else
-				{
-					// copy data from buffer into texture
-					unsigned long* dst = (unsigned long*)ld.bytes;
-					unsigned long* src = (unsigned long*)buffPtr;
+			tex.reset(new texture(*this, platform_tex));
 
-					// RGBA
-					if (pixFormat == Texture::PF_RGBA)
-					{
-						for (unsigned int i = 0; i < buffHeight; ++i)
-						{
-							for (unsigned int j = 0; j < buffWidth; ++j)
-							{
-								// we dont need endian safety on microsoft
-								unsigned char r = (unsigned char)(src[j] & 0xFF);
-								unsigned char g = (unsigned char)((src[j] >> 8) & 0xFF);
-								unsigned char b = (unsigned char)((src[j] >> 16)  & 0xFF);
-								unsigned char a = (unsigned char)((src[j] >> 24) & 0xFF);
-
-								dst[j] = rgde::math::color(r, g, b, a).data;
-							}
-
-							dst += ld.pitch / sizeof(unsigned long);
-							src += buffWidth;
-						}
-					}
-					// RGB
-					else
-					{
-						for (unsigned int i = 0; i < buffHeight; ++i)
-						{
-							for (unsigned int j = 0; j < buffWidth; ++j)
-							{
-								dst[j] = src[j];
-							}
-
-							dst += ld.pitch / sizeof(unsigned long);
-							src += buffWidth;
-						}
-					}
-
-					surface->unlock();
-				}
-
-				tex.reset(new texture(*this, platform_tex));
-				m_texmanager.pushTexture(tex);
-			}
+			reloadTexture(tex, buffPtr, buffWidth, buffHeight, pixFormat);
+			
+			m_texmanager.pushTexture(tex);
 
 			return tex;
 		}
@@ -799,32 +748,40 @@ namespace gui
 			if (i == m_mapQuadList.end()) return;
 			QuadCacheRecord& v = i->second;
 
+			assert(v.num <= v.m_vec.size());
+
+			QuadInfo* cached_quads = &v.m_vec.front();
+
+			if (m_num_quads + v.num >= m_quads.size())
+				m_quads.resize((m_num_quads + v.num) * 2);
+
+			BatchInfo* batches = &m_batches.front();
+			QuadInfo* quads = &m_quads.front();
+
 			for (std::size_t a = 0; a < v.num; ++a)
 			{
-				if (m_num_quads >= m_quads.size())
-					m_quads.resize(m_num_quads * 2);
-				assert(v.m_vec.size() > a);
+				quads[m_num_quads] = cached_quads[a];
 
-				m_quads[m_num_quads] = v.m_vec[a];
-				if (!m_num_quads  || m_quads[m_num_quads - 1].texture != m_quads[m_num_quads].texture ||
+				if (!m_num_quads  || quads[m_num_quads - 1].texture != quads[m_num_quads].texture ||
 					m_needToAddCallback ||
-					(m_num_batches && (m_num_quads - m_batches[m_num_batches - 1].startQuad + 1)*VERTEX_PER_QUAD >= VERTEXBUFFER_CAPACITY))
+					(m_num_batches && (m_num_quads - batches[m_num_batches - 1].startQuad + 1)*VERTEX_PER_QUAD >= VERTEXBUFFER_CAPACITY))
 				{
-					// закончим предыдущий батч если он есть
+					// terminate current batch if one:
 					if (m_num_batches)
 					{
-						m_batches[m_num_batches - 1].numQuads = m_num_quads - m_batches[m_num_batches - 1].startQuad;
+						batches[m_num_batches - 1].numQuads = m_num_quads - batches[m_num_batches - 1].startQuad;
 						if (!m_needToAddCallback)
 						{
 							m_callbackInfo.window = NULL;
 							m_callbackInfo.afterRenderCallback = NULL;
 						}
 						m_needToAddCallback = false;
-						m_batches[m_num_batches - 1].callbackInfo = m_callbackInfo;
+						batches[m_num_batches - 1].callbackInfo = m_callbackInfo;
 					}
-					// начнем следующий батч
-					m_batches[m_num_batches].texture = m_quads[m_num_quads].texture;
-					m_batches[m_num_batches].startQuad = m_num_quads;
+
+					// start next batch:
+					batches[m_num_batches].texture = quads[m_num_quads].texture;
+					batches[m_num_batches].startQuad = m_num_quads;
 
 					++m_num_batches;
 				}

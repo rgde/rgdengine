@@ -167,16 +167,6 @@ Rect& Rect::constrainSize(const Size& max_sz, const Size& min_sz)
 	return *this;
 }
 
-Rect& Rect::operator=(const Rect& rhs)
-{
-	m_left = rhs.m_left;
-	m_top = rhs.m_top;
-	m_right = rhs.m_right;
-	m_bottom = rhs.m_bottom;
-
-	return *this;
-}
-
 Rect& Rect::scale(const Size& size)
 {
 	const float scaleX = 1 / size.width;

@@ -12,7 +12,7 @@ namespace gui
 	class  Rect
 	{
 	public:
-		Rect(void) : m_left(0), m_top(0), m_right(0), m_bottom(0) {}
+		Rect() : m_left(0), m_top(0), m_right(0), m_bottom(0) {}
 		Rect(float left, float top, float right, float bottom);
 		Rect(point pos, Size sz);
 
@@ -48,7 +48,7 @@ namespace gui
 
 		bool	operator!=(const Rect& rhs) const		{return !operator==(rhs);}
 
-		Rect&	operator=(const Rect& rhs);
+		/*Rect&	operator=(const Rect& rhs);*/
 
 		Rect operator*(float scalar) const      { return Rect(m_left * scalar, m_top * scalar, m_right * scalar, m_bottom * scalar); }
 		const Rect& operator*=(float scalar)    { m_left *= scalar; m_top *= scalar; m_right *= scalar; m_bottom *= scalar; return *this; }
@@ -62,6 +62,16 @@ namespace gui
 		*************************************************************************/
 		float	m_left, m_top, m_right, m_bottom;
 	};
+
+	//Rect& Rect::operator=(const Rect& rhs)
+	//{
+	//	m_left = rhs.m_left;
+	//	m_top = rhs.m_top;
+	//	m_right = rhs.m_right;
+	//	m_bottom = rhs.m_bottom;
+
+	//	return *this;
+	//}
 
 	enum Align
 	{
