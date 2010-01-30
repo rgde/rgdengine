@@ -308,17 +308,10 @@ Rect Renderer::realToVirtualCoord( const Rect& realRect ) const
 
 void Renderer::fillQuad(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors, QuadSplitMode split_mode)
 {
-	quad.positions[0].x	= rc.m_left;
-	quad.positions[0].y	= rc.m_top;
-
-	quad.positions[1].x	= rc.m_right;
-	quad.positions[1].y	= rc.m_top;
-
-	quad.positions[2].x	= rc.m_left;
-	quad.positions[2].y	= rc.m_bottom;
-
-	quad.positions[3].x	= rc.m_right;
-	quad.positions[3].y	= rc.m_bottom;
+	quad.positions[0].x	= quad.positions[2].x = rc.m_left;
+	quad.positions[0].y	= quad.positions[1].y = rc.m_top;
+	quad.positions[1].x	= quad.positions[3].x = rc.m_right;
+	quad.positions[2].y	= quad.positions[3].y = rc.m_bottom;
 
 	quad.z				= z;
 	quad.texture		= &img.getTexture();
