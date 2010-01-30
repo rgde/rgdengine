@@ -25,7 +25,8 @@ Renderer::Renderer(void) :
 	m_texmanager(*this),
 	m_autoScale(true),
 	m_num_quads(0),
-	m_num_batches(0)
+	m_num_batches(0),
+	m_currentCapturing(0)
 {
 	m_quads.resize(10000);
 	m_batches.resize(1000);
@@ -194,6 +195,12 @@ void Renderer::clearCache(BaseWindow* window)
 		m_mapQuadList.clear();
 }
 
+bool Renderer::isExistInCache(BaseWindow* window) const
+{
+	QuadCacheMap::const_iterator i = m_mapQuadList.find(window);
+	return i != m_mapQuadList.end();
+}
+
 void Renderer::startCaptureForCache(BaseWindow* window)
 {
 	QuadCacheMap::iterator i = m_mapQuadList.find(window);
@@ -205,8 +212,7 @@ void Renderer::startCaptureForCache(BaseWindow* window)
 		m_currentCapturing = &v;
 	}
 	else
-	{
-		
+	{		
 		m_currentCapturing = &(i->second);
 		m_currentCapturing->num = 0;
 	}
