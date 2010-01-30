@@ -45,7 +45,6 @@ namespace gui
 			virtual	TexturePtr	createTextureInstance(const std::string& filename);
 
 			void	initPerFrameStates();
-			void	renderVBuffer();
 			void	constructor_impl(const Size& display_size);
 			void	setRenderStates();
 

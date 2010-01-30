@@ -40,8 +40,9 @@ namespace gui
 		{
 			VERTEX_PER_QUAD = 6,
 			VERTEX_PER_TRIANGLE = 3,
-			VERTEXBUFFER_CAPACITY	= 8192,
-			INDEXBUFFER_CAPACITY	= VERTEX_PER_QUAD*VERTEXBUFFER_CAPACITY/(VERTEX_PER_TRIANGLE*2),
+			QUADS_BUFFER = 10000,
+			VERTEXBUFFER_CAPACITY = QUADS_BUFFER * VERTEX_PER_QUAD,
+			INDEXBUFFER_CAPACITY  = QUADS_BUFFER*6,
 		};
 
 		/*************************************************************************
@@ -91,17 +92,30 @@ namespace gui
 
 				unsigned short* data = (unsigned short*)m_ibuffer->lock(0, INDEXBUFFER_CAPACITY*sizeof(unsigned short), 0);
 
+				//for (int i = 0; i < VERTEXBUFFER_CAPACITY; i += VERTEX_PER_QUAD)
+				//{
+				//	const size_t quad_index = i / VERTEX_PER_QUAD;
+
+				//	data[i+0] = quad_index + 0;
+				//	data[i+1] = quad_index + 1;
+				//	data[i+2] = quad_index + 2;
+
+				//	data[i+3] = quad_index + 3;
+				//	data[i+4] = quad_index + 4;
+				//	data[i+5] = quad_index + 5;
+				//}
+
 				for (int i = 0; i < VERTEXBUFFER_CAPACITY; i += VERTEX_PER_QUAD)
 				{
-					const size_t quad_index = i / VERTEX_PER_QUAD;
+					const size_t quad_index = i;// / VERTEX_PER_QUAD;
 
-					data[i+0] = quad_index + 0;
-					data[i+1] = quad_index + 1;
-					data[i+2] = quad_index + 2;
+					data[quad_index+0] = quad_index + 0;
+					data[quad_index+1] = quad_index + 1;
+					data[quad_index+2] = quad_index + 2;
 
-					data[i+3] = quad_index + 3;
-					data[i+4] = quad_index + 4;
-					data[i+5] = quad_index + 5;
+					data[quad_index+3] = quad_index + 3;
+					data[quad_index+4] = quad_index + 4;
+					data[quad_index+5] = quad_index + 5;
 				}
 
 				m_ibuffer->unlock();
@@ -203,8 +217,7 @@ namespace gui
 			if (!m_buffer)
 				return;
 
-			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
-			m_device.set_index_buffer(m_ibuffer);
+			//m_device.set_index_buffer(m_ibuffer);
 			
 			view_port viewPortDesc;
 			m_device.get_viewport(viewPortDesc);
@@ -217,34 +230,47 @@ namespace gui
 			m_shader->begin(0 );
 			m_shader->begin_pass(0);
 
-			QuadVertex*	buffmem;
-
 			texture* tex = (texture*)q.texture;
 			m_device.set_texture(((texture*)tex)->get_platform_resource(), 0 );
 
-#pragma message ("remove lock\unlock vb from ImmediateModeRender!")
+			QuadVertex buffmem[VERTEX_PER_QUAD];
 
-			buffmem = (QuadVertex*)m_buffer->lock(0, VERTEX_PER_QUAD * sizeof(QuadVertex), 
-				buffer::discard);
-
-			if (buffmem)
+			float scaleX = 1.f;
+			float scaleY = 1.f;
+			if(m_autoScale)
 			{
-				float scaleX = 1.f;
-				float scaleY = 1.f;
-				if(m_autoScale)
-				{
-					const Size viewport = getViewportSize();
-					scaleX = viewport.width / m_originalsize.width;
-					scaleY = viewport.height / m_originalsize.height;
-				}
-				
-				unsigned int vert_filled = fill_vertex(q, buffmem, scaleX, scaleY);
-
-				m_buffer->unlock();
-				m_bufferPos = vert_filled;
-
-				renderVBuffer();
+				const Size viewport = getViewportSize();
+				scaleX = viewport.width / m_originalsize.width;
+				scaleY = viewport.height / m_originalsize.height;
 			}
+
+			QuadVertex* temp_ptr = (QuadVertex*)buffmem;
+			unsigned int vert_filled = fill_vertex(q, temp_ptr, scaleX, scaleY);
+
+			m_bufferPos = vert_filled;
+
+			// if bufferPos is 0 there is no data in the buffer and nothing to render
+			if (m_bufferPos == 0)
+			{
+				return;
+			}
+
+			typedef rgde::uint16 uint16;
+
+			static const uint16 index_data[VERTEX_PER_QUAD] = 
+			{
+				0,1,2, // 1st triangle
+				3,4,5  // 2nd triangle
+			};
+
+			const unsigned int prim_count = 2 * m_bufferPos / VERTEX_PER_QUAD;
+
+			m_device.draw(triangle_list, m_bufferPos, prim_count, buffmem, sizeof(QuadVertex), index_data);			
+			//m_device.draw(triangle_list, prim_count, buffmem, sizeof(QuadVertex));
+
+			// reset buffer position to 0...
+			m_bufferPos = 0;
+
 			m_shader->end_pass();
 			m_shader->end();
 		}
@@ -442,7 +468,8 @@ namespace gui
 					(
 					s_quadOffset * quad_size, 
 					m_batches[b].numQuads * quad_size,
-					buffer::nooverwrite
+					buffer::discard
+					//buffer::nooverwrite
 					);
 
 #pragma message ("gui: compare perfomance!")
@@ -465,22 +492,15 @@ namespace gui
 				gui::rgde_platform::texture* t = static_cast<gui::rgde_platform::texture*>(batch.texture);
 				m_device.set_texture(t->get_platform_resource(), 0);
 
-				m_device.draw(triangle_list, s_quadOffset * VERTEX_PER_QUAD, UINT(numQ * 2));
-				//m_device.draw(triangle_list, 
-				//	s_quadOffset * VERTEX_PER_QUAD, //Ok
-				//	0, //Ok
-				//	numQ*VERTEX_PER_QUAD, //OK
-				//	0, 
-				//	numQ*2);
-
-				//void draw(primitive_type type, uint start_vertex, uint primitive_count);
-				//void draw(primitive_type type, 
-				//int base_vertex_index, 
-				//uint min_vertex_index,
-				//uint num_vertices, 
-				//uint start_index, 
-				//uint primitive_count);
-
+				m_device.draw
+					(
+					triangle_list,					//type
+					s_quadOffset * VERTEX_PER_QUAD, // base_vertex_index Ok
+					0,								// min_vertex_indexOk
+					numQ*VERTEX_PER_QUAD,			//num_vertices OK
+					0,								// Ok
+					numQ*2							// Ok
+					);
 
 				s_quadOffset += (DWORD)numQ;
 
@@ -510,26 +530,6 @@ namespace gui
 			// setup vertex stream
 			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
 			m_device.set_index_buffer(m_ibuffer);
-		}
-
-
-		/*************************************************************************
-		renders whatever is in the vertex buffer
-		*************************************************************************/
-		void renderer::renderVBuffer(void)
-		{
-			// if bufferPos is 0 there is no data in the buffer and nothing to render
-			if (m_bufferPos == 0)
-			{
-				return;
-			}
-
-			// render the sprites
-			m_device.draw(triangle_list, 0, (m_bufferPos / VERTEX_PER_TRIANGLE));
-			//m_device.draw(triangle_list, 0, 0, m_bufferPos, 0, m_bufferPos / VERTEX_PER_TRIANGLE);
-
-			// reset buffer position to 0...
-			m_bufferPos = 0;
 		}
 
 		void renderer::OnLostDevice()

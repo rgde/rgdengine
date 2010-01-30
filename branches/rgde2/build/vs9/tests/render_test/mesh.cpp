@@ -8,8 +8,6 @@ namespace rgde
 {
 	namespace render
 	{
-		typedef unsigned short uint16;
-
 		namespace
 		{
 			static inline void sincosf( float angle, float* psin, float* pcos )
