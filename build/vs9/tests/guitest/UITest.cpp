@@ -88,7 +88,7 @@ void ui_test_application::createGUISystem()
 
 	if(m_system)
 	{
-		::ShowCursor(FALSE);
+		//::ShowCursor(FALSE);
 		Cursor& cursor = m_system->getCursor();
 		cursor.setType("CursorNormal");
 

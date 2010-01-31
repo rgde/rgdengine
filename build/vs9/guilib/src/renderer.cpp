@@ -67,6 +67,7 @@ void Renderer::immediateDraw(const Image& img, const Rect& dest_rect, float z, c
 		renderQuadDirect(quad);
 	}
 }
+
 void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect,const ColorRect& colors, Image::ImageOps horz, Image::ImageOps vert)
 {
 	const Rect& source_rect = img.pixel_rect;
@@ -178,7 +179,6 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
 			(source_rect.m_right + ((final_rect.m_right - dest_rect.m_right) * tex_per_pix_x)),
 			(source_rect.m_bottom + ((final_rect.m_bottom - dest_rect.m_bottom) * tex_per_pix_y))
 			);
-
 		
 		tex_rect *= img.texture.getSize();
 
@@ -190,7 +190,12 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
 void Renderer::clearCache(BaseWindow* window)
 {
 	if (window)
-		m_mapQuadList.erase(window);
+	{
+		QuadCacheMap::iterator i = m_mapQuadList.find(window);
+		if (i != m_mapQuadList.end())
+			i->second.num = 0;//erase(window);
+		//m_mapQuadList[window].m_vec.resize(0);
+	}
 	else
 		m_mapQuadList.clear();
 }
@@ -198,7 +203,7 @@ void Renderer::clearCache(BaseWindow* window)
 bool Renderer::isExistInCache(BaseWindow* window) const
 {
 	QuadCacheMap::const_iterator i = m_mapQuadList.find(window);
-	return i != m_mapQuadList.end();
+	return i != m_mapQuadList.end() && i->second.num > 0;
 }
 
 void Renderer::startCaptureForCache(BaseWindow* window)
