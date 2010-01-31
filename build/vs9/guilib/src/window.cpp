@@ -110,7 +110,6 @@ void BaseWindow::setInputFocus(bool query)
 		m_focus = m_system.queryInputFocus(this);
 	else
 		m_focus = true;
-
 }
 
 bool BaseWindow::hitTest(const point& pt)
