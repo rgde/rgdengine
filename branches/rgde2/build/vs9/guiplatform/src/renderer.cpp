@@ -447,9 +447,9 @@ namespace gui
 					(
 					s_quadOffset * quad_size, 
 					m_batches[b].numQuads * quad_size,
-					s_quadOffset ? buffer::nooverwrite : buffer::discard
+					//s_quadOffset ? buffer::nooverwrite : buffer::discard
 					//buffer::discard
-					//buffer::nooverwrite
+					buffer::nooverwrite
 					);
 
 				if (!buffmem )
