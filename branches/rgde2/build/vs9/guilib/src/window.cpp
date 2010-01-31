@@ -71,6 +71,7 @@ void BaseWindow::setSize(const Size& sz)
 		send_event(events::SizedEvent());
 	}
 }
+
 void BaseWindow::invalidate()	
 {
 	m_system.getRenderer().clearCache(this);
@@ -84,6 +85,7 @@ void BaseWindow::invalidate()
 		++i;
 	}
 }
+
 void BaseWindow::setVisible(bool visible) 
 {
 	EventArgs a;
