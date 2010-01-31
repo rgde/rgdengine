@@ -262,6 +262,7 @@ namespace gui
 			}
 
 			QuadInfo& quad = (&m_quads.front())[m_num_quads];
+
 			quad.positions[0].x	= p0.x;
 			quad.positions[0].y	= p0.y;
 
@@ -296,7 +297,6 @@ namespace gui
 				m_currentCapturing->m_vec[m_currentCapturing->num] = quad;
 				++(m_currentCapturing->num);
 			}
-
 
 			BatchInfo* batches = &m_batches[0];
 
@@ -447,11 +447,11 @@ namespace gui
 					(
 					s_quadOffset * quad_size, 
 					m_batches[b].numQuads * quad_size,
-					buffer::discard
-					//buffer::nooverwrite
+					//s_quadOffset ? buffer::nooverwrite : buffer::discard
+					//buffer::discard
+					buffer::nooverwrite
 					);
 
-#pragma message ("gui: compare perfomance!")
 					//s_quadOffset ? buffer::nooverwrite : buffer::discard);
 
 				if (!buffmem )

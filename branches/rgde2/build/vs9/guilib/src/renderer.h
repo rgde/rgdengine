@@ -26,12 +26,6 @@ enum OrientationFlags
 	RotateRightAngle	= 4		//!< Rotate the image anticlockwise 90 degree
 };
 
-//enum QuadSplitMode
-//{
-//	TopLeftToBottomRight,	//!< Diagonal goes from top-left to bottom-right
-//	BottomLeftToTopRight	//!< Diagonal goes from bottom-left to top-right
-//};
-
 class  Renderer
 {
 public:
@@ -51,7 +45,7 @@ public:
 		// order: 0 ---> 1
 		//		  2 ---> 3
 		vec2				positions[4];
-		//Rect				position;
+
 		float				z;
 		Rect				texPosition;
 		unsigned long		topLeftCol;
@@ -59,9 +53,7 @@ public:
 		unsigned long		bottomLeftCol;
 		unsigned long		bottomRightCol;
 
-		//QuadSplitMode       splitMode;
-
-		bool operator<(const QuadInfo& other) const
+		__inline bool operator<(const QuadInfo& other) const
 		{
 			// this is intentionally reversed.
 			return z > other.z;
@@ -73,7 +65,7 @@ public:
 		Texture* texture;
 		std::size_t startQuad;
 		std::size_t numQuads;
-		QuadInfo* quads;
+		//QuadInfo* quads;
 
 		RenderCallbackInfo callbackInfo;
 	};
