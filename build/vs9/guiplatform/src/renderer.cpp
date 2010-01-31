@@ -153,7 +153,6 @@ namespace gui
 			// return value = buff offset in QuadInfo
 			__inline unsigned int fill_vertex(const Renderer::QuadInfo& q, QuadVertex*& v, float scaleX, float scaleY)
 			{									
-
 				QuadVertex& v0 = *v; ++v;
 				QuadVertex& v1 = *v; ++v;
 				QuadVertex& v2 = *v; ++v;
@@ -161,28 +160,30 @@ namespace gui
 
 				// setup Vertex 1...
 				v0.x = PixelAligned(q.positions[0].x * scaleX);
-				v0.y = PixelAligned(q.positions[0].y * scaleY);
+				v1.x = PixelAligned(q.positions[1].x * scaleX);
+				v2.x = PixelAligned(q.positions[2].x * scaleX);
+				v3.x = PixelAligned(q.positions[3].x * scaleX);
+
+				v0.y = PixelAligned(q.positions[0].y * scaleY);				
+				v1.y = PixelAligned(q.positions[1].y * scaleY);				
+				v2.y = PixelAligned(q.positions[2].y * scaleY);				
+				v3.y = PixelAligned(q.positions[3].y * scaleY);
+
 				v0.diffuse = q.topLeftCol;
 				v0.tu1 = q.texPosition.m_left;
 				v0.tv1 = q.texPosition.m_top;
 
 				// setup Vertex 2...
-				v1.x = PixelAligned(q.positions[1].x * scaleX);
-				v1.y = PixelAligned(q.positions[1].y * scaleY);
 				v1.diffuse = q.topRightCol;
 				v1.tu1 = q.texPosition.m_right;
 				v1.tv1 = q.texPosition.m_top;
 
 				// setup Vertex 3...
-				v2.x = PixelAligned(q.positions[2].x * scaleX);
-				v2.y = PixelAligned(q.positions[2].y * scaleY);
 				v2.diffuse = q.bottomLeftCol;
 				v2.tu1 = q.texPosition.m_left;
 				v2.tv1 = q.texPosition.m_bottom;
 
 				// setup Vertex 4...
-				v3.x = PixelAligned(q.positions[3].x * scaleX);
-				v3.y = PixelAligned(q.positions[3].y * scaleY);
 				v3.diffuse = q.bottomRightCol;
 				v3.tu1 = q.texPosition.m_right;
 				v3.tv1 = q.texPosition.m_bottom;
