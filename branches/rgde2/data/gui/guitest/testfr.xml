@@ -1,6 +1,4 @@
 <?xml version="1.0" ?>
-<root>
-  <Children>
     <FrameWindow name="TestWindow" file="base\framewindow.xml" >
       <Properties>
         <Area>0 0 256 128</Area>
@@ -53,5 +51,3 @@
         </On_Load>
       </Events>
     </FrameWindow>
-  </Children>
-</root>
