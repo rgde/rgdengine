@@ -8,6 +8,7 @@
 #include "eventtypes.h"
 #include "scripthost.h"
 #include "renderCallback.h"
+#include "utils.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
