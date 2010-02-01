@@ -415,9 +415,7 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
 			rc.offset(point(0.f, offset));
 
 			m_font->drawText(outtext, rc, 1.0f, clip, m_format, m_foreColor, 1.f, 1.f);
-		}
-
-		
+		}	
 
 		if(m_caretImg && m_focus && !m_readOnly)
 		{
