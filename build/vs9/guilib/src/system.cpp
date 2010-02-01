@@ -50,43 +50,6 @@ System::System(Renderer& render, const std::string& resourceDir, const std::stri
 
 System::~System(void)
 {
-	//_ASSERTE( _CrtCheckMemory( ) );
-
-	//m_logHelper.reset();
-	//_ASSERTE( _CrtCheckMemory( ) );
-
-	//m_windowMgr.reset();
-	//_ASSERTE( _CrtCheckMemory( ) );
-
-	//m_renderHelper.reset();
-	//_ASSERTE( _CrtCheckMemory( ) );
-
-	////m_scriptSys.~script_system();
-	////_ASSERTE( _CrtCheckMemory( ) );
-
-	////m_cursor.~Cursor();
-	////_ASSERTE( _CrtCheckMemory( ) );
-
-	//m_rootWindow = 0;
-	//_ASSERTE( _CrtCheckMemory( ) );
-
-	//m_dragContainer = 0;
-	//_ASSERTE( _CrtCheckMemory( ) );
-
-	//m_tooltipWindow = 0;
-	//_ASSERTE( _CrtCheckMemory( ) );
-
-	//m_menuWindow = 0;
-	//_ASSERTE( _CrtCheckMemory( ) );
-
-	//m_logger.clear();
-	//_ASSERTE( _CrtCheckMemory( ) );
-
-	//m_tickedWnd.clear();
-	//_ASSERTE( _CrtCheckMemory( ) );
-
-	//m_subscribeTickWnd.clear();
-	//_ASSERTE( _CrtCheckMemory( ) );
 }
 
 void System::reset()
@@ -469,12 +432,12 @@ bool System::handleKeyboard(EventArgs::Keys key, EventArgs::ButtonState state)
 bool System::handleChar(unsigned int code)
 {
 	if(m_exclusiveInputWindow)
-		return m_exclusiveInputWindow->onChar(std::wstring((wchar_t*)&code));
+		return m_exclusiveInputWindow->onChar((const wchar_t*)&code);
 
 	if(m_focusWindow)
 	{
 		if(code > 31) // skip ctrl codes
-			return m_focusWindow->onChar(std::wstring((wchar_t*)&code));
+			return m_focusWindow->onChar((const wchar_t*)&code);
 		else
 			return true;
 	}

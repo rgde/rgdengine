@@ -199,7 +199,7 @@ public:
 	EventArgs() : handled(false) {}
 	virtual ~EventArgs() {}
 
-	std::string name;
+	const char* name;
 	bool handled;
 };
 
@@ -223,7 +223,7 @@ public:
 	virtual ~MarkupEventArgs() {}
 	
 	unsigned int id;
-	std::string type;
+	const char* type;
 };
 
 class  MenuEventArgs : public MouseEventArgs
@@ -243,7 +243,7 @@ public:
 	
 	EventArgs::Keys button;
 	ButtonState state;
-	std::wstring ch;
+	const wchar_t* ch;
 };
 
 class BaseWindow;

@@ -547,7 +547,7 @@ bool MarkupText::onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonSta
 		m.mbutton = btn;
 		m.mstate = state;
 		m.id = (unsigned int)m_selectedlnk->id;
-		m.type = m_selectedlnk->type;
+		m.type = m_selectedlnk->type.c_str();
 		callHandler(&m);
 		return m.handled;
 	}

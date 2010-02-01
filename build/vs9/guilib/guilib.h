@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <algorithm>
+#include <boost/unordered_map.hpp>
 
 #include "src/base.h"
 #include "src/size.h"

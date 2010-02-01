@@ -38,7 +38,7 @@ public:
 	virtual bool onMouseMove();
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
 	virtual bool onKeyboardButton(EventArgs::Keys key, EventArgs::ButtonState state);
-	virtual bool onChar(const std::wstring& text);
+	virtual bool onChar(const wchar_t* text);
 	virtual bool onCaptureLost();
 	virtual bool onSized(bool update = true);
 
@@ -98,7 +98,7 @@ public:
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
 	virtual bool onMouseDouble(EventArgs::MouseButtons btn);
 	virtual bool onKeyboardButton(EventArgs::Keys key, EventArgs::ButtonState state);
-	virtual bool onChar(const std::wstring& text);
+	virtual bool onChar(const wchar_t* text);
 
 	virtual void init(xml::node& node);
 

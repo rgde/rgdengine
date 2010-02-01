@@ -274,7 +274,7 @@ bool BaseWindow::onMouseDouble(EventArgs::MouseButtons btn)
 	callHandler(&m);
 	return m.handled;
 }
-bool BaseWindow::onChar(const std::wstring& text)
+bool BaseWindow::onChar(const wchar_t* text)
 {
 	KeyEventArgs k;
 	k.name = "On_Char";
@@ -798,7 +798,7 @@ void BaseWindow::subscribeNamedEvent(std::string name, BaseWindow* sender, std::
 	{
 		NamedEventEntry entry = std::make_pair<std::string, BaseWindow*>(name, sender);
 		
-		m_scriptevents[entry] = script;
+		m_scriptevents.insert(std::make_pair(entry,script));
 
 		// support for a script events
 		subscribe<events::NamedEvent, BaseWindow> (&BaseWindow::onNamedEvent, sender);
@@ -871,7 +871,7 @@ bool BaseWindow::onGameEvent(const std::string& ev)
 		if(!handler.empty())
 		{
 			EventArgs arg;
-			arg.name = ev;
+			arg.name = ev.c_str();
 			luabind::globals (m_ref_script.LuaState())["gameEventArgs"] = &arg;
 			ExecuteScript(ev, handler);
 			luabind::globals (m_ref_script.LuaState())["gameEventArgs"] = 0;
