@@ -2,6 +2,7 @@
 #include "imageset.h"
 #include "renderer.h"
 #include "cframewindow.h"
+#include "utils.h"
 
 #include "system.h"
 

@@ -4,6 +4,7 @@
 #include "imageset.h"
 #include "renderer.h"
 #include "cslider.h"
+#include "utils.h"
 
 #include "system.h"
 

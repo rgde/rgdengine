@@ -147,7 +147,7 @@ void Renderer::drawLine(const Image& img, const vec2* p, size_t size, float z, c
 		vec2 dir = make_normal(v2-v1);
 
 		vec2 nv(-dir.y, dir.x);
-		nv *= width*0.5;
+		nv *= width*0.5f;
 
 		p0 = v1 + nv;
 		p1 = v2 + nv;

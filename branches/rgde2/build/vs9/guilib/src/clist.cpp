@@ -6,6 +6,7 @@
 #include "font.h"
 #include "cstatictext.h"
 #include "clist.h"
+#include "utils.h"
 
 #include "system.h"
 
