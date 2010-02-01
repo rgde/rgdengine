@@ -154,14 +154,14 @@ bool Editbox::ValidateNumeric(const std::wstring& text) const
 	return text.find_first_not_of(mask) == std::wstring::npos;
 }
 
-bool Editbox::onChar(const std::wstring& text)
+bool Editbox::onChar(const wchar_t* text)
 {
 	if (m_readOnly)
 		return true;
 
 	if(m_numeric)
 	{
-		if(!ValidateNumeric(text))
+		if(!ValidateNumeric(std::wstring(text)))
 			return true;
 	}
 
@@ -172,7 +172,7 @@ bool Editbox::onChar(const std::wstring& text)
 		setCaretPos(m_selectionStart);
 	}
 	clearSelection();
-	size_t newLen = m_wtext.length() + text.length();
+	size_t newLen = m_wtext.length() + 1;
 	if (newLen <= m_maxLength)
 	{
 		m_wtext.insert(m_caretPos, text);
@@ -586,7 +586,7 @@ bool KeyBinder::onKeyboardButton(EventArgs::Keys key, EventArgs::ButtonState sta
 	return true;
 }
 
-bool KeyBinder::onChar(const std::wstring& /*text*/)
+bool KeyBinder::onChar(const wchar_t* /*text*/)
 {
 	return true;
 }

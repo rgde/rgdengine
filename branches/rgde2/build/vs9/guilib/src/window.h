@@ -119,7 +119,7 @@ public:
 	virtual bool onMouseWheel(int delta);
 	virtual bool onMouseButton(EventArgs::MouseButtons btn, EventArgs::ButtonState state);
 	virtual bool onMouseDouble(EventArgs::MouseButtons btn);
-	virtual bool onChar(const std::wstring& text);
+	virtual bool onChar(const wchar_t* text);
 	virtual bool onKeyboardButton(EventArgs::Keys key, EventArgs::ButtonState state);
 	virtual bool onCaptureGained(void);
 	virtual bool onCaptureLost(void);
@@ -219,10 +219,10 @@ protected:
 	AfterRenderCallbackFunc m_afterRenderCallback;
 
 	typedef std::pair<std::string, BaseWindow*> NamedEventEntry;
-	typedef std::map<NamedEventEntry, std::string> NamedEventsMap;
+	typedef boost::unordered_map<NamedEventEntry, std::string> NamedEventsMap;
 	NamedEventsMap m_scriptevents;
 	
-	typedef std::map<std::string, std::string> HandlerMap;
+	typedef boost::unordered_map<std::string, std::string> HandlerMap;
 	HandlerMap		m_handlers;
 
 	struct seeker_{

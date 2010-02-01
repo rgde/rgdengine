@@ -26,6 +26,7 @@
 #include <boost/bind.hpp>
 #include <boost/noncopyable.hpp>
 #include <boost/tokenizer.hpp>
+#include <boost/unordered_map.hpp>
 
 extern "C"
 {
