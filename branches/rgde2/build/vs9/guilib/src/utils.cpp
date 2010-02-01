@@ -7,6 +7,7 @@
 namespace gui
 {
 
+#pragma message ("Use portable UTF conversion from http://sourceforge.net/projects/utfcpp/ !!!")
 
 std::wstring UTF8ToUTF16(const std::string& text)
 {
@@ -69,17 +70,14 @@ std::string PointToString(const point& val)
 
 bool StringToBool(const std::string& str)
 {
-	if(str == "true" || str == "True")
-		return true;
-	return false;
+	return (str == "true" || str == "True");
 }
 
-std::string BoolToString(bool val)
+const std::string& BoolToString(bool val)
 {
-	if(val)
-		return std::string("True");
-
-	return std::string("False");
+	static const std::string true_str("true");
+	static const std::string false_str("false");
+	return val ? true_str : false_str;
 }
 
 }

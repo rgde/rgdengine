@@ -7,6 +7,10 @@ namespace gui
 
 	Size StringToSize(const std::string& str);
 	std::string SizeToString(const Size& val);
+
 	point StringToPoint(const std::string& str);
 	std::string PointToString(const point& val);
+
+	bool StringToBool(const std::string& str);
+	const std::string& BoolToString(bool val);
 }
