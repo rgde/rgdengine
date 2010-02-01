@@ -73,8 +73,8 @@ const FontGlyph *Font::getGlyphData (utf32 codepoint)
         }
     }
 
-    CodepointMap::const_iterator pos = m_cp_map.find (codepoint);
-    return (pos != m_cp_map.end()) ? &pos->second : 0;
+    CodepointMapIndex::const_iterator pos = m_cp_map_index.find (codepoint);
+    return (pos != m_cp_map_index.end()) ? &pos->second->second : 0;
 }
 
 float Font::getTextExtent(const std::wstring& text, float x_scale)
