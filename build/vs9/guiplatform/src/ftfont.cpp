@@ -271,6 +271,7 @@ void FreeTypeFont::free ()
     if (!m_fontFace)
         return;
 
+	m_cp_map_index.clear();
     m_cp_map.clear();
 
 	ImagesetVector::iterator i = m_glyphImages.begin();
@@ -389,6 +390,7 @@ void FreeTypeFont::updateFont()
         // create a new empty FontGlyph with given character code
         //m_cp_map[codepoint] = FontGlyph (adv);
 		CodepointMap::iterator glyph_it = m_cp_map.insert(CodepointMap::value_type(codepoint, FontGlyph(adv))).first;
+		m_cp_map_index.insert(std::make_pair(codepoint, glyph_it));
 #ifdef GUI_KERNING_ENABLED
 		if (FT_HAS_KERNING(m_fontFace))
 		{

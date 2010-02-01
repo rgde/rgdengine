@@ -104,7 +104,10 @@ namespace gui
 
 		bool isCodepointAvailable (utf32 cp) const
 		{ 
-			return (m_cp_map.find(cp) != m_cp_map.end()); 
+			CodepointMapIndex::const_iterator it = m_cp_map_index.find(cp);
+			if(it != m_cp_map_index.end())
+				return (it->second != m_cp_map.end()); 
+			return false;
 		}
 
 		size_t drawText (const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
@@ -195,6 +198,8 @@ namespace gui
 		typedef std::map<utf32, FontGlyph> CodepointMap;
 		/// Contains mappings from code points to Image objects
 		CodepointMap m_cp_map;
+		typedef boost::unordered_map<utf32, CodepointMap::const_iterator> CodepointMapIndex;
+		CodepointMapIndex m_cp_map_index;
 
 		std::string m_name;
 		std::string m_fileName;
