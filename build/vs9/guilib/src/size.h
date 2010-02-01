@@ -19,7 +19,4 @@ namespace gui
 
 	Size operator* ( const Size& lhs,const Size& rhs );
 	Size operator/ ( const Size& lhs,const Size& rhs );
-
-	bool StringToBool(const std::string& str);
-	std::string BoolToString(bool val);	
 }

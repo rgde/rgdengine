@@ -38,7 +38,7 @@ class  BaseWindow :
 {
 public:
 	typedef BaseWindow Self;
-	BaseWindow(System& sys, const std::string& name = "");
+	BaseWindow(System& sys, const std::string& name = std::string());
 	virtual ~BaseWindow();
 
 	static const char* GetType() { return "BaseWindow"; }
