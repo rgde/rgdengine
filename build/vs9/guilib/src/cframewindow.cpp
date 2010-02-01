@@ -154,6 +154,10 @@ void FrameWindow::render(const Rect& finalRect, const Rect& finalClip)
 		// draw this element.
         r.draw(*m_captionBackImg, componentRect, 1.f, finalClip,  m_backColor, Image::Tile, Image::Stretch);
     }
+
+	//rendering frame
+	const Rect rc(finalRect.m_left, finalRect.m_top + height, finalRect.m_right, finalRect.m_bottom);
+	renderFrame(rc, finalClip);
 	
 	if(m_font)
 	{
@@ -162,10 +166,6 @@ void FrameWindow::render(const Rect& finalRect, const Rect& finalClip)
 		componentRect.m_top += (caption_height - font_height)*0.5f;
 		m_font->drawText(m_text, componentRect, 1.0f, finalClip, m_format, m_captionColor, 1.f, 1.f);
 	}
-
-	//rendering frame
-	const Rect rc(finalRect.m_left, finalRect.m_top + height, finalRect.m_right, finalRect.m_bottom);
-	renderFrame(rc, finalClip);
 }
 
 void FrameWindow::init(xml::node& node)
