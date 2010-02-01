@@ -3,6 +3,7 @@
 #include "imageset.h"
 #include "renderer.h"
 #include "cprogress.h"
+#include "utils.h"
 
 #include <math.h>
 

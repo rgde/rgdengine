@@ -3,6 +3,7 @@
 #include "imageset.h"
 #include "renderer.h"
 #include "cbutton.h"
+#include "utils.h"
 
 #include "system.h"
 

@@ -3,6 +3,7 @@
 #include "imageset.h"
 #include "renderer.h"
 #include "ccheckbox.h"
+#include "utils.h"
 
 #include "system.h"
 
