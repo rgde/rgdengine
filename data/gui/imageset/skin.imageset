@@ -33,9 +33,9 @@
 	
 	<Image Name="EditFrameLeft" XPos="48.0" YPos="56.0" Width="5.0" Height="31.0" />
 	<Image Name="EditFrameRight" XPos="72.0" YPos="56.0" Width="5.0" Height="31.0" />	
-	<Image Name="EditFrameMiddle" XPos="51.0" YPos="56.0" Width="4.0" Height="31.0" />
-	<Image Name="EditBoxCarat" XPos="68.0" YPos="63.0" Width="3.0" Height="16.0" />
-	<Image Name="TextSelectionBrush" XPos="58.0" YPos="63.0" Width="3.0" Height="16.0" />
+	<Image Name="EditFrameMiddle" XPos="51.0" YPos="56.0" Width="23.0" Height="31.0" />
+	<Image Name="EditBoxCarat" XPos="91.0" YPos="56.0" Width="3.0" Height="16.0" />
+	<Image Name="TextSelectionBrush" XPos="80.0" YPos="56.0" Width="9.0" Height="16.0" />
 	
 
 </Imageset>
