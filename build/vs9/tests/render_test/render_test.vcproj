@@ -191,6 +191,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\collada.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\collada.h"
 				>
 			</File>
