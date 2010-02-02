@@ -151,7 +151,7 @@ namespace gui
 		namespace 
 		{
 			// return value = buff offset in QuadInfo
-			/*__inline*/ __forceinline unsigned int fill_vertex(const Renderer::QuadInfo& q, QuadVertex*& v, float scaleX, float scaleY)
+			/*__inline */__forceinline unsigned int fill_vertex(const Renderer::QuadInfo& q, QuadVertex*& v, float scaleX, float scaleY)
 			{									
 				QuadVertex& v0 = *v; ++v;
 				QuadVertex& v1 = *v; ++v;
@@ -164,20 +164,10 @@ namespace gui
 				v2.x = PixelAligned(q.positions[2].x * scaleX);
 				v3.x = PixelAligned(q.positions[3].x * scaleX);
 
-				v0.y = PixelAligned(q.positions[0].y * scaleY);				
-				v1.y = PixelAligned(q.positions[1].y * scaleY);				
-				v2.y = PixelAligned(q.positions[2].y * scaleY);				
+				v0.y = PixelAligned(q.positions[0].y * scaleY);
+				v1.y = PixelAligned(q.positions[1].y * scaleY);
+				v2.y = PixelAligned(q.positions[2].y * scaleY);
 				v3.y = PixelAligned(q.positions[3].y * scaleY);
-
-				//v0.x = q.positions[0].x;
-				//v1.x = q.positions[1].x;
-				//v2.x = q.positions[2].x;
-				//v3.x = q.positions[3].x;
-
-				//v0.y = q.positions[0].y;				
-				//v1.y = q.positions[1].y;				
-				//v2.y = q.positions[2].y;				
-				//v3.y = q.positions[3].y;
 				
 				v0.tu1 = v2.tu1 = q.texPosition.m_left;
 				v0.tv1 = v1.tv1 = q.texPosition.m_top;
@@ -185,11 +175,9 @@ namespace gui
 				v2.tv1 = v3.tv1 = q.texPosition.m_bottom;
 
 				v0.diffuse = q.topLeftCol;
-				v1.diffuse = q.topRightCol;				
-				v2.diffuse = q.bottomLeftCol;			
+				v1.diffuse = q.topRightCol;
+				v2.diffuse = q.bottomLeftCol;
 				v3.diffuse = q.bottomRightCol;
-				
-
 
 				return VERTEX_PER_QUAD;
 			}			
@@ -265,7 +253,9 @@ namespace gui
 				m_quads.resize(m_num_quads*2);
 			}
 
-			QuadInfo& quad = (&m_quads.front())[m_num_quads];
+			QuadInfo* quads = &m_quads.front();
+
+			QuadInfo& quad = quads[m_num_quads];
 
 			quad.positions[0].x	= p0.x;
 			quad.positions[0].y	= p0.y;
@@ -295,17 +285,19 @@ namespace gui
 			}
 
 			if (m_currentCapturing)
-			{
+			{				
 				if (m_currentCapturing->num >= m_currentCapturing->m_vec.size())
 					m_currentCapturing->m_vec.resize(m_currentCapturing->num * 2);
-				m_currentCapturing->m_vec[m_currentCapturing->num] = quad;
+
+				QuadInfo& q = (&m_currentCapturing->m_vec.front())[m_currentCapturing->num];
+				q = quad;
 				++(m_currentCapturing->num);
 			}
 
 			BatchInfo* batches = &m_batches[0];
 
 
-			if (!m_num_quads  || m_quads[m_num_quads - 1].texture != quad.texture ||
+			if (!m_num_quads  || quads[m_num_quads - 1].texture != quad.texture ||
 				m_needToAddCallback || 
 				(m_num_batches && (m_num_quads - batches[m_num_batches - 1].startQuad + 1)*VERTEX_PER_QUAD >= VERTEXBUFFER_CAPACITY))
 			{
@@ -359,7 +351,10 @@ namespace gui
 			{
 				if (m_currentCapturing->num >= m_currentCapturing->m_vec.size())
 					m_currentCapturing->m_vec.resize(m_currentCapturing->num * 2);
-				m_currentCapturing->m_vec[m_currentCapturing->num] = quad;
+				
+				QuadInfo& q = (&m_currentCapturing->m_vec.front())[m_currentCapturing->num];
+				q = quad;
+
 				++(m_currentCapturing->num);
 			}
 
@@ -441,25 +436,24 @@ namespace gui
 			
 			static const unsigned int quad_size = VERTEX_PER_QUAD * sizeof(QuadVertex);
 
+			BatchInfo* batches = &m_batches.front();
+			QuadInfo* quads = &m_quads.front();
+
 			for (std::size_t b = 0; b < m_num_batches; ++b)
 			{
-				BatchInfo& batch = m_batches[b];
+				BatchInfo& batch = batches[b];
 				if ( VERTEX_PER_QUAD * (batch.numQuads + s_quadOffset) >= VERTEXBUFFER_CAPACITY)
 					s_quadOffset = 0;
 
 				buffmem = (QuadVertex*)m_buffer->lock
 					(
 					s_quadOffset * quad_size, 
-					m_batches[b].numQuads * quad_size,
-					//s_quadOffset ? buffer::nooverwrite : buffer::discard
-					//buffer::discard
+					batches[b].numQuads * quad_size,
 					buffer::nooverwrite
 					);
 
 				if (!buffmem )
-					return;
-
-				QuadInfo* quads = &m_quads.front();
+					break;				
 
 				std::size_t numQ = batch.numQuads;
 				QuadInfo* quad = &quads[batch.startQuad];
@@ -735,7 +729,7 @@ namespace gui
 		{
 			assert(window);
 			QuadCacheMap::iterator i = m_mapQuadList.find(window);
-			if (i == m_mapQuadList.end()) return;
+			assert (i != m_mapQuadList.end());
 			QuadCacheRecord& v = i->second;
 
 			assert(v.num <= v.m_vec.size());

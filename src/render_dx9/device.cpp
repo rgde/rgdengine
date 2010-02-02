@@ -14,7 +14,7 @@ namespace rgde
 
 		D3DPRIMITIVETYPE convert(primitive_type type)
 		{
-			D3DPRIMITIVETYPE dx_type = (D3DPRIMITIVETYPE)type;
+			D3DPRIMITIVETYPE dx_type = static_cast<D3DPRIMITIVETYPE>(type);
 			return dx_type;
 		}
 
@@ -34,15 +34,6 @@ namespace rgde
 
 		resource::pool convert(D3DPOOL pool)
 		{
-			//typedef enum _D3DPOOL {
-			//	D3DPOOL_DEFAULT                 = 0,
-			//	D3DPOOL_MANAGED                 = 1,
-			//	D3DPOOL_SYSTEMMEM               = 2,
-			//	D3DPOOL_SCRATCH                 = 3,
-
-			//	D3DPOOL_FORCE_DWORD             = 0x7fffffff
-			//} D3DPOOL;
-
 			static resource::pool pool_mapings[D3DPOOL_SYSTEMMEM + 1] =
 			{
 				resource::default, resource::managed, resource::systemmem
@@ -303,15 +294,6 @@ namespace rgde
 			assert(hr == S_OK);
 		}
 
-		//DrawIndexedPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType,
-		//	UINT MinVertexIndex, = 0
-		//	UINT NumVertices,
-		//	UINT PrimitiveCount,
-		//	CONST void* pIndexData,
-		//	D3DFORMAT IndexDataFormat, == D3DFMT_INDEX16
-		//	CONST void* pVertexStreamZeroData,
-		//	UINT VertexStreamZeroStride);
-
 		void device::draw(primitive_type type, uint num_vertices, uint primitive_count, const void* vertex_data, uint vertex_stride,
 						const uint16* index_data)
 		{			
@@ -557,8 +539,6 @@ namespace rgde
 
 		HRESULT dx_include_impl::Open(D3DXINCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID *ppData, UINT *pBytes)
 		{
-			__asm nop;
-
 			core::vfs::istream_ptr in = m_vfs.open_read(pFileName);
 
 			if (!in)
