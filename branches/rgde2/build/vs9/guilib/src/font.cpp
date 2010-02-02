@@ -447,7 +447,7 @@ void Font::drawTextLineJustified (const std::wstring& text, const Rect& draw_are
 	if(Rect(draw_area).getIntersection(clip_rect).empty())
 		return;
 
-	{
+/*	{
 		Vector3	cur_pos(position);
 
 		const FontGlyph* glyph;
@@ -477,15 +477,12 @@ void Font::drawTextLineJustified (const std::wstring& text, const Rect& draw_are
 			if (glyph)
 			{
 				const Image* img = glyph->getImage();
-				//cur_pos.y = base_y + glyph->getOffsetY()* y_scale;// - glyph->getOffsetY() * y_scale);
 				Size size = glyph->getSize(x_scale, y_scale);
 				Rect rec (cur_pos.x + glyph->getOffsetX() * x_scale, cur_pos.y + glyph->getOffsetY() * y_scale, cur_pos.x + glyph->getOffsetX() * x_scale + size.width, cur_pos.y + glyph->getOffsetY() * y_scale + size.height);
 
 				Rect shadow_rec (rec.m_left+.5f,rec.m_top+.5f,rec.m_right+1.f,rec.m_bottom+1.f);
 				ColorRect shadow_color (Color(0,0,0,colours.m_top_left.getAlpha()),Color(0,0,0,colours.m_top_right.getAlpha()),Color(0,0,0,colours.m_bottom_left.getAlpha()),Color(0,0,0,colours.m_bottom_right.getAlpha()));
 				m_render.draw(*img, shadow_rec, cur_pos.z, clip_rect, shadow_color);
-
-				//m_render.draw(*img, rec, cur_pos.z, clip_rect, shadow_color);
 
 				cur_pos.x += glyph->getAdvance(x_scale);
 #ifdef GUI_KERNING_ENABLED
@@ -497,7 +494,7 @@ void Font::drawTextLineJustified (const std::wstring& text, const Rect& draw_are
 					cur_pos.x += shared_lost_space;
 			}
 		}
-	}
+	}*/
 
 	{
 		Vector3	cur_pos(position);
@@ -529,7 +526,7 @@ void Font::drawTextLineJustified (const std::wstring& text, const Rect& draw_are
 			if (glyph)
 			{
 				const Image* img = glyph->getImage();
-				//cur_pos.y = base_y + glyph->getOffsetY()* y_scale;// - glyph->getOffsetY() * y_scale);
+
 				Size size = glyph->getSize(x_scale, y_scale);
 				Rect rec (cur_pos.x + glyph->getOffsetX() * x_scale, cur_pos.y + glyph->getOffsetY() * y_scale, cur_pos.x + glyph->getOffsetX() * x_scale + size.width, cur_pos.y + glyph->getOffsetY() * y_scale + size.height);
 
