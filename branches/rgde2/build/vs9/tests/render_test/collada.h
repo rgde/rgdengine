@@ -84,6 +84,8 @@ namespace collada
 			z_up
 		};
 
+		void read(rgde::core::vfs::istream_ptr stream);
+
 		std::string created;
 		std::string modified;
 		std::string authoring_tool;
@@ -96,10 +98,10 @@ namespace collada
 		typedef std::map<std::string, material> library_materials_t;
 		library_materials_t library_materials;
 
-		std::map<std::string, effect> effects_t;
+		typedef std::map<std::string, effect> effects_t;
 		effects_t effects;
 
-		std::map<std::string, geometries> geometries_t;
-		geometries_t geometries
+		typedef std::map<std::string, geometry> geometries_t;
+		geometries_t geometries;
 	};
 }
