@@ -66,15 +66,51 @@ namespace collada
 		};
 	};
 
-	struct geometry
+	struct mesh
 	{
 		const char* id; // is NULL when not in library
 		std::string name;
 
-		struct mesh_t
+		struct source
 		{
-
+			std::string id;
+			std::vector<float> data;
+			int stride;
 		};
+
+		struct subset_info
+		{
+			std::string material;
+
+			std::vector<int> indices;
+
+			struct input
+			{
+				enum semantic_t
+				{
+					VERTEX,
+					NORMAL,
+					TEXCOORD
+				};
+
+				std::string source_id;
+
+				semantic_t semantic;
+				int offset;
+				int set;
+			};
+
+			std::vector<input> inputs;
+		};
+
+		typedef std::map<std::string, source> source_library;
+		typedef source_library::iterator sources_iter;
+
+		typedef std::vector<subset_info> subsets_store;
+		typedef subsets_store::iterator subsets_iter;
+
+		source_library sources;
+		subsets_store subsets;		
 	};
 
 	struct scene
@@ -101,7 +137,7 @@ namespace collada
 		typedef std::map<std::string, effect> effects_t;
 		effects_t effects;
 
-		typedef std::map<std::string, geometry> geometries_t;
-		geometries_t geometries;
+		typedef std::map<std::string, mesh> meshes_t;
+		meshes_t meshes;
 	};
 }
