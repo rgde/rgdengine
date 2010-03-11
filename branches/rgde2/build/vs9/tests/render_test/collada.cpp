@@ -83,7 +83,9 @@ namespace collada
 			for( int i = 0; i < subset.indices.size(); ++i )
 			{
 				subset.indices[i] = static_cast<float>(strtod(buf,&buf));
-			}	
+			}
+
+			__asm nop;
 		}
 
 		//bool res = get_source_accessor_params( element, accessor_count, accessor_stride );
