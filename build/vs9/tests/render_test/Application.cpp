@@ -24,8 +24,8 @@ application::application(int x, int y, int w, int h, const std::wstring& title)
 	, m_batcher2d(m_device)
 	, m_console(m_device)
 {
-	m_size.w = w;
-	m_size.h = h;
+	m_size.w = (float)w;
+	m_size.h = (float)h;
 
 	old_x = -1;
 	old_y = -1;

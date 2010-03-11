@@ -105,7 +105,7 @@ namespace collada
 
 			char* buf = const_cast<char*>(str_data);
 
-			for( int i = 0; i < subset.indices.size(); ++i )
+			for( size_t i = 0; i < subset.indices.size(); ++i )
 			{
 				subset.indices[i] = static_cast<float>(strtod(buf,&buf));
 			}

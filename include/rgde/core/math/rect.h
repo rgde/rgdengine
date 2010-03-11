@@ -24,12 +24,10 @@ namespace rgde
 
 			union
 			{
-				struct 
-				{
+				struct {
 					vec2f position, size;
 				};
-				struct 
-				{
+				struct {
 					float x,y,w,h;
 				};
 			};
