@@ -120,12 +120,7 @@ namespace rgde
 				m_need_ib_update = false;
 				ushort *indices = (ushort*)m_ib->lock( 0, 
 					sizeof(ushort)*m_reserved_size*4, 0 );
-
-				if (!indices)
-				{
-					__asm nop;
-				}
-				
+			
 				for (uint i = 0; i < m_reserved_size; ++i)
 				{
 					indices[i * 6 + 0] = i * 4 + 0;
