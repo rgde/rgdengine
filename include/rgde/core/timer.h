@@ -19,7 +19,7 @@ namespace rgde
 				void start();				// starts the timer
 				void stop();				// stop (or pause) the timer
 
-				bool is_stopped() const;		// returns true if timer stopped
+				inline bool is_stopped() const {return m_is_stoped;}	// returns true if timer stopped
 
 				double get_absolute_time(); // get the absolute system time
 				double get_time();			// get the current time

@@ -4,6 +4,71 @@
 
 namespace collada
 {
+	namespace helpers
+	{
+		bool read_float_array(xml::node array_node, std::vector<float>& out)
+		{
+			if (!array_node)
+				return false;
+
+			std::string array_id = array_node["id"].value();			
+
+			const char* str_data = array_node.first_child().value();
+			int count = array_node["count"].as_int();
+
+			if (count <= 0)
+				return false;
+
+			out.resize(count);
+
+			char* buf = const_cast<char*>(str_data);
+
+			for( int i = 0; i < count; ++i )
+			{
+				out[i] = static_cast<float>(strtod(buf,&buf));
+			}
+
+			return true;
+		}
+
+		bool read_mesh_input(xml::node input_node, mesh::subset_info::input& input)
+		{
+			std::string semantic = input_node["semantic"].value();
+
+			if (semantic == "VERTEX")
+				input.semantic = mesh::subset_info::input::VERTEX;
+			else if (semantic == "NORMAL")
+				input.semantic = mesh::subset_info::input::NORMAL;
+			else if (semantic == "TEXCOORD")
+				input.semantic = mesh::subset_info::input::TEXCOORD;
+			else
+				return false; //TODO:
+
+			input.set = input_node["set"] ? input_node["set"].as_int() : -1;
+			input.offset = input_node["offset"].as_int();
+			input.source_id = input_node["source"].value();
+
+			return true;
+		}
+
+		bool read_mesh_source(xml::node source_node, mesh& m)
+		{
+			std::string source_id = source_node["id"].value();
+			mesh::source& source = m.sources["#" + source_id];
+
+			source.id = source_id;
+			source.stride = source_node("technique_common")("accessor")["stride"].as_int();				
+
+			xml::node array_node = source_node("float_array");
+
+			bool res = helpers::read_float_array(array_node, source.data);
+			assert(res && "Error while reading float array!");
+
+			return res;
+		}
+	}
+
+	// DOM walker:
 	void read_mesh(xml::node geometry_node, mesh& m)
 	{
 		m.name = geometry_node["name"] ? geometry_node["name"].value() : "";
@@ -15,34 +80,8 @@ namespace collada
 			return;
 
 		for(xml::node source_node = mesh_node("source");source_node;source_node = source_node.next_sibling("source"))
-		{
-			std::string source_id = source_node["id"].value();
-
-			mesh::source& source = m.sources["#" + source_id];
-			source.id = source_id;
-			source.stride = source_node("technique_common")("accessor")["stride"].as_int();				
-
-			xml::node array_node = source_node("float_array");
-
-			if (!array_node)
-				continue; // TODO: add diagnostics
-                         
-			std::string array_id = array_node["id"].value();			
-
-			const char* str_data = array_node.first_child().value();
-			int count = array_node["count"].as_int();
-
-			if (count <= 0)
-				return; // TODO: error reporting
-
-			source.data.resize(count);
-
-			char* buf = const_cast<char*>(str_data);
-
-			for( int i = 0; i < count; ++i )
-			{
-				source.data[i] = static_cast<float>(strtod(buf,&buf));
-			}	
+		{			
+			helpers::read_mesh_source(source_node, m);			
 		}
 
 		for(xml::node triangle_node = mesh_node("triangles");triangle_node;triangle_node = triangle_node.next_sibling("triangles"))
@@ -56,22 +95,8 @@ namespace collada
 			for(xml::node input_node = triangle_node("input");input_node;input_node = input_node.next_sibling("input"))
 			{
 				subset.inputs.push_back(mesh::subset_info::input());
-				mesh::subset_info::input& input = subset.inputs.back();
-
-				std::string semantic = input_node["semantic"].value();
-
-				if (semantic == "VERTEX")
-					input.semantic = mesh::subset_info::input::VERTEX;
-				else if (semantic == "NORMAL")
-					input.semantic = mesh::subset_info::input::NORMAL;
-				else if (semantic == "TEXCOORD")
-					input.semantic = mesh::subset_info::input::TEXCOORD;
-				else
-					return; //TODO:
-
-				input.set = input_node["set"] ? input_node["set"].as_int() : -1;
-				input.offset = input_node["offset"].as_int();
-				input.source_id = input_node["source"].value();
+				bool res = helpers::read_mesh_input(input_node, subset.inputs.back());
+				assert(res && "Error while reading input node data!");
 			}
 
 			const char* str_data = triangle_node("p").first_child().value();

@@ -7,8 +7,6 @@
 #include "wavefile.h"
 #include "wavefile_factory.h"
 
-
-
 #define SAFE_RELEASE(p)      { if(p) { (p)->Release(); (p)=NULL; } }
 #define CLAMP(var, min, max)   (((var) < (min)) ? (var) = (min) : ((var) > (max)) ? (var) = (max) : (var))
 
@@ -26,7 +24,7 @@ namespace rgde
 		// Desc: Initializes the IDirectSound object and also sets the primary buffer
 		//       format.  This function must be called before any others.
 		//-----------------------------------------------------------------------------
-		audio_manager::audio_manager(HWND  hWnd, 
+		audio_manager::audio_manager(core::windows::handle handle, 
 			DWORD dwPrimaryChannels, 
 			DWORD dwPrimaryFreq, 
 			DWORD dwPrimaryBitRate,
@@ -65,7 +63,7 @@ namespace rgde
 			}
 
 			// Set DirectSound coop level 
-			if (FAILED(hr = m_pDS->SetCooperativeLevel(hWnd, DSSCL_PRIORITY)))
+			if (FAILED(hr = m_pDS->SetCooperativeLevel((HWND)handle, DSSCL_PRIORITY)))
 			{
 				DXTRACE_ERR(TEXT("audio_manager::Init, SetCooperativeLevel"), hr);
 				return;
