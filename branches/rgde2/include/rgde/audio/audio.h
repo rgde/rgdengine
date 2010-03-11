@@ -1,6 +1,7 @@
 #pragma once
 
 #include <rgde/core/xml/xml.h>
+#include <rgde/core/windows_forward.h>
 
 namespace rgde
 {
@@ -16,8 +17,11 @@ namespace rgde
 		class listener
 		{
 		public:
+			virtual void audio_started(internal::base_audio* p) {}; /*= 0;*/ //TODO:
 			virtual void audio_finished(internal::base_audio* p) = 0;
 		};
+
+		typedef boost::shared_ptr<listener> listener_ptr;
 
 		struct vec3
 		{
@@ -65,47 +69,13 @@ namespace rgde
 			vec3 m_vel;
 		};
 
-		inline world_object::world_object()
-			:	m_pos(0.0f, 0.0f, 0.0f),
-			m_vel(0.0f, 0.0f, 0.0f)
-		{
-		}
+		typedef boost::shared_ptr<world_object> world_object_ptr;		
 
-		inline void world_object::get_position(float& x, float& y, float& z) const
-		{
-			x = m_pos.x;
-			y = m_pos.y;
-			z = m_pos.z;
-		}
-
-		inline const vec3& world_object::get_position() const
-		{
-			return m_pos;
-		}
-
-		inline void world_object::set_position(float x, float y, float z)
-		{
-			m_pos.x = x;
-			m_pos.y = y;
-			m_pos.z = z;
-		}
-
-		inline const vec3& world_object::get_velocity() const
-		{
-			return m_vel;
-		}
-
-		inline void world_object::set_velocity(float x, float y, float z)
-		{
-			m_vel.x = x;
-			m_vel.y = y;
-			m_vel.z = z;
-		}
 
 		class system
 		{
 		public:
-			system(void* window_handle /* hwnd on win32 */);
+			system(core::windows::handle handle);
 			~system();
 
 			void update(int ms_elapsed);
@@ -121,8 +91,11 @@ namespace rgde
 
 			void set_camera(camera* cam);
 
-			void play(const char* tag_name);
-			void play(size_t tag_index);
+			void play(const char* tag_name, int ms_duration = 0, int ms_delay = 0,	
+				listener_ptr listener = listener_ptr(), world_object_ptr world_object  = world_object_ptr() );
+
+			void play(size_t tag_index, int ms_duration = 0, int ms_delay = 0,	
+				listener_ptr listener = listener_ptr(), world_object_ptr world_object  = world_object_ptr() );
 
 		private:
 			class audio_manager* manager;

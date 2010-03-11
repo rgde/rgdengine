@@ -9,9 +9,19 @@ namespace rgde
 	{
 		namespace windows
 		{
+			window::window(handle external_handle)
+				: m_hwnd(external_handle)
+				, m_parent_hwnd(0)
+				, m_instance(0)
+				, m_using_external_handle(true)
+			{
+				m_instance = GetModuleHandle(NULL);
+			}
+
 			window::window(const std::wstring& title)
 				: m_hwnd(0), m_window_title(title), m_class_name(title + L"_class"),
 				  m_parent_hwnd(0), m_instance(0)
+				  , m_using_external_handle(false)
 			{
 				m_instance = GetModuleHandle(NULL);
 				if (register_class())
@@ -25,6 +35,7 @@ namespace rgde
 			window::window(const point& pos, const size& s, const std::wstring& title)
 				: m_hwnd(0), m_window_title(title), m_class_name(title + L"_class"),
 				m_parent_hwnd(0), m_instance(0) 
+				, m_using_external_handle(false)
 			{
 				m_instance = GetModuleHandle(NULL);
 				if (register_class())
@@ -35,7 +46,8 @@ namespace rgde
 
 			window::window(const point& pos, const size& s, const std::wstring& title, handle parent_handle, ulong style)
 				: m_hwnd(0), m_window_title(title), m_class_name(title + L"_class"),
-				m_parent_hwnd(parent_handle), m_instance(0) 
+				m_parent_hwnd(parent_handle), m_instance(0)
+				, m_using_external_handle(false)
 			{
 				m_instance = GetModuleHandle(NULL);
 				if (register_class())
@@ -46,21 +58,21 @@ namespace rgde
 
 			window::~window()
 			{
-				if (0 != m_hwnd)
+				if (0 != m_hwnd && !m_using_external_handle)
 					DestroyWindow(m_hwnd);
 
-				if (0 != m_instance)
+				if (0 != m_instance && !m_using_external_handle)
 					UnregisterClass(m_class_name.c_str(), m_instance);
 			}
 
 			bool window::set_state(int state)
 			{
-				return (TRUE == ShowWindow(m_hwnd, state ));
+				return !m_using_external_handle ? (TRUE == ShowWindow(m_hwnd, state )) : false;
 			}
 
 			bool window::update()
 			{
-				return (TRUE == UpdateWindow( m_hwnd ));
+				return !m_using_external_handle ? (TRUE == UpdateWindow( m_hwnd )) : true;
 			}
 
 			
@@ -80,6 +92,9 @@ namespace rgde
 
 			bool window::move_window(const point& p, const size& s)
 			{
+				if (m_using_external_handle)
+					return false;
+
 				return TRUE == MoveWindow(m_hwnd, 
 					p[0], p[1],
 					s[0],
@@ -89,16 +104,24 @@ namespace rgde
 
 			bool window::set_position(const point& p)
 			{
+				if (m_using_external_handle)
+					return false;
+
 				return move_window(p,get_size());
 			}
 
 			bool window::set_size(const size& s)
 			{
+				if (m_using_external_handle)
+					return false;
+
 				return move_window(get_position(),s);
 			}
 
 			bool window::register_class()
 			{
+				assert(!m_using_external_handle && "Invalid call RegisterClass while using external window handler!");
+
 				m_wc.style = 0;
 				m_wc.lpfnWndProc = (WNDPROC)dispatch;
 				m_wc.cbClsExtra = 0;
@@ -117,6 +140,8 @@ namespace rgde
 
 			bool window::create(const point& pos, const size& s, ulong style)
 			{
+				assert(!m_using_external_handle && "Invalid call CreateWindow while using external window handler!");
+
 				m_hwnd = CreateWindowEx (
 					0,
 					m_class_name.c_str(),

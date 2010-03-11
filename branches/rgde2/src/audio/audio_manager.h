@@ -47,7 +47,7 @@ namespace rgde
 			// Gets the instance of the singleton class
 			static audio_manager* instance();
 
-			audio_manager(HWND hWnd,
+			audio_manager(core::windows::handle handle,
 				DWORD dwPrimaryChannels = 2,
 				DWORD dwPrimaryFreq = 44100,
 				DWORD dwPrimaryBitRate = 16,

@@ -6,17 +6,48 @@ namespace rgde
 {
 	namespace audio
 	{
-
-		namespace
+		world_object::world_object()
+			:	m_pos(0.0f, 0.0f, 0.0f),
+			m_vel(0.0f, 0.0f, 0.0f)
 		{
-			std::map<HWND, audio_manager*> managers;
-
 		}
 
-		system::system(void* hwnd)
-			: manager(new audio_manager((HWND)hwnd))
+		void world_object::get_position(float& x, float& y, float& z) const
 		{
+			x = m_pos.x;
+			y = m_pos.y;
+			z = m_pos.z;
+		}
 
+		const vec3& world_object::get_position() const
+		{
+			return m_pos;
+		}
+
+		void world_object::set_position(float x, float y, float z)
+		{
+			m_pos.x = x;
+			m_pos.y = y;
+			m_pos.z = z;
+		}
+
+		const vec3& world_object::get_velocity() const
+		{
+			return m_vel;
+		}
+
+		void world_object::set_velocity(float x, float y, float z)
+		{
+			m_vel.x = x;
+			m_vel.y = y;
+			m_vel.z = z;
+		}
+
+		/////////////////////////////////////////////////////////////////////////////////////
+
+		system::system(core::windows::handle handle)
+			: manager(new audio_manager(handle))
+		{
 		}
 
 		system::~system()
@@ -65,15 +96,17 @@ namespace rgde
 			manager->set_listener_camera(cam);
 		}
 
-		void system::play(const char* tag_name)
+		void system::play(const char* tag_name, int ms_duration, int ms_delay,	
+				listener_ptr listener, world_object_ptr world_object)
 		{
-			manager->play(tag_name);
+			manager->play(tag_name, 0, ms_duration, ms_delay);//TODO:, listener, world_object);
 		}
 
-		void system::play(size_t tag_index)
+		void system::play(size_t tag_index, int ms_duration, int ms_delay,	
+				listener_ptr listener, world_object_ptr world_object)
 		{
 			if (const char* name = manager->get_tag_name(tag_index))
-				manager->play(name);
+				manager->play(name, 0, ms_duration, ms_delay); //TODO: listener, world_object
 		}
 	}
 }

@@ -12,6 +12,7 @@ namespace rgde
 			class window
 			{
 			public:		
+				explicit window(handle external_handle);
 				explicit window(const std::wstring& title = L"Window");
 				window(const point& pos, const size& s, const std::wstring& title = L"Window");
 				window(const point& pos, const size& s, const std::wstring& title, handle parent_handle, 
@@ -52,6 +53,8 @@ namespace rgde
 
 				std::wstring m_class_name;
 				std::wstring m_window_title;
+
+				bool m_using_external_handle;
 
 			private:
 				static result __stdcall dispatch( handle hWnd, ushort message, uint wParam, long lParam );
