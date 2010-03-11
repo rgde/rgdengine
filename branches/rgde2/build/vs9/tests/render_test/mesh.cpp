@@ -160,8 +160,8 @@ namespace rgde
 			
 			vertex* pv = vb.get();
 
-			for(int z=0;z<c.get_length();++z)
-				for(int x=0;x<c.get_width();++x)
+			for(size_t z=0;z<c.get_length();++z)
+				for(size_t x=0;x<c.get_width();++x)
 				{
 					pv->pos[0] = x*step;
 					pv->pos[1] = c.get_vertex(x,z).height;

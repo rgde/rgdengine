@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="luabind"
 	ProjectGUID="{EBC13284-800E-434E-903A-B532A0B23FCE}"
 	RootNamespace="luabind"
@@ -43,7 +43,7 @@
 				AdditionalOptions="-D_SCL_SECURE_NO_WARNINGS"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\external\luabind\;&quot;..\..\..\external\lua/src&quot;;&quot;..\..\..\external\boost&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
