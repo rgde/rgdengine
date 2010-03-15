@@ -63,7 +63,7 @@ namespace collada
 
 			bool res = helpers::read_float_array(array_node, source.data);
 			assert(res && "Error while reading float array!");
-
+			
 			return res;
 		}
 	}
@@ -71,8 +71,7 @@ namespace collada
 	// DOM walker:
 	void read_mesh(xml::node geometry_node, mesh& m)
 	{
-		m.name = geometry_node["name"] ? geometry_node["name"].value() : "";
-		m.id = geometry_node["id"] ? geometry_node["id"].value() : "";
+		m.name = geometry_node["name"] ? geometry_node["name"].value() : "";	
 
 		xml::node mesh_node = geometry_node("mesh");
 
@@ -84,6 +83,7 @@ namespace collada
 			helpers::read_mesh_source(source_node, m);			
 		}
 
+		//TODO:
 		for(xml::node triangle_node = mesh_node("triangles");triangle_node;triangle_node = triangle_node.next_sibling("triangles"))
 		{
 			m.subsets.push_back(mesh::subset_info());
@@ -167,11 +167,12 @@ namespace collada
 		{
 			for(xml::node n = library_images_node("image");n;n = n.next_sibling())
 			{
-				std::string id = n["id"].value();
-				std::string name = n["name"].value();
-				std::string load_path = n("init_from").first_child().value();
+				image img;
+				img.id = n["id"].value();
+				img.name = n["name"].value();
+				img.source = n("init_from").first_child().value();
 
-				__asm nop;
+				library_images[img.id] = img;
 			}
 		}
 
@@ -180,11 +181,13 @@ namespace collada
 			for(xml::node n = library_materials_node("material");n;n = n.next_sibling())
 			{ 
 				std::string id = n["id"].value();
-				std::string name = n["name"].value();
-				std::string effect_instance = n("instance_effect")["url"].value();
-				__asm nop;
-			}
 
+				material& mat = library_materials[id];
+
+				mat.id = id;
+				mat.name = n["name"].value();;
+				mat.effect_instance_url = n("instance_effect")["url"].value();;
+			}
 		}
 
 		if (xml::node library_effects_node = collada_node("library_effects"))
@@ -192,16 +195,23 @@ namespace collada
 			for(xml::node n = library_effects_node("effect");n;n = n.next_sibling())
 			{ 
 				std::string id = n["id"].value();
-				std::string name = n["name"].value();
-				__asm nop;
+
+				effect& ef = effects[id];
+
+				ef.id = id;
+				ef.name = n["name"].value();				
 			}
 		}
 
 		if(xml::node library_geometries_node = collada_node("library_geometries"))
 		{
-			for(xml::node n = library_geometries_node("geometry");n;n = n.next_sibling())
+			for(xml::node n = library_geometries_node("geometry"); n; n = n.next_sibling())
 			{ 
-				mesh m;
+				std::string id = n["id"].value();
+
+				mesh& m = meshes[id];
+				m.id = id;
+
 				read_mesh(n, m);
 				__asm nop;
 			}

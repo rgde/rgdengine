@@ -10,21 +10,21 @@ namespace collada
 {
 	struct image
 	{
-		const char* id; // is NULL when not in library
+		std::string id;
 		std::string name;
 		std::string source; // filename or smth.
 	};
 
 	struct material
 	{
-		const char* id; // is NULL when not in library
+		std::string id;
 		std::string name;
 		std::string effect_instance_url;
 	};
 
 	struct effect
 	{
-		const char* id; // is NULL when not in library
+		std::string id;
 		std::string name;
 
 		struct technique
@@ -68,7 +68,7 @@ namespace collada
 
 	struct mesh
 	{
-		const char* id; // is NULL when not in library
+		std::string id;
 		std::string name;
 
 		struct source
