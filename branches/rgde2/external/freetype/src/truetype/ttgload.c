@@ -1399,7 +1399,7 @@
 
         FT_Stream         old_stream     = loader->stream;
 
-        TT_GraphicsState  saved_GS;
+		TT_GraphicsState  saved_GS = {0};
 
 
         if ( loader->exec )

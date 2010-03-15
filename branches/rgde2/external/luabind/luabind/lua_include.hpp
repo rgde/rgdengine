@@ -25,15 +25,9 @@
 
 extern "C"
 {
-	#include "lstate.h"
+	#include "lua.h"
 	#include "lauxlib.h"
-	#include "lua.h"	
-	#include "lualib.h"
 }
-
-#undef luaL_getn
-#undef luaL_setn
-
 
 #endif
 
