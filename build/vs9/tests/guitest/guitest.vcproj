@@ -150,6 +150,7 @@
 				EnableEnhancedInstructionSet="2"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough=""
+				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
 			<Tool
