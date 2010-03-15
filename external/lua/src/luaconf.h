@@ -1,5 +1,5 @@
 /*
-** $Id: luaconf.h,v 1.82.1.6 2008/01/18 17:07:48 roberto Exp $
+** $Id: luaconf.h,v 1.82.1.7 2008/02/11 16:25:08 roberto Exp $
 ** Configuration file for Lua
 ** See Copyright Notice in lua.h
 */
@@ -320,7 +320,6 @@
 ** behavior of setn/getn in Lua 5.0.
 */
 #undef LUA_COMPAT_GETN
-//#define LUA_COMPAT_GETN
 
 /*
 @@ LUA_COMPAT_LOADLIB controls compatibility about global loadlib.
@@ -441,10 +440,10 @@
 @* can use.
 ** CHANGE it if you need lots of (Lua) stack space for your C
 ** functions. This limit is arbitrary; its only purpose is to stop C
-** functions to consume unlimited stack space.
+** functions to consume unlimited stack space. (must be smaller than
+** -LUA_REGISTRYINDEX)
 */
-#define LUAI_MCS_AUX	((int)(INT_MAX / (4*sizeof(LUA_NUMBER))))
-#define LUAI_MAXCSTACK	(LUAI_MCS_AUX > SHRT_MAX ? SHRT_MAX : LUAI_MCS_AUX)
+#define LUAI_MAXCSTACK	8000
 
 
 
@@ -486,7 +485,7 @@
 /*
 @@ LUAL_BUFFERSIZE is the buffer size used by the lauxlib buffer system.
 */
-#define LUAL_BUFFERSIZE		BUFSIZ
+#define LUAL_BUFFERSIZE		512/*BUFSIZ*/
 
 /* }================================================================== */
 
@@ -654,7 +653,7 @@ union luai_Cast { double l_d; long l_l; };
 	e = (e == -1); }
 
 #else
-#define LUA_TMPNAMBUFSIZE	L_tmpnam
+#define LUA_TMPNAMBUFSIZE	32/*L_tmpnam*/
 #define lua_tmpnam(b,e)		{ e = (tmpnam(b) == NULL); }
 #endif
 

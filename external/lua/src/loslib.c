@@ -5,7 +5,12 @@
 */
 
 
-#include <errno.h>
+#ifndef WINCE
+	#include <errno.h>
+#else
+	int errno = 0;
+#endif
+
 #include <locale.h>
 #include <stdlib.h>
 #include <string.h>

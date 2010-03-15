@@ -4,8 +4,10 @@
 ** See Copyright Notice in lua.h
 */
 
+#ifndef WINCE
+	#include <signal.h>
+#endif 
 
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

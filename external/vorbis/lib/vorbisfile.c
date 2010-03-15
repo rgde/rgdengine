@@ -17,7 +17,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <errno.h>
+#ifdef WINCE
+	int errno = 0;
+#else
+	#include <errno.h>
+#endif
+
 #include <string.h>
 #include <math.h>
 
