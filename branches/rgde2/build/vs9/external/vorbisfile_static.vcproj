@@ -118,11 +118,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/O3 /QaxK /Qsox- /Qip "
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				AdditionalIncludeDirectories="..\..\..\external\vorbis\include,..\..\..\external\ogg\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_WIN32"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_WIN32;_CRT_SECURE_NO_WARNINGS"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -130,7 +129,7 @@
 				EnableFunctionLevelLinking="false"
 				PrecompiledHeaderFile="$(IntDir)\vorbisfile_static.pch"
 				WarningLevel="3"
-				SuppressStartupBanner="true"
+				DisableSpecificWarnings="4244"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
