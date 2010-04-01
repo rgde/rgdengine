@@ -11,28 +11,51 @@ namespace rgde
 			typedef boost::shared_ptr<struct param_info> param_ptr;
 		}
 
+		class material_library
+		{
+		public:
+			material_library(device& dev);
+
+
+		protected:
+			device& m_device;
+		};
+
+
 		struct material
 		{
-			// need bind on reload event to reinit params bindings
-			effects::effect_ptr m_effect;
-
-			struct param_info
+			enum param_type
 			{
-				enum param_type
-				{
-					type_float, type_vec, 
-					type_samples, type_color
-				};
-				std::string name;
-				effects::param_ptr shader_param;
-				param_type type;
-			};	
+				type_float, 
+				type_samples,
+				type_vec3, 
+				type_vec4,
+				type_matrix44,
+				type_color
+			};
 
-			std::vector<std::pair<param_info, float> > m_float_values;
-			std::vector<std::pair<param_info, texture_ptr> > m_samples;
-			std::vector<std::pair<param_info, math::color> > m_colors;
-			std::vector<std::pair<param_info, math::vec3f> > m_vectors;
+			template<typename T, int param_type_value>
+			struct param_info_t
+			{
+				std::string name;
+				T value;
+
+				static param_type get_type() { return (param_type)param_type_value;}
+			};
+
+			typedef param_info_t<float,			type_float>		float_param;
+			typedef param_info_t<math::color,	type_color>		color_param;
+			typedef param_info_t<texture_ptr,	type_samples>	texture_param;
+			typedef param_info_t<math::vec3f,	type_vec3>		vec3_param;
+			typedef param_info_t<math::vec4f,	type_vec4>		vec4_param;
+			typedef param_info_t<math::mat44f,	type_matrix44>	mat44_param;
+
+			std::vector<std::pair<float_param, float> > m_float_values;
+			std::vector<std::pair<texture_param, texture_ptr> > m_samples;
+			std::vector<std::pair<color_param, math::color> > m_colors;
+			std::vector<std::pair<vec3_param, math::vec3f> > m_vectors3;
 		};
+
 		typedef boost::shared_ptr<material> material_ptr;
 
 		typedef boost::shared_ptr<class mesh> mesh_ptr;
