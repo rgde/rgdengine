@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="guilib"
 	ProjectGUID="{05E7E63D-01BF-4586-9215-D56FA02B2223}"
 	RootNamespace="guilib"
@@ -139,80 +139,6 @@
 				AdditionalOptions="/LTCG"
 				OutputFile="$(SolutionDir)libs\$(ConfigurationName)\$(ProjectName).lib"
 				AdditionalLibraryDirectories="$(SolutionDir)sources/external/pugixml/Lib/$(ConfigurationName)"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Product Release|Win32"
-			OutputDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)temp\$(ConfigurationName)\$(ProjectName)"
-			ConfigurationType="4"
-			CharacterSet="0"
-			WholeProgramOptimization="0"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="true"
-				FavorSizeOrSpeed="1"
-				EnableFiberSafeOptimizations="true"
-				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)../../external/boost&quot;;&quot;$(SolutionDir)../../external/lua/src&quot;;&quot;$(SolutionDir)../../external/luabind&quot;;&quot;$(SolutionDir)..\..\include\&quot;"
-				PreprocessorDefinitions="WIN32;GUILIB_EXPORTS;_CRT_SECURE_NO_WARNINGS;D_SCL_SECURE_NO_WARNINGS"
-				StringPooling="true"
-				MinimalRebuild="true"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="false"
-				EnableEnhancedInstructionSet="2"
-				RuntimeTypeInfo="true"
-				UsePrecompiledHeader="2"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				AdditionalOptions="/LTCG"
-				OutputFile="$(SolutionDir)libs\$(ConfigurationName)\$(ProjectName).lib"
-				AdditionalLibraryDirectories="$(SolutionDir)sources/external/pugixml/Lib/release"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -843,14 +769,6 @@
 			</FileConfiguration>
 			<FileConfiguration
 				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-					UsePrecompiledHeader="1"
-				/>
-			</FileConfiguration>
-			<FileConfiguration
-				Name="Product Release|Win32"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
