@@ -171,12 +171,14 @@ namespace rgde
 					pv->norm = c.get_vertex(x,z).norm;
 					pv++;
 				}
+
 			const size_t num_faces = (c.get_width()-1)*(c.get_length()-1)*2;
 			uint vertex_index = 0;
 			boost::scoped_array<uint16> ib (new uint16[num_faces*3]);
 			uint16* pf = ib.get();
-			for(int z=0;z<(c.get_length()-1);++z)
-				for(int x=0;x<(c.get_width()-1);++x)
+
+			for(uint z=0;z<(c.get_length()-1);++z)
+				for(uint x=0;x<(c.get_width()-1);++x)
 				{
 					pf[0] = z*c.get_width()+x;
 					pf[1] = z*c.get_width()+x+1;
@@ -187,9 +189,9 @@ namespace rgde
 					pf[2] = z*c.get_width()+x;
 					pf += 3;
 				}
+
 			mesh_ptr out = create_mesh(dev, vb.get(), num_vertices, ib.get(), num_faces*3);
 			return out;
-
 		}
 
 		mesh_ptr mesh::create_random_terrain(device& dev, int w, int l, float step)
@@ -224,13 +226,13 @@ namespace rgde
 					pv->norm[2] = 3*h1+h2-h3-3*h4-h5+h6;
 					math::normalize(pv->norm);
 					pv++;
-
-
 				}
+
 			const size_t num_faces = (w-1)*(l-1)*2;
 			uint vertex_index = 0;
 			boost::scoped_array<uint16> ib (new uint16[num_faces*3]);
 			uint16* pf = ib.get();
+			
 			for(int z=0;z<(l-1);++z)
 				for(int x=0;x<(w-1);++x)
 				{
@@ -243,6 +245,7 @@ namespace rgde
 					pf[2] = z*w+x;
 					pf += 3;
 				}
+
 			mesh_ptr out = create_mesh(dev, vb.get(), num_vertices, ib.get(), num_faces*3);
 			return out;
 

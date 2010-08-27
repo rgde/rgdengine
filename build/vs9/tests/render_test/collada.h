@@ -2,17 +2,15 @@
 
 /*
 параметры раздел€ютс€ по профил€м, блоками. основной профиль - COMMON
-
-
-
 */
+
 namespace collada
 {
 	struct image
 	{
 		std::string id;
 		std::string name;
-		std::string source; // filename or smth.
+		std::string source; // filename or other data url.
 	};
 
 	struct material
