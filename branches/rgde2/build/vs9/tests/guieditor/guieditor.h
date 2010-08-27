@@ -1,1 +1,0 @@
-// guieditor.h
