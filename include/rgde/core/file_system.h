@@ -60,10 +60,12 @@ namespace rgde
 			typedef boost::shared_ptr<file_source> file_source_ptr;
 			
 
+			file_source_ptr create_disk_file_source(const wchar_t* rel_path = L"/../data/");
+
 			class system
 			{
 			public:
-				system();
+				explicit system(file_source_ptr file_src = create_disk_file_source());
 				~system();
 
 				void add_file_source(file_source_ptr fs);

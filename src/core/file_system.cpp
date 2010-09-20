@@ -114,16 +114,15 @@ namespace rgde
 					mutable fs::ofstream m_file;
 				};
 
-
 				struct disk_file_source : public file_source
 				{
-					disk_file_source() 
+					explicit disk_file_source(const wchar_t* rel_path = L"") 
 					{
 						wchar_t buf[512];
 						GetModuleFileNameW(NULL, &buf[0], 512);
 
 						fs::wpath p(buf);
-						std::wstring path = p.branch_path().string() + L"/../data/";
+						std::wstring path = p.branch_path().string() + rel_path;
 
 						m_root_read_path = path;
 						m_root_write_path = path;
@@ -175,9 +174,11 @@ namespace rgde
 				};
 			}
 			//////////////////////////////////////////////////////////////////////////
-			system::system()
+			system::system(file_source_ptr source)
 			{
-				add_file_source(file_source_ptr(new internal::disk_file_source));
+				//add_file_source(file_source_ptr(new internal::disk_file_source));
+				if (source)
+					add_file_source(source);
 			}
 
 			system::~system()
@@ -212,6 +213,11 @@ namespace rgde
 						return true;
 				}
 				return false;
+			}
+
+			file_source_ptr create_disk_file_source(const wchar_t* rel_path)
+			{
+				return file_source_ptr(new internal::disk_file_source(rel_path));
 			}
 		}
 	}
