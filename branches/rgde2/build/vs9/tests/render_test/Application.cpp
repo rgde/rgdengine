@@ -1,8 +1,6 @@
 #include "stdafx.h"
 
-#include <boost/assign.hpp>
 
-#include <d3dx9.h>
 
 using namespace rgde;
 using core::windows::window;
@@ -75,9 +73,9 @@ void application::init_render_data()
 
 	using namespace rgde::render;
 
-	//m_box = mesh::create_box(m_device, 1, 1, 1);
-	terrain_container::terrain ter(1,1,256,256);
-	m_box = mesh::create_terrain_chunk(m_device,ter,0,0,1);
+	m_box = mesh::create_box(m_device, 1, 1, 1);
+	//terrain_container::terrain ter(1,1,256,256);
+	//m_box = mesh::create_terrain_chunk(m_device,ter,0,0,1);
 
 	m_font = font::create(m_device, 17, L"Arial");
 
@@ -95,7 +93,7 @@ void application::init_render_data()
 	s.h = 80;
 	s.color = math::color::White;
 
-	m_batcher2d.draw(s);
+	//m_batcher2d.draw(s);
 	
 	m_device.set_ztest(true);
 	m_device.set_cull_mode(rgde::render::cull_none);
@@ -152,7 +150,8 @@ void application::render()
 	
 	m_batcher2d.render();
 
-	m_font->render(L"render test:", math::rect(5,5, 300, 30), math::color::White, true);
+	//m_font->render(L"render test:", math::rect(5,5, 300, 30), math::color::White, true);
+	m_console.render();
 
 	m_device.frame_end();
 	m_device.present();
@@ -175,6 +174,12 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 		}
 	case WM_KEYDOWN:
 		{
+			if (m_console.is_on())
+			{
+				m_console.msg_keydown(wparam);
+				break;
+			}
+
 			if ('Q' == wparam || 'q' == wparam)
 				exit(0);
 
@@ -197,9 +202,20 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 			{
 				m_cam_controller->move_right(0.1f);
 			}
+			else if ('~' == wparam || 192 == wparam)
+			{
+				m_console.toggle();
+			}
 
 			return 0;
 		}
+
+	case WM_CHAR:
+		if (m_console.is_on())
+		{
+			m_console.msg_char(wparam);
+		}
+		break;
 
 	case WM_SIZE:
 		{
@@ -279,5 +295,5 @@ bool application::do_events()
 void application::test_collada_read()
 {
 	collada::scene scene;
-	scene.read(m_filesystem.open_read("models/MS-00X Experimental/models/MS-00X Experimental.dae"));
+	//scene.read(m_filesystem.open_read("models/MS-00X Experimental/models/MS-00X Experimental.dae"));
 }

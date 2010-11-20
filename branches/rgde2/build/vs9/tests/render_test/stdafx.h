@@ -28,9 +28,6 @@
 #include <stdio.h>
 #include <tchar.h>
 
-
-
-
 #include <map>
 #include <vector>
 #include <string>
@@ -49,9 +46,12 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/assign.hpp>
 
 #include <rgde/core/core.h>
 #include <rgde/core/xml/xml.h>
 #include <rgde/core/file_system.h>
 #include <rgde/render/render.h>
 #include <rgde/audio/audio.h>
+
+//#include <d3dx9.h>

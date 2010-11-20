@@ -2,7 +2,6 @@
 
 namespace rgde
 {
-
 	class terrain
 	{
 	public:
