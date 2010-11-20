@@ -16,25 +16,25 @@ namespace rgde
 				);
 		}
 
-		void font::render(const std::wstring& text, const math::rect& rc, unsigned int color)
-		{
-			render(text, rc, color, false, top | left | word_break);
-		}
+		//void font::render(const std::wstring& text, const math::rect& rc, unsigned int color)
+		//{
+		//	render(text, rc, color, false, top | left | word_break);
+		//}
 
-		void font::render(const std::wstring& text, const math::rect& rc, unsigned int color, bool draw_shadow)
-		{
-			render(text, rc, color, draw_shadow, top | left | word_break);
-		}
+		//void font::render(const std::wstring& text, const math::rect& rc, unsigned int color, bool draw_shadow)
+		//{
+		//	render(text, rc, color, draw_shadow, top | left | word_break);
+		//}
 
-		void font::render(const std::string& text, const math::rect& rc, unsigned int color)
-		{
-			render(std::wstring(text.begin(), text.end()), rc, color, false);
-		}
+		//void font::render(const std::string& text, const math::rect& rc, unsigned int color)
+		//{
+		//	render(std::wstring(text.begin(), text.end()), rc, color, false);
+		//}
 
-		void font::render(const std::string& text, const math::rect& rc, unsigned int color, bool draw_shadow)
-		{
-			render(std::wstring(text.begin(), text.end()), rc, color, draw_shadow);
-		}
+		//void font::render(const std::string& text, const math::rect& rc, unsigned int color, bool draw_shadow)
+		//{
+		//	render(std::wstring(text.begin(), text.end()), rc, color, draw_shadow);
+		//}
 
 		void font::render(const std::string& text, const math::rect& rc, unsigned int color, bool draw_shadow, int flags)
 		{

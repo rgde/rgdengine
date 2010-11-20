@@ -58,6 +58,14 @@ namespace rgde
 			
 		size m_size;
 
+		struct scene_obj
+		{
+			math::mat44f world_tm;
+			render::mesh_ptr mesh;
+		};
+
+		std::vector<scene_obj> m_scene_objects;
+		
 		render::mesh_ptr m_box;
 
 		int old_x;

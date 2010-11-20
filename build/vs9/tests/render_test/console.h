@@ -51,8 +51,7 @@ namespace rgde
 			void msg_char(unsigned int wParam);
 			void toggle();
 
-			// Draws the console system onto the canvas
-			void render(class Canvas* canvas);
+			void render();
 			// initialized during game init process
 			void init(const std::string& frontTex, const std::string& backTex);
 
