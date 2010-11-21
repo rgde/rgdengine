@@ -1,5 +1,7 @@
 #pragma once
 
+#include "sprite.h"
+
 namespace rgde
 {
 	namespace game
@@ -36,10 +38,10 @@ namespace rgde
 			void clear();
 			void hide();
 
-			void show(bool ChatLineOnly = false);
+			void show(bool chat_line_only = false);
 
 			bool is_chat_line_on(){return m_is_chat_line_on;}
-			void clear_edit_line(){editing_line="";cursor_pos=0;}
+			void clear_edit_line(){editing_line.clear();cursor_pos=0;}
 			/// Current Line
 
 			// adds entry to the console's history list of previously displayed lines
@@ -47,13 +49,13 @@ namespace rgde
 			void add_history_line(message_type type,int team,std::string& line, math::color color = math::color(0,220,0,255));	
 
 			/// Windows Messages 
-			void msg_keydown(unsigned int wParam);
-			void msg_char(unsigned int wParam);
+			void msg_keydown(unsigned int wparam);
+			void msg_char(unsigned int wparam);
 			void toggle();
 
 			void render();
 			// initialized during game init process
-			void init(const std::string& frontTex, const std::string& backTex);
+			void init(const std::string& front_tex, const std::string& back_tex);
 
 			bool is_on()
 			{ 
@@ -130,6 +132,9 @@ namespace rgde
 			/// Delete key; deletes character at cursor pos
 			void key_backspace();
 
+			void set_back_texture(render::texture_ptr t) {textures[0] = t;}
+			void set_front_texture(render::texture_ptr t) {textures[1] = t;}
+
 		private:
 			/// Old editing line while user scrolls up and down
 			std::string old_edit_line;	
@@ -143,7 +148,6 @@ namespace rgde
 			render::texture_ptr textures[2];
 			render::font_ptr m_small_font;
 			render::font_ptr m_medium_font;
-
 
 			bool m_is_chat_line_on;
 
@@ -165,7 +169,9 @@ namespace rgde
 			bool m_is_allow_toggling;
 
 			/// Previous TYPED lines
-			std::vector<std::string> m_typed_history;;
+			std::vector<std::string> m_typed_history;
+
+			render::canvas m_canvas;
 		};
 	}
 }
