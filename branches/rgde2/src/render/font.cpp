@@ -47,13 +47,13 @@ namespace rgde
 		}
 
 		void font::render(const std::string& text, float x, float y, unsigned int color)
-		{
-			render(text, math::rect(x, y, 0,0), color, false, 0);
+		{			
+			render(text, math::rect(x, y, 0,0), color, false, top | left | no_clip);
 		}
 
 		void font::render(const std::wstring& text, float x, float y, unsigned int color)
 		{
-			render(text, math::rect(x, y, 0,0), color, false, 0);
+			render(text, math::rect(x, y, 0,0), color, false, top | left | no_clip);
 		}
 	}
 }
