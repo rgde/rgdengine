@@ -6,7 +6,7 @@
 #include <boost/filesystem.hpp>
 
 int _tmain(int argc, _TCHAR* argv[])
-{
+{	
 	wchar_t buf[512];
 	GetModuleFileNameW(NULL, &buf[0], 512);
 

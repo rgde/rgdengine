@@ -3,11 +3,10 @@
 #include "uitest.h"
 
 
-class Xml2Test : public rgde::ui_test_application
+class xml_test : public rgde::ui_test_application
 {
 public:
-	Xml2Test(int x, int y, int w, int h, const std::wstring& title);
-	~Xml2Test(void);
+	xml_test(int x, int y, int w, int h, const std::wstring& title);
 		
 	virtual void createGUISystem();
 	virtual void resetGUISystem();

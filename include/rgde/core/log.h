@@ -10,8 +10,10 @@ namespace rgde
 		{
 			namespace utils
 			{
-				void output_debug_string(const std::wstring& msg);
-				void output_debug_string(const std::string& msg);
+				void debug_out(const std::wstring& msg);
+				void debug_out(const std::string& msg);
+				void debug_out(const char *format, ...);
+				void debug_out(const wchar_t *format, ...);
 			}
 		}
 	}
