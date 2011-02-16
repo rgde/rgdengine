@@ -32,7 +32,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR params, int )
 
 	RedirectIOToConsole();
 
-	Xml2Test g_test(100, 100, width, height, L"GUI Test");
+	xml_test g_test(100, 100, width, height, L"GUI Test");
 	g_test.run();
     
     return 0;

@@ -15,9 +15,9 @@ namespace rgde
         extern log_stream lerr;
 
         //unicode
-        extern wlog_stream wlmsg;
-        extern wlog_stream wlwrn;
-        extern wlog_stream wlerr;
+        extern wlog_stream wmsg;
+        extern wlog_stream wwrn;
+        extern wlog_stream werr;
 
         //класс дл€ облегчени€ работы с логом:
         //  пока существует хоть один экземпл€р этого класса,

@@ -1,7 +1,8 @@
 #pragma once
 
 /*
-параметры раздел€ютс€ по профил€м, блоками. основной профиль - COMMON
+	params are separated by profiles
+	main profiles is 'COMMON'
 */
 
 namespace collada
@@ -115,7 +116,7 @@ namespace collada
 	{
 		enum up_axis
 		{
-			z_up
+			z_up, y_up
 		};
 
 		void read(rgde::core::vfs::istream_ptr stream);

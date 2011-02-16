@@ -69,9 +69,9 @@ namespace rgde
         log_stream lwrn(wrn_dev);
         log_stream lerr(err_dev);
 
-        wlog_stream wlmsg(wmsg_dev);
-        wlog_stream wlwrn(wwrn_dev);
-        wlog_stream wlerr(werr_dev);
+        wlog_stream wmsg(wmsg_dev);
+        wlog_stream wwrn(wwrn_dev);
+        wlog_stream werr(werr_dev);
 
         int logsystem::counter = 0;
         logsystem::loghelper* logsystem::ploghelper = 0;
@@ -108,7 +108,7 @@ namespace rgde
             std::cout.rdbuf(lmsg.rdbuf());
 
             wcoutsbuf = std::wcout.rdbuf();
-            std::wcout.rdbuf(wlmsg.rdbuf());
+            std::wcout.rdbuf(wmsg.rdbuf());
 
             //(w)cerr
             cerrsbuf = std::cerr.rdbuf();
@@ -116,7 +116,7 @@ namespace rgde
             std::cerr.unsetf(std::ios_base::unitbuf);
 
             wcerrsbuf = std::wcerr.rdbuf();
-            std::wcerr.rdbuf(wlerr.rdbuf());
+            std::wcerr.rdbuf(werr.rdbuf());
             std::wcerr.unsetf(std::ios_base::unitbuf);
         }
 
