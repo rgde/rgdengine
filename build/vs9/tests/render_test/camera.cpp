@@ -44,7 +44,7 @@ namespace scene
 	//////////////////////////////////////////////////////////////////////////
 
 	free_camera::free_camera(camera_ptr camera)
-		: base_camera_controller(camera)
+		: camera_controller(camera)
 		, m_up(0.0f, 1.0f, 0.0f)
 		, m_eye_pos(0.0f, 0.0f, 0.0f)
 		, m_lookat_pt(0.0f, 0.0f, 1.0f)
@@ -61,12 +61,7 @@ namespace scene
 		do_ortho_normal();
 	}
 
-	free_camera_ptr free_camera::create(camera_ptr camera)
-	{
-		return free_camera_ptr(new free_camera(camera));
-	}
-
-	void free_camera::set_position(const vec3f& up, const vec3f& eye, const vec3f& look_at)
+	void free_camera::set(const vec3f& up, const vec3f& eye, const vec3f& look_at)
 	{
 		m_up       = up;
 		m_eye_pos    = eye;
@@ -74,7 +69,7 @@ namespace scene
 		apply();
 	}
 
-	void free_camera::get_pos(vec3f& up, vec3f& eye, vec3f& look_at)
+	void free_camera::get(vec3f& up, vec3f& eye, vec3f& look_at)
 	{
 		up       = m_up;
 		eye    = m_eye_pos;

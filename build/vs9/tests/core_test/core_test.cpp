@@ -121,7 +121,7 @@ int _tmain(int argc, wchar_t* argv[])
 		float elapsed = timer.get_elapsed_time();
 		log << L"elapsed time: " << elapsed << endl;
 		//new char[100];
-		core::log::utils::output_debug_string(L"DEBUG LOG TEST MSG");
+		core::log::utils::debug_out(L"DEBUG LOG TEST MSG");
 	}
 
 	core::utils::get_allocated_mem();

@@ -213,7 +213,7 @@ namespace rgde
 
 			m_device.draw(render::triangle_list, 0, 0, sprites_num * 4, 0, sprites_num *2);
 
-			//m_device.set_texture(texture_ptr(), 0);
+			m_device.set_texture(texture_ptr(), 0);
 		}
 
 		void canvas::draw(const sprite& s)

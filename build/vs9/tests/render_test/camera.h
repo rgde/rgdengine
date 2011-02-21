@@ -33,21 +33,23 @@ namespace scene
 	typedef boost::intrusive_ptr<camera> camera_ptr;
 
 
-	typedef boost::shared_ptr<class base_camera_controller> camera_controller_ptr;
+	typedef boost::shared_ptr<class camera_controller> camera_controller_ptr;
 
 	//camera controller
-	class base_camera_controller : boost::noncopyable
+	class camera_controller : boost::noncopyable
 	{
 	public:
-		virtual ~base_camera_controller() {}
+		virtual ~camera_controller() {}
 
 		// camera managing
-		void bind(camera_ptr cam)				{m_camera = cam;}
-		const camera_ptr& get_camera()	const	{return m_camera;}
-		virtual void activate() = 0;
+		void attach(camera_ptr cam)			{m_camera = cam;}
+		void detach()						{m_camera.reset();}
+		const camera_ptr& camera()	const	{return m_camera;}
 
+		virtual void activate() = 0;
+	
 	protected:
-		base_camera_controller(camera_ptr cam = camera_ptr()) 
+		camera_controller(camera_ptr cam) 
 			: m_camera(cam){}
 
 	protected:
@@ -57,18 +59,17 @@ namespace scene
 	typedef boost::shared_ptr<class free_camera> free_camera_ptr;
 
 	//free camera controller
-	class free_camera: public base_camera_controller
+	class free_camera: public camera_controller
 	{
-		free_camera(camera_ptr camera);
-
 	public:
-		static free_camera_ptr create(camera_ptr camera);
+		explicit free_camera(camera_ptr camera = camera_ptr());
 
 		//position
-		void set_position(const math::vec3f& up, const math::vec3f& eye, const math::vec3f& look_at);
-		void get_pos(math::vec3f& up, math::vec3f& eye, math::vec3f& look_at);
+		void set(const math::vec3f& up, const math::vec3f& eye, const math::vec3f& look_at);
+		void get(math::vec3f& up, math::vec3f& eye, math::vec3f& look_at);
 
 		//moving
+		void move(float forward, float side, float up);
 		void move_forward(float delta);
 		void move_back(float delta) {move_forward(-delta);}
 		void move_left(float delta);
@@ -77,6 +78,7 @@ namespace scene
 		void move_down(float delta) {move_up(-delta);}
 
 		//rotation
+		void rotate(float yaw, float pitch, float rol);
 		void rotate_right(float angle);
 		void rotate_left(float angle) {rotate_right(-angle);}
 		void rotate_up(float angle);

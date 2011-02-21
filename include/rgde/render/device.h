@@ -110,7 +110,7 @@ namespace rgde
 			bool frame_end();
 			bool present();
 
-			void get_viewport(view_port& vp);
+			view_port get_viewport();
 			void set_viewport(const view_port& vp);
 
 			bool set_render_target(size_t rt_index, surface_ptr rt_surface);

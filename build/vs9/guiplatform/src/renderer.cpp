@@ -191,13 +191,12 @@ namespace gui
 			if (!m_buffer)
 				return;
 	
-			view_port viewPortDesc;
-			m_device.get_viewport(viewPortDesc);
+			view_port vp = m_device.get_viewport();
 
 			m_device.set_decl(m_vertexDeclaration);
 
 			m_shader->set_tech("Simple");
-			rgde::math::vec2f vec((float)viewPortDesc.width, (float)viewPortDesc.height);
+			rgde::math::vec2f vec((float)vp.width, (float)vp.height);
 			m_shader->set("ViewPortSize",&vec, 2 );
 			m_shader->begin(0 );
 			m_shader->begin_pass(0);
@@ -397,13 +396,12 @@ namespace gui
 			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
 			m_device.set_index_buffer(m_ibuffer);
 			
-			view_port viewPortDesc;
-			m_device.get_viewport(viewPortDesc);
+			view_port vp = m_device.get_viewport();
 
 			m_device.set_decl(m_vertexDeclaration);
 
 			m_shader->set_tech("simple");
-			rgde::math::vec2f vec((float)viewPortDesc.width, (float)viewPortDesc.height);
+			rgde::math::vec2f vec((float)vp.width, (float)vp.height);
 
 			if (m_handleViewPortSize)
 				m_shader->set(m_handleViewPortSize,(float*)&vec, 2 );
@@ -544,8 +542,7 @@ namespace gui
 		Size renderer::getViewportSize(void) const
 		{
 			// initialise renderer size
-			view_port	vp;
-			m_device.get_viewport(vp);
+			view_port vp = m_device.get_viewport();
 			return Size((float)vp.width, (float)vp.height);
 		}
 
