@@ -130,7 +130,7 @@ bool ui_test_application::do_events()
 
 void ui_test_application::render()
 {
-	m_render_device.frame_begin();
+	m_render_device.begin();
 	m_render_device.clear(rgde::math::color::Black);
 
 	if (m_system)
@@ -159,7 +159,7 @@ void ui_test_application::render()
 		m_system->render();
 	}
 
-	m_render_device.frame_end();
+	m_render_device.end();
 	m_render_device.present();
 }
 

@@ -64,11 +64,11 @@ void application::init_render_data()
 {
 	using namespace rgde::render;
 
-	m_device.set_ztest(true);
-	m_device.set_cull_mode(rgde::render::cull_none);
-	m_device.set_lighting(false);
-	m_device.set_alpha_blend(false);
-	m_device.set_alpha_test(false);
+	m_device.enable_ztest(true);
+	m_device.set(rgde::render::cull_none);
+	m_device.enable_lighting(false);
+	m_device.enable_alpha_blend(false);
+	m_device.enable_alpha_test(false);
 
 	using namespace rgde::render;
 
@@ -83,7 +83,7 @@ void application::init_render_data()
 	sprite s;
 	s.texture = t;
 
-	render::view_port vp = m_device.get_viewport();
+	render::view_port vp = m_device.viewport();
 
 	s.x = vp.width - 80;
 	s.y = vp.height - 80;
@@ -93,11 +93,11 @@ void application::init_render_data()
 
 	m_batcher2d.draw(s);
 	
-	m_device.set_ztest(true);
-	m_device.set_cull_mode(rgde::render::cull_none);
-	m_device.set_lighting(false);
-	m_device.set_alpha_blend(false);
-	m_device.set_alpha_test(false);
+	m_device.enable_ztest(true);
+	m_device.set(rgde::render::cull_none);
+	m_device.enable_lighting(false);
+	m_device.enable_alpha_blend(false);
+	m_device.enable_alpha_test(false);
 
 	math::vec3f cam_pos(-5, 0, 0);
 	m_camera->look_at(cam_pos, (math::vec3f(1,0,0) + cam_pos), math::vec3f(0,1,0));
@@ -129,20 +129,19 @@ void application::update()
 
 void application::render()
 {
-	m_device.frame_begin();
+	m_device.begin();
 	m_device.clear(m_back_color);
 
-	m_device.set_transform( render::projection_transform, m_camera->get_proj_matrix());
-	m_device.set_transform( render::view_transform, m_camera->get_view_matrix());
+	m_device.set( render::projection_transform, m_camera->get_proj_matrix());
+	m_device.set( render::view_transform, m_camera->get_view_matrix());
 
-	m_device.set_ztest(true);
-	m_device.set_cull_mode(rgde::render::cull_none);
-	m_device.set_lighting(false);
-	m_device.set_alpha_blend(false);
-	m_device.set_alpha_test(false);
+	m_device.enable_ztest(true);
+	m_device.set(rgde::render::cull_none);
+	m_device.enable_lighting(false);
+	m_device.enable_alpha_blend(false);
+	m_device.enable_alpha_test(false);
 
-	m_device.set_tex_adressu(0, render::mode_wrap);
-	m_device.set_tex_adressv(0, render::mode_wrap);
+	m_device.set(0, render::mode_wrap, render::mode_wrap);
 
 	m_box->render();
 	
@@ -151,7 +150,7 @@ void application::render()
 	m_font->render(L"render test:", math::rect(5,5, 300, 30), math::color::White, true);
 	m_console.render();
 
-	m_device.frame_end();
+	m_device.end();
 	m_device.present();
 }
 

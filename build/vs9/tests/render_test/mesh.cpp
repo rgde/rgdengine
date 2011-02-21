@@ -77,8 +77,8 @@ namespace rgde
 
 		void mesh::render()
 		{			
-			m_device.set_stream_source( 0, vb, sizeof(vertex));
-			m_device.set_index_buffer(ib);
+			m_device.set( 0, vb, sizeof(vertex));
+			m_device.set(ib);
 			
 			vertex_declaration_ptr cur_decl;
 
@@ -89,11 +89,11 @@ namespace rgde
 				if (cur_decl != attr.decl)
 				{
 					cur_decl = attr.decl;
-					m_device.set_decl(cur_decl);
+					m_device.set(cur_decl);
 				}
 
 				if (attr.vb_offset > 0)
-					m_device.set_stream_source( 0, vb, sizeof(vertex));//attr.vb_offset );				
+					m_device.set( 0, vb, sizeof(vertex));//attr.vb_offset );				
 
 				m_device.draw(attr.prim_type, attr.vertex_start, 0, attr.vertex_count,
 					attr.index_start, attr.prim_count);
@@ -102,8 +102,8 @@ namespace rgde
 
 		void mesh::render(size_t attrib_index)
 		{
-			m_device.set_stream_source( 0, vb, sizeof(vertex) );
-			m_device.set_index_buffer(ib);
+			m_device.set( 0, vb, sizeof(vertex) );
+			m_device.set(ib);
 
 			attrib_range& attr = m_parts[attrib_index].first;
 			m_device.draw(attr.prim_type, attr.vertex_start, 0, attr.vertex_count,

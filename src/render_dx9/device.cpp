@@ -86,20 +86,20 @@ namespace rgde
 		{
 		}
 
-		view_port device::get_viewport()
+		view_port device::viewport()
 		{			
 			D3DVIEWPORT9 dx_vp;
 			get_impl()->GetViewport(&dx_vp);
 			return convert(dx_vp);
 		}
 
-		void device::set_viewport(const view_port& vp)
+		void device::set(const view_port& vp)
 		{
 			D3DVIEWPORT9 dx_vp = convert(vp);
 			get_impl()->SetViewport(&dx_vp);
 		}
 
-		bool device::set_render_target(size_t rt_index, surface_ptr rt_surface) 
+		bool device::set(size_t rt_index, surface_ptr rt_surface) 
 		{
 			IDirect3DSurface9* dx_surface = rt_surface->get_impl()->get_dx_surface();
 			HRESULT hr = get_impl()->SetRenderTarget((DWORD)rt_index, dx_surface);
@@ -119,7 +119,7 @@ namespace rgde
 		//		);
 		//}
 
-		bool device::set_depth_surface(surface_ptr depth_surface) 
+		bool device::set_depth(surface_ptr depth_surface) 
 		{
 			//TODO: check format
 			IDirect3DSurface9* dx_surface = depth_surface->get_impl()->get_dx_surface();
@@ -127,7 +127,7 @@ namespace rgde
 			return hr == S_OK;
 		}
 
-		surface_ptr device::get_render_target(size_t rt_index) 
+		surface_ptr device::render_target(size_t rt_index) 
 		{ 
 			IDirect3DSurface9* rt = 0;
 
@@ -140,7 +140,7 @@ namespace rgde
 			return surface::create(impl);			
 		}
 
-		surface_ptr device::get_depth_surface() 
+		surface_ptr device::depth_surface() 
 		{ 
 			IDirect3DSurface9* rt = 0;
 
@@ -153,7 +153,7 @@ namespace rgde
 			return surface::create(impl);	
 		}
 
-		bool device::frame_begin()
+		bool device::begin()
 		{
 			bool res = m_pimpl->frame_begin();
 
@@ -183,19 +183,14 @@ namespace rgde
 			return res;
 		}
 
-		void device::set_tex_adressu(size_t stage, texture_addr mode)
+		void device::set(size_t stage, texture_addr modeu, texture_addr modev)
 		{
 			IDirect3DDevice9* dev = get_impl();
-			dev->SetSamplerState((DWORD)stage, D3DSAMP_ADDRESSU, (D3DTEXTUREADDRESS)mode);
+			dev->SetSamplerState((DWORD)stage, D3DSAMP_ADDRESSU, (D3DTEXTUREADDRESS)modeu);
+			dev->SetSamplerState((DWORD)stage, D3DSAMP_ADDRESSV, (D3DTEXTUREADDRESS)modev);
 		}
 
-		void device::set_tex_adressv(size_t stage, texture_addr mode)
-		{
-			IDirect3DDevice9* dev = get_impl();
-			dev->SetSamplerState((DWORD)stage, D3DSAMP_ADDRESSV, (D3DTEXTUREADDRESS)mode);
-		}
-
-		bool device::frame_end()
+		bool device::end()
 		{
 			return m_pimpl->frame_end();
 		}
@@ -220,13 +215,13 @@ namespace rgde
 			return *m_pimpl;
 		}
 
-		void device::set_index_buffer(index_buffer_ptr ib)
+		void device::set(index_buffer_ptr ib)
 		{
 			HRESULT hr = get_impl()->SetIndices(ib->get_impl().get_dx_index_buffer());
 			assert(hr == S_OK);
 		}
 
-		void device::set_stream_source(uint stream_number, vertex_buffer_ptr stream_data, uint stride, uint bytes_offset)
+		void device::set(uint stream_number, vertex_buffer_ptr stream_data, uint stride, uint bytes_offset)
 		{
 			get_impl().get_dx_device()->SetStreamSource(stream_number, stream_data->get_impl().get_dx_vertex_buffer(),bytes_offset, stride);
 			DWORD fvf = convert_to_fvf(stream_data->get_declaration()->get_vertex_elemets());
@@ -234,43 +229,43 @@ namespace rgde
 			assert(hr == S_OK);
 		}
 
-		void device::set_decl(vertex_declaration_ptr& decl)
+		void device::set(vertex_declaration_ptr& decl)
 		{
 			get_impl().get_dx_device()->SetVertexDeclaration(decl->get_impl().get_dx_decl());
 		}
 
-		void device::set_lighting(bool enable)
+		void device::enable_lighting(bool enable)
 		{
 			get_impl()->SetRenderState(D3DRS_LIGHTING, enable? TRUE : FALSE);
 		}
 
-		void device::set_ztest(bool enable)
+		void device::enable_ztest(bool enable)
 		{
 			get_impl()->SetRenderState(D3DRS_ZENABLE, enable? TRUE : FALSE);
 		}
 
-		void device::set_cull_mode(cull_mode mode)
+		void device::set(cull_mode mode)
 		{
 			get_impl()->SetRenderState(D3DRS_CULLMODE, (D3DCULL)mode );
 		}
 
-		void device::set_alpha_test(bool enable)
+		void device::enable_alpha_test(bool enable)
 		{
 			get_impl()->SetRenderState(D3DRS_ALPHATESTENABLE, enable? TRUE : FALSE);
 		}
 
-		void device::set_alpha_blend(bool enable)
+		void device::enable_alpha_blend(bool enable)
 		{
 			get_impl()->SetRenderState(D3DRS_ALPHABLENDENABLE, enable? TRUE : FALSE);
 		}
 
-		void device::set_texture(texture_ptr texture, size_t index)
+		void device::set(texture_ptr texture, size_t index)
 		{
 			IDirect3DTexture9* dx_texture = texture ? texture->get_impl()->get_dx_texture() : 0;
 			get_impl()->SetTexture((DWORD)index, dx_texture);
 		}
 
-		void device::set_transform(transform_type type, const math::mat44f& m)
+		void device::set(transform_type type, const math::mat44f& m)
 		{
 			static D3DTRANSFORMSTATETYPE trasform_maping[texture3_transform + 1] =  
 			{
@@ -284,13 +279,10 @@ namespace rgde
 			};
 
 			assert(type < texture3_transform + 1 && "transform_type out of range!");
-
 			D3DTRANSFORMSTATETYPE ttype = trasform_maping[type];
 
 			const D3DMATRIX* d3d_matrix = (const D3DMATRIX*)(float*)&m;
-
 			HRESULT hr = get_impl()->SetTransform(ttype, d3d_matrix);
-			
 			assert(hr == S_OK);
 		}
 

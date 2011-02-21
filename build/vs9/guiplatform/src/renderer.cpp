@@ -191,9 +191,9 @@ namespace gui
 			if (!m_buffer)
 				return;
 	
-			view_port vp = m_device.get_viewport();
+			view_port vp = m_device.viewport();
 
-			m_device.set_decl(m_vertexDeclaration);
+			m_device.set(m_vertexDeclaration);
 
 			m_shader->set_tech("Simple");
 			rgde::math::vec2f vec((float)vp.width, (float)vp.height);
@@ -202,7 +202,7 @@ namespace gui
 			m_shader->begin_pass(0);
 
 			texture* tex = (texture*)q.texture;
-			m_device.set_texture(((texture*)tex)->get_platform_resource(), 0 );
+			m_device.set(((texture*)tex)->get_platform_resource(), 0 );
 
 			QuadVertex buffmem[VERTEX_PER_QUAD];
 
@@ -393,12 +393,12 @@ namespace gui
 		void renderer::setRenderStates()
 		{
 			// setup vertex stream
-			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
-			m_device.set_index_buffer(m_ibuffer);
+			m_device.set(0, m_buffer, sizeof(QuadVertex));
+			m_device.set(m_ibuffer);
 			
-			view_port vp = m_device.get_viewport();
+			view_port vp = m_device.viewport();
 
-			m_device.set_decl(m_vertexDeclaration);
+			m_device.set(m_vertexDeclaration);
 
 			m_shader->set_tech("simple");
 			rgde::math::vec2f vec((float)vp.width, (float)vp.height);
@@ -463,7 +463,7 @@ namespace gui
 				m_buffer->unlock();
 
 				gui::rgde_platform::texture* t = static_cast<gui::rgde_platform::texture*>(batch.texture);
-				m_device.set_texture(t->get_platform_resource(), 0);
+				m_device.set(t->get_platform_resource(), 0);
 
 				m_device.draw
 					(
@@ -501,8 +501,8 @@ namespace gui
 		void renderer::initPerFrameStates(void)
 		{
 			// setup vertex stream
-			m_device.set_stream_source(0, m_buffer, sizeof(QuadVertex));
-			m_device.set_index_buffer(m_ibuffer);
+			m_device.set(0, m_buffer, sizeof(QuadVertex));
+			m_device.set(m_ibuffer);
 		}
 
 		void renderer::OnLostDevice()
@@ -542,7 +542,7 @@ namespace gui
 		Size renderer::getViewportSize(void) const
 		{
 			// initialise renderer size
-			view_port vp = m_device.get_viewport();
+			view_port vp = m_device.viewport();
 			return Size((float)vp.width, (float)vp.height);
 		}
 

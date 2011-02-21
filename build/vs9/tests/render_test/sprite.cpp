@@ -204,16 +204,17 @@ namespace rgde
 			if (m_sprites.empty() || !m_updated || !m_ib || !m_vb)
 				return;
 
-			m_device.set_stream_source( 0, m_vb, sizeof(sprite_vertex) );
-			m_device.set_index_buffer(m_ib);
+			m_device.set( 0, m_vb, sizeof(sprite_vertex) );
+			m_device.set(m_ib);
 
 			uint sprites_num = (uint)m_sprites.size();
 
-			m_device.set_texture(m_sprites.front().texture, 0);
+			//TODO: currently only first texture is used!
+			m_device.set(m_sprites.front().texture, 0);
 
 			m_device.draw(render::triangle_list, 0, 0, sprites_num * 4, 0, sprites_num *2);
 
-			m_device.set_texture(texture_ptr(), 0);
+			m_device.set(texture_ptr(), 0);
 		}
 
 		void canvas::draw(const sprite& s)
