@@ -5,6 +5,7 @@ namespace rgde
 {
 	namespace render
 	{
+		/// Base class for any render system resource.
 		class resource
 		{
 		public:

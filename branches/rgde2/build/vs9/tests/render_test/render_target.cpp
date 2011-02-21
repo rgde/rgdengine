@@ -84,15 +84,6 @@ namespace rgde
 			m_locked = false;
 		}
 
-		const rt_desc& render_target::get_desc() const
-		{ 
-			return m_desc; 
-		}
-
-		bool render_target::operator== (const render_target& rhs) const 
-		{ 
-			return m_desc == rhs.get_desc(); 
-		}
 
 		void render_target::clear_texture( unsigned long argb_color )
 		{
@@ -100,64 +91,64 @@ namespace rgde
 			{
 				//if( m_device.color_fill( m_surface, argb_color ) )
 				{
-					//LogPrintf( "render_target::clear_texture ColorFill failed: %s", DXGetErrorDescription9A(hr) );
+					//msg << "render_target::clear_texture failed:" <<  get_error_desc(hr)";
 				}
 			}
 		}
 
-		void render_target::set_current()
+		void render_target::set()
 		{
 			if( m_surface )
 			{
-				if( !get_device().set_render_target(0, m_surface) )
+				if( !dev().set(0, m_surface) )
 				{
-					throw std::exception( "render_target::set_current SetRenderTarget: failed. " );
+					//err << "render_target::set_current SetRenderTarget: failed. ";
 				}
 			}
 
 			if( m_depth_surface )
 			{
-				if( !get_device().set_depth_surface( m_depth_surface ) )
+				if( !dev().set_depth( m_depth_surface ) )
 				{
-					throw std::exception( "render_target::set_current SetDepthStencilSurface: failed. " );
+					//err << "render_target::set_current SetDepthStencilSurface: failed. ";
 				}
 			}
 		}
 
-		void render_target::on_device_lost()
-		{
-			release();
-		}
+		//void render_target::on_device_lost()
+		//{
+		//	release();
+		//}
 
-		void render_target::on_device_reset()
-		{
-			view_port vp = get_device().get_viewport();
+		//void render_target::on_device_reset()
+		//{
+		//	view_port vp = get_device().get_viewport();
 
-			int width = (int)vp.width;
-			int height = (int)vp.height;
+		//	int width = (int)vp.width;
+		//	int height = (int)vp.height;
 
-			if( m_desc.screen_divisor_ == 0 )
-			{
-				//<do not change the size./>
-			}
-			else
-				if( m_desc.screen_divisor_ == 1 && !m_desc.force_crop_ )
-				{
-					m_desc.width_ = width;
-					m_desc.height_ = height;
-				}
-				else
-					if( m_desc.screen_divisor_ <= 8 )
-					{
-						int crop_width = width - width % 8;
-						int crop_height = height - height % 8;
+		//	if( m_desc.screen_divisor_ == 0 )
+		//	{
+		//		//<do not change the size./>
+		//	}
+		//	else
+		//		if( m_desc.screen_divisor_ == 1 && !m_desc.force_crop_ )
+		//		{
+		//			m_desc.width_ = width;
+		//			m_desc.height_ = height;
+		//		}
+		//		else
+		//			if( m_desc.screen_divisor_ <= 8 )
+		//			{
+		//				int crop_width = width - width % 8;
+		//				int crop_height = height - height % 8;
 
-						m_desc.width_ = crop_width/m_desc.screen_divisor_ + (int)m_desc.size_shift_;
-						m_desc.height_ = crop_height/m_desc.screen_divisor_ + (int)m_desc.size_shift_;
-					}
+		//				m_desc.width_ = crop_width/m_desc.screen_divisor_ + (int)m_desc.size_shift_;
+		//				m_desc.height_ = crop_height/m_desc.screen_divisor_ + (int)m_desc.size_shift_;
+		//			}
 
-					reinit();
-		}
+		//			reinit();
+		//}
 
 		void render_target::reinit()								
 		{ 
@@ -165,7 +156,7 @@ namespace rgde
 			{
 				if (m_desc.create_rt_texture_)
 				{
-					m_texture = texture::create(get_device(), m_desc.width_, m_desc.height_, 1,
+					m_texture = texture::create(dev(), m_desc.width_, m_desc.height_, 1,
 						m_desc.texture_format_, usage_rendertarget);
 
 					if( !m_texture )
@@ -182,7 +173,7 @@ namespace rgde
 				}
 				else
 				{
-					m_surface = surface::create_rt(get_device(), m_desc.width_, m_desc.height_,
+					m_surface = surface::create_rt(dev(), m_desc.width_, m_desc.height_,
 						m_desc.texture_format_, ms_none, false);
 
 					if(!m_surface)
@@ -210,7 +201,7 @@ namespace rgde
 
 				if (m_desc.create_ds_texture_)
 				{
-					m_depth_texture = texture::create( get_device(), 
+					m_depth_texture = texture::create( dev(), 
 						ds_width, 
 						ds_height, 
 						1, 
@@ -269,7 +260,7 @@ namespace rgde
 				}
 			}
 
-			on_device_lost(); // HACK: to force deleting all device resources
+			//on_device_lost(); // HACK: to force deleting all device resources
 		}
 
 
@@ -282,7 +273,7 @@ namespace rgde
 				if( force_create )
 				{
 					//<any time create./>
-					rt = render_target_ptr(new render_target(get_device()));
+					rt = render_target_ptr(new render_target(dev()));
 					rt->m_desc = d;
 					rt->reinit();
 					rt->lock();
@@ -293,8 +284,8 @@ namespace rgde
 					//<create if not exists and not in use./>
 					for( render_targets_vector::const_iterator i = m_cache.begin(); i != m_cache.end(); ++i )
 					{
-						if( (*i)->get_desc() == d
-							&& ( !(*i)->is_locked() || (*i).use_count() == 1 ) )
+						if( (*i)->desc() == d
+							&& ( !(*i)->locked() || (*i).use_count() == 1 ) )
 						{
 							rt = (*i);
 							rt->unlock();
@@ -304,13 +295,12 @@ namespace rgde
 					//<if not found in cache - create and push./>
 					if( !rt )
 					{
-						rt = render_target_ptr(new render_target(get_device()));
+						rt = render_target_ptr(new render_target(dev()));
 						rt->m_desc = d;
 						rt->reinit();
 						m_cache.push_back(rt);
 					}		
 				}
-
 
 				return rt;
 			}
@@ -323,9 +313,9 @@ namespace rgde
 
 		void rt_manager::set( const render_target_ptr& rt, bool& set_color, bool& set_depth )
 		{
-			if( set_color && rt->get_color_surface() )
+			if( set_color && rt->color_surface() )
 			{
-				if( !get_device().set_render_target(0, rt->get_color_surface()) )
+				if( !dev().set(0, rt->color_surface()) )
 				{
 					throw std::exception( "rt_manager::set: SetRenderTarget: failed. "  );
 				}
@@ -333,9 +323,9 @@ namespace rgde
 				set_color = false;
 			}
 
-			if( set_depth && rt->get_depth_surface() )
+			if( set_depth && rt->depth_surface() )
 			{
-				if( !get_device().set_depth_surface(rt->get_depth_surface()) )
+				if( !dev().set_depth(rt->depth_surface()) )
 				{
 					throw std::exception( "rt_manager::set: SetDepthStencilSurface: failed. " );
 				}
@@ -356,8 +346,8 @@ namespace rgde
 		void rt_manager::pop()
 		{
 			const render_target_ptr& curent = m_stack.back();
-			bool set_color = curent->get_color_surface();
-			bool set_depth = curent->get_depth_surface();
+			bool set_color = curent->color_surface();
+			bool set_depth = curent->depth_surface();
 			m_stack.pop_back();	
 
 			render_targets_vector::const_reverse_iterator ri = m_stack.rbegin(), rend = m_stack.rend();
@@ -367,41 +357,45 @@ namespace rgde
 			}	
 		}
 
-
-		void rt_manager::on_device_lost()
+		void rt_manager::reset()
 		{
 			m_stack.clear();
-
-			std::for_each(m_cache.begin(), m_cache.end(), 
-				boost::bind(&render_target::on_device_lost, _1));
 		}
 
+		//void rt_manager::on_device_lost()
+		//{
+		//	m_stack.clear();
 
-		void rt_manager::on_device_reset()
-		{
-			surface_ptr depth_surface = get_device().get_depth_surface();
-			assert(depth_surface);
+		//	std::for_each(m_cache.begin(), m_cache.end(), 
+		//		boost::bind(&render_target::on_device_lost, _1));
+		//}
 
-			surface_ptr color_surface = get_device().get_render_target(0);
-			assert(color_surface);
 
-			render_target_ptr rt(new render_target(get_device(), color_surface, depth_surface));
+		//void rt_manager::on_device_reset()
+		//{
+		//	surface_ptr depth_surface = get_device().get_depth_surface();
+		//	assert(depth_surface);
 
-			m_stack.push_back(rt);
+		//	surface_ptr color_surface = get_device().get_render_target(0);
+		//	assert(color_surface);
 
-			try
-			{
-				std::for_each(m_cache.begin(), m_cache.end(), 
-					boost::bind(&render_target::on_device_reset, _1));
-			}
-			catch( const std::exception& e )
-			{
-				std::cerr << e.what() << std::endl;
-				throw;
-			}
-		}
+		//	render_target_ptr rt(new render_target(get_device(), color_surface, depth_surface));
 
-		void rt_manager::get_mem_usage( std::vector<std::string>& _list ) const
+		//	m_stack.push_back(rt);
+
+		//	try
+		//	{
+		//		std::for_each(m_cache.begin(), m_cache.end(), 
+		//			boost::bind(&render_target::on_device_reset, _1));
+		//	}
+		//	catch( const std::exception& e )
+		//	{
+		//		std::cerr << e.what() << std::endl;
+		//		throw;
+		//	}
+		//}
+
+		void rt_manager::mem_usage( std::vector<std::string>& _list ) const
 		{
 			//render_targets_vector::const_iterator i =  m_cache.begin(), end = m_cache.end();
 			//for( ; i != end; ++i )
@@ -410,7 +404,7 @@ namespace rgde
 			//}
 		}
 
-		int rt_manager::get_mem_usage( ) const
+		int rt_manager::mem_usage( ) const
 		{
 			int result(0);
 			//render_targets_vector::const_iterator i =  m_cache.begin(), end = m_cache.end();

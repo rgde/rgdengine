@@ -18,13 +18,13 @@ namespace rgde
 		public:			
 			virtual ~device_object();
 
-			device& get_device() {return m_device;}
-			const device& get_device() const {return m_device;}
+			device& dev() {return m_device;}
+			const device& dev() const {return m_device;}
 
-			static size_t get_objects_num();
+			static size_t objects_num();
 
-			virtual void on_device_lost() {}
-			virtual void on_device_reset() {}
+			//virtual void on_device_lost() {}
+			//virtual void on_device_reset() {}
 
 		private:
 			typedef std::list<device_object*>::iterator obj_handler;

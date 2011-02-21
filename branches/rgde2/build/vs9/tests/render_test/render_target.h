@@ -5,7 +5,6 @@
 
 #include <rgde/render/device_object.h>
 
-
 namespace rgde
 {
 	namespace render
@@ -75,23 +74,23 @@ namespace rgde
 		public:
 			~render_target();
 
-			const rt_desc& get_desc() const;
+			const rt_desc& desc() const;
 
-			texture_ptr get_color_texture() const	{ return m_texture;	}
-			surface_ptr get_color_surface() const	{ return m_surface; }
+			texture_ptr color_texture() const	{ return m_texture;	}
+			surface_ptr color_surface() const	{ return m_surface; }
 
-			surface_ptr get_depth_surface() const	{ return m_depth_surface; }
-			texture_ptr get_depth_texture() const	{ return m_depth_texture; }
+			surface_ptr depth_surface() const	{ return m_depth_surface; }
+			texture_ptr depth_texture() const	{ return m_depth_texture; }
 
-			void set_current();//<throw std::exception./>
+			void set();//<throw std::exception./>
 			
-			bool is_locked() const { return m_locked; }
+			bool locked() const { return m_locked; }
 			void lock() { m_locked = true;}
 			void unlock() { m_locked = false;}
 
 			bool operator == (const render_target& rhs) const;
 
-			void clear_texture( unsigned long argb_color );
+			void clear_texture( unsigned long argb_color = 0xFF000000);
 
 			//std::string get_mem_usage_info() const {}
 			//int get_mem_usage() const;
@@ -103,8 +102,8 @@ namespace rgde
 			void reinit();				//<throw std::exception./> <init with current descriptor./>
 			void release();
 
-			void on_device_lost();
-			void on_device_reset();
+			//void on_device_lost();
+			//void on_device_reset();
 
 		protected:
 			rt_desc		m_desc;
@@ -129,18 +128,34 @@ namespace rgde
 			void push(render_target_ptr rt);//<throw std::exception./>
 			void pop();//<throw std::exception./>
 
-			void get_mem_usage( std::vector<std::string>& list ) const;
-			int get_mem_usage() const;
+			/// returns detailed information of current RT in manager
+			void mem_usage( std::vector<std::string>& list ) const;
+			
+			/// returns video memory usage in MB
+			int mem_usage() const;
+
+			/// for internal use
+			void reset();
 
 		private:
-			void on_device_lost();
-			void on_device_reset();
-
+			//void on_device_lost();
+			//void on_device_reset();
 			void set( const render_target_ptr& rt, bool& set_color, bool& set_depth );//<throw std::exception./>
 
 			typedef std::vector<render_target_ptr> render_targets_vector;	
 			render_targets_vector m_cache;
 			render_targets_vector m_stack;
 		};
+
+		inline const rt_desc& render_target::desc() const
+		{ 
+			return m_desc; 
+		}
+
+		inline bool render_target::operator== (const render_target& rhs) const 
+		{ 
+			return m_desc == rhs.desc(); 
+		}
+
 	}
 }

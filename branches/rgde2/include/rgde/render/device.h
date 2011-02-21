@@ -82,14 +82,15 @@ namespace rgde
 			device(core::windows::handle hwnd, core::vfs::system& vfs, bool windowed = true);
 			virtual ~device();
 
-			void set_lighting(bool enable);
-			void set_ztest(bool enable);
-			void set_cull_mode(cull_mode mode);
-			void set_alpha_test(bool enable);
-			void set_alpha_blend(bool enable);
-			void set_transform(transform_type type, const math::mat44f& m);
-			void set_texture(texture_ptr texture, size_t index);
-			void set_blend_mode(blend_mode src, blend_mode dest);
+			void enable_lighting(bool enable);
+			void enable_ztest(bool enable);
+			void enable_alpha_test(bool enable);
+			void enable_alpha_blend(bool enable);
+
+			void set(cull_mode mode);
+			void set(transform_type type, const math::mat44f& m);
+			void set(texture_ptr texture, size_t index);
+			void set(blend_mode src, blend_mode dest);
 
 			void draw(primitive_type type, uint num_vertices, uint primitive_count, const void* vertex_data, uint vertex_stride,
 								const uint16* index_data);
@@ -98,26 +99,25 @@ namespace rgde
 			void draw(primitive_type type, int base_vertex_index, uint min_vertex_index,
 					  uint num_vertices, uint start_index, uint primitive_count);
 
-			void set_index_buffer(index_buffer_ptr ib);
-			void set_stream_source(uint stream_number, vertex_buffer_ptr stream_data, uint stride, uint bytes_offset = 0);
-			void set_decl(vertex_declaration_ptr& decl);
+			void set(index_buffer_ptr ib);
+			void set(uint stream_number, vertex_buffer_ptr stream_data, uint stride, uint bytes_offset = 0);
+			void set(vertex_declaration_ptr& decl);
 
-			void set_tex_adressu(size_t stage, texture_addr mode);
-			void set_tex_adressv(size_t stage, texture_addr mode);
+			void set(size_t stage, texture_addr modeu, texture_addr modev);
 
 			void clear(unsigned int color, float depth = 1.0f);
-			bool frame_begin();
-			bool frame_end();
+			bool begin();
+			bool end();
 			bool present();
 
-			view_port get_viewport();
-			void set_viewport(const view_port& vp);
+			view_port viewport();
+			void set(const view_port& vp);
 
-			bool set_render_target(size_t rt_index, surface_ptr rt_surface);
-			bool set_depth_surface(surface_ptr depth_surface);
+			bool set(size_t rt_index, surface_ptr rt_surface);
+			bool set_depth(surface_ptr depth_surface);
 
-			surface_ptr get_render_target(size_t rt_index);
-			surface_ptr get_depth_surface();
+			surface_ptr render_target(size_t rt_index);
+			surface_ptr depth_surface();
 
 			device_impl& get_impl();
 			const device_impl& get_impl() const;

@@ -19,7 +19,7 @@ namespace rgde
 			--ms_num_objects;
 		}
 
-		size_t device_object::get_objects_num()
+		size_t device_object::objects_num()
 		{
 			return ms_num_objects;
 		}
