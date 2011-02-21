@@ -83,6 +83,6 @@ namespace rgde
 		render::font_ptr m_font;
 
 		scene::camera_ptr m_camera;
-		scene::free_camera_ptr m_cam_controller;
+		scene::free_camera m_camera_controller;
 	};
 }

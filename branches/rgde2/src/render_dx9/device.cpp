@@ -86,11 +86,11 @@ namespace rgde
 		{
 		}
 
-		void device::get_viewport(view_port& vp)
+		view_port device::get_viewport()
 		{			
 			D3DVIEWPORT9 dx_vp;
 			get_impl()->GetViewport(&dx_vp);
-			vp = convert(dx_vp);
+			return convert(dx_vp);
 		}
 
 		void device::set_viewport(const view_port& vp)

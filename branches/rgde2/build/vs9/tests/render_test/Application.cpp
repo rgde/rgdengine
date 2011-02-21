@@ -43,8 +43,7 @@ application::application(int x, int y, int w, int h, const std::wstring& title)
 
 	test_collada_read();
 
-
-	m_cam_controller = scene::free_camera::create(m_camera);
+	m_camera_controller.attach(m_camera);
 
 	xml::document doc;
 	if (doc.load(m_filesystem.open_read("audiodb.xml")))
@@ -73,9 +72,9 @@ void application::init_render_data()
 
 	using namespace rgde::render;
 
-	m_box = mesh::create_box(m_device, 1, 1, 1);
-	//terrain_container::terrain ter(1,1,256,256);
-	//m_box = mesh::create_terrain_chunk(m_device,ter,0,0,1);
+	//m_box = mesh::create_box(m_device, 1, 1, 1);
+	terrain_container::terrain ter(1,1,256,256);
+	m_box = mesh::create_terrain_chunk(m_device,ter,0,0,1);
 
 	m_font = font::create(m_device, 17, L"Arial");
 
@@ -84,8 +83,7 @@ void application::init_render_data()
 	sprite s;
 	s.texture = t;
 
-	render::view_port vp;
-	m_device.get_viewport(vp);
+	render::view_port vp = m_device.get_viewport();
 
 	s.x = vp.width - 80;
 	s.y = vp.height - 80;
@@ -93,7 +91,7 @@ void application::init_render_data()
 	s.h = 80;
 	s.color = math::color::White;
 
-	//m_batcher2d.draw(s);
+	m_batcher2d.draw(s);
 	
 	m_device.set_ztest(true);
 	m_device.set_cull_mode(rgde::render::cull_none);
@@ -150,7 +148,7 @@ void application::render()
 	
 	m_batcher2d.render();
 
-	//m_font->render(L"render test:", math::rect(5,5, 300, 30), math::color::White, true);
+	m_font->render(L"render test:", math::rect(5,5, 300, 30), math::color::White, true);
 	m_console.render();
 
 	m_device.frame_end();
@@ -188,19 +186,19 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 
 			if ('w' == wparam || 'W' == wparam)
 			{
-				m_cam_controller->move_forward(0.1f);
+				m_camera_controller.move_forward(0.1f);
 			}
 			else if ('s' == wparam || 'S' == wparam)
 			{
-				m_cam_controller->move_back(0.1f);
+				m_camera_controller.move_back(0.1f);
 			}
 			else if ('a' == wparam || 'A' == wparam)
 			{
-				m_cam_controller->move_left(0.1f);
+				m_camera_controller.move_left(0.1f);
 			}
 			else if ('d' == wparam || 'D' == wparam)
 			{
-				m_cam_controller->move_right(0.1f);
+				m_camera_controller.move_right(0.1f);
 			}
 			else if ('~' == wparam || 192 == wparam)
 			{
@@ -228,7 +226,7 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 		{
 			float delta = (short)HIWORD((DWORD)wparam);
 			delta /= 80.0f;
-			m_cam_controller->move_forward(delta);
+			m_camera_controller.move_forward(delta);
 		}
 		break;
 
@@ -248,8 +246,8 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 				int dx = xPos - old_x;
 				int dy = yPos - old_y;
 
-				m_cam_controller->rotate_right(dx/200.0f);
-				m_cam_controller->rotate_up(dy/200.0f);
+				m_camera_controller.rotate_right(dx/200.0f);
+				m_camera_controller.rotate_up(dy/200.0f);
 			}
 
 			old_x = xPos;
@@ -295,5 +293,5 @@ bool application::do_events()
 void application::test_collada_read()
 {
 	collada::scene scene;
-	//scene.read(m_filesystem.open_read("models/MS-00X Experimental/models/MS-00X Experimental.dae"));
+	scene.read(m_filesystem.open_read("models/MS-00X Experimental/models/MS-00X Experimental.dae"));
 }

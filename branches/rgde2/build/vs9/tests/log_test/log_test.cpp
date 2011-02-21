@@ -23,9 +23,9 @@ int _tmain(int argc, _TCHAR* argv[])
     lwrn << "(lwrn) Предупреждение в лог: " << 2 << std::endl;
     lerr << "(lerr) Ошибка в лог: " << 3 << std::endl;
 
-    wlmsg << L"(wlmsg) Сообщение в лог: " << 4 << std::endl;
-    wlwrn << L"(wlwrn) Предупреждение в лог: " << 5 << std::endl;
-    wlerr << L"(wlerr) Ошибка в лог: " << 6 << std::endl;
+    lmsg << L"(wlmsg) Сообщение в лог: " << 4 << std::endl;
+    lwrn << L"(wlwrn) Предупреждение в лог: " << 5 << std::endl;
+    lerr << L"(wlerr) Ошибка в лог: " << 6 << std::endl;
 
     std::cout << "(cout) Сообщение в лог: " << 7 << std::endl;
     std::wcout << L"(wcout) Сообщение в лог: " << 8 << std::endl;

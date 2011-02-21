@@ -1,4 +1,4 @@
-#include "xml_test.h"
+#include "xml2test.h"
 
 using namespace gui;
 
