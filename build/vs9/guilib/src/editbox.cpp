@@ -2,7 +2,7 @@
 #include "image.h"
 #include "imageset.h"
 #include "renderer.h"
-#include "ceditbox.h"
+#include "editbox.h"
 
 #include "system.h"
 #include "utils.h"

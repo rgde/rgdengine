@@ -1,7 +1,6 @@
-
 #pragma once
 
-#include "cstatictext.h"
+#include "statictext.h"
 #include "font.h"
 #include "ActiveText.h"
 

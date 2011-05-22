@@ -1,9 +1,7 @@
-
-
 #include "stdafx.h"
 #include "imageset.h"
 #include "renderer.h"
-#include "cmarkuptext.h"
+#include "markuptext.h"
 #include "tooltip.h"
 
 #include "system.h"

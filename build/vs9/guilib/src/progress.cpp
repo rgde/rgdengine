@@ -2,7 +2,7 @@
 #include "image.h"
 #include "imageset.h"
 #include "renderer.h"
-#include "cprogress.h"
+#include "progress.h"
 #include "utils.h"
 
 #include <math.h>

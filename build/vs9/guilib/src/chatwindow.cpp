@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "imageset.h"
 #include "renderer.h"
-#include "cchatwindow.h"
+#include "chatwindow.h"
 #include "utils.h"
 
 #include "system.h"
@@ -10,7 +10,7 @@
 namespace gui
 {
 
-	ChatWindow::ChatWindow(System& sys, const std::string& name) :
+ChatWindow::ChatWindow(System& sys, const std::string& name) :
 Panel(sys, name),
 m_captionLeftImg(0),
 m_captionRightImg(0),

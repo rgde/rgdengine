@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "cstatictext.h"
+#include "statictext.h"
 #include "utils.h"
 
 #include "system.h"

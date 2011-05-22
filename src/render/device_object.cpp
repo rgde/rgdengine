@@ -9,7 +9,7 @@ namespace rgde
 		unsigned int device_object::ms_num_objects;
 
 		device_object::device_object(device& dev, bool register_on_lost_reset)
-			: m_is_registered(register_on_lost_reset), m_device(dev)
+			:/* m_is_registered(register_on_lost_reset),*/ m_device(dev)
 		{
 			++ms_num_objects;
 		}

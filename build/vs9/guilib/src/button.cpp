@@ -2,7 +2,7 @@
 #include "image.h"
 #include "imageset.h"
 #include "renderer.h"
-#include "cbutton.h"
+#include "button.h"
 #include "utils.h"
 
 #include "system.h"

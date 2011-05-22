@@ -1,11 +1,10 @@
-
 #include "stdafx.h"
 #include "image.h"
 #include "imageset.h"
 #include "renderer.h"
 #include "font.h"
-#include "cstatictext.h"
-#include "clist.h"
+#include "statictext.h"
+#include "list.h"
 #include "utils.h"
 
 #include "system.h"

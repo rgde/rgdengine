@@ -2,8 +2,8 @@
 #include "image.h"
 #include "imageset.h"
 #include "renderer.h"
-#include "cslider.h"
-#include "cscrollpane.h"
+#include "slider.h"
+#include "scrollpane.h"
 #include "system.h"
 
 namespace gui

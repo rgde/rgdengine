@@ -1,7 +1,8 @@
 #pragma once
-#include "ceditbox.h"
-#include "cbutton.h"
-#include "clist.h"
+
+#include "editbox.h"
+#include "button.h"
+#include "list.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

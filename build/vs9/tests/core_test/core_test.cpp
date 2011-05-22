@@ -91,9 +91,17 @@ namespace test
 
 
 
+#include <GL/GL.h>
 
 int _tmain(int argc, wchar_t* argv[])
 {
+#define GL_MAJOR_VERSION 0x821B
+#define GL_MINOR_VERSION 0x821C
+	GLint MajorVersionContext = 0;
+	GLint MinorVersionContext = 0;
+	glGetIntegerv(GL_MAJOR_VERSION, &MajorVersionContext);
+	glGetIntegerv(GL_MINOR_VERSION, &MinorVersionContext);
+
 	wchar_t buf[512];
 	GetModuleFileNameW(NULL, &buf[0], 512);
 
@@ -167,7 +175,7 @@ int _tmain(int argc, wchar_t* argv[])
 	wcout.flush();
 
 	// TEST MEM LEAKS REPORTING
-	new int[10];
+	//new int[10];
 	
 	return 0;
 }
