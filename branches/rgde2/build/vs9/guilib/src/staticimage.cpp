@@ -2,7 +2,7 @@
 #include "image.h"
 #include "imageset.h"
 #include "renderer.h"
-#include "cstaticimage.h"
+#include "staticimage.h"
 
 #include "system.h"
 

@@ -571,107 +571,107 @@
 				Name="controls"
 				>
 				<File
-					RelativePath=".\src\cbutton.cpp"
+					RelativePath=".\src\button.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cbutton.h"
+					RelativePath=".\src\button.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cchatwindow.cpp"
+					RelativePath=".\src\chatwindow.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cchatwindow.h"
+					RelativePath=".\src\chatwindow.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\ccheckbox.cpp"
+					RelativePath=".\src\checkbox.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\ccheckbox.h"
+					RelativePath=".\src\checkbox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\ccombobox.cpp"
+					RelativePath=".\src\combobox.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\ccombobox.h"
+					RelativePath=".\src\combobox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\ceditbox.cpp"
+					RelativePath=".\src\editbox.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\ceditbox.h"
+					RelativePath=".\src\editbox.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cframewindow.cpp"
+					RelativePath=".\src\framewindow.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cframewindow.h"
+					RelativePath=".\src\framewindow.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\clist.cpp"
+					RelativePath=".\src\list.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\clist.h"
+					RelativePath=".\src\list.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cmarkuptext.cpp"
+					RelativePath=".\src\markuptext.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cmarkuptext.h"
+					RelativePath=".\src\markuptext.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cprogress.cpp"
+					RelativePath=".\src\progress.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cprogress.h"
+					RelativePath=".\src\progress.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cscrollpane.cpp"
+					RelativePath=".\src\scrollpane.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cscrollpane.h"
+					RelativePath=".\src\scrollpane.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cslider.cpp"
+					RelativePath=".\src\slider.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cslider.h"
+					RelativePath=".\src\slider.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cstaticimage.cpp"
+					RelativePath=".\src\staticimage.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cstaticimage.h"
+					RelativePath=".\src\staticimage.h"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cstatictext.cpp"
+					RelativePath=".\src\statictext.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\cstatictext.h"
+					RelativePath=".\src\statictext.h"
 					>
 				</File>
 			</Filter>
@@ -748,10 +748,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\guilib.cpp"
-			>
-		</File>
 		<File
 			RelativePath=".\guilib.h"
 			>

@@ -1,5 +1,5 @@
 #pragma once
-#include "cbutton.h"
+#include "button.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

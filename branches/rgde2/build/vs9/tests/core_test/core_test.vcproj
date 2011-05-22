@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="core_test"
 	ProjectGUID="{5DF17805-0C6B-46CD-8B4A-12D33E282F21}"
 	RootNamespace="core_test"
@@ -64,6 +64,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib"
 				OutputFile="$(SolutionDir)..\..\bin\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(SolutionDir)..\..\external\boost\lib\"

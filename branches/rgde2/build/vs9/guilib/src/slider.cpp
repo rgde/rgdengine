@@ -1,9 +1,9 @@
 #include "StdAfx.h"
-#include "cbutton.h"
+#include "button.h"
 #include "image.h"
 #include "imageset.h"
 #include "renderer.h"
-#include "cslider.h"
+#include "slider.h"
 #include "utils.h"
 
 #include "system.h"

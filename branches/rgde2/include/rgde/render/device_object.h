@@ -1,7 +1,6 @@
 #pragma once
 
 #include <list>
-#include <boost/noncopyable.hpp>
 #include <rgde/render/render_forward.h>
 
 namespace rgde
@@ -10,7 +9,7 @@ namespace rgde
 	{
 		class device;
 
-		class device_object : boost::noncopyable
+		class device_object
 		{
 		protected:
 			explicit device_object(device& dev, bool register_on_lost_reset = false);
@@ -27,11 +26,11 @@ namespace rgde
 			//virtual void on_device_reset() {}
 
 		private:
-			typedef std::list<device_object*>::iterator obj_handler;
+			//typedef std::list<device_object*>::iterator obj_handler;
 
 			device& m_device;
-			bool m_is_registered;
-			obj_handler m_handler;
+			//bool m_is_registered;
+			//obj_handler m_handler;
 
 			static unsigned int ms_num_objects;
 		};

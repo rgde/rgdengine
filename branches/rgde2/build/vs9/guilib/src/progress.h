@@ -1,5 +1,5 @@
 #pragma once
-#include "cstatictext.h"
+#include "statictext.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

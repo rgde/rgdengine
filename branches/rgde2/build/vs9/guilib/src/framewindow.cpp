@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "imageset.h"
 #include "renderer.h"
-#include "cframewindow.h"
+#include "framewindow.h"
 #include "utils.h"
 
 #include "system.h"
