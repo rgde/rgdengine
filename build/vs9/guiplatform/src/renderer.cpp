@@ -54,7 +54,7 @@ namespace gui
 			, m_device(device)
 		{
 			m_needToAddCallback = false;
-			Size size(getViewportSize());
+			Size size(viewport_size());
 
 			constructor_impl(size);
 		}
@@ -130,7 +130,7 @@ namespace gui
 											BaseWindow* window, const Rect& dest, const Rect& clip)
 		{
 			// если сразу должны были рисовать, то сразу запускаем коллбак
-			if (!m_isQueueing)
+			if (!m_batching_enabled)
 			{
 				if (window && callback)
 					callback(window,dest, clip);
@@ -186,7 +186,7 @@ namespace gui
 		/*************************************************************************
 		render a quad directly to the display
 		*************************************************************************/
-		void renderer::renderQuadDirect(const QuadInfo& q)
+		void renderer::immediate_render(const QuadInfo& q)
 		{
 			if (!m_buffer)
 				return;
@@ -210,7 +210,7 @@ namespace gui
 			float scaleY = 1.f;
 			if(m_autoScale)
 			{
-				const Size viewport = getViewportSize();
+				const Size viewport = viewport_size();
 				scaleX = viewport.width / m_originalsize.width;
 				scaleY = viewport.height / m_originalsize.height;
 			}
@@ -245,7 +245,7 @@ namespace gui
 			m_shader->end();
 		}
 
-		void renderer::addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colors)
+		void renderer::add(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colors)
 		{
 			if (m_num_quads >= m_quads.size())
 			{
@@ -277,9 +277,9 @@ namespace gui
 			quad.bottomRightCol	= colors.m_bottom_right.getARGB();
 
 			// if not queering, render directly (as in, right now!)
-			if (!m_isQueueing)
+			if (!m_batching_enabled)
 			{
-				renderQuadDirect(quad);
+				immediate_render(quad);
 				return;
 			}
 
@@ -327,7 +327,7 @@ namespace gui
 			++batches[m_num_batches - 1].numQuads;
 		}
 
-		void renderer::addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colors)		
+		void renderer::add(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colors)		
 		{
 			if (m_num_quads >= m_quads.size())
 			{
@@ -337,12 +337,12 @@ namespace gui
 			QuadInfo* quads = &m_quads.front();
 			QuadInfo& quad = quads[m_num_quads];
 
-			fillQuad(quad, dest_rect, tex_rect, z, img, colors);
+			fill_quads(quad, dest_rect, tex_rect, z, img, colors);
 		
 			// if not queering, render directly (as in, right now!)
-			if (!m_isQueueing)
+			if (!m_batching_enabled)
 			{
-				renderQuadDirect(quad);
+				immediate_render(quad);
 				return;
 			}
 
@@ -424,7 +424,7 @@ namespace gui
 			float scaleY = 1.f;
 			if(m_autoScale)
 			{
-				Size& viewport = getViewportSize();
+				Size viewport = viewport_size();
 				scaleX = viewport.width / m_originalsize.width;
 				scaleY = viewport.height / m_originalsize.height;
 			}
@@ -498,7 +498,7 @@ namespace gui
 		/*************************************************************************
 		setup states etc
 		*************************************************************************/
-		void renderer::initPerFrameStates(void)
+		void renderer::init_frame_states()
 		{
 			// setup vertex stream
 			m_device.set(0, m_buffer, sizeof(QuadVertex));
@@ -539,7 +539,7 @@ namespace gui
 			m_texmanager.onDeviceReset();
 		}
 
-		Size renderer::getViewportSize(void) const
+		Size renderer::viewport_size() const
 		{
 			// initialise renderer size
 			view_port vp = m_device.viewport();

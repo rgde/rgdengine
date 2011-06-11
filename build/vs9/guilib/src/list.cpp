@@ -153,7 +153,7 @@ void ListBox::AddItem(const std::string& name)
 		st->setText(name);
 		st->setIgnoreInputEvents(true);
 		st->setAlwaysOnTop(true);
-		st->setVisible(true);
+		st->visible(true);
 	}
 }
 
@@ -322,7 +322,7 @@ void CategorizedList::render(const Rect& finalRect, const Rect& finalClip)
 			s.m_left += p->area.m_left;
 			s.m_top += p->area.m_top;
 
-			m_font->drawText(p->name, s, 1.0f, finalClip, Font::LeftAligned, m_backColor, 1.f, 1.f);
+			m_font->draw(p->name, s, 1.0f, finalClip, Font::LeftAligned, m_backColor, 1.f, 1.f);
 
 			s.m_left = finalRect.m_left;
 			s.setSize(Size(m_indent, m_indent));
@@ -412,7 +412,7 @@ unsigned int CategorizedList::Category::Add(BaseWindow* wnd)
 {
 	children.push_back(wnd);
 	if(collapsed)
-		wnd->setVisible(false);
+		wnd->visible(false);
 	
 	parent.addChildWindow(wnd);
 	parent.layoutItems();

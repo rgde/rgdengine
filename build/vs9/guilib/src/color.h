@@ -18,7 +18,7 @@ public:
 	/*************************************************************************
 		Construction & Destruction
 	*************************************************************************/
-	Color(void);
+	Color();
 	Color(const Color& val);
 	Color(float red, float green, float blue, float alpha = 1.0f);
 	Color(argb_t argb);
@@ -26,12 +26,12 @@ public:
 	/*************************************************************************
 		Accessors
 	*************************************************************************/
-	__inline argb_t	getARGB() const	{	return m_argb;	}
+	inline argb_t	getARGB() const	{	return m_argb;	}
 	
-	__inline float	getAlpha() const	{return m_alpha;}
-	__inline float	getRed() const		{return m_red;}
-	__inline float	getGreen() const	{return m_green;}
-	__inline float	getBlue() const		{return m_blue;}
+	inline float	getAlpha() const	{return m_alpha;}
+	inline float	getRed() const		{return m_red;}
+	inline float	getGreen() const	{return m_green;}
+	inline float	getBlue() const		{return m_blue;}
 
 	float	getHue() const;
 	float	getSaturation() const;

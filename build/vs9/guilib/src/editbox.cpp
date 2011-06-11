@@ -414,7 +414,7 @@ void Editbox::render(const Rect& finalRect, const Rect& finalClip)
 			float offset = (finalRect.getHeight() - height) / 2;
 			rc.offset(point(0.f, offset));
 
-			m_font->drawText(outtext, rc, 1.0f, clip, m_format, m_foreColor, 1.f, 1.f);
+			m_font->draw(outtext, rc, 1.0f, clip, m_format, m_foreColor, 1.f, 1.f);
 		}	
 
 		if(m_caretImg && m_focus && !m_readOnly)
@@ -648,7 +648,7 @@ void KeyBinder::render(const Rect& finalRect, const Rect& finalClip)
 		clip.m_top += 1.f;
 		clip.m_bottom -= 1.f;
 		
-		m_font->drawText(m_text, dest, 1.0f, clip, m_format, m_backColor, 1.f, 1.f);
+		m_font->draw(m_text, dest, 1.0f, clip, m_format, m_backColor, 1.f, 1.f);
 	}
 }
 

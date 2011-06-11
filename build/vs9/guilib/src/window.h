@@ -56,11 +56,19 @@ public:
 	void setSize(const Size& sz);
 	const Size getSize(void) const { return m_area.getSize(); }
 
-	void setVisible(bool visible);
-	bool getVisible() const { return m_visible; }
+	void hide() {visible(false);}
+	void show() {visible(true);}
+	void visible(bool visible);
+	bool visible() const { return m_visible; }
 
-	void setEnabled(bool enable) { m_enabled = enable; }
-	bool getEnabled() const { return m_enabled; }
+	void enable(bool enable) { m_enabled = enable; }
+	bool enable() const { return m_enabled; }
+
+	// for Script binding
+	bool get_visible() const {return visible();}
+	void set_visible(bool f) {visible(f);}
+	bool get_enable() const {return enable();}
+	void set_enable(bool f) {enable(f);}
 
 	void setBackColor(Color cl)
 	{

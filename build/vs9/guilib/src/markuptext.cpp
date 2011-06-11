@@ -377,7 +377,7 @@ void MarkupBase::render(const Rect& finalRect, const Rect& finalClip)
 				Rect rc(chunk->area);
 				rc.offset(rl.getPosition());
 				rc.offset(finalRect.getPosition());
-				f->drawText(buf, rc, 1.0f, finalClip, Font::LeftAligned, col, 1.f, 1.f);
+				f->draw(buf, rc, 1.0f, finalClip, Font::LeftAligned, col, 1.f, 1.f);
 			}
 
 			++c;

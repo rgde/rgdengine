@@ -86,7 +86,7 @@ void BaseWindow::invalidate()
 	}
 }
 
-void BaseWindow::setVisible(bool visible) 
+void BaseWindow::visible(bool visible) 
 {
 	EventArgs a;
 	

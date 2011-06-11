@@ -17,7 +17,7 @@ class  Combobox :
 {
 public:
 	typedef Combobox Self;
-	Combobox(System& sys, const std::string& name = "");
+	explicit Combobox(System& sys, const std::string& name = std::string());
 	virtual ~Combobox();
 
 	static const char* GetType() { return "Combobox"; }
@@ -38,10 +38,10 @@ protected:
 private:
 	void hideList()
 	{
-		if (m_list && m_list->getVisible())
+		if (m_list && m_list->visible())
 		{
 			addChildWindow(m_list.get());
-			m_list->setVisible(false);
+			m_list->visible(false);
 		}
 	}
 

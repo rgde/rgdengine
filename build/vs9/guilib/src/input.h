@@ -270,7 +270,8 @@ public:
 class  BinderEventArgs : public EventArgs
 {
 public:
-	BinderEventArgs() : isMouse(false), isKbd(false), isWheel(false), systemkey(0), doubleClick(false) {}
+	BinderEventArgs() 
+		: isMouse(false), isKbd(false), isWheel(false), systemkey(0), doubleClick(false) {}
 	virtual ~BinderEventArgs() {}
 	
 	bool isMouse;

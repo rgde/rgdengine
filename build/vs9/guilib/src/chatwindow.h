@@ -68,11 +68,10 @@ namespace gui
 		void Show(const std::string& text);
 		void Hide() 
 		{
-			setVisible(false);
+			visible(false);
 			BaseWindow::stopTick();
 		}
 		void SetPosition(const point& point);
-		void SetVisible(bool visible) {BaseWindow::setVisible(visible);}
 
 
 		void SetMaxWidth(float value) 

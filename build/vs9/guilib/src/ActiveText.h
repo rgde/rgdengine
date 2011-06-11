@@ -22,6 +22,10 @@ enum TagType
 
 struct TextNode
 {	
+	TextNode() 
+		: start(0), len(0), content(0), parent(0), type(NormalTag) 
+	{}
+
 	size_t start;
 	size_t len;
 	size_t content;
@@ -29,7 +33,6 @@ struct TextNode
 	std::string param;
 	TextNode* parent;
 	TextNodeVector children;
-	TextNode() : start(0), len(0), content(0), parent(0), type(NormalTag) {}
 };
 
 class Image;
@@ -74,13 +77,14 @@ struct TextView
 		urlnode(0)
 	{}
 };
+
 typedef boost::shared_ptr<TextView> PTextView;
 typedef std::vector<PTextView> TextViewVector;
 
 class Parser
 {
 public:
-	Parser(System& sys);
+	explicit Parser(System& sys);
 	~Parser();
 
 	void parseText(const std::string& text, Color c, FontPtr font);
@@ -107,6 +111,4 @@ protected:
 	bool	m_paragraph;
 	bool	m_list;
 };
-
-
 }

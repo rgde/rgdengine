@@ -165,7 +165,7 @@ void FrameWindow::render(const Rect& finalRect, const Rect& finalClip)
 		float font_height = m_font->getFontHeight();
 		float caption_height = componentRect.m_bottom - componentRect.m_top;
 		componentRect.m_top += (caption_height - font_height)*0.5f;
-		m_font->drawText(m_text, componentRect, 1.0f, finalClip, m_format, m_captionColor, 1.f, 1.f);
+		m_font->draw(m_text, componentRect, 1.0f, finalClip, m_format, m_captionColor, 1.f, 1.f);
 	}
 }
 

@@ -23,7 +23,7 @@ void Cursor::setPosition(point pt)
 
 point Cursor::getPosition() const
 {	
-	Size vp = m_render.getViewportSize();
+	Size vp = m_render.viewport_size();
 	if(m_render.isAutoScale() && vp.width && vp.height)
 	{
 		Size sz = m_render.getOriginalSize();
@@ -61,7 +61,7 @@ void Cursor::render()
 	if(m_currentCursor)
 	{
 		Rect dest(getPosition(), m_currentCursor->pixel_rect.getSize());
-		m_render.immediateDraw(*m_currentCursor, dest, 0.f, Rect(point(0.f,0.f), m_render.getViewportSize()), Color(1.f, 1.f, 1.f));
+		m_render.immediateDraw(*m_currentCursor, dest, 0.f, Rect(point(0.f,0.f), m_render.viewport_size()), Color(1.f, 1.f, 1.f));
 	}
 }
 

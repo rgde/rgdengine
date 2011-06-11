@@ -50,7 +50,7 @@ namespace rgde
 				virtual ~file_source() {}
 				virtual int get_priority() const = 0;
 
-				virtual bool is_support_write() const = 0;
+				virtual bool is_readonly() const = 0;
 				
 				virtual bool is_file_exist(const std::string& file_name) const = 0;
 				virtual istream_ptr open_read(const std::string& file_name) = 0;

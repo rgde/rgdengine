@@ -47,7 +47,7 @@ bool Combobox::onLoad(void)
 	if(m_list)
 	{
 		m_list->setAlwaysOnTop(true);
-		m_list->setVisible(false);
+		m_list->visible(false);
 		subscribe<events::ClickEvent, Combobox> (&Combobox::onListClick, m_list.get());
 	}
 	return Editbox::onLoad();
@@ -57,7 +57,7 @@ void Combobox::onBtnClick(const events::ClickEvent& e)
 {
 	if(m_list)
 	{
-		if (m_list->getVisible())
+		if (m_list->visible())
 		{
 			hideList();
 		}
@@ -65,7 +65,7 @@ void Combobox::onBtnClick(const events::ClickEvent& e)
 		{
 			m_system.getRootWindow().addChildWindow(m_list.get());
 			m_list->setSize(Size(m_area.getSize().width, m_list->getSize().height));
-			m_list->setVisible(true);
+			m_list->visible(true);
 			m_list->moveToFront();
 			point pt = transformToRootCoord(point(m_area.m_left, m_area.m_bottom));
 			m_list->setPosition(pt);

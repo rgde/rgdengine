@@ -65,8 +65,6 @@ public:
 		Texture* texture;
 		std::size_t startQuad;
 		std::size_t numQuads;
-		//QuadInfo* quads;
-
 		RenderCallbackInfo callbackInfo;
 	};
 
@@ -76,22 +74,22 @@ public:
 	virtual void	addCallback( AfterRenderCallbackFunc callback,
 								 BaseWindow* window, const Rect& dest, const Rect& clip) = 0;
 
-	void	drawLine(const Image& img, const vec2* p, size_t size, float z, const Rect& clip_rect, const Color& color, float width);
+	void	draw_line(const Image& img, const vec2* p, size_t size, float z, const Rect& clip_rect, const Color& color, float width);
 	
 	void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors);
 	void	draw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors, Image::ImageOps horz, Image::ImageOps vert);
 	void	immediateDraw(const Image& img, const Rect& dest_rect, float z, const Rect& clip_rect, const ColorRect& colors);
 
 	virtual	void	doRender() = 0;
-	virtual	void	clearRenderList();	
+	virtual	void	clear_render_list();	
 
 	virtual void	beginBatching();
 	virtual void	endBatching();
 	void			clearCache(BaseWindow* window = 0);
 	bool			isExistInCache(BaseWindow* window) const;
 	
-	virtual void	setQueueingEnabled(bool setting)  { m_isQueueing = setting; }
-	bool	isQueueingEnabled(void) const { return m_isQueueing; }
+	virtual void	set_batching(bool enable)  { m_batching_enabled = enable; }
+	bool	get_batching() const { return m_batching_enabled; }
 
 	virtual	TexturePtr	createTexture(const std::string& filename) = 0;
 	virtual	TexturePtr	createTexture(const void* data, unsigned int width, unsigned int height, Texture::PixelFormat format) = 0;
@@ -122,7 +120,7 @@ public:
 
 	void setAutoScale(bool status) { m_autoScale = status; }
 	bool isAutoScale() const { return m_autoScale; }
-	virtual Size getViewportSize() const = 0;
+	virtual Size viewport_size() const = 0;
 
 	Rect virtualToRealCoord( const Rect& virtualRect ) const;
 	Rect realToVirtualCoord( const Rect& realRect ) const;
@@ -132,12 +130,12 @@ public:
 	void cleanup(bool complete);
 
 protected:
-	virtual	void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours) = 0;
-	virtual void addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours) = 0;
-	virtual void renderQuadDirect(const QuadInfo& q) = 0;
+	virtual	void add(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours) = 0;
+	virtual void add(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours) = 0;
+	virtual void immediate_render(const QuadInfo& q) = 0;
 
-	void fillQuad(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors);
-	void sortQuads();	
+	void fill_quads(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors);
+	void sort_quads();	
 	
 	friend TextureManager;
 	virtual	TexturePtr	createTextureInstance(const std::string& filename) = 0;
@@ -163,7 +161,7 @@ protected:
 	unsigned int m_vdpi;
 	unsigned int m_maxTextureSize;
 
-	bool m_isQueueing;
+	bool m_batching_enabled;
 	bool m_autoScale;
 
 	const float	GuiZInitialValue;

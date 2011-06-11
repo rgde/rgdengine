@@ -134,7 +134,7 @@ namespace rgde
 
 					virtual int get_priority() const {return 0;}
 
-					virtual bool is_support_write() const {return true;}
+					virtual bool is_readonly() const {return false;}
 
 					fs::wpath get_file_path(const std::string& filename) const
 					{

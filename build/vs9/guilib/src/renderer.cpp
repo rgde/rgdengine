@@ -17,7 +17,7 @@ Renderer::Renderer(void) :
 	GuiZInitialValue(1.0f),
 	GuiZElementStep(0.001f),
 	GuiZLayerStep(0.0001f),
-	m_isQueueing(true),
+	m_batching_enabled(true),
 	m_hdpi(96),
 	m_vdpi(96),
 	m_maxTextureSize(4096),
@@ -63,8 +63,8 @@ void Renderer::immediateDraw(const Image& img, const Rect& dest_rect, float z, c
 
 		// queue a quad to be rendered
 		QuadInfo quad;
-		fillQuad(quad, final_rect, tex_rect, z, img, colors);
-		renderQuadDirect(quad);
+		fill_quads(quad, final_rect, tex_rect, z, img, colors);
+		immediate_render(quad);
 	}
 }
 
@@ -130,7 +130,7 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
     }
 }
 
-void Renderer::drawLine(const Image& img, const vec2* p, size_t size, float z, const Rect& clip_rect, const Color& color, float width)
+void Renderer::draw_line(const Image& img, const vec2* p, size_t size, float z, const Rect& clip_rect, const Color& color, float width)
 {
 	ColorRect color_rect(color);
 
@@ -155,7 +155,7 @@ void Renderer::drawLine(const Image& img, const vec2* p, size_t size, float z, c
 		p2 = v1 - nv;
 		p3 = v2 - nv;
 
-		addQuad(p0, p1, p2, p3, source_rect, z, img, color_rect);
+		add(p0, p1, p2, p3, source_rect, z, img, color_rect);
 	}
 }
 
@@ -183,7 +183,7 @@ void Renderer::draw(const Image& img, const Rect& dest_rect, float z, const Rect
 		tex_rect *= img.texture.getSize();
 
 		// queue a quad to be rendered
-		addQuad(final_rect, tex_rect, z, img, colors);
+		add(final_rect, tex_rect, z, img, colors);
 	}
 
 }
@@ -229,7 +229,7 @@ void Renderer::endCaptureForCache(BaseWindow* window)
 }
 
 
-void Renderer::clearRenderList(void)
+void Renderer::clear_render_list(void)
 {
 	//m_quadlist.clear();
 	m_num_quads = 0;
@@ -238,7 +238,7 @@ void Renderer::clearRenderList(void)
 
 void Renderer::beginBatching()
 {
-	clearRenderList();
+	clear_render_list();
 }
 
 void Renderer::endBatching()
@@ -249,7 +249,7 @@ void Renderer::endBatching()
 }
 
 
-void Renderer::sortQuads(void)
+void Renderer::sort_quads(void)
 {
 }
 
@@ -268,7 +268,7 @@ const Size Renderer::getSize(void)
 	if(m_autoScale)
 		return getOriginalSize();
 	else
-		return getViewportSize();
+		return viewport_size();
 }
 
 void Renderer::cleanup(bool complete)
@@ -291,7 +291,7 @@ void Renderer::computeVirtualDivRealFactor(Size& coefOut) const
 		return;
 	}
 	const Size& original = getOriginalSize(); 
-	Size& current = getViewportSize();
+	Size& current = viewport_size();
 	coefOut = current/original;	
 }
 Rect Renderer::virtualToRealCoord( const Rect& virtualRect ) const
@@ -318,7 +318,7 @@ Rect Renderer::realToVirtualCoord( const Rect& realRect ) const
 	return result;
 }
 
-void Renderer::fillQuad(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors)
+void Renderer::fill_quads(QuadInfo& quad, const Rect& rc, const Rect& uv, float z, const Image& img, const ColorRect& colors)
 {
 	quad.positions[0].x	= quad.positions[2].x = rc.m_left;
 	quad.positions[0].y	= quad.positions[1].y = rc.m_top;
