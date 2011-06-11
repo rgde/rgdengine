@@ -18,7 +18,7 @@ namespace gui
 			PF_COMPRESSED
 		};
 
-		Texture(Renderer& owner) : m_owner(owner) {}
+		explicit Texture(Renderer& owner) : m_owner(owner) {}
 		virtual ~Texture() {}
 
 		const Size& getSize() const { return m_size; }
@@ -26,7 +26,6 @@ namespace gui
 		virtual float getHeight(void) const { return m_size.height; }
 
 		Renderer&	getRenderer(void) const { return m_owner; }
-		PixelFormat getPixelFormat() const { return m_format; }
 
 		virtual	void onDeviceLost(void) = 0;
 		virtual	void onDeviceReset(void) = 0;
@@ -35,11 +34,8 @@ namespace gui
 		Texture& operator=(const Texture&) { return *this; }
 		virtual void calculateMetrics() = 0;
 
-		void setPixelFormat(PixelFormat fmt) { m_format = fmt; }	
-
 	protected:
 		Renderer& m_owner;
-		PixelFormat m_format;
 		Size m_size;
 	};
 

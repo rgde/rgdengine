@@ -34,14 +34,14 @@ void Tooltip::rise()
 
 void Tooltip::reset(void)
 {
-	setVisible(false);
+	visible(false);
 	setIgnoreInputEvents(true);
 }
 
 void Tooltip::show()
 {
 	rise();
-	setVisible(true);
+	visible(true);
 }
 
 }

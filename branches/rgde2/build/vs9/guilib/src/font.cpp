@@ -214,12 +214,12 @@ size_t Font::getFormattedLineCount(const std::wstring& text, const Rect& format_
     return line_count;
 }
 
-size_t Font::drawText(const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, Font::TextFormatting fmt, const ColorRect& colours, float x_scale, float y_scale)
+size_t Font::draw(const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, Font::TextFormatting fmt, const ColorRect& colours, float x_scale, float y_scale)
 {
-	return drawText(UTF8ToUTF16(text), draw_area, z, clip_rect, fmt, colours, x_scale, y_scale);
+	return draw(UTF8ToUTF16(text), draw_area, z, clip_rect, fmt, colours, x_scale, y_scale);
 }
 
-size_t Font::drawText(const std::wstring& text, const Rect& draw_area, float z, const Rect& clip_rect, Font::TextFormatting fmt, const ColorRect& colours, float x_scale, float y_scale)
+size_t Font::draw(const std::wstring& text, const Rect& draw_area, float z, const Rect& clip_rect, Font::TextFormatting fmt, const ColorRect& colours, float x_scale, float y_scale)
 {
     size_t thisCount;
     size_t lineCount = 0;
@@ -288,7 +288,7 @@ size_t Font::drawText(const std::wstring& text, const Rect& draw_area, float z, 
             break;
 
         default:
-			throw std::exception("Font::drawText - Unknown or unsupported TextFormatting value specified.");
+			throw std::exception("Font::draw - Unknown or unsupported TextFormatting value specified.");
         }
 
         lineCount += thisCount;
@@ -349,7 +349,7 @@ size_t Font::drawWrappedText(const std::wstring& text, const Rect& draw_area, fl
         if ((getTextExtent(thisLine, x_scale) + getTextExtent(thisWord, x_scale)) > wrap_width)
         {
             // output what we had until this new word
-            line_count += drawText(thisLine, dest_area, z, clip_rect, fmt, colours, x_scale, y_scale);
+            line_count += draw(thisLine, dest_area, z, clip_rect, fmt, colours, x_scale, y_scale);
 
 			std::wstring::size_type offset = thisWord.find_first_not_of(whitespace);
             // remove whitespace from next word - it will form start of next line
@@ -372,7 +372,7 @@ size_t Font::drawWrappedText(const std::wstring& text, const Rect& draw_area, fl
     // Last line is left aligned
     TextFormatting last_fmt = (fmt == Justified ? LeftAligned : fmt);
     // output last bit of string
-    line_count += drawText(thisLine, dest_area, z, clip_rect, last_fmt, colours, x_scale, y_scale);
+    line_count += draw(thisLine, dest_area, z, clip_rect, last_fmt, colours, x_scale, y_scale);
 
     return line_count;
 }

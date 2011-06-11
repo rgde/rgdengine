@@ -114,7 +114,7 @@ public:
 		{
 			bool visible;
 			VisibleTask(bool v) : visible(v) {}
-			void operator () (WindowPtr w) { if(w) w->setVisible(visible); }
+			void operator () (WindowPtr w) { if(w) w->visible(visible); }
 		};
 		struct HeightCalcTask
 		{

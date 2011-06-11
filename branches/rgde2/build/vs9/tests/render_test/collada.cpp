@@ -8,19 +8,16 @@ namespace collada
 	{
 		bool read_float_array(xml::node array_node, std::vector<float>& out)
 		{
-			if (!array_node)
-				return false;
+			if (!array_node) return false;
 
-			std::string array_id = array_node["id"].value();			
+//			std::string array_id = array_node["id"].value();			
 
-			const char* str_data = array_node.first_child().value();
 			int count = array_node["count"].as_int();
-
-			if (count <= 0)
-				return false;
+			if (count <= 0)	return false;
 
 			out.resize(count);
 
+			const char* str_data = array_node.first_child().value();
 			char* buf = const_cast<char*>(str_data);
 
 			for( int i = 0; i < count; ++i )
@@ -31,17 +28,37 @@ namespace collada
 			return true;
 		}
 
+		template<typename T>
+		struct str2enum
+		{
+			const char* str_value;
+			T enum_value;
+		};
+
+		mesh::subset_info::input::semantic_t semantic_str2enum(const char* str)
+		{
+			typedef mesh::subset_info::input input;
+			static str2enum<input::semantic_t> maping[] = {
+				{"VERTEX", input::VERTEX},
+				{"NORMAL", input::NORMAL},
+				{"TEXCOORD", input::TEXCOORD},
+				{0, input::INVALID}
+			};
+			if (strcmp(str, "VERTEX") == 0)
+				return mesh::subset_info::input::VERTEX;
+			else if (strcmp(str, "NORMAL") == 0)
+				return mesh::subset_info::input::NORMAL;
+			else if (strcmp(str, "TEXCOORD") == 0)
+				return mesh::subset_info::input::TEXCOORD;
+			return input::INVALID;
+		}
+
 		bool read_mesh_input(xml::node input_node, mesh::subset_info::input& input)
 		{
-			std::string semantic = input_node["semantic"].value();
+			const char* semantic = input_node["semantic"].value();
+			input.semantic = semantic_str2enum(semantic);
 
-			if (semantic == "VERTEX")
-				input.semantic = mesh::subset_info::input::VERTEX;
-			else if (semantic == "NORMAL")
-				input.semantic = mesh::subset_info::input::NORMAL;
-			else if (semantic == "TEXCOORD")
-				input.semantic = mesh::subset_info::input::TEXCOORD;
-			else
+			if (input.semantic == mesh::subset_info::input::INVALID)
 				return false; //TODO:
 
 			input.set = input_node["set"] ? input_node["set"].as_int() : -1;
@@ -68,10 +85,17 @@ namespace collada
 		}
 	}
 
+	struct vertex_id {
+		std::vector<int> streams_ids;
+	};
+
+	//bool operator < (const vertex_id& l, const vertex_id& r) {		
+	//}
+
 	// DOM walker:
 	void read_mesh(xml::node geometry_node, mesh& m)
 	{
-		m.name = geometry_node["name"] ? geometry_node["name"].value() : "";	
+		m.name = geometry_node["name"] ? geometry_node["name"].value() : std::string();	
 
 		xml::node mesh_node = geometry_node("mesh");
 
@@ -109,44 +133,7 @@ namespace collada
 			{
 				subset.indices[i] = static_cast<float>(strtod(buf,&buf));
 			}
-
-			__asm nop;
 		}
-
-		//bool res = get_source_accessor_params( element, accessor_count, accessor_stride );
-
-		//TiXmlHandle source_handle = TiXmlHandle( const_cast<TiXmlElement*>(element) );
-		//const TiXmlElement* accessor_element = source_handle.FirstChild( "technique_common" ).FirstChild( "accessor" ).ToElement();
-		//if( accessor_element )
-		//{
-		//	accessor_element->Attribute( count_attribute, &count );
-		//	accessor_element->Attribute( stride_attribute, &stride );
-		//	return true;
-		//}
-		//else
-		//	return false;
-
-		/*const TiXmlElement* float_array_element = element->FirstChildElement( "float_array" );*/
-
-		//const char* text = float_array_element->GetText();
-		//char* buf = const_cast<char*>(text);
-		//for( int i = 0; i < accessor_count; ++i )
-		//{
-		//	vector3& v = container[i];
-		//	v[0] = static_cast<float>(strtod(str_data,&str_data));
-		//	v[1] = static_cast<float>(strtod(str_data,&str_data));
-		//	v[2] = static_cast<float>(strtod(str_data,&str_data));
-		//}		
-
-		//const char* text = p_element->GetText();
-		//char* buf = const_cast<char*>(text);
-
-		//while( *buf )
-		//{
-		//	t.indexes_.push_back( strtoul(buf, &buf, 10) );
-		//}
-
-		__asm nop;
 	}
 
 	void scene::read(rgde::core::vfs::istream_ptr stream)
@@ -196,10 +183,29 @@ namespace collada
 			{ 
 				std::string id = n["id"].value();
 
+				effect::profile profile;
+				/*profile.*/
+
+				xml::node tech_node = n("profile_COMMON")("technique").first_child();
+				std::string tech_name = tech_node.name();
+
+				effect::technique tech;
+
+				tech.type = effect::technique::blinn;
+
+				if (tech_name == "phong")
+					tech.type = effect::technique::phong;
+				else if (tech_name == "blinn")
+					tech.type = effect::technique::blinn;
+				else if (tech_name == "lambert")
+					tech.type = effect::technique::lambert;
+				else 
+					tech.type = effect::technique::constant;
+				
 				effect& ef = effects[id];
 
 				ef.id = id;
-				ef.name = n["name"].value();				
+				ef.name = n["name"].value();
 			}
 		}
 

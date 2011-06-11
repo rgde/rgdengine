@@ -7,10 +7,6 @@ namespace gui
 namespace rgde_platform
 {
 
-
-/*************************************************************************
-	Constructor
-*************************************************************************/
 texture::texture(renderer& owner, rgde::render::texture_ptr tex) :
 	Texture(owner),
 	m_texture(tex)
@@ -18,12 +14,8 @@ texture::texture(renderer& owner, rgde::render::texture_ptr tex) :
 	calculateMetrics();
 }
 
-/*************************************************************************
-	Destructor
-*************************************************************************/
 texture::~texture()
 {
-	//m_owner.
 	free_platform_resource();
 }
 
@@ -41,32 +33,6 @@ void texture::calculateMetrics()
 
 	if (!surface)
 		throw std::exception("Failed to load texture from memory: Invalid texture.");
-
-	using rgde::render::resource;
-
-	switch (surface->get_format())
-	{
-	case resource::r8g8b8:
-		m_format = Texture::PF_RGB;
-	    break;
-
-	case resource::x8r8g8b8:
-	case resource::a8r8g8b8:
-		m_format = Texture::PF_RGBA;
-	    break;
-
-	case resource::dxt1:
-	case resource::dxt2:
-	case resource::dxt3:
-	case resource::dxt4:
-	case resource::dxt5:
-		m_format = Texture::PF_COMPRESSED;
-		break;
-
-	default:
-		throw std::exception("Failed to load texture from memory: Invalid pixelformat.");
-		break;
-	}
 }
 
 void texture::free_platform_resource()

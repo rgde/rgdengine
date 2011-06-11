@@ -12,7 +12,7 @@ namespace gui
 		ScriptObject();
 		ScriptObject(const ScriptObject&);
 	public:
-		ScriptObject(ScriptSystem& ref) : m_ref_script(ref) {}
+		explicit ScriptObject(ScriptSystem& ref) : m_ref_script(ref) {}
 		virtual ~ScriptObject() {}
 
 	protected:

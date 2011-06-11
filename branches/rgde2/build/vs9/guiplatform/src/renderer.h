@@ -16,9 +16,11 @@ namespace gui
 
 			virtual void addCallback( AfterRenderCallbackFunc callback,
 				BaseWindow* window, const Rect& dest, const Rect& clip);
+			
 			virtual	void doRender();
-			virtual void addQuad(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours);
-			virtual void addQuad(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours);
+
+			virtual void add(const Rect& dest_rect, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours);
+			virtual void add(const vec2& p0, const vec2& p1, const vec2& p2, const vec2& p3, const Rect& tex_rect, float z, const Image& img, const ColorRect& colours);
 		
 			virtual void drawFromCache(BaseWindow* window);
 			virtual	TexturePtr createTexture(const std::string& filename);
@@ -36,15 +38,15 @@ namespace gui
 			virtual void	OnResetDevice();
 			virtual void	OnLostDevice();
 
-			virtual Size	getViewportSize() const;
+			virtual Size	viewport_size() const;
 
 			rgde::render::device& getDevice() const {return m_device;}
 
 		protected:
-			virtual void renderQuadDirect(const QuadInfo& q);
+			virtual void immediate_render(const QuadInfo& q);
 			virtual	TexturePtr	createTextureInstance(const std::string& filename);
 
-			void	initPerFrameStates();
+			void	init_frame_states();
 			void	constructor_impl(const Size& display_size);
 			void	setRenderStates();
 
@@ -73,4 +75,3 @@ namespace gui
 		};
 	}
 }
-

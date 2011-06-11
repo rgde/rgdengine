@@ -99,7 +99,7 @@ void ui_test_application::createGUISystem()
 void ui_test_application::resetGUISystem()
 {
 	if(m_render)
-		m_render->clearRenderList();
+		m_render->clear_render_list();
 
 	if(m_system)
 		m_system->reset();	
@@ -135,7 +135,7 @@ void ui_test_application::render()
 
 	if (m_system)
 	{		
-		//m_font->drawText("BLAAA BAAA LAA LALA", gui::Rect(0,0,200,200), 1.f);
+		//m_font->draw("BLAAA BAAA LAA LALA", gui::Rect(0,0,200,200), 1.f);
 		//gui::Renderer& r = m_system->getRenderer();
 
 		//struct vec2 {float x, y;};
@@ -154,7 +154,7 @@ void ui_test_application::render()
 		//gui::Imageset* imageset = m_system->getWindowManager().getImageset("skin");
 		//const gui::Image* img = imageset->getImage("Background");
 
-		//r.drawLine(*img, (gui::vec2*)points, 7, 1, gui::Rect(0,0,400,400), gui::Color(0xFFFF0F0F), 7);
+		//r.draw_line(*img, (gui::vec2*)points, 7, 1, gui::Rect(0,0,400,400), gui::Color(0xFFFF0F0F), 7);
 
 		m_system->render();
 	}

@@ -53,7 +53,7 @@ void Menu::setFont(const std::string& font)
 void Menu::reset(void)
 {
 	m_system.setContextMenuState(false);
-	setVisible(false);
+	visible(false);
 }
 
 void Menu::show(point& pt)
@@ -61,7 +61,7 @@ void Menu::show(point& pt)
 	m_area.setPosition(m_system.getCursor().getPosition() - pt);
 	rise();
 	m_system.setContextMenuState(true);
-	setVisible(true);
+	visible(true);
 }
 
 void Menu::render(const Rect& finalRect, const Rect& finalClip)
@@ -100,7 +100,7 @@ void Menu::render(const Rect& finalRect, const Rect& finalClip)
 
 		itemrect.setPosition(point(3 * m_margin + m_itemHeight, h + m_margin));
 		itemrect.offset(left);
-		m_font->drawText(item.text, itemrect, 1.0f, finalClip, Font::LeftAligned, selected ? item.selcol : item.col, 1.f, 1.f);		
+		m_font->draw(item.text, itemrect, 1.0f, finalClip, Font::LeftAligned, selected ? item.selcol : item.col, 1.f, 1.f);		
 
 		h += 2 * m_margin + m_itemHeight;
 

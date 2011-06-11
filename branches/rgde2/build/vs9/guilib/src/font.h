@@ -20,7 +20,8 @@ namespace gui
 	{
 	public:
 		FontGlyph (){}
-		FontGlyph (float advance) : m_image (0), m_advance (advance), m_isLoaded(false), m_xoffset(0.f), m_yoffset(0.f), m_rect(0.f, 0.f, 0.f, 0.f) {}    
+		explicit FontGlyph (float advance) 
+			: m_image (0), m_advance (advance), m_isLoaded(false), m_xoffset(0.f), m_yoffset(0.f), m_rect(0.f, 0.f, 0.f, 0.f) {}    
 
 		const Image* getImage () const { return m_image; }
 		const Imageset* getImageset () const { return m_image->getImageset (); }
@@ -110,41 +111,41 @@ namespace gui
 			return false;
 		}
 
-		size_t drawText (const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
-		size_t drawText (const std::wstring& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
-		size_t drawText (const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f)
+		size_t draw (const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
+		size_t draw (const std::wstring& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f);
+		size_t draw (const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			return drawText (text, draw_area, z, clip_rect, fmt, ColorRect(DefaultColour), x_scale, y_scale); 
+			return draw (text, draw_area, z, clip_rect, fmt, ColorRect(DefaultColour), x_scale, y_scale); 
 		}
 
-		void drawText (const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f)
+		void draw (const std::string& text, const Rect& draw_area, float z, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			drawText (text, draw_area, z, clip_rect, LeftAligned, ColorRect(DefaultColour), x_scale, y_scale);
+			draw (text, draw_area, z, clip_rect, LeftAligned, ColorRect(DefaultColour), x_scale, y_scale);
 		}
 
-		size_t drawText (const std::string& text, const Rect& draw_area, float z, TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f)
+		size_t draw (const std::string& text, const Rect& draw_area, float z, TextFormatting fmt, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			return drawText (text, draw_area, z, draw_area, fmt, colours, x_scale, y_scale);
+			return draw (text, draw_area, z, draw_area, fmt, colours, x_scale, y_scale);
 		}
 
-		size_t drawText (const std::string& text, const Rect& draw_area, float z, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f)
+		size_t draw (const std::string& text, const Rect& draw_area, float z, TextFormatting fmt, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			return drawText (text, draw_area, z, draw_area, fmt, ColorRect(DefaultColour), x_scale, y_scale);
+			return draw (text, draw_area, z, draw_area, fmt, ColorRect(DefaultColour), x_scale, y_scale);
 		}
 
-		void drawText (const std::string& text, const Rect& draw_area, float z, float x_scale = 1.0f, float y_scale = 1.0f)
+		void draw (const std::string& text, const Rect& draw_area, float z, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			drawText (text, draw_area, z, draw_area, LeftAligned, ColorRect(DefaultColour), x_scale, y_scale); 
+			draw (text, draw_area, z, draw_area, LeftAligned, ColorRect(DefaultColour), x_scale, y_scale); 
 		}
 
-		void drawText (const std::string& text, const Vector3& position, const Rect& clip_rect, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f)
+		void draw (const std::string& text, const Vector3& position, const Rect& clip_rect, const ColorRect& colours, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			drawText (text, Rect (position.x, position.y, position.x, position.y), position.z, clip_rect, LeftAligned, colours, x_scale, y_scale);
+			draw (text, Rect (position.x, position.y, position.x, position.y), position.z, clip_rect, LeftAligned, colours, x_scale, y_scale);
 		}
 
-		void drawText (const std::string& text, const Vector3& position, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f)
+		void draw (const std::string& text, const Vector3& position, const Rect& clip_rect, float x_scale = 1.0f, float y_scale = 1.0f)
 		{ 
-			drawText (text, Rect (position.x, position.y, position.x, position.y), position.z, clip_rect, LeftAligned, ColorRect(DefaultColour), x_scale, y_scale); 
+			draw (text, Rect (position.x, position.y, position.x, position.y), position.z, clip_rect, LeftAligned, ColorRect(DefaultColour), x_scale, y_scale); 
 		}
 
 		void setSpacing(float spacing) { m_spacing = spacing; }

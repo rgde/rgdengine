@@ -75,7 +75,7 @@ void ChatWindow::render(const Rect& finalRect, const Rect& finalClip)
 				   finalRect.m_right - m_textOffsetX + dx,  finalRect.m_bottom - m_textOffsetY + dy);
 
 	if(m_font)
-		m_font->drawText(m_text, textRect, 1.0f, finalClip, m_format, m_captionColor, 1.f, 1.f);
+		m_font->draw(m_text, textRect, 1.0f, finalClip, m_format, m_captionColor, 1.f, 1.f);
 }
 
 void ChatWindow::init(xml::node& node)

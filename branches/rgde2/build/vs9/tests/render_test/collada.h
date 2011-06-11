@@ -63,6 +63,8 @@ namespace collada
 			typedef std::map<std::string, technique> techniques_t;
 			techniques_t techniques;
 		};
+
+		std::vector<profile> profiles;
 	};
 
 	struct mesh
@@ -87,9 +89,10 @@ namespace collada
 			{
 				enum semantic_t
 				{
-					VERTEX,
+					VERTEX = 0,
 					NORMAL,
-					TEXCOORD
+					TEXCOORD,
+					INVALID
 				};
 
 				std::string source_id;

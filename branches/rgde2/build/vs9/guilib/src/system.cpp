@@ -106,7 +106,7 @@ void System::reset(bool complete)
 	menu->reset();
 
 	rootWindow->setArea(Rect(point(0.f, 0.f), m_render.getSize())); // full window area
-	rootWindow->setVisible(true);
+	rootWindow->visible(true);
 	rootWindow->addChild(m_dragContainer);
 	rootWindow->addChild(m_tooltipWindow);
 	rootWindow->addChild(m_menuWindow);
@@ -419,7 +419,7 @@ bool System::handleKeyboard(EventArgs::Keys key, EventArgs::ButtonState state)
 	//if(!m_focusWindow)
 	//	queryInputFocus(getTabstopWindow(m_rootWindow->getChildren()));
 
-	if(m_focusWindow && m_focusWindow->getEnabled())
+	if(m_focusWindow && m_focusWindow->enable())
 	{
 		return m_focusWindow->onKeyboardButton(key, state);
 	}
@@ -448,7 +448,7 @@ void System::handleViewportChange()
 {
 	if(!m_autoScale)
 	{
-		updateSize(m_render.getViewportSize());
+		updateSize(m_render.viewport_size());
 	}
 }
 
@@ -678,7 +678,7 @@ void System::tick(float delta)
 		}
 	}
 
-	if(m_tooltipWindow->getVisible() && m_ttlifetime > 1.f)
+	if(m_tooltipWindow->visible() && m_ttlifetime > 1.f)
 	{
 		m_tttime += delta;
 		if(m_tttime >= m_ttlifetime)
@@ -692,7 +692,7 @@ void System::tick(float delta)
 
 void System::draw()
 {
-	m_render.clearRenderList();
+	m_render.clear_render_list();
 
 	m_render.beginBatching();
 

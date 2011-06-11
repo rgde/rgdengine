@@ -41,7 +41,7 @@ void DragContainer::update(BaseWindow* target, const point& pt)
 
 void DragContainer::reset(void)
 {
-	setVisible(false);
+	visible(false);
 	setIgnoreInputEvents(true);
 	m_dropTarget = 0;
 	m_dragSubject = 0;
@@ -49,7 +49,7 @@ void DragContainer::reset(void)
 
 bool DragContainer::startDrag(BaseWindow* subj, const point& off)
 {
-	setVisible(true);
+	visible(true);
 	m_dragSubject = subj;
 	
 	DragEventArgs de;
