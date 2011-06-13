@@ -14,7 +14,7 @@ namespace event
 			~ListManagers() {}
 
 			//отписать данного получателя ото всех менеджеров
-			void unsubscribeAll (base_listener *listener);
+			void unsubscribeAll (void *l);
 
 			//менеджер добавляет себя в общий список менеджеров
 			void add_manager     (base_manager *manager);
@@ -38,31 +38,30 @@ namespace event
 		list_manager.remove_manager(this);
 	}
 
-	base_listener::base_listener() 
+	listener::listener() 
 	{
 	}
 
-	//отписать получателя от всех менеджеров
-	base_listener::~base_listener()
+	listener::~listener()
 	{		
 		list_manager.unsubscribeAll(this);
 	}
 
-	base_sender::base_sender() 
+	sender::sender() 
 	{
 	}
 
-	base_sender::~base_sender()
+	sender::~sender()
 	{
 	}
 
     //отписать данного получателя ото всех менеджеров
-    void ListManagers::unsubscribeAll(base_listener *listener)
+    void ListManagers::unsubscribeAll(void *l)
     {
         std::list<base_manager*>::iterator i = m_managers.begin();
         while (i != m_managers.end())
         {
-            (*i)->unsubscribe(listener);
+            (*i)->unsubscribe(l);
             ++i;
         }
     }
@@ -85,5 +84,4 @@ namespace event
                 ++i;
         }
     }
-
 }

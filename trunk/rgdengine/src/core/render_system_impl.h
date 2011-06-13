@@ -31,6 +31,7 @@ struct device_info
 
 
 class render_device_impl : public event::sender, 
+						   public event::listener,
 						   public render::render_device
 {	
 public:

@@ -186,7 +186,6 @@ namespace game
 
 		m_cur_frame_delta = dt;
 
-		//static_cast<float>(m_timer.elapsed());
 		typedef std::list<dynamic_object*> DinamicObjects;
 		typedef DinamicObjects::iterator DinamicObjsIter;
 
@@ -196,8 +195,6 @@ namespace game
 		{
 			(*it)->update(dt);
 		}
-
-		render::TheSpriteManager::get().update();
 
 		//сменим уровень (если надо)
 		if (m_change_level)
