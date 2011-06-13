@@ -46,6 +46,7 @@ public:
 		{//input init
 			using namespace input;
 
+			// èçáàâèòü îò ñòğîêîâûõ ID äëÿ êîìàíä
 			Input::add_command("Quit");
 			Input::add_command("Horz");
 			Input::add_command("Vert");
@@ -58,6 +59,8 @@ public:
 			m_mouse_x.attach("Horz");
 			m_mouse_y.attach("Vert");
 
+			// ïåğåäåëàòü ÷åğåç ñèñòåìó ıâåíòîâ
+			// âñå îáğàáîò÷èêè èíïóò ıâåíòîâ ïî ñóòè ïîëó÷àşò òîëüêî ÷èñëî.
 			m_esc += boost::bind(&AnimationTest::onEsc, this);
 			m_mouse_y += boost::bind(&AnimationTest::onYAxis, this, _1);
 			m_mouse_x += boost::bind(&AnimationTest::onXAxis, this, _1);
@@ -65,7 +68,6 @@ public:
 	}
 
 protected:
-
 	virtual void update(float dt)
 	{
 		m_controller.update( dt );
@@ -99,12 +101,12 @@ protected:
 		m_target_camera->rotate_up(angle);
 	}
 protected:
-	render::font_ptr			m_font;	
-	render::texture_ptr			m_texture;
+	render::font_ptr		m_font;	
+	render::texture_ptr		m_texture;
 
 	math::frame_animation	m_controller;
-	math::frame_ptr				m_frame;
-	render::mesh_ptr			m_mesh;
+	math::frame_ptr			m_frame;
+	render::mesh_ptr		m_mesh;
 
 	//input handlers
 	input::Button       m_esc;
@@ -131,7 +133,8 @@ int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 	app->add<input_task>(1, false);
 	app->add<game_task>(2);
 
-	AnimationTest r;
-
-	app->run();
+	{
+		AnimationTest r;
+		app->run();
+	}
 }
