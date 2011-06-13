@@ -457,15 +457,15 @@
 					Name="particles"
 					>
 					<File
-						RelativePath=".\rgde\render\particles\abstract_emitter.h"
-						>
-					</File>
-					<File
 						RelativePath=".\rgde\render\particles\box_emitter.h"
 						>
 					</File>
 					<File
 						RelativePath=".\rgde\render\particles\effect.h"
+						>
+					</File>
+					<File
+						RelativePath=".\rgde\render\particles\emitter.h"
 						>
 					</File>
 					<File
@@ -701,11 +701,11 @@
 					Name="particles"
 					>
 					<File
-						RelativePath=".\src\render\particles\abstract_emitter.cpp"
+						RelativePath=".\src\render\particles\box_emitter.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\src\render\particles\box_emitter.cpp"
+						RelativePath=".\src\render\particles\emitter.cpp"
 						>
 					</File>
 					<File
