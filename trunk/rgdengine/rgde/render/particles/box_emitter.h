@@ -1,6 +1,6 @@
 #pragma once
 
-#include <rgde/render/particles/abstract_emitter.h>
+#include <rgde/render/particles/emitter.h>
 
 namespace particles
 {

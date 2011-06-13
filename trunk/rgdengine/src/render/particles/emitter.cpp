@@ -1,7 +1,7 @@
 #include "precompiled.h"
 
 #include <rgde/render/particles/main.h>
-#include <rgde/render/particles/abstract_emitter.h>
+#include <rgde/render/particles/emitter.h>
 #include <rgde/render/particles/processor.h>
 
 
