@@ -21,38 +21,38 @@ namespace math
 
 		virtual				~frame();
 
-		const point3f&		get_pos()		const {return m_position;}
-		point3f				get_world_pos() const;
-		void				set_position(const point3f& pos);
+		const point3f&		position()		const {return m_position;}
+		point3f				world_position() const;
+		void				position(const point3f& pos);
     
-		const quatf&		get_rot()		const {return m_rotation;}
-		void				set_rot(const quatf& quat);
+		const quatf&		rotation()		const {return m_rotation;}
+		void				rotation(const quatf& quat);
 
-		void				look_at(const vec3f& eye, const vec3f& look_at, const vec3f& up_vec);
+		void				lookat(const vec3f& eye, const vec3f& lookat, const vec3f& up_vec);
 
 		/// it must be set directly to shader params
-		const matrix44f&			get_local_tm() const;
-		const matrix44f&			get_full_tm()  const;
+		const matrix44f&			local_trasform() const;
+		const matrix44f&			world_trasform()  const;
 
 		virtual void				debug_draw() const;
 
-		inline const vec3f&			get_scale()	const { return m_scale;}
-		void						set_scale(const vec3f& s);
+		inline const vec3f&			scale()	const { return m_scale;}
+		void						scale(const vec3f& s);
 
 		// directional vectors
-		vec3f						getUp()		const;
-		vec3f						getAt()		const;
-		vec3f						getLeft()	const;
+		vec3f						up()		const;
+		vec3f						at()		const;
+		vec3f						left()	const;
 
-		vec3f						getUpGlobal() const;
-		vec3f						getAtGlobal() const;
-		vec3f						getLeftGlobal() const;
+		vec3f						world_up() const;
+		vec3f						world_at() const;
+		vec3f						world_left() const;
 
 		//Neonic: octree
-		virtual void				update( bool NeedFullUpdate =0 );
+		virtual void				update( bool invalidate_transform = false );
 
 		//Finds frames with names wich contain substring str_template + "_"
-		void findFrames(const std::string& str_template, std::vector<frame_ptr>& container);
+		void find(const std::string& str_template, std::vector<frame_ptr>& container);
 		
 	protected:
 		frame();
@@ -62,9 +62,9 @@ namespace math
 		void to_stream(io::write_stream& wf) const;
 		void from_stream(io::read_stream& rf);
 
-		bool isNeedRecompute()			const {return m_need_recompute;}
-		void computeLocalTransform()	const;
-		void computeFullTransform()		const;
+		bool is_dirty()			const {return m_need_recompute;}
+		void update_transform()	const;
+		void update_world_transform()		const;
 
 	protected:
 		vec3f					m_scale;

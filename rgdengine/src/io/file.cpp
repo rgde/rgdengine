@@ -8,17 +8,17 @@ namespace io
 	namespace helpers
 	{
 		//-----------------------------------------------------------------------------------
-		std::string get_file_ext(const std::string &file_name)
+		std::string get_file_ext(const std::string &filename)
 		{
-			size_t pos	= file_name.rfind(".") + 1;
-			return file_name.substr(pos, file_name.size() - pos);
+			size_t pos	= filename.rfind(".") + 1;
+			return filename.substr(pos, filename.size() - pos);
 		}
 
 		//-----------------------------------------------------------------------------------
-		std::string get_shot_filename(const std::string &file_name)
+		std::string get_shot_filename(const std::string &filename)
 		{
-			size_t pos	= file_name.rfind(".");
-			return file_name.substr(0, pos);
+			size_t pos	= filename.rfind(".");
+			return filename.substr(0, pos);
 		}
 
 		////-----------------------------------------------------------------------------------
@@ -159,9 +159,9 @@ namespace io
 		m_is_error = false;
 	}
 	//-----------------------------------------------------------------------------------
-	write_file::write_file(const std::string& file_name)
+	write_file::write_file(const std::string& filename)
 	{
-		m_is_opened = open(file_name);
+		m_is_opened = open(filename);
 		m_is_error = !m_is_opened;
 		m_is_valid = m_is_opened;
 	}
@@ -174,7 +174,7 @@ namespace io
 	//--------------------------------------------------------------------------------------
 	bool write_file::do_open_file(const std::string& fullname, const Path& path)
 	{
-		//std::string fullname = file_name;// + (std::string)path;
+		//std::string fullname = filename;// + (std::string)path;
 		if (m_is_opened)
 			m_file_stream.close();
 		if (m_is_error)
@@ -201,12 +201,12 @@ namespace io
 		m_is_error = false;
 	}
 	//-----------------------------------------------------------------------------------
-	read_file::read_file(const std::string& file_name)
+	read_file::read_file(const std::string& filename)
 		: m_size(0)
 	{
 		m_is_opened = false;
 		m_is_error = false;
-		m_is_opened = open(file_name);
+		m_is_opened = open(filename);
 		m_is_error = !m_is_opened;
 		m_is_valid = m_is_opened;
 	}
@@ -223,7 +223,7 @@ namespace io
 	//-----------------------------------------------------------------------------------
 	bool read_file::do_open_file(const std::string& fullname, const Path& path)
 	{
-		//std::string fullname= file_name;// + (std::string)path;
+		//std::string fullname= filename;// + (std::string)path;
 		if (m_is_opened)
 			m_file_stream.close();
 		if (m_is_error)
@@ -244,17 +244,17 @@ namespace io
 		return m_is_opened;
 	}
 	//-----------------------------------------------------------------------------------
-	unsigned long read_file::get_size() const
+	unsigned long read_file::size() const
 	{
 		return m_size;
 	}
 	//-----------------------------------------------------------------------------------
-	unsigned long read_file::get_pos()
+	unsigned long read_file::position()
 	{
 		return m_file_stream.tellg();;
 	}
 	//-----------------------------------------------------------------------------------
-	void read_file::set_pos(unsigned long pos)
+	void read_file::position(unsigned long pos)
 	{
 		m_file_stream.seekg(pos, std::ios_base::beg);
 	}

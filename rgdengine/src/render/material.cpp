@@ -6,7 +6,7 @@
 
 namespace render
 {
-	void material::material_map::set_texture(const texture_ptr& texture)
+	void material::material_map::texture(const texture_ptr& texture)
 	{
 		if (texture != NULL)
 		{
@@ -59,7 +59,7 @@ namespace render
 	{
 		m_pDefaultTexture = getDefaultTextureByType(defaultTexture);
 		texture_ptr pNullTexture;
-		set_texture(pNullTexture);
+		texture(pNullTexture);
 
 		m_fRotationSpeed = 0.0f;
 		m_time = 0.0;
@@ -70,10 +70,10 @@ namespace render
 		return material_ptr(new material(amb, diff, spec, em, power));
 	}
 
-	material_ptr material::create(const std::string& file_name)
+	material_ptr material::create(const std::string& filename)
 	{
 		material_ptr mat = material::create();
-		mat->load(file_name);
+		mat->load(filename);
 		return mat;
 	}
 
@@ -129,7 +129,7 @@ namespace render
 		int id	= getMapId(pMapEl);
 
 		if (id >= 0)
-			maps[name].set_texture(textures[id]);
+			maps[name].texture(textures[id]);
 
 		return pMapEl;
 	}
@@ -173,17 +173,17 @@ namespace render
 		}
 	}
 
-	void material::load(const std::string& file_name)
+	void material::load(const std::string& filename)
 	{
-		m_file_name = file_name;
-		base::lmsg << "loading material: " << "\"" << file_name << "\"";
+		m_file_name = filename;
+		base::lmsg << "loading material: " << "\"" << filename << "\"";
 
 		TiXmlDocument mat;
 		{
 			io::path_add_scoped p	("Materials/");
-			if (!base::load_xml(file_name, mat))
+			if (!base::load_xml(filename, mat))
 			{
-				base::lerr << "Не могу загрузить файл материала!" << "\"" << file_name << "\"";
+				base::lerr << "Не могу загрузить файл материала!" << "\"" << filename << "\"";
 				return;
 			}
 		}
@@ -255,7 +255,7 @@ namespace render
 		m_technique = effect->find_technique(techName);
 
 		if(!m_technique)
-			base::lwrn<<"effect_technique_impl \""<<techName<<"\" not found in effect \""<<effect->get_name()<<"\".";
+			base::lwrn<<"effect_technique_impl \""<<techName<<"\" not found in effect \""<<effect->name()<<"\".";
 	}
 
 	const dynamic_binder_ptr& material::getDynamicBinder()

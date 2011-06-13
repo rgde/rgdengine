@@ -24,7 +24,7 @@ namespace core
 
 		~render_system();
 
-		virtual void save_screen(const std::wstring& file_name);
+		virtual void save_screen(const std::wstring& filename);
 		virtual void update() const;
 
 		virtual render::render_device& get_device();

@@ -21,7 +21,7 @@ namespace render
 		class parameter
 		{
 		public:
-			enum type
+			enum type_t
 			{
 				Void,
 				Bool,
@@ -46,10 +46,10 @@ namespace render
 
 			virtual ~parameter(){}
 
-			virtual const std::string& get_name() const = 0;
-			virtual const std::string& get_semantic() const = 0;
-			virtual unsigned int get_size() const = 0;
-			virtual type get_type() const = 0;
+			virtual const std::string& name() const = 0;
+			virtual const std::string& semantic() const = 0;
+			virtual unsigned int size() const = 0;
+			virtual type_t type() const = 0;
 
 			virtual annotations_vector& get_annotations() = 0;
 
@@ -99,7 +99,7 @@ namespace render
 				virtual void begin() = 0;
 				virtual void end() = 0;
 
-				virtual const std::string& get_name() const = 0;
+				virtual const std::string& name() const = 0;
 				virtual annotations_vector& get_annotations() = 0;
 			};
 
@@ -107,7 +107,7 @@ namespace render
 
 			virtual ~technique(){}
 			virtual passes& get_passes() = 0;
-			virtual const std::string& get_name() const = 0;
+			virtual const std::string& name() const = 0;
 			virtual annotations_vector& get_annotations() = 0;
 			
 			virtual void begin() = 0;
@@ -119,11 +119,11 @@ namespace render
 
 		friend effect_ptr;
 	protected:
-		virtual bool load(const std::string& file_name) = 0;
+		virtual bool load(const std::string& filename) = 0;
 	public:
 		virtual ~effect(){}
 
-		static effect_ptr create(const std::string& file_name);
+		static effect_ptr create(const std::string& filename);
 		static void clear_all();
 
 		///////////////////////////////////////////////////
@@ -131,7 +131,7 @@ namespace render
 		virtual void commit_changes() = 0;
 		virtual void onLostDevice() = 0;
 		virtual void onResetDevice() = 0;
-		virtual const std::string& get_name() const= 0;
+		virtual const std::string& name() const= 0;
 		virtual params_map& get_params() = 0;
 		virtual techniques_list& get_technics() = 0;
 		virtual technique* find_technique(const std::string& name) = 0;

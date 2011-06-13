@@ -20,9 +20,9 @@ namespace core
 	{
 	}
 
-	void render_system::save_screen(const std::wstring& file_name)
+	void render_system::save_screen(const std::wstring& filename)
 	{
-		m_render_device->save_screen(file_name);
+		m_render_device->save_screen(filename);
 	}
 
 	void render_system::update() const

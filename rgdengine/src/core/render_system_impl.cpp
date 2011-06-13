@@ -123,7 +123,7 @@ void render_device_impl::onWindowResizeEvent(window_resize e)
 	render::render_device::on_reset();
 }
 
-void render_device_impl::save_screen(const std::wstring& file_name)
+void render_device_impl::save_screen(const std::wstring& filename)
 {
 	D3DDISPLAYMODE display;
 	m_pd3dDevice->GetDisplayMode(0, &display);
@@ -132,7 +132,7 @@ void render_device_impl::save_screen(const std::wstring& file_name)
 
 	// save the back buffer to the surface.  Then save the file. 
 	m_pd3dDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &ScreenShotSurface);
-	D3DXSaveSurfaceToFile((file_name + L".png").c_str(), D3DXIFF_PNG, ScreenShotSurface, NULL, NULL);
+	D3DXSaveSurfaceToFile((filename + L".png").c_str(), D3DXIFF_PNG, ScreenShotSurface, NULL, NULL);
 
 	SAFE_RELEASE(ScreenShotSurface);
 }
@@ -154,7 +154,7 @@ void render_device_impl::update() const
 	m_is_first_frame = false;
 
 	// Clear the backbuffer
-	const math::Color& color = render::render_device::get_clear_color();
+	const math::Color& color = render::render_device::clear_color();
 	V(m_pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(color.a, color.r, color.g, color.b), 1.0f, 0 ));
 
 	// Begin the scene
@@ -266,7 +266,7 @@ device_info render_device_impl::readRenderDeviceInfo(const std::string strConfig
 	deviceInfo.m_clear_color.a = base::safe_read_attr<int>(RenderDeviceNode, "BackColor", "a", 255);
 	//->
 	math::Color color = deviceInfo.m_clear_color;
-	render::render_device::set_clear_color(color);
+	render::render_device::clear_color(color);
 	//-<
 
 	std::string strColorBufferFormat = base::safe_read<std::string>(RenderDeviceNode, "ColorFormat", "A8R8G8B8");

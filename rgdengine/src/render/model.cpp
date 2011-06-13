@@ -11,7 +11,7 @@ using math::Color;
 namespace render
 {
 	model::model() 
-		: m_is_visible(true)
+		: m_visible(true)
 	{
 	}
 
@@ -23,11 +23,11 @@ namespace render
 	void read_node(TiXmlElement *elem, math::frame &root_frame, model &model);
 	mesh::geometry_ptr read_geometry(const std::string& fNm);
 
-	model_ptr model::create(const std::string& file_name)
+	model_ptr model::create(const std::string& filename)
 	{
 		model_ptr m = new model();
-		m->load(file_name);
-        m->set_looped(true);
+		m->load(filename);
+        m->looped(true);
 		m->play();
 		m->update(0.0001f);			
 		return m;
@@ -44,7 +44,7 @@ namespace render
 
 		if (!in)
 		{
-			std::string error	= "model::load: can't load file ";// + file_name;
+			std::string error	= "model::load: can't load file ";// + filename;
 			base::lerr << "model::load: can't load file: " << model_name << ".xml";
 			throw exception(error.c_str());
 		}
@@ -88,7 +88,7 @@ namespace render
 	{
 		if (elem->Attribute("name"))
 		{
-			root_frame.set_name(elem->Attribute("name"));
+			root_frame.name(elem->Attribute("name"));
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ namespace render
 			{
 				math::vec3f v;
 				base::read(v, node);
-				root_frame.set_position(v);
+				root_frame.position(v);
 			}
 
 			//rotation
@@ -114,7 +114,7 @@ namespace render
 				math::quatf q;
 				math::set(q, ang);
 
-				root_frame.set_rot(q);
+				root_frame.rotation(q);
 			}
 
 			//scale
@@ -122,7 +122,7 @@ namespace render
 			{
 				math::vec3f v;
 				base::read(v, node);
-				root_frame.set_scale(v);
+				root_frame.scale(v);
 			}
 		}
 		//////////////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@ namespace render
 
 		if (gm)
 		{
-			math::frame_anim_controller control;
+			math::frame_animation control;
 			control.load(elem);
 
 			control.atach(&root_frame);
@@ -182,7 +182,7 @@ namespace render
 
 			if(strType == "point")
 			{
-				PointLight *pPointLight = new PointLight(root_frame.get_name());
+				PointLight *pPointLight = new PointLight(root_frame.name());
 				root_frame.add(pPointLight);
 
 				math::Color color;
@@ -203,10 +203,10 @@ namespace render
 					if(att->Attribute("end"))
 						range = base::lexical_cast<float, std::string>(att->Attribute("end"));
 
-				pPointLight->setRange(range);
-				pPointLight->setConstantAttenuation(0.0f);
-				pPointLight->setLinearAttenuation(1.0f);
-				pPointLight->setQuadraticAttenuation(0.0f);
+				pPointLight->range(range);
+				pPointLight->constant_attenuation(0.0f);
+				pPointLight->linear_attenuation(1.0f);
+				pPointLight->quadratic_attenuation(0.0f);
 
 				std::string strEnabled = "1";
 
@@ -302,29 +302,29 @@ namespace render
 			(*i).pause();
 	}
 
-	void model::set_looped(bool flag)
+	void model::looped(bool flag)
 	{
 		contollers_vector::iterator i;
 		for (i = m_controllers.begin(); i != m_controllers.end(); ++i)
-			(*i).set_looped(flag);
+			(*i).looped(flag);
 	}
 
-	bool model::is_visible() const
+	bool model::visible() const
 	{
-		return m_is_visible;
+		return m_visible;
 	}
 
-	void model::setVisible(bool bVisible)
+	void model::visible(bool bVisible)
 	{
-		if (bVisible == m_is_visible)
+		if (bVisible == m_visible)
 			return;
 
-		m_is_visible = bVisible;
+		m_visible = bVisible;
 
 		size_t nNumMeshes	= m_meshes.size();
 
 		for (size_t i = 0; i < nNumMeshes; i++)
-			if (m_is_visible)
+			if (m_visible)
 				m_meshes[i]->show();
 			else
 				m_meshes[i]->hide();

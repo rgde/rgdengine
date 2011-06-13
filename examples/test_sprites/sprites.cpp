@@ -77,7 +77,7 @@ namespace rgde
 			{
 				static bool drawen = false;
 
-				float time = game::game_system::get().get_timer().get_absolute_time();
+				float time = game::game_system::get().get_timer().absolute_time();
 				render::render_device::get().draw_fps(time, m_font);
 
 				//if (drawen)
@@ -89,7 +89,7 @@ namespace rgde
 				for (iter it = m_sprites.begin(); it != m_sprites.end(); ++it)
 				{
 					it->spin += delta_spin;
-					m_sprite_renderer.add_sprite(*it);
+					m_sprite_renderer.add(*it);
 				}
 
 				drawen = true;

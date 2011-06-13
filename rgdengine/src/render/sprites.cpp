@@ -58,7 +58,7 @@ namespace render
 	{
 	}
 
-	void sprite_manager::add_sprite(const sprite &s)
+	void sprite_manager::add(const sprite &s)
 	{
 		m_updated = false;
 		m_sprites.push_back(s);

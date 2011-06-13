@@ -8,7 +8,7 @@ namespace core
 {
 	timer::timer()
 	{
-		Stopped = true;
+		stopped = true;
 
 		BaseTime = 0;
 		LastTime = 0;
@@ -31,18 +31,18 @@ namespace core
 		else
 			QueryPerformanceCounter(&time);
 
-		if( Stopped )
+		if( stopped )
 			BaseTime += time.QuadPart - StopTime;
 
 		StopTime = 0;
 		LastTime = time.QuadPart;
-		Stopped = false;
+		stopped = false;
 	}
 
 	//-----------------------------------------------------------------------------
 	void timer::stop()
 	{
-		if( Stopped )
+		if( stopped )
 		{
 			LARGE_INTEGER time;
 
@@ -53,7 +53,7 @@ namespace core
 
 			StopTime = time.QuadPart;
 			LastTime = time.QuadPart;
-			Stopped = true;
+			stopped = true;
 		}
 	}
 
@@ -71,7 +71,7 @@ namespace core
 		LastTime = time.QuadPart;
 		StopTime = time.QuadPart;
 
-		Stopped = false;
+		stopped = false;
 	}
 
 	//-----------------------------------------------------------------------------
@@ -81,7 +81,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float timer::get_absolute_time() const
+	float timer::absolute_time() const
 	{
 		LARGE_INTEGER time;
 
@@ -95,7 +95,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float timer::get_current_time() const
+	float timer::time() const
 	{
 		LARGE_INTEGER time;
 
@@ -109,7 +109,7 @@ namespace core
 	}
 
 	//-----------------------------------------------------------------------------
-	float timer::get_elapsed() const
+	float timer::elapsed() const
 	{
 		LARGE_INTEGER time;
 
@@ -124,7 +124,7 @@ namespace core
 		return elapsed;
 	}
 	//-----------------------------------------------------------------------------
-	float timer::get_elapsed()
+	float timer::elapsed()
 	{
 		LARGE_INTEGER time;
 
@@ -143,6 +143,6 @@ namespace core
 	//-----------------------------------------------------------------------------
 	bool timer::is_stoped() const
 	{
-		return Stopped;
+		return stopped;
 	}
 }

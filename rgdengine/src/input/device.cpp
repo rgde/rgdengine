@@ -4,7 +4,7 @@
 
 namespace input
 {
-	device::device(type type, int index, input_impl &input):
+	device::device(type_t type, int index, input_impl &input):
 		m_index  (index),
 		m_type  (type),
 		m_input (input)
@@ -51,14 +51,14 @@ namespace input
     void device::add_button (controls contol_name)
     {
         Control *pControl = new Control(contol_name, Control::Button, *this);
-        m_controls[pControl->get_name()] = pControl;
+        m_controls[pControl->name()] = pControl;
     }
 
     //добавить ось
     void device::add_axis (controls contol_name)
     {
         Control *pControl = new Control(contol_name, Control::Axis, *this);
-        m_controls[pControl->get_name()] = pControl;
+        m_controls[pControl->name()] = pControl;
     }
 
     //отвязать команду ото всех контролов

@@ -11,20 +11,20 @@ public:
 		m_font = render::font::create(20, L"Arial", render::font::Heavy);
 
 		math::vec3f eye(40, 40, -40);
-		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
+		math::vec3f lookat( 0.0f, 0.0f, 0.0f );
 		math::vec3f up_vec( 00.0f, 1.0f, 0.0f );
 	
-		initParticles();
+		init();
 
 		// init input
 		init_input();
 
 		// init camera
 		m_camera  = render::render_camera::create();
-		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+		m_camera->projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 		m_target_camera = math::target_camera::create(m_camera);
-		render::TheCameraManager::get().add_camera(m_camera);
-		m_target_camera->set_position(up_vec, eye,look_at);
+		render::TheCameraManager::get().add(m_camera);
+		m_target_camera->position(up_vec, eye,lookat);
 		m_target_camera->activate();
 	}
 
@@ -102,7 +102,7 @@ public:
 	}
 protected:
 	//-----------------------------------------------------------------------------------
-	void initParticles()
+	void init()
 	{
 		m_effect = new particles::effect();
 
@@ -117,26 +117,26 @@ protected:
 			m_effect->add(sph_emitter);
 
 			particles::processor* proc = new particles::processor();			
-			proc->set_texture( particle_texture );
-			proc->setMaxParticles( 100 );
-			sph_emitter->addProcessor(proc);
+			proc->texture( particle_texture );
+			proc->particles_limit( 100 );
+			sph_emitter->add(proc);
 			proc->load();
 
 			math::point3f sph_pos(dist, 0, -dist/1.732f);
-			sph_emitter->get_transform()->set_position(math::point3f(sph_pos));
+			sph_emitter->position(sph_pos);
 
 			// create cube emitter
 			particles::box_emitter* box_emitter = new particles::box_emitter();
 			m_effect->add(box_emitter);
 
 			proc = new particles::processor();
-			box_emitter->addProcessor(proc);
-			proc->set_texture( particle_texture );
-			proc->setMaxParticles( 100 );
+			box_emitter->add(proc);
+			proc->texture( particle_texture );
+			proc->particles_limit( 100 );
 			proc->load();
 
 			math::point3f box_pos( -dist, 0, -dist/1.732f);
-			box_emitter->get_transform()->set_position(box_pos);
+			box_emitter->position(box_pos);
 		}
 	}
 

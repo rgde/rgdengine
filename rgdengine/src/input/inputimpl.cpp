@@ -339,7 +339,7 @@ namespace input
             command_ptr pCommand = *i;
 
             TiXmlElement *command = (TiXmlElement*)(input->InsertEndChild(TiXmlElement("command")));
-            std::string command_name = pCommand->get_name();
+            std::string command_name = pCommand->name();
 
             command->SetAttribute("name", command_name.c_str());
 
@@ -352,7 +352,7 @@ namespace input
 				{
 					device *pDevice = *j;
 
-					std::wstring sDeviseNameW = Device2String(pDevice->get_type());
+					std::wstring sDeviseNameW = Device2String(pDevice->type());
 					std::string sDeviceName(sDeviseNameW.begin(), sDeviseNameW.end());
 
 					std::map<controls, Control*>::iterator k = pDevice->m_controls.begin();
@@ -361,7 +361,7 @@ namespace input
 						Control *pControl = k->second;
 						if (pControl->is_bind(pCommand))
 						{
-							std::wstring sControlNameW = Control2String(pControl->get_name());
+							std::wstring sControlNameW = Control2String(pControl->name());
 							std::string contol_name(sControlNameW.begin(), sControlNameW.end());
 
 							TiXmlElement *control = (TiXmlElement*)(command->InsertEndChild(TiXmlElement("control")));
@@ -406,7 +406,7 @@ namespace input
         m_inited = false;
     }
  
-    device* input_impl::get_device (device::type type, size_t indx/*=0*/) const
+    device* input_impl::get_device (device::type_t type, size_t indx/*=0*/) const
     {
 		if (!m_inited)
 			return 0;
@@ -425,7 +425,7 @@ namespace input
         return get_device(String2Device(sDeviceName), indx);
     }
 
-    bool input_impl::is_present (device::type type, size_t indx/*=0*/) const
+    bool input_impl::is_present (device::type_t type, size_t indx/*=0*/) const
     {
 		return get_device(type, indx) ? true : false;
     }
@@ -457,7 +457,7 @@ namespace input
         std::list<command_ptr>::iterator i = m_commands.begin();
         while (i != m_commands.end())
         {
-            if ((*i)->get_name() == command_name)
+            if ((*i)->name() == command_name)
                 return (*i);
             ++i;
         }
@@ -473,7 +473,7 @@ namespace input
         std::list<command_ptr>::const_iterator i = m_commands.begin();
         while (i != m_commands.end())
         {
-            if ((*i)->get_name() == command_name)
+            if ((*i)->name() == command_name)
                 return true;
             ++i;
         }
@@ -831,12 +831,12 @@ namespace input
 
         pControl->m_time = dod.dwTimeStamp;
 
-        if (pControl->get_type() == Control::Axis)
+        if (pControl->type() == Control::Axis)
         {
             pControl->m_press = false;
             pControl->m_delta = dod.dwData;
         }
-        else if (pControl->get_type() == Control::Button)
+        else if (pControl->type() == Control::Button)
         {
             pControl->m_press = (dod.dwData & 0x80) ? true : false;
             pControl->m_delta = 0;

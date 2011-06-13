@@ -6,11 +6,11 @@
 
 namespace base
 {
-	inline bool load_xml(const std::string& file_name, TiXmlDocument& document)
+	inline bool load_xml(const std::string& filename, TiXmlDocument& document)
 	{
 		std::vector<byte> data;
 		{
-			io::readstream_ptr in = io::file_system::get().find(file_name);
+			io::readstream_ptr in = io::file_system::get().find(filename);
 
 			if(!in)
 				return false;

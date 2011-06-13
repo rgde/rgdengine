@@ -17,7 +17,7 @@ TestInput::TestInput():
     m_btnPrimaryFire   ("PrimaryFire"),
     m_btnSecondaryFire ("SecondaryFire")
 {
-    render::render_device::get().set_clear_color(math::Color(0,0,0,255));
+    render::render_device::get().clear_color(math::Color(0,0,0,255));
 
     input::Input::load("TestInput/input.xml");
 
@@ -73,7 +73,7 @@ void TestInput::update (float dt)
             //...
         }
 		m_cursor.pos = math::vec2f(m_mouse.getX(), m_mouse.getY());
-        m_sprite_renderer.add_sprite(m_cursor);
+        m_sprite_renderer.add(m_cursor);
         //-<
     }
     else
@@ -106,7 +106,7 @@ void TestInput::onPause (bool pause)
     if (pause)
     {
         input::Input::get().set_mode(false);
-        m_mouse.set_pos(400,300);
+        m_mouse.position(400,300);
         ShowCursor(FALSE);
     }
     else

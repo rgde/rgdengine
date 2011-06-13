@@ -42,9 +42,9 @@ namespace particles{
 
 		inline void set_emitter(base_emitter* em) { m_parent_emitter = em; }
 
-		const math::matrix44f& get_local_tm();
+		const math::matrix44f& local_trasform();
 
-		void set_texture(render::texture_ptr texture);
+		void texture(render::texture_ptr texture);
 
 		// interpolators
 		inline math::interpolatorf& rate()							{ return m_rate; }
@@ -62,34 +62,34 @@ namespace particles{
 
 		// getters/setters
 		inline bool is_fading() const { return m_is_fading; }
-		inline void set_fade(bool b) { m_is_fading = b; }
+		inline void fade(bool b) { m_is_fading = b; }
 
-		inline unsigned getMaxParticles() const { return m_max_particles; }
-		inline void setMaxParticles (unsigned num) 
+		inline unsigned particles_limit() const { return m_max_particles; }
+		inline void particles_limit (unsigned num) 
 		{ 
 			m_max_particles = num; 
 			m_particles.resize(m_max_particles);
 		}
 
-		inline int getSeed() const { return m_max_particles; }
-		inline void set_seed(int seed) { m_rnd_seed = seed; }
+		inline int seed() const { return m_max_particles; }
+		inline void seed(int seed) { m_rnd_seed = seed; }
 
-		inline bool is_visible() const { return m_is_visible; }
-		inline void setVisible(bool visible) { m_is_visible = visible; }
+		inline bool visible() const { return m_visible; }
+		inline void visible(bool v) { m_visible = v; }
 
-		inline bool getIntenseMode() const { return m_intense; }
-		inline void setIntenseMode(bool intense) { m_intense = intense; }
+		inline bool additive_blend() const { return m_additive_blend; }
+		inline void additive_blend(bool f) { m_additive_blend = f; }
 
-		inline bool getSparkMode() { return m_is_sparks; }
-		inline void setSparkMode(bool sm) { m_is_sparks = sm; }
+		inline bool sparks_mode() { return m_is_sparks; }
+		inline void sparks_mode(bool sm) { m_is_sparks = sm; }
 
 	protected:
-		inline void assignChilds();
-		inline void createParticle(particle& p);
+		inline void assign_children();
+		inline void init_particle(particle& p);
 
 		void first_time_init();
-		void updateParticle(particle& p);
-		void formTank();
+		void update_particle(particle& p);
+		void update_particle();
 		void add_new_particles(int num2add);
 
 		virtual void to_stream(io::write_stream& wf) const;
@@ -148,7 +148,7 @@ namespace particles{
 
 		bool m_is_fading;								// Затухает ли процессор (затухающий процессор не излучает новых частиц)
 
-		bool m_intense;								// Меняет режим блендинга
+		bool m_additive_blend;								// Меняет режим блендинга
 		math::vec3f m_scaling;								// Масштабирование родительского эмитера
 		int m_max_particles;							// Максимальное число частиц в процессоре
 
@@ -156,10 +156,10 @@ namespace particles{
 		
 		bool m_is_sparks;
 
-		particles_vector m_particles;
+		particles_t m_particles;
 
 		bool m_modifiers_loaded;
-		bool m_is_visible;
+		bool m_visible;
 		bool m_ptank_inited;
 
 		float m_normalized_time;		// нормированное от 0 до 1

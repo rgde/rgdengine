@@ -45,7 +45,7 @@ namespace particles
 	void effect::set_emitters_to_fade(bool b)
 	{
 		for(emitters_iter it = m_emitters.begin(); it != m_emitters.end(); ++it)
-			(*it)->set_fade(b);
+			(*it)->fade(b);
 	}
 	//-----------------------------------------------------------------------------------
 	void effect::update(float fDeltaTime)
@@ -118,7 +118,7 @@ namespace particles
 		{
 			unsigned em_type = 0;
 			rf >> em_type;
-			base_emitter::type type = static_cast<base_emitter::type> (em_type);
+			base_emitter::type_t type = static_cast<base_emitter::type_t> (em_type);
 		
 			emitter_ptr em;
 			switch(type)

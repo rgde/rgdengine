@@ -6,13 +6,12 @@
 namespace math
 {
     //трек
-    class CTrack
+    class track_t
     {
     public:
-        CTrack() {}
-
-        //ключ трека
-        struct Key
+		track_t(){}
+        
+        struct key_t
         {
 		    vec3f m_up;
 		    vec3f m_eye_pos;
@@ -20,23 +19,21 @@ namespace math
             float m_speed;
         };
 
-        //внешний массив с ключами трека
-        typedef std::list<Key> List;
-        typedef List::iterator iterator;
-        typedef List::const_iterator const_iterator;
-        List m_values;
+        typedef std::list<key_t> keys;
+        typedef keys::iterator iterator;
+        typedef keys::const_iterator const_iterator;
+        keys m_keys;
 
         //принять/отменить изменения во внешнем масиве
         void apply();
         void undo();
 
-        //сохранение/загрузка трека
-		void load(const std::string& strTrackName);
-		void save(const std::string& strTrackName);
+		void load(const std::string& filename);
+		void save(const std::string& filename);
 
         //получение точки трека
-        float getTotalTime();
-        Key getKey(float t);
+        float total_time();
+        key_t key(float t);
 
     private:
         catm_rom_spline_v3f     m_splineUp;
@@ -45,7 +42,7 @@ namespace math
         catm_rom_splinef     m_splineSpeed;
         FloatLinearInterpolatorf m_time2parameter;
 
-        CTrack(const CTrack&);
-        CTrack& operator=(const CTrack&);
+        track_t(const track_t&);
+        track_t& operator=(const track_t&);
     };
 }

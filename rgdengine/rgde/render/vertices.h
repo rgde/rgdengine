@@ -67,7 +67,7 @@ namespace  vertex
 	{
 		unsigned short  usStream;     // Stream index
 		unsigned short  usOffset;     // Offset in the stream in bytes
-		unsigned char	eType;        // Data type
+		unsigned char	tipe;        // Data type
 		unsigned char	eMethod;      // Processing method
 		unsigned char	eUsage;       // Semantics
 		unsigned char   ucUsageIndex; // Semantic index

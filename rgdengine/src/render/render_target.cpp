@@ -16,8 +16,8 @@ namespace render
 		texture_format get_format() const {return texture_d3d9::get_format();}
 		texture_usage  get_usage()  const {return texture_d3d9::get_usage();}
 		int			  get_height() const {return texture_d3d9::get_height();}
-		int			  get_width()  const {return texture_d3d9::get_width();}
-		texture_type  get_type()	  const {return texture_d3d9::get_type();}
+		int			  width()  const {return texture_d3d9::width();}
+		texture_type  type()	  const {return texture_d3d9::type();}
 		bool		  has_alpha()  const {return texture_d3d9::has_alpha();}
 
 		virtual const std::string& get_filename() const 

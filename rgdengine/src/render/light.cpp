@@ -6,11 +6,11 @@
 namespace render
 {
 	//base_light
-	base_light::base_light(const std::string &name, type eType)
+	base_light::base_light(const std::string &name, type_t tipe)
 	{
 		m_name     = name;
-		m_bEnabled = true;
-		m_type    = eType;
+		m_enabled = true;
+		m_type    = tipe;
 		//TheLightManager::get().addLight(this);
 	}
 
@@ -19,7 +19,7 @@ namespace render
 		//TheLightManager::get().removeLight(this);
 	}
 
-	base_light::type base_light::get_type() const
+	base_light::type_t base_light::type() const
 	{
 		return m_type;
 	}
@@ -56,25 +56,24 @@ namespace render
 
 	void base_light::setDirection(const math::vec3f& direction)
 	{
-		math::vec3f position= get_pos();
-		look_at(position, position + direction, getUp());
+		lookat(position(), position() + direction, up());
 	}
 
 	bool base_light::isEnabled() const
 	{
-		return m_bEnabled;
+		return m_enabled;
 	}
 
 	void base_light::setEnabled(bool bEnabled)
 	{
-		m_bEnabled = bEnabled;
+		m_enabled = bEnabled;
 	}
 
 	//PointLight
 	PointLight::PointLight(const std::string &name)
 		: base_light(name, base_light::Point)
 	{
-		m_fRange                = 0.0f;
+		m_range                = 0.0f;
 		m_fConstantAttenuation  = 1.0f;
 		m_fLinearAttenuation    = 0.0f;
 		m_fQuadraticAttenuation = 0.0f;
@@ -84,51 +83,51 @@ namespace render
 	{
 	}
 
-	float PointLight::getRange() const
+	float PointLight::range() const
 	{
-		return m_fRange;
+		return m_range;
 	}
 
-	void PointLight::setRange(float fRange)
+	void PointLight::range(float fRange)
 	{
-		m_fRange = fRange;
+		m_range = fRange;
 	}
 
-	float PointLight::getConstantAttenuation() const
+	float PointLight::constant_attenuation() const
 	{
 		return m_fConstantAttenuation;
 	}
 
-	void PointLight::setConstantAttenuation(float fConstantAttenuation)
+	void PointLight::constant_attenuation(float value)
 	{
-		m_fConstantAttenuation = fConstantAttenuation;
+		m_fConstantAttenuation = value;
 	}
 
-	float PointLight::getLinearAttenuation() const
+	float PointLight::linear_attenuation() const
 	{
 		return m_fLinearAttenuation;
 	}
 
-	void PointLight::setLinearAttenuation(float fLinearAttenuation)
+	void PointLight::linear_attenuation(float value)
 	{
-		m_fLinearAttenuation = fLinearAttenuation;
+		m_fLinearAttenuation = value;
 	}
 
-	float PointLight::getQuadraticAttenuation() const
+	float PointLight::quadratic_attenuation() const
 	{
 		return m_fQuadraticAttenuation;
 	}
 
-	void PointLight::setQuadraticAttenuation(float fQuadraticAttenuation)
+	void PointLight::quadratic_attenuation(float value)
 	{
-		m_fQuadraticAttenuation = fQuadraticAttenuation;
+		m_fQuadraticAttenuation = value;
 	}
 
 	//SpotLight
 	SpotLight::SpotLight(const std::string &name)
 		: base_light(name, base_light::Spot)
 	{
-		m_fRange   = 0.0f;
+		m_range   = 0.0f;
 		m_fConstantAttenuation  = 1.0f;
 		m_fLinearAttenuation    = 0.0f;
 		m_fQuadraticAttenuation = 0.0f;
@@ -141,44 +140,44 @@ namespace render
 	{
 	}
 
-	float SpotLight::getRange() const
+	float SpotLight::range() const
 	{
-		return m_fRange;
+		return m_range;
 	}
 
-	void SpotLight::setRange(float fRange)
+	void SpotLight::range(float fRange)
 	{
-		m_fRange = fRange;
+		m_range = fRange;
 	}
 
-	float SpotLight::getConstantAttenuation() const
+	float SpotLight::constant_attenuation() const
 	{
 		return m_fConstantAttenuation;
 	}
 
-	void SpotLight::setConstantAttenuation(float fConstantAttenuation)
+	void SpotLight::constant_attenuation(float value)
 	{
-		m_fConstantAttenuation = fConstantAttenuation;
+		m_fConstantAttenuation = value;
 	}
 
-	float SpotLight::getLinearAttenuation() const
+	float SpotLight::linear_attenuation() const
 	{
 		return m_fLinearAttenuation;
 	}
 
-	void SpotLight::setLinearAttenuation(float fLinearAttenuation)
+	void SpotLight::linear_attenuation(float value)
 	{
-		m_fLinearAttenuation = fLinearAttenuation;
+		m_fLinearAttenuation = value;
 	}
 
-	float SpotLight::getQuadraticAttenuation() const
+	float SpotLight::quadratic_attenuation() const
 	{
 		return m_fQuadraticAttenuation;
 	}
 
-	void SpotLight::setQuadraticAttenuation(float fQuadraticAttenuation)
+	void SpotLight::quadratic_attenuation(float value)
 	{
-		m_fQuadraticAttenuation = fQuadraticAttenuation;
+		m_fQuadraticAttenuation = value;
 	}
 
 	float SpotLight::getFalloff() const

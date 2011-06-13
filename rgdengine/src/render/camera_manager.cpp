@@ -13,7 +13,7 @@ namespace render
 		{
 			bool operator()(math::camera_ptr &c1, math::camera_ptr &c2)
 			{
-				return c1->get_priority() < c2->get_priority() ? true : false;
+				return c1->priority() < c2->priority() ? true : false;
 			}
 		};
 	}
@@ -26,37 +26,37 @@ namespace render
 	{
 	}
 
-	void camera_manager::add_camera(const math::camera_ptr& c)
+	void camera_manager::add(const math::camera_ptr& c)
 	{
-		m_lCameras.push_back(c);
+		m_cameras.push_back(c);
 	}
 
-	void camera_manager::removeCamera(const math::camera_ptr& c)
+	void camera_manager::remove(const math::camera_ptr& c)
 	{
-		m_lCameras.remove(c);
+		m_cameras.remove(c);
 	}
 
 	void camera_manager::clear()
 	{
-		m_lCameras.clear();
+		m_cameras.clear();
 	}
 
 	void camera_manager::sort()
 	{
-		m_lCameras.sort(functors::priority_sorter_less());
+		m_cameras.sort(functors::priority_sorter_less());
 	}
 
-	camera_manager::CameraListIterator camera_manager::begin()
+	camera_manager::camera_it camera_manager::begin()
 	{
-		return m_lCameras.begin();
+		return m_cameras.begin();
 	}
 	
-	camera_manager::CameraListIterator camera_manager::end()
+	camera_manager::camera_it camera_manager::end()
 	{
-		return m_lCameras.end();
+		return m_cameras.end();
 	}
 
-	void camera_manager::set_camera(camera_manager::CameraListIterator it)
+	void camera_manager::activate(camera_manager::camera_it it)
 	{
 		//if (m_curCamera)
 		//{
@@ -65,6 +65,6 @@ namespace render
 
 		//m_curCamera = *it;
 		(*it)->activate();
-		render::render_device::get().set_camera(*it);
+		render::render_device::get().camera(*it);
 	}
 }

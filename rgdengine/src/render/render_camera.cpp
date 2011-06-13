@@ -21,12 +21,12 @@ namespace render
 		  m_clear_color(0),
 		  m_clear_depth(1.0f)
 	{
-		TheCameraManager::get().add_camera(this);
+		TheCameraManager::get().add(this);
 	}
 
 	render_camera::~render_camera()
 	{
-		TheCameraManager::get().removeCamera(this);
+		TheCameraManager::get().remove(this);
 	}
 
 	void render_camera::activate()
@@ -126,12 +126,12 @@ namespace render
 		m_clear_color	= clearColor;
 	}
 		
-	void render_camera::set_priority(unsigned priority)
+	void render_camera::priority(unsigned priority)
 	{
 		m_priority = priority;
 	}
 
-	unsigned render_camera::get_priority() const
+	unsigned render_camera::priority() const
 	{
 		return m_priority;
 	}

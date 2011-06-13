@@ -111,13 +111,13 @@ namespace render
 	public:
 		virtual ~texture(){}
 
-		static texture_ptr		  create(const std::string& file_name);
+		static texture_ptr		  create(const std::string& filename);
 
 		virtual texture_format get_format() const = 0; 
 		virtual texture_usage  get_usage()  const = 0;
 		virtual int			  get_height() const = 0;
-		virtual int			  get_width()  const = 0;
-		virtual texture_type  get_type()	  const = 0;
+		virtual int			  width()  const = 0;
+		virtual texture_type  type()	  const = 0;
 		virtual	bool		  has_alpha()  const = 0;
 
 		virtual const std::string& get_filename() const = 0;

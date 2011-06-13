@@ -62,15 +62,15 @@ namespace render
 		return ret;
 	}
 
-	void mesh::load(const std::string& file_name)
+	void mesh::load(const std::string& filename)
 	{
-		m_file_name = file_name;
+		m_file_name = filename;
 		m_geometry = geometry_ptr(new geometry());
 
 		io::file_system &fs	= io::file_system::get();
 		io::path_add_scoped p	("meshes/");
 
-		m_geometry->load(file_name);
+		m_geometry->load(filename);
 
 		m_geometry->lock_ib();
 		m_geometry->unlock_ib();
@@ -90,13 +90,13 @@ namespace render
 	}
 
 	//Neonic: octree
-	void mesh::update( bool NeedFullUpdate )
+	void mesh::update( bool invalidate_transform )
 	{
 		//if( !getRoot() )
 		//{
 		////	// calc global AABB from OOB
 		////	aaboxf global_aabb;
-		////	matrix44f m = m_frame.get()->get_full_tm();
+		////	matrix44f m = m_frame.get()->world_trasform();
 		////	float	Xmax = m_render_info.bbox.getMax()[0],
 		////			Ymax = m_render_info.bbox.getMax()[1],
 		////			Zmax = m_render_info.bbox.getMax()[2],
@@ -114,7 +114,7 @@ namespace render
 		////	extendVolume(global_aabb,m*point3f(Xmin,Ymin,Zmin));	// xyz
 
 		//	math::aaboxf global_aabb = m_render_info.bbox;
-		//	collision::calcAABB(get_full_tm(),global_aabb);
+		//	collision::calcAABB(world_trasform(),global_aabb);
 		//	setAABB(global_aabb);
 		//	//Neonic: корректируем динамические меши в пространстве 
 		//	if(is_dynamic())
@@ -122,16 +122,16 @@ namespace render
 		//	scene::TheScene::get().inject(this);
 		//}
 		//else 
-		//if( NeedFullUpdate )
+		//if( invalidate_transform )
 		//{
 		//	math::aaboxf global_aabb = m_render_info.bbox;
-		//	collision::calcAABB(get_full_tm(),global_aabb);
+		//	collision::calcAABB(world_trasform(),global_aabb);
 		//	setAABB(global_aabb);
 		//	scene::TheScene::get().inject(this);
 		//}
 		//else
 		//{
-		//	move(get_world_pos()+m_render_info.bsphere.getCenter());
+		//	move(world_position()+m_render_info.bsphere.getCenter());
 		//}
 	};
 

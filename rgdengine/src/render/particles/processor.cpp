@@ -10,7 +10,7 @@ namespace particles{
 
 	//-----------------------------------------------------------------------------------
 	processor::processor(base_emitter* em )   // конструктор
-	: m_is_visible(true)
+	: m_visible(true)
 	, m_parent_emitter(em)
 	{
 		m_is_anim_texture_used = false; 		
@@ -43,7 +43,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void processor::updateParticle(particle& p)
+	void processor::update_particle(particle& p)
 	{
 		// отображение времени частица на интервал от 0 до 1 
 		float t = p.time / p.ttl; 
@@ -108,8 +108,8 @@ namespace particles{
 		m_is_anim_texture_used		= false;
 		m_modifiers_loaded		= false;
 		m_ptank_inited		= false;
-		m_is_visible			= true;
-		m_intense				= false;
+		m_visible			= true;
+		m_additive_blend				= false;
 		
 		m_max_particles			= 0;
 		m_normalized_time		= 0;
@@ -118,14 +118,14 @@ namespace particles{
 	//-----------------------------------------------------------------------------------
 	void processor::render()
 	{
-		if( !m_is_visible )
+		if( !m_visible )
 			return;
 
-		formTank();
+		update_particle();
 
 		//if (!m_is_geometric)
 		{
-			m_tank.render(m_texture, m_parent_emitter->get_transform());
+			m_tank.render(m_texture, m_parent_emitter);
 		}
 		//else
 		//	geomRender();
@@ -137,9 +137,7 @@ namespace particles{
 		m_dt += dt;
 
 		m_normalized_time = m_parent_emitter->getTime();
-
-		math::frame_ptr rParentTransform = m_parent_emitter->get_transform();
-		m_scaling = rParentTransform->get_scale();
+		m_scaling = m_parent_emitter->scale();
 
 		int m_acting_particles = 0;
 		// здесь происходит апдейт партиклов
@@ -157,7 +155,7 @@ namespace particles{
 				{
 					++m_acting_particles;
 					it->time += m_dt;
-					updateParticle(*it);
+					update_particle(*it);
 				}
 
 			m_dt = 0;
@@ -187,7 +185,7 @@ namespace particles{
 
 		for(int i = 0; i < m_max_particles; ++i)
 			if (m_particles[i].dead && to_add > 0){
-				createParticle(m_particles[i]);
+				init_particle(m_particles[i]);
 				to_add--;
 				added_num++;
 			}
@@ -197,7 +195,7 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void processor::createParticle(particle& p)
+	void processor::init_particle(particle& p)
 	{
 		m_parent_emitter->get_particle(p);
 		p.dead = false;
@@ -218,7 +216,7 @@ namespace particles{
 						/(25.0f);
 		
 		//if (m_is_global){
-		//	math::xform( p.initial_pos, get_local_tm(), p.initial_pos );
+		//	math::xform( p.initial_pos, local_trasform(), p.initial_pos );
 		//	p.initial_vel = m_parent_emitter->getSpeed();// / 2.0f;
 		//}
 
@@ -241,16 +239,16 @@ namespace particles{
 			p.cur_tex_frame = lrnd() * (float)m_ucTexFrames;
 		}
 
-		updateParticle(p);
+		update_particle(p);
 	}
 
 	//-----------------------------------------------------------------------------------
 	void processor::debug_draw()
 	{
-		if( !m_is_visible )
+		if( !m_visible )
 			return;
 
-		math::matrix44f m = get_local_tm();
+		math::matrix44f m = local_trasform();
 
 		//if (m_is_global)
 		//	m = math::setTrans( m, math::vec3f(0,0,0) );
@@ -278,15 +276,15 @@ namespace particles{
 		}
 	}
 	//-----------------------------------------------------------------------------------
-	void processor::formTank()
+	void processor::update_particle()
 	{
 		//if (m_is_geometric)
 		//	return;
 
-		const math::matrix44f& ltm = get_local_tm();
+		const math::matrix44f& ltm = local_trasform();
 
-		m_tank.getParticles().resize( m_particles.size() );
-		renderer::SParticle* array = &m_tank.getParticles().front();
+		m_tank.particles().resize( m_particles.size() );
+		renderer::particle_t* array = &m_tank.particles().front();
 
 		int i = 0;
 
@@ -306,7 +304,7 @@ namespace particles{
 			array->size = math::vec2f( p.size, p.size );
 			array->spin = p.rotation * 3.1415926f/180.0f;
 			array->color = p.color.color;
-			array->nTile = 0; // TODO: implement animated texture
+			array->tile = 0; // TODO: implement animated texture
 
 			array++;
 		}
@@ -315,26 +313,26 @@ namespace particles{
 	}
 
 	//-----------------------------------------------------------------------------------
-	void processor::set_texture(render::texture_ptr texture)
+	void processor::texture(render::texture_ptr texture)
 	{
 		m_texture = texture;
 	}
 
 	//-----------------------------------------------------------------------------------
-	const math::matrix44f& processor::get_local_tm()
+	const math::matrix44f& processor::local_trasform()
 	{
-		return m_parent_emitter->get_transform()->get_full_tm();
+		return m_parent_emitter->world_trasform();
 	}
 
 	//-----------------------------------------------------------------------------------
 	void processor::load()
 	{
 		reset();
-		setIntenseMode(m_intense);
+		additive_blend(m_additive_blend);
 	}
 
 	//-----------------------------------------------------------------------------------
-	void processor::assignChilds()
+	void processor::assign_children()
 	{
 		m_modifiers_loaded = true;
 	}
@@ -343,7 +341,7 @@ namespace particles{
 	void processor::to_stream(io::write_stream& wf) const
 	{
 		wf  << file_version
-			<< m_intense
+			<< m_additive_blend
 			<< m_scaling
 			//<< m_is_global
 			<< m_max_particles
@@ -379,7 +377,7 @@ namespace particles{
 
 		std::string texture_file_name;
 
-		rf	>> m_intense
+		rf	>> m_additive_blend
 			>> m_scaling
 			//>> m_is_global
 			>> m_max_particles
@@ -405,7 +403,7 @@ namespace particles{
 			>> m_rnd_frame
 			>> m_is_play_tex_anim;
 
-		setMaxParticles( m_max_particles );
+		particles_limit( m_max_particles );
 
 		m_texture = render::texture::create(texture_file_name);
 	}

@@ -309,7 +309,7 @@
 						>
 					</File>
 					<File
-						RelativePath=".\rgde\math\track_camera.h"
+						RelativePath=".\rgde\math\track_camera_controller.h"
 						>
 					</File>
 				</Filter>
@@ -386,14 +386,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\rgde\render\flame_renderer.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\render\fog.h"
-					>
-				</File>
-				<File
 					RelativePath=".\rgde\render\font.h"
 					>
 				</File>
@@ -403,10 +395,6 @@
 				</File>
 				<File
 					RelativePath=".\rgde\render\geometry.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\render\lens_flares.h"
 					>
 				</File>
 				<File
@@ -442,15 +430,15 @@
 					>
 				</File>
 				<File
+					RelativePath=".\rgde\render\particles.h"
+					>
+				</File>
+				<File
 					RelativePath=".\rgde\render\render_device.h"
 					>
 				</File>
 				<File
 					RelativePath=".\rgde\render\render_target.h"
-					>
-				</File>
-				<File
-					RelativePath=".\rgde\render\screen_fader.h"
 					>
 				</File>
 				<File
@@ -478,10 +466,6 @@
 					</File>
 					<File
 						RelativePath=".\rgde\render\particles\effect.h"
-						>
-					</File>
-					<File
-						RelativePath=".\rgde\render\particles\includes.h"
 						>
 					</File>
 					<File
@@ -646,23 +630,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\render\flame_renderer.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\render\fog.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\src\render\font.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\render\geometry.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\render\lens_flares.cpp"
 					>
 				</File>
 				<File
@@ -707,10 +679,6 @@
 				</File>
 				<File
 					RelativePath=".\src\render\render_target.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\render\screen_fader.cpp"
 					>
 				</File>
 				<File
@@ -901,7 +869,7 @@
 						>
 					</File>
 					<File
-						RelativePath=".\src\math\track_camera.cpp"
+						RelativePath=".\src\math\track_camera_controller.cpp"
 						>
 					</File>
 				</Filter>

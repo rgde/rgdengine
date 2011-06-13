@@ -63,8 +63,8 @@ namespace lines_test
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 
 		for( points_iter it = m_points.begin(); it != (m_points.end()-1); ++it )
-			line_manager.add_line( it->get_pos(), (it+1)->get_pos(), m_color.color );
+			line_manager.add_line( it->position(), (it+1)->position(), m_color.color );
 
-		line_manager.add_line( (m_points.end()-1)->get_pos(), m_points.begin()->get_pos(), m_color.color );
+		line_manager.add_line( (m_points.end()-1)->position(), m_points.begin()->position(), m_color.color );
 	}
 }

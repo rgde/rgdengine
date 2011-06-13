@@ -27,13 +27,13 @@ namespace render
 		if (m_vertices->size() == 0)
 			return;
 
-		math::camera_ptr camera	= render::render_device::get().get_camera();
+		math::camera_ptr camera	= render::render_device::get().camera();
 
 		if (!camera)
 			return;
 
-		const math::matrix44f &mView = camera->get_view_matrix();
-		const math::matrix44f &mProj = camera->get_proj_matrix();
+		const math::matrix44f &mView = camera->view_matrix();
+		const math::matrix44f &mProj = camera->proj_matrix();
 		math::matrix44f mLVP		 = mProj *mView;
 
 		m_effect->get_params()["g_mLVP"]->set(mLVP);
@@ -309,7 +309,7 @@ namespace render
 	//-----------------------------------------------------------------------------------
 	void lines3d::add_quad(const math::vec3f &center, const math::vec2f &size, float spin)
 	{
-		const math::matrix44f & mView = render_device::get().get_camera()->get_view_matrix();
+		const math::matrix44f & mView = render_device::get().camera()->view_matrix();
 
 		math::vec3f up	(mView.mData[0], mView.mData[4], mView.mData[8]);
 		math::normalize(up);

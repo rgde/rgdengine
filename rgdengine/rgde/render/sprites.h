@@ -39,15 +39,15 @@ namespace render
 		sprite_manager(int priority = 0);
 		~sprite_manager();
 	
-		void set_blending(bool bAditive) { m_aditive = bAditive; }
+		void blending(bool bAditive) { m_aditive = bAditive; }
 
-		inline sprites_vector& get_sprites() { return m_sprites; }
+		inline sprites_vector& sprites() { return m_sprites; }
 		inline unsigned get_num_rendered() { return m_sprites_rendered; }
 
-		inline math::vec2f& get_origin() { return m_origin; }
-		inline void			set_origin(math::vec2f& vNewOrigin) { m_origin = vNewOrigin; }
+		inline math::vec2f& origin() { return m_origin; }
+		inline void			origin(math::vec2f& pos) { m_origin = pos; }
 
-		virtual void add_sprite(const sprite& s);
+		virtual void add(const sprite& s);
 
 		void update();
 

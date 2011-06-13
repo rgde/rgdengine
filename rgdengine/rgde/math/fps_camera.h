@@ -15,8 +15,8 @@ namespace math
         static fps_camera_ptr create(camera_ptr camera);
 
         //положение
-        void set_position(const vec3f& up, const vec3f& eye, const vec3f& look_at);
-        void get_pos(vec3f& up, vec3f& eye, vec3f& look_at);
+        void position(const vec3f& up, const vec3f& eye, const vec3f& lookat);
+        void position(vec3f& up, vec3f& eye, vec3f& lookat);
 
         //движение
         void move_forward(float delta);

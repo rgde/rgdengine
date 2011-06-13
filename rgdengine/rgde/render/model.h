@@ -19,9 +19,9 @@ namespace render
 		typedef std::map<int, material_ptr>					material_map;
 		typedef std::vector<math::frame_ptr>				frames_vector;
 		typedef std::vector<mesh_ptr>						meshes_vector;
-		typedef std::vector<math::frame_anim_controller>	contollers_vector;
+		typedef std::vector<math::frame_animation>	contollers_vector;
 
-		static model_ptr create(const std::string& file_name);
+		static model_ptr create(const std::string& filename);
 		~model();
 		
 		inline material_map&  get_materials()		{return m_materials;}
@@ -32,13 +32,13 @@ namespace render
 		unsigned int get_num_verts()	const;
 		unsigned int getFaceNum()	const;
 
-		bool is_visible() const;
-		void setVisible(bool bVisible);
+		bool visible() const;
+		void visible(bool bVisible);
 
 		void play();
 		void stop();
 		void pause();
-		void set_looped( bool );
+		void looped( bool );
 
 	protected:
 		model();
@@ -48,7 +48,7 @@ namespace render
 		//Neonic: octree
 		void update( void );
 
-		void load(const std::string& file_name);
+		void load(const std::string& filename);
 
 	protected:
 		material_map		m_materials;
@@ -56,7 +56,7 @@ namespace render
 		meshes_vector		m_meshes;
 		contollers_vector	m_controllers;
 
-		bool			m_is_visible;
+		bool			m_visible;
         
 		std::string		m_name;
 		std::string		m_strComment;

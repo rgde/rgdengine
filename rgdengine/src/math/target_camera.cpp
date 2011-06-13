@@ -21,19 +21,19 @@ namespace math
         return target_camera_ptr(new target_camera(camera));
     }
 
-    void target_camera::set_position(const vec3f& up, const vec3f& eye, const vec3f& look_at)
+    void target_camera::position(const vec3f& up, const vec3f& eye, const vec3f& lookat)
     {
         m_up = up;
         m_eye_pos = eye;
-        m_lookat_pt = look_at;
+        m_lookat_pt = lookat;
         apply();
     }
 
-    void target_camera::get_pos(vec3f& up, vec3f& eye, vec3f& look_at)
+    void target_camera::position(vec3f& up, vec3f& eye, vec3f& lookat)
     {
         up = m_up;
         eye = m_eye_pos;
-        look_at = m_lookat_pt;
+        lookat = m_lookat_pt;
     }
 
     void target_camera::move_forward(float d)
@@ -101,7 +101,7 @@ namespace math
         if (m_camera)
         {
             try{
-                m_camera->look_at(m_eye_pos,m_lookat_pt,m_up);
+                m_camera->lookat(m_eye_pos,m_lookat_pt,m_up);
                 m_camera->activate();
             }
             catch(...){}

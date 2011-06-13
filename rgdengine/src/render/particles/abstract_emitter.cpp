@@ -17,12 +17,12 @@ namespace particles{
 		p.rotation = m_Rand() * m_PRotationSpread.get_value(m_normalized_time);
 	}
 	//-----------------------------------------------------------------------------------
-	void base_emitter::addProcessor(processor* pp)
+	void base_emitter::add(processor* pp)
 	{
 		if (0 == pp)
-			throw std::exception("base_emitter::addProcessor(): zero pointer!");
+			throw std::exception("base_emitter::add(): zero pointer!");
 
-		m_lProcessors.push_back(pp);
+		m_processors.push_back(pp);
 		pp->set_emitter(this);
 	}
 	//-----------------------------------------------------------------------------------
@@ -32,19 +32,19 @@ namespace particles{
 		//m_vCurSpeed = math::vec3f();
 		//m_vOldPos = math::vec3f();
 
-		m_fCurrentTime = 0;
+		m_time = 0;
 		m_bIsEnded = false;
 		m_normalized_time = 0;
-		m_is_visible = true;
+		m_visible = true;
 
-		for(processors_iter pi = m_lProcessors.begin(); pi != m_lProcessors.end(); ++pi)
+		for(processors_iter pi = m_processors.begin(); pi != m_processors.end(); ++pi)
 			(*pi)->reset();
 	}
 	//////////////////////////////////////////////////////////////////////////
-	void base_emitter::set_fade(bool b)
+	void base_emitter::fade(bool b)
 	{
-		for (processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
-			(*it)->set_fade(b);
+		for (processors_iter it = m_processors.begin(); it != m_processors.end(); ++it)
+			(*it)->fade(b);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	void base_emitter::update(float dt)
@@ -52,14 +52,14 @@ namespace particles{
 		//if (m_bIsJustCreated && dt > 0.02f)
 		//	dt = 0.02f;
 
-		m_fCurrentTime += dt;
+		m_time += dt;
 
 		// если вышли за переделы диапазона - надо вернуться
-		if (!(m_fCurrentTime < m_fCycleTime))
+		if (!(m_time < m_fCycleTime))
 		{
-			if (!m_bIsCycling){
+			if (!m_looped){
 				m_bIsEnded = true;
-				m_is_visible = false;
+				m_visible = false;
 				return;
 			}
 			else 
@@ -67,13 +67,13 @@ namespace particles{
 				m_bIsEnded = false;
 			}
 
-			int i = (int)(m_fCurrentTime / m_fCycleTime);
-			m_fCurrentTime = m_fCurrentTime - m_fCycleTime * i;
+			int i = (int)(m_time / m_fCycleTime);
+			m_time = m_time - m_fCycleTime * i;
 		}
 		
-		m_normalized_time = m_fCurrentTime / m_fCycleTime;
+		m_normalized_time = m_time / m_fCycleTime;
 		{
-			//math::matrix44f m = get_local_tm();
+			//math::matrix44f m = local_trasform();
 
 			//if (!m_bIsJustCreated)
 			//{
@@ -85,7 +85,7 @@ namespace particles{
 			//}
 		}
 		
-		math::matrix44f m = get_full_tm();
+		math::matrix44f m = world_trasform();
 
 		math::invert( m );
 		m_vPAcceleration = m_PAcceleration.get_value(m_normalized_time);
@@ -97,7 +97,7 @@ namespace particles{
 		//m_vCurSpeedTransformed = m.transformVector(m_vCurSpeed);
 		math::xform( m_vCurSpeedTransformed, m, m_vCurSpeed );
 
-		for (processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
+		for (processors_iter it = m_processors.begin(); it != m_processors.end(); ++it)
 			(*it)->update(dt);
 
 		//m_bIsJustCreated = false;
@@ -105,26 +105,26 @@ namespace particles{
 
 	void base_emitter::render()
 	{
-		if (m_is_visible)
+		if (m_visible)
 		{
 			// 1-ми рендерятся не аддитивные партиклы
-			for (processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
-				if (!((*it)->getIntenseMode()))(*it)->render();
+			for (processors_iter it = m_processors.begin(); it != m_processors.end(); ++it)
+				if (!((*it)->additive_blend()))(*it)->render();
 
 			// 2-ми рендерятся аддитивные партиклы
-			for (processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
-				if ((*it)->getIntenseMode())(*it)->render();
+			for (processors_iter it = m_processors.begin(); it != m_processors.end(); ++it)
+				if ((*it)->additive_blend())(*it)->render();
 		}
 	}
 
 
-	base_emitter::base_emitter(type type) 
+	base_emitter::base_emitter(type_t type) 
 		: m_type(type)
-		, m_fCurrentTime(0)
-		, m_time_shift(0)
+		, m_time(0)
+		, m_start_delay(0)
 		, m_fCycleTime(5)
-		, m_bIsCycling(true)
-		, m_is_visible(true)
+		, m_looped(true)
+		, m_visible(true)
 		, m_normalized_time(0)
 	{
 		m_PMass.add_key(1, 1.0f);
@@ -132,14 +132,14 @@ namespace particles{
 
 	base_emitter::~base_emitter()
 	{
-		for( processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); it++ )
+		for( processors_iter it = m_processors.begin(); it != m_processors.end(); it++ )
 			delete(*it);
-		m_lProcessors.clear();
+		m_processors.clear();
 	}
 	
-	void base_emitter::deleteProcessor(processor* p)
+	void base_emitter::remove(processor* p)
 	{
-		m_lProcessors.remove(p);
+		m_processors.remove(p);
 	}
 
 	void base_emitter::to_stream(io::write_stream& wf) const
@@ -148,9 +148,9 @@ namespace particles{
 
 		wf	/*<< (int)m_type*/
 			<< m_fCycleTime
-			<< m_bIsCycling
-			<< m_is_visible
-			<< m_time_shift
+			<< m_looped
+			<< m_visible
+			<< m_start_delay
 			<< m_name
 			<< (m_PMass)
 			<< (m_PMassSpread)
@@ -161,8 +161,8 @@ namespace particles{
 			<< (m_PRotationSpread);
 
 		// Сохраняем процессоры частиц
-		wf << (unsigned)m_lProcessors.size();
-		for( processors_list::const_iterator it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it)
+		wf << (unsigned)m_processors.size();
+		for( processors_list::const_iterator it = m_processors.begin(); it != m_processors.end(); ++it)
 			wf << *(*it);
 	}
 
@@ -177,9 +177,9 @@ namespace particles{
 		//}
 
 		rf	>> m_fCycleTime
-			>> m_bIsCycling
-			>> m_is_visible
-			>> m_time_shift
+			>> m_looped
+			>> m_visible
+			>> m_start_delay
 			>> m_name
 			>> (m_PMass)
 			>> (m_PMassSpread)
@@ -196,7 +196,7 @@ namespace particles{
 		{
 			processor* proc = new processor();
 			rf >> (*proc);
-			addProcessor(proc);
+			add(proc);
 			proc->load();
 		}
 	}
@@ -205,7 +205,7 @@ namespace particles{
 	{
 		math::frame::debug_draw();
 
-		for( processors_iter it = m_lProcessors.begin(); it != m_lProcessors.end(); ++it )
+		for( processors_iter it = m_processors.begin(); it != m_processors.end(); ++it )
 			(*it)->debug_draw();
 	}
 }

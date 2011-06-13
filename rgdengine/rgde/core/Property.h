@@ -16,10 +16,10 @@ namespace core
 		virtual std::string	get()	const			= 0;
 		virtual void		set(const std::string&)	= 0;
 
-		const std::wstring& get_name() const {return m_name;}
-		const std::string& get_type() const {return m_type_name;}
+		const std::wstring& name() const {return m_name;}
+		const std::string& type() const {return m_type_name;}
 
-		virtual bool is_read_only() = 0;
+		virtual bool read_only() = 0;
 
 		base_property(const std::wstring& name, std::string type = "string") 
 			: m_name(name), m_type_name(type)
@@ -58,9 +58,9 @@ namespace core
 		}
 
 		getter get_getter() const {return m_get_function;}
-		setter get_setter() const {return m_set_function;}
+		setter set_setter() const {return m_set_function;}
 
-		virtual bool is_read_only() {return m_set_function ? false : true;}
+		virtual bool read_only() {return m_set_function ? false : true;}
 
 		std::string get() const 
 		{
@@ -110,15 +110,15 @@ namespace core
 		{
 			const std::string& str;
 			_seacher(const std::string& str_to_cmp) : str(str_to_cmp)	{}
-			bool operator()(property_ptr p) { return p->get_name() == str; }
+			bool operator()(property_ptr p) { return p->name() == str; }
 		};
 	public:
 		typedef std::vector<property_ptr> PropList;
 
-		PropList&		get_properties()			{return m_properties;}
-		const PropList& get_properties() const	{return m_properties;}
+		PropList&		properties()			{return m_properties;}
+		const PropList& properties() const	{return m_properties;}
 
-		property_ptr get_property(const std::string& property_name) const
+		property_ptr find_property(const std::string& property_name) const
 		{
 			PropList::const_iterator i = std::find_if(m_properties.begin(), m_properties.end(), _seacher(property_name));
 
@@ -173,7 +173,7 @@ namespace core
 			: m_name(name), m_func(f)
 		{}
 
-		const std::string& get_name() const  { return m_name; }
+		const std::string& name() const  { return m_name; }
 
 		void call(const std::string& params) {if (m_func) m_func(params);}
 		void operator()(const std::string& params) {call(params);}
@@ -189,11 +189,11 @@ namespace core
 		{
 			const std::string& str;
 			_seacher(const std::string& str_to_cmp) : str(str_to_cmp){}
-			bool operator()(const function& p){return p.get_name() == str;}
+			bool operator()(const function& p){return p.name() == str;}
 		};
 	public:
 		typedef std::vector<function> FuncList;
-		FuncList& get_functions() {return m_functions;}
+		FuncList& functions() {return m_functions;}
 		
 		virtual ~functions_owner(){}
 
@@ -205,7 +205,7 @@ namespace core
 			return &(*i);
 		}
 
-		void call_function(const std::string& function_name, const std::string& strParams = std::string())
+		void call(const std::string& function_name, const std::string& strParams = std::string())
 		{
 			function* f = getter(function_name);
 			if (0 != f)
@@ -213,7 +213,7 @@ namespace core
 		}
 
 	protected:
-		void add_function(function p){m_functions.push_back(p);}
+		void add(function p){m_functions.push_back(p);}
 
 	protected:
 		FuncList m_functions;

@@ -73,14 +73,14 @@ void MenuLevelObject::onDownKey()
 void MenuLevelObject::onSpace() 
 {
 	m_items[m_active_menu_item]->send(this);
-	//send_event(m_items[m_active_menu_item].e);
-	//send_event(game::events::on_complite_level()); // активируется уровень который прописан как следующий
-	//send_event(game::CSetLevelEvent("play")); // окончание текущего уровня и начало уровня "play"
+	//send(m_items[m_active_menu_item].e);
+	//send(game::events::on_complite_level()); // активируется уровень который прописан как следующий
+	//send(game::CSetLevelEvent("play")); // окончание текущего уровня и начало уровня "play"
 }
 
 void MenuLevelObject::onEsc() 
 {
-	send_event<game::events::on_close_game>(game::events::on_close_game());
+	send<game::events::on_close_game>(game::events::on_close_game());
 }
 
 

@@ -18,7 +18,7 @@ namespace math
 
 		// camera managing
 		void bind(camera_ptr cam)				{m_camera = cam;}
-		const camera_ptr& get_camera()	const	{return m_camera;}
+		const camera_ptr& camera()	const	{return m_camera;}
 		virtual void activate() = 0;
 
 	protected:

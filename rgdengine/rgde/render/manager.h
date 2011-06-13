@@ -5,7 +5,6 @@
 #include <rgde/render/texture.h>
 #include <rgde/render/font.h>
 #include <rgde/render/effect.h>
-#include <rgde/render/fog.h>
 #include <rgde/render/material.h>
 #include <rgde/render/binders.h>
 
@@ -91,20 +90,20 @@ namespace render
 		rendererable(unsigned priority = 1);
 		virtual ~rendererable();
 
-		void			set_priority(unsigned priority) {m_render_priority = priority;}
-		unsigned		get_priority() const {return m_render_priority;}
+		void			priority(unsigned priority) {m_render_priority = priority;}
+		unsigned		priority() const {return m_render_priority;}
 
-		void			hide() {m_is_visible = false;}
-		void			show() {m_is_visible = true;}
+		void			hide() {m_visible = false;}
+		void			show() {m_visible = true;}
 
 		virtual const renderable_info& get_renderable_info() const {return m_render_info;}
-		bool		is_visible()	const {return m_is_visible;}
+		bool		visible()	const {return m_visible;}
 
 	protected:
 		mutable renderable_info	m_render_info;
 		
 	private:
-		bool	 m_is_visible;
+		bool	 m_visible;
 		unsigned m_render_priority;
 	};
 }

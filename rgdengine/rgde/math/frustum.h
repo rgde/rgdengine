@@ -9,7 +9,7 @@ namespace math
 		frustum();
 
 		/// Call this every time the camera moves to update the frustum
-		void calculate(const base_camera& pCam);
+		void calculate(const base_camera& cam);
 
 		/// This takes a 3D point and returns TRUE if it's inside of the frustum
 		bool test_point(float x, float y, float z) const;

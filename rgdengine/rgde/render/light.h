@@ -8,7 +8,7 @@ namespace render
 	class base_light : public math::frame
 	{
 	public:
-		enum type 
+		enum type_t
 		{
 			None            = 0,
 			Point			= 1,
@@ -16,10 +16,10 @@ namespace render
 			Directional		= 3
 		};
 
-		base_light(const std::string& name, type eType);
+		base_light(const std::string& name, type_t tipe);
 		virtual ~base_light();
 
-		type get_type() const;
+		type_t type() const;
 
 		const math::Color& getDiffuse() const;
 		void               setDiffuse(const math::Color& diffuse);
@@ -36,14 +36,13 @@ namespace render
 		void setEnabled(bool bEnabled);
 
 	protected:
-
 		math::Color m_diffuse; //Diffuse color of light
 		math::Color m_specular;//Specular color of light
 		math::Color m_ambient; //Ambient color of light
 
-		bool m_bEnabled;       //Is light enabled
+		bool m_enabled;       //Is light enabled
 
-		type m_type;         //Light type
+		type_t m_type;         //Light type
 	};
 
 	typedef boost::intrusive_ptr<base_light> PLight;
@@ -52,25 +51,24 @@ namespace render
 	class PointLight : public base_light
 	{
 	public:
-
 		PointLight(const std::string& name);
 		~PointLight();
 
-		float getRange() const;
-		void  setRange(float fRange);
+		float range() const;
+		void  range(float fRange);
 
-		float getConstantAttenuation() const;
-		void  setConstantAttenuation(float fConstantAttenuation);
+		float constant_attenuation() const;
+		void  constant_attenuation(float value);
 
-		float getLinearAttenuation() const;
-		void  setLinearAttenuation(float fLinearAttenuation);
+		float linear_attenuation() const;
+		void  linear_attenuation(float value);
 
-		float getQuadraticAttenuation() const;
-		void  setQuadraticAttenuation(float fQuadraticAttenuation);
+		float quadratic_attenuation() const;
+		void  quadratic_attenuation(float value);
 
 	protected:
 	
-		float m_fRange;               //Cutoff range 
+		float m_range;               //Cutoff range 
 		float m_fConstantAttenuation; //Constant attenuation
 		float m_fLinearAttenuation;   //Linear attenuation 
 		float m_fQuadraticAttenuation;//Quadratic attenuation
@@ -85,17 +83,17 @@ namespace render
 		SpotLight(const std::string& name);
 		~SpotLight();
 
-		float getRange() const;
-		void  setRange(float fRange);
+		float range() const;
+		void  range(float fRange);
 
-		float getConstantAttenuation() const;
-		void  setConstantAttenuation(float fConstantAttenuation);
+		float constant_attenuation() const;
+		void  constant_attenuation(float value);
 
-		float getLinearAttenuation() const;
-		void  setLinearAttenuation(float fLinearAttenuation);
+		float linear_attenuation() const;
+		void  linear_attenuation(float value);
 
-		float getQuadraticAttenuation() const;
-		void  setQuadraticAttenuation(float fQuadraticAttenuation);
+		float quadratic_attenuation() const;
+		void  quadratic_attenuation(float value);
 
 		float getFalloff() const;
 		void  setFalloff(float fFalloff);
@@ -108,7 +106,7 @@ namespace render
 
 	protected:
 
-		float m_fRange;               //Cutoff range 
+		float m_range;               //Cutoff range 
 		float m_fConstantAttenuation; //Constant attenuation
 		float m_fLinearAttenuation;   //Linear attenuation 
 		float m_fQuadraticAttenuation;//Quadratic attenuation

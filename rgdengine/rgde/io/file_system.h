@@ -13,7 +13,7 @@ namespace io
 	public:
 		virtual ~base_file_souce(){}
 
-		virtual int			get_priority() const = 0;
+		virtual int			priority() const = 0;
 		virtual readstream_ptr find(const std::string& file_path) const = 0;
 		virtual bool		is_exist	(const std::string& file_path) const = 0;
 
@@ -72,15 +72,15 @@ namespace io
 			return;
 		}
 
-		uint size = s->get_size();
+		uint size = s->size();
 
 		if (!from_current_pos)
 		{
-			s->set_pos(0);
+			s->position(0);
 		}
 		else
 		{
-			size -= s->get_pos();
+			size -= s->position();
 		}
 		
 		uint vsize  = size/sizeof(DataType);

@@ -35,7 +35,7 @@ private:
 			text = str;
 		}
 
-		virtual void send(MenuLevelObject* obj) {obj->send_event<EventType>(event);}
+		virtual void send(MenuLevelObject* obj) {obj->send<EventType>(event);}
 
 		EventType event;
 	};

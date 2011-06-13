@@ -86,7 +86,7 @@ Space::Space (int nStars)
     m_textureShip = render::texture::create("TestInput/SpaceShip.png"); 
 
     m_spriteShip.texture = m_textureShip;
-    m_spriteShip.size = math::vec2f(m_textureShip->get_width(),m_textureShip->get_height());
+    m_spriteShip.size = math::vec2f(m_textureShip->width(),m_textureShip->get_height());
     m_spriteShip.pos = math::vec2f(m_x,m_y);
     m_spriteShip.rect = math::Rect(0, 0, 1, 1);
     m_spriteShip.color = math::Color(255, 255, 255, 255);
@@ -118,7 +118,7 @@ Space::Space (int nStars)
     m_textureLazer = render::texture::create("TestInput/Lazer.png"); 
 
     m_spriteLazer.texture = m_textureLazer;
-    m_spriteLazer.size = math::vec2f(m_textureLazer->get_width()*2,m_textureLazer->get_height());
+    m_spriteLazer.size = math::vec2f(m_textureLazer->width()*2,m_textureLazer->get_height());
     m_spriteLazer.pos = math::vec2f(m_x,m_y);
     m_spriteLazer.rect = math::Rect(0, 0, 1, 1);
     m_spriteLazer.color = math::Color(255, 255, 255, 255);
@@ -129,33 +129,33 @@ Space::Space (int nStars)
 void Space::update (float dt)
 {
 	//FPS
-	float abs_time = game::game_system::get().get_timer().get_absolute_time();
+	float abs_time = game::game_system::get().get_timer().absolute_time();
 	render::render_device::get().draw_fps(abs_time, m_font);
 
     //ship
     m_spriteShip.pos = math::vec2f(int(m_x)+.5f,int(m_y)+.5f);
-    m_sprite_renderer.add_sprite(m_spriteShip);
+    m_sprite_renderer.add(m_spriteShip);
 
     //dust
     std::for_each(m_particles.begin(), m_particles.end(), 
         boost::bind(&Space::updateSprite, this, _1, dt));
 
     std::for_each(m_particles.begin(), m_particles.end(), 
-        boost::bind(&render::sprite_manager::add_sprite, &m_sprite_renderer, _1));
+        boost::bind(&render::sprite_manager::add, &m_sprite_renderer, _1));
 
     //stars
     std::for_each(m_stars.begin(), m_stars.end(), 
         boost::bind(&Space::updateStar, this, _1, dt));
 
     std::for_each(m_stars.begin(), m_stars.end(), 
-        boost::bind(&render::sprite_manager::add_sprite, &m_sprite_renderer, _1));
+        boost::bind(&render::sprite_manager::add, &m_sprite_renderer, _1));
 
     //aliens
     std::for_each(m_aliens.begin(), m_aliens.end(), 
         boost::bind(&Space::updateAlien, this, _1, dt));
 
     std::for_each(m_aliens.begin(), m_aliens.end(), 
-        boost::bind(&render::sprite_manager::add_sprite, &m_sprite_renderer, _1));
+        boost::bind(&render::sprite_manager::add, &m_sprite_renderer, _1));
 
     //primary weapon
     if (m_bFirePrimaryWeapon)
@@ -168,7 +168,7 @@ void Space::update (float dt)
         {
             m_spriteLazer.rect = math::Rect(0, math::rangeRandom(0,.2f), 1, 1-math::rangeRandom(0,.2f));
             m_spriteLazer.pos = math::vec2f(x,y);
-            m_sprite_renderer.add_sprite(m_spriteLazer);
+            m_sprite_renderer.add(m_spriteLazer);
         }
     }
 }

@@ -30,17 +30,17 @@ public:
 		
 		m_controller.atach( m_frame );
 		m_controller.start();
-		m_controller.set_rate( 1.0f );
-		m_controller.set_looped( true );
+		m_controller.speed( 1.0f );
+		m_controller.looped( true );
 
 		math::vec3f eye( 0.0f, 40, -400 );
-		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
+		math::vec3f lookat( 0.0f, 0.0f, 0.0f );
 		math::vec3f up_vec( 0.0f, 1.0f, 0.0f );
 
-		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+		m_camera->projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 
 		m_target_camera = math::target_camera::create(m_camera);
-		m_target_camera->set_position(up_vec,eye,look_at);
+		m_target_camera->position(up_vec,eye,lookat);
 
 
 		{//input init
@@ -102,7 +102,7 @@ protected:
 	render::font_ptr			m_font;	
 	render::texture_ptr			m_texture;
 
-	math::frame_anim_controller	m_controller;
+	math::frame_animation	m_controller;
 	math::frame_ptr				m_frame;
 	render::mesh_ptr			m_mesh;
 

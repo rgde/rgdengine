@@ -7,7 +7,7 @@ namespace input
 {
 	struct InputMap
 	{
-		std::map<std::wstring, device::type>  m_mapString2Device;
+		std::map<std::wstring, device::type_t>  m_mapString2Device;
 		std::map<std::wstring, controls> m_mapString2Control;
 
 		InputMap()
@@ -158,9 +158,9 @@ namespace input
 	static InputMap s_map;
 
     //получение строки, соответствующей enum-значению
-	std::wstring Device2String (device::type name)
+	std::wstring Device2String (device::type_t name)
     {
-		std::map<std::wstring, device::type>::iterator i = s_map.m_mapString2Device.begin();
+		std::map<std::wstring, device::type_t>::iterator i = s_map.m_mapString2Device.begin();
 		while (i != s_map.m_mapString2Device.end())
 		{
 			if (i->second == name)
@@ -172,9 +172,9 @@ namespace input
     }
 
     //получение enum-значения, соответствующего строке
-    device::type String2Device (const std::wstring &str)
+    device::type_t String2Device (const std::wstring &str)
     {
-		std::map<std::wstring, device::type>::iterator i = s_map.m_mapString2Device.find(str);
+		std::map<std::wstring, device::type_t>::iterator i = s_map.m_mapString2Device.find(str);
 		if (i != s_map.m_mapString2Device.end())
 			return i->second;
 

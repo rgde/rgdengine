@@ -35,7 +35,7 @@ namespace scene
 	void Scene::aux_draw( math::frame_ptr frame )
 	{
 		//frame->debug_draw();
-		//for( math::frame::children_list::iterator it = frame->get_children().begin(); it != frame->get_children().end(); ++it)
+		//for( math::frame::children_list::iterator it = frame->children().begin(); it != frame->children().end(); ++it)
 		//{
 		//	aux_draw( (*it) );
 		//}

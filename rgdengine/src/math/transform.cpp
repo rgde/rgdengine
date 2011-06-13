@@ -50,9 +50,9 @@ namespace math
 	{
 	}
 
-	void frame::findFrames(const std::string& str_template, std::vector<frame_ptr>& container)
+	void frame::find(const std::string& str_template, std::vector<frame_ptr>& container)
 	{
-		const std::string &frame_name = get_name();
+		const std::string &frame_name = name();
 
 		size_t pos = frame_name.find_first_of("_");
 		if(pos != -1)
@@ -64,27 +64,27 @@ namespace math
 				container.push_back(this);
 		}
 
-		for (math::frame::children_list::const_iterator it = get_children().begin(); it != get_children().end(); it++)
-			(*it)->findFrames(str_template, container);
+		for (math::frame::children_list::const_iterator it = children().begin(); it != children().end(); it++)
+			(*it)->find(str_template, container);
 	}
 
-	void frame::set_position(const point3f& pos)
+	void frame::position(const point3f& pos)
 	{
 		m_position = pos;
 		m_need_recompute = true;
 	}
 
-	void frame::set_rot(const quatf& quat)
+	void frame::rotation(const quatf& quat)
 	{
 		m_rotation = quat;
 		m_need_recompute = true;
 	}
 
-	void frame::look_at(const vec3f& eye, const vec3f& look_at, const vec3f& up_vec)
+	void frame::lookat(const vec3f& eye, const vec3f& lookat, const vec3f& up_vec)
 	{	
 		m_position = eye;
 		const math::vec3f& up = up_vec;
-		math::vec3f at = look_at - eye;
+		math::vec3f at = lookat - eye;
 
 		{	
 			using namespace math;
@@ -99,32 +99,32 @@ namespace math
 		m_need_recompute = true;
 	}
 
-	void frame::set_scale(const vec3f& s)
+	void frame::scale(const vec3f& s)
 	{
 		m_scale = s;
 		m_need_recompute = true;
 	}
 
-	const matrix44f & frame::get_local_tm() const
+	const matrix44f & frame::local_trasform() const
 	{
-		computeLocalTransform();
+		update_transform();
 		return m_local_tm;
 	}
 
-	const matrix44f & frame::get_full_tm() const
+	const matrix44f & frame::world_trasform() const
 	{
-        computeFullTransform();
+        update_world_transform();
 		return m_fullTransform;
 	}
 
 	void frame::debug_draw() const
 	{
 		const float l = 10.5f;
-		math::point3f p = get_world_pos();
+		math::point3f p = world_position();
 
-		math::point3f X = p + l * getLeftGlobal();
-		math::point3f Y = p + l * getUpGlobal();
-		math::point3f Z = p + l * getAtGlobal();
+		math::point3f X = p + l * world_left();
+		math::point3f Y = p + l * world_up();
+		math::point3f Z = p + l * world_at();
 
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 		line_manager.add_line( p, X, math::Red );
@@ -132,7 +132,7 @@ namespace math
 		line_manager.add_line( p, Z, math::Blue );
 	}
 
-	void frame::computeLocalTransform() const
+	void frame::update_transform() const
 	{
 		if (!m_need_recompute)
 			return;
@@ -152,18 +152,18 @@ namespace math
 		m_recompute_global_matrix = true;
 	}
 
-	void frame::computeFullTransform() const 
+	void frame::update_world_transform() const 
 	{
 		if (m_need_recompute)
-			computeLocalTransform();
+			update_transform();
 
 		if (!m_recompute_global_matrix)
 			return;
 
-		computeLocalTransform();
+		update_transform();
 
-		if (get_parent())
-			m_fullTransform = get_parent()->get_full_tm() * m_local_tm;
+		if (parent())
+			m_fullTransform = parent()->world_trasform() * m_local_tm;
 		else
 			m_fullTransform = m_local_tm;
 
@@ -175,9 +175,9 @@ namespace math
 		m_need_recompute = true;
 	}
 
-	point3f frame::get_world_pos() const 
+	point3f frame::world_position() const 
 	{
-		computeFullTransform();
+		update_world_transform();
 		const  matrix44f &m	= m_fullTransform;
 		return point3f(m.mData[12], m.mData[13], m.mData[14]);
 	}
@@ -186,51 +186,51 @@ namespace math
 	//xaxis.x     yaxis.x     zaxis.x
 	//xaxis.y     yaxis.y     zaxis.y
 	//xaxis.z     yaxis.z     zaxis.z
-	vec3f frame::getUp() const 
+	vec3f frame::up() const 
 	{
-		computeLocalTransform();
+		update_transform();
 		const matrix44f &m= m_local_tm;
 		return vec3f(m[1][0], m[1][1], m[1][2]);
 	}
-	vec3f frame::getAt() const 
+	vec3f frame::at() const 
 	{
-		computeLocalTransform();
+		update_transform();
 		const matrix44f &m= m_local_tm;
 		return vec3f(m[2][0], m[2][1], m[2][2]);
 	}
-	vec3f frame::getLeft() const 
+	vec3f frame::left() const 
 	{
-		computeLocalTransform();
+		update_transform();
 		const matrix44f &m= m_local_tm;
 		return vec3f(m[0][0], m[0][1], m[0][2]);
 	}
 
-	vec3f frame::getUpGlobal() const
+	vec3f frame::world_up() const
 	{
-		computeFullTransform();
+		update_world_transform();
 		matrix44f &m = m_fullTransform;
 		return vec3f(m[1][0], m[1][1], m[1][2]);
 	}
 
-	vec3f frame::getAtGlobal() const
+	vec3f frame::world_at() const
 	{
-		computeFullTransform();
+		update_world_transform();
 		matrix44f &m = m_fullTransform;
 		return vec3f(m[2][0], m[2][1], m[2][2]);
 	}
 
-	vec3f frame::getLeftGlobal() const
+	vec3f frame::world_left() const
 	{
-		computeFullTransform();
+		update_world_transform();
 		matrix44f &m = m_fullTransform;
 		return vec3f(m[0][0], m[0][1], m[0][2]);
 	}
 
 	//Neonic: octree
-	void frame::update( bool NeedFullUpdate )
+	void frame::update( bool invalidate_transform )
 	{
-		for (math::frame::children_list::const_iterator it = get_children().begin(); it != get_children().end(); it++)
-			(*it)->update(NeedFullUpdate);
+		for (math::frame::children_list::const_iterator it = children().begin(); it != children().end(); it++)
+			(*it)->update(invalidate_transform);
 	};
 
 	//-----------------------------------------------------------------------------------
