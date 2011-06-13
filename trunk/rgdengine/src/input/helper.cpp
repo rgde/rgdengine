@@ -58,7 +58,7 @@ namespace input
 	{
 		helper_event ev;
 
-		switch (c.get_type())
+		switch (c.type())
 		{
 			case Control::Axis:
 				ev.m_type = helper_event::Axis; 
@@ -103,7 +103,7 @@ namespace input
 	{
         Helper::notify(c);
 
-		if (c.get_type() != Control::Button)
+		if (c.type() != Control::Button)
 			return;
 
 		if (c.get_press())
@@ -150,7 +150,7 @@ namespace input
 	{
         Helper::notify(c);
 
-        if (c.get_type() != Control::Button)
+        if (c.type() != Control::Button)
 			return;
 
 		if (!c.get_press())
@@ -186,7 +186,7 @@ namespace input
 	{
         Helper::notify(c);
 
-		if (c.get_type() != Control::Button)
+		if (c.type() != Control::Button)
 			return;
 
 		if (c.get_press())
@@ -220,7 +220,7 @@ namespace input
 	{
         Helper::notify(c);
 
-		if (c.get_type() != Control::Button)
+		if (c.type() != Control::Button)
 			return;
 
 		if (!c.get_press())
@@ -254,7 +254,7 @@ namespace input
 	{
         Helper::notify(c);
 
-		if (c.get_type() != Control::Axis)
+		if (c.type() != Control::Axis)
 			return;
 
 		std::list<RelativeAxis::RelativeAxisHandler>::iterator i = m_raxisHandlers.begin();
@@ -296,7 +296,7 @@ namespace input
 			std::swap(m_min, m_max);
 		}
 
-		set_pos(m_pos);
+		position(m_pos);
 	}
 
 	void AbsoluteAxis::setMax (int nMax)
@@ -305,7 +305,7 @@ namespace input
 		setMin(m_min);
 	}
 
-	void AbsoluteAxis::set_pos (int pos)
+	void AbsoluteAxis::position (int pos)
 	{
 		m_pos = min(max(m_min, pos), m_max);
 	}
@@ -314,10 +314,10 @@ namespace input
 	{
         Helper::notify(c);
 
-		if (c.get_type() != Control::Axis)
+		if (c.type() != Control::Axis)
 			return;
 
-		set_pos(m_pos + c.get_delta());
+		position(m_pos + c.get_delta());
 
 		std::list<AbsoluteAxis::AbsoluteAxisHandler>::iterator i = m_aaxisHandlers.begin();
 		while (i != m_aaxisHandlers.end())
@@ -341,7 +341,7 @@ namespace input
 		m_cursorHandlers.push_back(handler);
     }
 
-    void Cursor::set_pos (float x, float y)
+    void Cursor::position (float x, float y)
     {
         m_x = x;
         m_y = y;

@@ -86,7 +86,7 @@ typedef unsigned int  uint;
 #include "input\\input.h"
 
 #include "math\\track.h"
-#include "math\\track_camera.h"
+#include "math\\track_camera_controller.h"
 #include "math\\types3d.h"
 #include "math\\transform.h"
 #include "math\\random.h"
@@ -109,7 +109,6 @@ typedef unsigned int  uint;
 #include "render\\material.h"
 #include "render\\vertices.h"
 #include "render\\geometry.h"
-#include "render\\fog.h"
 #include "render\\light.h"
 #include "render\\light_manager.h"
 #include "render\\render_target.h"
@@ -123,15 +122,8 @@ typedef unsigned int  uint;
 #include "render\\model.h"
 #include "render\\sprites.h"
 #include "render\\geom_generator.h"
-#include "render\\flame_renderer.h"
-#include "render\\lens_flares.h"
-#include "render\\screen_fader.h"
 
-#include "render\\particles\\main.h"
-#include "render\\particles\\box_emitter.h"
-#include "render\\particles\\spherical_emitter.h"
-#include "render\\particles\\processor.h"
-#include "render\\particles\\effect.h"
+#include "render\\particles.h"
 
 #include "scene\\tree.h"
 #include "scene\\scene.h"

@@ -4,7 +4,6 @@
 
 namespace particles
 {
-
 	// basic typical particle.
 	// serve as a base class for more advanced particles
 	struct base_particle
@@ -16,8 +15,6 @@ namespace particles
 		math::Color color;			// color variation
 		float rotation;				// rotation variation
 	};
-
-	//////////////////////////////////////////////////////////////////////////
 
 	/// advanced particle struct
 	struct particle : public base_particle
@@ -41,12 +38,8 @@ namespace particles
 		math::vec3f old_pos;
 	};
 
-	//////////////////////////////////////////////////////////////////////////
-
-	typedef std::vector<particle> particles_vector;
-	typedef particles_vector::iterator  particles_iter;
-
-	//////////////////////////////////////////////////////////////////////////
+	typedef std::vector<particle> particles_t;
+	typedef particles_t::iterator  particles_iter;
 
 	inline base_particle::base_particle() 
 	: size(0)

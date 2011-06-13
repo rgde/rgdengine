@@ -56,8 +56,6 @@ namespace math
 		Rect(const vec2f& pos, const vec2f& s);
 
 		const vec2f& get_top_left()	const	{ return position; }
-		const vec2f& get_size()		const	{ return size;}
-		const vec2f& get_pos()		const	{ return position;}
 		vec2f get_top_right()		const	{ return vec2f (x+w, y); }
 		vec2f get_bottom_left()		const	{ return vec2f (x, y+h); }
 		vec2f get_bottom_right()	const	{ return vec2f (x+w, y+h); }

@@ -16,11 +16,11 @@ public:
 		m_camera = render::render_camera::create();
 
 		math::vec3f eye( 0.0f, 0, -50 );
-		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
+		math::vec3f lookat( 0.0f, 0.0f, 0.0f );
 		math::vec3f up_vec( 0.0f, 1.0f, 0.0f );
 
-		m_camera->look_at(eye, look_at, up_vec);
-		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+		m_camera->lookat(eye, lookat, up_vec);
+		m_camera->projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
 
         {
             using namespace input;
@@ -31,13 +31,13 @@ public:
             m_esc += boost::bind(&HelloMessage::onEsc, this);
         }
 
-		render::TheCameraManager::get().add_camera(m_camera);		
+		render::TheCameraManager::get().add(m_camera);		
 	}
 
 protected:
 	void update (float dt)
 	{
-		float abs_time = game::game_system::get().get_timer().get_absolute_time();
+		float abs_time = game::game_system::get().get_timer().absolute_time();
 		render::render_device::get().draw_fps(abs_time, m_font);
 
 		m_TrianglesManager.update();

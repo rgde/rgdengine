@@ -83,7 +83,7 @@ namespace event
         }
 
         //отправить событие event от отправителя pSender
-        void send_event (const Event& event, const base_sender *pSender)
+        void send (const Event& event, const base_sender *pSender)
         {
             SubscriptionsList tmp(m_subscriptions.begin(), m_subscriptions.end());
 
@@ -153,7 +153,7 @@ namespace event
         template<typename Event>
         void base_send_event(const Event& event)
         {
-			manager<Event>::get().send_event(event,this);
+			manager<Event>::get().send(event,this);
         }
 
     private:
@@ -203,7 +203,7 @@ namespace event
 	{
 	public:
 		template<typename Event>
-		void send_event(const Event& event)
+		void send(const Event& event)
 		{
 			base_send_event(event);
 		}

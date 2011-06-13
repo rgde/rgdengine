@@ -59,7 +59,7 @@ namespace render
 
 	class font_impl : public font, public device_object
 	{
-		int				m_nHeight;
+		int				m_height;
 		std::wstring	m_name;
 		FontWeight		m_eFontWeght;
 		bool			m_useDelayedRender;
@@ -84,7 +84,7 @@ namespace render
 			if (g_d3d == NULL || m_font != NULL)
 				return;
 
-			if (FAILED(D3DXCreateFont(g_d3d, -m_nHeight, 0, m_eFontWeght, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 5, DEFAULT_PITCH | FF_DONTCARE, m_name.c_str(), &m_font)))
+			if (FAILED(D3DXCreateFont(g_d3d, -m_height, 0, m_eFontWeght, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, 5, DEFAULT_PITCH | FF_DONTCARE, m_name.c_str(), &m_font)))
 			{
 				throw std::bad_exception("font_impl():Can't create device font object!");
 			}			fontsCreated++;
@@ -93,12 +93,12 @@ namespace render
 	public:
 		font_impl(int height, const std::wstring &name, FontWeight font_weigh)
 			: m_font(0),
-			  m_nHeight(height),
+			  m_height(height),
 			  m_name(name),
 			  m_eFontWeght(font_weigh),
 			  m_useDelayedRender(true)
 		{
-			base::lmsg << "Creating Font:  \"" << std::string(name.begin(), name.end()) << "\"," << m_nHeight;
+			base::lmsg << "Creating Font:  \"" << std::string(name.begin(), name.end()) << "\"," << m_height;
 			create();
 		}		
 

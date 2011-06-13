@@ -24,7 +24,7 @@ namespace game
 		{
 		public:
 			on_level_set(const std::string& next_level);
-			const std::string& get_next_level()  const { return m_next_level_name; }
+			const std::string& next_level()  const { return m_next_level_name; }
 
 		private:
 			std::string m_next_level_name;

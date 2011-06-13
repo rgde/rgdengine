@@ -7,28 +7,28 @@
 namespace math
 {
     //принять изменения во внешнем масиве
-    void CTrack::apply()
+    void track_t::apply()
     {
         //вспомогательный сплайн для вычисления расстояния на сплайне
         catm_rom_spline_dist_v3f spline;
 
         //чистим
-        m_splineUp.m_values.swap(catm_rom_spline_v3f::List());
-        m_splineEyePt.m_values.swap(catm_rom_spline_v3f::List());
-        m_splineLookatPt.m_values.swap(catm_rom_spline_v3f::List());
-        m_splineSpeed.m_values.swap(catm_rom_splinef::List());
-        m_time2parameter.m_values.swap(FloatLinearInterpolatorf::keys_map());
+        m_splineUp.m_keys.clear();
+        m_splineEyePt.m_keys.clear();
+        m_splineLookatPt.m_keys.clear();
+        m_splineSpeed.m_keys.clear();
+        m_time2parameter.m_keys.clear();
 
         //заполняем
-        List::iterator i = m_values.begin();
-        while (i != m_values.end())
+        keys::iterator i = m_keys.begin();
+        while (i != m_keys.end())
         {
-            m_splineUp.m_values.push_back(i->m_up);
-            m_splineEyePt.m_values.push_back(i->m_eye_pos);
-            m_splineLookatPt.m_values.push_back(i->m_lookat_pt);
-            m_splineSpeed.m_values.push_back(i->m_speed);
+            m_splineUp.m_keys.push_back(i->m_up);
+            m_splineEyePt.m_keys.push_back(i->m_eye_pos);
+            m_splineLookatPt.m_keys.push_back(i->m_lookat_pt);
+            m_splineSpeed.m_keys.push_back(i->m_speed);
 
-            spline.m_values.push_back(i->m_eye_pos);
+            spline.m_keys.push_back(i->m_eye_pos);
 
             ++i;
         }
@@ -43,9 +43,9 @@ namespace math
         //ключевой момент - заполнение массива соотвествия "время" <-> "параметр по умолчанию"
         float t = 0;
         float u = 0;
-        m_time2parameter.add_value(t,u);
+        m_time2parameter.add(t,u);
 
-        const float step = spline.length() / (m_values.size()*20.f);
+        const float step = spline.length() / (m_keys.size()*20.f);
         for (float position=0; position<spline.length(); position+=step)
         {
             u = spline.get_param(position);
@@ -53,33 +53,33 @@ namespace math
 
             t += step/speed; 
 
-            m_time2parameter.add_value(t,u);
+            m_time2parameter.add(t,u);
         }
     }
 
     //отменить изменения во внешнем масиве
-    void CTrack::undo()
+    void track_t::undo()
     {
-        m_values.swap(List());
+        m_keys.clear();
 
-        catm_rom_spline_v3f::iterator i_up     = m_splineUp.m_values.begin();
-        catm_rom_spline_v3f::iterator i_eyept  = m_splineEyePt.m_values.begin();
-        catm_rom_spline_v3f::iterator i_lookat = m_splineLookatPt.m_values.begin();
-        catm_rom_splinef::iterator i_speed  = m_splineSpeed.m_values.begin();
+        catm_rom_spline_v3f::iterator i_up     = m_splineUp.m_keys.begin();
+        catm_rom_spline_v3f::iterator i_eyept  = m_splineEyePt.m_keys.begin();
+        catm_rom_spline_v3f::iterator i_lookat = m_splineLookatPt.m_keys.begin();
+        catm_rom_splinef::iterator i_speed  = m_splineSpeed.m_keys.begin();
 
         //все сплайны должны иметь одинаковый размер,
         //поэтому можно отлавливать выход из цикла
         //только по окончанию одного из сплайнов
-        while (i_up != m_splineUp.m_values.end())
+        while (i_up != m_splineUp.m_keys.end())
         {
-            Key key;
+            key_t key;
 
             key.m_up       = *i_up;
             key.m_eye_pos    = *i_eyept;
             key.m_lookat_pt = *i_lookat;
             key.m_speed    = *i_speed;
 
-            m_values.push_back(key);
+            m_keys.push_back(key);
 
             ++i_up;
             ++i_eyept;
@@ -89,7 +89,7 @@ namespace math
     }
 
     //загрузка трека
-	void CTrack::load(const std::string& strTrackFileName)
+	void track_t::load(const std::string& strTrackFileName)
     {
 		//base::lmsg << "loading track: " << "\"" << strTrackFileName << "\"";
 		io::file_system& fs = io::file_system::get();
@@ -103,10 +103,8 @@ namespace math
 
 		if (!in)
 		{
-			std::string error = "CTrack::load: can't load file " + strTrackFileName;
-			//base::lerr << "CTrack::load: can't load file: " << strTrackFileName;
-			//throw std::exception(error.c_str());
-            throw std::exception("CTrack::load: can't load file");
+			std::string error = "track_t::load: can't load file " + strTrackFileName;
+            throw std::exception("track_t::load: can't load file");
 		}
 
 		std::vector<byte> data;
@@ -115,7 +113,7 @@ namespace math
 		TiXmlDocument xml;
 		xml.Parse((const char*)&(data[0]));
 
-        m_values.swap(List());
+        m_keys.clear();
 
 		TiXmlElement *mod_elem = xml.RootElement();
 		TiXmlElement *elem = mod_elem->FirstChild("keys")->ToElement();
@@ -138,7 +136,7 @@ namespace math
 				float speed;
 				math::vec3f up;
 				math::vec3f eye;
-				math::vec3f look_at;
+				math::vec3f lookat;
 
 				tx->Attribute("speed", &t); speed = (float)t;
 
@@ -150,16 +148,16 @@ namespace math
 				eye_el->Attribute("y", &t); eye.mData[1] = (float)t;
 				eye_el->Attribute("z", &t); eye.mData[2] = (float)t;
 
-				lookat_el->Attribute("x", &t); look_at.mData[0] = (float)t;
-				lookat_el->Attribute("y", &t); look_at.mData[1] = (float)t;
-				lookat_el->Attribute("z", &t); look_at.mData[2] = (float)t;
+				lookat_el->Attribute("x", &t); lookat.mData[0] = (float)t;
+				lookat_el->Attribute("y", &t); lookat.mData[1] = (float)t;
+				lookat_el->Attribute("z", &t); lookat.mData[2] = (float)t;
 
-				Key key;
+				key_t key;
 				key.m_up = up;
 				key.m_eye_pos = eye;
-				key.m_lookat_pt = look_at;
+				key.m_lookat_pt = lookat;
 				key.m_speed = speed;
-				m_values.push_back(key);
+				m_keys.push_back(key);
 			}	                
         }
 
@@ -167,7 +165,7 @@ namespace math
     }
 
     //сохранение трека
-	void CTrack::save(const std::string& strTrackFileName)
+	void track_t::save(const std::string& strTrackFileName)
     {
         //undo();
 
@@ -176,8 +174,8 @@ namespace math
 		TiXmlElement *track = (TiXmlElement*)(doc.InsertEndChild(TiXmlElement("track")));
 		TiXmlElement *keys = (TiXmlElement*)(track->InsertEndChild(TiXmlElement("keys")));
 
-		List::iterator i = this->m_values.begin();
-		while (i != this->m_values.end())
+		keys::iterator i = this->m_keys.begin();
+		while (i != this->m_keys.end())
 		{
 			TiXmlElement *key = (TiXmlElement*)(keys->InsertEndChild(TiXmlElement("key")));
 			key->SetAttribute("speed", boost::lexical_cast<std::string>(i->m_speed));
@@ -208,18 +206,17 @@ namespace math
     }
 
     //узнать общую длительность трека
-    float CTrack::getTotalTime()
+    float track_t::total_time()
     {
-        if (m_time2parameter.m_values.size() <= 1)
+        if (m_time2parameter.m_keys.size() <= 1)
             return 0;
-        return m_time2parameter.m_values.rbegin()->first -
-               m_time2parameter.m_values.begin()->first;
+        return m_time2parameter.m_keys.rbegin()->first - m_time2parameter.m_keys.begin()->first;
     }
 
     //получение точки трека
-    CTrack::Key CTrack::getKey(float t)
+    track_t::key_t track_t::key(float t)
     {
-        Key key;
+        key_t key;
 
         float u = m_time2parameter(t);
 

@@ -1,35 +1,32 @@
-//linear_interpolator.h
 #pragma once
 
 #include "interpolator.h"
 
 namespace math
 {
-
-    //линейный интерполятор
-    template <typename VALUE, typename POSITION>
-    class TLinearInterpolator: public interpolator_ex<VALUE, POSITION>
+    template <typename value_t, typename param_t>
+    class linear_interpolator: public base_interpolator<value_t, param_t>
     {
     public:
-        VALUE interpolate(POSITION position) const
+        value_t interpolate(param_t position) const
         {
             const_iterator lessEq = getLessOrEqualIterator(position);
             const_iterator grEq   = getGreaterOrEqualIterator(position);
 
-            if(lessEq == m_values.end() || grEq == m_values.end())
+            if(lessEq == m_keys.end() || grEq == m_keys.end())
             {
-                if (lessEq != m_values.end()) return lessEq->second;
-                if (grEq != m_values.end()) return grEq->second;
-                return VALUE(); //ахтунг! сюда вообще можно ассерт засунуть или брекпоинт [Dub]
+                if (lessEq != m_keys.end()) return lessEq->second;
+                if (grEq != m_keys.end()) return grEq->second;
+				assert(false && "Invalid internal data");
+                return value_t(); 
             }
             if(lessEq == grEq)
                 return lessEq->second;
 
-            POSITION distance = grEq->first - lessEq->first;
-            POSITION t = position - lessEq->first;
-            VALUE dValue = grEq->second - lessEq->second;
-            return dValue*(t/distance) + lessEq->second;
+            param_t distance = grEq->first - lessEq->first;
+            param_t t = position - lessEq->first;
+            value_t v = grEq->second - lessEq->second;
+            return v*(t/distance) + lessEq->second;
         }
     };
-
 }

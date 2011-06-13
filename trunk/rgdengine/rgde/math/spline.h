@@ -4,22 +4,22 @@
 
 namespace math
 {
-    template <typename VALUE>
+    template <typename value_t>
     class spline : public io::serialized_object
     {
     public:
-        typedef std::list<VALUE> List;
-        typedef typename List::iterator iterator;
-        typedef typename List::const_iterator const_iterator;
+        typedef std::list<value_t> keys;
+        typedef typename keys::iterator iterator;
+        typedef typename keys::const_iterator const_iterator;
 
         spline() {}
         virtual ~spline() {}
 
-        List m_values;
+        keys m_keys;
 
-        VALUE operator()(float position) const {return interpolate(position);}
+        value_t operator()(float position) const {return interpolate(position);}
 
-        virtual VALUE interpolate(float position) const = 0;
+        virtual value_t interpolate(float position) const = 0;
         virtual float length() const = 0;
 
         virtual void apply() {}
@@ -33,27 +33,27 @@ namespace math
         spline& operator=(const spline&);
     };
 
-    template <typename VALUE>
-    void spline<VALUE>::to_stream(io::write_stream& ws) const
+    template <typename value_t>
+    void spline<value_t>::to_stream(io::write_stream& ws) const
     {
-        ws << uint(m_values.size());
+        ws << uint(m_keys.size());
 
-        for(const_iterator it = m_values.begin(); it != m_values.end(); ++it)
+        for(const_iterator it = m_keys.begin(); it != m_keys.end(); ++it)
             ws << (*it);
     }
 
-    template <typename VALUE>
-    void spline<VALUE>::from_stream(io::read_stream& rs)
+    template <typename value_t>
+    void spline<value_t>::from_stream(io::read_stream& rs)
     {
-        m_values.swap(List());
+        m_keys.clear();
 
         uint num;
         rs >> num;
         for(uint i = 0; i < num; ++i)
         {
-            VALUE value;
+            value_t value;
             rs >> value;
-            m_values.push_back(value);
+            m_keys.push_back(value);
         }
     }
 

@@ -2,8 +2,6 @@
 
 #include <rgde/render/particles/abstract_emitter.h>
 
-
-
 namespace particles
 {
 	class  box_emitter : public base_emitter

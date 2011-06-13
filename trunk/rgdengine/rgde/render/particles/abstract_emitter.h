@@ -13,7 +13,7 @@ struct particle;
 class  base_emitter : public math::frame
 {
 public:
-	enum type {	spherical, box };
+	enum type_t {	spherical, box };
 
 	typedef std::list<processor*> processors_list;
 	typedef processors_list::iterator processors_iter;
@@ -22,26 +22,23 @@ public:
 
 	virtual void		get_particle(particle& p);
 
-	inline math::frame_ptr get_transform() { return this; }
-	inline type get_type() const { return m_type; }
+	inline type_t type() const { return m_type; }
 
 	void				reset();
 	void				update(float dt);
 	void				render();
 	virtual void		debug_draw() = 0;
 
-	void				addProcessor(processor*	 proc);	
-	void				deleteProcessor(processor* proc);
+	void				add(processor*	 proc);	
+	void				remove(processor* proc);
 
-	inline processors_list& getProcessors() { return m_lProcessors; }
+	inline processors_list& processors() { return m_processors; }
 
 	inline float getTime() { return m_normalized_time; }
 	inline math::vec3f&	getSpeed() {return m_vCurSpeed;}
 
-	// Акксессоры задания
-	void set_fade(bool b);
+	void fade(bool b);
 
-	// Акксессоры к интерполяторам
 	inline math::interpolatorf& particleMass()			{ return m_PMass; }
 	inline math::interpolatorf& particleMassSpread()		{ return m_PMassSpread; }
 	inline math::interpolatorf& particleRotationSpread()	{ return m_PRotationSpread; }
@@ -50,22 +47,22 @@ public:
 	inline math::interpolator_v3f& particleAcceleration()		{ return m_PAcceleration; }
 	inline math::interpolator_v3f& getGlobalVelocityInterp()	{ return m_GlobalVelocity; }
 
-	// Акксессоры получения / задания свойств
 	inline float getCycleTime() const { return m_fCycleTime; }
 	inline void setCycleTime(float fTime) { m_fCycleTime = fTime; }
 
-	inline bool isCycling() const { return m_bIsCycling; }
-	inline void setCycling(bool b) { m_bIsCycling = b; }
+	inline bool looped() const { return m_looped; }
+	inline void looped(bool b) { m_looped = b; }
 
-	inline bool	is_visible() const {return m_is_visible;}
-	inline void	hide() { m_is_visible = false; }
-	inline void	show() { m_is_visible = true; }
+	inline bool	visible() const {return m_visible;}
+	inline void	visible(bool flag) { m_visible = flag; }
+	inline void	hide() { visible(false); }
+	inline void	show() { visible(true); }
 
-	inline float getTimeShift() const { return m_time_shift; }
-	inline void setTimeShift(float t) { m_time_shift = t; }
+	inline float start_delay() const { return m_start_delay; }
+	inline void start_delay(float time) { m_start_delay = time; }
 
 protected:
-	explicit base_emitter(type);
+	explicit base_emitter(type_t);
 
 	virtual void to_stream(io::write_stream& wf) const;
 	virtual void from_stream(io::read_stream& rf);
@@ -74,12 +71,12 @@ protected:
 protected:
 	math::unit_rand_2k	m_Rand;
 
-	processors_list	m_lProcessors;				// присоединенные процессоры частиц
+	processors_list	m_processors;				// присоединенные процессоры частиц
 
 	float			m_fCycleTime;				// время повтора для всех интерполяторов
-	bool			m_bIsCycling;
-	bool			m_is_visible;
-	float			m_time_shift;				// смещение в секундах от начала проигрывания эффекта
+	bool			m_looped;
+	bool			m_visible;
+	float			m_start_delay;				// смещение в секундах от начала проигрывания эффекта
 	std::string		m_name;						// для будущего использования
 
 	// common for all emmiters types modifiers
@@ -93,7 +90,7 @@ protected:
 	
 	// temporary computing values
 	float			m_normalized_time;			// От 0 до 1 - текущее нормализованное время
-	float			m_fCurrentTime;				// текущее время (меньше времени повтора)
+	float			m_time;				// текущее время (меньше времени повтора)
 	bool			m_bIsEnded;					// флаг: емиттер отработал
 
 	math::vec3f		m_vCurSpeed;
@@ -106,7 +103,7 @@ protected:
 	math::vec3f		m_vGlobalVelPrecomputed;
 	math::vec3f		m_vGlobalVel;
 
-	const type		m_type;					// emitter type
+	const type_t		m_type;					// emitter type
 };
 
 }

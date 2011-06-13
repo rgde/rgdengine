@@ -22,20 +22,20 @@ namespace core
 		void advance();
 
 		/// Returns the absolute system time
-		float get_absolute_time() const;
+		float absolute_time() const;
 
 		/// Returns the current time
-		float get_current_time() const;
+		float time() const;
 
-		/// Returns a time that elapsed between get_elapsed() calls
-		float get_elapsed();
-		float get_elapsed() const;
+		/// Returns a time that elapsed between elapsed() calls
+		float elapsed();
+		float elapsed() const;
 
 		/// Indicates that a timer is stopped or paused
 		bool is_stoped() const;
 
 	protected:
-		bool Stopped;
+		bool stopped;
 
 		__int64 BaseTime;
 		__int64 LastTime;

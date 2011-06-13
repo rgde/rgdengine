@@ -79,7 +79,7 @@ namespace render
 
 
 			//io::readstream_ptr in = fs.find(filename);
-			//unsigned int size = in->get_size();
+			//unsigned int size = in->size();
 			//io::stream_to_vector(data, in);
 
 			//TiXmlDocument xml;//( xml_filename );
@@ -322,9 +322,9 @@ namespace render
 		std::vector<byte> data;
 		io::file_system& fs = io::file_system::get();
 		io::readstream_ptr in = fs.find(xml_filename);
-		if (in && in->get_size() > 0)
+		if (in && in->size() > 0)
 		{
-			unsigned int size = in->get_size();
+			unsigned int size = in->size();
 			io::stream_to_vector(data, in);
 
 			TiXmlDocument xml;//( xml_filename );
@@ -504,7 +504,7 @@ namespace render
 
 			bool loaded = false;
 
-			if (bin_in && bin_in->get_size() > 0)
+			if (bin_in && bin_in->size() > 0)
 			{
 				uint vertex_size = 0;//Vertex size
 				uint vdata_size = 0;//Vertex Data Size

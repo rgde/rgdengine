@@ -28,10 +28,10 @@ namespace input
 		//завершить работу системы ввода
         void Done();
 
-        device* get_device(device::type      eDeviceName, size_t indx=0) const;
+        device* get_device(device::type_t      eDeviceName, size_t indx=0) const;
         device* get_device(const std::wstring &sDeviceName, size_t indx=0) const;
 
-        bool is_present(device::type      eDeviceName, size_t indx=0) const;
+        bool is_present(device::type_t      eDeviceName, size_t indx=0) const;
         bool is_present(const std::wstring &sDeviceName, size_t indx=0) const;
 
 

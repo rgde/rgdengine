@@ -14,7 +14,7 @@ struct Button : public event::sender
 {
     void Click (int x, int y)
     {
-        send_event( click_event(x,y) );
+        send( click_event(x,y) );
     }
 };
 

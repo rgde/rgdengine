@@ -42,7 +42,7 @@ namespace game
 
 		void SnowEffect::update(float dt)
 		{
-			float abs_time = game::game_system::get().get_timer().get_absolute_time();
+			float abs_time = game::game_system::get().get_timer().absolute_time();
 			render::render_device::get().draw_fps(abs_time, m_font);
 
 
@@ -51,11 +51,11 @@ namespace game
 
 
 			std::for_each(m_sprites.begin(), m_sprites.end(), 
-				boost::bind(&render::sprite_manager::add_sprite, &m_sprite_renderer, _1));
+				boost::bind(&render::sprite_manager::add, &m_sprite_renderer, _1));
 
 			//for (Sprites::iterator it = m_sprites.begin(); it != m_sprites.end(); ++it)
 			//{
-			//	m_sprite_renderer.add_sprite(*it);
+			//	m_sprite_renderer.add(*it);
 			//}
 		}
 

@@ -180,7 +180,7 @@ namespace input
 	class device
 	{
 	public:
-		enum type
+		enum type_t
 		{
 			keyboard = 0,
 			mouse	 = 1,
@@ -189,11 +189,11 @@ namespace input
 			invalid = 255,
 		};
 
-		device(type type, int index, input_impl &input_system);
+		device(type_t type, int index, input_impl &input_system);
 		virtual ~device();
 
 		//get device type
-		type get_type () const {return m_type;}
+		type_t type () const {return m_type;}
 		//get device index
 		int get_device_index () const {return m_index;}
 
@@ -218,7 +218,7 @@ namespace input
 
 	private:
 		int			m_index;
-		type		m_type;
+		type_t		m_type;
 		input_impl &m_input;
 
 		typedef std::map<controls, Control*> controls_map;
@@ -228,8 +228,8 @@ namespace input
 	};
 
 
-	std::wstring Device2String (device::type type);
-	device::type String2Device (const std::wstring &name);
+	std::wstring Device2String (device::type_t type);
+	device::type_t String2Device (const std::wstring &name);
 
 	std::wstring Control2String (controls type);
 	controls String2Control (const std::wstring &name); 
@@ -246,14 +246,14 @@ namespace input
 
         static bool set_mode (bool exclusive=false, bool foreground=true);
         static void load_xml (const std::string &xml);
-        static void load (const std::string &file_name);
+        static void load (const std::string &filename);
         static void update();
         static void save_xml(std::string &xml);
 
-        static device* get_device (device::type device_type, int indx=0);
+        static device* get_device (device::type_t device_type, int indx=0);
         static device* get_device (const std::wstring &sDeviceName, int indx=0);
 
-        static bool is_present (device::type device_type, int indx=0);
+        static bool is_present (device::type_t device_type, int indx=0);
         static bool is_present (const std::wstring &sDeviceName, int indx=0);
 
 		static device* get_mouse (int indx = 0)
@@ -271,8 +271,8 @@ namespace input
 			return get_device(device::joystick, indx);
 		}
 
-		static Control* get_control(device::type device_type, int dev_index, controls control);
-		static Control* get_control(device::type device_type, controls control)
+		static Control* get_control(device::type_t device_type, int dev_index, controls control);
+		static Control* get_control(device::type_t device_type, controls control)
 		{
 			return get_control(device_type, 0, control);
 		}
@@ -295,16 +295,16 @@ namespace input
 	{
 	public:        
 		//виды контролов
-		enum type
+		enum type_t
 		{
 			Button,
 			Axis
 		};
 
-		Control(controls name, type type, device &device);
+		Control(controls name, type_t type, device &device);
 
-		controls get_name () const {return m_name;}
-		type    get_type () const {return m_type;}
+		controls name () const {return m_name;}
+		type_t    type () const {return m_type;}
 
 		//добавить наблюдателя
 		void bind (command_ptr command);
@@ -327,7 +327,7 @@ namespace input
 
 	private:
 		device    &m_device; //устройство, которому принадлежит контрол
-		type      m_type;   //тип контрола
+		type_t      m_type;   //тип контрола
 		controls  m_name;   //'имя' контрола
 
 		friend class input_impl;
@@ -502,8 +502,8 @@ namespace input
 		int  getMax () const {return m_max;}
 		void setMax (int value);
 
-		int  get_pos () const {return m_pos;}		
-		void set_pos (int value);
+		int  position () const {return m_pos;}		
+		void position (int value);
 
 	protected:
 		friend class Command;
@@ -529,7 +529,7 @@ namespace input
 
 		float getX () const {return m_x;}
 		float getY () const {return m_y;}
-		void  set_pos (float x, float y);
+		void  position (float x, float y);
 
 	protected:
 		void onCursorMove (mouse_move e);
@@ -627,7 +627,7 @@ namespace input
 	public:
 		Command(const std::string &name, input_impl &input);
 
-		const std::string& get_name() const;
+		const std::string& name() const;
 		void lock();
 		void unlock();
 		bool is_locked() const;
@@ -652,7 +652,7 @@ namespace input
 		helpers_list m_helpers;
 	};
 
-	inline const std::string& Command::get_name() const 
+	inline const std::string& Command::name() const 
 	{
 		return m_name;
 	}

@@ -11,7 +11,7 @@ namespace game
 		base::lmsg << "level::level() " << name << base::endl;
 
 		core::function::Func func = boost::bind(&level::addTypeToCreate, this, _1);
-		core::functions_owner::add_function(core::function("AddTypeToCreate", func));
+		core::functions_owner::add(core::function("AddTypeToCreate", func));
 	}
 
 	void level::addTypeToCreate(const std::string& type_name)

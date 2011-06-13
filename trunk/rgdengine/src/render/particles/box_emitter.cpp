@@ -32,7 +32,7 @@ namespace particles
 		math::vec3f direction = m_direction(m_normalized_time);
 		math::vec3f direction_rand = m_direction_spread(m_normalized_time);
 
-		math::matrix44f m = get_transform()->get_full_tm();
+		math::matrix44f m = world_trasform();
 		render::lines3d& line_manager = render::render_device::get().get_lines3d();
 		line_manager.add_box( m, (math::vec3f)(size + size_rand), math::Color(0, 255, 0, 255) );
 		line_manager.add_box( m, (math::vec3f)(size - size_rand), math::Color(0, 255, 0, 255) );

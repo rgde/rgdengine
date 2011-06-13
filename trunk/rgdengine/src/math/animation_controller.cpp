@@ -5,11 +5,11 @@
 
 namespace math
 {
-	frame_anim_controller::frame_anim_controller( TiXmlNode* pXmlNode, frame_ptr frame)
+	frame_animation::frame_animation( TiXmlNode* pXmlNode, frame_ptr frame)
 	{
 		m_paused = false;
-		m_bPlaying = false;
-		m_bLooped = false;
+		m_playing = false;
+		m_looped = false;
 
 		if ( pXmlNode != 0 )
 		{
@@ -17,13 +17,13 @@ namespace math
 		}
 
 		m_frame = frame;
-		m_fAnimationRate = 1.0f;
-		m_fAnimationTime = 1;
-		m_fCurrentTime = 0.0f;
-		set_weight(1.0f);
+		m_speed = 1.0f;
+		m_anim_time = 1;
+		m_time = 0.0f;
+		weight(1.0f);
 	}
 
-	bool frame_anim_controller::load( TiXmlNode* pXmlNode )
+	bool frame_animation::load( TiXmlNode* pXmlNode )
 	{
 		TiXmlElement *elem = pXmlNode->FirstChildElement("animation");
 
@@ -32,7 +32,7 @@ namespace math
 
 		double time;
 		elem->Attribute("time", &time );
-		m_fAnimationTime = (float)time;
+		m_anim_time = (float)time;
 
 		for (TiXmlElement* ev = elem->FirstChildElement("key"); 0 != ev; ev = ev->NextSiblingElement("key"))
 		{
@@ -76,37 +76,37 @@ namespace math
 		return true;
 	}
 
-	float frame_anim_controller::get_weight() const
+	float frame_animation::weight() const
 	{
 		return m_fWeight;
 	}
 
-	void frame_anim_controller::set_weight(float fWeight)
+	void frame_animation::weight(float fWeight)
 	{ 
 		m_fWeight = fWeight;
 		if((m_fWeight < 0.0f) || (m_fWeight > 1.0f)) 
 			m_fWeight = 1.0f;
 	}
 
-	void frame_anim_controller::update( float dt )
+	void frame_animation::update( float dt )
 	{
-		if ( !m_bPlaying || !(m_fAnimationTime > 0) || m_paused)
+		if ( !m_playing || !(m_anim_time > 0) || m_paused)
 			return;
 
-		m_fCurrentTime += dt*m_fAnimationRate;
+		m_time += dt*m_speed;
 
-		if (m_fCurrentTime > m_fAnimationTime)
-			if ( m_bLooped )
-				m_fCurrentTime -= (m_fCurrentTime/m_fAnimationTime)*m_fAnimationTime;
+		if (m_time > m_anim_time)
+			if ( m_looped )
+				m_time -= (m_time/m_anim_time)*m_anim_time;
 			else
 				pause();
 
-		updateMatrix();
+		update_transform();
 	}
 
-	void frame_anim_controller::updateMatrix()
+	void frame_animation::update_transform()
 	{
-		math::vec3f vec = m_RotationInterpolyator.get_value( m_fCurrentTime );
+		math::vec3f vec = m_RotationInterpolyator.get_value( m_time );
 		math::EulerAngleXYZf ang( vec[ 0 ], vec[ 1 ], vec[ 2 ] );
 
 		math::quatf q;
@@ -115,11 +115,11 @@ namespace math
 		//if (m_frame)
 		//{
 		//
-		//	m_frame->set_rot( q );
-		//	m_frame->set_position( m_PosInterpolyator.get_value( m_fCurrentTime/m_fAnimationTime ) );
+		//	m_frame->rotation( q );
+		//	m_frame->position( m_PosInterpolyator.get_value( m_time/m_anim_time ) );
 		//}
 
-		vec = m_ScaleInterpolyator.get_value( m_fCurrentTime );
+		vec = m_ScaleInterpolyator.get_value( m_time );
 		if ( vec[ 0 ] > 1.5f )
 		{
 			int sdf = 0;
@@ -129,16 +129,16 @@ namespace math
 		{
 			if(m_fWeight == 1.0f)
 			{
-				m_frame->set_scale( vec );
-				m_frame->set_rot( q );
-				m_frame->set_position( m_PosInterpolyator.get_value( m_fCurrentTime ) );
+				m_frame->scale( vec );
+				m_frame->rotation( q );
+				m_frame->position( m_PosInterpolyator.get_value( m_time ) );
 			}
 			else
 			{
 				float fInverseWeight = 1.0f - m_fWeight;
-				m_frame->set_scale(m_frame->get_scale()*fInverseWeight + vec*m_fWeight );
-				m_frame->set_rot(m_frame->get_rot()*fInverseWeight + q*m_fWeight  );
-				m_frame->set_position(m_frame->get_pos()*fInverseWeight +  m_PosInterpolyator.get_value( m_fCurrentTime/m_fAnimationTime )*m_fWeight );
+				m_frame->scale(m_frame->scale()*fInverseWeight + vec*m_fWeight );
+				m_frame->rotation(m_frame->rotation()*fInverseWeight + q*m_fWeight  );
+				m_frame->position(m_frame->position()*fInverseWeight +  m_PosInterpolyator.get_value( m_time/m_anim_time )*m_fWeight );
 			}
 
 			//Neonic: octree. 1 ставится, если было использовано вращение или увеличение/уменьшение. Иначе ставим 0.
@@ -146,21 +146,21 @@ namespace math
 		}
 	}
 
-	void frame_anim_controller::stop()
+	void frame_animation::stop()
 	{
-		m_bPlaying = false;
+		m_playing = false;
 		m_paused = false;
-		m_bLooped = false;
+		m_looped = false;
 	}
 
-	void frame_anim_controller::pause()
+	void frame_animation::pause()
 	{
 		m_paused = true;//!m_paused;
 	}
 
-	void frame_anim_controller::start()
+	void frame_animation::start()
 	{
-		m_bPlaying = true;
+		m_playing = true;
 		m_paused = false;
 	}
 }

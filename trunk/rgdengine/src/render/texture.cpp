@@ -18,9 +18,9 @@ namespace render
 	texture_manager manager(boost::bind(&texture_d3d9::create_from_file, _1), true, "default.jpg");
 
 
-	texture_ptr texture::create(const std::string& file_name)
+	texture_ptr texture::create(const std::string& filename)
 	{
-		return manager.get(file_name);
+		return manager.get(filename);
 	}
 
 	//D3DUSAGE_AUTOGENMIPMAP during 
@@ -30,15 +30,15 @@ namespace render
 	//For more information about usage constants, see D3DUSAGE.
 	void texture_d3d9::create_render_texture(const math::Vec2i &size, texture_format format)
 	{
-		m_eUsage = RenderTarget;
+		m_usage = RenderTarget;
 
 		if (format >= D16_LOCKABLE && format <= D24FS8)
-			m_eUsage = DepthStencil;
+			m_usage = DepthStencil;
 
 		V(g_d3d->CreateTexture(size[0],			// Width
 			size[1],			// Height
 			1,					// Levels
-			(DWORD)m_eUsage,	// Usage
+			(DWORD)m_usage,	// Usage
 			(D3DFORMAT)format,	// Format
 			D3DPOOL_DEFAULT,	// Pool
 			&m_texture,		// Texture pointer
@@ -47,60 +47,60 @@ namespace render
 
 		V(m_texture->GetLevelDesc(0, &m_desc));
 
-		m_nHeight = size[1];
-		m_nWidth = size[0];
-		m_eFormat = format;
+		m_height = size[1];
+		m_width = size[0];
+		m_format = format;
 	}
 
-	io::readstream_ptr open_texture_file(const std::string& file_name)
+	io::readstream_ptr open_texture_file(const std::string& filename)
 	{
 		io::file_system &fs	= io::file_system::get();
-		if (io::readstream_ptr in	= fs.find(file_name))
+		if (io::readstream_ptr in	= fs.find(filename))
 			return in;
 
 		{
-			std::string file = io::helpers::get_shot_filename(file_name);
+			std::string file = io::helpers::get_shot_filename(filename);
 			if (io::readstream_ptr in	= fs.find(file + ".jpg"))
 				return in;
 		}
 
 		{
 			io::path_add_scoped p	("Textures/");
-			if (io::readstream_ptr in	= fs.find(file_name))
+			if (io::readstream_ptr in	= fs.find(filename))
 				return in;
 		}
 
 		{
 			io::scope_path p	("Media/Common/Textures/");
-			if (io::readstream_ptr in = fs.find(file_name))
+			if (io::readstream_ptr in = fs.find(filename))
 				return in;
 		}
 
 		return io::readstream_ptr();
 	}
 
-	texture_ptr texture_d3d9::create_from_file(const std::string& file_name)
+	texture_ptr texture_d3d9::create_from_file(const std::string& filename)
 	{
-		return texture_ptr(new texture_d3d9(file_name));
+		return texture_ptr(new texture_d3d9(filename));
 	}
 
-	void texture_d3d9::createTextureFromFile(const std::string& file_name)
+	void texture_d3d9::createTextureFromFile(const std::string& filename)
 	{	
 		if (NULL == g_d3d) return;
 
 		std::vector<byte> data;
-		io::readstream_ptr in = open_texture_file(file_name);
+		io::readstream_ptr in = open_texture_file(filename);
 
 		if (!in)
 		{
-			base::lerr << "Can't load texture!" << "\"" << file_name << "\"";
+			base::lerr << "Can't load texture!" << "\"" << filename << "\"";
 			return; //false
 		}
 
-		unsigned int size	= in->get_size();
+		unsigned int size	= in->size();
 		io::stream_to_vector(data, in);
 
-		m_eUsage = DefaultUsage;
+		m_usage = DefaultUsage;
 
 		SAFE_RELEASE(m_texture);
 
@@ -122,20 +122,20 @@ namespace render
 
 		V(m_texture->GetLevelDesc(0, &m_desc));
 
-		m_nHeight = m_desc.Height;
-		m_nWidth = m_desc.Width;
-		m_eFormat = (texture_format)m_desc.Format;
+		m_height = m_desc.Height;
+		m_width = m_desc.Width;
+		m_format = (texture_format)m_desc.Format;
 		m_type = convet_type(m_texture->GetType());
 		if (m_type == Unknown)
-			base::lwrn << "Warning: texture \"" << file_name << "\" has unknown type";
+			base::lwrn << "Warning: texture \"" << filename << "\" has unknown type";
 	}
 
-	texture_d3d9::texture_d3d9(const std::string& file_name)
+	texture_d3d9::texture_d3d9(const std::string& filename)
 		: m_texture(0),
-		m_strFileName(file_name)
+		m_filename(filename)
 	{
-		base::lmsg << "loading texture:  " << m_strFileName.c_str() << "";
-		createTextureFromFile(m_strFileName);
+		base::lmsg << "loading texture:  " << m_filename.c_str() << "";
+		createTextureFromFile(m_filename);
 	}
 
 	IDirect3DTexture9 * texture_d3d9::get_dx_texture()

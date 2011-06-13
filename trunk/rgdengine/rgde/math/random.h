@@ -27,7 +27,7 @@ namespace math
 			return ms_vRndTable[m_nCurIndex];
 		}
 
-		void	 set_seed(unsigned seed) {m_nCurIndex = seed;}
+		void	 seed(unsigned seed) {m_nCurIndex = seed;}
 
 	protected:
 		static float	ms_vRndTable[table_size];

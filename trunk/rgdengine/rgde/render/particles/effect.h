@@ -21,14 +21,12 @@ namespace particles
 
 		effect();
 		virtual ~effect();
-		
-		inline const math::frame_ptr get_transform() const { return m_transform; }
-		
+				
 		void add(emitter_ptr);
 		void remove(emitter_ptr);
 
-		const emitters_list& get_emitters() const {return m_emitters;}
-		emitters_list&		 get_emitters()		  {return m_emitters;}
+		const emitters_list& emitters() const {return m_emitters;}
+		emitters_list&		 emitters()		  {return m_emitters;}
 
 		void reset();
 

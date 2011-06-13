@@ -30,8 +30,8 @@ namespace render
 		static camera_ptr create();
 		static camera_ptr create(uint priority, const viewport& viewport);
 
-		void set_priority(uint priority);
-		uint get_priority() const;
+		void priority(uint priority);
+		uint priority() const;
 
 	private:
 		render_camera(uint priority, const viewport& viewport);

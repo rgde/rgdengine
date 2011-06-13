@@ -38,7 +38,7 @@ public:
 	~render_device_impl();
 
 	void onWindowResizeEvent(window_resize e);
-	void save_screen(const std::wstring& file_name);
+	void save_screen(const std::wstring& filename);
 	void update() const;
 
 	D3DFORMAT getBackBufferFormat(const std::string& strColorBufferFormat);

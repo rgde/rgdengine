@@ -3,68 +3,68 @@
 
 namespace math
 {
-    //добавляя значение (VALUE), сразу указываем ее положение (POSITION) относительно других значений
-    template <typename VALUE, typename POSITION>
-    class interpolator_ex : public io::serialized_object
+    //добавляя значение (value_t), сразу указываем ее положение (param_t) относительно других значений
+    template <typename value_t, typename param_t>
+    class base_interpolator : public io::serialized_object
     {
     public:
-        typedef std::map<POSITION, VALUE> keys_map;
-        typedef typename keys_map::value_type value_type;
-        typedef typename keys_map::iterator iterator;
-        typedef typename keys_map::const_iterator const_iterator;
+        typedef std::map<param_t, value_t> keys;
+        typedef typename keys::value_type value_type;
+        typedef typename keys::iterator iterator;
+        typedef typename keys::const_iterator const_iterator;
 
-        interpolator_ex() {}
-        virtual ~interpolator_ex() {}
+        base_interpolator() {}
+        virtual ~base_interpolator() {}
 
-        keys_map m_values;
+        keys m_keys;
 
-        void add_value(POSITION position, VALUE value);
-        void scale(POSITION begin, POSITION end);
-        const_iterator getLessOrEqualIterator(POSITION position) const;
-        const_iterator getGreaterOrEqualIterator(POSITION position) const;
+        void add(param_t position, value_t value);
+        void scale(param_t begin, param_t end);
+        const_iterator getLessOrEqualIterator(param_t position) const;
+        const_iterator getGreaterOrEqualIterator(param_t position) const;
 
-        VALUE operator()(POSITION position) const {return interpolate(position);}
-        virtual VALUE interpolate(POSITION position) const = 0;
+        value_t operator()(param_t position) const {return interpolate(position);}
+        virtual value_t interpolate(param_t position) const = 0;
 
     protected:
         void to_stream(io::write_stream& ws) const;
         void from_stream(io::read_stream& rs);
 
     private:
-        interpolator_ex(const interpolator_ex&);
-        interpolator_ex& operator=(const interpolator_ex&);
+        base_interpolator(const base_interpolator&);
+        base_interpolator& operator=(const base_interpolator&);
     };
 
-    template <typename VALUE, typename POSITION>
-    void interpolator_ex<VALUE, POSITION>::add_value(POSITION position, VALUE value)
+    template <typename value_t, typename param_t>
+    void base_interpolator<value_t, param_t>::add(param_t position, value_t value)
     {
-        m_values.insert(value_type(position,value));
+        m_keys.insert(value_type(position,value));
     }
 
-    template <typename VALUE, typename POSITION>
-    void interpolator_ex<VALUE, POSITION>::scale(POSITION begin, POSITION end)
+    template <typename value_t, typename param_t>
+    void base_interpolator<value_t, param_t>::scale(param_t begin, param_t end)
     {
-        if (m_values.size() < 2)
+        if (m_keys.size() < 2)
             return;
 
-        POSITION min = m_values.begin()->first;
-        POSITION max = m_values.rbegin()->first;
+        param_t min = m_keys.begin()->first;
+        param_t max = m_keys.rbegin()->first;
 
-        keys_map tmp;
-        for (iterator it = m_values.begin(); it != m_values.end(); ++it)
+        keys tmp;
+        for (iterator it = m_keys.begin(); it != m_keys.end(); ++it)
 		{
             tmp.insert(value_type((it->first-min)/(max-min) * (end-begin) + begin, it->second))
 		}
 
-        m_values.swap(tmp);
+        m_keys.swap(tmp);
     }
 
-    template <typename VALUE, typename POSITION>
-    typename interpolator_ex<VALUE, POSITION>::const_iterator interpolator_ex<VALUE, POSITION>::getLessOrEqualIterator(POSITION position) const
+    template <typename value_t, typename param_t>
+    typename base_interpolator<value_t, param_t>::const_iterator base_interpolator<value_t, param_t>::getLessOrEqualIterator(param_t position) const
     {
-        const_iterator result = m_values.end();
+        const_iterator result = m_keys.end();
 
-        for(const_iterator it = m_values.begin(); it != m_values.end(); ++it)
+        for(const_iterator it = m_keys.begin(); it != m_keys.end(); ++it)
         {
             if(it->first > position)
                 break;
@@ -74,42 +74,41 @@ namespace math
         return result;
     }
 
-    template <typename VALUE, typename POSITION>
-    typename interpolator_ex<VALUE, POSITION>::const_iterator interpolator_ex<VALUE, POSITION>::getGreaterOrEqualIterator(POSITION position) const
+    template <typename value_t, typename param_t>
+    typename base_interpolator<value_t, param_t>::const_iterator base_interpolator<value_t, param_t>::getGreaterOrEqualIterator(param_t position) const
     {
-        for(const_iterator it = m_values.begin(); it != m_values.end(); ++it)
+        for(const_iterator it = m_keys.begin(); it != m_keys.end(); ++it)
             if(it->first >= position)
                 return it;
-        return m_values.end();
+        return m_keys.end();
     }
 
-    template <typename VALUE, typename POSITION>
-    void interpolator_ex<VALUE, POSITION>::to_stream(io::write_stream& ws) const
+    template <typename value_t, typename param_t>
+    void base_interpolator<value_t, param_t>::to_stream(io::write_stream& ws) const
     {
-        ws << uint(m_values.size());
+        ws << uint(m_keys.size());
 
-        for(const_iterator it = m_values.begin(); it != m_values.end(); ++it)
+        for(const_iterator it = m_keys.begin(); it != m_keys.end(); ++it)
         {		
             ws << it->first;
             ws << it->second;
         }
     }
 
-    template <typename VALUE, typename POSITION>
-    void interpolator_ex<VALUE, POSITION>::from_stream(io::read_stream& rs)
+    template <typename value_t, typename param_t>
+    void base_interpolator<value_t, param_t>::from_stream(io::read_stream& rs)
     {
-        m_values.swap(keys_map());
+        m_keys.clear();
 
         uint num;
         rs >> num;
         for(uint i = 0; i < num; ++i)
         {
-            POSITION position;
-            VALUE value;
+            param_t position;
+            value_t value;
             rs >> position;
             rs >> value;
-            add_value(position, value);
+            add(position, value);
         }
     }
-
 } //namespace math

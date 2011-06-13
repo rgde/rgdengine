@@ -31,12 +31,12 @@ namespace scene
 		if (!m_frame)
 			return;
 
-		math::camera_ptr cam = render::render_device::get().get_camera();
+		math::camera_ptr cam = render::render_device::get().camera();
 
 		if (!cam)
 			return;
 
-		float distance	= math::length<float, 3>(cam->get_pos() - m_frame->get_world_pos());
+		float distance	= math::length<float, 3>(cam->position() - m_frame->world_position());
 
 		bool is_inside	= distance <= m_distance;
 

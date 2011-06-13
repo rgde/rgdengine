@@ -29,28 +29,27 @@ namespace core
 		void add(const node_ptr& node)
 		{
 			m_children.push_back(node); 
-			node->set_parent((T*)this);
+			node->parent((T*)this);
 		}
 
 		void remove(const node_ptr& node)
 		{
 			m_children.remove(node); 
-			node->set_parent(0);
+			node->parent(0);
 		}
 
-		const node*		get_parent() const  {return m_parent;}
-		node*			get_parent()		{return m_parent;}
+		const node*		parent() const  {return m_parent;}
+		node*			parent()		{return m_parent;}
 
-		const children_list& get_children() const {return m_children;}
+		const children_list& children() const {return m_children;}
 
-		tree_node() 
-			: m_parent(0)
+		tree_node() : m_parent(0)
 		{}
 
 		virtual ~tree_node()
 		{
 			for (children_list::iterator it = m_children.begin(); it != m_children.end(); ++it)
-				(*it)->set_parent(0);
+				(*it)->parent(0);
 
 			m_children.clear();
 
@@ -61,7 +60,7 @@ namespace core
 			}
 		}
 
-		void set_parent(node* parent)	{m_parent = parent; on_parent_change();}
+		void parent(node* ptr)	{m_parent = ptr; on_parent_change();}
 
 	protected:				
 		virtual void on_parent_change(){}
@@ -86,7 +85,7 @@ namespace core
 
 			bool operator()(const node_type_ptr& obj) const 
 			{
-				return obj->get_name() == m_name;
+				return obj->name() == m_name;
 			}
 
 			const std::string& m_name;
@@ -101,11 +100,11 @@ namespace core
 		{
 		}
 
-		node_type_ptr find_node(const std::string& node_name)
+		node_type_ptr find(const std::string& node_name)
 		{
 			try
 			{
-				return find_node(base::tokenize<char>(".", node_name));		
+				return find(base::tokenize<char>(".", node_name));		
 			}
 			catch(exceptions::node_not_found&)
 			{
@@ -113,9 +112,9 @@ namespace core
 			}		
 		}
 
-		node_type_ptr find_node(const std::list<std::string>& nodes_names)
+		node_type_ptr find(const std::list<std::string>& nodes_names)
 		{
-			node_type_ptr node = find_child(*nodes_names.begin());
+			node_type_ptr node = child(*nodes_names.begin());
 
 			if (nodes_names.size() == 1)
 				return node;
@@ -124,11 +123,11 @@ namespace core
 				std::list<std::string> name;
 				name.resize(nodes_names.size()-1);
 				std::copy((++nodes_names.begin()), nodes_names.end(), name.begin());
-				return node->find_node(name);
+				return node->find(name);
 			}
 		}
 
-		node_type_ptr find_child(const std::string& name)
+		node_type_ptr child(const std::string& name)
 		{
 			children_list::iterator it = std::find_if(m_children.begin(), m_children.end(), _searcher(name));
 

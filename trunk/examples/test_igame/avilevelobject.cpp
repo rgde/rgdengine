@@ -22,7 +22,7 @@ AviLevelObject::~AviLevelObject()
 
 void AviLevelObject::onSpace() 
 {
-	send_event<game::events::on_complite_level>(game::events::on_complite_level());
+	send<game::events::on_complite_level>(game::events::on_complite_level());
 }
 
 namespace game

@@ -3,8 +3,6 @@
 #include <rgde/math/camera.h>
 #include <rgde/render/font.h>
 
-#include <rgde/base/singelton.h>
-
 namespace render
 {
 	class device_object;
@@ -27,8 +25,8 @@ namespace render
 		void					add_object(device_object* obj);
 		void					remove_object(device_object* obj);
 
-		void					set_camera(const math::camera_ptr& cam){m_cam = cam; }
-		const math::camera_ptr&	get_camera() const {return m_cam;}
+		void					camera(const math::camera_ptr& cam){m_cam = cam; }
+		const math::camera_ptr&	camera() const {return m_cam;}
 
 		void					set_shader_flags(unsigned long flag)	{m_shaderFlags = flag;}
 		unsigned long			get_shader_flags() const				{return m_shaderFlags;}
@@ -48,8 +46,8 @@ namespace render
 		void                    showStatistics(const font_ptr& font);
 
         //->
-        void                    set_clear_color (math::Color color) {m_clear_color = color;}
-        const math::Color&      get_clear_color () const {return m_clear_color;}
+        void                    clear_color (math::Color color) {m_clear_color = color;}
+        const math::Color&      clear_color () const {return m_clear_color;}
         //-<
 
 		lines3d&				get_lines3d();
@@ -62,9 +60,7 @@ namespace render
 		void init();
 
 	protected:
-        //->
         math::Color             m_clear_color;
-        //-<
 
 		unsigned long			m_shaderFlags;
 		math::camera_ptr		m_cam;

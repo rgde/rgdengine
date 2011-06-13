@@ -7,7 +7,7 @@ namespace
 {
 	bool operator<(const io::file_source_ptr& s1, const io::file_source_ptr& s2)
 	{
-		return s1->get_priority() < s2->get_priority();
+		return s1->priority() < s2->priority();
 	}
 }
 
@@ -24,7 +24,7 @@ namespace io
 		{
 		}
 
-		int get_priority() const
+		int priority() const
 		{
 			return 100;
 		}

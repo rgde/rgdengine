@@ -63,7 +63,7 @@ namespace render
 	//		math::vec4f m_ambient;
 	//		math::vec4f m_diffuse;
 	//		math::vec4f m_specular;
-	//		float       m_fRange;
+	//		float       m_range;
 	//		math::vec3f m_attenuations;//1, D, D^2;
 	//		math::vec3f m_spot;
 	//		bool        m_bEnable;
@@ -91,7 +91,7 @@ namespace render
 
 	//	void readModelNames(const std::string& strConfigName =
 	//										"LightsModelsNames.xml");
-	//	const std::string& lightTypeToStr(base_light::type eType);
+	//	const std::string& lightTypeToStr(base_light::type tipe);
 
 	//private:
 	//	math::Color m_ambientColor;

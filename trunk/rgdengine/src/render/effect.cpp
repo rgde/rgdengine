@@ -35,7 +35,7 @@ namespace
 				return S_FALSE;
 			}
 
-			uint size = in->get_size();
+			uint size = in->size();
 			byte* data = new byte[size];
 			in->read(data, size);
 
@@ -119,7 +119,7 @@ namespace render
 			D3DXPARAMETER_DESC paramDesc;
 			m_effect->GetParameterDesc(paramHandle, &paramDesc);
 
-			m_type = (type)paramDesc.Type;
+			m_type = (type_t)paramDesc.Type;
 			m_name = paramDesc.Name;
 			m_size = paramDesc.Bytes;
 
@@ -146,22 +146,22 @@ namespace render
 			return m_vecAnnotations;
 		}
 		
-		const std::string& get_name() const
+		const std::string& name() const
 		{
 			return m_name;
 		}
 
-		const std::string& get_semantic() const
+		const std::string& semantic() const
 		{
 			return m_semantic;
 		}
 
-		unsigned int get_size() const
+		unsigned int size() const
 		{
 			return m_size;
 		}
 
-		type get_type() const
+		type_t type() const
 		{
 			return m_type;
 		}
@@ -394,7 +394,7 @@ namespace render
 		std::string m_name;
 		std::string m_semantic;
 		unsigned int m_size;
-		type m_type;
+		type_t m_type;
 		D3DXHANDLE m_Handle;
 		effect::annotations_vector m_vecAnnotations;
 	};
@@ -458,7 +458,7 @@ namespace render
 				//unguard
 			}
 
-			const std::string& get_name() const
+			const std::string& name() const
 			{
 				return m_name;
 			}
@@ -518,7 +518,7 @@ namespace render
 			return m_arPasses;
 		}
 
-		const std::string& get_name() const
+		const std::string& name() const
 		{
 			return m_name;
 		}
@@ -630,7 +630,7 @@ namespace render
 			for(unsigned int i = 0; i < desc.Parameters; i ++)
 			{
 				parameter* effectParam = new effect_param_impl(m_effect, i);
-				m_mapParameters[effectParam->get_semantic()] = effectParam;
+				m_mapParameters[effectParam->semantic()] = effectParam;
 			}
 
 			// Retrieve techniques.
@@ -639,7 +639,7 @@ namespace render
 				effect_technique_impl* technique = new effect_technique_impl(m_effect, i);
 
 				if(FAILED(m_effect->ValidateTechnique(technique->getHandle())))
-					base::lerr << "ValidateTechnique fault. effect file: " << effect_name << " tech: " << technique->get_name();
+					base::lerr << "ValidateTechnique fault. effect file: " << effect_name << " tech: " << technique->name();
 				else
 					m_listTechniques.push_back(technique);
 			}
@@ -686,7 +686,7 @@ namespace render
 			//unguard
 		}
 
-		const std::string& get_name() const
+		const std::string& name() const
 		{
 			return m_name;
 		}
@@ -708,7 +708,7 @@ namespace render
 			techniques_list::iterator technique = m_listTechniques.begin();
 			while (technique != m_listTechniques.end())
 			{
-				if ((*technique)->get_name() == name)
+				if ((*technique)->name() == name)
 					return *technique;
 
 				++ technique;
@@ -731,25 +731,25 @@ namespace render
 	//------------------------------------------------------------------------------
 	// Static methods.
 	//------------------------------------------------------------------------------
-	effect_ptr effect::create(const std::string& file_name)
+	effect_ptr effect::create(const std::string& filename)
 	{
-		//guard(effect_ptr effect::create(std::wstring file_name))
+		//guard(effect_ptr effect::create(std::wstring filename))
 
-		EffectsList::iterator it = std::find_if(effects.begin(), effects.end(), _seacher(file_name));
+		EffectsList::iterator it = std::find_if(effects.begin(), effects.end(), _seacher(filename));
 
 		if (it != effects.end())
 			return it->effect;
 
 		EffectEntry ee;
 		ee.effect = effect_ptr(new CEffect());
-		bool res = ee.effect->load(file_name);
-		ee.name = file_name;
+		bool res = ee.effect->load(filename);
+		ee.name = filename;
 
 		ee.effect = res ? ee.effect : effect_ptr();
 
 		if (!res)
 		{
-			base::lerr << "effect::create(std::string effect_name): Can't load effect:" << file_name;
+			base::lerr << "effect::create(std::string effect_name): Can't load effect:" << filename;
 		}
 
 		effects.push_back(ee);

@@ -21,7 +21,7 @@ log::~log()
 	instance = 0;
 }
 //---------------------------------------------------------------------------------------
-std::string get_current_time()
+std::string time()
 {
 	SYSTEMTIME t;
 	GetLocalTime (&t);
@@ -44,7 +44,7 @@ bool log::init()
 
 	std::string strLogName;
 	strLogName.append("RGDE_Log_");
-	strLogName.append(get_current_time().c_str());
+	strLogName.append(time().c_str());
 	strLogName.append(".html");
 	get().logFile.open(strLogName.c_str());
 

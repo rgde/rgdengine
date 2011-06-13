@@ -13,7 +13,6 @@
 #include <rgde/render/render_device.h>
 #include <rgde/render/manager.h>
 #include <rgde/render/light_manager.h>
-#include <rgde/render/fog.h>
 
 #include <rgde/base/lexical_cast.h>
 
@@ -22,29 +21,29 @@ namespace render
 ///---------------------------------------------------------------------------\
 //|                              Dynamic binder                               |
 //\---------------------------------------------------------------------------/
-	inline const math::camera_ptr& get_camera()
+	inline const math::camera_ptr& camera()
 	{
-		return render_device::get().get_camera();
+		return render_device::get().camera();
 	}
 
 	math::matrix44f makeWorldViewProjMatrix(const math::frame_ptr& frame)
 	{
-		const math::camera_ptr& camera = get_camera();
-		assert(camera && "ERROR: render::makeWorldViewProjMatrix camera is NULL !");
-		const math::matrix44f& view = camera->get_view_matrix();
-		const math::matrix44f& proj = camera->get_proj_matrix();
-		return proj*(view*frame->get_full_tm());
+		const math::camera_ptr& cam = camera();
+		assert(cam && "ERROR: render::makeWorldViewProjMatrix camera is NULL !");
+		const math::matrix44f& view = cam->view_matrix();
+		const math::matrix44f& proj = cam->proj_matrix();
+		return proj*(view*frame->world_trasform());
 	}
 
 	math::matrix44f makeWorldViewMatrix(const math::frame_ptr& frame)
 	{
-		return frame->get_full_tm()*get_camera()->get_view_matrix();
+		return frame->world_trasform()*camera()->view_matrix();
 	}
 
 	math::matrix44f makeWorldViewInvTranspMatrix(const math::frame_ptr& frame)
 	{
-		math::matrix44f result = frame->get_full_tm();
-		result *= get_camera()->get_view_matrix();
+		math::matrix44f result = frame->world_trasform();
+		result *= camera()->view_matrix();
 		math::invert(result);
 		math::transpose(result);
 		return result;
@@ -68,7 +67,7 @@ namespace render
 		getMatrixFunction = bind(&makeWorldViewInvTranspMatrix, _1);
 		binder->addParameter<matrix44f>(getMatrixFunction,
 										WorldViewITMatrixParamName);
-		getMatrixFunction = bind(&frame::get_full_tm, _1);
+		getMatrixFunction = bind(&frame::world_trasform, _1);
 		binder->addParameter<matrix44f>(getMatrixFunction,
 										WorldMatrixParamName);
 	}
@@ -125,7 +124,7 @@ namespace render
 					std::string temp = upper.substr(0, 1) +
 									   lower.substr(1, lower.length() - 1);
 
-					if(CubeTexture == it->second.get_texture()->get_type())
+					if(CubeTexture == it->second.get_texture()->type())
 						temp += "Cube";
 
 					strTechName += temp;
@@ -175,20 +174,13 @@ namespace render
 		using namespace math;
 		using namespace boost;
 		typedef StaticBinder::Types<int>::getter GetIntFunction;
-		typedef StaticBinder::Types<Fog>::ParamTypeGetFunction
-												ParamTypeGetFogFunction;
 
 		GetIntFunction          getIntFunction;
-		ParamTypeGetFogFunction getFogFunction;
 
 		//getIntFunction = bind(&render_manager::getFillMode,
 		//					  &TheRenderManager::get());
 		//binder->addParameter<int>(getIntFunction,
 		//						  FillModeParamName);
-		//getFogFunction = bind(&render_manager::getCurrentFog,
-		//					  &TheRenderManager::get());
-		//binder->addParameter<Fog>(getFogFunction,
-		//						   FogParamName);
 	}
 
 	void addLightingParameters(const static_binder_ptr& binder)
@@ -246,28 +238,28 @@ namespace render
 		//binder->addParameter<LightDatas>(getLightsFunction, "LIGHTS");
 	}
 
-	math::matrix44f get_view_matrix()
+	math::matrix44f view_matrix()
 	{
-		if(!get_camera())
+		if(!camera())
 			return math::matrix44f();
 
-		return get_camera()->get_view_matrix();
+		return camera()->view_matrix();
 	}
 
-	math::matrix44f get_proj_matrix()
+	math::matrix44f proj_matrix()
 	{
-		if(!get_camera())
+		if(!camera())
 			return math::matrix44f();
 
-		return get_camera()->get_proj_matrix();
+		return camera()->proj_matrix();
 	}
 
 	math::matrix44f makeViewInvTranspMatrix()
 	{
-		if(!get_camera())
+		if(!camera())
 			return math::matrix44f();
 
-		math::matrix44f result = get_camera()->get_view_matrix();
+		math::matrix44f result = camera()->view_matrix();
 		math::invert(result);
 		math::transpose(result);
 		return result;
@@ -281,10 +273,10 @@ namespace render
 
 		GetMatrix44fFunction getMatrixFunction;
 		
-		getMatrixFunction = bind(&get_proj_matrix);
+		getMatrixFunction = bind(&proj_matrix);
 		binder->addParameter<matrix44f>(getMatrixFunction, ProjectionMatrixParamName);
 
-		getMatrixFunction = bind(&get_view_matrix);
+		getMatrixFunction = bind(&view_matrix);
 		binder->addParameter<matrix44f>(getMatrixFunction, ViewMatrixParamName);
 
 		getMatrixFunction = bind(&makeViewInvTranspMatrix);

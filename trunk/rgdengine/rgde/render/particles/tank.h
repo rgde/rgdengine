@@ -8,19 +8,17 @@ namespace particles
 	class renderer
 	{
 	public:
-		/// Структура с информацией по частице 
-		struct SParticle
+		struct particle_t
 		{
-			math::vec3f		pos;			///> Позиция
-			math::vec2f		size;			///> Размер
-			float			spin;			///> Поворот
-			unsigned long	color;			///> Цвет
-			unsigned int    nTile; //Temporary
+			math::vec3f		pos;
+			math::vec2f		size;
+			float			spin;
+			unsigned long	color;
+			unsigned int    tile; // texture tile
 		};
 
-		/// Тип массива частиц
-		typedef std::vector< SParticle > particles_vector;
-		typedef particles_vector::iterator ParticleArrayIter;
+		typedef std::vector< particle_t > particles_t;
+		typedef particles_t::iterator particle_it;
 
 		renderer();
 		virtual ~renderer();
@@ -28,13 +26,13 @@ namespace particles
 		void update();
 		void render(render::texture_ptr texture, math::frame_ptr transform);
 
-		inline particles_vector& getParticles() { return m_vParticleArray; }
+		inline particles_t& particles() { return m_particles; }
 
-		void setTextureTiling(int nRows, int nColumnsTotal, int nRowsTotal);
+		void texture_tiling(int rows, int columns_total, int rows_total);
 
 	protected:
-		particles_vector		m_vParticleArray;///> Вектор частиц
-		unsigned long		m_reserved_size; ///> Число частиц, для которого зарезервированы буферы
+		particles_t		m_particles;
+		unsigned long	m_reserved_size; ///> Число частиц, для которого зарезервированы буферы
 
 	private:
 		render::effect_ptr		m_effect;
@@ -50,7 +48,7 @@ namespace particles
 		typedef render::indexed_geometry<vertex::PositionColoredTextured2, false> geometry;
 		geometry			m_geometry;
 
-		int m_nRows;
+		int m_rows;
 		float m_fInvRows;
 		float m_fInvTotalColumns;
 		float m_fInvTotalRows;

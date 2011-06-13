@@ -9,8 +9,8 @@ namespace io
 	//////////////////////////////////////////////////////////////////////////
 	namespace helpers
 	{
-		std::string get_file_ext(const std::string& file_name);
-		std::string get_shot_filename(const std::string& file_name);
+		std::string get_file_ext(const std::string& filename);
+		std::string get_shot_filename(const std::string& filename);
 		std::string wstr_to_str (const std::wstring& wstr);
 		std::wstring str_to_wstr (const std::string& str);
 	}
@@ -29,9 +29,9 @@ namespace io
 	public:
 		virtual void read(byte* buff, unsigned size) = 0;
 
-		virtual unsigned long get_size() const = 0;
-		virtual unsigned long get_pos() = 0;
-		virtual void set_pos(unsigned long pos) = 0;
+		virtual unsigned long size() const = 0;
+		virtual unsigned long position() = 0;
+		virtual void position(unsigned long pos) = 0;
 
 		virtual ~read_stream(){}
 	};
@@ -166,7 +166,7 @@ namespace io
 		bool is_valid()					const {return m_is_valid;}
 		bool has_errors()				const {return m_is_error;}
 		const Path& get_path()			const {return m_path;}
-		const std::string& get_name()	const {return m_name;}
+		const std::string& name()	const {return m_name;}
 
 		bool open(const std::string& name, Path path = Path());
 
@@ -188,7 +188,7 @@ namespace io
 	{
 	public:
 		write_file();
-		write_file(const std::string& file_name);
+		write_file(const std::string& filename);
 		virtual ~write_file();
 
 		virtual bool is_valid() const {return base_file::is_valid();}
@@ -196,7 +196,7 @@ namespace io
 		virtual void write(const byte* buff, unsigned size);
 
 	protected:
-		virtual bool do_open_file(const std::string& file_name, const Path& path);
+		virtual bool do_open_file(const std::string& filename, const Path& path);
 
 	protected:
 		std::ofstream m_file_stream;
@@ -210,18 +210,18 @@ namespace io
 	{
 	public:
 		read_file();
-		read_file(const std::string& file_name);
+		read_file(const std::string& filename);
 		virtual ~read_file();
 
 		virtual bool is_valid() const {return base_file::is_valid();}
 		virtual void read(byte* buff, unsigned size);
 
-		virtual unsigned long get_size() const;
-		virtual unsigned long get_pos();
-		virtual void set_pos(unsigned long pos);
+		virtual unsigned long size() const;
+		virtual unsigned long position();
+		virtual void position(unsigned long pos);
 
 	protected:		
-		virtual bool do_open_file(const std::string& file_name, const Path& path);
+		virtual bool do_open_file(const std::string& filename, const Path& path);
 
 	protected:
 		unsigned long m_size;

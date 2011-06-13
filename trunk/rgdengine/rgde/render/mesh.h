@@ -28,10 +28,10 @@ namespace render
 		mesh();
 		~mesh();
 
-		void		  load(const std::string& file_name); // load from xml file
+		void		  load(const std::string& filename); // load from xml file
 
 		//Neonic: octree
-		void			update( bool NeedFullUpdate =0 );
+		void			update( bool invalidate_transform =0 );
 
 		geometry_ptr	  getGeometry()				{return m_geometry;}
 		materials_list& get_materials()			{return m_materials;}

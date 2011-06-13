@@ -7,7 +7,7 @@ namespace render
 {
 	//LightManager::SLightData::SLightData()
 	//	:	m_nType(base_light::Point),
-	//		m_fRange(0),
+	//		m_range(0),
 	//		m_attenuations(math::vec3f(1, 0, 0)),
 	//		m_bEnable(false)
 	//{
@@ -36,7 +36,7 @@ namespace render
 	////	m_bRenderDebug = bRenderDebug;
 
 	////	for(ModelsList::iterator it = m_models.begin(); it != m_models.end(); it++)
-	////		(*it)->setVisible(m_bRenderDebug);
+	////		(*it)->visible(m_bRenderDebug);
 	////}
 
 	//int LightManager::getActivePointLightsIni() const
@@ -111,9 +111,9 @@ namespace render
 
 	//void LightManager::addLight(const PLight& pLight)
 	//{
-	//	base_light::type eType = pLight->get_type();
+	//	base_light::type tipe = pLight->type();
 
-	//	switch(eType)
+	//	switch(tipe)
 	//	{
 	//		case base_light::Point:
 	//			m_nPointLightsNum++;
@@ -128,12 +128,12 @@ namespace render
 	//		break;
 	//	};
 
-	//	//std::string strLightModelName = lightTypeToStr(eType);
+	//	//std::string strLightModelName = lightTypeToStr(tipe);
 	//	//model_ptr pModel = model::create(std::wstring(strLightModelName.begin(), strLightModelName.end()));
 	//	//m_models.push_back(pModel);
 
 	//	//pLight->getParentFrame()->add(pModel->getRoot());
-	//	//pModel->setVisible(m_bRenderDebug);
+	//	//pModel->visible(m_bRenderDebug);
 	//	m_lights.push_back(pLight);
 	//}
 	//
@@ -148,7 +148,7 @@ namespace render
 	//		{
 	//			m_lights.erase(it1);
 	//			//m_models.erase(it2);
-	//			switch(pLight->get_type())
+	//			switch(pLight->type())
 	//			{
 	//				case base_light::Point:
 	//					m_nPointLightsNum--;
@@ -180,9 +180,9 @@ namespace render
 	//	int i = 0;
 
 	//	#define FILL_BASE_LIGHT_MEMBERS(light_data, pLight)   \
-	//	light_data.m_nType     = pLight->get_type();           \
-	//	light_data.m_position  = pLight->get_world_pos(); \
-	//	light_data.m_direction = pLight->getAt(); 	          \
+	//	light_data.m_nType     = pLight->type();           \
+	//	light_data.m_position  = pLight->world_position(); \
+	//	light_data.m_direction = pLight->at(); 	          \
 	//	light_data.m_ambient   = pLight->getAmbient();        \
 	//	light_data.m_diffuse   = pLight->getDiffuse();        \
 	//	light_data.m_specular  = pLight->getSpecular();       \
@@ -191,7 +191,7 @@ namespace render
 	//	for(it = m_lights.begin(); it != m_lights.end(); it++)
 	//		if(*it)
 	//			if((*it)->isEnabled())
-	//				if((*it)->get_type() == base_light::Point)
+	//				if((*it)->type() == base_light::Point)
 	//				{
 	//					if(i >= MAX_NUM_ACTIVE_LIGHTS)
 	//						return;
@@ -200,11 +200,11 @@ namespace render
 	//								(const PointLight*)it->get();
 
 	//					FILL_BASE_LIGHT_MEMBERS(m_lightData[i], pPointLight)
-	//					m_lightData[i].m_fRange = pPointLight->getRange();
+	//					m_lightData[i].m_range = pPointLight->range();
 	//					m_lightData[i].m_attenuations =
-	//					math::vec3f(pPointLight->getConstantAttenuation(),
-	//								pPointLight->getLinearAttenuation(),
-	//								pPointLight->getQuadraticAttenuation());
+	//					math::vec3f(pPointLight->constant_attenuation(),
+	//								pPointLight->linear_attenuation(),
+	//								pPointLight->quadratic_attenuation());
 	//					m_lightData[i].m_spot = math::vec3f(0, 0, 0);
 
 	//					m_nActivePointLightsNum++;
@@ -216,7 +216,7 @@ namespace render
 	//	for(it = m_lights.begin(); it != m_lights.end(); it++)
 	//		if(*it)
 	//			if((*it)->isEnabled())
-	//				if((*it)->get_type() == base_light::Spot)
+	//				if((*it)->type() == base_light::Spot)
 	//				{
 	//					if(i >= MAX_NUM_ACTIVE_LIGHTS)
 	//						return;
@@ -225,11 +225,11 @@ namespace render
 	//								(const SpotLight*)it->get();
 
 	//					FILL_BASE_LIGHT_MEMBERS(m_lightData[i], pSpotLight)
-	//					m_lightData[i].m_fRange = pSpotLight->getRange();
+	//					m_lightData[i].m_range = pSpotLight->range();
 	//					m_lightData[i].m_attenuations =
-	//					math::vec3f(pSpotLight->getConstantAttenuation(),
-	//								pSpotLight->getLinearAttenuation(),
-	//								pSpotLight->getQuadraticAttenuation());
+	//					math::vec3f(pSpotLight->constant_attenuation(),
+	//								pSpotLight->linear_attenuation(),
+	//								pSpotLight->quadratic_attenuation());
 	//					m_lightData[i].m_spot =
 	//					math::vec3f(pSpotLight->getTheta(),
 	//								pSpotLight->getPhi(),
@@ -244,7 +244,7 @@ namespace render
 	//	for(it = m_lights.begin(); it != m_lights.end(); it++)
 	//		if(*it)
 	//			if((*it)->isEnabled())
-	//				if((*it)->get_type() == base_light::Directional)
+	//				if((*it)->type() == base_light::Directional)
 	//				{
 	//					if(i >= MAX_NUM_ACTIVE_LIGHTS)
 	//						return;
@@ -254,7 +254,7 @@ namespace render
 
 	//					FILL_BASE_LIGHT_MEMBERS(m_lightData[i],
 	//													pDirectionalLight)
-	//					m_lightData[i].m_fRange = 0;
+	//					m_lightData[i].m_range = 0;
 	//					m_lightData[i].m_attenuations = math::vec3f(0, 0, 0);
 	//					m_lightData[i].m_spot = math::vec3f(0, 0, 0);
 
@@ -295,12 +295,12 @@ namespace render
 	//	m_bModelNamesReaded = true;
 	//}
 
-	//const std::string& LightManager::lightTypeToStr(base_light::type eType)
+	//const std::string& LightManager::lightTypeToStr(base_light::type tipe)
 	//{
 	//	if(!m_bModelNamesReaded)
 	//		readModelNames();
 
-	//	switch(eType)
+	//	switch(tipe)
 	//	{
 	//		case base_light::Point:
 	//			return m_strPointLightModelName;

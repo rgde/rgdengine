@@ -64,7 +64,7 @@ namespace particles
 		float r_rand = m_RadiusSpread.get_value(m_normalized_time);
 		int angle = (int)(m_Angle.get_value(m_normalized_time));
 
-		math::matrix44f m = get_transform()->get_full_tm();
+		const math::matrix44f& m = world_trasform();
 
 		line_manager.add_sphere( m , rad, angle );
 		if( r_rand != 0 )

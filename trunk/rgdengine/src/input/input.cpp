@@ -52,12 +52,12 @@ namespace input
         get().m_impl->load(xml);
     }
 
-    void Input::load (const std::string &file_name)
+    void Input::load (const std::string &filename)
     {
         std::vector<char> data;
 
         io::file_system &fs    = io::file_system::get();
-        io::readstream_ptr stream = fs.find(file_name);
+        io::readstream_ptr stream = fs.find(filename);
         io::stream_to_vector<char>(data, stream);
 
 		std::string str( data.begin(), data.end());
@@ -75,7 +75,7 @@ namespace input
         get().m_impl->save(xml);
     }
 
-    device* Input::get_device (device::type eDeviceName, int indx)
+    device* Input::get_device (device::type_t eDeviceName, int indx)
     {
         return get().m_impl->get_device(eDeviceName, indx);
     }
@@ -85,7 +85,7 @@ namespace input
         return get().m_impl->get_device(sDeviceName, indx);
     }
 
-	Control* Input::get_control(device::type type, int dev_index, controls control)
+	Control* Input::get_control(device::type_t type, int dev_index, controls control)
 	{
 		if (device* dev = get_device(type, dev_index))
 			return dev->get_control(control);
@@ -94,7 +94,7 @@ namespace input
 	}
 
     //есть ли такое устройство
-    bool Input::is_present (device::type type, int indx)
+    bool Input::is_present (device::type_t type, int indx)
     {
         return get().m_impl->is_present(type, indx);
     }

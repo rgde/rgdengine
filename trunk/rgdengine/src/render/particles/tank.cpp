@@ -20,7 +20,7 @@ namespace particles
 
 		m_pRenderTechnique = m_effect->find_technique("PartilesRenderModulate");
 
-		setTextureTiling(1, 1, 1);
+		texture_tiling(1, 1, 1);
 	}
 
 	//-----------------------------------------------------------------------------------
@@ -33,10 +33,10 @@ namespace particles
 		if( (m_reserved_size == 0) )
 			return;
 
-		const math::matrix44f& mLocal	= frame->get_full_tm();
-		math::camera_ptr camera		= render::render_device::get().get_camera();
-		const math::matrix44f& mProj	= camera->get_proj_matrix();
-		const math::matrix44f& mView	= camera->get_view_matrix();
+		const math::matrix44f& mLocal	= frame->world_trasform();
+		math::camera_ptr camera		= render::render_device::get().camera();
+		const math::matrix44f& mProj	= camera->proj_matrix();
+		const math::matrix44f& mView	= camera->view_matrix();
 		
 		math::matrix44f mSystem = mView * mLocal;
 		math::matrix44f mLVP = mProj * mSystem;
@@ -76,7 +76,7 @@ namespace particles
 		for(size_t pass = 0; pass < passes.size(); ++pass)
 		{
 			passes[pass]->begin();
-			m_geometry.render( render::TriangleList, 2*(unsigned)m_vParticleArray.size() );
+			m_geometry.render( render::TriangleList, 2*(unsigned)m_particles.size() );
 			passes[pass]->end();
 		}
 
@@ -85,7 +85,7 @@ namespace particles
 	//-----------------------------------------------------------------------------------
 	void renderer::update()
 	{
-		unsigned int nParticles = (unsigned int)m_vParticleArray.size();
+		unsigned int nParticles = (unsigned int)m_particles.size();
 
 		if( nParticles == 0 ) return;
 
@@ -115,7 +115,7 @@ namespace particles
 		unsigned int j = 0;
 		for( unsigned int i = 0; i < nParticles; ++i )
 		{
-			SParticle & p = m_vParticleArray[i];
+			particle_t & p = m_particles[i];
 			float sizex = p.size[0]*0.5f;
 			float sizey = p.size[1]*0.5f;
 			float& spin = p.spin;
@@ -125,8 +125,8 @@ namespace particles
 			float ysin = sizey*::sin(spin);
 			float ycos = sizey*::cos(spin);
 
-			float fTileY = (float)(p.nTile%m_nRows),
-				  fTileX = ((float)p.nTile - fTileY)*m_fInvRows;
+			float fTileY = (float)(p.tile%m_rows),
+				  fTileX = ((float)p.tile - fTileY)*m_fInvRows;
 
 
 			vertexies[j].position = p.pos;
@@ -156,12 +156,12 @@ namespace particles
 		m_geometry.unlock_vb();
 	}
 
-	void renderer::setTextureTiling(int nRows, int nColumnsTotal, int nRowsTotal)
+	void renderer::texture_tiling(int rows, int columns_total, int rows_total)
 	{
-		m_nRows = nRows;
-		m_fInvRows = 1.0f/(float)nRows;
-		m_fInvTotalColumns = 1.0f/(float)nColumnsTotal;
-		m_fInvTotalRows = 1.0f/(float)nRowsTotal;
+		m_rows = rows;
+		m_fInvRows = 1.0f/(float)rows;
+		m_fInvTotalColumns = 1.0f/(float)columns_total;
+		m_fInvTotalRows = 1.0f/(float)rows_total;
 	}
 
 }

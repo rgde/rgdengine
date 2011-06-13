@@ -10,7 +10,7 @@ namespace lines_test
 		void reset();
 		void update();
 
-		inline math::vec3f& get_pos() { return m_pos; }
+		inline math::vec3f& position() { return m_pos; }
 
 	protected:
 		math::vec3f m_pos;							///> Позиция

@@ -110,7 +110,7 @@ namespace game
 				while (levelobject)
 				{
 					std::string type = levelobject->Attribute("type");
-					pLevel->call_function("AddTypeToCreate", type);
+					pLevel->call("AddTypeToCreate", type);
 					levelobject = levelobject->NextSiblingElement("levelobject");
 				}
 
@@ -148,7 +148,7 @@ namespace game
             return;
         }
 
-        pLevel->call_function("AddTypeToCreate", type_name);
+        pLevel->call("AddTypeToCreate", type_name);
     }
 
 
@@ -164,14 +164,14 @@ namespace game
 		level *pLevel = get_level(m_cur_level_name);
 
 		if (0 != pLevel)
-			next_level = pLevel->get_next_level();
+			next_level = pLevel->next_level();
 
 		setCurrentLevel(next_level);
 	}
 
 	void game_system::onSetLevel(events::on_level_set event)
 	{
-		setCurrentLevel(event.get_next_level());
+		setCurrentLevel(event.next_level());
 	}
 
 	void game_system::setCurrentLevel(const std::string& next_level)
@@ -182,7 +182,7 @@ namespace game
 
 	void game_system::update()
 	{
-		float dt = m_timer.get_elapsed();
+		float dt = m_timer.elapsed();
 
 		m_cur_frame_delta = dt;
 
@@ -259,7 +259,7 @@ namespace game
 	{
 		for(std::list<level*>::iterator i = m_levels.begin(); i != m_levels.end(); ++i)
 		{
-			if ((*i)->get_name() == name)
+			if ((*i)->name() == name)
 				return (*i);
 		}
 		return 0;

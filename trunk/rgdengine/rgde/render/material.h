@@ -17,7 +17,7 @@ namespace render
 		material(math::Color amb, math::Color diff, math::Color spec,
 				  math::Color em, float power);
 
-		void load(const std::string& file_name);
+		void load(const std::string& filename);
 
 	public:
 		class material_map
@@ -33,9 +33,9 @@ namespace render
 			material_map(default_texture_type defaultTexture = White);
 
 			const texture_ptr& get_texture() const { return m_texture; }
-			void set_texture(const texture_ptr& texure);
+			void texture(const texture_ptr& texure);
 
-			//Returns true if texture was valid for the last call of set_texture
+			//Returns true if texture was valid for the last call of texture
 			bool isTextureValid() const { return m_bTextureIsValid; }
 
 			const math::matrix44f& getMatrix() const { return m_matrix; }
@@ -53,7 +53,6 @@ namespace render
 			void update(float dt);
 
 		private:
-
 			texture_ptr        m_pDefaultTexture;
 
 			bool            m_bTextureIsValid;
@@ -75,7 +74,7 @@ namespace render
 				  math::Color em = math::Black,
 				  float power = 1.0f);
 
-		static material_ptr create(const std::string& file_name);
+		static material_ptr create(const std::string& filename);
 
 		virtual ~material();
 

@@ -160,7 +160,7 @@ namespace game
 				{
 					sprite.texture = m_textures[l[j].id];
 					sprite.pos = l[j].rect.position;
-					m_spriteRenderer.add_sprite(sprite);
+					m_spriteRenderer.add(sprite);
 				}
 			}
 		}

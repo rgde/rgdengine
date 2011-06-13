@@ -149,7 +149,7 @@ namespace render
 					if(NULL != pTechnique)
 					{	
 						pTechnique->begin();
-						//base::lmsg << "effect tech -=" << pTechnique->get_name() << "=- begin";
+						//base::lmsg << "effect tech -=" << pTechnique->name() << "=- begin";
 
 						std::vector<effect::technique::pass*>   &vecPasses = pTechnique->get_passes();
 
@@ -162,12 +162,12 @@ namespace render
 						}
 
 						pTechnique->end();
-						//base::lmsg << "effect tech <" << pTechnique->get_name() << "> end";
+						//base::lmsg << "effect tech <" << pTechnique->name() << "> end";
 					}
 					else
 					{
-						//info.frame->get_full_tm()						
-						g_d3d->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&info.frame->get_full_tm()[0]);						
+						//info.frame->world_trasform()						
+						g_d3d->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&info.frame->world_trasform()[0]);						
 						info.render_func();
 					}
 				}
@@ -188,7 +188,7 @@ namespace render
 		{
 			bool operator()(rendererable *r1, rendererable *r2)
 			{
-				return r1->get_priority() < r2->get_priority() ? true : false;
+				return r1->priority() < r2->priority() ? true : false;
 			}
 		};
 
@@ -207,9 +207,9 @@ namespace render
 
 				math::vec3f		pos1, pos2;
 				if (pFrame1)
-					pos1 = pFrame1->get_world_pos();
+					pos1 = pFrame1->world_position();
 				if (pFrame2)
-					pos2 = pFrame2->get_world_pos();
+					pos2 = pFrame2->world_position();
 				float	fLengthSqr1			= math::lengthSquared<float, 3>(vCamPos - pos1),
 						fLengthSqr2			= math::lengthSquared<float, 3>(vCamPos - pos2);
 
@@ -235,7 +235,7 @@ namespace render
 
 		void operator()(rendererable const * r)
 		{
-			if ((NULL == r) || (r->is_visible() == false))
+			if ((NULL == r) || (r->visible() == false))
 				return;
 
 			const renderable_info  &ri = r->get_renderable_info();
@@ -248,14 +248,14 @@ namespace render
 
 				float fHalfLenght = math::length<float, 3>(max - min) / 2.0f;
 
-				math::point3f centerGlobal = ri.frame->get_full_tm() * center;
+				math::point3f centerGlobal = ri.frame->world_trasform() * center;
 
 				// skip test on that low level.
 				//if (!m_frustum.test_sphere(centerGlobal[0], centerGlobal[1], centerGlobal[2], fHalfLenght))
 				//	return;
 			}
 
-			if (r->get_priority() >= 1000)
+			if (r->priority() >= 1000)
 				vposttrans.push_back(&ri);
 			else if (ri.material && ri.material->isTransparent())
 				vtrans.push_back(&ri);
@@ -281,19 +281,19 @@ namespace render
 		camera_manager &cm	= TheCameraManager::get();
 		if (cm.begin() != cm.end())
 		{
-			for (camera_manager::CameraListIterator camera = cm.begin(); camera != cm.end(); ++camera)
+			for (camera_manager::camera_it camera = cm.begin(); camera != cm.end(); ++camera)
 			{
 				vSolid.resize(0);
 				vTransparet.resize(0);
 				vPostTransparet.resize(0);
 
-				TheCameraManager::get().set_camera(camera);
+				TheCameraManager::get().activate(camera);
 
 				if(!m_static_binder)
 					createBinder();
 				m_static_binder->setupParameters(0);
 
-				const math::frustum& frustum = render_device::get().get_camera()->get_frustum();
+				const math::frustum& frustum = render_device::get().camera()->frustum();
 				std::for_each(m_lRenderables.begin(), m_lRenderables.end(), SRenderblesSorter(vSolid, vTransparet, vPostTransparet, frustum));
 
 				int nVisibleObjects = static_cast<int>(vTransparet.size() + vSolid.size());
@@ -301,14 +301,14 @@ namespace render
 				//std::wstring wstr(str.begin(), str.end());
 				//getDefaultFont()->renderText(wstr, math::Rect(1, 29, 400, 400), 0xFFFFFFFF, true);
 
-				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(render_device::get().get_camera()->get_pos()));
+				std::sort(vTransparet.begin(), vTransparet.end(), functors::SDistanceSorter_Less(render_device::get().camera()->position()));
 
 				{
 					{
 						const math::camera_ptr& cam = *camera;
-						const math::matrix44f& mView = cam->get_view_matrix();
-						const math::matrix44f& mProj = cam->get_proj_matrix();
-						//return mProj*(mView*frame->get_full_tm());
+						const math::matrix44f& mView = cam->view_matrix();
+						const math::matrix44f& mProj = cam->proj_matrix();
+						//return mProj*(mView*frame->world_trasform());
 						g_d3d->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&mView[0]);
 						g_d3d->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&mProj[0]);
 					}
@@ -334,7 +334,7 @@ namespace render
 			for (Renderables::iterator it = temp_copy.begin();
 				it != temp_copy.end(); ++it)
 			{
-				if ((*it)->is_visible())
+				if ((*it)->visible())
 					r(&(*it)->get_renderable_info());
 			}
 		}
@@ -359,7 +359,7 @@ namespace render
 
 	rendererable::rendererable(unsigned priority)
 		: m_render_priority(priority),
-		  m_is_visible(true)
+		  m_visible(true)
 	{
 		TheRenderManager::get().add(this);
 	}

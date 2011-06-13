@@ -129,37 +129,37 @@ namespace core
         switch (msg.uMsg)
         {
             case WM_MOUSEMOVE:
-                this->send_event<mouse_move>(mouse_move(LOWORD(msg.lParam), HIWORD(msg.lParam)));
+                this->send<mouse_move>(mouse_move(LOWORD(msg.lParam), HIWORD(msg.lParam)));
                 break;
             case WM_LBUTTONDOWN:
-                this->send_event<mouse_button>(mouse_button(mouse_button::Left, mouse_button::Down));
+                this->send<mouse_button>(mouse_button(mouse_button::Left, mouse_button::Down));
                 break;
             case WM_LBUTTONUP:
-                this->send_event<mouse_button>(mouse_button(mouse_button::Left, mouse_button::Up));
+                this->send<mouse_button>(mouse_button(mouse_button::Left, mouse_button::Up));
                 break;
             case WM_LBUTTONDBLCLK:
-                this->send_event<mouse_button>(mouse_button(mouse_button::Left, mouse_button::DoubleClick));
+                this->send<mouse_button>(mouse_button(mouse_button::Left, mouse_button::DoubleClick));
                 break;
             case WM_MBUTTONDOWN:
-                this->send_event<mouse_button>(mouse_button(mouse_button::Middle, mouse_button::Down));
+                this->send<mouse_button>(mouse_button(mouse_button::Middle, mouse_button::Down));
                 break;
             case WM_MBUTTONUP:
-                this->send_event<mouse_button>(mouse_button(mouse_button::Middle, mouse_button::Up));
+                this->send<mouse_button>(mouse_button(mouse_button::Middle, mouse_button::Up));
                 break;
             case WM_MBUTTONDBLCLK:
-                this->send_event<mouse_button>(mouse_button(mouse_button::Middle, mouse_button::DoubleClick));
+                this->send<mouse_button>(mouse_button(mouse_button::Middle, mouse_button::DoubleClick));
                 break;
             case WM_RBUTTONDOWN:
-                this->send_event<mouse_button>(mouse_button(mouse_button::Right, mouse_button::Down));
+                this->send<mouse_button>(mouse_button(mouse_button::Right, mouse_button::Down));
                 break;
             case WM_RBUTTONUP:
-                this->send_event<mouse_button>(mouse_button(mouse_button::Right, mouse_button::Up));
+                this->send<mouse_button>(mouse_button(mouse_button::Right, mouse_button::Up));
                 break;
             case WM_RBUTTONDBLCLK:
-                this->send_event<mouse_button>(mouse_button(mouse_button::Right, mouse_button::DoubleClick));
+                this->send<mouse_button>(mouse_button(mouse_button::Right, mouse_button::DoubleClick));
                 break;
             case WM_MOUSEWHEEL:
-                this->send_event<mouse_whell>(mouse_whell(HIWORD(msg.wParam)));
+                this->send<mouse_whell>(mouse_whell(HIWORD(msg.wParam)));
                 break;
         };
 	}
@@ -228,7 +228,7 @@ namespace core
 			// TODO: Send event with new sizes
 			int width = rcWindowClient.right - rcWindowClient.left;
 			int height = rcWindowClient.bottom - rcWindowClient.top;
-			this->send_event<window_resize>(window_resize(width, height));
+			this->send<window_resize>(window_resize(width, height));
 
 			m_is_paused = false;
 		}
@@ -347,7 +347,7 @@ namespace core
 			//GetClientRect( Handle(), &rcWindowClient );
 			//int width = rcWindowClient.right - rcWindowClient.left;
 			//int height = rcWindowClient.bottom - rcWindowClient.top;
-			//this->send_event(window_resize(width, height));
+			//this->send(window_resize(width, height));
 		}
 		else
 		{

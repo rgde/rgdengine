@@ -47,16 +47,16 @@ public:
 	SampleApp()
 	{
 		math::vec3f eye( 0.0f, 0, -30 );
-		math::vec3f look_at( 0.0f, 0.0f, 0.0f );
+		math::vec3f lookat( 0.0f, 0.0f, 0.0f );
 		math::vec3f up_vec( 0.0f, 1.0f, 0.0f );
 
 		m_camera = render::render_camera::create();
-		m_camera->set_projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
-		render::TheCameraManager::get().add_camera(m_camera);
+		m_camera->projection(math::Math::PI/4, 1.0f, 1.0f, 10000.0f);
+		render::TheCameraManager::get().add(m_camera);
 
 
 		m_target_camera = math::target_camera::create(m_camera);
-		m_target_camera->set_position(up_vec,eye,look_at);
+		m_target_camera->position(up_vec,eye,lookat);
 
         {
             using namespace input;
@@ -80,7 +80,7 @@ public:
 
 		m_pMySuper = boost::intrusive_ptr<SceneHelper>(new SceneHelper(m_pGeometry));
 		scene::TheScene::get().get_root()->add(m_pMySuper);
-		m_pMySuper->set_position(math::vec3f(0,0,-5));
+		m_pMySuper->position(math::vec3f(0,0,-5));
 	}
 protected:
 

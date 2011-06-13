@@ -5,9 +5,9 @@
 
 namespace input
 {
-    Control::Control(controls name, type eType, device &device)
+    Control::Control(controls name, type_t tipe, device &device)
 		: m_device(device)
-        , m_type(eType)
+        , m_type(tipe)
         , m_time(0)
         , m_press(false)
         , m_delta(0)
