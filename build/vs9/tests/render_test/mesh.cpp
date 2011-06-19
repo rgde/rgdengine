@@ -36,12 +36,10 @@ namespace rgde
 			{
 				mesh_ptr out(new mesh(dev));
 
-				vertex_declaration_ptr decl = vertex_declaration::create(dev, vertex_desc, 4);
-
 				{
 					out->vb = vertex_buffer::create
 						(
-						dev, decl, 
+						dev,
 						num_vertices * sizeof(vertex), 
 						resource::default, 
 						buffer::write_only
@@ -70,6 +68,7 @@ namespace rgde
 				attr.vertex_start = 0;
 				attr.vertex_count = num_vertices;
 				attr.prim_type = triangle_list;
+				attr.decl = vertex_declaration::create(dev, vertex_desc, 4);
 
 				return out;
 			}

@@ -24,36 +24,30 @@ namespace rgde
 
 		struct material
 		{
-			enum param_type
+			enum param_type // used as prefixes for names - "fSpecular"
 			{
-				type_float, 
-				type_samples,
-				type_vec3, 
-				type_vec4,
-				type_matrix44,
-				type_color
+				type_float	= 'f', 
+				type_samples = 's',
+				type_vec3 = 'v', 
+				type_vec4 = 'p',
+				type_matrix44 = 't',
+				type_color = 'c'
 			};
 
-			template<typename T, int param_type_value>
 			struct param_info_t
 			{
 				std::string name;
-				T value;
+				param_type type;
 
-				static param_type get_type() { return (param_type)param_type_value;}
+				float float_data;
+				texture_ptr texture_data;
+				math::color color_data;
+				math::vec3f vec3_data;
+				math::vec4f vec4_data;
+				math::mat44f mat44_data;
 			};
 
-			typedef param_info_t<float,			type_float>		float_param;
-			typedef param_info_t<math::color,	type_color>		color_param;
-			typedef param_info_t<texture_ptr,	type_samples>	texture_param;
-			typedef param_info_t<math::vec3f,	type_vec3>		vec3_param;
-			typedef param_info_t<math::vec4f,	type_vec4>		vec4_param;
-			typedef param_info_t<math::mat44f,	type_matrix44>	mat44_param;
-
-			std::vector<std::pair<float_param, float> > m_float_values;
-			std::vector<std::pair<texture_param, texture_ptr> > m_samples;
-			std::vector<std::pair<color_param, math::color> > m_colors;
-			std::vector<std::pair<vec3_param, math::vec3f> > m_vectors3;
+			std::vector<param_info_t> m_params;
 		};
 
 		typedef boost::shared_ptr<material> material_ptr;
@@ -100,7 +94,9 @@ namespace rgde
 
 			vertex_buffer_ptr vb;
 			index_buffer_ptr ib;
-			std::vector<std::pair<attrib_range, material_ptr>> m_parts;
+
+			typedef std::vector<std::pair<attrib_range, material_ptr>> mesh_parts_t;
+			mesh_parts_t m_parts;
 
 			//TODO: custom atribs, bbox, bsphere, bones, etc
 			device& get_device() {return m_device;}

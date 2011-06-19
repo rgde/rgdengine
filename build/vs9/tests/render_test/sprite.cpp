@@ -93,7 +93,7 @@ namespace rgde
 
 			m_vb = vertex_buffer::create
 			(
-				m_device, sprites_decl, 
+				m_device, 
 				size * sizeof(sprite_vertex)*4, 
 				resource::default, 
 				buffer::write_only
@@ -211,6 +211,7 @@ namespace rgde
 
 			//TODO: currently only first texture is used!
 			m_device.set(m_sprites.front().texture, 0);
+			m_device.set(sprites_decl);
 
 			m_device.draw(render::triangle_list, 0, 0, sprites_num * 4, 0, sprites_num *2);
 

@@ -74,7 +74,6 @@ namespace gui
 			// Create a vertex buffer
 			m_buffer = vertex_buffer::create(
 				m_device, 
-				m_vertexDeclaration, 
 				VERTEXBUFFER_CAPACITY * sizeof(QuadVertex),
 				resource::default, 
 				buffer::write_only | buffer::dynamic);
@@ -522,7 +521,6 @@ namespace gui
 				// Recreate a vertex buffer
 				m_buffer = vertex_buffer::create(
 					m_device,
-					m_vertexDeclaration,
 					(VERTEXBUFFER_CAPACITY * sizeof(QuadVertex)), 
 					resource::default,
 					buffer::dynamic|buffer::write_only
