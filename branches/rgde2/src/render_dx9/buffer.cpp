@@ -24,11 +24,10 @@ namespace rgde
 		}
 
 
-		vertex_buffer::vertex_buffer(device& dev, vertex_declaration_ptr decl, size_t size, 
+		vertex_buffer::vertex_buffer(device& dev, size_t size, 
 									resource::pool pool, uint usage_flags)
 			: buffer(dev, resource::vertexbuffer, resource::vertex_data, pool, usage_flags, false)
-			, m_decl(decl)
-			, m_pimpl(new vertex_buffer_impl(dev, decl, size, usage_flags, pool))			
+			, m_pimpl(new vertex_buffer_impl(dev, size, usage_flags, pool))			
 		{
 		}
 

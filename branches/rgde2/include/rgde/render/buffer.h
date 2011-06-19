@@ -124,23 +124,19 @@ namespace rgde
 			class vertex_buffer_impl;
 			typedef boost::shared_ptr<vertex_buffer_impl> pimpl;
 
-			vertex_buffer(device& dev, vertex_declaration_ptr decl, size_t size, resource::pool pool, uint usage_flags);
+			vertex_buffer(device& dev, size_t size, resource::pool pool, uint usage_flags);
 		public:
-			static vertex_buffer_ptr create(device& dev, vertex_declaration_ptr decl, 
-								size_t size, resource::pool pool, uint usage_flags = 0);
+			static vertex_buffer_ptr create(device& dev, size_t size, resource::pool pool, uint usage_flags = 0);
 			
 			~vertex_buffer();
 
 			void* lock(uint offset_to_lock, uint size_to_lock, ulong flags);
 			void unlock();
 
-			vertex_declaration_ptr get_declaration()  const {return m_decl;}
-
 			vertex_buffer_impl& get_impl();
 			const vertex_buffer_impl& get_impl() const;
 
 		private:
-			vertex_declaration_ptr m_decl;
 			pimpl m_pimpl;
 		};
 

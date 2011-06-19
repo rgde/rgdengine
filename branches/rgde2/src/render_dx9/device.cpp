@@ -224,9 +224,9 @@ namespace rgde
 		void device::set(uint stream_number, vertex_buffer_ptr stream_data, uint stride, uint bytes_offset)
 		{
 			get_impl().get_dx_device()->SetStreamSource(stream_number, stream_data->get_impl().get_dx_vertex_buffer(),bytes_offset, stride);
-			DWORD fvf = convert_to_fvf(stream_data->get_declaration()->get_vertex_elemets());
-			HRESULT hr = get_impl().get_dx_device()->SetFVF(fvf);
-			assert(hr == S_OK);
+			//DWORD fvf = convert_to_fvf(stream_data->get_declaration()->get_vertex_elemets());
+			//HRESULT hr = get_impl().get_dx_device()->SetFVF(fvf);
+			//assert(hr == S_OK);
 		}
 
 		void device::set(vertex_declaration_ptr& decl)
@@ -493,6 +493,8 @@ namespace rgde
 			{
 				MessageBox(m_hwnd, L"Can't Create DirectX 3D Device.", L"ERROR",MB_OK|MB_ICONEXCLAMATION);
 			}
+
+			__asm nop;
 		}
 
 		device::device_impl::~device_impl()

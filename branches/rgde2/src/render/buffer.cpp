@@ -48,18 +48,14 @@ namespace rgde
 
 		buffer::buffer(device& dev, resource::type type, resource::format format, 
 			resource::pool pool, uint buffer_usage, bool register_on_lost_reset)
-			: resource(type, format, pool), 
-			m_buffer_usage(buffer_usage)
+			: resource(type, format, pool), m_buffer_usage(buffer_usage)
 		{
 		}
 
 
-		vertex_buffer_ptr vertex_buffer::create(device& dev, vertex_declaration_ptr decl, 
-			size_t size, resource::pool pool, uint usage_flags)
-		{
-			return vertex_buffer_ptr(
-				new vertex_buffer(dev, decl, size, pool, usage_flags)
-				);
+		vertex_buffer_ptr vertex_buffer::create(device& dev, 
+			size_t size, resource::pool pool, uint flags) {
+			return vertex_buffer_ptr(new vertex_buffer(dev, size, pool, flags));
 		}
 
 
