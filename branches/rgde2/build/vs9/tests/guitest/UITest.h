@@ -20,15 +20,11 @@ namespace rgde
 		virtual void createGUISystem();
 		virtual void resetGUISystem();
 
-		virtual bool isFinished();
-
-		bool isInitialized() { return m_system != 0; }
-
 		bool handleMouseMove(int x, int y);
 		bool handleMouseWheel(int diff);
 		bool handleMouseButton(gui::EventArgs::MouseButtons btn, gui::EventArgs::ButtonState state);
 		virtual bool handleKeyboard(UINT_PTR key, gui::EventArgs::ButtonState state);
-		bool handleChar(UINT_PTR ch);
+		bool handleChar(unsigned int);
 
 		void handleViewportChange();
 

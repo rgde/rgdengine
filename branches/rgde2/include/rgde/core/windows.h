@@ -14,33 +14,33 @@ namespace rgde
 			public:		
 				explicit window(handle external_handle);
 				explicit window(const std::wstring& title = L"Window");
-				window(const point& pos, const size& s, const std::wstring& title = L"Window");
-				window(const point& pos, const size& s, const std::wstring& title, handle parent_handle, 
-					ulong style = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
+				window(const math::vec2i& pos, const math::vec2i& s, const std::wstring& title = L"Window");
+				window(const math::vec2i& pos, const math::vec2i& s, const std::wstring& title, handle parent_handle, 
+					ulong style/* = WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN*/);
 				virtual ~window();
 
-				virtual handle get_handle() const { return m_hwnd; }
+				virtual handle system_handle() const { return m_hwnd; }
 				bool is_created() const {return 0 != m_hwnd;}				
 				
 				bool set_state(int state);
 				bool show() {return set_state(SW_SHOW);}
 				bool hide() {return set_state(SW_HIDE);}
 
-				bool set_position(const point& p);
-				point get_position() const;
+				bool position(const math::vec2i& p);
+				math::vec2i position() const;
 
-				bool set_size(const size& s);
-				size get_size() const;
+				bool size(const math::vec2i& s);
+				math::vec2i size() const;
 
-				bool move_window(const point& p, const size& s);
+				bool move(const math::vec2i& p, const math::vec2i& s);
 
 				bool update();
 
-				const std::wstring& get_title() const {return m_window_title;}
-				const std::wstring& get_class_name() const {return m_class_name;}
+				const std::wstring& title() const {return m_window_title;}
+				const std::wstring& class_name() const {return m_class_name;}
 
 			protected:
-				bool create(const point& pos, const size& s, ulong style);
+				bool create(const math::vec2i& pos, const math::vec2i& s, ulong style);
 				bool register_class();
 
 				virtual result wnd_proc(ushort message, uint wparam, long lparam );
@@ -59,6 +59,7 @@ namespace rgde
 			private:
 				static result __stdcall dispatch( handle hWnd, ushort message, uint wParam, long lParam );
 				static	std::map<handle, window*>	m_map;
+				//static	std::vector<window*>	ms_windows;
 			};
 
 		}

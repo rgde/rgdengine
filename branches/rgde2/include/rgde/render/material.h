@@ -36,29 +36,22 @@ render_param_desc params_desc[] = {
 
 // base(common) shader class
 struct shader {
+	enum type_t {VERTEX = 0, GEOMETRY = 1, FRAGMENT = 2, MAX_TYPES = 3};
 	const char* filename;
 	const char* compilation_flags;
-};
+	type_t type;
 
-// vertex shader
-struct vshader : public shader {
-};
-
-//fragment shader
-struct fshader : public shader {
-};
-
-//geometry
-struct gshader : public shader {
+	union {
+		void* handle_ptr;
+		unsigned int handle_int;
+	};
 };
 
 struct technique {
 	const char* name;
 	// may (and should) be used as meta-information storage
 	const char* user_desc;
-	vshader* vs;
-	fshader* fs;
-	gshader* gs;
+	shader shaders[shader::MAX_TYPES];
 };
 
 struct gpu_programm {

@@ -2,6 +2,7 @@
 
 #include <rgde/input/base.h>
 #include <rgde/core/windows_forward.h>
+#include <rgde/core/file_system_forward.h>
 
 namespace rgde
 {
@@ -13,22 +14,32 @@ namespace input
 	class system : boost::noncopyable
 	{
 	public:
-		system(core::windows::window_ptr window, bool exclusive=false, bool foreground=true);
+		enum mode_flags{
+			mode_exlusive = 0x1,
+			mode_foreground = 0x4
+		};
+
+		system(core::windows::window_ptr window, int flags = mode_foreground);
 		~system();
 
         // функции самой системы ввода
-        bool set_mode (bool exclusive=false, bool foreground=true); //изменить режим работы устройств ввода
-        void load_from_string (const std::string &xml_str);      //загрузить раскладку
-        void load_from_file   (const std::string &file_name); //загрузить раскладку
-        void update();                        //считать из буфера все события от устройств ввода
-        void save(std::string &xml_str);       //сохранить раскладку
+        bool set_mode (int flags = mode_foreground);
+		
+		//загрузить раскладку
+        void load (const std::string &xml_str);
+		void load (core::vfs::istream_ptr src);
 
-        // доступ к устройствам ввода
-        //получить устройство
+		// save input layout to string
+		void save(std::string &xml_str);
+        
+		//считать из буфера все события от устройств ввода
+		void update();
+        
+        // get input device
         device* get_device (types::EDevice device_type, int indx=0);
         device* get_device (const std::wstring &device_name, int indx=0);
 
-        //есть ли такое устройство
+        // check is device present
         bool is_device_present (types::EDevice device_type, int indx=0);
         bool is_device_present (const std::wstring &device_name, int indx=0);
 
