@@ -18,7 +18,7 @@ namespace rgde
 {
 namespace input
 {
-    input_impl::input_impl (HWND hWnd, bool exclusive/*=false*/, bool foreground/*=true*/):
+    input_impl::input_impl (core::windows::window_ptr window, bool exclusive/*=false*/, bool foreground/*=true*/):
         m_inited     (false), //считаем, что система ввода не инициализированна
         m_direct_input (NULL),  //устройство DInput
         m_dx_keyboard (NULL),  //устройство ввода "клавиатура"
@@ -26,6 +26,7 @@ namespace input
         keyboard    (NULL),
         mouse       (NULL)
     {
+		HWND hWnd = (HWND)window->handle();
 		//инициализируем DXInput
 		m_inited = init_dx_input (hWnd,exclusive,foreground);
 		if (!m_inited)

@@ -13,7 +13,7 @@ namespace input
     class input_impl
     {
     public:
-        input_impl(HWND hWnd, bool exclusive=false, bool foreground=true);
+        input_impl(core::windows::window_ptr window, bool exclusive=false, bool foreground=true);
        ~input_impl();
 
 	    //изменить режим работы устройств ввода

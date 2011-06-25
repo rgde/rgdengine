@@ -163,14 +163,6 @@ void ui_test_application::render()
 	m_render_device.present();
 }
 
-bool ui_test_application::isFinished() 
-{
-	/*if(m_framecount >= 50)
-	return true;*/
-
-	return false;
-}
-
 core::windows::result ui_test_application::wnd_proc(ushort message, uint wparam, long lparam )
 {
 	switch (message)
@@ -273,7 +265,7 @@ bool ui_test_application::handleKeyboard(UINT_PTR key, EventArgs::ButtonState st
 		return false;
 }
 
-bool ui_test_application::handleChar(UINT_PTR ch)
+bool ui_test_application::handleChar(unsigned int ch)
 {
 	if(m_system)
 		return m_system->handleChar((unsigned int)ch);

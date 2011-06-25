@@ -14,9 +14,6 @@ namespace rgde
 
 			class window;
 			typedef boost::shared_ptr<window> window_ptr;
-
-			typedef math::vec2i point;
-			typedef math::vec2i size;
 		}
 	}
 }

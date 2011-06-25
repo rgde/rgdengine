@@ -26,13 +26,13 @@ namespace rgde
 				m_instance = GetModuleHandle(NULL);
 				if (register_class())
 				{
-					point p(50,50);
-					size s(640, 480);
+					math::vec2i p(50,50);
+					math::vec2i s(640, 480);
 					create(p,s, WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
 				}
 			}
 
-			window::window(const point& pos, const size& s, const std::wstring& title)
+			window::window(const math::vec2i& pos, const math::vec2i& s, const std::wstring& title)
 				: m_hwnd(0), m_window_title(title), m_class_name(title + L"_class"),
 				m_parent_hwnd(0), m_instance(0) 
 				, m_using_external_handle(false)
@@ -44,7 +44,7 @@ namespace rgde
 				}
 			}
 
-			window::window(const point& pos, const size& s, const std::wstring& title, handle parent_handle, ulong style)
+			window::window(const math::vec2i& pos, const math::vec2i& s, const std::wstring& title, handle parent_handle, ulong style)
 				: m_hwnd(0), m_window_title(title), m_class_name(title + L"_class"),
 				m_parent_hwnd(parent_handle), m_instance(0)
 				, m_using_external_handle(false)
@@ -76,21 +76,21 @@ namespace rgde
 			}
 
 			
-			size window::get_size() const
+			math::vec2i window::size() const
 			{
 				RECT rc;
 				GetWindowRect(m_hwnd, &rc);
-				return size(rc.right - rc.left, rc.bottom - rc.top);
+				return math::vec2i(rc.right - rc.left, rc.bottom - rc.top);
 			}
 
-			point window::get_position() const
+			math::vec2i window::position() const
 			{
 				RECT rc;
 				GetWindowRect(m_hwnd, &rc);
-				return point(rc.left, rc.top);
+				return math::vec2i(rc.left, rc.top);
 			}
 
-			bool window::move_window(const point& p, const size& s)
+			bool window::move(const math::vec2i& p, const math::vec2i& s)
 			{
 				if (m_using_external_handle)
 					return false;
@@ -102,20 +102,20 @@ namespace rgde
 					FALSE);		// repaint window 
 			}
 
-			bool window::set_position(const point& p)
+			bool window::position(const math::vec2i& p)
 			{
 				if (m_using_external_handle)
 					return false;
 
-				return move_window(p,get_size());
+				return move(p,size());
 			}
 
-			bool window::set_size(const size& s)
+			bool window::size(const math::vec2i& s)
 			{
 				if (m_using_external_handle)
 					return false;
 
-				return move_window(get_position(),s);
+				return move(position(),s);
 			}
 
 			bool window::register_class()
@@ -138,7 +138,7 @@ namespace rgde
 			}
 			
 
-			bool window::create(const point& pos, const size& s, ulong style)
+			bool window::create(const math::vec2i& pos, const math::vec2i& s, ulong style)
 			{
 				assert(!m_using_external_handle && "Invalid call CreateWindow while using external window handler!");
 
@@ -176,20 +176,12 @@ namespace rgde
 				return true;
 			}
 
-
-			//void window::move(WORD x,WORD y,WORD xx,WORD yy,bool d){
-			//	MoveWindow(hWnd, 
-			//		x, y,           // starting x- and y-coordinates 
-			//		xx, // width of client area 
-			//		yy, // height of client area 
-			//		d);          // repaint window 		
-			//}
-
 			result window::wnd_proc(ushort message, uint wParam, long lParam )
 			{ 
 				return DefWindowProc(m_hwnd, message, wParam, lParam );
 			}
-
+			
+			//std::vector<window*> window::ms_windows;
 			std::map<handle, window*>	window::m_map;
 
 			result __stdcall window::dispatch( handle hWnd, ushort message, uint wParam, long lParam )

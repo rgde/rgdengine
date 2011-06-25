@@ -5,6 +5,8 @@
 #include <rgde/input/device.h>
 
 #include <rgde/core/windows.h>
+#include <rgde/core/file_system.h>
+
 
 #include "inputimpl.h"
 
@@ -13,9 +15,8 @@ namespace rgde
 namespace input
 {
     system::system (core::windows::window_ptr window, bool exclusive, bool foreground)
-    {
-		HWND hwnd = (HWND)window->get_handle();
-		m_impl.reset(new input_impl(hwnd, exclusive, foreground));
+    {		
+		m_impl.reset(new input_impl(window, exclusive, foreground));
     }
 
     system::~system ()
@@ -32,15 +33,13 @@ namespace input
         m_impl->load(xml_str);
     }
 
-    void system::load_from_file (const std::string &file_name)
+    void system::load (core::vfs::istream_ptr src)
     {
-        std::vector<char> data;
-
-        //io::CFileSystem &fs    = io::TheFileSystem::get();
-        //io::readstream_ptr stream = fs.findFile(file_name);
-        //io::stream_to_vector<char>(data, stream);
-
-        //m_impl->load(std::string(data.begin(), data.end()));
+        std::string xml_data;
+		size_t size = src->get_size();
+		xml_data.resize(size);
+		src->read(&xml_data[0], size);
+        m_impl->load(xml_data);
     }
 
     void system::update ()
