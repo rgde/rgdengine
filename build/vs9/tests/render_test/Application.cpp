@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-
-
 using namespace rgde;
 using core::windows::window;
 using render::device;
@@ -214,13 +212,6 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 		}
 		break;
 
-	case WM_SIZE:
-		{
-			resize_scene(LOWORD(lparam), HIWORD(lparam));
-			return 0;
-		}
-		break;
-
 	case WM_MOUSEWHEEL:
 		{
 			float delta = (short)HIWORD((DWORD)wparam);
@@ -257,15 +248,16 @@ core::windows::result application::wnd_proc(ushort message, uint wparam, long lp
 	return window::wnd_proc(message, wparam, lparam);
 }
 
-void application::resize_scene(unsigned int width, unsigned int height)
+bool application::on_resize(int width, int height)
 {
-	if (height==0) // Prevent A Divide By Zero By
-	{
-		height=1; // Making Height Equal One
-	}
+	// to prevent divicion by zero
+	height = max(1, height);
 
-	if (m_camera)
-		m_camera->set_projection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
+	if (!m_camera)	return false;
+	
+	m_camera->set_projection(45.0f, (float)width/(float)height, 0.1f, 100.0f);
+
+	return true;
 }
 
 void application::init_game_data()

@@ -2,12 +2,13 @@
 
 #include <rgde/input/device.h>
 #include <rgde/input/control.h>
+#include <rgde/input/input.h>
 
 namespace rgde
 {
 namespace input
 {
-	device::device(types::EDevice eName, int nIndx, input_impl &input):
+	device::device(types::EDevice eName, int nIndx, system &input):
 		m_index  (nIndx),
 		m_device_type  (eName),
 		m_input (input)

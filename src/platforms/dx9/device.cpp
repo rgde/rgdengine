@@ -447,11 +447,11 @@ namespace rgde
 
 			if ( m_d3d == NULL )
 			{
-				MessageBox(m_hwnd, L"Can't init DirectX.", L"ERROR", MB_OK|MB_ICONEXCLAMATION);
+				MessageBox((HWND)m_hwnd.vp, L"Can't init DirectX.", L"ERROR", MB_OK|MB_ICONEXCLAMATION);
 			}
 
 			RECT rc;
-			GetClientRect((HWND)m_hwnd, &rc);
+			GetClientRect((HWND)m_hwnd.vp, &rc);
 
 			using rgde::uint;
 
@@ -468,7 +468,7 @@ namespace rgde
 				D3DMULTISAMPLE_NONE,	// No Multi Sample Type
 				0,				// No Multi Sample Quality
 				D3DSWAPEFFECT_DISCARD,	// Swap Effect (Fast)
-				(HWND)m_hwnd,	// The Window Handle
+				(HWND)m_hwnd.vp,	// The Window Handle
 				windowed,		// Windowed or Fullscreen
 				TRUE,			// Enable Auto Depth Stencil  
 				D3DFMT_D24S8,	// 16Bit Z-Buffer (Depth Buffer)
@@ -483,18 +483,16 @@ namespace rgde
 				d3dpp.BackBufferFormat, D3DUSAGE_DEPTHSTENCIL,
 				D3DRTYPE_SURFACE, d3dpp.AutoDepthStencilFormat ) ) )
 			{
-				MessageBox(m_hwnd, L"Can't Find Surface Format.", L"ERROR",MB_OK|MB_ICONEXCLAMATION);
+				MessageBox((HWND)m_hwnd.vp, L"Can't Find Surface Format.", L"ERROR",MB_OK|MB_ICONEXCLAMATION);
 			}
 
 			// Create The DirectX 3D Device 
-			if(FAILED( m_d3d->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, m_hwnd,
+			if(FAILED( m_d3d->CreateDevice( D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, (HWND)m_hwnd.vp,
 				D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 				&d3dpp, &m_device ) ) )
 			{
-				MessageBox(m_hwnd, L"Can't Create DirectX 3D Device.", L"ERROR",MB_OK|MB_ICONEXCLAMATION);
+				MessageBox((HWND)m_hwnd.vp, L"Can't Create DirectX 3D Device.", L"ERROR",MB_OK|MB_ICONEXCLAMATION);
 			}
-
-			__asm nop;
 		}
 
 		device::device_impl::~device_impl()

@@ -3,6 +3,7 @@
 #include <rgde/input/device.h>
 #include <rgde/input/control.h>
 #include <rgde/input/command.h>
+#include <rgde/input/input.h>
 
 #include <assert.h>
 
@@ -18,23 +19,28 @@ namespace rgde
 {
 namespace input
 {
-    input_impl::input_impl (core::windows::window_ptr window, bool exclusive/*=false*/, bool foreground/*=true*/):
+    input_impl::input_impl (system& sys, core::windows::window_ptr window, int flags):
         m_inited     (false), //считаем, что система ввода не инициализированна
         m_direct_input (NULL),  //устройство DInput
         m_dx_keyboard (NULL),  //устройство ввода "клавиатура"
         m_dx_mouse    (NULL),  //устройство ввода "мышь"
         keyboard    (NULL),
-        mouse       (NULL)
+        mouse       (NULL),
+		m_system(sys)
     {
-		HWND hWnd = (HWND)window->handle();
-		//инициализируем DXInput
+		HWND hWnd = (HWND)window->system_handle().vp;
+
+		bool exclusive = flags && system::mode_exlusive;
+		bool foreground = flags && system::mode_foreground;
+		
+		//init DirecX Input system
 		m_inited = init_dx_input (hWnd,exclusive,foreground);
 		if (!m_inited)
 			return;
 
-		//заполним массив m_devices
-		m_devices.push_back (new device(types::Keyboard, 0, *this));
-		m_devices.push_back (new device(types::Mouse,    0, *this));
+		// add standart devices
+		m_devices.push_back (new device(types::Keyboard, 0, sys));
+		m_devices.push_back (new device(types::Mouse,    0, sys));
 
 		//заполним список контролов
 		keyboard = *(m_devices.begin());
@@ -194,10 +200,13 @@ namespace input
     /////////////////////////////////////////////////
 
     //изменить режим работы устройств ввода
-    bool input_impl::set_mode (bool exclusive/*=false*/, bool foreground/*=true*/)
+    bool input_impl::set_mode (int flags)
     {
         if (!m_inited)
             return false;
+
+		bool exclusive = flags && system::mode_exlusive;
+		bool foreground = flags && system::mode_foreground;
 
         //убить старое подключение к устройствам ввода
         done_dx_input();
@@ -458,7 +467,7 @@ namespace input
     {
         if (m_inited && !is_command_present(command_name))
         {
-            command_ptr command(new command(command_name, *this));
+            command_ptr command(new command(command_name, m_system));
             m_commands.push_back(command);
 			return command;
         }
@@ -475,7 +484,7 @@ namespace input
         std::list<command_ptr>::iterator i = m_commands.begin();
         while (i != m_commands.end())
         {
-            if ((*i)->get_name() == command_name)
+            if ((*i)->name() == command_name)
                 return (*i);
             ++i;
         }
@@ -492,7 +501,7 @@ namespace input
         std::list<command_ptr>::const_iterator i = m_commands.begin();
         while (i != m_commands.end())
         {
-            if ((*i)->get_name() == command_name)
+            if ((*i)->name() == command_name)
                 return true;
             ++i;
         }

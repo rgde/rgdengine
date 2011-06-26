@@ -4,19 +4,19 @@ namespace rgde
 {
 namespace input
 {
-	class input_impl;
 	class helper;
+	class system;
 
     //команда системы ввода
     class command
     {
     public:
-        command(const std::wstring &name, input_impl &input);
+        command(const std::wstring &name, system &sys);
 
-        const std::wstring& get_name() const;
-        void lock();
-        void unlock();
-        bool is_locked() const;
+		const std::wstring& name() const {return m_name;}
+		void lock()	{m_locked = true;}
+		void unlock() {m_locked = false;}
+		bool is_locked() const {return m_locked;}
 
     protected:
         friend class control;
@@ -29,34 +29,14 @@ namespace input
         void detach (helper *helper);
 
     private:
-        bool          m_locked;
-        input_impl&	  m_input;
-        std::wstring  m_name;
+        bool			m_locked;
+		std::wstring	m_name;
+        system&			m_input;        
 
 		typedef std::list<helper*> helpers_list;
 		typedef helpers_list::iterator helpers_iter;
 
         helpers_list m_helpers;
     };
-
-	inline const std::wstring& command::get_name() const 
-	{
-		return m_name;
-	}
-
-	inline void command::lock() 
-	{
-		m_locked = true;
-	}
-
-	inline void command::unlock() 
-	{
-		m_locked = false;
-	}
-
-	inline bool command::is_locked() const 
-	{
-		return m_locked;
-	}
 }
 }

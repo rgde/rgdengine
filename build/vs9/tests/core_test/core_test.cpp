@@ -11,7 +11,6 @@
 #include <boost/iostreams/detail/ios.hpp> 
 #include <boost/iostreams/filtering_stream.hpp>
 
-#include <windows.h>
 #include <boost/filesystem.hpp>
 
 namespace io = boost::iostreams;
@@ -90,24 +89,14 @@ namespace test
 }
 
 
-
-#include <GL/GL.h>
-
 int _tmain(int argc, wchar_t* argv[])
 {
-#define GL_MAJOR_VERSION 0x821B
-#define GL_MINOR_VERSION 0x821C
-	GLint MajorVersionContext = 0;
-	GLint MinorVersionContext = 0;
-	glGetIntegerv(GL_MAJOR_VERSION, &MajorVersionContext);
-	glGetIntegerv(GL_MINOR_VERSION, &MinorVersionContext);
+	//wchar_t buf[512];
+	//GetModuleFileNameW(NULL, &buf[0], 512);
 
-	wchar_t buf[512];
-	GetModuleFileNameW(NULL, &buf[0], 512);
-
-	boost::filesystem::wpath p(buf);
-	std::wstring path = p.branch_path().string() + L"/../data/";
-	SetCurrentDirectoryW(path.c_str());
+	//boost::filesystem::wpath p(buf);
+	//std::wstring path = p.branch_path().string() + L"/../data/";
+	//SetCurrentDirectoryW(path.c_str());
 
 	using namespace rgde;
 	using namespace std;
@@ -124,7 +113,7 @@ int _tmain(int argc, wchar_t* argv[])
 
 	log << L"Test" << endl;
 	{
-		core::utils::timer timer;
+		core::timer timer;
 		Sleep(1000);
 		float elapsed = timer.get_elapsed_time();
 		log << L"elapsed time: " << elapsed << endl;

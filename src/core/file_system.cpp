@@ -2,7 +2,6 @@
 
 #include <rgde/core/file_system.h>
 
-#include <windows.h>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 
@@ -56,6 +55,7 @@ namespace rgde
 			namespace internal
 			{
 				namespace fs = boost::filesystem;
+				extern fs::wpath get_root_path();
 
 				struct disk_istream : public istream
 				{
@@ -81,12 +81,12 @@ namespace rgde
 						m_file.seekg((std::streamoff)pos);
 					}
 
-					bool is_valid() const {return m_file.good();}
 					size_t get_pos() const {return m_file.tellg();}
+
+					bool is_valid() const {return m_file.good();}					
 
 					size_t m_file_size;
 					mutable fs::ifstream m_file;
-
 				};
 
 				struct disk_ostream : public ostream
@@ -118,11 +118,9 @@ namespace rgde
 				{
 					explicit disk_file_source(const wchar_t* rel_path = L"") 
 					{
-						wchar_t buf[512];
-						GetModuleFileNameW(NULL, &buf[0], 512);
+						fs::wpath root_path = get_root_path();
 
-						fs::wpath p(buf);
-						std::wstring path = p.branch_path().string() + rel_path;
+						std::wstring path = root_path.string() + rel_path;
 
 						m_root_read_path = path;
 						m_root_write_path = path;

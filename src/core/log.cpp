@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include <rgde/core/log.h>
-#include <windows.h>
+#include <rgde/core/debug.h>
 
 //TODO: move that code to platform lib!
 #if DEBUG || _DEBUG
@@ -20,14 +20,12 @@ namespace rgde
 			{
 				void debug_out(const std::wstring& msg)
 				{
-					RELEASE_OUT;
-					OutputDebugStringW(msg.c_str());
+					debug::pring(msg.c_str());
 				}
 
 				void debug_out(const std::string& msg)
 				{
-					RELEASE_OUT;
-					OutputDebugStringA(msg.c_str());
+					debug::pring(msg.c_str());
 				}
 
 				void debug_out(const char *format, ...)
@@ -46,7 +44,6 @@ namespace rgde
 				{
 					RELEASE_OUT;
 					if (!format) return;
-
 				}
 			}
 		}
