@@ -8,7 +8,7 @@
 
 namespace rgde
 {
-	struct size
+	struct size_t
 	{
 		float w, h;
 	};
@@ -21,22 +21,20 @@ namespace rgde
 
 		void run();
 
-		const size& get_size() const {return m_size;} 
+		const size_t& get_size() const {return m_size;} 
 
-		render::device& get_render_device()
-		{
-			return m_device;
-		}
+		render::device& get_render_device() { return m_device; }
 
 		xml::document& get_config() {return m_config;}
 
 		audio::system& get_audio_system() {return  m_sound_system;}
 
 	protected:
-		virtual long wnd_proc(ushort message, uint wparam, long lparam );
+		//virtual long wnd_proc(ushort message, uint wparam, long lparam );
 		
-		// window eventgs
+		// window events
 		bool on_resize(unsigned int width, unsigned int height);
+		bool on_input_event(const core::windows::input_event& e);
 		
 		bool do_events();
 
@@ -56,10 +54,8 @@ namespace rgde
 		game::system m_game;
 
 		game::console m_console;
-		
-		bool m_active;
-			
-		size m_size;
+					
+		size_t m_size;
 
 		struct scene_obj
 		{

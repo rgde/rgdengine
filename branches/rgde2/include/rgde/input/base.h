@@ -11,18 +11,18 @@ namespace input
 
     typedef boost::shared_ptr<command> command_ptr;
 
-	class helper;       //базовый класс обьекта-посредника для получения информации о событиях ввода
-	class button;       //кнопка (нажатие и отжатие клавиш)
-	class trigger;      //триггер (переключение состояния при каждом НАжатии клавиш)
-	class key_up;        //ОТжатие клавиши
-	class key_down;      //НАжатие на клавишу
-	class relative_axis; //относительная ось (сдвиг оси)
-	class absolute_axis; //абсолютная ось (координата оси)
+	class helper;       // base class of helper object to receive input event
+	class button;       // button (pressed/released) helper
+	class trigger;      // trigger helper
+	class key_up;       
+	class key_down;     
+	class relative_axis; 
+	class absolute_axis; 
 	class char_stream;
 
 	namespace types
 	{
-		//перечисление существующих устройств ввода
+		/// input device types
 		enum EDevice
 		{
 			Keyboard,
@@ -32,7 +32,7 @@ namespace input
 			InvalidDevice,
 		};
 
-		//перечисление существующих элементов ввода
+		/// input control types
 		enum EControl
 		{
 			KeyEscape,

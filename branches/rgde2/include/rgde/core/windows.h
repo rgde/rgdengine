@@ -9,28 +9,14 @@ namespace rgde
 	{
 		namespace windows
 		{
+			namespace internal {
+				class impl;
+			}
+
 			class window
 			{
+				friend internal::impl;
 			public:
-				struct input_event {
-					enum event_type{
-						mouse_move,
-						mouse_button, 
-						mouse_scrool,
-						key_pressed, 
-						text_input
-					};
-					enum action_type {
-						up, down, move
-					};
-					// to handle several input devices case or multy touch events
-					int device_index; 
-					int keycode;
-					int value;
-					event_type event;
-					action_type action;
-				};
-
 				explicit window(handle external_handle);
 				explicit window(const std::wstring& title = L"Window");
 				window(const math::vec2i& pos, const math::vec2i& s, const std::wstring& title = L"Window");
@@ -74,7 +60,8 @@ namespace rgde
 				virtual long wnd_proc(ushort message, uint wparam, long lparam );
 
 			protected:
-				handle		m_hwnd;
+				impl*	m_impl;
+				handle	m_hwnd;
 
 				std::wstring m_class_name;
 				std::wstring m_window_title;

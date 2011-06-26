@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{78
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core_test", "tests\core_test\core_test.vcproj", "{5DF17805-0C6B-46CD-8B4A-12D33E282F21}"
 	ProjectSection(ProjectDependencies) = postProject
+		{1E387E72-9FB4-485B-8DA2-C17161ABBC6F} = {1E387E72-9FB4-485B-8DA2-C17161ABBC6F}
 		{C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6} = {C4D448DD-ECBF-47F0-B2A5-DD06B2BFC1F6}
 	EndProjectSection
 EndProject

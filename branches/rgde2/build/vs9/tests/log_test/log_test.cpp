@@ -2,19 +2,9 @@
 
 #include <rgde/log/log.h>
 
-//#include <windows.h>
-//#include <boost/filesystem.hpp>
 
 int _tmain(int argc, _TCHAR* argv[])
 {	
-	//wchar_t buf[512];
-	//GetModuleFileNameW(NULL, &buf[0], 512);
-
-	//boost::filesystem::wpath p(buf);
-	//std::wstring path = p.branch_path().string() + L"/../data/";
-	//SetCurrentDirectoryW(path.c_str());
-
-
     using namespace rgde::log;
 
     logsystem log; //пока существует экземпл€р класса logsystem лог работает
@@ -35,4 +25,3 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	return 0;
 }
-

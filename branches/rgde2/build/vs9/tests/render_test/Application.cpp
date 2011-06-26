@@ -152,101 +152,98 @@ void application::render()
 	m_device.present();
 }
 
-core::windows::result application::wnd_proc(ushort message, uint wparam, long lparam )
+bool on_input_event(const core::windows::input_event& e)
 {
-	static bool rm_down = false;
-
-	switch (message)
-	{
-	case WM_ACTIVATE:	// Watch For Window Activate Message
-		{
-			if (!HIWORD(wparam))// Check Minimization State
-				m_active = true;
-			else
-				m_active = false;
-
-			return 0;
-		}
-	case WM_KEYDOWN:
-		{
-			if (m_console.is_on())
-			{
-				m_console.msg_keydown(wparam);
-				break;
-			}
-
-			if ('Q' == wparam || 'q' == wparam)
-				exit(0);
-
-			if (VK_ESCAPE == wparam)
-				exit(0);
-
-			if ('w' == wparam || 'W' == wparam)
-			{
-				m_camera_controller.move_forward(0.1f);
-			}
-			else if ('s' == wparam || 'S' == wparam)
-			{
-				m_camera_controller.move_back(0.1f);
-			}
-			else if ('a' == wparam || 'A' == wparam)
-			{
-				m_camera_controller.move_left(0.1f);
-			}
-			else if ('d' == wparam || 'D' == wparam)
-			{
-				m_camera_controller.move_right(0.1f);
-			}
-			else if ('~' == wparam || 192 == wparam)
-			{
-				m_console.toggle();
-			}
-
-			return 0;
-		}
-
-	case WM_CHAR:
-		if (m_console.is_on())
-		{
-			m_console.msg_char(wparam);
-		}
-		break;
-
-	case WM_MOUSEWHEEL:
-		{
-			float delta = (short)HIWORD((DWORD)wparam);
-			delta /= 80.0f;
-			m_camera_controller.move_forward(delta);
-		}
-		break;
-
-	case WM_RBUTTONDOWN:
-		rm_down = true;
-		break;
-	case WM_RBUTTONUP:
-		rm_down = false;
-		break;
-	case WM_MOUSEMOVE:		
-		{
-			int xPos = LOWORD(lparam); 
-			int yPos = HIWORD(lparam);
-
-			if (rm_down && (old_x != -1 || old_y != -1) /*&& ((wparam & MK_LBUTTON) != 0)*/)
-			{
-				int dx = xPos - old_x;
-				int dy = yPos - old_y;
-
-				m_camera_controller.rotate_right(dx/200.0f);
-				m_camera_controller.rotate_up(dy/200.0f);
-			}
-
-			old_x = xPos;
-			old_y = yPos;
-		}
-		break;
-	}
-	return window::wnd_proc(message, wparam, lparam);
+	return false;
 }
+//TODO: move to windows class code. 
+//
+//long application::wnd_proc(ushort message, uint wparam, long lparam )
+//{
+//	static bool rm_down = false;
+//
+//	switch (message)
+//	{
+//	case WM_KEYDOWN:
+//		{
+//			if (m_console.is_on())
+//			{
+//				m_console.msg_keydown(wparam);
+//				break;
+//			}
+//
+//			if ('Q' == wparam || 'q' == wparam)
+//				exit(0);
+//
+//			if (VK_ESCAPE == wparam)
+//				exit(0);
+//
+//			if ('w' == wparam || 'W' == wparam)
+//			{
+//				m_camera_controller.move_forward(0.1f);
+//			}
+//			else if ('s' == wparam || 'S' == wparam)
+//			{
+//				m_camera_controller.move_back(0.1f);
+//			}
+//			else if ('a' == wparam || 'A' == wparam)
+//			{
+//				m_camera_controller.move_left(0.1f);
+//			}
+//			else if ('d' == wparam || 'D' == wparam)
+//			{
+//				m_camera_controller.move_right(0.1f);
+//			}
+//			else if ('~' == wparam || 192 == wparam)
+//			{
+//				m_console.toggle();
+//			}
+//
+//			return 0;
+//		}
+//
+//	case WM_CHAR:
+//		if (m_console.is_on())
+//		{
+//			m_console.msg_char(wparam);
+//		}
+//		break;
+//
+//	case WM_MOUSEWHEEL:
+//		{
+//			float delta = (short)HIWORD((DWORD)wparam);
+//			delta /= 80.0f;
+//			m_camera_controller.move_forward(delta);
+//		}
+//		break;
+//
+//	case WM_RBUTTONDOWN:
+//		rm_down = true;
+//		break;
+//	case WM_RBUTTONUP:
+//		rm_down = false;
+//		break;
+//	case WM_MOUSEMOVE:		
+//		{
+//			int xPos = LOWORD(lparam); 
+//			int yPos = HIWORD(lparam);
+//
+//			if (rm_down && (old_x != -1 || old_y != -1) /*&& ((wparam & MK_LBUTTON) != 0)*/)
+//			{
+//				int dx = xPos - old_x;
+//				int dy = yPos - old_y;
+//
+//				m_camera_controller.rotate_right(dx/200.0f);
+//				m_camera_controller.rotate_up(dy/200.0f);
+//			}
+//
+//			old_x = xPos;
+//			old_y = yPos;
+//		}
+//		break;
+//	}
+//	return window::wnd_proc(message, wparam, lparam);
+//}
 
 bool application::on_resize(int width, int height)
 {

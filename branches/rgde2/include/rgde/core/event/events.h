@@ -12,7 +12,6 @@ namespace rgde
 				class base_listener;
 				class base_events_manager;
 
-				// базовый класс менеджера событий
 				class base_events_manager
 				{
 				protected:
@@ -20,20 +19,17 @@ namespace rgde
 					virtual ~base_events_manager();
 
 				public:
-					//отписать получателя от менеджера (потомка класса base_events_manager)
 					virtual void unsubscribe (base_listener*) = 0;
 					virtual void unsubscribe (base_listener*, base_sender*) = 0;
 				};
 			}
 
-			// шаблонный класс менеджера событий
 			template <typename Event>
 			class manager: public details::base_events_manager
 			{
-				//подписка на получение событий
 				struct subscription
 				{
-					details::base_listener                *m_listener; //кто хочет получать события
+					details::base_listener                *m_listener; 
 					details::base_sender                  *m_sender;   //от кого хочет получать события (0 - от всех)
 					boost::function<void(Event)>  m_func;      //какой метод вызывать
 
@@ -46,7 +42,6 @@ namespace rgde
 				 typedef std::list<subscription> subscriptions_list;
 
 			public:
-				//синглтон
 				static manager& get()
 				{
 					static manager instance;
@@ -64,7 +59,6 @@ namespace rgde
 					m_subscriptions.push_back(subs);
 				}
 
-				//отписать listener от получения всех событий типа Event
 				void unsubscribe (details::base_listener *listener)
 				{
 					subscriptions_list::iterator i = m_subscriptions.begin();

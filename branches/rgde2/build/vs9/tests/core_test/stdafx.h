@@ -32,13 +32,21 @@
 
 #include <map>
 #include <vector>
-#include <string>
 #include <list>
 #include <exception>
+#include <string>
 #include <iostream>
+#include <fstream>
+#include <iterator>
 
-#include <boost/noncopyable.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/categories.hpp>
+#include <boost/iostreams/categories.hpp>
+#include <boost/iostreams/pipeline.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/smart_ptr.hpp>
+#include <boost/noncopyable.hpp>
 #include <boost/any.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
