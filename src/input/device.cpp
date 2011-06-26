@@ -24,7 +24,6 @@ namespace input
         }
     }
 
-    //получить контрол
     control* device::get_control(types::EControl contol_type)
     {
         std::map<types::EControl,control*>::iterator pos = m_controls.find(contol_type);

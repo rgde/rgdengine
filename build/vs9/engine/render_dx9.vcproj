@@ -388,6 +388,10 @@
 				RelativePath="..\..\..\src\platforms\win32\fs_impl.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\src\platforms\win32\window_impl.cpp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

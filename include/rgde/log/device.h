@@ -6,7 +6,6 @@ namespace rgde
     {
         namespace device
         {
-
             //вспомогательный класс д€л работы с файлом лога
             class file_wrapper
             {

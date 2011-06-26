@@ -1,68 +1,10 @@
 #include "stdafx.h"
 
 #include <rgde/core/core.h>
+#include <rgde/log/log.h>
 #include <rgde/core/options/options.h>
 
-#include <iterator>
 
-#include <boost/iostreams/stream.hpp>
-#include <boost/iostreams/stream_buffer.hpp>
-#include <boost/iostreams/categories.hpp>
-#include <boost/iostreams/detail/ios.hpp> 
-#include <boost/iostreams/filtering_stream.hpp>
-
-#include <boost/filesystem.hpp>
-
-namespace io = boost::iostreams;
-
-template<typename Ch>
-struct	basic_time_tracer 
-{
-	typedef	Ch	char_type;
-	typedef io::multichar_output_filter_tag	category;
-
-	template<typename Sink>
-	std::streamsize write(Sink& snk, const char_type* s, std::streamsize n)
-	{
-		//using	namespace	boost::posix_time;
-		//ptime	time_stamp(second_clock::local_time());
-		//std::string	output(to_simple_string(time_stamp));
-		std::string	output("21-58-24");
-		output.append(": ", 2);
-		output.append(s, s+n);
-
-		typedef std::basic_string<char_type> _string;
-		_string out(output.begin(), output.end());
-		io::write(snk, out.c_str(), (std::streamsize)out.size());
-		return	n;
-	}			
-};
-
-BOOST_IOSTREAMS_PIPABLE(basic_time_tracer, 1)
-typedef	basic_time_tracer<char>		time_tracer;
-typedef	basic_time_tracer<wchar_t>	wtime_tracer;
-
-
-class screen_log_device
-{
-public:
-	typedef wchar_t char_type;
-	typedef char_type type;
-	typedef boost::iostreams::sink_tag category;
-
-	screen_log_device(std::wstring& out_string)
-		: m_string(out_string){}
-
-	std::streamsize write(const wchar_t* s, std::streamsize n)
-	{
-		std::wstring out(s, n);
-		m_string += out;
-		std::wcout << out.c_str();
-		return n;
-	}
-private:
-	std::wstring& m_string;
-};
 
 
 namespace test
@@ -91,32 +33,21 @@ namespace test
 
 int _tmain(int argc, wchar_t* argv[])
 {
-	//wchar_t buf[512];
-	//GetModuleFileNameW(NULL, &buf[0], 512);
-
-	//boost::filesystem::wpath p(buf);
-	//std::wstring path = p.branch_path().string() + L"/../data/";
-	//SetCurrentDirectoryW(path.c_str());
-
 	using namespace rgde;
 	using namespace std;
 
-	std::wstring log_text;
+	using namespace rgde::log;
 
-	typedef boost::iostreams::stream_buffer<screen_log_device>  my_streambuf;
-	screen_log_device dev(log_text);
-	typedef io::wfiltering_stream<io::output> my_ostream;
-	my_ostream log(wtime_tracer() | dev);
+	logsystem log; //пока существует экземпл€р класса logsystem лог работает
 
-	std::wstreambuf *old_buff = wcout.rdbuf();
 	//wcout.rdbuf(log.rdbuf());
 
-	log << L"Test" << endl;
+	lmsg << L"Test" << endl;
 	{
 		core::timer timer;
-		Sleep(1000);
+		//Sleep(1000);
 		float elapsed = timer.get_elapsed_time();
-		log << L"elapsed time: " << elapsed << endl;
+		lmsg << L"elapsed time: " << elapsed << endl;
 		//new char[100];
 		core::log::utils::debug_out(L"DEBUG LOG TEST MSG");
 	}
@@ -156,12 +87,6 @@ int _tmain(int argc, wchar_t* argv[])
 	{
 		cout << ex.what() << endl;
 	}
-
-	log.flush();
-
-	wcout.rdbuf(old_buff);
-	wcout << log_text.c_str();
-	wcout.flush();
 
 	// TEST MEM LEAKS REPORTING
 	//new int[10];
