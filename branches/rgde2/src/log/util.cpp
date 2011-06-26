@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#include <windows.h>
 #include <time.h>
 
 namespace rgde
@@ -28,17 +27,19 @@ namespace rgde
 
             std::string get_current_datetime()
             {
-	            SYSTEMTIME t;
-	            GetLocalTime (&t);
-
 	            char minute[3], day[3], month[3];
-	            sprintf_s (minute, (t.wMinute < 10) ? "0%i" : "%i", t.wMinute);
-	            sprintf_s (day, (t.wDay < 10) ? "0%i" : "%i", t.wDay);
-	            sprintf_s (month, (t.wMonth < 10) ? "0%i" : "%i", t.wMonth);
+
+				time_t ttime;
+				::time (&ttime);
+				struct tm ctime;
+				localtime_s (&ctime, &ttime);
+
+				sprintf_s (minute, (ctime.tm_min < 10) ? "0%i" : "%i", ctime.tm_min);
+				sprintf_s (day, (ctime.tm_mday < 10) ? "0%i" : "%i", ctime.tm_mday);
+				sprintf_s (month, (ctime.tm_mon < 10) ? "0%i" : "%i", ctime.tm_mon);
 
 	            char time[128];
-				sprintf (time, "%i.%s%_%s.%s.%i", t.wHour, minute, day, month, t.wYear); 
-	            //sprintf_s (time, "%i.%s%_%s.%s.%i", t.wHour, minute, day, month, t.wYear); 
+				sprintf (time, "%i.%s%_%s.%s.%i", ctime.tm_hour, minute, day, month, ctime.tm_year + 1900); 
                 return std::string(time);
             }
         }

@@ -14,21 +14,21 @@ namespace rgde
 {
 namespace input
 {
-    system::system (core::windows::window_ptr window, bool exclusive, bool foreground)
+    system::system (core::windows::window_ptr window, int flags)
     {		
-		m_impl.reset(new input_impl(window, exclusive, foreground));
+		m_impl.reset(new input_impl(*this, window, flags));
     }
 
     system::~system ()
     {
     }
 
-    bool system::set_mode(bool exclusive, bool foreground)
+    bool system::set_mode(int flags)
     {
-        return m_impl->set_mode(exclusive,foreground);
+        return m_impl->set_mode(flags);
     }
 
-    void system::load_from_string (const std::string &xml_str)
+    void system::load (const std::string &xml_str)
     {
         m_impl->load(xml_str);
     }
@@ -38,11 +38,11 @@ namespace input
         std::string xml_data;
 		size_t size = src->get_size();
 		xml_data.resize(size);
-		src->read(&xml_data[0], size);
+		src->read((byte*)&xml_data[0], size);
         m_impl->load(xml_data);
     }
 
-    void system::update ()
+    void system::update()
     {
         m_impl->update();
     }

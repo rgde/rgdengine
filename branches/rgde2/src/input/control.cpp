@@ -3,7 +3,7 @@
 #include <rgde/input/control.h>
 #include <rgde/input/device.h>
 #include <rgde/input/command.h>
-#include "inputimpl.h"
+#include <rgde/input/input.h>
 
 namespace rgde
 {

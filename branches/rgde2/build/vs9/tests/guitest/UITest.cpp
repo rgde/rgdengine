@@ -163,7 +163,7 @@ void ui_test_application::render()
 	m_render_device.present();
 }
 
-core::windows::result ui_test_application::wnd_proc(ushort message, uint wparam, long lparam )
+long ui_test_application::wnd_proc(ushort message, uint wparam, long lparam )
 {
 	switch (message)
 	{

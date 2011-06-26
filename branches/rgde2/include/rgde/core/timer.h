@@ -8,36 +8,39 @@ namespace rgde
 {
 	namespace core
 	{
-		namespace utils
+		typedef int64 time_t;
+
+		// platform methods (implemented in platform lib)
+		int64 get_ticks_per_second();
+		int64 get_current_time();
+
+		class timer : boost::noncopyable
 		{
-			class timer : boost::noncopyable
-			{
-			public:
-				timer(bool start = true);
+		public:
+			explicit timer(bool start = true);
 
-				void reset(); 				// resets the timer
-				void start();				// starts the timer
-				void stop();				// stop (or pause) the timer
+			void reset(); 				// resets the timer
+			void start();				// starts the timer
+			void stop();				// stop (or pause) the timer
 
-				inline bool is_stopped() const {return m_is_stoped;}	// returns true if timer stopped
+			inline bool is_stopped() const {return m_is_stoped;}	// returns true if timer stopped
 
-				double get_absolute_time(); // get the absolute system time
-				double get_time();			// get the current time
-								
-				float get_elapsed_time();   // get the time between get_elapsed_time() calls
+			double get_absolute_time(); // get the absolute system time
+			double get_time();			// get the current time
+							
+			float get_elapsed_time();   // get the time between get_elapsed_time() calls
 
-				// get all time values at once
-				void get_time_values( double& time, double& absolute_time, float& elapsed_time );				
+			// get all time values at once
+			void get_time_values( double& time, double& absolute_time, float& elapsed_time );				
 
-			protected:
-				bool m_is_using_qpf;
-				bool m_is_stoped;
-				int64 m_ticks_per_second;
+		protected:
+			bool m_is_using_qpf;
+			bool m_is_stoped;
+			time_t m_ticks_per_second;
 
-				int64 m_stop_time;
-				int64 m_last_elapsed_time;
-				int64 m_base_time;
-			};
-		}
+			time_t m_stop_time;
+			time_t m_last_elapsed_time;
+			time_t m_base_time;
+		};
 	}
 }

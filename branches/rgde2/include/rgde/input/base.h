@@ -3,11 +3,11 @@
 namespace rgde
 {
 namespace input
-{
-    class input_impl;
+{    
     class device;
     class control;
     class command;
+	class system;
 
     typedef boost::shared_ptr<command> command_ptr;
 

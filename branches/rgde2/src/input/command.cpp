@@ -8,8 +8,8 @@ namespace rgde
 {
 namespace input
 {
-	command::command(const std::wstring &name, input_impl &input)
-		: m_input  (input)
+	command::command(const std::wstring &name, system &sys)
+		: m_input  (sys)
 		, m_name   (name)
 		, m_locked (false)
 	{

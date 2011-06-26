@@ -33,8 +33,11 @@ namespace rgde
 		audio::system& get_audio_system() {return  m_sound_system;}
 
 	protected:
-		virtual core::windows::result wnd_proc(ushort message, uint wparam, long lparam );
-		void resize_scene(unsigned int width, unsigned int height);
+		virtual long wnd_proc(ushort message, uint wparam, long lparam );
+		
+		// window eventgs
+		bool on_resize(unsigned int width, unsigned int height);
+		
 		bool do_events();
 
 		void init_game_data();

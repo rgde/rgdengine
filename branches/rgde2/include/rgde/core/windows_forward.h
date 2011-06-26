@@ -1,7 +1,6 @@
 #pragma once
 
 #include <rgde/core/math/forward.h>
-#include <windows.h>
 
 namespace rgde
 {
@@ -9,8 +8,14 @@ namespace rgde
 	{
 		namespace windows
 		{
-			typedef HWND handle;
-			typedef LRESULT result;
+			struct handle {
+				union {
+					void* vp;
+					int ip;
+				};
+
+				operator bool() const {return vp ? true : false;}
+			};
 
 			class window;
 			typedef boost::shared_ptr<window> window_ptr;

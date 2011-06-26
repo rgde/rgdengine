@@ -6,6 +6,7 @@ namespace rgde
 {
 namespace input
 {
+	class system;
     //устройство ввода
     class device
     {
@@ -17,8 +18,8 @@ namespace input
 		//получить порядковый номер устройства
         int		get_index () const {return m_index;}
 		//получить устройство ввода
-        input_impl& get_input()     {return m_input;}
-		const input_impl& get_input() const {return m_input;}
+        system& get_input()     {return m_input;}
+		const system& get_input() const {return m_input;}
 
 		//получить контрол
         control* get_control       (types::EControl	contol_type);
@@ -29,7 +30,7 @@ namespace input
         bool is_control_present (const std::wstring &control_name) const;
 
     protected:
-		device(types::EDevice name, int index, input_impl &input_system);
+		device(types::EDevice name, int index, system &input_system);
 
         friend class input_impl;
         void add_button (types::EControl contol_type); //добавить кнопку
@@ -39,7 +40,7 @@ namespace input
     private:
         int         m_index;
         types::EDevice m_device_type;
-        input_impl &m_input;
+        system &m_input;
 
         std::map<types::EControl, control*> m_controls; //контролы, которые есть у устройства
     };

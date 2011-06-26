@@ -5,7 +5,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "engine", "engine", "{11DEB1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{64D121FF-0272-4189-B61A-2FA431241D01}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "platform_specific", "platform_specific", "{71FE945C-C6B9-4E7C-9E7D-07F212F59759}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "platforms_impl", "platforms_impl", "{71FE945C-C6B9-4E7C-9E7D-07F212F59759}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{7833305A-3DA1-466C-9B3E-134BDF44F624}"
 EndProject
@@ -36,7 +36,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "log_test", "tests\log_test\
 		{1E387E72-9FB4-485B-8DA2-C17161ABBC6F} = {1E387E72-9FB4-485B-8DA2-C17161ABBC6F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "render_win32_dx9", "engine\render_dx9.vcproj", "{DD993359-1DA6-4B02-A429-827CDC85D983}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32_dx9", "engine\render_dx9.vcproj", "{DD993359-1DA6-4B02-A429-827CDC85D983}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "localization", "engine\localization.vcproj", "{499A4A27-1B37-4B09-A14C-362589A3DC06}"
 	ProjectSection(ProjectDependencies) = postProject

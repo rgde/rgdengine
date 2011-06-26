@@ -63,7 +63,7 @@ namespace rgde
 			}
 
 			// Set DirectSound coop level 
-			if (FAILED(hr = m_pDS->SetCooperativeLevel((HWND)handle, DSSCL_PRIORITY)))
+			if (FAILED(hr = m_pDS->SetCooperativeLevel((HWND)handle.vp, DSSCL_PRIORITY)))
 			{
 				DXTRACE_ERR(TEXT("audio_manager::Init, SetCooperativeLevel"), hr);
 				return;

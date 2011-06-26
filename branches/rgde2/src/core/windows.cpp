@@ -3,27 +3,32 @@
 #include <rgde/core/windows.h>
 #include <rgde/core/math.h>
 
+#include <windows.h>
+
 namespace rgde
 {
 	namespace core
 	{
 		namespace windows
 		{
+			static LRESULT __stdcall dispatch( HWND hWnd, ushort message, uint wParam, long lParam );
+			static	std::map<HWND, window*>	m_map;
+
 			window::window(handle external_handle)
 				: m_hwnd(external_handle)
-				, m_parent_hwnd(0)
-				, m_instance(0)
 				, m_using_external_handle(true)
+				, m_active(false)
 			{
-				m_instance = GetModuleHandle(NULL);
 			}
 
 			window::window(const std::wstring& title)
-				: m_hwnd(0), m_window_title(title), m_class_name(title + L"_class"),
-				  m_parent_hwnd(0), m_instance(0)
-				  , m_using_external_handle(false)
+				: m_window_title(title)
+				, m_class_name(title + L"_class")
+				, m_using_external_handle(false)
+				, m_active(false)				  
 			{
-				m_instance = GetModuleHandle(NULL);
+				m_hwnd.vp = 0;
+
 				if (register_class())
 				{
 					math::vec2i p(50,50);
@@ -33,11 +38,13 @@ namespace rgde
 			}
 
 			window::window(const math::vec2i& pos, const math::vec2i& s, const std::wstring& title)
-				: m_hwnd(0), m_window_title(title), m_class_name(title + L"_class"),
-				m_parent_hwnd(0), m_instance(0) 
+				: m_window_title(title)
+				, m_class_name(title + L"_class")
 				, m_using_external_handle(false)
+				, m_active(false)
 			{
-				m_instance = GetModuleHandle(NULL);
+				m_hwnd.vp = 0;
+
 				if (register_class())
 				{
 					create(pos,s, WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
@@ -45,11 +52,13 @@ namespace rgde
 			}
 
 			window::window(const math::vec2i& pos, const math::vec2i& s, const std::wstring& title, handle parent_handle, ulong style)
-				: m_hwnd(0), m_window_title(title), m_class_name(title + L"_class"),
-				m_parent_hwnd(parent_handle), m_instance(0)
+				: m_window_title(title)
+				, m_class_name(title + L"_class")
 				, m_using_external_handle(false)
-			{
-				m_instance = GetModuleHandle(NULL);
+				, m_active(false)
+			{	
+				m_hwnd.vp = 0;
+
 				if (register_class())
 				{
 					create(pos,s, style);
@@ -59,34 +68,36 @@ namespace rgde
 			window::~window()
 			{
 				if (0 != m_hwnd && !m_using_external_handle)
-					DestroyWindow(m_hwnd);
+					DestroyWindow((HWND)m_hwnd.vp);
 
-				if (0 != m_instance && !m_using_external_handle)
-					UnregisterClass(m_class_name.c_str(), m_instance);
+				HINSTANCE instance = GetModuleHandle(NULL);
+
+				if (instance && !m_using_external_handle)
+					UnregisterClass(m_class_name.c_str(), instance);
 			}
 
 			bool window::set_state(int state)
 			{
-				return !m_using_external_handle ? (TRUE == ShowWindow(m_hwnd, state )) : false;
+				return !m_using_external_handle ? (TRUE == ShowWindow((HWND)m_hwnd.vp, state )) : false;
 			}
 
 			bool window::update()
 			{
-				return !m_using_external_handle ? (TRUE == UpdateWindow( m_hwnd )) : true;
+				return !m_using_external_handle ? (TRUE == UpdateWindow( (HWND)m_hwnd.vp )) : true;
 			}
 
 			
 			math::vec2i window::size() const
 			{
 				RECT rc;
-				GetWindowRect(m_hwnd, &rc);
+				GetWindowRect((HWND)m_hwnd.vp, &rc);
 				return math::vec2i(rc.right - rc.left, rc.bottom - rc.top);
 			}
 
 			math::vec2i window::position() const
 			{
 				RECT rc;
-				GetWindowRect(m_hwnd, &rc);
+				GetWindowRect((HWND)m_hwnd.vp, &rc);
 				return math::vec2i(rc.left, rc.top);
 			}
 
@@ -95,7 +106,7 @@ namespace rgde
 				if (m_using_external_handle)
 					return false;
 
-				return TRUE == MoveWindow(m_hwnd, 
+				return TRUE == MoveWindow((HWND)m_hwnd.vp, 
 					p[0], p[1],
 					s[0],
 					s[1],
@@ -122,19 +133,16 @@ namespace rgde
 			{
 				assert(!m_using_external_handle && "Invalid call RegisterClass while using external window handler!");
 
-				m_wc.style = 0;
-				m_wc.lpfnWndProc = (WNDPROC)dispatch;
-				m_wc.cbClsExtra = 0;
-				m_wc.cbWndExtra = 0;
-				m_wc.hInstance = m_instance;
-				m_wc.hIcon = NULL;
-				m_wc.hCursor = LoadCursor(NULL,IDC_ARROW);
-				m_wc.hbrBackground = (HBRUSH)( COLOR_WINDOW );
-				m_wc.lpszMenuName = 0;//MAKEINTRESOURCE( IDR_MENU1 );
-				m_wc.lpszClassName = m_class_name.c_str();
+				HINSTANCE instance = GetModuleHandle(NULL);
 
-				return (0 != RegisterClass (&m_wc));
-				//UnregisterClass(lpClassName,hInstance);
+				WNDCLASS wc = {0};				
+				wc.lpfnWndProc = (WNDPROC)dispatch;				
+				wc.hInstance = instance;
+				wc.hCursor = LoadCursor(NULL,IDC_ARROW);
+				wc.hbrBackground = (HBRUSH)( COLOR_WINDOW );
+				wc.lpszClassName = m_class_name.c_str();
+
+				return (0 != RegisterClass (&wc));
 			}
 			
 
@@ -142,7 +150,7 @@ namespace rgde
 			{
 				assert(!m_using_external_handle && "Invalid call CreateWindow while using external window handler!");
 
-				m_hwnd = CreateWindowEx (
+				m_hwnd.vp = CreateWindowEx (
 					0,
 					m_class_name.c_str(),
 					m_window_title.c_str(),
@@ -153,7 +161,7 @@ namespace rgde
 					s[1],
 					//s[0]/*640*/+2*GetSystemMetrics(SM_CXSIZEFRAME),
 					//s[1]/*480*/+2*GetSystemMetrics(SM_CYSIZEFRAME) + GetSystemMetrics(SM_CYCAPTION),
-					m_parent_hwnd,
+					NULL,
 					NULL,
 					NULL,/* hInstance: Windows NT/2000/XP: This value is ignored. */
 					this);
@@ -176,15 +184,41 @@ namespace rgde
 				return true;
 			}
 
-			result window::wnd_proc(ushort message, uint wParam, long lParam )
+			bool window::show() 
+			{
+				return set_state(SW_SHOW);
+			}
+
+			bool window::hide() 
+			{
+				return set_state(SW_HIDE);
+			}
+
+			long window::wnd_proc(ushort message, uint wParam, long lParam )
 			{ 
-				return DefWindowProc(m_hwnd, message, wParam, lParam );
+				switch ()
+				{
+				case WM_ACTIVATE:	// Watch For Window Activate Message
+					{
+						// Check Minimization State
+						m_active = !HIWORD(wparam);
+						bool was_handled = m_active ? on_activate() : on_deactive();
+						if (was_handled)
+							return 0;
+					}
+					break;
+				case WM_SIZE:
+					if (on_resize(LOWORD(lparam), HIWORD(lparam)))
+						return 0;
+					break;
+				}
+				return DefWindowProc((HWND)m_hwnd.vp, message, wParam, lParam );
 			}
 			
 			//std::vector<window*> window::ms_windows;
-			std::map<handle, window*>	window::m_map;
+			//std::map<handle, window*>	window::m_map;
 
-			result __stdcall window::dispatch( handle hWnd, ushort message, uint wParam, long lParam )
+			LRESULT __stdcall dispatch( HWND hWnd, ushort message, uint wParam, long lParam )
 			{
 				std::map<HWND,window*>::iterator it = m_map.find(hWnd);
 
@@ -193,7 +227,7 @@ namespace rgde
 					if( message == WM_NCCREATE || message == WM_CREATE )
 					{
 						window* w = (window*)((CREATESTRUCT*)lParam)->lpCreateParams;
-						w->m_hwnd = hWnd;
+						w->m_hwnd.vp = hWnd;
 						std::pair<HWND,window*> value(hWnd, w);
 						m_map.insert(value);
 						it = m_map.find(hWnd);
@@ -208,16 +242,16 @@ namespace rgde
 					return DefWindowProc(hWnd, message, wParam, lParam);
 
 				window *w = it->second;
-				result r = w->wnd_proc(message,wParam,lParam);
+				long r = w->wnd_proc(message,wParam,lParam);
 
 				if( message == WM_DESTROY )
 				{
 					//SetWindowLongW()
-					w->m_hwnd = 0;
+					w->m_hwnd.vp = 0;
 					m_map.erase(it);					
 				}
 
-				return r;
+				return (LRESULT)r;
 			}
 		}
 	}

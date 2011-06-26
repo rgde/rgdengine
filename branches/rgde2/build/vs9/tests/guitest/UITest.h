@@ -43,7 +43,7 @@ namespace rgde
 		void update(float delta);
 		void render();
 
-		virtual core::windows::result wnd_proc(ushort message, uint wparam, long lparam );
+		virtual long wnd_proc(ushort message, uint wparam, long lparam );
 
 	protected:
 		std::string m_filename;

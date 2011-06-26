@@ -6,18 +6,21 @@
 #include <windows.h>
 #include <dinput.h>
 
+#include <rgde/core/windows.h>
+
 namespace rgde
 {
 namespace input
 {
+	class system;
     class input_impl
     {
     public:
-        input_impl(core::windows::window_ptr window, bool exclusive=false, bool foreground=true);
+        input_impl(system& sys, core::windows::window_ptr window, int flags);
        ~input_impl();
 
 	    //изменить режим работы устройств ввода
-        bool set_mode (bool exclusive=false, bool foreground=true);
+        bool set_mode (int flags);
 
 		//загрузить/сохранить раскладку
         void load(const std::string &xml_str);                               
@@ -65,6 +68,9 @@ namespace input
 		//вспомогательные переменные для более быстрого доступа
         device*            keyboard; 
         device*            mouse;    
+
+		//owner class 
+		system& m_system;
 
         bool m_inited;
 

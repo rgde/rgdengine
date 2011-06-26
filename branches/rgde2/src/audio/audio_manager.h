@@ -4,7 +4,6 @@ namespace rgde
 {
 	namespace audio
 	{
-
 		class camera;
 
 		namespace internal

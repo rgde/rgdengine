@@ -5,8 +5,6 @@
 #include <rgde/input/control.h>
 #include <rgde/input/command.h>
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 
 namespace rgde
 {
@@ -320,7 +318,7 @@ namespace input
 
 	void absolute_axis::set_pos (int nPos)
 	{
-		m_pos = min(max(m_min, nPos), m_max);
+		m_pos = std::min(std::max(m_min, nPos), m_max);
 	}
 
 	void absolute_axis::notify (const control &control)
