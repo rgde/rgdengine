@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 #include "application.h"
-
+#include <windows.h>
 
 int __stdcall WinMain( HINSTANCE hInst, HINSTANCE, LPSTR, int )
 {

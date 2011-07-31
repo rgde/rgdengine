@@ -29,7 +29,7 @@ namespace rgde
 
 		void timer::start()
 		{
-			int64 time = get_current_time();
+			int64 time = get_current_time(0);
 
 			if(m_is_stoped)
 				m_base_time += time - m_stop_time;

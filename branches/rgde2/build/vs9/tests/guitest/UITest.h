@@ -23,15 +23,15 @@ namespace rgde
 		bool handleMouseMove(int x, int y);
 		bool handleMouseWheel(int diff);
 		bool handleMouseButton(gui::EventArgs::MouseButtons btn, gui::EventArgs::ButtonState state);
-		virtual bool handleKeyboard(UINT_PTR key, gui::EventArgs::ButtonState state);
+		virtual bool handleKeyboard(unsigned int key, gui::EventArgs::ButtonState state);
 		bool handleChar(unsigned int);
 
 		void handleViewportChange();
 
 		void load(const std::string& xml);
 
-		virtual HRESULT OnResetDevice();
-		virtual void	OnLostDevice();
+		virtual bool OnResetDevice();
+		virtual void OnLostDevice();
 
 	protected:
 		void log(gui::LogLevel level, const std::string& message);
@@ -43,7 +43,7 @@ namespace rgde
 		void update(float delta);
 		void render();
 
-		virtual long wnd_proc(ushort message, uint wparam, long lparam );
+		virtual long wnd_proc(uint message, uint wparam, long lparam );
 
 	protected:
 		std::string m_filename;
@@ -55,7 +55,6 @@ namespace rgde
 		gui::System* m_system;
 
 		unsigned int m_framecount;
-		HANDLE m_hFile;
 
 		bool m_active;
 		double m_elapsed;
@@ -63,6 +62,4 @@ namespace rgde
 
 		gui::FontPtr m_font;
 	};
-
 }
-

@@ -1,27 +1,27 @@
 #include "stdafx.h"
 #include <rgde/core/windows.h>
 
+static	std::map<HWND, rgde::core::windows::internal::impl*>	m_map;
+LRESULT CALLBACK dispatch_proc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
+
 namespace rgde {
 namespace core {
 namespace windows {
 
-	namespace internal{
-		static LRESULT __stdcall dispatch( HWND hWnd, ushort message, uint wParam, long lParam );
-		static	std::map<HWND, window*>	m_map;
+	namespace internal{	
 
 		class impl
 		{
 		public:
-			impl(window& wnd, HWND external, const wchar_t* title, const wchar_t* class_name,)
-			: owner(wnd), m_external_hwnd(external), m_class_name(class_name), m_hwnd(0)
+			impl(window& wnd, HWND external, const wchar_t* title)
+			: owner(wnd), m_external_hwnd(external), m_class_name(title),
+			m_hwnd(0), m_window_title(title)
 			{
 				if (!m_external_hwnd) {
-					if (register_class())
-					{
-						math::vec2i p(50,50);
-						math::vec2i s(640, 480);
-						create(p,s, WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
-					}
+					m_class_name += L"_class";
+					math::vec2i p(50,50);
+					math::vec2i s(640, 480);
+					create(p,s, WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN);
 				}
 
 				owner.m_hwnd.vp = m_hwnd;
@@ -34,68 +34,67 @@ namespace windows {
 
 				if (!m_external_hwnd) {
 					if (0 != m_hwnd) DestroyWindow(m_hwnd);
-					if (instance) UnregisterClassW(m_class_name, instance);
+					//if (instance) 
+					UnregisterClassW(m_class_name.c_str(), instance);
 				}
-			}
-
-			bool register_class()
-			{
-				assert(!m_external_hwnd && "Invalid call RegisterClass while using external window handler!");
-
-				HINSTANCE instance = GetModuleHandle(NULL);
-
-				WNDCLASS wc = {0};				
-				wc.lpfnWndProc = (WNDPROC)dispatch;				
-				wc.hInstance = instance;
-				wc.hCursor = LoadCursor(NULL,IDC_ARROW);
-				wc.hbrBackground = (HBRUSH)( COLOR_WINDOW );
-				wc.lpszClassName = m_class_name;
-
-				return (0 != RegisterClass (&wc));
 			}
 
 			bool create(const math::vec2i& pos, const math::vec2i& s, ulong style)
 			{
 				assert(!m_external_hwnd && "Invalid call CreateWindow while using external window handler!");
+			
+				HINSTANCE instance = GetModuleHandle(NULL);
 
-				m_hwnd = CreateWindowEx (
+				WNDCLASS wc = {0};				
+				wc.lpfnWndProc = (WNDPROC)dispatch_proc;				
+				wc.hInstance = instance;
+				wc.hCursor = LoadCursor(NULL,IDC_ARROW);
+				wc.hbrBackground = (HBRUSH)( COLOR_WINDOW );
+				wc.lpszClassName = m_class_name.c_str();
+				RegisterClassW (&wc);
+
+				m_hwnd = CreateWindowExW (
 					0,
 					m_class_name.c_str(),
 					m_window_title.c_str(),
 					style,
-					pos[0],//CW_USEDEFAULT,//0
-					pos[1],//CW_USEDEFAULT,//0
-					s[0],
-					s[1],
-					//s[0]/*640*/+2*GetSystemMetrics(SM_CXSIZEFRAME),
-					//s[1]/*480*/+2*GetSystemMetrics(SM_CYSIZEFRAME) + GetSystemMetrics(SM_CYCAPTION),
-					NULL,
-					NULL,
-					NULL,/* hInstance: Windows NT/2000/XP: This value is ignored. */
-					this);
+					pos[0],	pos[1],
+					s[0], s[1],
+					NULL, NULL,
+					instance,/* hInstance: Windows NT/2000/XP: This value is ignored. */
+					this
+					); 
 
 				if( !m_hwnd )
 				{
-					//LPVOID lpMsgBuf;
-					//DWORD last_err  = GetLastError();
-					//if(last_err)
-					//{
-					//	//FormatMessage( 
-					//	//	FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | 
-					//	//	FORMAT_MESSAGE_IGNORE_INSERTS,NULL,last_err, 0, (LPTSTR) &lpMsgBuf,0,NULL );			
-					//	//// Free the buffer.
-					//	//MessageBox( NULL, (LPCTSTR)lpMsgBuf, "Error", MB_OK | MB_ICONINFORMATION );
-					//	//LocalFree( lpMsgBuf );
-					//}		
-					return false;
+					LPVOID lpMsgBuf;
+					DWORD last_err  = GetLastError();
+					if(last_err)
+					{
+						FormatMessage( 
+							FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | 
+							FORMAT_MESSAGE_IGNORE_INSERTS,NULL,last_err, 0, (LPTSTR) &lpMsgBuf,0,NULL );			
+						// Free the buffer.
+						MessageBoxW( NULL, (LPCTSTR)lpMsgBuf, L"Error", MB_OK | MB_ICONINFORMATION );
+						LocalFree( lpMsgBuf );
+					}		
 				}	
-				return true;
+
+				owner.m_hwnd.vp = m_hwnd;
+				return m_hwnd != 0;
 			}
 
-			windows& owner;
+
+			LRESULT wnd_proc( uint message, uint wparam, long lparam )
+			{
+				return owner.wnd_proc(message, wparam, lparam );
+			}
+
+			window& owner;
 			HWND m_hwnd;
 			HWND m_external_hwnd;
-			cons wchar_t* m_class_name;
+			std::wstring m_class_name;
+			std::wstring m_window_title;
 		};
 	}
 
@@ -106,34 +105,31 @@ namespace windows {
 		, m_using_external_handle(true)
 		, m_active(false)
 	{
-		m_impl = new impl(*this, m_hwnd.vp);
+		m_impl = new impl(*this, (HWND)m_hwnd.vp, L"must_never_be_used");
 	}
 
 	window::window(const std::wstring& title)
 		: m_window_title(title)
-		, m_class_name(title + L"_class")
 		, m_using_external_handle(false)
 		, m_active(false)				  
 	{
-		m_impl = new impl(*this, 0, m_window_title.c_str(), m_class_name.c_str(), 0);
+		m_impl = new impl(*this, 0, m_window_title.c_str());
 	}
 
 	window::window(const math::vec2i& pos, const math::vec2i& s, const std::wstring& title)
 		: m_window_title(title)
-		, m_class_name(title + L"_class")
 		, m_using_external_handle(false)
 		, m_active(false)
 	{
-		m_impl = new impl(*this, 0, m_window_title.c_str(), m_class_name.c_str(), 0);
+		m_impl = new impl(*this, 0, m_window_title.c_str());
 	}
 
 	window::window(const math::vec2i& pos, const math::vec2i& s, const std::wstring& title, handle parent_handle, ulong style)
 		: m_window_title(title)
-		, m_class_name(title + L"_class")
 		, m_using_external_handle(false)
 		, m_active(false)
 	{	
-		m_impl = new impl(*this, 0, m_window_title.c_str(), m_class_name.c_str(), 0);
+		m_impl = new impl(*this, 0, m_window_title.c_str());
 	}
 
 	window::~window()
@@ -194,8 +190,6 @@ namespace windows {
 		return move(position(),s);
 	}
 
-
-
 	bool window::show() 
 	{
 		return set_state(SW_SHOW);
@@ -206,7 +200,7 @@ namespace windows {
 		return set_state(SW_HIDE);
 	}
 
-	long window::wnd_proc(ushort message, uint wparam, long lparam )
+	long window::wnd_proc(uint message, uint wparam, long lparam )
 	{ 
 		switch (message)
 		{
@@ -227,48 +221,42 @@ namespace windows {
 		return DefWindowProc((HWND)m_hwnd.vp, message, wparam, lparam );
 	}
 
-	//std::vector<window*> window::ms_windows;
-	//std::map<handle, window*>	window::m_map;
+}
+}
+}
 
-	LRESULT __stdcall dispatch( HWND hWnd, ushort message, uint wParam, long lParam )
+LRESULT CALLBACK dispatch_proc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
+{
+	using namespace rgde;
+	std::map<HWND,core::windows::internal::impl*>::iterator it = m_map.find(hWnd);
+
+	core::windows::internal::impl *w = 0;
+
+	if( it == m_map.end() )
 	{
-		std::map<HWND,window*>::iterator it = m_map.find(hWnd);
-
-		window *w = 0;
-
-		if( it == m_map.end() )
+		if( message == WM_NCCREATE || message == WM_CREATE )
 		{
-			if( message == WM_NCCREATE || message == WM_CREATE )
-			{
-				w = (window*)((CREATESTRUCT*)lParam)->lpCreateParams;
-				w->m_hwnd.vp = hWnd;
-				std::pair<HWND,window*> value(hWnd, w);
-				m_map.insert(value);
-			}
-			else {
-				return DefWindowProc(hWnd, message, wParam, lParam);
-			}
+			w = (core::windows::internal::impl*)((CREATESTRUCT*)lParam)->lpCreateParams;
+			w->m_hwnd = hWnd;
+			std::pair<HWND,core::windows::internal::impl*> value(hWnd, w);
+			m_map.insert(value);
 		}
-		else 
-		{
-			w = it->second;
-		}
-		assert(w && "Invalid windows pointer!");
-
-		long r = w->wnd_proc(message,wParam,lParam);
-
-		if( message == WM_DESTROY )
-		{
-			w->m_hwnd.vp = 0;
-			m_map.erase(it);
-		}
-
-		return (LRESULT)r;
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+	else 
+	{
+		w = it->second;
 	}
 
+	assert(w && "Invalid windows pointer!");
 
+	long r = w->wnd_proc(message,wParam,lParam);
 
+	if( message == WM_DESTROY )
+	{
+		w->m_hwnd = 0;
+		m_map.erase(it);
+	}
 
-}
-}
+	return (LRESULT)r;
 }

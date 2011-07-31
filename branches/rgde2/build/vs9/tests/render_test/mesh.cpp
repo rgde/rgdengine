@@ -115,7 +115,7 @@ namespace rgde
 			{0.0f, -1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, -1.0f}
 		};
 
-		static WORD cubeF[6][4] =
+		static unsigned short cubeF[6][4] =
 		{
 			{ 0, 1, 5, 4 }, { 4, 5, 6, 7 }, { 7, 6, 2, 3 },
 			{ 1, 0, 3, 2 }, { 1, 2, 6, 5 }, { 0, 4, 7, 3 }
@@ -145,7 +145,7 @@ namespace rgde
 			{1.0f, 0.0f}
 		};
 
-		static WORD cubeFT[6][4] =
+		static unsigned short cubeFT[6][4] =
 		{
 			{ 3, 0, 1, 2 }, { 0, 1, 2, 3 }, { 1, 2, 3, 0 },
 			{ 0, 1, 2, 3 }, { 3, 0, 1, 2 }, { 0, 1, 2, 3 }

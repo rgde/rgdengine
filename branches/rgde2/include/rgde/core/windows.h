@@ -9,13 +9,11 @@ namespace rgde
 	{
 		namespace windows
 		{
-			namespace internal {
-				class impl;
-			}
-
+			namespace internal {class impl;}
 			class window
 			{
-				friend internal::impl;
+				//class impl;
+				friend class internal::impl;
 			public:
 				explicit window(handle external_handle);
 				explicit window(const std::wstring& title = L"Window");
@@ -45,32 +43,28 @@ namespace rgde
 				bool active() const {return m_active;}
 
 				const std::wstring& title() const {return m_window_title;}
-				const std::wstring& class_name() const {return m_class_name;}
 
 			protected:
 				bool create(const math::vec2i& pos, const math::vec2i& s, ulong style);
-				bool register_class();
 
 				// window event handlers, return 'false' if event wasn't handled
 				virtual bool on_activate() {return false;}
 				virtual bool on_deactivate() {return false;}
-				virtual bool on_resize(int w, int h) {return false;}
-				virtual bool on_input_event(const input_event& e) {return false;}
+				virtual bool on_resize(int w, int h) {w;h;return false;}
+				virtual bool on_input_event(const input_event& e) {e;return false;}
 
-				virtual long wnd_proc(ushort message, uint wparam, long lparam );
+				virtual long wnd_proc(uint message, uint wparam, long lparam );
 
 			protected:
-				impl*	m_impl;
+				internal::impl*	m_impl;
 				handle	m_hwnd;
 
-				std::wstring m_class_name;
 				std::wstring m_window_title;
 
 				bool m_active;
 
 				bool m_using_external_handle;
 			};
-
 		}
 	}
 }
