@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <windows.h>
 
 using namespace rgde;
 using core::windows::window;
@@ -12,11 +13,10 @@ using namespace math;
 #include "terrain.h"
 
 application::application(int x, int y, int w, int h, const std::wstring& title) 
-	: m_active(true)
-	, window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU)
-	, m_device(get_handle(), m_filesystem)
+	: window(math::vec2i(x, y), math::vec2i(w, h), title/*, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU*/)
+	, m_device(system_handle(), m_filesystem)
 	, m_elapsed(0)
-	, m_sound_system(get_handle())
+	, m_sound_system(system_handle())
 	, m_batcher2d(m_device)
 	, m_console(m_device)
 {
@@ -34,7 +34,7 @@ application::application(int x, int y, int w, int h, const std::wstring& title)
 
 	m_camera = new scene::camera();
 
-	resize_scene(w, h);
+	on_resize(w, h);
 	
 	init_game_data();
 	init_render_data();
@@ -107,7 +107,7 @@ void application::run()
 
 	while( is_created() )
 	{
-		if( !do_events() && m_active)
+		if( !do_events()/* && m_active*/)
 		{
 			m_elapsed = m_timer.elapsed();
 			update();
@@ -152,7 +152,7 @@ void application::render()
 	m_device.present();
 }
 
-bool on_input_event(const core::windows::input_event& e)
+bool application::on_input_event(const core::windows::input_event& e)
 {
 	return false;
 }
@@ -245,10 +245,10 @@ bool on_input_event(const core::windows::input_event& e)
 //	return window::wnd_proc(message, wparam, lparam);
 //}
 
-bool application::on_resize(int width, int height)
+bool application::on_resize(unsigned int width, unsigned int height)
 {
 	// to prevent divicion by zero
-	height = max(1, height);
+	height = std::max<unsigned int>(1, height);
 
 	if (!m_camera)	return false;
 	

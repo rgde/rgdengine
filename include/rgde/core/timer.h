@@ -12,7 +12,7 @@ namespace rgde
 
 		// platform methods (implemented in platform lib)
 		int64 get_ticks_per_second();
-		int64 get_current_time();
+		int64 get_current_time(const int64& stop_time = 0);
 
 		class timer : boost::noncopyable
 		{

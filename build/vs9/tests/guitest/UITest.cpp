@@ -20,9 +20,9 @@ using namespace rgde;
 ui_test_application::ui_test_application(int x, int y, int w, int h, const std::wstring& title)
 	: m_render(NULL)
 	, m_system(NULL)
-	, m_hFile(INVALID_HANDLE_VALUE)
-	, window(math::vec2i(x, y), math::vec2i(w, h), title, 0, WS_BORDER | WS_CAPTION | WS_SYSMENU)
-	, m_render_device(get_handle(), m_filesystem)
+	//, m_hFile(INVALID_HANDLE_VALUE)
+	, window(math::vec2i(x, y), math::vec2i(w, h), title/*, core::windows::handle(), WS_BORDER | WS_CAPTION | WS_SYSMENU*/)
+	, m_render_device(system_handle(), m_filesystem)
 	, m_elapsed(0)
 	, m_active(true)
 {
@@ -30,9 +30,9 @@ ui_test_application::ui_test_application(int x, int y, int w, int h, const std::
 	// init app data path
 	SHGetFolderPathW(NULL, CSIDL_APPDATA | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, wpath);
 
-	std::wstring log(wpath);
-	log += L"\\RGDEngine\\guitest.log";
-	m_hFile = CreateFileW(log.c_str(), GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, 0, 0);
+	//std::wstring log(wpath);
+	//log += L"\\RGDEngine\\guitest.log";
+	//m_hFile = CreateFileW(log.c_str(), GENERIC_WRITE, FILE_SHARE_READ, 0, CREATE_ALWAYS, 0, 0);
 
 	wchar_t buf[512];
 	GetModuleFileNameW(NULL, &buf[0], 512);
@@ -53,8 +53,8 @@ ui_test_application::~ui_test_application()
 	if(m_render)
 		delete m_render;
 
-	if(m_hFile != INVALID_HANDLE_VALUE)
-		CloseHandle(m_hFile);
+	//if(m_hFile != INVALID_HANDLE_VALUE)
+	//	CloseHandle(m_hFile);
 }
 
 void ui_test_application::run()
@@ -163,7 +163,7 @@ void ui_test_application::render()
 	m_render_device.present();
 }
 
-long ui_test_application::wnd_proc(ushort message, uint wparam, long lparam )
+long ui_test_application::wnd_proc(uint message, uint wparam, long lparam )
 {
 	switch (message)
 	{
@@ -204,13 +204,13 @@ long ui_test_application::wnd_proc(ushort message, uint wparam, long lparam )
 			if ('Q' == wparam || 'q' == wparam || VK_ESCAPE == wparam)
 				exit(0);
 
-			handleKeyboard((UINT_PTR)wparam, EventArgs::Down);
+			handleKeyboard((unsigned int)wparam, EventArgs::Down);
 
 			return 0;
 		}
 
 	case WM_KEYUP:
-		handleKeyboard((UINT_PTR)wparam, EventArgs::Up);
+		handleKeyboard((unsigned int)wparam, EventArgs::Up);
 		return 0;
 
 	case WM_SIZE:
@@ -248,7 +248,7 @@ bool ui_test_application::handleMouseButton(EventArgs::MouseButtons btn, EventAr
 		return false;
 }
 
-bool ui_test_application::handleKeyboard(UINT_PTR key, EventArgs::ButtonState state)
+bool ui_test_application::handleKeyboard(unsigned int key, EventArgs::ButtonState state)
 {
 	if(m_system)
 	{
@@ -276,78 +276,60 @@ bool ui_test_application::handleChar(unsigned int ch)
 
 void ui_test_application::log(LogLevel level, const std::string& message)
 {
-	if(m_hFile != INVALID_HANDLE_VALUE)
-	{
-		std::string type;
-		switch(level)
-		{
-		case LogSystem:
-			type = "System";
-			break;
-		case LogWarning:
-			type = "Warning";
-			break;
-		case LogError:
-			type = "Error";
-			break;
-		case LogCritical:
-			type = "Critical";
-			break;
-		default:
-			type = "Message";
-			break;
-		};
+	//if(m_hFile != INVALID_HANDLE_VALUE)
+	//{
+	//	std::string type;
+	//	switch(level)
+	//	{
+	//	case LogSystem:
+	//		type = "System";
+	//		break;
+	//	case LogWarning:
+	//		type = "Warning";
+	//		break;
+	//	case LogError:
+	//		type = "Error";
+	//		break;
+	//	case LogCritical:
+	//		type = "Critical";
+	//		break;
+	//	default:
+	//		type = "Message";
+	//		break;
+	//	};
 
-		SYSTEMTIME st;
-		GetLocalTime(&st);
+	//	SYSTEMTIME st;
+	//	GetLocalTime(&st);
 
-		char timestamp[32] = {0};
-		_snprintf(timestamp, 32, "[%04d.%02d.%02d %02d:%02d:%02d][%s] ", st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, type.c_str());
+	//	char timestamp[32] = {0};
+	//	_snprintf(timestamp, 32, "[%04d.%02d.%02d %02d:%02d:%02d][%s] ", st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, type.c_str());
 
-		char con_timestamp[32] = {0};
-		_snprintf(con_timestamp, 32, "[%02d:%02d:%02d][%s] ", st.wHour, st.wMinute, st.wSecond, type.c_str());
+	//	char con_timestamp[32] = {0};
+	//	_snprintf(con_timestamp, 32, "[%02d:%02d:%02d][%s] ", st.wHour, st.wMinute, st.wSecond, type.c_str());
 
-		std::string m(timestamp);
-		m += message;
-		std::cout << (std::string(con_timestamp)+message).c_str() << std::endl;
-		m += "\n";
-		DWORD len = (DWORD)m.length();
-		WriteFile(m_hFile, m.c_str(), len, &len, 0);
-	}
+	//	std::string m(timestamp);
+	//	m += message;
+	//	std::cout << (std::string(con_timestamp)+message).c_str() << std::endl;
+	//	m += "\n";
+	//	DWORD len = (DWORD)m.length();
+	//	WriteFile(m_hFile, m.c_str(), len, &len, 0);
+	//}
 }
 
 void ui_test_application::load(const std::string& xml)
 {
-	if(m_system)
-	{
-		if (gui::BaseWindow* wnd = m_system->loadXml(xml))
-		{
-
-		}
-	}
+	if(!m_system) return;
+	gui::BaseWindow* wnd = m_system->loadXml(xml);
 }
 
 void ui_test_application::OnLostDevice(void)
 {
-	try
-	{
-		m_render->OnLostDevice();
-	}
-	catch(...)
-	{	
-	}		
+	m_render->OnLostDevice();
 }
 
-HRESULT ui_test_application::OnResetDevice(void)
+bool ui_test_application::OnResetDevice(void)
 {
-	try
-	{
-		m_render->OnResetDevice();
-		handleViewportChange();
-	}
-	catch(...)
-	{
-		return S_FALSE;
-	}
-	return S_OK;
+	m_render->OnResetDevice();
+	handleViewportChange();
+	return true;
 }
