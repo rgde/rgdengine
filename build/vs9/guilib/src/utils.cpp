@@ -1,56 +1,26 @@
 #include "stdafx.h"
 
-#include <windows.h>
 #include "vector.h"
 #include "utils.h"
+
+#include "utf8.h"
 
 namespace gui
 {
 
-#pragma message ("Use portable UTF conversion from http://sourceforge.net/projects/utfcpp/ !!!")
-
+// translate from UTF-8 to UTF-16
 std::wstring UTF8ToUTF16(const std::string& text)
-{
-	// translate from UTF-8 to UTF-16
+{	
 	std::wstring out;
-
-	size_t len = text.length();
-	char* src = new char[len+1];
-	memset(src, 0, len+1);
-	memcpy(src, text.c_str(), len);
-
-	size_t needed = ::MultiByteToWideChar(CP_UTF8, NULL, src, (int)len+1, NULL, NULL);
-	if(needed)
-	{
-		wchar_t* dst = new wchar_t[needed+1];
-		memset(dst, 0, needed+1);
-		if(::MultiByteToWideChar(CP_UTF8, NULL, src, (int)len+1, dst, (int)needed))
-		{
-			out = dst;
-		}
-		delete [] dst;
-	}
-	delete [] src;
+	utf8::utf8to16(text.begin(), text.end(), std::back_inserter(out));
 	return out;
 }
 
+// translate from UTF-16 to UTF-8
 std::string UTF16ToUTF8(const std::wstring& wtext)
-{
-	// translate from UTF-16 to UTF-8
+{	
 	std::string out;
-	size_t len = wtext.length();
-
-	size_t needed = ::WideCharToMultiByte(CP_UTF8, NULL, wtext.c_str(), (int)len, NULL, NULL, NULL, NULL);
-	if(needed)
-	{
-		char* dst = new char[needed+1];
-		memset(dst, 0, needed+1);
-		if(::WideCharToMultiByte(CP_UTF8, NULL, wtext.c_str(), (int)len, dst, (int)needed, NULL, NULL))
-		{
-			out = dst;
-		}
-		delete [] dst;
-	}
+	utf8::utf16to8(wtext.begin(), wtext.end(), std::back_inserter(out));
 	return out;	
 }
 
@@ -70,7 +40,23 @@ std::string PointToString(const point& val)
 
 bool StringToBool(const std::string& str)
 {
-	return (str == "true" || str == "True");
+	if (str.size() == 1) {
+		const char c = *str.begin();
+		if (c == '1') return true;
+		if (c == '0') return false;
+	}
+
+	// length of "true" is 4
+	static const std::string true_str = "true";
+	if (str.size() == 4) {
+		for (size_t i = 0; i < true_str.length(); ++i)
+		{
+			if (tolower(str[i]) != true_str[i]) return false;
+		}
+		return true;
+	}
+
+	return false;
 }
 
 const std::string& BoolToString(bool val)

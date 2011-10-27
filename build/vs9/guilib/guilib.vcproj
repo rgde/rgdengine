@@ -155,6 +155,7 @@
 		</Configuration>
 		<Configuration
 			Name="Product Release|Win32"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			>
 			<Tool
