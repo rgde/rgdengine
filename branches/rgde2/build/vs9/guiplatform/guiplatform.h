@@ -1,6 +1,5 @@
 #pragma once
 
-//struct IDirect3DDevice9;
 #include <rgde/render/render_forward.h>
 #include <rgde/core/file_system.h>
 
