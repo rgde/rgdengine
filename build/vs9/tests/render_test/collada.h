@@ -26,6 +26,10 @@ namespace collada
 		std::string id;
 		std::string name;
 
+		//struct profile {
+		//	std::vector<technique> techniques;
+		//};
+
 		struct technique
 		{
 			std::string sid;
@@ -49,7 +53,7 @@ namespace collada
 
 				type type;
 			};
- 
+
 			typedef std::map<std::string, param> params_t;
 			params_t params;
 		};
@@ -123,6 +127,11 @@ namespace collada
 		};
 
 		void read(rgde::core::vfs::istream_ptr stream);
+
+		void load_images_library(xml::node collada_root);
+		void load_materials_library(xml::node collada_root);
+		void load_effects_library(xml::node collada_root);
+		void load_geometries_library(xml::node collada_root);
 
 		std::string created;
 		std::string modified;
