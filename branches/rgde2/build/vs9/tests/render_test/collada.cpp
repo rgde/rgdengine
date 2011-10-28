@@ -136,6 +136,81 @@ namespace collada
 		}
 	}
 
+	void scene::load_images_library(xml::node collada_node) {
+		xml::node library_images_node = collada_node("library_images");
+
+		for(xml::node n = library_images_node("image");n;n = n.next_sibling()) {
+			image img;
+			img.id = n["id"].value();
+			img.name = n["name"].value();
+			img.source = n("init_from").first_child().value();
+
+			library_images[img.id] = img;
+		}
+	}
+
+	void scene::load_materials_library(xml::node collada_node) {
+		xml::node library_materials_node = collada_node("library_materials");
+
+		for(xml::node n = library_materials_node("material");n;n = n.next_sibling()) { 
+			std::string id = n["id"].value();
+
+			material& mat = library_materials[id];
+
+			mat.id = id;
+			mat.name = n["name"].value();;
+			mat.effect_instance_url = n("instance_effect")["url"].value();;
+		}
+	}
+
+	void scene::load_effects_library(xml::node collada_node) {
+		xml::node library_effects_node = collada_node("library_effects");
+
+		for(xml::node n = library_effects_node("effect");n;n = n.next_sibling())
+		{ 
+			std::string id = n["id"].value();
+			effect& ef = effects[id];
+			ef.id = id;
+		
+			xml::node profile_node = n("profile_COMMON");
+			if (!profile_node) continue;
+
+			ef.profiles.push_back(effect::profile());
+			effect::profile& profile = ef.profiles.back();
+			profile.type = effect::profile::common;
+
+			xml::node tech_node = profile_node("technique").first_child();
+			std::string tech_name = tech_node.name();
+
+			effect::technique& tech = profile.techniques[tech_name];
+			tech.sid = tech_node["sid"].value();
+			tech.type = effect::technique::blinn;
+
+			if (tech_name == "phong")
+				tech.type = effect::technique::phong;
+			else if (tech_name == "blinn")
+				tech.type = effect::technique::blinn;
+			else if (tech_name == "lambert")
+				tech.type = effect::technique::lambert;
+			else 
+				tech.type = effect::technique::constant;
+		}
+	}
+
+	void scene::load_geometries_library(xml::node collada_node) {
+		xml::node library_geometries_node = collada_node("library_geometries");
+		for(xml::node n = library_geometries_node("geometry"); n; n = n.next_sibling())
+		{ 
+			std::string id = n["id"].value();
+
+			mesh& m = meshes[id];
+			m.id = id;
+
+			read_mesh(n, m);
+			__asm nop;
+		}
+	}
+
 	void scene::read(rgde::core::vfs::istream_ptr stream)
 	{
 		xml::document dae_doc;
@@ -148,80 +223,13 @@ namespace collada
 
 		xml::node collada_node = dae_doc("COLLADA");
 
-		xml::node asset_node = collada_node("COLLADA");
+		//xml::node asset_node = collada_node("COLLADA");
 
-		if (xml::node library_images_node = collada_node("library_images"))
-		{
-			for(xml::node n = library_images_node("image");n;n = n.next_sibling())
-			{
-				image img;
-				img.id = n["id"].value();
-				img.name = n["name"].value();
-				img.source = n("init_from").first_child().value();
+		load_images_library(collada_node);
+		load_materials_library(collada_node);
+		load_effects_library(collada_node);
+		load_geometries_library(collada_node);
 
-				library_images[img.id] = img;
-			}
-		}
-
-		if (xml::node library_materials_node = collada_node("library_materials"))
-		{
-			for(xml::node n = library_materials_node("material");n;n = n.next_sibling())
-			{ 
-				std::string id = n["id"].value();
-
-				material& mat = library_materials[id];
-
-				mat.id = id;
-				mat.name = n["name"].value();;
-				mat.effect_instance_url = n("instance_effect")["url"].value();;
-			}
-		}
-
-		if (xml::node library_effects_node = collada_node("library_effects"))
-		{
-			for(xml::node n = library_effects_node("effect");n;n = n.next_sibling())
-			{ 
-				std::string id = n["id"].value();
-
-				effect::profile profile;
-				/*profile.*/
-
-				xml::node tech_node = n("profile_COMMON")("technique").first_child();
-				std::string tech_name = tech_node.name();
-
-				effect::technique tech;
-
-				tech.type = effect::technique::blinn;
-
-				if (tech_name == "phong")
-					tech.type = effect::technique::phong;
-				else if (tech_name == "blinn")
-					tech.type = effect::technique::blinn;
-				else if (tech_name == "lambert")
-					tech.type = effect::technique::lambert;
-				else 
-					tech.type = effect::technique::constant;
-				
-				effect& ef = effects[id];
-
-				ef.id = id;
-				ef.name = n["name"].value();
-			}
-		}
-
-		if(xml::node library_geometries_node = collada_node("library_geometries"))
-		{
-			for(xml::node n = library_geometries_node("geometry"); n; n = n.next_sibling())
-			{ 
-				std::string id = n["id"].value();
-
-				mesh& m = meshes[id];
-				m.id = id;
-
-				read_mesh(n, m);
-				__asm nop;
-			}
-		}
 
 		xml::node library_nodes_node = collada_node("library_nodes");
 		xml::node library_cameras_node = collada_node("library_cameras");
