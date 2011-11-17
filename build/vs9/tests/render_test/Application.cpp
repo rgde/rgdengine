@@ -285,4 +285,6 @@ void application::test_collada_read()
 	//scene.read(m_filesystem.open_read("models/MS-00X Experimental/models/MS-00X Experimental.dae"));
 	core::vfs::istream_ptr in = m_filesystem.open_read("models/test_morph.DAE");
 	scene.read(in);
+
+	__asm nop;
 }
