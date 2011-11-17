@@ -7,6 +7,20 @@
 
 namespace collada
 {
+	struct data3f{
+		union {
+			struct {float x, y, z;};
+			struct {float r, g, b;};
+		};
+	};
+
+	struct data4f{
+		union {
+			struct {float x, y, z, w;};
+			struct {float r, g, b, w;};
+		};
+	};
+
 	struct image
 	{
 		std::string id;
@@ -14,70 +28,43 @@ namespace collada
 		std::string source; // filename or other data url.
 	};
 
-	struct material
-	{
-		std::string id;
-		std::string name;
-		std::string effect_instance_url;
-	};
-
 	struct effect
 	{
-		std::string id;
-		std::string name;
-
-		//struct profile {
-		//	std::vector<technique> techniques;
-		//};
-
-		struct technique
-		{
-			std::string sid;
+		struct technique {			
 			enum type {blinn, constant, lambert, phong};
-
+			std::string sid;
 			type type;
-
-			// params
-			struct param
-			{
-				enum type {
-					float_t,
-					float2_t,
-					float3_t,
-					float4_t,
-					color_t,					
-				};
-
-				std::string name;
-				std::string value;
-
-				type type;
-			};
-
-			typedef std::map<std::string, param> params_t;
-			params_t params;
+			data4f ambient;
+			data4f diffuse;
+			data4f specular;
+			float shininess;
+			data4f reflective;
 		};
 
 		struct profile
 		{
 			enum type {bridge, common, cg, gles, glsl, gles2};
-
-			type type;
-
 			typedef std::map<std::string, technique> techniques_t;
+
+			type type;			
 			techniques_t techniques;
 		};
 
+		std::string id;
 		std::vector<profile> profiles;
+	};
+
+	struct material
+	{
+		std::string id;
+		std::string name;
+		std::string effect_instance_url;
+		effect*  effect_instance;
 	};
 
 	struct mesh
 	{
-		std::string id;
-		std::string name;
-
-		struct source
-		{
+		struct source {
 			std::string id;
 			std::vector<float> data;
 			int stride;
@@ -85,27 +72,24 @@ namespace collada
 
 		struct subset_info
 		{
-			std::string material;
-
-			std::vector<int> indices;
-
-			struct input
-			{
-				enum semantic_t
-				{
+			struct input {
+				enum semantic_t {
 					VERTEX = 0,
 					NORMAL,
 					TEXCOORD,
+					TEXTANGENT,
+					TEXBINORMAL,
 					INVALID
 				};
 
 				std::string source_id;
-
 				semantic_t semantic;
 				int offset;
 				int set;
 			};
 
+			std::string material;
+			std::vector<int> indices;
 			std::vector<input> inputs;
 		};
 
@@ -115,14 +99,15 @@ namespace collada
 		typedef std::vector<subset_info> subsets_store;
 		typedef subsets_store::iterator subsets_iter;
 
+		std::string id;
+		std::string name;
 		source_library sources;
 		subsets_store subsets;		
 	};
 
 	struct scene
 	{
-		enum up_axis
-		{
+		enum up_axis {
 			z_up, y_up
 		};
 
@@ -136,7 +121,7 @@ namespace collada
 		std::string created;
 		std::string modified;
 		std::string authoring_tool;
-
+		up_axis axis;
 		float scale; // to meters
 
 		typedef std::map<std::string, image> library_images_t;

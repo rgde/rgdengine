@@ -6,11 +6,28 @@ namespace collada
 {
 	namespace helpers
 	{
+		bool read_data(const char* str, data3f& v) {
+			if (!str) return false;
+			char* buf = const_cast<char*>(str);
+			v.x = static_cast<float>(strtod(buf,&buf));
+			v.y = static_cast<float>(strtod(buf,&buf));
+			v.z = static_cast<float>(strtod(buf,&buf));
+			return true;
+		}
+
+		bool read_data(const char* str, data4f& v) {
+			if (!str) return false;
+			char* buf = const_cast<char*>(str);
+			v.x = static_cast<float>(strtod(buf,&buf));
+			v.y = static_cast<float>(strtod(buf,&buf));
+			v.z = static_cast<float>(strtod(buf,&buf));
+			v.w = static_cast<float>(strtod(buf,&buf));
+			return true;
+		}
+
 		bool read_float_array(xml::node array_node, std::vector<float>& out)
 		{
 			if (!array_node) return false;
-
-//			std::string array_id = array_node["id"].value();			
 
 			int count = array_node["count"].as_int();
 			if (count <= 0)	return false;
@@ -42,14 +59,15 @@ namespace collada
 				{"VERTEX", input::VERTEX},
 				{"NORMAL", input::NORMAL},
 				{"TEXCOORD", input::TEXCOORD},
+				{"TEXTANGENT", input::TEXTANGENT},
+				{"TEXBINORMAL", input::TEXBINORMAL},
 				{0, input::INVALID}
 			};
-			if (strcmp(str, "VERTEX") == 0)
-				return mesh::subset_info::input::VERTEX;
-			else if (strcmp(str, "NORMAL") == 0)
-				return mesh::subset_info::input::NORMAL;
-			else if (strcmp(str, "TEXCOORD") == 0)
-				return mesh::subset_info::input::TEXCOORD;
+			if (strcmp(str, "VERTEX") == 0)  return input::VERTEX;
+			else if (strcmp(str, "NORMAL") == 0) return input::NORMAL;
+			else if (strcmp(str, "TEXCOORD") == 0) return input::TEXCOORD;
+			else if (strcmp(str, "TEXTANGENT") == 0) return input::TEXTANGENT;
+			else if (strcmp(str, "TEXBINORMAL") == 0) return input::TEXBINORMAL;
 			return input::INVALID;
 		}
 
@@ -150,6 +168,8 @@ namespace collada
 	}
 
 	void scene::load_materials_library(xml::node collada_node) {
+
+
 		xml::node library_materials_node = collada_node("library_materials");
 
 		for(xml::node n = library_materials_node("material");n;n = n.next_sibling()) { 
@@ -159,21 +179,34 @@ namespace collada
 
 			mat.id = id;
 			mat.name = n["name"].value();;
-			mat.effect_instance_url = n("instance_effect")["url"].value();;
+			mat.effect_instance_url = n("instance_effect")["url"].value();
+			if (mat.effect_instance_url.empty()) {
+				mat.effect_instance = 0;
+				continue;
+			}
+			// skip 1st char '#'
+			std::string effect_name = &(n("instance_effect")["url"].value()[1]);
+			effects_t::iterator it = effects.find(effect_name);
+			if (it != effects.end()) {
+				mat.effect_instance = &(it->second);
+			}
 		}
 	}
 
 	void scene::load_effects_library(xml::node collada_node) {
-		xml::node library_effects_node = collada_node("library_effects");
-
-		for(xml::node n = library_effects_node("effect");n;n = n.next_sibling())
+		for(xml::node n = collada_node("library_effects")("effect"); n; n = n.next_sibling())
 		{ 
 			std::string id = n["id"].value();
-			effect& ef = effects[id];
-			ef.id = id;
 		
 			xml::node profile_node = n("profile_COMMON");
-			if (!profile_node) continue;
+			// only handle "COMMON" profiles
+			if (!profile_node) {
+				//TODO: print some error message as COMMON profile not found for effect
+				continue;
+			}
+
+			effect& ef = effects[id];
+			ef.id = id;
 
 			ef.profiles.push_back(effect::profile());
 			effect::profile& profile = ef.profiles.back();
@@ -194,6 +227,12 @@ namespace collada
 				tech.type = effect::technique::lambert;
 			else 
 				tech.type = effect::technique::constant;
+
+			helpers::read_data(tech_node("ambient")("color").child_value(), tech.ambient);
+			helpers::read_data(tech_node("diffuse")("color").child_value(), tech.diffuse);
+			helpers::read_data(tech_node("specular")("color").child_value(), tech.specular);
+			helpers::read_data(tech_node("reflective")("color").child_value(), tech.reflective);
+			tech.shininess = atof(tech_node("shininess")("float").child_value());
 		}
 	}
 
@@ -223,11 +262,20 @@ namespace collada
 
 		xml::node collada_node = dae_doc("COLLADA");
 
+		xml::node asset_node = collada_node("asset");
+		authoring_tool = asset_node("contributor")("authoring_tool").child_value();
+		created = asset_node("created").child_value();
+		scale = asset_node("unit")["meter"].as_float();
+
+		//TODO:
+		//asset_node("up_axis").child_value();
+		axis = z_up;
+
 		//xml::node asset_node = collada_node("COLLADA");
 
 		load_images_library(collada_node);
-		load_materials_library(collada_node);
 		load_effects_library(collada_node);
+		load_materials_library(collada_node);		
 		load_geometries_library(collada_node);
 
 
