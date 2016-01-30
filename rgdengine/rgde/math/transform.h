@@ -40,8 +40,8 @@ namespace math
 		void						scale(const vec3f& s);
 
 		// directional vectors
-		vec3f						up()		const;
-		vec3f						at()		const;
+		vec3f						up()	const;
+		vec3f						at()	const;
 		vec3f						left()	const;
 
 		vec3f						world_up() const;

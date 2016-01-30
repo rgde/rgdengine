@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="gmtl">
+      <UniqueIdentifier>{58d28424-c4b1-46ce-bc63-ba35aed2a767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gmtl\Util">
+      <UniqueIdentifier>{be25245a-b1e8-472f-a228-654f8d0eab08}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AABox.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="AABoxOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="AxisAngle.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="AxisAngleOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Comparitors.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Containment.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Coord.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerAngle.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerAngleOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Generate.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="gmtl.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Intersection.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="LineSeg.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="LineSegOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="OOBox.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Output.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaneOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Quat.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="QuatOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="RayOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Tri.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="TriOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="VecBase.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="VecExprMeta.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="VecOps.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="VecOpsMeta.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Version.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Xforms.h">
+      <Filter>gmtl</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Assert.h">
+      <Filter>gmtl\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Meta.h">
+      <Filter>gmtl\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\StaticAssert.h">
+      <Filter>gmtl\Util</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

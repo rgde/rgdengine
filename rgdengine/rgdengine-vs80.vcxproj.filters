@@ -1,0 +1,600 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="headers">
+      <UniqueIdentifier>{29024ad9-ce94-4ab9-921f-18e515544d32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\core">
+      <UniqueIdentifier>{d69bb66d-8924-46a5-a430-37cb0702d2d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\base">
+      <UniqueIdentifier>{2c1e9c73-0025-43dd-892b-56f7fd160342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\math">
+      <UniqueIdentifier>{7cb2d39f-9071-4fbf-a64e-4e2044ed8641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\math\camera">
+      <UniqueIdentifier>{633acf72-e51b-48d8-b911-c216042f57dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\math\spline">
+      <UniqueIdentifier>{8c941be8-ecda-48c4-9f9d-964ceac2530e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\math\Interpolator">
+      <UniqueIdentifier>{7c9aa7fa-2400-4270-8396-0ab04b3def29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\render">
+      <UniqueIdentifier>{45ebc164-0d2b-4882-99ef-602212572daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\render\particles">
+      <UniqueIdentifier>{ca2dba94-b37a-40d5-b3c9-550992a25b85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\event">
+      <UniqueIdentifier>{538174d2-14f6-4166-bf95-3810919f944f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\input">
+      <UniqueIdentifier>{0d998369-c6c6-4c50-933e-f05206c46155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\game">
+      <UniqueIdentifier>{bde862c6-ae03-4887-9be5-e60d34cd5b4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\io">
+      <UniqueIdentifier>{08e5e25b-9bb7-4ef4-b4d8-d5359ce86d14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\scene">
+      <UniqueIdentifier>{57251d31-01db-426f-b88d-30baf188ac20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers\scene\triggers">
+      <UniqueIdentifier>{ac6635d9-9e34-4aa6-a56f-6df8954da786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources">
+      <UniqueIdentifier>{193b310e-47c7-4f39-82ee-b9bf02a77fba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\base">
+      <UniqueIdentifier>{ceb3be26-166f-4538-afd6-35210dda22fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\render">
+      <UniqueIdentifier>{c15ab58e-bb58-4526-9756-2d8ac616afba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\render\particles">
+      <UniqueIdentifier>{9e9669b3-fce5-4167-a9a9-b99866565dcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\event">
+      <UniqueIdentifier>{66c6bd3a-b054-4d19-8803-4b11670e8b97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\input">
+      <UniqueIdentifier>{5f892f98-2ae3-460c-91f7-c99a8826d5e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\game">
+      <UniqueIdentifier>{1fb94e03-3a51-4916-9108-7286e9a9ed85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\io">
+      <UniqueIdentifier>{a5a8de69-e4df-4a6f-aba9-de02f85aabbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\scene">
+      <UniqueIdentifier>{c6fabf0f-86ae-4b15-8483-e6f29fe7d129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\scene\triggers">
+      <UniqueIdentifier>{f0f775e5-4439-4623-8869-092fb89b9a31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\math">
+      <UniqueIdentifier>{53e8f7f4-2f91-4ce3-8919-0ecf3942c71e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\math\camera">
+      <UniqueIdentifier>{068682e4-1854-48cb-a70c-a7599b8b0a63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\core">
+      <UniqueIdentifier>{3e843c21-11a0-43f7-a8d8-1c6a30994ba4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\core\Forms">
+      <UniqueIdentifier>{6a3e1ab8-f848-49f1-8569-0f49e75e0402}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\core\impl">
+      <UniqueIdentifier>{bb91aa07-ddb0-4667-886a-0f823534be69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources\precompiled">
+      <UniqueIdentifier>{2bd2d6b2-c1e1-43ba-9a05-c345b331891a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rgde\engine.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\application.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\factory.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\game_task.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\input_task.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\named_object.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\Property.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\render_system.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\render_task.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\Task.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\Timer.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\xml_class.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\core\xml_node.h">
+      <Filter>headers\core</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\base\exceptions.h">
+      <Filter>headers\base</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\base\hash_string.h">
+      <Filter>headers\base</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\base\lexical_cast.h">
+      <Filter>headers\base</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\base\log.h">
+      <Filter>headers\base</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\base\log_helper.h">
+      <Filter>headers\base</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\base\manager.h">
+      <Filter>headers\base</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\base\singelton.h">
+      <Filter>headers\base</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\base\smart_ptr_helpers.h">
+      <Filter>headers\base</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\base\xml_helpers.h">
+      <Filter>headers\base</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\animation_controller.h">
+      <Filter>headers\math</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\frustum.h">
+      <Filter>headers\math</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\random.h">
+      <Filter>headers\math</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\transform.h">
+      <Filter>headers\math</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\types3d.h">
+      <Filter>headers\math</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\camera.h">
+      <Filter>headers\math\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\camera_controller.h">
+      <Filter>headers\math\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\fly_camera.h">
+      <Filter>headers\math\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\fps_camera.h">
+      <Filter>headers\math\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\target_camera.h">
+      <Filter>headers\math\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\track.h">
+      <Filter>headers\math\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\track_camera_controller.h">
+      <Filter>headers\math\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\catmulrom.h">
+      <Filter>headers\math\spline</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\catmulrom_dist.h">
+      <Filter>headers\math\spline</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\spline.h">
+      <Filter>headers\math\spline</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\splines.h">
+      <Filter>headers\math\spline</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\interpolator.h">
+      <Filter>headers\math\Interpolator</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\interpolators.h">
+      <Filter>headers\math\Interpolator</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\math\linear_interpolator.h">
+      <Filter>headers\math\Interpolator</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\binder.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\binders.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\camera.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\camera_manager.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\common.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\effect.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\effect_parameter_names.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\font.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\geom_generator.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\geometry.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\light.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\light_manager.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\lines2d.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\lines3d.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\manager.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\material.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\mesh.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\model.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\particles.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\render_device.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\render_target.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\sprites.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\texture.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\vertices.h">
+      <Filter>headers\render</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\particles\box_emitter.h">
+      <Filter>headers\render\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\particles\effect.h">
+      <Filter>headers\render\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\particles\emitter.h">
+      <Filter>headers\render\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\particles\main.h">
+      <Filter>headers\render\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\particles\particle.h">
+      <Filter>headers\render\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\particles\processor.h">
+      <Filter>headers\render\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\particles\spherical_emitter.h">
+      <Filter>headers\render\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\render\particles\tank.h">
+      <Filter>headers\render\particles</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\event\Events.h">
+      <Filter>headers\event</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\input\input.h">
+      <Filter>headers\input</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\game\dynamic_object.h">
+      <Filter>headers\game</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\game\game.h">
+      <Filter>headers\game</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\game\Level.h">
+      <Filter>headers\game</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\game\level_object.h">
+      <Filter>headers\game</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\io\file.h">
+      <Filter>headers\io</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\io\file_system.h">
+      <Filter>headers\io</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\io\io.h">
+      <Filter>headers\io</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\io\path.h">
+      <Filter>headers\io</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\io\serialized_object.h">
+      <Filter>headers\io</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\scene\manager.h">
+      <Filter>headers\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\scene\scene.h">
+      <Filter>headers\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\scene\tree.h">
+      <Filter>headers\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\scene\visitor.h">
+      <Filter>headers\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\scene\base_trigger.h">
+      <Filter>headers\scene\triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="rgde\scene\distance_trigger.h">
+      <Filter>headers\scene\triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\exception.h">
+      <Filter>sources\base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\macros.h">
+      <Filter>sources\base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render\texture_impl.h">
+      <Filter>sources\render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\inputimpl.h">
+      <Filter>sources\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\forms\drawing.h">
+      <Filter>sources\core\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\forms\message.h">
+      <Filter>sources\core\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\forms\window.h">
+      <Filter>sources\core\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\render_system_impl.h">
+      <Filter>sources\core\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\precompiled.h">
+      <Filter>sources\precompiled</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\base\exception.cpp">
+      <Filter>sources\base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base\hash_string.cpp">
+      <Filter>sources\base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base\log.cpp">
+      <Filter>sources\base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base\log_helper.cpp">
+      <Filter>sources\base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\binders.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\camera_manager.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\effect.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\font.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\geometry.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\light.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\light_manager.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\lines2d.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\lines3d.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\manager.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\material.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\mesh.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\model.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\render_camera.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\render_device.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\render_target.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\sprites.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\texture.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\vertices.cpp">
+      <Filter>sources\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\particles\box_emitter.cpp">
+      <Filter>sources\render\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\particles\emitter.cpp">
+      <Filter>sources\render\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\particles\peffect.cpp">
+      <Filter>sources\render\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\particles\processor.cpp">
+      <Filter>sources\render\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\particles\spherical_emitter.cpp">
+      <Filter>sources\render\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\particles\tank.cpp">
+      <Filter>sources\render\particles</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event\Events.cpp">
+      <Filter>sources\event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\base.cpp">
+      <Filter>sources\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\command.cpp">
+      <Filter>sources\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\control.cpp">
+      <Filter>sources\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\device.cpp">
+      <Filter>sources\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\helper.cpp">
+      <Filter>sources\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\input.cpp">
+      <Filter>sources\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\inputimpl.cpp">
+      <Filter>sources\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\dynamic_object.cpp">
+      <Filter>sources\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\game.cpp">
+      <Filter>sources\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\Level.cpp">
+      <Filter>sources\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\level_object.cpp">
+      <Filter>sources\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\file.cpp">
+      <Filter>sources\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\file_system.cpp">
+      <Filter>sources\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\scene.cpp">
+      <Filter>sources\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\tree.cpp">
+      <Filter>sources\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\distance_trigger.cpp">
+      <Filter>sources\scene\triggers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\animation_controller.cpp">
+      <Filter>sources\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\frustum.cpp">
+      <Filter>sources\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\transform.cpp">
+      <Filter>sources\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\types3d.cpp">
+      <Filter>sources\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\camera.cpp">
+      <Filter>sources\math\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\camera_controller.cpp">
+      <Filter>sources\math\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\fly_camera.cpp">
+      <Filter>sources\math\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\fps_camera.cpp">
+      <Filter>sources\math\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\target_camera.cpp">
+      <Filter>sources\math\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\track.cpp">
+      <Filter>sources\math\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\track_camera_controller.cpp">
+      <Filter>sources\math\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\application.cpp">
+      <Filter>sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\game_task.cpp">
+      <Filter>sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\input_task.cpp">
+      <Filter>sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\render_system.cpp">
+      <Filter>sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\render_task.cpp">
+      <Filter>sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Task.cpp">
+      <Filter>sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Timer.cpp">
+      <Filter>sources\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\forms\window.cpp">
+      <Filter>sources\core\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\render_system_impl.cpp">
+      <Filter>sources\core\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\precompiled.cpp">
+      <Filter>sources\precompiled</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

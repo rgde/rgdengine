@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>Enginelib</ProjectName>
+    <ProjectGuid>{3A68081D-E8F9-4523-9436-530DE9E5530A}</ProjectGuid>
+    <RootNamespace>rgde</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.23107.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)temp\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)temp\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)temp\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)temp\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\rgdengine;$(SolutionDir)external/;$(SolutionDir)external/directx/include;$(SolutionDir)external/vorbis/include;$(SolutionDir)external/ogg/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;D3D_DEBUG_INFO;VC_EXTRALEAN;_CRT_SECURE_NO_DEPRECATE;TEST_NEW_BINDERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <EnablePREfast>false</EnablePREfast>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(SolutionDir)lib/$(Configuration)\$(ProjectName).lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/EHa %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)\rgdengine;$(SolutionDir)external/;$(SolutionDir)external/directx/include;$(SolutionDir)external/vorbis/include;$(SolutionDir)external/ogg/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(SolutionDir)lib/$(Configuration)\$(ProjectName).lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="rgde\base\exceptions.h" />
+    <ClInclude Include="rgde\base\hash_string.h" />
+    <ClInclude Include="rgde\base\lexical_cast.h" />
+    <ClInclude Include="rgde\base\log.h" />
+    <ClInclude Include="rgde\base\log_helper.h" />
+    <ClInclude Include="rgde\base\manager.h" />
+    <ClInclude Include="rgde\base\singelton.h" />
+    <ClInclude Include="rgde\base\smart_ptr_helpers.h" />
+    <ClInclude Include="rgde\base\xml_helpers.h" />
+    <ClInclude Include="rgde\core\application.h" />
+    <ClInclude Include="rgde\core\factory.h" />
+    <ClInclude Include="rgde\core\game_task.h" />
+    <ClInclude Include="rgde\core\input_task.h" />
+    <ClInclude Include="rgde\core\named_object.h" />
+    <ClInclude Include="rgde\core\Property.h" />
+    <ClInclude Include="rgde\core\render_system.h" />
+    <ClInclude Include="rgde\core\render_task.h" />
+    <ClInclude Include="rgde\core\Task.h" />
+    <ClInclude Include="rgde\core\Timer.h" />
+    <ClInclude Include="rgde\core\xml_class.h" />
+    <ClInclude Include="rgde\core\xml_node.h" />
+    <ClInclude Include="rgde\engine.h" />
+    <ClInclude Include="rgde\event\Events.h" />
+    <ClInclude Include="rgde\game\dynamic_object.h" />
+    <ClInclude Include="rgde\game\game.h" />
+    <ClInclude Include="rgde\game\Level.h" />
+    <ClInclude Include="rgde\game\level_object.h" />
+    <ClInclude Include="rgde\input\input.h" />
+    <ClInclude Include="rgde\io\file.h" />
+    <ClInclude Include="rgde\io\file_system.h" />
+    <ClInclude Include="rgde\io\io.h" />
+    <ClInclude Include="rgde\io\path.h" />
+    <ClInclude Include="rgde\io\serialized_object.h" />
+    <ClInclude Include="rgde\math\animation_controller.h" />
+    <ClInclude Include="rgde\math\camera.h" />
+    <ClInclude Include="rgde\math\camera_controller.h" />
+    <ClInclude Include="rgde\math\catmulrom.h" />
+    <ClInclude Include="rgde\math\catmulrom_dist.h" />
+    <ClInclude Include="rgde\math\fly_camera.h" />
+    <ClInclude Include="rgde\math\fps_camera.h" />
+    <ClInclude Include="rgde\math\frustum.h" />
+    <ClInclude Include="rgde\math\interpolator.h" />
+    <ClInclude Include="rgde\math\interpolators.h" />
+    <ClInclude Include="rgde\math\linear_interpolator.h" />
+    <ClInclude Include="rgde\math\random.h" />
+    <ClInclude Include="rgde\math\spline.h" />
+    <ClInclude Include="rgde\math\splines.h" />
+    <ClInclude Include="rgde\math\target_camera.h" />
+    <ClInclude Include="rgde\math\track.h" />
+    <ClInclude Include="rgde\math\track_camera_controller.h" />
+    <ClInclude Include="rgde\math\transform.h" />
+    <ClInclude Include="rgde\math\types3d.h" />
+    <ClInclude Include="rgde\render\binder.h" />
+    <ClInclude Include="rgde\render\binders.h" />
+    <ClInclude Include="rgde\render\camera.h" />
+    <ClInclude Include="rgde\render\camera_manager.h" />
+    <ClInclude Include="rgde\render\common.h" />
+    <ClInclude Include="rgde\render\effect.h" />
+    <ClInclude Include="rgde\render\effect_parameter_names.h" />
+    <ClInclude Include="rgde\render\font.h" />
+    <ClInclude Include="rgde\render\geometry.h" />
+    <ClInclude Include="rgde\render\geom_generator.h" />
+    <ClInclude Include="rgde\render\light.h" />
+    <ClInclude Include="rgde\render\light_manager.h" />
+    <ClInclude Include="rgde\render\lines2d.h" />
+    <ClInclude Include="rgde\render\lines3d.h" />
+    <ClInclude Include="rgde\render\manager.h" />
+    <ClInclude Include="rgde\render\material.h" />
+    <ClInclude Include="rgde\render\mesh.h" />
+    <ClInclude Include="rgde\render\model.h" />
+    <ClInclude Include="rgde\render\particles.h" />
+    <ClInclude Include="rgde\render\particles\box_emitter.h" />
+    <ClInclude Include="rgde\render\particles\effect.h" />
+    <ClInclude Include="rgde\render\particles\emitter.h" />
+    <ClInclude Include="rgde\render\particles\main.h" />
+    <ClInclude Include="rgde\render\particles\particle.h" />
+    <ClInclude Include="rgde\render\particles\processor.h" />
+    <ClInclude Include="rgde\render\particles\spherical_emitter.h" />
+    <ClInclude Include="rgde\render\particles\tank.h" />
+    <ClInclude Include="rgde\render\render_device.h" />
+    <ClInclude Include="rgde\render\render_target.h" />
+    <ClInclude Include="rgde\render\sprites.h" />
+    <ClInclude Include="rgde\render\texture.h" />
+    <ClInclude Include="rgde\render\vertices.h" />
+    <ClInclude Include="rgde\scene\base_trigger.h" />
+    <ClInclude Include="rgde\scene\distance_trigger.h" />
+    <ClInclude Include="rgde\scene\manager.h" />
+    <ClInclude Include="rgde\scene\scene.h" />
+    <ClInclude Include="rgde\scene\tree.h" />
+    <ClInclude Include="rgde\scene\visitor.h" />
+    <ClInclude Include="src\base\exception.h" />
+    <ClInclude Include="src\base\macros.h" />
+    <ClInclude Include="src\core\render_system_impl.h" />
+    <ClInclude Include="src\forms\drawing.h" />
+    <ClInclude Include="src\forms\message.h" />
+    <ClInclude Include="src\forms\window.h" />
+    <ClInclude Include="src\input\inputimpl.h" />
+    <ClInclude Include="src\precompiled.h" />
+    <ClInclude Include="src\render\texture_impl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\base\exception.cpp" />
+    <ClCompile Include="src\base\hash_string.cpp" />
+    <ClCompile Include="src\base\log.cpp" />
+    <ClCompile Include="src\base\log_helper.cpp" />
+    <ClCompile Include="src\core\application.cpp" />
+    <ClCompile Include="src\core\game_task.cpp" />
+    <ClCompile Include="src\core\input_task.cpp" />
+    <ClCompile Include="src\core\render_system.cpp" />
+    <ClCompile Include="src\core\render_system_impl.cpp" />
+    <ClCompile Include="src\core\render_task.cpp" />
+    <ClCompile Include="src\core\Task.cpp" />
+    <ClCompile Include="src\core\Timer.cpp" />
+    <ClCompile Include="src\event\Events.cpp" />
+    <ClCompile Include="src\forms\window.cpp" />
+    <ClCompile Include="src\game\dynamic_object.cpp" />
+    <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\Level.cpp" />
+    <ClCompile Include="src\game\level_object.cpp" />
+    <ClCompile Include="src\input\base.cpp" />
+    <ClCompile Include="src\input\command.cpp" />
+    <ClCompile Include="src\input\control.cpp" />
+    <ClCompile Include="src\input\device.cpp" />
+    <ClCompile Include="src\input\helper.cpp" />
+    <ClCompile Include="src\input\input.cpp" />
+    <ClCompile Include="src\input\inputimpl.cpp" />
+    <ClCompile Include="src\io\file.cpp" />
+    <ClCompile Include="src\io\file_system.cpp" />
+    <ClCompile Include="src\math\animation_controller.cpp" />
+    <ClCompile Include="src\math\camera.cpp" />
+    <ClCompile Include="src\math\camera_controller.cpp" />
+    <ClCompile Include="src\math\fly_camera.cpp" />
+    <ClCompile Include="src\math\fps_camera.cpp" />
+    <ClCompile Include="src\math\frustum.cpp" />
+    <ClCompile Include="src\math\target_camera.cpp" />
+    <ClCompile Include="src\math\track.cpp" />
+    <ClCompile Include="src\math\track_camera_controller.cpp" />
+    <ClCompile Include="src\math\transform.cpp" />
+    <ClCompile Include="src\math\types3d.cpp" />
+    <ClCompile Include="src\precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\render\binders.cpp" />
+    <ClCompile Include="src\render\camera_manager.cpp" />
+    <ClCompile Include="src\render\effect.cpp" />
+    <ClCompile Include="src\render\font.cpp" />
+    <ClCompile Include="src\render\geometry.cpp" />
+    <ClCompile Include="src\render\light.cpp" />
+    <ClCompile Include="src\render\light_manager.cpp" />
+    <ClCompile Include="src\render\lines2d.cpp" />
+    <ClCompile Include="src\render\lines3d.cpp" />
+    <ClCompile Include="src\render\manager.cpp" />
+    <ClCompile Include="src\render\material.cpp" />
+    <ClCompile Include="src\render\mesh.cpp" />
+    <ClCompile Include="src\render\model.cpp" />
+    <ClCompile Include="src\render\particles\box_emitter.cpp" />
+    <ClCompile Include="src\render\particles\emitter.cpp" />
+    <ClCompile Include="src\render\particles\peffect.cpp" />
+    <ClCompile Include="src\render\particles\processor.cpp" />
+    <ClCompile Include="src\render\particles\spherical_emitter.cpp" />
+    <ClCompile Include="src\render\particles\tank.cpp" />
+    <ClCompile Include="src\render\render_camera.cpp" />
+    <ClCompile Include="src\render\render_device.cpp" />
+    <ClCompile Include="src\render\render_target.cpp" />
+    <ClCompile Include="src\render\sprites.cpp" />
+    <ClCompile Include="src\render\texture.cpp" />
+    <ClCompile Include="src\render\vertices.cpp" />
+    <ClCompile Include="src\scene\distance_trigger.cpp" />
+    <ClCompile Include="src\scene\scene.cpp" />
+    <ClCompile Include="src\scene\tree.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\external\ogg\win32\ogg_static.vcxproj">
+      <Project>{7744e265-f311-410f-943d-a63b98c0fc4f}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\external\TinyXML\tinyxmlSTL.vcxproj">
+      <Project>{e8b256de-0d44-4dc5-a43f-58e7f61331ca}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\external\vorbis\win32\vorbisfile_static.vcxproj">
+      <Project>{4b61f965-d1da-4454-8983-d645cc327633}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\external\vorbis\win32\vorbis_static.vcxproj">
+      <Project>{88a9ea72-91bf-400b-b175-c7e1db13dae7}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

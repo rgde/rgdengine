@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="media">
+      <UniqueIdentifier>{10ea3a58-e6c5-4a23-9b9b-dd8ff806b738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="effects">
+      <UniqueIdentifier>{6bb504e8-1935-4026-8def-040edd09accf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="levels">
+      <UniqueIdentifier>{60395739-9dba-4b6d-96f2-c91fffc211d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="levels\src">
+      <UniqueIdentifier>{28f1eb18-77e3-4ab0-8f0d-eb0046bc556f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="levels\headers">
+      <UniqueIdentifier>{c0cc7171-e947-4272-bb6d-996d8ae60348}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game">
+      <UniqueIdentifier>{4b20be10-b176-43fe-97e4-a5a425b66ccb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\bin\Media\gameconfig.xml">
+      <Filter>media</Filter>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SnowEffect.cpp">
+      <Filter>effects</Filter>
+    </ClCompile>
+    <ClCompile Include="avilevelobject.cpp">
+      <Filter>levels\src</Filter>
+    </ClCompile>
+    <ClCompile Include="maplevelobject.cpp">
+      <Filter>levels\src</Filter>
+    </ClCompile>
+    <ClCompile Include="menulevelobject.cpp">
+      <Filter>levels\src</Filter>
+    </ClCompile>
+    <ClCompile Include="playlevelobject.cpp">
+      <Filter>levels\src</Filter>
+    </ClCompile>
+    <ClCompile Include="glass.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SnowEffect.h">
+      <Filter>effects</Filter>
+    </ClInclude>
+    <ClInclude Include="avilevelobject.h">
+      <Filter>levels\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="maplevelobject.h">
+      <Filter>levels\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="menulevelobject.h">
+      <Filter>levels\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="playlevelobject.h">
+      <Filter>levels\headers</Filter>
+    </ClInclude>
+    <ClInclude Include="glass.h">
+      <Filter>game</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
